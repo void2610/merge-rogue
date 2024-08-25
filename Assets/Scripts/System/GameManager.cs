@@ -86,7 +86,6 @@ public class GameManager : MonoBehaviour
             case GameState.PlayerAttack:
                 break;
             case GameState.EnemyAttack:
-                player.mirror.NormalPos();
                 break;
             case GameState.LevelUp:
                 uiManager.EnableLevelUpOptions(false);
@@ -159,7 +158,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Clear:
                 playerAnimation.ChangeAnimation("stand");
-                if(PlayerPrefs.GetString("SeedText", "") == "")
+                if (PlayerPrefs.GetString("SeedText", "") == "")
                     UnityroomApiClient.Instance.SendScore(1, turnCount, ScoreboardWriteMode.HighScoreAsc);
                 uiManager.EnableClear(true);
                 break;

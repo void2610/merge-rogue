@@ -73,7 +73,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -82,7 +82,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -464,14 +464,27 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      panel-transparent-center-004_0: 5040012621604742130
+      panel-transparent-center-004_1: 7304738108037729990
+      panel-transparent-center-004_10: -3585997501394590317
+      panel-transparent-center-004_11: -1632160211250633079
+      panel-transparent-center-004_12: -909449430064753358
+      panel-transparent-center-004_2: -192948506451511916
+      panel-transparent-center-004_3: -4819252487893308725
+      panel-transparent-center-004_4: -7383237948899819419
+      panel-transparent-center-004_5: 6319418358592650639
+      panel-transparent-center-004_6: -8854964446911546287
+      panel-transparent-center-004_7: 9055815438050088853
+      panel-transparent-center-004_8: 4673844525914648890
+      panel-transparent-center-004_9: 7096280073521161033
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

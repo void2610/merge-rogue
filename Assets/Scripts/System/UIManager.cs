@@ -227,14 +227,12 @@ public class UIManager : MonoBehaviour
     {
         SeManager.instance.PlaySe("button");
         GameManager.instance.uiManager.EnablePlayerActions(false);
-        GameManager.instance.player.mirror.AttackPos();
         Utils.instance.WaitAndInvoke(0.5f, () => player.EnableSave(true));
     }
     public void OnClickReturn()
     {
         SeManager.instance.PlaySe("button");
         GameManager.instance.uiManager.EnablePlayerActions(false);
-        GameManager.instance.player.mirror.AttackPos();
         Utils.instance.WaitAndInvoke(0.5f, () => player.Return(GameManager.instance.enemyContainer.GetAllEnemies()));
     }
 
@@ -316,16 +314,14 @@ public class UIManager : MonoBehaviour
 
     public void EnableReturnButton(bool e)
     {
-        if(e)
+        if (e)
         {
             returnButton.interactable = true;
-            returnButton.GetComponent<UIGradient>().enabled = true;
         }
         else
         {
             returnButton.interactable = false;
             returnButton.GetComponent<TweenButton>()?.ResetScale();
-            returnButton.GetComponent<UIGradient>().enabled = false;
         }
     }
 
@@ -379,21 +375,22 @@ public class UIManager : MonoBehaviour
         fadeImage.DOFade(0, 2f);
     }
 
-    private void Update(){
+    private void Update()
+    {
         if (Input.GetKeyDown(KeyCode.Z))
         {
-            if(playerActions.interactable) OnClickAttack();
-            else if(levelUpOptions.interactable) OnClickGrowAttack();
+            if (playerActions.interactable) OnClickAttack();
+            else if (levelUpOptions.interactable) OnClickGrowAttack();
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
-            if(playerActions.interactable) OnClickSave();
-            else if(levelUpOptions.interactable) OnClickGrowSave();
+            if (playerActions.interactable) OnClickSave();
+            else if (levelUpOptions.interactable) OnClickGrowSave();
         }
         else if (Input.GetKeyDown(KeyCode.C))
         {
-            if(playerActions.interactable) OnClickReturn();
-            else if(levelUpOptions.interactable) OnClickGrowHp();
+            if (playerActions.interactable) OnClickReturn();
+            else if (levelUpOptions.interactable) OnClickGrowHp();
         }
     }
 }
