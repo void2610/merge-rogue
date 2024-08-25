@@ -14,6 +14,8 @@ public class MergeManager : MonoBehaviour
     public static MergeManager instance;
 
     [SerializeField]
+    private MergeWall wall;
+    [SerializeField]
     private GameObject fallAnchor;
     [SerializeField]
     private List<BallData> balls;
@@ -22,8 +24,7 @@ public class MergeManager : MonoBehaviour
 
     public float moveSpeed = 1.0f;
     public float coolTime = 1.0f;
-    private float leftLimit = -3.2f;
-    private float rightLimit = 3.2f;
+    private float limit = -2.5f;
 
     private GameObject currentBall;
     private GameObject nextBall;
@@ -113,6 +114,7 @@ public class MergeManager : MonoBehaviour
 
         ballContainer = new GameObject("BallContainer");
         fallAnchor.transform.position = new Vector3(0, 1.5f, 0);
+        limit = wall.wallWidth / 2;
     }
 
     void Start()
@@ -122,11 +124,12 @@ public class MergeManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKey(KeyCode.A) && fallAnchor.transform.position.x > leftLimit)
+        float size = fallAnchor.transform.localScale.x + 0.5f;
+        if (Input.GetKey(KeyCode.A) && fallAnchor.transform.position.x - size / 2 > -limit)
         {
             fallAnchor.transform.position += Vector3.left * moveSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.D) && fallAnchor.transform.position.x < rightLimit)
+        if (Input.GetKey(KeyCode.D) && fallAnchor.transform.position.x + size / 2 < limit)
         {
             fallAnchor.transform.position += Vector3.right * moveSpeed * Time.deltaTime;
         }

@@ -3148,6 +3148,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 774851888}
+  - component: {fileID: 774851889}
   m_Layer: 0
   m_Name: Merge
   m_TagString: Untagged
@@ -3169,11 +3170,26 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1984357587}
-  - {fileID: 1461756397}
   - {fileID: 1066192358}
+  - {fileID: 1461756397}
   - {fileID: 154657688}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &774851889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 774851887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eab425d58be2940c6b743fbbb82ce72d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftWall: {fileID: 1984357586}
+  rightWall: {fileID: 1066192357}
+  floor: {fileID: 1461756396}
 --- !u!1 &813430540
 GameObject:
   m_ObjectHideFlags: 0
@@ -4280,7 +4296,7 @@ GameObject:
   - component: {fileID: 1066192359}
   - component: {fileID: 1066192360}
   m_Layer: 0
-  m_Name: Wall (1)
+  m_Name: RWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4295,7 +4311,7 @@ Transform:
   m_GameObject: {fileID: 1066192357}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 3.8, y: -1.52, z: 0}
+  m_LocalPosition: {x: 2.5, y: -1.5, z: 0}
   m_LocalScale: {x: 0.4, y: 6.6146483, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5116,7 +5132,7 @@ GameObject:
   - component: {fileID: 1461756398}
   - component: {fileID: 1461756399}
   m_Layer: 0
-  m_Name: Wall (2)
+  m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5131,8 +5147,8 @@ Transform:
   m_GameObject: {fileID: 1461756396}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.63, z: 0}
-  m_LocalScale: {x: 7.826569, y: 0.4, z: 1}
+  m_LocalPosition: {x: 0, y: -4.61, z: 0}
+  m_LocalScale: {x: 5, y: 0.4, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 774851888}
@@ -6009,6 +6025,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d435ca6135a944864acac918de64a25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wall: {fileID: 774851889}
   fallAnchor: {fileID: 632287031}
   balls:
   - prefab: {fileID: 2452455947392626302, guid: 78edb425978ad47779b3d3be8091f1e1, type: 3}
@@ -6400,7 +6417,7 @@ GameObject:
   - component: {fileID: 1984357588}
   - component: {fileID: 1984357589}
   m_Layer: 0
-  m_Name: Wall
+  m_Name: LWall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6415,7 +6432,7 @@ Transform:
   m_GameObject: {fileID: 1984357586}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.8, y: -1.52, z: 0}
+  m_LocalPosition: {x: -2.5, y: -1.5, z: 0}
   m_LocalScale: {x: 0.4, y: 6.6146483, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7270,10 +7287,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
-      propertyPath: soundDatas.Array.data[0].volume
-      value: 0.7
-      objectReference: {fileID: 0}
     - target: {fileID: 7521127176204447298, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: m_LocalPosition.x
       value: 434.22272
