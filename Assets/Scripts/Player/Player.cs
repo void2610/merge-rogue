@@ -26,30 +26,12 @@ public class Player : MonoBehaviour
 
     private TextMeshProUGUI healthText => canvas.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
     private Slider healthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
-    private TextMeshProUGUI saveText => canvas.transform.Find("SaveText").GetComponent<TextMeshProUGUI>();
-    private Slider saveSlider => canvas.transform.Find("SaveSlider").GetComponent<Slider>();
-    private ParticleSystem saveEffect => this.transform.parent.transform.Find("SaveParticle").GetComponent<ParticleSystem>();
 
     public void UpdateStatusDisplay()
     {
         healthSlider.maxValue = maxHealth;
         healthSlider.value = health;
         healthText.text = health + "/" + maxHealth;
-        saveSlider.maxValue = maxSave;
-        saveSlider.value = save;
-        saveText.text = save + "/" + maxSave;
-
-        var emission = saveEffect.emission;
-        emission.rateOverTime = ((float)save / (float)maxSave) * 15;
-
-        if (save > 0)
-        {
-            GameManager.instance.uiManager.EnableReturnButton(true);
-        }
-        else
-        {
-            GameManager.instance.uiManager.EnableReturnButton(false);
-        }
     }
 
     public void TakeDamage(int damage)
@@ -187,7 +169,6 @@ public class Player : MonoBehaviour
     public void Attack(List<EnemyBase> enemies)
     {
         GameManager.instance.ChangeState(GameManager.GameState.PlayerAttack);
-        GameManager.instance.playerAnimation.ChangeAnimation("sword");
 
         Utils.instance.WaitAndInvoke(0.75f, () =>
         {
@@ -200,7 +181,6 @@ public class Player : MonoBehaviour
             }
             Camera.main.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
             UpdateStatusDisplay();
-            GameManager.instance.playerAnimation.ChangeAnimation("stand");
             Utils.instance.WaitAndInvoke(1f, () =>
             {
                 if (CheckAndLevelUp())
@@ -224,8 +204,6 @@ public class Player : MonoBehaviour
             return;
         }
 
-        GameManager.instance.playerAnimation.ChangeAnimation("gun");
-
         Utils.instance.WaitAndInvoke(1f, () =>
         {
             SeManager.instance.PlaySe("enemyAttack");
@@ -237,7 +215,6 @@ public class Player : MonoBehaviour
             Camera.main.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
             save = 0;
             UpdateStatusDisplay();
-            GameManager.instance.playerAnimation.ChangeAnimation("stand");
             Utils.instance.WaitAndInvoke(1, () =>
             {
                 if (CheckAndLevelUp())
@@ -285,7 +262,7 @@ public class Player : MonoBehaviour
         UpdateStatusDisplay();
     }
 
-    void Awake()
+    void Start()
     {
         health = maxHealth;
         UpdateStatusDisplay();

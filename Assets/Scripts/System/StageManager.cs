@@ -34,7 +34,6 @@ public class StageManager : MonoBehaviour
     {
         if (currentStage >= 0)
         {
-            GameManager.instance.playerAnimation.ChangeAnimation("move");
             SeManager.instance.PlaySe("footsteps");
             //背景をスクロールさせる
             DOTween.To(() => m.GetTextureOffset("_MainTex"), x => m.SetTextureOffset("_MainTex", x), new Vector2(1, 0), 2.0f).SetEase(Ease.Linear).OnComplete(() =>

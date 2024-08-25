@@ -50,8 +50,6 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private GameObject playerObj;
     [SerializeField]
-    public PlayerAnimation playerAnimation;
-    [SerializeField]
     public EnemyContainer enemyContainer;
     [SerializeField]
     public Shop shop;
@@ -61,7 +59,7 @@ public class GameManager : MonoBehaviour
     private bool isPaused = false;
     public int turnCount = 0;
     public Player player => playerObj.GetComponent<Player>();
-    public UIManager uiManager => GetComponent<UIManager>();
+    public UIManager uiManager => this.GetComponent<UIManager>();
     public StageManager stageManager => GetComponent<StageManager>();
 
     public float RandomRange(float min, float max)
@@ -81,14 +79,12 @@ public class GameManager : MonoBehaviour
         switch (state)
         {
             case GameState.PlayerTurn:
-                uiManager.EnablePlayerActions(false);
                 break;
             case GameState.PlayerAttack:
                 break;
             case GameState.EnemyAttack:
                 break;
             case GameState.LevelUp:
-                uiManager.EnableLevelUpOptions(false);
                 break;
             case GameState.Shop:
                 shop.ResetItem();
@@ -129,41 +125,30 @@ public class GameManager : MonoBehaviour
         {
             case GameState.PlayerTurn:
                 turnCount++;
-                uiManager.UpdateTurnText(turnCount);
-                uiManager.EnablePlayerActions(true);
                 player.EnableSave(false);
-                playerAnimation.ChangeAnimation("stand");
                 break;
             case GameState.PlayerAttack:
                 break;
             case GameState.EnemyAttack:
-                playerAnimation.ChangeAnimation("stand");
                 enemyContainer.AttackPlayer(player);
                 break;
             case GameState.LevelUp:
-                playerAnimation.ChangeAnimation("stand");
-                uiManager.EnableLevelUpOptions(true);
                 break;
             case GameState.StageMoving:
                 stageManager.NextStage();
                 break;
             case GameState.Shop:
-                playerAnimation.ChangeAnimation("stand");
                 shop.SetItem(3);
-                uiManager.EnableShopOptions(true);
                 break;
             case GameState.GameOver:
-                playerAnimation.ChangeAnimation("stand");
                 uiManager.EnableGameOver(true);
                 break;
             case GameState.Clear:
-                playerAnimation.ChangeAnimation("stand");
                 if (PlayerPrefs.GetString("SeedText", "") == "")
                     UnityroomApiClient.Instance.SendScore(1, turnCount, ScoreboardWriteMode.HighScoreAsc);
                 uiManager.EnableClear(true);
                 break;
             case GameState.Other:
-                playerAnimation.ChangeAnimation("stand");
                 break;
         }
     }

@@ -67,10 +67,10 @@ public class Shop : MonoBehaviour
     {
         foreach (GameObject g in currentItems)
         {
-            g.transform.GetChild(0).GetComponent<CanvasGroup>().DOFade(0, 0.5f).OnComplete(() =>Destroy(g));
+            g.transform.GetChild(0).GetComponent<CanvasGroup>().DOFade(0, 0.5f).OnComplete(() => Destroy(g));
         }
         currentItems.Clear();
-        shopBG.DOFade(0, 0.5f).OnComplete(() => GameManager.instance.uiManager.EnableShopOptions(false));
+        shopBG.DOFade(0, 0.5f);
     }
 
     private void SetOnClick(GameObject g)
