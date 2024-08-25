@@ -18,8 +18,8 @@ public class EnemyBase : MonoBehaviour
         public string description;
     }
     public string enemyName = "Enemy";
-    public int health = 100;
-    public int maxHealth = 100;
+    public int hMax = 100;
+    public int hMin = 1;
     public int attack = 2;
     public int defense = 1;
     public int gold = 0;
@@ -32,17 +32,15 @@ public class EnemyBase : MonoBehaviour
     [SerializeField]
     private GameObject coinPrefab;
 
-    protected int hMax = 100;
-    protected int hMin = 1;
+    public int health { get; private set; }
+    public int maxHealth { get; private set; }
+
     protected int turnCount = 0;
     protected List<AttackData> enemyActions = new List<AttackData>();
     protected AttackData nextAction;
 
-    private TextMeshProUGUI nameText => canvas.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
     private TextMeshProUGUI healthText => canvas.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
     private Slider healthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
-    private TextMeshProUGUI attackText => canvas.transform.Find("AttackText").GetComponent<TextMeshProUGUI>();
-    private Image attackImage => canvas.transform.Find("AttackIcon").GetComponent<Image>();
 
     public void TakeDamage(int damage)
     {
@@ -133,15 +131,6 @@ public class EnemyBase : MonoBehaviour
                 break;
             }
         }
-
-        UpadateActionIcon();
-    }
-
-    protected void UpadateActionIcon()
-    {
-        attackText.text = nextAction.name;
-        attackImage.color = nextAction.color;
-        attackImage.GetComponent<OverRayWindow>().text = nextAction.description;
     }
 
     protected virtual bool NormalAttack(Player player)
@@ -186,12 +175,12 @@ public class EnemyBase : MonoBehaviour
 
         this.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         canvas.GetComponent<CanvasGroup>().alpha = 0;
-        nameText.text = enemyName;
+
         healthSlider.maxValue = maxHealth;
         healthSlider.value = health;
         healthText.text = health + "/" + maxHealth;
 
-        enemyActions.Add(new AttackData { name = "こうげき", action = NormalAttack, probability = 0.8f, color = Color.red, description = "いたい！\n"+attack+"ダメージ" });
+        enemyActions.Add(new AttackData { name = "こうげき", action = NormalAttack, probability = 0.8f, color = Color.red, description = "いたい！\n" + attack + "ダメージ" });
 
         DecideNextAction();
         OnAppear();

@@ -31,6 +31,11 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI stageText;
 
+    [SerializeField]
+    public Slider hpSlider;
+    [SerializeField]
+    public TextMeshProUGUI hpText;
+
     public int remainingLevelUps = 0;
     private Player player => GameManager.instance.player;
 

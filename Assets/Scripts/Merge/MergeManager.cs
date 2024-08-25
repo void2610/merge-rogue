@@ -96,7 +96,7 @@ public class MergeManager : MonoBehaviour
         }
 
         ballContainer = new GameObject("BallContainer");
-        fallAnchor.transform.position = new Vector3(0, 1.7f, 0);
+        fallAnchor.transform.position = new Vector3(0, 1.5f, 0);
     }
 
     void Start()

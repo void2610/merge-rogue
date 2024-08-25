@@ -127,7 +127,8 @@ public class EnemyContainer : MonoBehaviour
             GameObject enemy = currentEnemies[i];
             EnemyBase enemyBase = enemy.transform.GetChild(0).GetComponent<EnemyBase>();
 
-            if(enemyBase.Attack(player)){
+            if (enemyBase.Attack(player))
+            {
                 enemy.transform.GetChild(0).transform.DOMoveX(-0.75f, 0.02f).SetRelative(true).OnComplete(() =>
                 {
                     enemy.transform.GetChild(0).transform.DOMoveX(0.75f, 0.2f).SetRelative(true).SetEase(Ease.OutExpo);
@@ -155,18 +156,18 @@ public class EnemyContainer : MonoBehaviour
         positions.Add(this.transform.position);
         positions.Add(this.transform.position + new Vector3(alignment, 0, 0));
     }
-    // void Update()
-    // {
-    //     // エディタだけ
-    //     if (!Application.isEditor) return;
-    //     if (Input.GetKeyDown(KeyCode.Space))
-    //     {
-    //         SpawnEnemy();
-    //     }
-    //     if (Input.GetKeyDown(KeyCode.B))
-    //     {
-    //         //PlayerPrefsをリセット
-    //         PlayerPrefs.DeleteAll();
-    //     }
-    // }
+    void Update()
+    {
+        // エディタだけ
+        if (!Application.isEditor) return;
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            SpawnEnemy();
+        }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            //PlayerPrefsをリセット
+            PlayerPrefs.DeleteAll();
+        }
+    }
 }

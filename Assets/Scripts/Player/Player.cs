@@ -24,14 +24,13 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject damageTextPrefab;
 
-    private TextMeshProUGUI healthText => canvas.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
-    private Slider healthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
-
     public void UpdateStatusDisplay()
     {
-        healthSlider.maxValue = maxHealth;
-        healthSlider.value = health;
-        healthText.text = health + "/" + maxHealth;
+        Slider s = GameManager.instance.uiManager.hpSlider;
+        s.maxValue = maxHealth;
+        s.value = health;
+        TextMeshProUGUI t = GameManager.instance.uiManager.hpText;
+        t.text = health + "/" + maxHealth;
     }
 
     public void TakeDamage(int damage)
