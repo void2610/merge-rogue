@@ -1,0 +1,72 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8483398409194093420
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7521127176204447298}
+  - component: {fileID: 6740438996834902664}
+  m_Layer: 0
+  m_Name: SEManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7521127176204447298
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8483398409194093420}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 434.22272, y: 353.46616, z: -4.800009}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6740438996834902664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8483398409194093420}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef5bc3d5437cd4e63a84539f6010c69c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  seMixerGroup: {fileID: -2914203093863034194, guid: 036946d98e62e4eb6a4ed37ee1c88abe, type: 2}
+  soundDatas:
+  - name: button
+    audioClip: {fileID: 8300000, guid: c08019ad0cad74564a6a63b5cc5d583d, type: 3}
+    volume: 0.5
+  - name: enemyAttack
+    audioClip: {fileID: 8300000, guid: 4baad9ed01026450a803bbf172d43d67, type: 3}
+    volume: 1
+  - name: footsteps
+    audioClip: {fileID: 8300000, guid: f53f703a6757f47c2bf54a5152db1b7f, type: 3}
+    volume: 0.5
+  - name: levelUp
+    audioClip: {fileID: 8300000, guid: 95c4e103e2acb4452909a5749af0bd53, type: 3}
+    volume: 0.6
+  - name: coin
+    audioClip: {fileID: 8300000, guid: d9e708257b4ef49e7b16ecbc4cd83d6b, type: 3}
+    volume: 1
+  - name: error
+    audioClip: {fileID: 8300000, guid: 34b338ab01aa64bc5bcc333030090dc8, type: 3}
+    volume: 1
+  - name: mirror
+    audioClip: {fileID: 8300000, guid: f9880c88442754da5bc4efcb8150dc95, type: 3}
+    volume: 1
+  - name: laser
+    audioClip: {fileID: 8300000, guid: 902b69590f2d54f91a77e51ee9f69292, type: 3}
+    volume: 1
