@@ -108,12 +108,6 @@ public class Player : MonoBehaviour
         GameManager.instance.uiManager.UpdateCoinText(gold);
     }
 
-    public void AddExp(int amount)
-    {
-        exp += amount;
-        GameManager.instance.uiManager.UpdateExpText(exp, levelUpExp[level - 1]);
-    }
-
     private void ShowDamage(int damage)
     {
         float r = UnityEngine.Random.Range(-0.5f, 0.5f);
@@ -137,8 +131,12 @@ public class Player : MonoBehaviour
             g.GetComponent<TextMeshProUGUI>().DOFade(0, 0.5f);
             g.transform.DOMoveY(-1f, 0.5f).SetRelative(true).SetEase(Ease.InQuad).OnComplete(() =>
             {
-                Destroy(g);
+
             });
+        });
+        Utils.instance.WaitAndInvoke(5f, () =>
+        {
+            Destroy(g);
         });
     }
 
@@ -152,8 +150,6 @@ public class Player : MonoBehaviour
         exp -= levelUpExp[level - 1];
         level++;
         SeManager.instance.PlaySe("levelUp");
-        GameManager.instance.uiManager.UpdateExpText(exp, levelUpExp[level - 1]);
-        GameManager.instance.uiManager.UpdateLevelText(level);
         GameManager.instance.uiManager.remainingLevelUps++;
         GameManager.instance.ChangeState(GameManager.GameState.LevelUp);
 
@@ -207,34 +203,11 @@ public class Player : MonoBehaviour
         GameManager.instance.ChangeState(GameManager.GameState.EnemyAttack);
     }
 
-    public void GrowAttack()
-    {
-        attack += 0.5f;
-        GameManager.instance.uiManager.UpdateAttackText(attack);
-        UpdateStatusDisplay();
-    }
-
-    public void GrowSave()
-    {
-        maxSave++;
-        UpdateStatusDisplay();
-    }
-
-    public void GrowHp()
-    {
-        maxHealth += 5;
-        health += 5;
-        UpdateStatusDisplay();
-    }
-
     void Start()
     {
         health = maxHealth;
         UpdateStatusDisplay();
 
         GameManager.instance.uiManager.UpdateCoinText(gold);
-        GameManager.instance.uiManager.UpdateExpText(exp, levelUpExp[level - 1]);
-        GameManager.instance.uiManager.UpdateLevelText(level);
-        GameManager.instance.uiManager.UpdateAttackText(attack);
     }
 }

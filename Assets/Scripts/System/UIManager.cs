@@ -23,12 +23,6 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI coinText;
     [SerializeField]
-    private TextMeshProUGUI expText;
-    [SerializeField]
-    private TextMeshProUGUI levelText;
-    [SerializeField]
-    private TextMeshProUGUI attackText;
-    [SerializeField]
     private TextMeshProUGUI stageText;
 
     [SerializeField]
@@ -94,49 +88,10 @@ public class UIManager : MonoBehaviour
         coinText.text = "おかね: " + amount.ToString();
     }
 
-    public void UpdateExpText(int now, int max)
-    {
-        expText.text = "けいけんち: " + now + "/" + max;
-    }
-
-    public void UpdateLevelText(int level)
-    {
-        levelText.text = "レベル: " + level;
-    }
-
-    public void UpdateAttackText(float attack)
-    {
-        attackText.text = "こうげきりょく: " + attack.ToString("F1");
-    }
-
     public void UpdateStageText(int stage)
     {
         int s = Mathf.Max(1, stage);
         stageText.text = "ステージ: " + s;
-    }
-
-    public void OnClickGrowAttack()
-    {
-        SeManager.instance.PlaySe("button");
-        player.GrowAttack();
-        if (--remainingLevelUps <= 0)
-            GameManager.instance.ChangeState(GameManager.GameState.EnemyAttack);
-    }
-
-    public void OnClickGrowSave()
-    {
-        SeManager.instance.PlaySe("button");
-        player.GrowSave();
-        if (--remainingLevelUps <= 0)
-            GameManager.instance.ChangeState(GameManager.GameState.EnemyAttack);
-    }
-
-    public void OnClickGrowHp()
-    {
-        SeManager.instance.PlaySe("button");
-        player.GrowHp();
-        if (--remainingLevelUps <= 0)
-            GameManager.instance.ChangeState(GameManager.GameState.EnemyAttack);
     }
 
     public void OnClickPause()

@@ -117,7 +117,6 @@ public class EnemyContainer : MonoBehaviour
 
     public void RemoveEnemy(GameObject enemy)
     {
-        GameManager.instance.player.AddExp(enemy.GetComponent<EnemyBase>().exp);
         GameManager.instance.player.AddGold(enemy.GetComponent<EnemyBase>().gold);
         GameObject g = enemy.transform.parent.gameObject;
         currentEnemies.Remove(g);
