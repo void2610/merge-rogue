@@ -45,4 +45,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   seMixerGroup: {fileID: -2914203093863034194, guid: f789843a274c340cb976f3e5fb359cf3, type: 2}
-  soundDatas: []
+  soundDatas:
+  - name: enemyAttack
+    audioClip: {fileID: 8300000, guid: 1b8c24557f80a4d248e197d1ea1a8142, type: 3}
+    volume: 1
+  - name: button
+    audioClip: {fileID: 8300000, guid: a2af495fb5b1b43a3b9457da3e08de07, type: 3}
+    volume: 1

@@ -17,6 +17,8 @@ public class MergeManager : MonoBehaviour
     private GameObject fallAnchor;
     [SerializeField]
     private List<BallData> balls;
+    [SerializeField]
+    private List<float> ballAttacks;
 
     public float moveSpeed = 1.0f;
     public float coolTime = 1.0f;
@@ -35,6 +37,18 @@ public class MergeManager : MonoBehaviour
 
         GameObject b = balls[level - 1].prefab;
         Instantiate(b, p, q, ballContainer.transform);
+        int atk = (int)(ballAttacks[level - 1] * level);
+        Attack(atk);
+    }
+
+    private void Attack(int atk)
+    {
+        foreach (var e in GameManager.instance.enemyContainer.GetAllEnemies())
+        {
+            e.TakeDamage(atk);
+        }
+        SeManager.instance.PlaySe("enemyAttack");
+        Camera.main.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
     }
 
     private void FallAndDecideNextBall()
@@ -90,9 +104,11 @@ public class MergeManager : MonoBehaviour
         else Destroy(gameObject);
 
         probabilitySum = 0;
-        foreach (var ball in balls)
+        for (int i = 0; i < balls.Count; i++)
         {
+            var ball = balls[i];
             probabilitySum += ball.probability;
+            ballAttacks.Add(1.0f);
         }
 
         ballContainer = new GameObject("BallContainer");

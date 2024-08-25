@@ -35,7 +35,7 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        Camera.main.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
+        Camera.main.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.2f);
         ShowDamage(damage);
         health -= damage;
         if (health <= 0)

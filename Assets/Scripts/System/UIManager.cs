@@ -46,12 +46,14 @@ public class UIManager : MonoBehaviour
             pauseMenu.alpha = 1;
             pauseMenu.interactable = true;
             pauseMenu.blocksRaycasts = true;
+            Time.timeScale = 0;
         }
         else
         {
             pauseMenu.alpha = 0;
             pauseMenu.interactable = false;
             pauseMenu.blocksRaycasts = false;
+            Time.timeScale = 1;
         }
     }
 
