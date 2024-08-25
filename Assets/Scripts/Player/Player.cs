@@ -194,40 +194,6 @@ public class Player : MonoBehaviour
         });
     }
 
-    public void Return(List<EnemyBase> enemies)
-    {
-        GameManager.instance.ChangeState(GameManager.GameState.PlayerAttack);
-        if (save <= 0)
-        {
-            GameManager.instance.ChangeState(GameManager.GameState.EnemyAttack);
-            return;
-        }
-
-        Utils.instance.WaitAndInvoke(1f, () =>
-        {
-            SeManager.instance.PlaySe("enemyAttack");
-            int a = Mathf.FloorToInt(attack * (float)save);
-            foreach (EnemyBase enemy in enemies)
-            {
-                enemy.TakeDamageFromReturn(a);
-            }
-            Camera.main.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
-            save = 0;
-            UpdateStatusDisplay();
-            Utils.instance.WaitAndInvoke(1, () =>
-            {
-                if (CheckAndLevelUp())
-                {
-                    GameManager.instance.ChangeState(GameManager.GameState.LevelUp);
-                }
-                else
-                {
-                    GameManager.instance.ChangeState(GameManager.GameState.EnemyAttack);
-                }
-            });
-        });
-    }
-
     public void EnableSave(bool enable)
     {
         if (enable) Save();

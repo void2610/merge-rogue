@@ -130,7 +130,6 @@ public class GameManager : MonoBehaviour
             case GameState.PlayerAttack:
                 break;
             case GameState.EnemyAttack:
-                enemyContainer.AttackPlayer(player);
                 break;
             case GameState.LevelUp:
                 break;

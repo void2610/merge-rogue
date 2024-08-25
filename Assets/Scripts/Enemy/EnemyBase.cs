@@ -18,6 +18,7 @@ public class EnemyBase : MonoBehaviour
         public string description;
     }
     public string enemyName = "Enemy";
+    public float atackSpeed = 1.0f;
     public int hMax = 100;
     public int hMin = 1;
     public int attack = 2;
@@ -41,20 +42,9 @@ public class EnemyBase : MonoBehaviour
 
     private TextMeshProUGUI healthText => canvas.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
     private Slider healthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
+    private float lastAttackTime = 0.0f;
 
     public void TakeDamage(int damage)
-    {
-        ShowDamage(damage);
-        health -= damage;
-        if (health <= 1)
-        {
-            health = 1;
-        }
-        healthSlider.value = health;
-        healthText.text = health + "/" + maxHealth;
-    }
-
-    public void TakeDamageFromReturn(int damage)
     {
         ShowDamage(damage);
         health -= damage;
@@ -80,11 +70,14 @@ public class EnemyBase : MonoBehaviour
     }
 
     // 返り値で、攻撃モーションを再生するかどうかを返す
-    public bool Attack(Player player)
+    public void Attack()
     {
-        bool b = nextAction.action(player);
-        DecideNextAction();
-        return b;
+        GameManager.instance.player.TakeDamage(attack);
+        this.transform.DOMoveX(-0.75f, 0.02f).SetRelative(true).OnComplete(() =>
+                {
+                    this.transform.DOMoveX(0.75f, 0.2f).SetRelative(true).SetEase(Ease.OutExpo);
+                });
+        SeManager.instance.PlaySe("enemyAttack");
     }
 
     public void OnAppear()
@@ -105,39 +98,11 @@ public class EnemyBase : MonoBehaviour
         }
         CanvasGroup cg = canvas.GetComponent<CanvasGroup>();
         cg.DOFade(0, 0.5f);
-        // ゆらゆらと左右に揺れながら上に登っていく
-        this.transform.DOPunchPosition(new Vector3(0.5f, 0, 0), 2f, 3, 1f).SetRelative(true);
-        this.transform.DOMoveY(1, 2f).SetRelative(true);
-        this.GetComponent<SpriteRenderer>().DOFade(0, 2f).OnComplete(() =>
+
+        this.GetComponent<SpriteRenderer>().DOFade(0, 0.5f).OnComplete(() =>
         {
             Destroy(this.transform.parent.gameObject);
         });
-    }
-
-    protected virtual void DecideNextAction()
-    {
-        float sum = 0;
-        foreach (var a in enemyActions)
-        {
-            sum += a.probability;
-        }
-        float random = GameManager.instance.RandomRange(0.0f, sum);
-        foreach (var a in enemyActions)
-        {
-            random -= a.probability;
-            if (random <= 0)
-            {
-                nextAction = a;
-                break;
-            }
-        }
-    }
-
-    protected virtual bool NormalAttack(Player player)
-    {
-        if (player.isSaving) player.AddSaveFromEnemy(attack);
-        else player.TakeDamage(attack);
-        return true;
     }
 
     public void Death()
@@ -180,9 +145,15 @@ public class EnemyBase : MonoBehaviour
         healthSlider.value = health;
         healthText.text = health + "/" + maxHealth;
 
-        enemyActions.Add(new AttackData { name = "こうげき", action = NormalAttack, probability = 0.8f, color = Color.red, description = "いたい！\n" + attack + "ダメージ" });
-
-        DecideNextAction();
         OnAppear();
+    }
+
+    protected virtual void Update()
+    {
+        if (Time.time - lastAttackTime > atackSpeed)
+        {
+            lastAttackTime = Time.time;
+            Attack();
+        }
     }
 }
