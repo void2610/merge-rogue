@@ -18,15 +18,7 @@ public class TitleMenu : MonoBehaviour
     [SerializeField]
     private CanvasGroup credit;
     [SerializeField]
-    private TextAsset creditText;
-    [SerializeField]
-    private TextMeshProUGUI creditTextObject;
-    [SerializeField]
     private CanvasGroup license;
-    [SerializeField]
-    private TextAsset licenseText;
-    [SerializeField]
-    private TextMeshProUGUI licenseTextObject;
 
     public void StartGame()
     {
@@ -57,7 +49,6 @@ public class TitleMenu : MonoBehaviour
     public void ShowLicense()
     {
         PlayButtonSe();
-        licenseTextObject.text = licenseText.text;
         license.alpha = 1.0f;
         license.interactable = true;
         license.blocksRaycasts = true;
@@ -99,8 +90,6 @@ public class TitleMenu : MonoBehaviour
         HideCredit();
         HideLicense();
         if (!PlayerPrefs.HasKey("BgmVolume")) InitPlayerPrefs();
-        licenseTextObject.text = licenseText.text;
-        creditTextObject.text = creditText.text;
     }
 
     void Start()
