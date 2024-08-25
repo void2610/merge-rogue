@@ -1,0 +1,43 @@
+using UnityEngine;
+
+public class Ball : MonoBehaviour
+{
+    private static int ball_serial = 0;
+
+
+    public int level = 1;
+    public float size = 1;
+    public Color color = Color.white;
+    public int serial { get; private set; }
+    public bool isDestroyed = false;
+
+    private void Awake()
+    {
+        serial = ball_serial++;
+        GetComponent<SpriteRenderer>().color = color;
+        transform.localScale = new Vector3(size, size, size);
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (isDestroyed) return;
+
+        if (other.gameObject.TryGetComponent(out Ball b))
+        {
+            if (b.level == this.level)
+            {
+                if (this.serial < b.serial)
+                {
+                    isDestroyed = true;
+                    b.isDestroyed = true;
+                    Destroy(gameObject);
+                    Destroy(other.gameObject);
+
+                    Vector3 center = (this.transform.position + other.transform.position) / 2;
+                    Quaternion rotation = Quaternion.Lerp(this.transform.rotation, other.transform.rotation, 0.5f);
+                    MergeManager.instance.SpawnBall(level + 1, center, rotation);
+                }
+            }
+        }
+    }
+}
