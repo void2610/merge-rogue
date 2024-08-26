@@ -5,7 +5,6 @@ public class NormalSoul : EnemyBase
 {
     private bool Absorb(Player player)
     {
-        player.AddSaveFromEnemy(-attack);
         return true;
     }
 

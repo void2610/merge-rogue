@@ -10,7 +10,7 @@ public class MergeWall : MonoBehaviour
     [SerializeField]
     private GameObject floor;
 
-    public float wallWidth { get; private set; } = 5.0f;
+    public float wallWidth { get; private set; } = 4.5f;
     private float defaultY = 0.0f;
 
     public void SetWallWidth(float width)

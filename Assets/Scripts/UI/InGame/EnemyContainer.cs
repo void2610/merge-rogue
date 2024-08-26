@@ -121,6 +121,7 @@ public class EnemyContainer : MonoBehaviour
         GameObject g = enemy.transform.parent.gameObject;
         currentEnemies.Remove(g);
         enemy.GetComponent<EnemyBase>().OnDisappear();
+        GameManager.instance.player.AddExp(enemy.GetComponent<EnemyBase>().exp);
     }
 
     void Awake()

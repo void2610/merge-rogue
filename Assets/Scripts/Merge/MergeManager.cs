@@ -32,13 +32,61 @@ public class MergeManager : MonoBehaviour
     private GameObject ballContainer;
     private float lastFallTime = 0;
 
+    private List<float> moveSpeeds = new List<float> { 0.5f, 1.0f, 1.5f, 2.0f, 2.5f };
+    private int moveSpeedLevel = 0;
+    private List<float> wallWidths = new List<float> { 4.5f, 5.0f, 5.5f, 6.0f, 6.5f };
+    private int wallWidthLevel = 0;
+    private List<float> coolTimes = new List<float> { 1.0f, 0.8f, 0.6f, 0.4f, 0.2f };
+    private int coolTimeLevel = 0;
+    private List<float> attacks = new List<float> { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f };
+    private int attackLevel = 0;
+
+    public void LevelUpMoveSpeed()
+    {
+        if (moveSpeedLevel < moveSpeeds.Count - 1)
+        {
+            moveSpeed = moveSpeeds[++moveSpeedLevel];
+        }
+
+    }
+
+    public void LevelUpWallWidth()
+    {
+        if (wallWidthLevel < wallWidths.Count - 1)
+        {
+            wall.SetWallWidth(wallWidths[++wallWidthLevel]);
+        }
+        GameManager.instance.uiManager.EnableLevelUpOptions(false);
+        Time.timeScale = 1.0f;
+    }
+
+    public void LevelUpCoolTime()
+    {
+        if (coolTimeLevel < coolTimes.Count - 1)
+        {
+            coolTime = coolTimes[++coolTimeLevel];
+        }
+        GameManager.instance.uiManager.EnableLevelUpOptions(false);
+        Time.timeScale = 1.0f;
+    }
+
+    public void LevelUpAttack()
+    {
+        if (attackLevel < attacks.Count - 1)
+        {
+            ballAttacks[attackLevel] = attacks[++attackLevel];
+        }
+        GameManager.instance.uiManager.EnableLevelUpOptions(false);
+        Time.timeScale = 1.0f;
+    }
+
     public void SpawnBall(int level, Vector3 p = default, Quaternion q = default)
     {
         if (level < 1 || level > balls.Count) return;
 
         GameObject b = balls[level - 1].prefab;
         Instantiate(b, p, q, ballContainer.transform);
-        int atk = (int)(ballAttacks[level - 1] * level);
+        int atk = (int)(ballAttacks[level - 1] * level * attacks[attackLevel]);
         Attack(atk);
     }
 
@@ -115,6 +163,10 @@ public class MergeManager : MonoBehaviour
         ballContainer = new GameObject("BallContainer");
         fallAnchor.transform.position = new Vector3(0, 1.5f, 0);
         limit = wall.wallWidth / 2;
+
+        moveSpeed = moveSpeeds[0];
+        wall.SetWallWidth(wallWidths[0]);
+        coolTime = coolTimes[0];
     }
 
     void Start()

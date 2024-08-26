@@ -21,10 +21,17 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private CanvasGroup clear;
     [SerializeField]
+    private CanvasGroup levelUpOptions;
+    [SerializeField]
+    private CanvasGroup shopOptions;
+    [SerializeField]
     private TextMeshProUGUI coinText;
     [SerializeField]
     private TextMeshProUGUI stageText;
-
+    [SerializeField]
+    private TextMeshProUGUI expText;
+    [SerializeField]
+    private TextMeshProUGUI levelText;
     [SerializeField]
     public Slider hpSlider;
     [SerializeField]
@@ -83,15 +90,57 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    public void EnableLevelUpOptions(bool e)
+    {
+        if (e)
+        {
+            levelUpOptions.alpha = 1;
+            levelUpOptions.interactable = true;
+            levelUpOptions.blocksRaycasts = true;
+        }
+        else
+        {
+            levelUpOptions.alpha = 0;
+            levelUpOptions.interactable = false;
+            levelUpOptions.blocksRaycasts = false;
+        }
+    }
+
+    public void EnableShopOptions(bool e)
+    {
+        if (e)
+        {
+            shopOptions.alpha = 1;
+            shopOptions.interactable = true;
+            shopOptions.blocksRaycasts = true;
+        }
+        else
+        {
+            shopOptions.alpha = 0;
+            shopOptions.interactable = false;
+            shopOptions.blocksRaycasts = false;
+        }
+    }
+
     public void UpdateCoinText(int amount)
     {
-        coinText.text = "おかね: " + amount.ToString();
+        coinText.text = "coin: " + amount.ToString();
+    }
+
+    public void UpdateExpText(int now, int max)
+    {
+        expText.text = "exp: " + now + "/" + max;
+    }
+
+    public void UpdateLevelText(int level)
+    {
+        levelText.text = "level: " + level;
     }
 
     public void UpdateStageText(int stage)
     {
         int s = Mathf.Max(1, stage);
-        stageText.text = "ステージ: " + s;
+        stageText.text = "stage: " + s;
     }
 
     public void OnClickPause()
@@ -128,6 +177,8 @@ public class UIManager : MonoBehaviour
         EnablePauseMenu(false);
         EnableGameOver(false);
         EnableClear(false);
+        EnableLevelUpOptions(false);
+        EnableShopOptions(false);
     }
 
     private void Start()

@@ -4,7 +4,6 @@ public class SavePortion : ItemBase
 {
     public override void Use(Player p)
     {
-        p.AddSaveFromItem(10);
     }
 
     protected override void Awake()

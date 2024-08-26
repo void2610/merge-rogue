@@ -31,6 +31,9 @@ public class Player : MonoBehaviour
         s.value = health;
         TextMeshProUGUI t = GameManager.instance.uiManager.hpText;
         t.text = health + "/" + maxHealth;
+
+        GameManager.instance.uiManager.UpdateExpText(exp, levelUpExp[level - 1]);
+        GameManager.instance.uiManager.UpdateLevelText(level);
     }
 
     public void TakeDamage(int damage)
@@ -41,34 +44,6 @@ public class Player : MonoBehaviour
         if (health <= 0)
         {
             health = 0;
-        }
-        UpdateStatusDisplay();
-    }
-
-    public void AddSaveFromEnemy(int amount)
-    {
-        if (save + amount > maxSave)
-        {
-            TakeDamage(save + amount);
-            save = 0;
-        }
-        else if (save + amount < 0)
-        {
-            save = 0;
-        }
-        else
-        {
-            save += amount;
-        }
-        UpdateStatusDisplay();
-    }
-
-    public void AddSaveFromItem(int amount)
-    {
-        save += amount;
-        if (save > maxSave + 5)
-        {
-            save = maxSave + 5;
         }
         UpdateStatusDisplay();
     }
@@ -95,6 +70,13 @@ public class Player : MonoBehaviour
         {
             health = maxHealth + 5;
         }
+        UpdateStatusDisplay();
+    }
+
+    public void AddExp(int amount)
+    {
+        exp += amount;
+        CheckAndLevelUp();
         UpdateStatusDisplay();
     }
 
@@ -150,8 +132,9 @@ public class Player : MonoBehaviour
         exp -= levelUpExp[level - 1];
         level++;
         SeManager.instance.PlaySe("levelUp");
+        Time.timeScale = 0.0f;
         GameManager.instance.uiManager.remainingLevelUps++;
-        GameManager.instance.ChangeState(GameManager.GameState.LevelUp);
+        GameManager.instance.uiManager.EnableLevelUpOptions(true);
 
         if (exp >= levelUpExp[level - 1])
         {
@@ -159,48 +142,6 @@ public class Player : MonoBehaviour
         }
 
         return true;
-    }
-
-    public void Attack(List<EnemyBase> enemies)
-    {
-        GameManager.instance.ChangeState(GameManager.GameState.PlayerAttack);
-
-        Utils.instance.WaitAndInvoke(0.75f, () =>
-        {
-            SeManager.instance.PlaySe("enemyAttack");
-            int a = Mathf.FloorToInt((float)attack);
-            foreach (EnemyBase enemy in enemies)
-            {
-                enemy.TakeDamage(a);
-                Heal(1);
-            }
-            Camera.main.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
-            UpdateStatusDisplay();
-            Utils.instance.WaitAndInvoke(1f, () =>
-            {
-                if (CheckAndLevelUp())
-                {
-                    GameManager.instance.ChangeState(GameManager.GameState.LevelUp);
-                }
-                else
-                {
-                    GameManager.instance.ChangeState(GameManager.GameState.EnemyAttack);
-                }
-            });
-        });
-    }
-
-    public void EnableSave(bool enable)
-    {
-        if (enable) Save();
-        else isSaving = false;
-    }
-
-    private void Save()
-    {
-        GameManager.instance.ChangeState(GameManager.GameState.PlayerAttack);
-        isSaving = true;
-        GameManager.instance.ChangeState(GameManager.GameState.EnemyAttack);
     }
 
     void Start()

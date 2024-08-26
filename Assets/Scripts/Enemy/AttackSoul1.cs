@@ -5,7 +5,6 @@ public class AttackSoul1 : EnemyBase
 {
     private bool SlimeAttack(Player player)
     {
-        player.AddSaveFromEnemy(-attack);
         return true;
     }
 

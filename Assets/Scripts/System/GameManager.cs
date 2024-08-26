@@ -57,7 +57,6 @@ public class GameManager : MonoBehaviour
     public System.Random random { get; private set; }
     private int seed = 42;
     private bool isPaused = false;
-    public int turnCount = 0;
     public Player player => playerObj.GetComponent<Player>();
     public UIManager uiManager => this.GetComponent<UIManager>();
     public StageManager stageManager => GetComponent<StageManager>();
@@ -124,8 +123,6 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.PlayerTurn:
-                turnCount++;
-                player.EnableSave(false);
                 break;
             case GameState.PlayerAttack:
                 break;
@@ -143,8 +140,6 @@ public class GameManager : MonoBehaviour
                 uiManager.EnableGameOver(true);
                 break;
             case GameState.Clear:
-                if (PlayerPrefs.GetString("SeedText", "") == "")
-                    UnityroomApiClient.Instance.SendScore(1, turnCount, ScoreboardWriteMode.HighScoreAsc);
                 uiManager.EnableClear(true);
                 break;
             case GameState.Other:
