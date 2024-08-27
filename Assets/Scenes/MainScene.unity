@@ -401,10 +401,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 567445622}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: EnablePauseMenu
-        m_Mode: 6
+      - m_Target: {fileID: 1843446104}
+        m_TargetAssemblyTypeName: MergeManager, Assembly-CSharp
+        m_MethodName: LevelUpMoveSpeed
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -4049,10 +4049,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 567445622}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: EnablePauseMenu
-        m_Mode: 6
+      - m_Target: {fileID: 1843446104}
+        m_TargetAssemblyTypeName: MergeManager, Assembly-CSharp
+        m_MethodName: LevelUpWallWidth
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -5495,10 +5495,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 567445622}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: EnablePauseMenu
-        m_Mode: 6
+      - m_Target: {fileID: 1843446104}
+        m_TargetAssemblyTypeName: MergeManager, Assembly-CSharp
+        m_MethodName: LevelUpAttack
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7909,10 +7909,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 567445622}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: EnablePauseMenu
-        m_Mode: 6
+      - m_Target: {fileID: 1843446104}
+        m_TargetAssemblyTypeName: MergeManager, Assembly-CSharp
+        m_MethodName: LevelUpCoolTime
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
