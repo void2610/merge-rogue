@@ -34,17 +34,14 @@ public class GameManager : MonoBehaviour
 
     public enum GameState
     {
-        PlayerTurn,
-        PlayerAttack,
-        EnemyAttack,
-        LevelUp,
+        Battle,
         StageMoving,
         Shop,
         GameOver,
         Clear,
         Other
     }
-    public GameState state = GameState.PlayerTurn;
+    public GameState state = GameState.Battle;
 
 
     [SerializeField]
@@ -77,59 +74,17 @@ public class GameManager : MonoBehaviour
     {
         switch (state)
         {
-            case GameState.PlayerTurn:
-                break;
-            case GameState.PlayerAttack:
-                break;
-            case GameState.EnemyAttack:
-                break;
-            case GameState.LevelUp:
-                break;
             case GameState.Shop:
                 shop.ResetItem();
                 break;
-            case GameState.GameOver:
-                break;
-            case GameState.Other:
-                break;
         }
-        switch (newState)
-        {
-            // 敵を倒したら次のステージへ
-            case GameState.EnemyAttack:
-                if (enemyContainer.GetEnemyCount() == 0)
-                {
-                    //ボスならクリア
-                    if (stageManager.GetCurrentStageType() == StageManager.StageType.boss)
-                    {
-                        newState = GameState.Clear;
-                    }
-                    else
-                    {
-                        newState = GameState.StageMoving;
-                    }
-                }
-                break;
-            // HPが0になったらゲームオーバー
-            case GameState.PlayerTurn:
-                if (player.health <= 0)
-                {
-                    newState = GameState.GameOver;
-                }
-                break;
-        }
+        // 敵を倒したら次のステージへ
+        // HPが0になったらゲームオーバー
+
         state = newState;
         Debug.Log("State: " + state);
         switch (newState)
         {
-            case GameState.PlayerTurn:
-                break;
-            case GameState.PlayerAttack:
-                break;
-            case GameState.EnemyAttack:
-                break;
-            case GameState.LevelUp:
-                break;
             case GameState.StageMoving:
                 stageManager.NextStage();
                 break;
@@ -169,13 +124,7 @@ public class GameManager : MonoBehaviour
         }
         switch (state)
         {
-            case GameState.PlayerTurn:
-                break;
-            case GameState.PlayerAttack:
-                break;
-            case GameState.EnemyAttack:
-                break;
-            case GameState.LevelUp:
+            case GameState.Battle:
                 break;
             case GameState.Shop:
                 break;

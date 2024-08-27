@@ -56,14 +56,14 @@ public class StageManager : MonoBehaviour
                 case StageType.enemy:
                     enemyStageCount++;
                     GameManager.instance.enemyContainer.SpawnEnemy(enemyStageCount);
-                    GameManager.instance.ChangeState(GameManager.GameState.PlayerTurn);
+                    GameManager.instance.ChangeState(GameManager.GameState.Battle);
                     break;
                 case StageType.shop:
                     GameManager.instance.ChangeState(GameManager.GameState.Shop);
                     break;
                 case StageType.boss:
                     GameManager.instance.enemyContainer.SpawnBoss();
-                    GameManager.instance.ChangeState(GameManager.GameState.PlayerTurn);
+                    GameManager.instance.ChangeState(GameManager.GameState.Battle);
                     break;
                 case StageType.events:
                     GameManager.instance.ChangeState(GameManager.GameState.Other);
