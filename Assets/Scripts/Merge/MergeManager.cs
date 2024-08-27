@@ -47,7 +47,8 @@ public class MergeManager : MonoBehaviour
         {
             moveSpeed = moveSpeeds[++moveSpeedLevel];
         }
-
+        GameManager.instance.uiManager.EnableLevelUpOptions(false);
+        Time.timeScale = 1.0f;
     }
 
     public void LevelUpWallWidth()
