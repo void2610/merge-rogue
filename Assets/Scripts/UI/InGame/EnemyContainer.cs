@@ -16,11 +16,11 @@ public class EnemyContainer : MonoBehaviour
     private List<EnemyData> enemies = new List<EnemyData>();
     [SerializeField]
     private List<EnemyData> bosses = new List<EnemyData>();
-    private List<GameObject> currentEnemies = new List<GameObject>();
-    private int enemyNum = 4;
     [SerializeField]
     private float alignment = 4;
-
+    private List<GameObject> currentEnemies = new List<GameObject>();
+    private int enemyNum = 4;
+    private int gainedExp = 0;
     private List<Vector3> positions = new List<Vector3>();
 
     public int GetEnemyCount()
@@ -117,14 +117,19 @@ public class EnemyContainer : MonoBehaviour
 
     public void RemoveEnemy(GameObject enemy)
     {
+        gainedExp += enemy.GetComponent<EnemyBase>().exp;
         GameManager.instance.player.AddGold(enemy.GetComponent<EnemyBase>().gold);
         GameObject g = enemy.transform.parent.gameObject;
         currentEnemies.Remove(g);
         enemy.GetComponent<EnemyBase>().OnDisappear();
-        GameManager.instance.player.AddExp(enemy.GetComponent<EnemyBase>().exp);
         if (currentEnemies.Count == 0)
         {
-            GameManager.instance.NextStage();
+            Utils.instance.WaitAndInvoke(1.0f, () =>
+            {
+                GameManager.instance.player.AddExp(gainedExp);
+                GameManager.instance.NextStage();
+                gainedExp = 0;
+            });
         }
     }
 

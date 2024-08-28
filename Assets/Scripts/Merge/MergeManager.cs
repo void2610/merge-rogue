@@ -34,7 +34,7 @@ public class MergeManager : MonoBehaviour
 
     private List<float> moveSpeeds = new List<float> { 0.5f, 1.0f, 1.5f, 2.0f, 2.5f };
     private int moveSpeedLevel = 0;
-    private List<float> wallWidths = new List<float> { 4.5f, 5.0f, 5.5f, 6.0f, 6.5f };
+    private List<float> wallWidths = new List<float> { 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f };
     private int wallWidthLevel = 0;
     private List<float> coolTimes = new List<float> { 1.0f, 0.8f, 0.6f, 0.4f, 0.2f };
     private int coolTimeLevel = 0;

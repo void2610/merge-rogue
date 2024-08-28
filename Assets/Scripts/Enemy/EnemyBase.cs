@@ -152,12 +152,17 @@ public class EnemyBase : MonoBehaviour
     protected virtual void Update()
     {
         if (GameManager.instance.state != GameManager.GameState.Battle) return;
+
         attackGauge.fillAmount = (Time.time - lastAttackTime) / attackSpeed;
 
-        if (Time.time - lastAttackTime > attackSpeed)
+        if (Time.time - lastAttackTime > attackSpeed && lastAttackTime > 0)
         {
             lastAttackTime = Time.time;
             Attack();
+        }
+        else if (lastAttackTime == 0)
+        {
+            lastAttackTime = Time.time;
         }
     }
 }
