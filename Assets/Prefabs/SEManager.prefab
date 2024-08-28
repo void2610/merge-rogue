@@ -46,9 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   seMixerGroup: {fileID: -2914203093863034194, guid: f789843a274c340cb976f3e5fb359cf3, type: 2}
   soundDatas:
+  - name: playerAttack
+    audioClip: {fileID: 8300000, guid: 0bd254bf6869044f1956508e3975a305, type: 3}
+    volume: 1
   - name: enemyAttack
     audioClip: {fileID: 8300000, guid: 1b8c24557f80a4d248e197d1ea1a8142, type: 3}
-    volume: 0.7
+    volume: 0.5
   - name: button
     audioClip: {fileID: 8300000, guid: a2af495fb5b1b43a3b9457da3e08de07, type: 3}
     volume: 1
@@ -57,7 +60,7 @@ MonoBehaviour:
     volume: 1
   - name: levelUp
     audioClip: {fileID: 8300000, guid: 295aecdfed9e64deeab79853422071f4, type: 3}
-    volume: 1
+    volume: 0.7
   - name: footstep
     audioClip: {fileID: 8300000, guid: dea09f1f07d11490ba4ccac854c2d760, type: 3}
     volume: 1

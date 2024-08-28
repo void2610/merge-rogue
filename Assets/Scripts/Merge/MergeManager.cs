@@ -178,18 +178,22 @@ public class MergeManager : MonoBehaviour
     void Update()
     {
         float size = fallAnchor.transform.localScale.x + 0.5f;
-        if (Input.GetKey(KeyCode.A) && fallAnchor.transform.position.x - size / 2 > -limit)
+
+        if (GameManager.instance.state == GameManager.GameState.Battle || GameManager.instance.state == GameManager.GameState.BattlePreparation)
         {
-            fallAnchor.transform.position += Vector3.left * moveSpeed * Time.deltaTime;
-        }
-        if (Input.GetKey(KeyCode.D) && fallAnchor.transform.position.x + size / 2 < limit)
-        {
-            fallAnchor.transform.position += Vector3.right * moveSpeed * Time.deltaTime;
-        }
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastFallTime > coolTime)
-        {
-            lastFallTime = Time.time;
-            FallAndDecideNextBall();
+            if (Input.GetKey(KeyCode.A) && fallAnchor.transform.position.x - size / 2 > -limit)
+            {
+                fallAnchor.transform.position += Vector3.left * moveSpeed * Time.deltaTime;
+            }
+            if (Input.GetKey(KeyCode.D) && fallAnchor.transform.position.x + size / 2 < limit)
+            {
+                fallAnchor.transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+            }
+            if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastFallTime > coolTime)
+            {
+                lastFallTime = Time.time;
+                FallAndDecideNextBall();
+            }
         }
     }
 }

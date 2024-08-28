@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
 
     public enum GameState
     {
+        BattlePreparation,
         Battle,
         StageMoving,
         Shop,
@@ -70,41 +71,36 @@ public class GameManager : MonoBehaviour
         return randomValue;
     }
 
+    public void GameOver()
+    {
+        ChangeState(GameState.GameOver);
+        uiManager.EnableGameOver(true);
+    }
+
+    public void NextStage()
+    {
+        ChangeState(GameState.StageMoving);
+        stageManager.NextStage();
+    }
+
     public void ChangeState(GameState newState)
     {
-        switch (state)
-        {
-            case GameState.Shop:
-                shop.ResetItem();
-                break;
-        }
-        // 敵を倒したら次のステージへ
-        // HPが0になったらゲームオーバー
-
         state = newState;
         Debug.Log("State: " + state);
         switch (newState)
         {
-            case GameState.StageMoving:
-                stageManager.NextStage();
-                break;
-            case GameState.Shop:
-                shop.SetItem(3);
-                break;
-            case GameState.GameOver:
-                uiManager.EnableGameOver(true);
-                break;
-            case GameState.Clear:
-                uiManager.EnableClear(true);
-                break;
-            case GameState.Other:
+            case GameState.BattlePreparation:
+                Utils.instance.WaitAndInvoke(1.0f, () =>
+                {
+                    ChangeState(GameState.Battle);
+                });
                 break;
         }
     }
 
     void Start()
     {
-        ChangeState(GameState.StageMoving);
+        NextStage();
     }
 
     void Update()

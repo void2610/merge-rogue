@@ -122,6 +122,10 @@ public class EnemyContainer : MonoBehaviour
         currentEnemies.Remove(g);
         enemy.GetComponent<EnemyBase>().OnDisappear();
         GameManager.instance.player.AddExp(enemy.GetComponent<EnemyBase>().exp);
+        if (currentEnemies.Count == 0)
+        {
+            GameManager.instance.NextStage();
+        }
     }
 
     void Awake()

@@ -44,6 +44,7 @@ public class Player : MonoBehaviour
         if (health <= 0)
         {
             health = 0;
+            GameManager.instance.GameOver();
         }
         UpdateStatusDisplay();
     }
