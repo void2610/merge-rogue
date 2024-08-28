@@ -17,7 +17,7 @@ public class EnemyContainer : MonoBehaviour
     [SerializeField]
     private List<EnemyData> bosses = new List<EnemyData>();
     private List<GameObject> currentEnemies = new List<GameObject>();
-    private int enemyNum = 3;
+    private int enemyNum = 4;
     [SerializeField]
     private float alignment = 5;
 
@@ -126,6 +126,7 @@ public class EnemyContainer : MonoBehaviour
 
     void Awake()
     {
+        positions.Add(this.transform.position + new Vector3(-alignment * 2, 0, 0));
         positions.Add(this.transform.position + new Vector3(-alignment, 0, 0));
         positions.Add(this.transform.position);
         positions.Add(this.transform.position + new Vector3(alignment, 0, 0));
