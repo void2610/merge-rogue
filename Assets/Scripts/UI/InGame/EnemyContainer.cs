@@ -19,7 +19,7 @@ public class EnemyContainer : MonoBehaviour
     private List<GameObject> currentEnemies = new List<GameObject>();
     private int enemyNum = 4;
     [SerializeField]
-    private float alignment = 5;
+    private float alignment = 4;
 
     private List<Vector3> positions = new List<Vector3>();
 

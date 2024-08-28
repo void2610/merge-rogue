@@ -18,7 +18,7 @@ public class EnemyBase : MonoBehaviour
         public string description;
     }
     public string enemyName = "Enemy";
-    public float atackSpeed = 1.0f;
+    public float attackSpeed = 1.0f;
     public int hMax = 100;
     public int hMin = 1;
     public int attack = 2;
@@ -42,6 +42,7 @@ public class EnemyBase : MonoBehaviour
 
     private TextMeshProUGUI healthText => canvas.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
     private Slider healthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
+    private Image attackGauge => canvas.transform.Find("AttackGauge").GetComponent<Image>();
     private float lastAttackTime = 0.0f;
 
     public void TakeDamage(int damage)
@@ -150,7 +151,9 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (Time.time - lastAttackTime > atackSpeed)
+        attackGauge.fillAmount = (Time.time - lastAttackTime) / attackSpeed;
+
+        if (Time.time - lastAttackTime > attackSpeed)
         {
             lastAttackTime = Time.time;
             Attack();
