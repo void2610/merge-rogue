@@ -163,7 +163,6 @@ public class MergeManager : MonoBehaviour
 
         ballContainer = new GameObject("BallContainer");
         fallAnchor.transform.position = new Vector3(0, 1.5f, 0);
-        limit = wall.wallWidth / 2;
 
         moveSpeed = moveSpeeds[0];
         wall.SetWallWidth(wallWidths[0]);
@@ -177,6 +176,7 @@ public class MergeManager : MonoBehaviour
 
     void Update()
     {
+        limit = wall.wallWidth / 2;
         float size = fallAnchor.transform.localScale.x + 0.5f;
 
         if (GameManager.instance.state == GameManager.GameState.Battle || GameManager.instance.state == GameManager.GameState.BattlePreparation)

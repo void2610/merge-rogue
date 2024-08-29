@@ -122,11 +122,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Battle:
                 break;
-            case GameState.Shop:
-                break;
-            case GameState.GameOver:
-                break;
-            case GameState.Other:
+            case GameState.StageMoving:
                 break;
         }
     }
