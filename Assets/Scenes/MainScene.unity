@@ -2560,7 +2560,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 183379095e18d4fc6bd5dfa68ad49dd8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -6621,13 +6621,13 @@ MonoBehaviour:
   fallAnchor: {fileID: 632287031}
   balls:
   - prefab: {fileID: 2452455947392626302, guid: 78edb425978ad47779b3d3be8091f1e1, type: 3}
-    probability: 0.7
+    probability: 0.9
   - prefab: {fileID: 2452455947392626302, guid: c313997ead9be429ea66606318566e02, type: 3}
-    probability: 1
+    probability: 0.6
   - prefab: {fileID: 2452455947392626302, guid: 375942398c4bd4062b5cd5b69ac9e413, type: 3}
-    probability: 0.5
-  - prefab: {fileID: 2452455947392626302, guid: a95a82814fa1842faa2d63a38332d2cd, type: 3}
     probability: 0.2
+  - prefab: {fileID: 2452455947392626302, guid: a95a82814fa1842faa2d63a38332d2cd, type: 3}
+    probability: 0
   - prefab: {fileID: 2452455947392626302, guid: 991a8fa3bbf5f4044950b012694453aa, type: 3}
     probability: 0
   - prefab: {fileID: 2452455947392626302, guid: 1d284f4f65f2e4097aa8d957116b5461, type: 3}
