@@ -172,6 +172,7 @@ public class MergeManager : MonoBehaviour
     void Start()
     {
         DecideBall();
+        if (Application.isEditor) coolTime = 0.1f;
     }
 
     void Update()
