@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Ball : MonoBehaviour
+public class BallBase : MonoBehaviour
 {
     [SerializeField]
     private GameObject mergeParticle;
@@ -9,9 +9,15 @@ public class Ball : MonoBehaviour
 
     public int level = 1;
     public float size = 1;
+    public int attack = 1;
     public Color color = Color.white;
     public int serial { get; private set; }
     public bool isDestroyed = false;
+
+    protected virtual void Effect()
+    {
+        // Effect
+    }
 
     private void Awake()
     {
@@ -24,12 +30,13 @@ public class Ball : MonoBehaviour
     {
         if (isDestroyed) return;
 
-        if (other.gameObject.TryGetComponent(out Ball b))
+        if (other.gameObject.TryGetComponent(out BallBase b))
         {
             if (b.level == this.level)
             {
                 if (this.serial < b.serial)
                 {
+                    Effect();
                     Instantiate(mergeParticle, transform.position, Quaternion.identity);
                     isDestroyed = true;
                     b.isDestroyed = true;

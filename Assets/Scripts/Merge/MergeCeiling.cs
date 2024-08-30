@@ -4,10 +4,9 @@ public class MergeCeiling : MonoBehaviour
 {
     void OnTriggerEnter2D(Collider2D other)
     {
-        Debug.Log(other.name);
-        if (other.GetComponent<Ball>() != null)
+        if (other.GetComponent<BallBase>() != null)
         {
-            GameManager.instance.player.TakeDamage(other.GetComponent<Ball>().level);
+            GameManager.instance.player.TakeDamage(other.GetComponent<BallBase>().level);
             Destroy(other.gameObject);
         }
     }

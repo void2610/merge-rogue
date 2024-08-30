@@ -61,6 +61,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5632553607604754789, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
+      propertyPath: attack
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5632553607604754789, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
       propertyPath: color.b
       value: 1
       objectReference: {fileID: 0}

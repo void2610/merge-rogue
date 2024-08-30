@@ -105,8 +105,8 @@ public class MergeManager : MonoBehaviour
     private void FallAndDecideNextBall()
     {
         Instantiate(currentBall, fallAnchor.transform.position + Vector3.down, Quaternion.identity, ballContainer.transform);
-        fallAnchor.GetComponent<SpriteRenderer>().color = nextBall.GetComponent<Ball>().color;
-        fallAnchor.transform.localScale = Vector3.one * nextBall.GetComponent<Ball>().size;
+        fallAnchor.GetComponent<SpriteRenderer>().color = nextBall.GetComponent<BallBase>().color;
+        fallAnchor.transform.localScale = Vector3.one * nextBall.GetComponent<BallBase>().size;
 
         float r = GameManager.instance.RandomRange(0.0f, probabilitySum);
         foreach (var ball in balls)
@@ -145,8 +145,8 @@ public class MergeManager : MonoBehaviour
             }
         }
 
-        fallAnchor.GetComponent<SpriteRenderer>().color = currentBall.GetComponent<Ball>().color;
-        fallAnchor.transform.localScale = Vector3.one * currentBall.GetComponent<Ball>().size;
+        fallAnchor.GetComponent<SpriteRenderer>().color = currentBall.GetComponent<BallBase>().color;
+        fallAnchor.transform.localScale = Vector3.one * currentBall.GetComponent<BallBase>().size;
     }
 
     void Awake()
