@@ -1,12 +1,35 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class BallBase : MonoBehaviour
 {
+    public enum BallRarity
+    {
+        Common,
+        Uncommon,
+        Rare,
+        Epic,
+        Legendary
+    }
+
+    //TODO UI表示クラスにおいてもいいかも？
+    private static readonly Dictionary<BallRarity, Color> RarityColors = new Dictionary<BallRarity, Color>
+    {
+        { BallRarity.Common, Color.gray },
+        { BallRarity.Uncommon, Color.green },
+        { BallRarity.Rare, Color.blue },
+        { BallRarity.Epic, new Color(0.5f, 0f, 0.5f) },
+        { BallRarity.Legendary, new Color(1f, 0.5f, 0f) }
+    };
+
+
     [SerializeField]
     private GameObject mergeParticle;
     private static int ball_serial = 0;
 
-
+    public string ballName = "ふつう";
+    public string description = "ふつうのボール";
+    public BallRarity rarity = BallRarity.Common;
     public int level = 1;
     public float size = 1;
     public int attack = 1;
