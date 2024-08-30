@@ -97,7 +97,8 @@ public class MergeManager : MonoBehaviour
         {
             e.TakeDamage(atk);
         }
-        SeManager.instance.PlaySe("enemyAttack");
+        int i = Random.Range(0, 5);
+        SeManager.instance.PlaySe("ball" + i);
         Camera.main.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
     }
 
@@ -172,7 +173,7 @@ public class MergeManager : MonoBehaviour
     void Start()
     {
         DecideBall();
-        if (Application.isEditor) coolTime = 0.1f;
+        // if (Application.isEditor) coolTime = 0.1f;
     }
 
     void Update()
