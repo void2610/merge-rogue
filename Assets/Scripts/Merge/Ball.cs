@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject mergeParticle;
     private static int ball_serial = 0;
 
 
@@ -28,6 +30,7 @@ public class Ball : MonoBehaviour
             {
                 if (this.serial < b.serial)
                 {
+                    Instantiate(mergeParticle, transform.position, Quaternion.identity);
                     isDestroyed = true;
                     b.isDestroyed = true;
                     Destroy(gameObject);

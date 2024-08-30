@@ -102,9 +102,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23d4a0c8e86c34afaa857cc0f7687565, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mergeParticle: {fileID: 1620409693136122509, guid: adb71434fa9c04035a16947c624e5be2, type: 3}
   level: 1
   size: 1
   color: {r: 0, g: 0, b: 0, a: 1}
+  isDestroyed: 0
 --- !u!58 &6922958764989876792
 CircleCollider2D:
   m_ObjectHideFlags: 0
