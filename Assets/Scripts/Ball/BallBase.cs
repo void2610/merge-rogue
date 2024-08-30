@@ -10,6 +10,7 @@ public class BallBase : MonoBehaviour
     public int level = 1;
     public float size = 1;
     public int attack = 1;
+    public float probability = 0.1f;
     public Color color = Color.white;
     public int serial { get; private set; }
     public bool isDestroyed = false;
@@ -40,12 +41,12 @@ public class BallBase : MonoBehaviour
                     Instantiate(mergeParticle, transform.position, Quaternion.identity);
                     isDestroyed = true;
                     b.isDestroyed = true;
-                    Destroy(gameObject);
-                    Destroy(other.gameObject);
-
                     Vector3 center = (this.transform.position + other.transform.position) / 2;
                     Quaternion rotation = Quaternion.Lerp(this.transform.rotation, other.transform.rotation, 0.5f);
-                    MergeManager.instance.SpawnBall(level + 1, center, rotation);
+                    MergeManager.instance.SpawnBall(level + 1, attack, center, rotation);
+
+                    Destroy(gameObject);
+                    Destroy(other.gameObject);
                 }
             }
         }

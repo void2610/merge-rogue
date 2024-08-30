@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 
 public class MergeManager : MonoBehaviour
@@ -18,8 +19,6 @@ public class MergeManager : MonoBehaviour
     [SerializeField]
     private GameObject fallAnchor;
     [SerializeField]
-    private List<BallData> balls;
-    [SerializeField]
     private List<float> ballAttacks;
 
     public float moveSpeed = 1.0f;
@@ -28,7 +27,6 @@ public class MergeManager : MonoBehaviour
 
     private GameObject currentBall;
     private GameObject nextBall;
-    private float probabilitySum;
     private GameObject ballContainer;
     private float lastFallTime = 0;
 
@@ -81,14 +79,16 @@ public class MergeManager : MonoBehaviour
         Time.timeScale = 1.0f;
     }
 
-    public void SpawnBall(int level, Vector3 p = default, Quaternion q = default)
+    public void SpawnBall(int level, int atk, Vector3 p = default, Quaternion q = default)
     {
-        if (level < 1 || level > balls.Count) return;
-
-        GameObject b = balls[level - 1].prefab;
-        Instantiate(b, p, q, ballContainer.transform);
-        int atk = (int)(ballAttacks[level - 1] * level * attacks[attackLevel]);
-        Attack(atk);
+        GameObject selectedBall = InventoryManager.instance.GetBallByLevel(level);
+        if (selectedBall != null)
+        {
+            Instantiate(selectedBall, p, q, ballContainer.transform);
+            Attack(atk);
+        }
+        int i = Random.Range(0, 5);
+        SeManager.instance.PlaySe("ball" + i);
     }
 
     private void Attack(int atk)
@@ -97,8 +97,6 @@ public class MergeManager : MonoBehaviour
         {
             e.TakeDamage(atk);
         }
-        int i = Random.Range(0, 5);
-        SeManager.instance.PlaySe("ball" + i);
         Camera.main.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
     }
 
@@ -108,43 +106,14 @@ public class MergeManager : MonoBehaviour
         fallAnchor.GetComponent<SpriteRenderer>().color = nextBall.GetComponent<BallBase>().color;
         fallAnchor.transform.localScale = Vector3.one * nextBall.GetComponent<BallBase>().size;
 
-        float r = GameManager.instance.RandomRange(0.0f, probabilitySum);
-        foreach (var ball in balls)
-        {
-            r -= ball.probability;
-            if (r <= 0)
-            {
-                currentBall = nextBall;
-                nextBall = ball.prefab;
-                break;
-            }
-        }
+        currentBall = nextBall;
+        nextBall = InventoryManager.instance.GetRandomBall();
     }
 
     private void DecideBall()
     {
-        float r = GameManager.instance.RandomRange(0.0f, probabilitySum);
-        foreach (var ball in balls)
-        {
-            r -= ball.probability;
-            if (r <= 0)
-            {
-                currentBall = ball.prefab;
-                break;
-            }
-        }
-
-        r = GameManager.instance.RandomRange(0.0f, probabilitySum);
-        foreach (var ball in balls)
-        {
-            r -= ball.probability;
-            if (r <= 0)
-            {
-                nextBall = ball.prefab;
-                break;
-            }
-        }
-
+        currentBall = InventoryManager.instance.GetRandomBall();
+        nextBall = InventoryManager.instance.GetRandomBall();
         fallAnchor.GetComponent<SpriteRenderer>().color = currentBall.GetComponent<BallBase>().color;
         fallAnchor.transform.localScale = Vector3.one * currentBall.GetComponent<BallBase>().size;
     }
@@ -153,14 +122,6 @@ public class MergeManager : MonoBehaviour
     {
         if (instance == null) instance = this;
         else Destroy(gameObject);
-
-        probabilitySum = 0;
-        for (int i = 0; i < balls.Count; i++)
-        {
-            var ball = balls[i];
-            probabilitySum += ball.probability;
-            ballAttacks.Add(1.0f);
-        }
 
         ballContainer = new GameObject("BallContainer");
         fallAnchor.transform.position = new Vector3(0, 1.5f, 0);

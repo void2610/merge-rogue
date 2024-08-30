@@ -49,6 +49,7 @@ public class BallCreater : MonoBehaviour
         b.attack = a;
         b.size = GameManager.instance.RandomRange(0.1f, 3f);
         b.level = GameManager.instance.RandomRange(1, 6);
+        b.probability = 0.1f;
         InventoryManager.instance.AddBall(ballObject);
     }
 
