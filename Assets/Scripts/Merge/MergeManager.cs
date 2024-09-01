@@ -144,17 +144,16 @@ public class MergeManager : MonoBehaviour
         float r = 1 - Mathf.Min(1, (Time.time - lastFallTime) / coolTime);
         fallAnchor.GetComponent<SpriteRenderer>().material.SetFloat("_Ratio", r);
 
-
+        if (Input.GetKey(KeyCode.A) && fallAnchor.transform.position.x - size / 2 > -limit)
+        {
+            fallAnchor.transform.position += Vector3.left * moveSpeed * Time.deltaTime;
+        }
+        if (Input.GetKey(KeyCode.D) && fallAnchor.transform.position.x + size / 2 < limit)
+        {
+            fallAnchor.transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+        }
         if (GameManager.instance.state == GameManager.GameState.Battle || GameManager.instance.state == GameManager.GameState.BattlePreparation)
         {
-            if (Input.GetKey(KeyCode.A) && fallAnchor.transform.position.x - size / 2 > -limit)
-            {
-                fallAnchor.transform.position += Vector3.left * moveSpeed * Time.deltaTime;
-            }
-            if (Input.GetKey(KeyCode.D) && fallAnchor.transform.position.x + size / 2 < limit)
-            {
-                fallAnchor.transform.position += Vector3.right * moveSpeed * Time.deltaTime;
-            }
             if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastFallTime > coolTime)
             {
                 lastFallTime = Time.time;
