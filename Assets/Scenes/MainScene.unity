@@ -6805,19 +6805,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wall: {fileID: 774851889}
   fallAnchor: {fileID: 632287031}
-  balls:
-  - prefab: {fileID: 2452455947392626302, guid: 78edb425978ad47779b3d3be8091f1e1, type: 3}
-    probability: 0.9
-  - prefab: {fileID: 2452455947392626302, guid: c313997ead9be429ea66606318566e02, type: 3}
-    probability: 0.6
-  - prefab: {fileID: 2452455947392626302, guid: 375942398c4bd4062b5cd5b69ac9e413, type: 3}
-    probability: 0.2
-  - prefab: {fileID: 2452455947392626302, guid: a95a82814fa1842faa2d63a38332d2cd, type: 3}
-    probability: 0
-  - prefab: {fileID: 2452455947392626302, guid: 991a8fa3bbf5f4044950b012694453aa, type: 3}
-    probability: 0
-  - prefab: {fileID: 2452455947392626302, guid: 1d284f4f65f2e4097aa8d957116b5461, type: 3}
-    probability: 0
   ballAttacks: []
   moveSpeed: 1
   coolTime: 0.5
@@ -8557,7 +8544,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: soundDatas.Array.size
-      value: 11
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: soundDatas.Array.data[6].name
@@ -8581,7 +8568,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: soundDatas.Array.data[11].name
-      value: ball4
+      value: fall
       objectReference: {fileID: 0}
     - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: soundDatas.Array.data[6].volume
@@ -8630,7 +8617,7 @@ PrefabInstance:
     - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: soundDatas.Array.data[11].audioClip
       value: 
-      objectReference: {fileID: 8300000, guid: 96c5565e27a9e40dab9ab24987dcc3ae, type: 3}
+      objectReference: {fileID: 8300000, guid: d5752acecbf7341408306fe92e3c2334, type: 3}
     - target: {fileID: 7521127176204447298, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: m_LocalPosition.x
       value: 434.22272
