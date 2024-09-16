@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3065741183021959835}
   - component: {fileID: 7938197718387432591}
-  - component: {fileID: 5632553607604754789}
   - component: {fileID: 6922958764989876792}
   - component: {fileID: 8039620373084102938}
   m_Layer: 0
@@ -90,23 +89,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &5632553607604754789
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5528515049713681562}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23d4a0c8e86c34afaa857cc0f7687565, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mergeParticle: {fileID: 1620409693136122509, guid: adb71434fa9c04035a16947c624e5be2, type: 3}
-  level: 1
-  size: 1
-  color: {r: 0, g: 0, b: 0, a: 1}
-  isDestroyed: 0
 --- !u!58 &6922958764989876792
 CircleCollider2D:
   m_ObjectHideFlags: 0

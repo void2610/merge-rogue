@@ -19,14 +19,14 @@ public class MergeManager : MonoBehaviour
     [SerializeField]
     private GameObject fallAnchor;
     [SerializeField]
-    private List<float> ballAttacks;
+    private GameObject mergeParticle;
 
     public float moveSpeed = 1.0f;
     public float coolTime = 1.0f;
     private float limit = -2.5f;
 
-    private GameObject currentBall;
-    private GameObject nextBall;
+    public GameObject currentBall;
+    public GameObject nextBall;
     private GameObject ballContainer;
     private float lastFallTime = 0;
 
@@ -82,6 +82,7 @@ public class MergeManager : MonoBehaviour
 
     public void SpawnBall(int level, Vector3 p = default, Quaternion q = default)
     {
+        Instantiate(mergeParticle, p, q);
         GameObject selectedBall = InventoryManager.instance.GetBallByLevel(level);
         if (selectedBall != null)
         {
@@ -102,7 +103,8 @@ public class MergeManager : MonoBehaviour
 
     private void FallAndDecideNextBall()
     {
-        Instantiate(currentBall, fallAnchor.transform.position + Vector3.down, Quaternion.identity, ballContainer.transform);
+        var b = Instantiate(currentBall, fallAnchor.transform.position + Vector3.down, Quaternion.identity, ballContainer.transform);
+        b.GetComponent<BallBase>().Unfreeze();
         fallAnchor.GetComponent<SpriteRenderer>().color = nextBall.GetComponent<BallBase>().color;
         fallAnchor.transform.localScale = Vector3.one * nextBall.GetComponent<BallBase>().size;
 

@@ -22,21 +22,34 @@ public class BallBase : MonoBehaviour
         { BallRarity.Legendary, new Color(1f, 0.5f, 0f) }
     };
 
-
-    [SerializeField]
-    private GameObject mergeParticle;
     private static int ball_serial = 0;
 
-    public string ballName = "ふつう";
-    public string description = "ふつうのボール";
+    public string ballName = "ふつうのボール";
+    public string description = "ふつう";
     public BallRarity rarity = BallRarity.Common;
     public int level = 1;
     public float size = 1;
     public int attack = 1;
-    public float probability = 0.1f;
     public Color color = Color.white;
     public int serial { get; private set; }
     public bool isDestroyed = false;
+
+    private bool isFreezed = false;
+    public void Freeze()
+    {
+        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+        GetComponent<Collider2D>().enabled = false;
+        GetComponent<SpriteRenderer>().enabled = false;
+        isFreezed = true;
+    }
+
+    public void Unfreeze()
+    {
+        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        GetComponent<Collider2D>().enabled = true;
+        GetComponent<SpriteRenderer>().enabled = true;
+        isFreezed = false;
+    }
 
     protected virtual void Effect()
     {
@@ -44,7 +57,7 @@ public class BallBase : MonoBehaviour
         MergeManager.instance.Attack(attack);
     }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         serial = ball_serial++;
         GetComponent<SpriteRenderer>().color = color;
@@ -53,7 +66,7 @@ public class BallBase : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (isDestroyed) return;
+        if (isDestroyed || isFreezed) return;
 
         if (other.gameObject.TryGetComponent(out BallBase b))
         {
@@ -63,7 +76,7 @@ public class BallBase : MonoBehaviour
                 {
                     Effect();
                     b.Effect();
-                    Instantiate(mergeParticle, transform.position, Quaternion.identity);
+
                     isDestroyed = true;
                     b.isDestroyed = true;
                     Vector3 center = (this.transform.position + other.transform.position) / 2;
