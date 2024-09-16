@@ -71,27 +71,27 @@ public class MergeManager : MonoBehaviour
 
     public void LevelUpAttack()
     {
-        if (attackLevel < attacks.Count - 1)
-        {
-            ballAttacks[attackLevel] = attacks[++attackLevel];
-        }
+        // TODO
+        // if (attackLevel < attacks.Count - 1)
+        // {
+        //     ballAttacks[attackLevel] = attacks[++attackLevel];
+        // }
         GameManager.instance.uiManager.EnableLevelUpOptions(false);
         Time.timeScale = 1.0f;
     }
 
-    public void SpawnBall(int level, int atk, Vector3 p = default, Quaternion q = default)
+    public void SpawnBall(int level, Vector3 p = default, Quaternion q = default)
     {
         GameObject selectedBall = InventoryManager.instance.GetBallByLevel(level);
         if (selectedBall != null)
         {
             Instantiate(selectedBall, p, q, ballContainer.transform);
-            Attack(atk);
         }
         int i = Random.Range(0, 5);
         SeManager.instance.PlaySe("ball" + i);
     }
 
-    private void Attack(int atk)
+    public void Attack(int atk)
     {
         foreach (var e in GameManager.instance.enemyContainer.GetAllEnemies())
         {
@@ -134,12 +134,12 @@ public class MergeManager : MonoBehaviour
     void Start()
     {
         DecideBall();
-        // if (Application.isEditor) coolTime = 0.1f;
+        if (Application.isEditor) coolTime = 0.1f;
     }
 
     void Update()
     {
-        limit = wall.wallWidth / 2;
+        limit = wall.wallWidth / 2 + 0.05f;
         float size = fallAnchor.transform.localScale.x + 0.5f;
         float r = 1 - Mathf.Min(1, (Time.time - lastFallTime) / coolTime);
         fallAnchor.GetComponent<SpriteRenderer>().material.SetFloat("_Ratio", r);

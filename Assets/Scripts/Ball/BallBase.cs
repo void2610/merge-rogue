@@ -41,6 +41,7 @@ public class BallBase : MonoBehaviour
     protected virtual void Effect()
     {
         // Effect
+        MergeManager.instance.Attack(attack);
     }
 
     private void Awake()
@@ -61,12 +62,13 @@ public class BallBase : MonoBehaviour
                 if (this.serial < b.serial)
                 {
                     Effect();
+                    b.Effect();
                     Instantiate(mergeParticle, transform.position, Quaternion.identity);
                     isDestroyed = true;
                     b.isDestroyed = true;
                     Vector3 center = (this.transform.position + other.transform.position) / 2;
                     Quaternion rotation = Quaternion.Lerp(this.transform.rotation, other.transform.rotation, 0.5f);
-                    MergeManager.instance.SpawnBall(level + 1, attack, center, rotation);
+                    MergeManager.instance.SpawnBall(level + 1, center, rotation);
 
                     Destroy(gameObject);
                     Destroy(other.gameObject);
