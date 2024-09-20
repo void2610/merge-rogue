@@ -15,7 +15,6 @@ public class InventoryManager : MonoBehaviour
 
     public void AddBall(GameObject ball)
     {
-
         // TODO: 大きさを自動で変える ボールの大きさ倍率*レベル
         int l = ball.GetComponent<BallBase>().level;
         inventory[l - 1] = ball;
