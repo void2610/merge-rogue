@@ -13,9 +13,10 @@ MonoBehaviour:
   m_Name: NomalBall
   m_EditorClassIdentifier: 
   id: 0
-  className: NomalBall
+  className: NormalBall
   name: "\u3075\u3064\u3046\u306E\u30DC\u30FC\u30EB"
   description: "\u3075\u3064\u3046"
-  price: 1
   sprite: {fileID: -8246627260571945669, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
   rarity: 0
+  price: 1
+  size: 0

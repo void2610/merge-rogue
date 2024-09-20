@@ -15,7 +15,8 @@ public class BallData : ScriptableObject
     public string className;
     public string name;
     public string description;
-    public int price;
     public Sprite sprite;
     public BallRarity rarity;
+    public int price;
+    public float size;
 }

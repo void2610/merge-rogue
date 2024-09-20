@@ -9,26 +9,19 @@ public class InventoryManager : MonoBehaviour
     [SerializeField]
     private int inventorySize = 6;
     [SerializeField]
-    private List<GameObject> inventory = new List<GameObject>();
-
     private List<float> probabilities = new List<float> { 1f, 0.8f, 0.6f, 0.4f, 0.2f, 0.0f };
+    [SerializeField]
+    private List<float> sizes = new List<float> { 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
+    [SerializeField]
+    private List<Color> colors = new List<Color> { Color.white, Color.red, Color.green, Color.blue, Color.yellow, Color.magenta };
+    [SerializeField]
+    private List<BallData> inventory = new List<BallData>();
+    [SerializeField]
+    private BallDataList allBallDataList;
+    [SerializeField]
+    private GameObject ballBasePrefab;
 
-    public void AddBall(GameObject ball)
-    {
-        // TODO: 大きさを自動で変える ボールの大きさ倍率*レベル
-        int l = ball.GetComponent<BallBase>().level;
-        inventory[l - 1] = ball;
-    }
-
-    public void RemoveBall(int index)
-    {
-        if (index >= 0 && index < inventorySize)
-        {
-            inventory.RemoveAt(index);
-        }
-    }
-
-    public List<GameObject> GetInventory()
+    public List<BallData> GetInventory()
     {
         return inventory;
     }
@@ -41,20 +34,50 @@ public class InventoryManager : MonoBehaviour
         {
             if (r < probabilities[i])
             {
-                return inventory[i];
+                return CreateBallInstanceFromBallData(inventory[i], i + 1);
             }
             r -= probabilities[i];
         }
-        return inventory[0];
+        return CreateBallInstanceFromBallData(inventory[0], 1);
     }
 
     public GameObject GetBallByLevel(int level)
     {
         if (level > 0 && level <= inventorySize)
         {
-            return inventory[level - 1];
+            return CreateBallInstanceFromBallData(inventory[level - 1], level);
         }
         return null;
+    }
+
+    private GameObject CreateBallInstanceFromBallData(BallData data, int level)
+    {
+        GameObject ball = Instantiate(ballBasePrefab);
+        if (!string.IsNullOrEmpty(data.className))
+        {
+            System.Type type = System.Type.GetType(data.className);
+            if (type != null && typeof(MonoBehaviour).IsAssignableFrom(type))
+            {
+                ball.AddComponent(type);
+            }
+            else
+            {
+                Debug.LogError("指定されたクラスは存在しないか、MonoBehaviourではありません: " + data.className);
+                return null;
+            }
+        }
+        else
+        {
+            Debug.LogError("behaviourClassNameが指定されていません。");
+            return null;
+        }
+
+        ball.GetComponent<BallBase>().level = level;
+        ball.GetComponent<SpriteRenderer>().sprite = data.sprite;
+        ball.GetComponent<CircleCollider2D>().radius = data.size * sizes[level - 1];
+        ball.GetComponent<BallBase>().color = colors[level - 1];
+
+        return ball;
     }
 
     private void Awake()
@@ -68,11 +91,11 @@ public class InventoryManager : MonoBehaviour
             Destroy(this);
         }
 
+        Debug.Log(allBallDataList.GetNormalBallData());
+
         for (int i = 0; i < inventorySize; i++)
         {
-            var ball = BallFactory.instance.CreateNormalBall();
-            ball.GetComponent<BallBase>().level = i + 1;
-            inventory.Add(ball);
+            inventory.Add(allBallDataList.GetNormalBallData());
         }
     }
 
