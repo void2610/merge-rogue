@@ -83,7 +83,7 @@ public class MergeManager : MonoBehaviour
     public void SpawnBall(int level, Vector3 p = default, Quaternion q = default)
     {
         Instantiate(mergeParticle, p, q);
-        GameObject selectedBall = InventoryManager.instance.GetBallByLevel(level);
+        GameObject selectedBall = InventoryManager.instance.GetNextBall();
         if (selectedBall != null)
         {
             Instantiate(selectedBall, p, q, ballContainer.transform);
@@ -103,21 +103,8 @@ public class MergeManager : MonoBehaviour
 
     private void FallAndDecideNextBall()
     {
-        var b = Instantiate(currentBall, fallAnchor.transform.position + Vector3.down, Quaternion.identity, ballContainer.transform);
-        b.GetComponent<BallBase>().Unfreeze();
-        fallAnchor.GetComponent<SpriteRenderer>().color = nextBall.GetComponent<BallBase>().color;
-        fallAnchor.transform.localScale = Vector3.one * nextBall.GetComponent<BallBase>().size;
-
-        currentBall = nextBall;
-        nextBall = InventoryManager.instance.GetRandomBall();
-    }
-
-    private void DecideBall()
-    {
-        currentBall = InventoryManager.instance.GetRandomBall();
-        nextBall = InventoryManager.instance.GetRandomBall();
-        fallAnchor.GetComponent<SpriteRenderer>().color = currentBall.GetComponent<BallBase>().color;
-        fallAnchor.transform.localScale = Vector3.one * currentBall.GetComponent<BallBase>().size;
+        var ball = InventoryManager.instance.GetNextBall();
+        ball.transform.position = fallAnchor.transform.position;
     }
 
     void Awake()
@@ -135,7 +122,6 @@ public class MergeManager : MonoBehaviour
 
     void Start()
     {
-        DecideBall();
         if (Application.isEditor) coolTime = 0.1f;
     }
 
@@ -163,5 +149,10 @@ public class MergeManager : MonoBehaviour
                 FallAndDecideNextBall();
             }
         }
+
+        var current = InventoryManager.instance.currentBallData;
+        fallAnchor.GetComponent<SpriteRenderer>().sprite = current.ball.sprite;
+        fallAnchor.GetComponent<SpriteRenderer>().color = current.color;
+        fallAnchor.transform.localScale = Vector3.one * current.ball.size * current.size;
     }
 }

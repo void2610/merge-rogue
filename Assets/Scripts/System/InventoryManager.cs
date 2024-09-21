@@ -21,12 +21,23 @@ public class InventoryManager : MonoBehaviour
     [SerializeField]
     private GameObject ballBasePrefab;
 
+    public (BallData ball, float size, Color color) currentBallData { private set; get; }
+    public (BallData ball, float size, Color color) nextBallData { private set; get; }
+
     public List<BallData> GetInventory()
     {
         return inventory;
     }
 
-    public GameObject GetRandomBall()
+    public GameObject GetNextBall()
+    {
+        currentBallData = nextBallData;
+        var b = GetRandomBall();
+        nextBallData = (b, sizes[inventory.IndexOf(b)], colors[inventory.IndexOf(b)]);
+        return CreateBallInstanceFromBallData(b);
+    }
+
+    private BallData GetRandomBall()
     {
         float total = probabilities.Sum();
         float r = GameManager.instance.RandomRange(0.0f, total);
@@ -34,23 +45,14 @@ public class InventoryManager : MonoBehaviour
         {
             if (r < probabilities[i])
             {
-                return CreateBallInstanceFromBallData(inventory[i], i + 1);
+                return inventory[i];
             }
             r -= probabilities[i];
         }
-        return CreateBallInstanceFromBallData(inventory[0], 1);
+        return inventory[0];
     }
 
-    public GameObject GetBallByLevel(int level)
-    {
-        if (level > 0 && level <= inventorySize)
-        {
-            return CreateBallInstanceFromBallData(inventory[level - 1], level);
-        }
-        return null;
-    }
-
-    private GameObject CreateBallInstanceFromBallData(BallData data, int level)
+    private GameObject CreateBallInstanceFromBallData(BallData data)
     {
         GameObject ball = Instantiate(ballBasePrefab);
         if (!string.IsNullOrEmpty(data.className))
@@ -71,6 +73,7 @@ public class InventoryManager : MonoBehaviour
             Debug.LogError("behaviourClassNameが指定されていません。");
             return null;
         }
+        int level = inventory.IndexOf(data) + 1;
 
         ball.GetComponent<BallBase>().level = level;
         ball.GetComponent<SpriteRenderer>().sprite = data.sprite;
@@ -97,6 +100,10 @@ public class InventoryManager : MonoBehaviour
         {
             inventory.Add(allBallDataList.GetNormalBallData());
         }
+        var b = GetRandomBall();
+        currentBallData = (b, sizes[inventory.IndexOf(b)], colors[inventory.IndexOf(b)]);
+        b = GetRandomBall();
+        nextBallData = (b, sizes[inventory.IndexOf(b)], colors[inventory.IndexOf(b)]);
     }
 
     private void Start()
