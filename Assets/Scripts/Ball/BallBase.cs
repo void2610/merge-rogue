@@ -34,22 +34,6 @@ public class BallBase : MonoBehaviour
     public int serial { get; private set; }
     public bool isDestroyed = false;
 
-    private bool isFreezed = false;
-    public void Freeze()
-    {
-        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-        GetComponent<Collider2D>().enabled = false;
-        GetComponent<SpriteRenderer>().enabled = false;
-        isFreezed = true;
-    }
-
-    public void Unfreeze()
-    {
-        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        GetComponent<Collider2D>().enabled = true;
-        GetComponent<SpriteRenderer>().enabled = true;
-        isFreezed = false;
-    }
 
     protected virtual void Effect()
     {
@@ -66,7 +50,7 @@ public class BallBase : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (isDestroyed || isFreezed) return;
+        if (isDestroyed) return;
 
         if (other.gameObject.TryGetComponent(out BallBase b))
         {

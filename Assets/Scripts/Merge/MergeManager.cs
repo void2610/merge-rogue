@@ -80,14 +80,12 @@ public class MergeManager : MonoBehaviour
         Time.timeScale = 1.0f;
     }
 
-    public void SpawnBall(int level, Vector3 p = default, Quaternion q = default)
+    public void SpawnBall(int level, Vector3 p, Quaternion q)
     {
-        Instantiate(mergeParticle, p, q);
-        GameObject selectedBall = InventoryManager.instance.GetNextBall();
-        if (selectedBall != null)
-        {
-            Instantiate(selectedBall, p, q, ballContainer.transform);
-        }
+        Debug.Log(p);
+        var ball = InventoryManager.instance.GetBallByLevel(level);
+        ball.transform.position = p;
+        ball.transform.rotation = q;
         int i = Random.Range(0, 5);
         SeManager.instance.PlaySe("ball" + i);
     }

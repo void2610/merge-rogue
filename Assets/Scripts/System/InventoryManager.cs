@@ -37,6 +37,17 @@ public class InventoryManager : MonoBehaviour
         return CreateBallInstanceFromBallData(b);
     }
 
+    public GameObject GetBallByLevel(int level)
+    {
+        if (level > 0 && level <= inventorySize)
+        {
+            var b = CreateBallInstanceFromBallData(inventory[level - 1]);
+            b.GetComponent<BallBase>().level = level;
+            return b;
+        }
+        return null;
+    }
+
     private BallData GetRandomBall()
     {
         float total = probabilities.Sum();
