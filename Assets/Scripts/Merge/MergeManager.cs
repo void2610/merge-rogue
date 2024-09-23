@@ -17,13 +17,14 @@ public class MergeManager : MonoBehaviour
     [SerializeField]
     private MergeWall wall;
     [SerializeField]
-    private GameObject fallAnchor;
-    [SerializeField]
     private GameObject mergeParticle;
+    [SerializeField]
+    private GameObject fallAnchor;
 
     public float moveSpeed = 1.0f;
     public float coolTime = 1.0f;
     private float limit = -2.5f;
+
 
     public GameObject currentBall;
     public GameObject nextBall;
@@ -38,6 +39,8 @@ public class MergeManager : MonoBehaviour
     private int coolTimeLevel = 0;
     private List<float> attacks = new List<float> { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f };
     private int attackLevel = 0;
+    private Vector3 currentBallPosition = new Vector3(0, 1.5f, 0);
+    private Vector3 nextBallPosition = new Vector3(-2, 1, 0);
 
     public void LevelUpMoveSpeed()
     {
@@ -82,7 +85,6 @@ public class MergeManager : MonoBehaviour
 
     public void SpawnBall(int level, Vector3 p, Quaternion q)
     {
-        Debug.Log(p);
         var ball = InventoryManager.instance.GetBallByLevel(level);
         ball.transform.position = p;
         ball.transform.rotation = q;
@@ -101,8 +103,12 @@ public class MergeManager : MonoBehaviour
 
     private void FallAndDecideNextBall()
     {
-        var ball = InventoryManager.instance.GetNextBall();
-        ball.transform.position = fallAnchor.transform.position;
+        currentBall.GetComponent<BallBase>().Unfreeze();
+        currentBall.transform.SetParent(ballContainer.transform);
+        currentBall = nextBall;
+        currentBall.transform.position = currentBallPosition;
+        nextBall = InventoryManager.instance.GetRandomBall();
+        nextBall.transform.position = nextBallPosition;
     }
 
     void Awake()
@@ -111,7 +117,6 @@ public class MergeManager : MonoBehaviour
         else Destroy(gameObject);
 
         ballContainer = new GameObject("BallContainer");
-        fallAnchor.transform.position = new Vector3(0, 1.5f, 0);
 
         moveSpeed = moveSpeeds[0];
         wall.SetWallWidth(wallWidths[0]);
@@ -121,22 +126,28 @@ public class MergeManager : MonoBehaviour
     void Start()
     {
         if (Application.isEditor) coolTime = 0.1f;
+
+        nextBall = InventoryManager.instance.GetRandomBall();
+        nextBall.transform.position = nextBallPosition;
+        currentBall = InventoryManager.instance.GetRandomBall();
+        currentBall.transform.position = currentBallPosition;
     }
 
     void Update()
     {
         limit = wall.wallWidth / 2 + 0.05f;
-        float size = fallAnchor.transform.localScale.x + 0.5f;
-        float r = 1 - Mathf.Min(1, (Time.time - lastFallTime) / coolTime);
+        float size = currentBall.transform.localScale.x + 0.5f;
+        float r = Mathf.Min(1, (Time.time - lastFallTime) / coolTime);
         fallAnchor.GetComponent<SpriteRenderer>().material.SetFloat("_Ratio", r);
+        fallAnchor.transform.localScale = currentBall.transform.localScale * 1.01f;
 
-        if (Input.GetKey(KeyCode.A) && fallAnchor.transform.position.x - size / 2 > -limit)
+        if (Input.GetKey(KeyCode.A) && currentBallPosition.x - size / 2 > -limit)
         {
-            fallAnchor.transform.position += Vector3.left * moveSpeed * Time.deltaTime;
+            currentBallPosition += Vector3.left * moveSpeed * Time.deltaTime;
         }
-        if (Input.GetKey(KeyCode.D) && fallAnchor.transform.position.x + size / 2 < limit)
+        if (Input.GetKey(KeyCode.D) && currentBallPosition.x + size / 2 < limit)
         {
-            fallAnchor.transform.position += Vector3.right * moveSpeed * Time.deltaTime;
+            currentBallPosition += Vector3.right * moveSpeed * Time.deltaTime;
         }
         if (GameManager.instance.state == GameManager.GameState.Battle || GameManager.instance.state == GameManager.GameState.BattlePreparation)
         {
@@ -148,9 +159,12 @@ public class MergeManager : MonoBehaviour
             }
         }
 
-        var current = InventoryManager.instance.currentBallData;
-        fallAnchor.GetComponent<SpriteRenderer>().sprite = current.ball.sprite;
-        fallAnchor.GetComponent<SpriteRenderer>().color = current.color;
-        fallAnchor.transform.localScale = Vector3.one * current.ball.size * current.size;
+        currentBall.transform.position = currentBallPosition;
+        fallAnchor.transform.position = currentBallPosition;
+
+        // var current = InventoryManager.instance.currentBallData;
+        // currentBall.GetComponent<SpriteRenderer>().sprite = current.ball.sprite;
+        // currentBall.GetComponent<SpriteRenderer>().color = current.color;
+        // currentBall.transform.localScale = Vector3.one * current.ball.size * current.size;
     }
 }

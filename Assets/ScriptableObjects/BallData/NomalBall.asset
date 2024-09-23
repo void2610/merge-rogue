@@ -14,9 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   className: NormalBall
-  name: "\u3075\u3064\u3046\u306E\u30DC\u30FC\u30EB"
-  description: "\u3075\u3064\u3046"
-  sprite: {fileID: 21300000, guid: 32b9f7f704937473a95e70c0b14e6ebb, type: 3}
   rarity: 0
   price: 1
-  size: 1

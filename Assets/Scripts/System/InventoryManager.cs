@@ -6,66 +6,62 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance { get; private set; }
 
-    [SerializeField]
     private int inventorySize = 6;
+    private List<float> probabilities = new List<float> { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f };
     [SerializeField]
-    private List<float> probabilities = new List<float> { 1f, 0.8f, 0.6f, 0.4f, 0.2f, 0.0f };
-    [SerializeField]
+    private Vector3 inventoryPosition = new Vector3(0, -4, 0);
     private List<float> sizes = new List<float> { 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
     [SerializeField]
-    private List<Color> colors = new List<Color> { Color.white, Color.red, Color.green, Color.blue, Color.yellow, Color.magenta };
-    [SerializeField]
-    private List<BallData> inventory = new List<BallData>();
+    private List<GameObject> inventory = new List<GameObject>();
     [SerializeField]
     private BallDataList allBallDataList;
     [SerializeField]
     private GameObject ballBasePrefab;
 
-    public (BallData ball, float size, Color color) currentBallData { private set; get; }
-    public (BallData ball, float size, Color color) nextBallData { private set; get; }
 
-    public List<BallData> GetInventory()
+    public List<GameObject> GetInventory()
     {
         return inventory;
     }
 
-    public GameObject GetNextBall()
-    {
-        currentBallData = nextBallData;
-        var b = GetRandomBall();
-        nextBallData = (b, sizes[inventory.IndexOf(b)], colors[inventory.IndexOf(b)]);
-        return CreateBallInstanceFromBallData(b);
-    }
-
+    // マージ時に次のボールを生成
     public GameObject GetBallByLevel(int level)
     {
         if (level > 0 && level <= inventorySize)
         {
-            var b = CreateBallInstanceFromBallData(inventory[level - 1]);
-            b.GetComponent<BallBase>().level = level;
-            return b;
+            var ball = CopyBall(inventory[level - 1]);
+            ball.GetComponent<BallBase>().Unfreeze();
+            return ball;
         }
         return null;
     }
 
-    private BallData GetRandomBall()
+    // 落とすボールを生成してMergeManagerに渡す
+    public GameObject GetRandomBall()
     {
+        GameObject ball;
         float total = probabilities.Sum();
         float r = GameManager.instance.RandomRange(0.0f, total);
         for (int i = 0; i < inventorySize; i++)
         {
             if (r < probabilities[i])
             {
-                return inventory[i];
+                ball = CopyBall(inventory[i]);
+                ball.GetComponent<BallBase>().Freeze();
+                return ball;
             }
             r -= probabilities[i];
         }
-        return inventory[0];
+        ball = CopyBall(inventory[0]);
+        ball.GetComponent<BallBase>().Freeze();
+        return ball;
     }
 
-    private GameObject CreateBallInstanceFromBallData(BallData data)
+    // ボールのコピー元となるオブジェクトを生成、ステータス変化はこのオブジェクトに対して行う
+    private GameObject CreateBallInstanceFromBallData(BallData data, int level)
     {
         GameObject ball = Instantiate(ballBasePrefab);
+        ball.name = $"{data.name} (Level {level})";
         if (!string.IsNullOrEmpty(data.className))
         {
             System.Type type = System.Type.GetType(data.className);
@@ -84,14 +80,21 @@ public class InventoryManager : MonoBehaviour
             Debug.LogError("behaviourClassNameが指定されていません。");
             return null;
         }
-        int level = inventory.IndexOf(data) + 1;
-
+        ball.transform.localScale = Vector3.one * sizes[level - 1];
+        List<float> c = new List<float>() { GameManager.instance.RandomRange(0.0f, 1.0f), GameManager.instance.RandomRange(0.0f, 1.0f), GameManager.instance.RandomRange(0.0f, 1.0f) };
+        ball.GetComponent<SpriteRenderer>().color = new Color(c[0], c[1], c[2]);
         ball.GetComponent<BallBase>().level = level;
-        ball.GetComponent<SpriteRenderer>().sprite = data.sprite;
-        ball.transform.localScale = Vector3.one * data.size * sizes[level - 1];
-        ball.GetComponent<BallBase>().color = colors[level - 1];
 
+        ball.GetComponent<BallBase>().Freeze();
         return ball;
+    }
+
+    private GameObject CopyBall(GameObject ball)
+    {
+        GameObject newBall = Instantiate(ball);
+        newBall.transform.localScale = ball.transform.localScale;
+        newBall.GetComponent<SpriteRenderer>().color = ball.GetComponent<SpriteRenderer>().color;
+        return newBall;
     }
 
     private void Awake()
@@ -107,14 +110,14 @@ public class InventoryManager : MonoBehaviour
 
         Debug.Log(allBallDataList.GetNormalBallData());
 
+        // 全てnormalBallで初期化
         for (int i = 0; i < inventorySize; i++)
         {
-            inventory.Add(allBallDataList.GetNormalBallData());
+            var bd = allBallDataList.GetNormalBallData();
+            var ball = CreateBallInstanceFromBallData(bd, i + 1);
+            ball.transform.position = inventoryPosition + new Vector3(i * 1f, 0, 0);
+            inventory.Add(ball);
         }
-        var b = GetRandomBall();
-        currentBallData = (b, sizes[inventory.IndexOf(b)], colors[inventory.IndexOf(b)]);
-        b = GetRandomBall();
-        nextBallData = (b, sizes[inventory.IndexOf(b)], colors[inventory.IndexOf(b)]);
     }
 
     private void Start()
