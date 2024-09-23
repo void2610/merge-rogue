@@ -77,7 +77,7 @@ public class InventoryManager : MonoBehaviour
 
         ball.GetComponent<BallBase>().level = level;
         ball.GetComponent<SpriteRenderer>().sprite = data.sprite;
-        ball.GetComponent<CircleCollider2D>().radius = data.size * sizes[level - 1];
+        ball.transform.localScale = Vector3.one * data.size * sizes[level - 1];
         ball.GetComponent<BallBase>().color = colors[level - 1];
 
         return ball;
