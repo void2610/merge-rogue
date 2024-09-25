@@ -81,10 +81,8 @@ public class InventoryManager : MonoBehaviour
             return null;
         }
         ball.transform.localScale = Vector3.one * sizes[level - 1];
-        List<float> c = new List<float>() { GameManager.instance.RandomRange(0.0f, 1.0f), GameManager.instance.RandomRange(0.0f, 1.0f), GameManager.instance.RandomRange(0.0f, 1.0f) };
-        ball.GetComponent<SpriteRenderer>().color = new Color(c[0], c[1], c[2]);
+        ball.GetComponent<SpriteRenderer>().color = Color.HSVToRGB(GameManager.instance.RandomRange(0.0f, 1.0f), 0.8f, 1.0f);
         ball.GetComponent<BallBase>().level = level;
-
         ball.GetComponent<BallBase>().Freeze();
         return ball;
     }

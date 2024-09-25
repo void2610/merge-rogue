@@ -39,7 +39,7 @@ public class MergeManager : MonoBehaviour
     private int coolTimeLevel = 0;
     private List<float> attacks = new List<float> { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f };
     private int attackLevel = 0;
-    private Vector3 currentBallPosition = new Vector3(0, 1.5f, 0);
+    private Vector3 currentBallPosition = new Vector3(0, 1.0f, 0);
     private Vector3 nextBallPosition = new Vector3(-2, 1, 0);
 
     public void LevelUpMoveSpeed()
@@ -90,6 +90,7 @@ public class MergeManager : MonoBehaviour
         ball.transform.rotation = q;
         int i = Random.Range(0, 5);
         SeManager.instance.PlaySe("ball" + i);
+        Instantiate(mergeParticle, p, Quaternion.identity);
     }
 
     public void Attack(int atk)
