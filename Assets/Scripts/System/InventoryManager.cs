@@ -60,7 +60,7 @@ public class InventoryManager : MonoBehaviour
     // ボールのコピー元となるオブジェクトを生成、ステータス変化はこのオブジェクトに対して行う
     private GameObject CreateBallInstanceFromBallData(BallData data, int level)
     {
-        GameObject ball = Instantiate(ballBasePrefab);
+        GameObject ball = Instantiate(ballBasePrefab, this.transform);
         ball.name = $"{data.name} (Level {level})";
         if (!string.IsNullOrEmpty(data.className))
         {
@@ -81,7 +81,7 @@ public class InventoryManager : MonoBehaviour
             return null;
         }
         ball.transform.localScale = Vector3.one * sizes[level - 1];
-        ball.GetComponent<SpriteRenderer>().color = Color.HSVToRGB(GameManager.instance.RandomRange(0.0f, 1.0f), 0.8f, 1.0f);
+        ball.GetComponent<SpriteRenderer>().color = Color.HSVToRGB(GameManager.instance.RandomRange(0.0f, 1.0f), GameManager.instance.RandomRange(0.0f, 1.0f), 1.0f);
         ball.GetComponent<BallBase>().level = level;
         ball.GetComponent<BallBase>().Freeze();
         return ball;
@@ -105,8 +105,6 @@ public class InventoryManager : MonoBehaviour
         {
             Destroy(this);
         }
-
-        Debug.Log(allBallDataList.GetNormalBallData());
 
         // 全てnormalBallで初期化
         for (int i = 0; i < inventorySize; i++)

@@ -6768,7 +6768,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1843446103}
   - component: {fileID: 1843446104}
-  - component: {fileID: 1843446105}
   m_Layer: 0
   m_Name: MergeManager
   m_TagString: Untagged
@@ -6810,22 +6809,6 @@ MonoBehaviour:
   coolTime: 0.5
   currentBall: {fileID: 0}
   nextBall: {fileID: 0}
---- !u!114 &1843446105
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1843446102}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3851c210955714e81b4721bf9e3254af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventoryPosition: {x: 2.5, y: 1, z: 0}
-  inventory: []
-  allBallDataList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
-  ballBasePrefab: {fileID: 5528515049713681562, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
 --- !u!1 &1852640721
 GameObject:
   m_ObjectHideFlags: 0
@@ -6962,6 +6945,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1852640721}
   m_CullTransparentMesh: 1
+--- !u!1 &1883030244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1883030246}
+  - component: {fileID: 1883030245}
+  m_Layer: 0
+  m_Name: Inventory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1883030245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883030244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3851c210955714e81b4721bf9e3254af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventoryPosition: {x: 2.5, y: 1, z: 0}
+  inventory: []
+  allBallDataList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
+  ballBasePrefab: {fileID: 5528515049713681562, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
+--- !u!4 &1883030246
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883030244}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1919969491
 GameObject:
   m_ObjectHideFlags: 0
@@ -9276,3 +9307,4 @@ SceneRoots:
   - {fileID: 2925697678709081943}
   - {fileID: 632287033}
   - {fileID: 813430544}
+  - {fileID: 1883030246}

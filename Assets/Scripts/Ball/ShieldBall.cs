@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class HealBall : BallBase
+public class ShieldBall : BallBase
 {
     protected override void Awake()
     {
@@ -14,6 +14,7 @@ public class HealBall : BallBase
 
     protected override void Effect()
     {
-        GameManager.instance.player.Heal(this.level);
+        // TODO: シールド
+        // GameManager.instance.player.Heal(this.level);
     }
 }
