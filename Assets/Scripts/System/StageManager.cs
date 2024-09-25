@@ -103,6 +103,8 @@ public class StageManager : MonoBehaviour
     public void Start()
     {
         DecideStage();
+        stageTypes[1] = StageType.shop;
         GameManager.instance.uiManager.UpdateStageText(currentStage);
+        m.SetTextureOffset("_MainTex", new Vector2(0, 0));
     }
 }

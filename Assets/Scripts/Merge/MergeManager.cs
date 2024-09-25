@@ -88,6 +88,7 @@ public class MergeManager : MonoBehaviour
         var ball = InventoryManager.instance.GetBallByLevel(level);
         ball.transform.position = p;
         ball.transform.rotation = q;
+        ball.transform.SetParent(ballContainer.transform);
         int i = Random.Range(0, 5);
         SeManager.instance.PlaySe("ball" + i);
         Instantiate(mergeParticle, p, Quaternion.identity);

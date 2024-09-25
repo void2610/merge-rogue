@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour
     {
         BattlePreparation,
         Battle,
+        BattleResult,
         StageMoving,
         Shop,
         GameOver,

@@ -26,7 +26,6 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private float defaultScale = 1.0f;
 
-    private CanvasGroup canvasGroup;
     private void OnClick()
     {
         this.transform.DOScale(defaultScale * scale, duration).SetEase(Ease.OutElastic);
@@ -34,20 +33,19 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (tweenByPointer && canvasGroup.interactable && this.GetComponent<Button>()?.interactable == true)
+        if (tweenByPointer && this.GetComponent<Button>()?.interactable == true)
             this.transform.DOScale(defaultScale * scale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (tweenByPointer && canvasGroup.interactable)
+        if (tweenByPointer)
             this.transform.DOScale(defaultScale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
     }
 
     public void ResetScale()
     {
-        if (canvasGroup != null)
-            this.transform.DOScale(defaultScale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
+        this.transform.DOScale(defaultScale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
     }
 
     public void CheckMouseAndTween()
@@ -76,7 +74,6 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void Awake()
     {
-        canvasGroup = this.transform.parent.GetComponent<CanvasGroup>();
         defaultScale = this.transform.localScale.x;
         if (tweenByClick)
         {
