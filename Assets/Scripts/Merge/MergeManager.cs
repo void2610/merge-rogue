@@ -127,7 +127,7 @@ public class MergeManager : MonoBehaviour
 
     void Start()
     {
-        if (Application.isEditor) coolTime = 0.1f;
+        // if (Application.isEditor) coolTime = 0.1f;
 
         nextBall = InventoryManager.instance.GetRandomBall();
         nextBall.transform.position = nextBallPosition;
