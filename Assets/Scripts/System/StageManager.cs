@@ -57,7 +57,10 @@ public class StageManager : MonoBehaviour
                     GameManager.instance.ChangeState(GameManager.GameState.BattlePreparation);
                     break;
                 case StageType.shop:
+                    GameManager.instance.uiManager.EnableShopOptions(true);
                     GameManager.instance.ChangeState(GameManager.GameState.Shop);
+                    Shop.instance.SetItem();
+                    Time.timeScale = 0;
                     break;
                 case StageType.boss:
                     GameManager.instance.enemyContainer.SpawnBoss();
@@ -103,7 +106,7 @@ public class StageManager : MonoBehaviour
     public void Start()
     {
         DecideStage();
-        // stageTypes[1] = StageType.shop;
+        stageTypes[0] = StageType.shop;
         GameManager.instance.uiManager.UpdateStageText(currentStage);
         m.SetTextureOffset("_MainTex", new Vector2(0, 0));
     }

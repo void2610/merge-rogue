@@ -64,3 +64,24 @@ MonoBehaviour:
   - name: footstep
     audioClip: {fileID: 8300000, guid: dea09f1f07d11490ba4ccac854c2d760, type: 3}
     volume: 1
+  - name: ball0
+    audioClip: {fileID: 8300000, guid: 4e6c340bded4e400580e0140f6462bfb, type: 3}
+    volume: 1
+  - name: ball1
+    audioClip: {fileID: 8300000, guid: 8375ad244324541b3adadf5a250c1865, type: 3}
+    volume: 1
+  - name: ball2
+    audioClip: {fileID: 8300000, guid: ed657a9df16e445bc8e2b3f246cdb9d3, type: 3}
+    volume: 1
+  - name: ball3
+    audioClip: {fileID: 8300000, guid: d6a4170b7abfb4795a0e41373a3ab642, type: 3}
+    volume: 1
+  - name: ball4
+    audioClip: {fileID: 8300000, guid: 96c5565e27a9e40dab9ab24987dcc3ae, type: 3}
+    volume: 1
+  - name: fall
+    audioClip: {fileID: 8300000, guid: d5752acecbf7341408306fe92e3c2334, type: 3}
+    volume: 1
+  - name: error
+    audioClip: {fileID: 8300000, guid: d574c26432bc949eb8f93dfc31c9d078, type: 3}
+    volume: 1

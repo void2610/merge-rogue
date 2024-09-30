@@ -2,92 +2,86 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 using UnityEngine.EventSystems;
 using DG.Tweening;
 
 public class Shop : MonoBehaviour
 {
-    [System.Serializable]
-    internal class ItemData
-    {
-        public GameObject prefab;
-        public float probability;
-    }
+    public static Shop instance;
 
     [SerializeField]
-    private Image shopBG;
-
-    [SerializeField]
-    private List<GameObject> shopOptions = new List<GameObject>();
-
-    [SerializeField]
-    private List<ItemData> items = new List<ItemData>();
-
-    private List<GameObject> currentItems = new List<GameObject>();
+    private BallDataList allBallDataList;
+    private List<BallData> currentItems = new List<BallData>();
     private int itemNum = 3;
-    private float alignment = 3;
-
+    private Transform itemContainer => this.transform.Find("Items");
     private List<Vector3> positions = new List<Vector3>();
 
-    public void SetItem(int count = 1)
+    public void SetItem(int count = 3)
     {
         if (count > itemNum) return;
         currentItems.Clear();
-        for (int i = 0; i < count; i++)
-        {
-            float total = 0;
-            foreach (ItemData itemData in items)
-            {
-                total += itemData.probability;
-            }
-            float randomPoint = GameManager.instance.RandomRange(0.0f, total);
+        currentItems.Add(allBallDataList.list[0]);
+        SetOnClick(itemContainer.GetChild(0).gameObject, allBallDataList.list[0]);
+        currentItems.Add(allBallDataList.list[1]);
+        SetOnClick(itemContainer.GetChild(1).gameObject, allBallDataList.list[1]);
+        currentItems.Add(allBallDataList.list[2]);
+        SetOnClick(itemContainer.GetChild(2).gameObject, allBallDataList.list[2]);
+        // for (int i = 0; i < count; i++)
+        // {
+        //     float total = 0;
+        //     foreach (ItemData itemData in items)
+        //     {
+        //         total += itemData.probability;
+        //     }
+        //     float randomPoint = GameManager.instance.RandomRange(0.0f, total);
 
-            foreach (ItemData itemData in items)
-            {
-                if (randomPoint < itemData.probability)
-                {
-                    var g = Instantiate(itemData.prefab, shopOptions[i].transform);
-                    g.transform.localScale = Vector3.one;
-                    currentItems.Add(g);
-                    // g.GetComponent<RectTransform>().position = positions[i];
-                    // g.transform.localPosition = positions[i];
-                    SetOnClick(g);
-                    g.transform.GetChild(0).GetComponent<CanvasGroup>().DOFade(1, 0.5f);
-                    break;
-                }
-                randomPoint -= itemData.probability;
-            }
-        }
+        //     foreach (ItemData itemData in items)
+        //     {
+        //         if (randomPoint < itemData.probability)
+        //         {
+        //             var g = Instantiate(itemData.prefab, shopOptions[i].transform);
+        //             g.transform.localScale = Vector3.one;
+        //             currentItems.Add(g);
+        //             SetOnClick(g);
+        //             g.transform.GetChild(0).GetComponent<CanvasGroup>().DOFade(1, 0.5f);
+        //             break;
+        //         }
+        //         randomPoint -= itemData.probability;
+        //     }
+        // }
 
-        shopBG.DOFade(0, 0);
-        shopBG.DOFade(1, 0.5f);
+        // shopBG.DOFade(0, 0);
+        // shopBG.DOFade(1, 0.5f);
     }
 
     public void ResetItem()
     {
-        foreach (GameObject g in currentItems)
-        {
-            g.transform.GetChild(0).GetComponent<CanvasGroup>().DOFade(0, 0.5f).OnComplete(() => Destroy(g));
-        }
         currentItems.Clear();
-        shopBG.DOFade(0, 0.5f);
+        // shopBG.DOFade(0, 0.5f);
     }
 
-    private void SetOnClick(GameObject g)
+    private void SetOnClick(GameObject g, BallData ball)
     {
-        Button b = g.transform.Find("Canvas").transform.Find("Image").gameObject.AddComponent<Button>();
-        if (b != null)
+        Button button = g.GetComponent<Button>();
+        TextMeshProUGUI name = g.transform.Find("Text").GetComponent<TextMeshProUGUI>();
+        name.text = ball.name;
+        TextMeshProUGUI price = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
+        price.text = ball.price.ToString();
+        Image image = g.transform.Find("BallIcon").GetComponent<Image>();
+        image.sprite = ball.sprite;
+        if (button != null)
         {
-            b.onClick.AddListener(() =>
+            button.onClick.AddListener(() =>
             {
-                var item = g.GetComponent<ItemBase>();
+                var item = ball;
                 if (item == null) return;
                 if (GameManager.instance.player.gold >= item.price)
                 {
                     GameManager.instance.player.AddGold(-item.price);
-                    item.Use(GameManager.instance.player);
-                    Destroy(g);
-                    currentItems.Remove(g);
+                    // TODO: Add item to inventory
+                    // Destroy(g);
+                    // currentItems.Remove(g);
                     SeManager.instance.PlaySe("coin");
                 }
                 else
@@ -96,36 +90,22 @@ public class Shop : MonoBehaviour
                 }
             });
         }
-
-        // Vector3 defaultPos = g.transform.position;
-        // EventTrigger trigger = g.AddComponent<EventTrigger>();
-        // EventTrigger.Entry entry = new EventTrigger.Entry();
-        // entry.eventID = EventTriggerType.PointerEnter;
-        // entry.callback.AddListener((data) =>
-        // {
-        //     //上にバウンドする
-        //     if (g.transform.position.y == defaultPos.y)
-        //         g.transform.DOPunchPosition(new Vector3(0, 0.5f, 0), 0.2f, 1, 1).SetRelative(true).OnComplete(() =>
-        //         {
-        //             g.transform.position = defaultPos;
-        //         });
-        // });
-        // trigger.triggers.Add(entry);
-        // entry = new EventTrigger.Entry();
-        // entry.eventID = EventTriggerType.PointerExit;
-        // entry.callback.AddListener((data) =>
-        // {
-        //     g.transform.DOScale(defaultScale, 0.1f);
-        // });
-        // trigger.triggers.Add(entry);
     }
 
     private void Awake()
     {
-        float a = 190;
-        float offset = this.transform.parent.transform.position.x;
-        positions.Add(this.transform.position + new Vector3(-a, 0, 0));
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+            return;
+        }
+        float offset = 220;
+        positions.Add(this.transform.position + new Vector3(-offset, 0, 0));
         positions.Add(this.transform.position);
-        positions.Add(this.transform.position + new Vector3(a, 0, 0));
+        positions.Add(this.transform.position + new Vector3(offset, 0, 0));
     }
 }

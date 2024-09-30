@@ -143,6 +143,14 @@ public class UIManager : MonoBehaviour
         stageText.text = "stage: " + s;
     }
 
+    public void OnClickShopExit()
+    {
+        SeManager.instance.PlaySe("button");
+        EnableShopOptions(false);
+        Time.timeScale = 1;
+        GameManager.instance.NextStage();
+    }
+
     public void OnClickPause()
     {
         SeManager.instance.PlaySe("button");
