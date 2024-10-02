@@ -31,14 +31,11 @@ public class StageManager : MonoBehaviour
 
     public void NextStage()
     {
-
         SeManager.instance.PlaySe("footsteps");
-        //背景をスクロールさせる
         DOTween.To(() => m.GetTextureOffset("_MainTex"), x => m.SetTextureOffset("_MainTex", x), new Vector2(1, 0), 2.0f).SetEase(Ease.Linear).OnComplete(() =>
         {
             m.SetTextureOffset("_MainTex", new Vector2(0, 0));
         });
-
 
         Utils.instance.WaitAndInvoke(2.0f, () =>
         {
@@ -56,15 +53,12 @@ public class StageManager : MonoBehaviour
                     GameManager.instance.enemyContainer.SpawnEnemy(enemyStageCount);
                     GameManager.instance.ChangeState(GameManager.GameState.BattlePreparation);
                     break;
-                case StageType.shop:
-                    GameManager.instance.uiManager.EnableShopOptions(true);
-                    GameManager.instance.ChangeState(GameManager.GameState.Shop);
-                    Shop.instance.SetItem();
-                    Time.timeScale = 0;
-                    break;
                 case StageType.boss:
                     GameManager.instance.enemyContainer.SpawnBoss();
                     GameManager.instance.ChangeState(GameManager.GameState.BattlePreparation);
+                    break;
+                case StageType.shop:
+                    GameManager.instance.ChangeState(GameManager.GameState.Shop);
                     break;
                 case StageType.events:
                     GameManager.instance.ChangeState(GameManager.GameState.Other);

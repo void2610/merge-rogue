@@ -37,16 +37,12 @@ public class BallBase : MonoBehaviour
     public void Freeze()
     {
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-        GetComponent<Collider2D>().enabled = false;
-        // GetComponent<SpriteRenderer>().enabled = false;
         isFreezed = true;
     }
 
     public void Unfreeze()
     {
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        GetComponent<Collider2D>().enabled = true;
-        // GetComponent<SpriteRenderer>().enabled = true;
         isFreezed = false;
     }
 

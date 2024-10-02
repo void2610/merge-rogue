@@ -88,6 +88,13 @@ public class GameManager : MonoBehaviour
 
     public void ChangeState(GameState newState)
     {
+        switch (state)
+        {
+            case GameState.Shop:
+                this.GetComponent<InventoryUI>().EnableCursor(false);
+                Time.timeScale = 1;
+                break;
+        }
         state = newState;
         Debug.Log("State: " + state);
         switch (newState)
@@ -97,6 +104,12 @@ public class GameManager : MonoBehaviour
                 {
                     ChangeState(GameState.Battle);
                 });
+                break;
+            case GameState.Shop:
+                Shop.instance.SetItem();
+                this.GetComponent<InventoryUI>().EnableCursor(true);
+                Time.timeScale = 0;
+                uiManager.EnableShopOptions(true);
                 break;
         }
     }

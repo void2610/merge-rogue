@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -92,6 +93,7 @@ public class InventoryManager : MonoBehaviour
         GameObject newBall = Instantiate(ball);
         newBall.transform.localScale = ball.transform.localScale;
         newBall.GetComponent<SpriteRenderer>().color = ball.GetComponent<SpriteRenderer>().color;
+        Destroy(newBall.GetComponent<EventTrigger>());
         return newBall;
     }
 
@@ -107,11 +109,17 @@ public class InventoryManager : MonoBehaviour
         }
 
         // 全てnormalBallで初期化
+        var bd = allBallDataList.GetNormalBallData();
         for (int i = 0; i < inventorySize; i++)
         {
-            var bd = allBallDataList.GetNormalBallData();
             var ball = CreateBallInstanceFromBallData(bd, i + 1);
-            ball.transform.position = inventoryPosition + new Vector3(i * 1f, 0, 0);
+            ball.transform.position = inventoryPosition + new Vector3(i, 0, 0);
+            ball.AddComponent<EventTrigger>().triggers = new List<EventTrigger.Entry>();
+            EventTrigger.Entry entry = new EventTrigger.Entry();
+            entry.eventID = EventTriggerType.PointerClick;
+            int j = i;
+            entry.callback.AddListener((data) => { GameManager.instance.GetComponent<InventoryUI>().SetCursor(j); });
+            ball.GetComponent<EventTrigger>().triggers.Add(entry);
             inventory.Add(ball);
         }
         GameManager.instance.GetComponent<InventoryUI>().SetItem(inventory);
