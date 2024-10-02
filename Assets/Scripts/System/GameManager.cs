@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour
     public EnemyContainer enemyContainer;
     [SerializeField]
     public Shop shop;
+    [SerializeField]
+    public Canvas mainCanvas;
 
     public System.Random random { get; private set; }
     private int seed = 42;

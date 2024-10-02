@@ -6,17 +6,17 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance { get; private set; }
 
-    private int inventorySize = 6;
-    private List<float> probabilities = new List<float> { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f };
     [SerializeField]
     private Vector3 inventoryPosition = new Vector3(0, -4, 0);
-    private List<float> sizes = new List<float> { 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
     [SerializeField]
     private List<GameObject> inventory = new List<GameObject>();
     [SerializeField]
     private BallDataList allBallDataList;
     [SerializeField]
     private GameObject ballBasePrefab;
+    private int inventorySize = 6;
+    private List<float> sizes = new List<float> { 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
+    private List<float> probabilities = new List<float> { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f };
 
 
     public List<GameObject> GetInventory()
@@ -114,10 +114,7 @@ public class InventoryManager : MonoBehaviour
             ball.transform.position = inventoryPosition + new Vector3(i * 1f, 0, 0);
             inventory.Add(ball);
         }
-    }
-
-    private void Start()
-    {
-
+        GameManager.instance.GetComponent<InventoryUI>().SetItem(inventory);
+        GameManager.instance.GetComponent<InventoryUI>().SetCursor(0);
     }
 }
