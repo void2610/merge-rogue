@@ -116,7 +116,7 @@ public class InventoryManager : MonoBehaviour
             ball.transform.position = inventoryPosition + new Vector3(i, 0, 0);
             ball.AddComponent<EventTrigger>().triggers = new List<EventTrigger.Entry>();
             EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerClick;
+            entry.eventID = EventTriggerType.PointerEnter;
             int j = i;
             entry.callback.AddListener((data) => { GameManager.instance.GetComponent<InventoryUI>().SetCursor(j); });
             ball.GetComponent<EventTrigger>().triggers.Add(entry);

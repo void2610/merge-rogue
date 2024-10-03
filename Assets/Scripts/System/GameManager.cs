@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
     public Canvas mainCanvas;
 
     public System.Random random { get; private set; }
+    public int coin { get; private set; } = 0;
     private int seed = 42;
     private bool isPaused = false;
     public Player player => playerObj.GetComponent<Player>();
@@ -116,6 +117,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        if (Application.isEditor) coin = 1000;
         NextStage();
     }
 

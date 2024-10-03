@@ -7,10 +7,9 @@ using DG.Tweening;
 public class InventoryUI : MonoBehaviour
 {
     [SerializeField]
-    private Sprite cursorSprite;
+    private GameObject cursor;
     private List<GameObject> items = new List<GameObject>();
     private float sizeCoefficient = 8f;
-    private GameObject cursor;
     private int cursorIndex = 0;
 
     public void SetItem(List<GameObject> inventory)
@@ -34,8 +33,6 @@ public class InventoryUI : MonoBehaviour
 
     private void Awake()
     {
-        cursor = new GameObject("Cursor", typeof(SpriteRenderer));
-        cursor.GetComponent<SpriteRenderer>().sprite = cursorSprite;
         EnableCursor(false);
     }
 }

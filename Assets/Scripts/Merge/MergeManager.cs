@@ -106,11 +106,13 @@ public class MergeManager : MonoBehaviour
     private void FallAndDecideNextBall()
     {
         currentBall.GetComponent<BallBase>().Unfreeze();
+        currentBall.GetComponent<CircleCollider2D>().enabled = true;
         currentBall.transform.SetParent(ballContainer.transform);
         currentBall = nextBall;
         currentBall.transform.position = currentBallPosition;
         nextBall = InventoryManager.instance.GetRandomBall();
         nextBall.transform.position = nextBallPosition;
+        nextBall.GetComponent<CircleCollider2D>().enabled = false;
     }
 
     void Awake()
@@ -127,7 +129,7 @@ public class MergeManager : MonoBehaviour
 
     void Start()
     {
-        // if (Application.isEditor) coolTime = 0.1f;
+        if (Application.isEditor) coolTime = 0.1f;
 
         nextBall = InventoryManager.instance.GetRandomBall();
         nextBall.transform.position = nextBallPosition;

@@ -50,38 +50,30 @@ public class Shop : MonoBehaviour
         //         randomPoint -= itemData.probability;
         //     }
         // }
-
-        // shopBG.DOFade(0, 0);
-        // shopBG.DOFade(1, 0.5f);
-    }
-
-    public void ResetItem()
-    {
-        currentItems.Clear();
-        // shopBG.DOFade(0, 0.5f);
     }
 
     private void SetOnClick(GameObject g, BallData ball)
     {
-        Button button = g.GetComponent<Button>();
         TextMeshProUGUI name = g.transform.Find("Text").GetComponent<TextMeshProUGUI>();
         name.text = ball.name;
         TextMeshProUGUI price = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
         price.text = ball.price.ToString();
         Image image = g.transform.Find("BallIcon").GetComponent<Image>();
         image.sprite = ball.sprite;
+        Button button = g.GetComponent<Button>();
         if (button != null)
         {
             button.onClick.AddListener(() =>
             {
                 var item = ball;
                 if (item == null) return;
-                if (GameManager.instance.player.gold >= item.price)
+                if (GameManager.instance.coin >= item.price)
                 {
+                    Debug.Log(item.name + "を購入しました");
                     GameManager.instance.player.AddGold(-item.price);
                     // TODO: Add item to inventory
-                    // Destroy(g);
-                    // currentItems.Remove(g);
+                    Destroy(g);
+                    currentItems.Remove(item);
                     SeManager.instance.PlaySe("coin");
                 }
                 else
