@@ -19,6 +19,17 @@ public class InventoryManager : MonoBehaviour
     private List<float> sizes = new List<float> { 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
     private List<float> probabilities = new List<float> { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f };
 
+    // ボールを入れ替える
+    public void SetBall(BallData data, int level)
+    {
+        if (level <= 0 || level > inventorySize) return;
+        var old = inventory[level - 1];
+        var ball = CreateBallInstanceFromBallData(data, level);
+        ball.transform.position = inventoryPosition + new Vector3(level - 1, 0, 0);
+        inventory[level - 1] = ball;
+        GameManager.instance.GetComponent<InventoryUI>().SetItem(inventory);
+        Destroy(old);
+    }
 
     public List<GameObject> GetInventory()
     {
@@ -97,6 +108,21 @@ public class InventoryManager : MonoBehaviour
         return newBall;
     }
 
+    private void SetEvent(GameObject ball, int index)
+    {
+        ball.AddComponent<EventTrigger>().triggers = new List<EventTrigger.Entry>();
+        EventTrigger.Entry entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerEnter;
+
+        entry.callback.AddListener((data) => { GameManager.instance.GetComponent<InventoryUI>().SetCursor(index); });
+        ball.GetComponent<EventTrigger>().triggers.Add(entry);
+        entry = new EventTrigger.Entry();
+        entry.eventID = EventTriggerType.PointerClick;
+        entry.callback.AddListener((data) => { Shop.instance.BuyBall(index); });
+        ball.GetComponent<EventTrigger>().triggers.Add(entry);
+        inventory.Add(ball);
+    }
+
     private void Awake()
     {
         if (instance == null)
@@ -114,13 +140,7 @@ public class InventoryManager : MonoBehaviour
         {
             var ball = CreateBallInstanceFromBallData(bd, i + 1);
             ball.transform.position = inventoryPosition + new Vector3(i, 0, 0);
-            ball.AddComponent<EventTrigger>().triggers = new List<EventTrigger.Entry>();
-            EventTrigger.Entry entry = new EventTrigger.Entry();
-            entry.eventID = EventTriggerType.PointerEnter;
-            int j = i;
-            entry.callback.AddListener((data) => { GameManager.instance.GetComponent<InventoryUI>().SetCursor(j); });
-            ball.GetComponent<EventTrigger>().triggers.Add(entry);
-            inventory.Add(ball);
+            SetEvent(ball, i);
         }
         GameManager.instance.GetComponent<InventoryUI>().SetItem(inventory);
         GameManager.instance.GetComponent<InventoryUI>().SetCursor(0);

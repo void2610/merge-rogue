@@ -63,6 +63,12 @@ public class GameManager : MonoBehaviour
     public UIManager uiManager => this.GetComponent<UIManager>();
     public StageManager stageManager => GetComponent<StageManager>();
 
+    public void AddCoin(int value)
+    {
+        coin += value;
+        //uiManager.UpdateCoinText(coin);
+    }
+
     public float RandomRange(float min, float max)
     {
         float randomValue = (float)(this.random.NextDouble() * (max - min) + min);
@@ -92,6 +98,7 @@ public class GameManager : MonoBehaviour
         switch (state)
         {
             case GameState.Shop:
+                Shop.instance.CloseShop();
                 this.GetComponent<InventoryUI>().EnableCursor(false);
                 Time.timeScale = 1;
                 break;
@@ -107,8 +114,7 @@ public class GameManager : MonoBehaviour
                 });
                 break;
             case GameState.Shop:
-                Shop.instance.SetItem();
-                this.GetComponent<InventoryUI>().EnableCursor(true);
+                Shop.instance.OpenShop();
                 Time.timeScale = 0;
                 uiManager.EnableShopOptions(true);
                 break;
