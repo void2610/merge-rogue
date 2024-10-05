@@ -85,3 +85,6 @@ MonoBehaviour:
   - name: error
     audioClip: {fileID: 8300000, guid: d574c26432bc949eb8f93dfc31c9d078, type: 3}
     volume: 1
+  - name: footsteps
+    audioClip: {fileID: 8300000, guid: dea09f1f07d11490ba4ccac854c2d760, type: 3}
+    volume: 1

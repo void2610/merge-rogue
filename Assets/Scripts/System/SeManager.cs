@@ -88,7 +88,7 @@ public class SeManager : MonoBehaviour
         var audioSource = GetUnusedAudioSource();
         if (soundData == null)
         {
-            Debug.LogWarning("指定された名前のSEが存在しません。");
+            Debug.LogWarning("指定された名前のSEが存在しません。: " + name);
             return;
         }
         if (audioSource == null)
