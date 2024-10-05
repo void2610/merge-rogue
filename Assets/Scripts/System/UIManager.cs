@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -37,8 +36,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     public TextMeshProUGUI hpText;
 
-    public int remainingLevelUps = 0;
-    private Player player => GameManager.Instance.player;
+    public int remainingLevelUps;
+    // private Player player => GameManager.Instance.player;
 
     public void EnablePauseMenu(bool e)
     {
@@ -148,7 +147,7 @@ public class UIManager : MonoBehaviour
         SeManager.Instance.PlaySe("button");
         EnableShopOptions(false);
         Time.timeScale = 1;
-        GameManager.Instance.NextStage();
+        GameManager.Instance.ChangeState(GameManager.GameState.StageMoving);
     }
 
     public void OnClickPause()
@@ -206,10 +205,7 @@ public class UIManager : MonoBehaviour
         {
             eventID = EventTriggerType.PointerUp
         };
-        entry.callback.AddListener(new UnityEngine.Events.UnityAction<BaseEventData>((data) =>
-        {
-            SeManager.Instance.PlaySe("button");
-        }));
+        entry.callback.AddListener(_ => SeManager.Instance.PlaySe("button"));
         trigger.triggers.Add(entry);
 
         fadeImage.color = new Color(0, 0, 0, 1);

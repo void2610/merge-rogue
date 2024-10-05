@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using DG.Tweening;
 
 public class EnemyContainer : MonoBehaviour
 {
@@ -14,14 +12,14 @@ public class EnemyContainer : MonoBehaviour
     }
 
     [SerializeField]
-    private List<EnemyData> enemies = new List<EnemyData>();
+    private List<EnemyData> enemies;
     [SerializeField]
     private List<EnemyData> bosses = new List<EnemyData>();
     [SerializeField]
     private float alignment = 4;
     private readonly List<GameObject> currentEnemies = new List<GameObject>();
     private const int ENEMY_NUM = 4;
-    private int gainedExp = 0;
+    private int gainedExp;
     private readonly List<Vector3> positions = new List<Vector3>();
 
     public int GetEnemyCount()
@@ -120,7 +118,7 @@ public class EnemyContainer : MonoBehaviour
             Utils.Instance.WaitAndInvoke(1.0f, () =>
             {
                 GameManager.Instance.player.AddExp(gainedExp);
-                GameManager.Instance.NextStage();
+                GameManager.Instance.ChangeState(GameManager.GameState.StageMoving);
                 gainedExp = 0;
             });
         }

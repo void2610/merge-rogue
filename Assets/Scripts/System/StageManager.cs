@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 
@@ -24,7 +22,7 @@ public class StageManager : MonoBehaviour
 
     public List<StageType> stageTypes = new List<StageType>();
     private int currentStage = -1;
-    private int enemyStageCount = 0;
+    private int enemyStageCount;
 
     public StageType GetCurrentStageType()
     {
@@ -33,8 +31,11 @@ public class StageManager : MonoBehaviour
 
     public void NextStage()
     {
-        SeManager.Instance.PlaySe("footsteps");
-        DOTween.To(() => m.GetTextureOffset(mainTex), x => m.SetTextureOffset("_MainTex", x), new Vector2(1, 0), 2.0f).SetEase(Ease.Linear).OnComplete(() =>
+        Utils.Instance.WaitAndInvoke(0.2f, () =>
+        {
+            SeManager.Instance.PlaySe("footsteps");
+        });
+        DOTween.To(() => m.GetTextureOffset(mainTex), x => m.SetTextureOffset(mainTex, x), new Vector2(1, 0), 2.0f).SetEase(Ease.Linear).OnComplete(() =>
         {
             m.SetTextureOffset(mainTex, new Vector2(0, 0));
         });

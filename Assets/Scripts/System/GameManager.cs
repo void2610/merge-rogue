@@ -1,13 +1,10 @@
 using System;
 using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using unityroom.Api;
 
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance = null;
+    public static GameManager Instance;
     private void Awake()
     {
         if (Instance == null)
@@ -55,10 +52,10 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     public Canvas mainCanvas;
 
-    public System.Random random { get; private set; }
-    public int coin { get; private set; } = 0;
+    private System.Random random { get; set; }
+    public int coin { get; private set; }
     private int seed = 42;
-    private bool isPaused = false;
+    private bool isPaused;
     public Player player => playerObj.GetComponent<Player>();
     public UIManager uiManager => this.GetComponent<UIManager>();
     public StageManager stageManager => GetComponent<StageManager>();
@@ -87,12 +84,6 @@ public class GameManager : MonoBehaviour
         uiManager.EnableGameOver(true);
     }
 
-    public void NextStage()
-    {
-        ChangeState(GameState.StageMoving);
-        stageManager.NextStage();
-    }
-
     public void ChangeState(GameState newState)
     {
         switch (state)
@@ -107,6 +98,9 @@ public class GameManager : MonoBehaviour
         Debug.Log("State: " + state);
         switch (newState)
         {
+            case GameState.StageMoving:
+                stageManager.NextStage();
+                break;
             case GameState.BattlePreparation:
                 Utils.Instance.WaitAndInvoke(1.0f, () =>
                 {
@@ -124,7 +118,7 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         if (Application.isEditor) coin = 1000;
-        NextStage();
+        ChangeState(GameState.StageMoving);
     }
 
     private void Update()
