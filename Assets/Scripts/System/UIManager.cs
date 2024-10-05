@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
     public TextMeshProUGUI hpText;
 
     public int remainingLevelUps = 0;
-    private Player player => GameManager.instance.player;
+    private Player player => GameManager.Instance.player;
 
     public void EnablePauseMenu(bool e)
     {
@@ -145,34 +145,34 @@ public class UIManager : MonoBehaviour
 
     public void OnClickShopExit()
     {
-        SeManager.instance.PlaySe("button");
+        SeManager.Instance.PlaySe("button");
         EnableShopOptions(false);
         Time.timeScale = 1;
-        GameManager.instance.NextStage();
+        GameManager.Instance.NextStage();
     }
 
     public void OnClickPause()
     {
-        SeManager.instance.PlaySe("button");
+        SeManager.Instance.PlaySe("button");
         EnablePauseMenu(true);
     }
 
     public void OnClickResume()
     {
-        SeManager.instance.PlaySe("button");
+        SeManager.Instance.PlaySe("button");
         EnablePauseMenu(false);
     }
 
     public void OnClickTitle()
     {
-        SeManager.instance.PlaySe("button");
+        SeManager.Instance.PlaySe("button");
         fadeImage.color = new Color(0, 0, 0, 0);
         fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("TitleScene"));
     }
 
     public void OnClickRetry()
     {
-        SeManager.instance.PlaySe("button");
+        SeManager.Instance.PlaySe("button");
         fadeImage.color = new Color(0, 0, 0, 0);
         fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("MainScene"));
     }
@@ -193,28 +193,26 @@ public class UIManager : MonoBehaviour
     {
         bgmSlider.onValueChanged.AddListener((value) =>
         {
-            BgmManager.instance.BgmVolume = value;
+            BgmManager.Instance.BgmVolume = value;
         });
 
         seSlider.onValueChanged.AddListener((value) =>
         {
-            SeManager.instance.SeVolume = value;
+            SeManager.Instance.seVolume = value;
         });
 
         var trigger = seSlider.gameObject.AddComponent<EventTrigger>();
-        var entry = new EventTrigger.Entry();
-        entry.eventID = EventTriggerType.PointerUp;
+        var entry = new EventTrigger.Entry
+        {
+            eventID = EventTriggerType.PointerUp
+        };
         entry.callback.AddListener(new UnityEngine.Events.UnityAction<BaseEventData>((data) =>
         {
-            SeManager.instance.PlaySe("button");
+            SeManager.Instance.PlaySe("button");
         }));
         trigger.triggers.Add(entry);
 
         fadeImage.color = new Color(0, 0, 0, 1);
         fadeImage.DOFade(0, 2f);
-    }
-
-    private void Update()
-    {
     }
 }

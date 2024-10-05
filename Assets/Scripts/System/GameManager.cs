@@ -7,12 +7,12 @@ using unityroom.Api;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager instance = null;
+    public static GameManager Instance = null;
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             if (PlayerPrefs.GetString("SeedText", "") == "")
             {
                 seed = (int)DateTime.Now.Ticks;
@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.BattlePreparation:
-                Utils.instance.WaitAndInvoke(1.0f, () =>
+                Utils.Instance.WaitAndInvoke(1.0f, () =>
                 {
                     ChangeState(GameState.Battle);
                 });
@@ -121,13 +121,13 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    void Start()
+    public void Start()
     {
         if (Application.isEditor) coin = 1000;
         NextStage();
     }
 
-    void Update()
+    private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {

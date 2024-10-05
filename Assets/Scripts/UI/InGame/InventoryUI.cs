@@ -9,7 +9,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField]
     private GameObject cursor;
     private List<GameObject> items = new List<GameObject>();
-    private float sizeCoefficient = 8f;
+    private const float SIZE_COEFFICIENT = 8f;
     private int cursorIndex = 0;
 
     public void SetItem(List<GameObject> inventory)
@@ -21,7 +21,7 @@ public class InventoryUI : MonoBehaviour
     {
         if (items.Count == 0 || index < 0 || index >= items.Count) return;
         cursor.transform.DOMove(items[index].transform.position, 0.3f).SetUpdate(true).SetEase(Ease.OutQuint);
-        float size = items[index].transform.localScale.x * sizeCoefficient;
+        var size = items[index].transform.localScale.x * SIZE_COEFFICIENT;
         cursor.transform.DOScale(new Vector3(size, size, 1), 0.3f).SetUpdate(true).SetEase(Ease.OutQuint);
         cursorIndex = index;
     }

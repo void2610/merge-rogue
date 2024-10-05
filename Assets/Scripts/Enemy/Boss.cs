@@ -5,7 +5,7 @@ public class Boss : EnemyBase
 {
     private bool CallSoul(Player player)
     {
-        GameManager.instance.enemyContainer.SpawnEnemyByBoss(1);
+        GameManager.Instance.enemyContainer.SpawnEnemyByBoss(1);
         return false;
     }
 

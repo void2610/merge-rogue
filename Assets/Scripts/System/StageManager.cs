@@ -6,13 +6,15 @@ using DG.Tweening;
 
 public class StageManager : MonoBehaviour
 {
+    private static readonly int mainTex = Shader.PropertyToID("_MainTex");
+
     public enum StageType
     {
-        enemy,
-        shop,
-        boss,
-        events,
-        other,
+        Enemy,
+        Shop,
+        Boss,
+        Events,
+        Other,
     }
 
     [SerializeField]
@@ -31,40 +33,40 @@ public class StageManager : MonoBehaviour
 
     public void NextStage()
     {
-        SeManager.instance.PlaySe("footsteps");
-        DOTween.To(() => m.GetTextureOffset("_MainTex"), x => m.SetTextureOffset("_MainTex", x), new Vector2(1, 0), 2.0f).SetEase(Ease.Linear).OnComplete(() =>
+        SeManager.Instance.PlaySe("footsteps");
+        DOTween.To(() => m.GetTextureOffset(mainTex), x => m.SetTextureOffset("_MainTex", x), new Vector2(1, 0), 2.0f).SetEase(Ease.Linear).OnComplete(() =>
         {
-            m.SetTextureOffset("_MainTex", new Vector2(0, 0));
+            m.SetTextureOffset(mainTex, new Vector2(0, 0));
         });
 
-        Utils.instance.WaitAndInvoke(2.0f, () =>
+        Utils.Instance.WaitAndInvoke(2.0f, () =>
         {
             currentStage++;
             if (currentStage >= stageTypes.Count)
             {
                 currentStage = 0;
             }
-            GameManager.instance.uiManager.UpdateStageText(currentStage + 1);
+            GameManager.Instance.uiManager.UpdateStageText(currentStage + 1);
 
             switch (stageTypes[currentStage])
             {
-                case StageType.enemy:
+                case StageType.Enemy:
                     enemyStageCount++;
-                    GameManager.instance.enemyContainer.SpawnEnemy(enemyStageCount);
-                    GameManager.instance.ChangeState(GameManager.GameState.BattlePreparation);
+                    GameManager.Instance.enemyContainer.SpawnEnemy(enemyStageCount);
+                    GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
                     break;
-                case StageType.boss:
-                    GameManager.instance.enemyContainer.SpawnBoss();
-                    GameManager.instance.ChangeState(GameManager.GameState.BattlePreparation);
+                case StageType.Boss:
+                    GameManager.Instance.enemyContainer.SpawnBoss();
+                    GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
                     break;
-                case StageType.shop:
-                    GameManager.instance.ChangeState(GameManager.GameState.Shop);
+                case StageType.Shop:
+                    GameManager.Instance.ChangeState(GameManager.GameState.Shop);
                     break;
-                case StageType.events:
-                    GameManager.instance.ChangeState(GameManager.GameState.Other);
+                case StageType.Events:
+                    GameManager.Instance.ChangeState(GameManager.GameState.Other);
                     break;
-                case StageType.other:
-                    GameManager.instance.ChangeState(GameManager.GameState.Other);
+                case StageType.Other:
+                    GameManager.Instance.ChangeState(GameManager.GameState.Other);
                     break;
             }
         });
@@ -74,34 +76,34 @@ public class StageManager : MonoBehaviour
     {
         int shopNum = enemyStageNum / 2;
         stageTypes.Clear();
-        for (int i = 0; i < enemyStageNum + shopNum; i++) stageTypes.Add(StageType.other);
+        for (int i = 0; i < enemyStageNum + shopNum; i++) stageTypes.Add(StageType.Other);
 
         for (int i = 0; i < shopNum; i++)
         {
-            int index = GameManager.instance.RandomRange(1, stageTypes.Count);
-            if (stageTypes[index] == StageType.shop)
+            int index = GameManager.Instance.RandomRange(1, stageTypes.Count);
+            if (stageTypes[index] == StageType.Shop)
             {
                 i--;
                 continue;
             }
-            stageTypes[index] = StageType.shop;
+            stageTypes[index] = StageType.Shop;
         }
 
         for (int i = 0; i < stageTypes.Count; i++)
         {
-            if (stageTypes[i] == StageType.other || stageTypes[i] == StageType.shop)
+            if (stageTypes[i] == StageType.Other || stageTypes[i] == StageType.Shop)
             {
-                stageTypes[i] = StageType.enemy;
+                stageTypes[i] = StageType.Enemy;
             }
         }
-        stageTypes.Add(StageType.boss);
+        stageTypes.Add(StageType.Boss);
     }
 
     public void Start()
     {
         DecideStage();
-        stageTypes[0] = StageType.shop;
-        GameManager.instance.uiManager.UpdateStageText(currentStage);
-        m.SetTextureOffset("_MainTex", new Vector2(0, 0));
+        stageTypes[0] = StageType.Shop;
+        GameManager.Instance.uiManager.UpdateStageText(currentStage);
+        m.SetTextureOffset(mainTex, new Vector2(0, 0));
     }
 }

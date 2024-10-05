@@ -12,14 +12,12 @@ public class MergeManager : MonoBehaviour
         public float probability;
     }
 
-    public static MergeManager instance;
+    public static MergeManager Instance;
+    private static readonly int Ratio = Shader.PropertyToID("_Ratio");
 
-    [SerializeField]
-    private MergeWall wall;
-    [SerializeField]
-    private GameObject mergeParticle;
-    [SerializeField]
-    private GameObject fallAnchor;
+    [SerializeField] private MergeWall wall;
+    [SerializeField] private GameObject mergeParticle;
+    [SerializeField] private GameObject fallAnchor;
 
     public float moveSpeed = 1.0f;
     public float coolTime = 1.0f;
@@ -31,16 +29,16 @@ public class MergeManager : MonoBehaviour
     private GameObject ballContainer;
     private float lastFallTime = 0;
 
-    private List<float> moveSpeeds = new List<float> { 0.5f, 1.0f, 1.5f, 2.0f, 2.5f };
+    private readonly List<float> moveSpeeds = new List<float> { 0.5f, 1.0f, 1.5f, 2.0f, 2.5f };
     private int moveSpeedLevel = 0;
-    private List<float> wallWidths = new List<float> { 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f };
+    private readonly List<float> wallWidths = new List<float> { 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f };
     private int wallWidthLevel = 0;
-    private List<float> coolTimes = new List<float> { 3.0f, 2.5f, 2.0f, 1.5f, 1.25f, 1.0f, 0.75f, 0.5f, 0.25f, 0.1f };
+    private readonly List<float> coolTimes = new List<float> { 3.0f, 2.5f, 2.0f, 1.5f, 1.25f, 1.0f, 0.75f, 0.5f, 0.25f, 0.1f };
     private int coolTimeLevel = 0;
     private List<float> attacks = new List<float> { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f };
-    private int attackLevel = 0;
+    // private int attackLevel = 0;
     private Vector3 currentBallPosition = new Vector3(0, 1.0f, 0);
-    private Vector3 nextBallPosition = new Vector3(-2, 1, 0);
+    private readonly Vector3 nextBallPosition = new Vector3(-2, 1, 0);
 
     public void LevelUpMoveSpeed()
     {
@@ -48,7 +46,8 @@ public class MergeManager : MonoBehaviour
         {
             moveSpeed = moveSpeeds[++moveSpeedLevel];
         }
-        GameManager.instance.uiManager.EnableLevelUpOptions(false);
+
+        GameManager.Instance.uiManager.EnableLevelUpOptions(false);
         Time.timeScale = 1.0f;
     }
 
@@ -58,7 +57,8 @@ public class MergeManager : MonoBehaviour
         {
             wall.SetWallWidth(wallWidths[++wallWidthLevel]);
         }
-        GameManager.instance.uiManager.EnableLevelUpOptions(false);
+
+        GameManager.Instance.uiManager.EnableLevelUpOptions(false);
         Time.timeScale = 1.0f;
     }
 
@@ -68,7 +68,8 @@ public class MergeManager : MonoBehaviour
         {
             coolTime = coolTimes[++coolTimeLevel];
         }
-        GameManager.instance.uiManager.EnableLevelUpOptions(false);
+
+        GameManager.Instance.uiManager.EnableLevelUpOptions(false);
         Time.timeScale = 1.0f;
     }
 
@@ -79,7 +80,7 @@ public class MergeManager : MonoBehaviour
         // {
         //     ballAttacks[attackLevel] = attacks[++attackLevel];
         // }
-        GameManager.instance.uiManager.EnableLevelUpOptions(false);
+        GameManager.Instance.uiManager.EnableLevelUpOptions(false);
         Time.timeScale = 1.0f;
     }
 
@@ -91,21 +92,23 @@ public class MergeManager : MonoBehaviour
             Debug.LogError("生成すべきボールが見つかりません");
             return;
         }
+
         ball.transform.position = p;
         ball.transform.rotation = q;
         ball.transform.SetParent(ballContainer.transform);
         int i = Random.Range(0, 5);
-        SeManager.instance.PlaySe("ball" + i);
+        SeManager.Instance.PlaySe("ball" + i);
         Instantiate(mergeParticle, p, Quaternion.identity);
     }
 
     public void Attack(int atk)
     {
-        foreach (var e in GameManager.instance.enemyContainer.GetAllEnemies())
+        foreach (var e in GameManager.Instance.enemyContainer.GetAllEnemies())
         {
             e.TakeDamage(atk);
         }
-        Camera.main.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
+
+        Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
     }
 
     private void FallAndDecideNextBall()
@@ -122,7 +125,7 @@ public class MergeManager : MonoBehaviour
 
     void Awake()
     {
-        if (instance == null) instance = this;
+        if (Instance == null) Instance = this;
         else Destroy(gameObject);
 
         ballContainer = new GameObject("BallContainer");
@@ -144,25 +147,28 @@ public class MergeManager : MonoBehaviour
 
     void Update()
     {
-        limit = wall.wallWidth / 2 + 0.05f;
+        limit = wall.WallWidth / 2 + 0.05f;
         float size = currentBall.transform.localScale.x + 0.5f;
         float r = Mathf.Min(1, (Time.time - lastFallTime) / coolTime);
-        fallAnchor.GetComponent<SpriteRenderer>().material.SetFloat("_Ratio", r);
+        fallAnchor.GetComponent<SpriteRenderer>().material.SetFloat(Ratio, r);
         fallAnchor.transform.localScale = currentBall.transform.localScale * 1.01f;
 
         if (Input.GetKey(KeyCode.A) && currentBallPosition.x - size / 2 > -limit)
         {
-            currentBallPosition += Vector3.left * moveSpeed * Time.deltaTime;
+            currentBallPosition += Vector3.left * (moveSpeed * Time.deltaTime);
         }
+
         if (Input.GetKey(KeyCode.D) && currentBallPosition.x + size / 2 < limit)
         {
-            currentBallPosition += Vector3.right * moveSpeed * Time.deltaTime;
+            currentBallPosition += Vector3.right * (moveSpeed * Time.deltaTime);
         }
-        if (GameManager.instance.state == GameManager.GameState.Battle || GameManager.instance.state == GameManager.GameState.BattlePreparation)
+
+        if (GameManager.Instance.state == GameManager.GameState.Battle ||
+            GameManager.Instance.state == GameManager.GameState.BattlePreparation)
         {
             if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastFallTime > coolTime)
             {
-                SeManager.instance.PlaySe("fall");
+                SeManager.Instance.PlaySe("fall");
                 lastFallTime = Time.time;
                 FallAndDecideNextBall();
             }

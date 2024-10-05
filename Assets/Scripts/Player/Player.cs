@@ -17,34 +17,32 @@ public class Player : MonoBehaviour
     public int maxSave = 5;
     public int save = 0;
 
-    public bool isSaving { get; private set; } = false;
-
     [SerializeField]
     private GameObject canvas;
     [SerializeField]
     private GameObject damageTextPrefab;
 
-    public void UpdateStatusDisplay()
+    private void UpdateStatusDisplay()
     {
-        Slider s = GameManager.instance.uiManager.hpSlider;
+        Slider s = GameManager.Instance.uiManager.hpSlider;
         s.maxValue = maxHealth;
         s.value = health;
-        TextMeshProUGUI t = GameManager.instance.uiManager.hpText;
+        var t = GameManager.Instance.uiManager.hpText;
         t.text = health + "/" + maxHealth;
-
-        GameManager.instance.uiManager.UpdateExpText(exp, levelUpExp[level - 1]);
-        GameManager.instance.uiManager.UpdateLevelText(level);
+    
+        GameManager.Instance.uiManager.UpdateExpText(exp, levelUpExp[level - 1]);
+        GameManager.Instance.uiManager.UpdateLevelText(level);
     }
 
     public void TakeDamage(int damage)
     {
-        Camera.main.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.2f);
+        Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.2f);
         ShowDamage(damage);
         health -= damage;
         if (health <= 0)
         {
             health = 0;
-            GameManager.instance.GameOver();
+            GameManager.Instance.GameOver();
         }
         UpdateStatusDisplay();
     }
@@ -88,7 +86,7 @@ public class Player : MonoBehaviour
         {
             gold = 0;
         }
-        GameManager.instance.uiManager.UpdateCoinText(gold);
+        GameManager.Instance.uiManager.UpdateCoinText(gold);
     }
 
     private void ShowDamage(int damage)
@@ -117,7 +115,7 @@ public class Player : MonoBehaviour
 
             });
         });
-        Utils.instance.WaitAndInvoke(5f, () =>
+        Utils.Instance.WaitAndInvoke(5f, () =>
         {
             Destroy(g);
         });
@@ -132,10 +130,10 @@ public class Player : MonoBehaviour
 
         exp -= levelUpExp[level - 1];
         level++;
-        SeManager.instance.PlaySe("levelUp");
+        SeManager.Instance.PlaySe("levelUp");
         Time.timeScale = 0.0f;
-        GameManager.instance.uiManager.remainingLevelUps++;
-        GameManager.instance.uiManager.EnableLevelUpOptions(true);
+        GameManager.Instance.uiManager.remainingLevelUps++;
+        GameManager.Instance.uiManager.EnableLevelUpOptions(true);
 
         if (exp >= levelUpExp[level - 1])
         {
@@ -145,11 +143,11 @@ public class Player : MonoBehaviour
         return true;
     }
 
-    void Start()
+    private void Start()
     {
         health = maxHealth;
         UpdateStatusDisplay();
 
-        GameManager.instance.uiManager.UpdateCoinText(gold);
+        GameManager.Instance.uiManager.UpdateCoinText(gold);
     }
 }

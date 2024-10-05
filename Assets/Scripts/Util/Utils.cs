@@ -3,12 +3,12 @@ using System.Collections;
 
 public class Utils : MonoBehaviour
 {
-    public static Utils instance;
+    public static Utils Instance;
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {

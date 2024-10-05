@@ -48,7 +48,7 @@ public class Shop : MonoBehaviour
             itemContainer.GetChild(i).GetComponent<Image>().color = new Color(1, 1, 1, 1);
             itemContainer.GetChild(i).DOScale(1, 0.2f).SetUpdate(true);
         }
-        GameManager.instance.GetComponent<InventoryUI>().EnableCursor(false);
+        GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(false);
     }
 
     public void BuyBall(int index)
@@ -56,22 +56,22 @@ public class Shop : MonoBehaviour
         var item = currentItems[selectedItem];
         if (item == null) return;
 
-        if (GameManager.instance.coin >= item.price)
+        if (GameManager.Instance.coin >= item.price)
         {
             Debug.Log(item.name + "を購入しました");
-            GameManager.instance.AddCoin(-item.price);
+            GameManager.Instance.AddCoin(-item.price);
             InventoryManager.instance.SetBall(item, index + 1);
-            SeManager.instance.PlaySe("coin");
+            SeManager.Instance.PlaySe("coin");
 
             itemContainer.GetChild(selectedItem).DOScale(1, 0.2f).SetUpdate(true);
             state = ShopState.NotSelected;
-            GameManager.instance.GetComponent<InventoryUI>().EnableCursor(false);
-            GameManager.instance.GetComponent<InventoryUI>().SetCursor(0);
+            GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(false);
+            GameManager.Instance.GetComponent<InventoryUI>().SetCursor(0);
             selectedItem = -1;
         }
         else
         {
-            SeManager.instance.PlaySe("error");
+            SeManager.Instance.PlaySe("error");
         }
     }
 
@@ -90,17 +90,17 @@ public class Shop : MonoBehaviour
             {
                 var item = ball;
                 if (item == null) return;
-                if (GameManager.instance.coin >= item.price)
+                if (GameManager.Instance.coin >= item.price)
                 {
                     state = ShopState.Selected;
                     selectedItem = index;
                     g.transform.DOScale(1.2f, 0.2f).SetUpdate(true);
-                    GameManager.instance.GetComponent<InventoryUI>().EnableCursor(true);
-                    SeManager.instance.PlaySe("button");
+                    GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(true);
+                    SeManager.Instance.PlaySe("button");
                 }
                 else
                 {
-                    SeManager.instance.PlaySe("error");
+                    SeManager.Instance.PlaySe("error");
                 }
             });
         }

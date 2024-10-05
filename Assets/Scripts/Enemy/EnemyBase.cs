@@ -71,17 +71,17 @@ public class EnemyBase : MonoBehaviour
     }
 
     // 返り値で、攻撃モーションを再生するかどうかを返す
-    public void Attack()
+    private void Attack()
     {
-        GameManager.instance.player.TakeDamage(attack);
+        GameManager.Instance.player.TakeDamage(attack);
         this.transform.DOMoveX(-0.75f, 0.02f).SetRelative(true).OnComplete(() =>
                 {
                     this.transform.DOMoveX(0.75f, 0.2f).SetRelative(true).SetEase(Ease.OutExpo);
                 });
-        SeManager.instance.PlaySe("enemyAttack");
+        SeManager.Instance.PlaySe("enemyAttack");
     }
 
-    public void OnAppear()
+    private void OnAppear()
     {
         CanvasGroup cg = canvas.GetComponent<CanvasGroup>();
         cg.DOFade(1, 0.5f);
@@ -92,7 +92,7 @@ public class EnemyBase : MonoBehaviour
     {
         for (int i = 0; i < gold; i++)
         {
-            Utils.instance.WaitAndInvoke(i * 0.1f, () =>
+            Utils.Instance.WaitAndInvoke(i * 0.1f, () =>
             {
                 Instantiate(coinPrefab, this.transform.position, Quaternion.identity);
             });
@@ -113,7 +113,7 @@ public class EnemyBase : MonoBehaviour
 
     private void ShowDamage(int damage)
     {
-        float r = UnityEngine.Random.Range(-0.5f, 0.5f);
+        var r = UnityEngine.Random.Range(-0.5f, 0.5f);
         var g = Instantiate(damageTextPrefab, this.transform.position + new Vector3(r, 0, 0), Quaternion.identity, this.canvas.transform);
         g.GetComponent<TextMeshProUGUI>().text = damage.ToString();
 
@@ -136,7 +136,7 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Awake()
     {
-        maxHealth = GameManager.instance.RandomRange(hMin, hMax);
+        maxHealth = GameManager.Instance.RandomRange(hMin, hMax);
         health = maxHealth;
 
         this.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
@@ -151,7 +151,7 @@ public class EnemyBase : MonoBehaviour
 
     protected virtual void Update()
     {
-        if (GameManager.instance.state != GameManager.GameState.Battle) return;
+        if (GameManager.Instance.state != GameManager.GameState.Battle) return;
 
         attackGauge.fillAmount = (Time.time - lastAttackTime) / attackSpeed;
 

@@ -21,15 +21,15 @@ public class SeManager : MonoBehaviour
 
 
 
-    public static SeManager instance;
-    private AudioSource[] seAudioSourceList = new AudioSource[20];
-    private float seVolume = 0.5f;
+    public static SeManager Instance;
+    private readonly AudioSource[] seAudioSourceList = new AudioSource[20];
+    private float _seVolume = 0.5f;
 
-    void Awake()
+    private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
             DontDestroyOnLoad(this.gameObject);
         }
         else
@@ -44,15 +44,12 @@ public class SeManager : MonoBehaviour
         }
     }
 
-    public float SeVolume
+    public float seVolume
     {
-        get
-        {
-            return seVolume;
-        }
+        get => _seVolume;
         set
         {
-            seVolume = value;
+            _seVolume = value;
             if (value <= 0.0f)
             {
                 value = 0.0001f;
@@ -82,16 +79,16 @@ public class SeManager : MonoBehaviour
         audioSource.Play();
     }
 
-    public void PlaySe(string name, float volume = 1.0f, float pitch = 1.0f)
+    public void PlaySe(string seName, float volume = 1.0f, float pitch = 1.0f)
     {
-        var soundData = soundDatas.FirstOrDefault(t => t.name == name);
+        var soundData = soundDatas.FirstOrDefault(t => t.name == seName);
         var audioSource = GetUnusedAudioSource();
         if (soundData == null)
         {
-            Debug.LogWarning("指定された名前のSEが存在しません。: " + name);
+            Debug.LogWarning("指定された名前のSEが存在しません。: " + seName);
             return;
         }
-        if (audioSource == null)
+        if (!audioSource)
         {
             Debug.LogWarning("再生可能なAudioSourceがありません。");
             return;
@@ -107,7 +104,7 @@ public class SeManager : MonoBehaviour
 
     private void Start()
     {
-        SeVolume = PlayerPrefs.GetFloat("SeVolume", 1.0f);
-        seMixerGroup.audioMixer.SetFloat("SeVolume", Mathf.Log10(seVolume) * 20);
+        seVolume = PlayerPrefs.GetFloat("SeVolume", 1.0f);
+        seMixerGroup.audioMixer.SetFloat("SeVolume", Mathf.Log10(_seVolume) * 20);
     }
 }

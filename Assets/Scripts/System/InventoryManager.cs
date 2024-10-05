@@ -15,19 +15,20 @@ public class InventoryManager : MonoBehaviour
     private BallDataList allBallDataList;
     [SerializeField]
     private GameObject ballBasePrefab;
-    private int inventorySize = 6;
-    private List<float> sizes = new List<float> { 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
-    private List<float> probabilities = new List<float> { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f };
+
+    private const int INVENTORY_SIZE = 6;
+    private readonly List<float> sizes = new List<float> { 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
+    private readonly List<float> probabilities = new List<float> { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f };
 
     // ボールを入れ替える
     public void SetBall(BallData data, int level)
     {
-        if (level <= 0 || level > inventorySize) return;
+        if (level is <= 0 or > INVENTORY_SIZE) return;
         var old = inventory[level - 1];
         var ball = CreateBallInstanceFromBallData(data, level);
         ball.transform.position = inventoryPosition + new Vector3(level - 1, 0, 0);
         inventory[level - 1] = ball;
-        GameManager.instance.GetComponent<InventoryUI>().SetItem(inventory);
+        GameManager.Instance.GetComponent<InventoryUI>().SetItem(inventory);
         Destroy(old);
     }
 
@@ -39,7 +40,7 @@ public class InventoryManager : MonoBehaviour
     // マージ時に次のボールを生成
     public GameObject GetBallByLevel(int level)
     {
-        if (level > 0 && level <= inventorySize)
+        if (level > 0 && level <= INVENTORY_SIZE)
         {
             var ball = CopyBall(inventory[level - 1]);
             ball.GetComponent<BallBase>().Unfreeze();
@@ -53,8 +54,8 @@ public class InventoryManager : MonoBehaviour
     {
         GameObject ball;
         float total = probabilities.Sum();
-        float r = GameManager.instance.RandomRange(0.0f, total);
-        for (int i = 0; i < inventorySize; i++)
+        float r = GameManager.Instance.RandomRange(0.0f, total);
+        for (int i = 0; i < INVENTORY_SIZE; i++)
         {
             if (r < probabilities[i])
             {
@@ -93,7 +94,7 @@ public class InventoryManager : MonoBehaviour
             return null;
         }
         ball.transform.localScale = Vector3.one * sizes[level - 1];
-        ball.GetComponent<SpriteRenderer>().color = Color.HSVToRGB(GameManager.instance.RandomRange(0.0f, 1.0f), GameManager.instance.RandomRange(0.0f, 1.0f), 1.0f);
+        ball.GetComponent<SpriteRenderer>().color = Color.HSVToRGB(GameManager.Instance.RandomRange(0.0f, 1.0f), GameManager.Instance.RandomRange(0.0f, 1.0f), 1.0f);
         ball.GetComponent<BallBase>().level = level;
         ball.GetComponent<BallBase>().Freeze();
         return ball;
@@ -114,10 +115,12 @@ public class InventoryManager : MonoBehaviour
         EventTrigger.Entry entry = new EventTrigger.Entry();
         entry.eventID = EventTriggerType.PointerEnter;
 
-        entry.callback.AddListener((data) => { GameManager.instance.GetComponent<InventoryUI>().SetCursor(index); });
+        entry.callback.AddListener((data) => { GameManager.Instance.GetComponent<InventoryUI>().SetCursor(index); });
         ball.GetComponent<EventTrigger>().triggers.Add(entry);
-        entry = new EventTrigger.Entry();
-        entry.eventID = EventTriggerType.PointerClick;
+        entry = new EventTrigger.Entry
+        {
+            eventID = EventTriggerType.PointerClick
+        };
         entry.callback.AddListener((data) => { Shop.instance.BuyBall(index); });
         ball.GetComponent<EventTrigger>().triggers.Add(entry);
         inventory.Add(ball);
@@ -136,13 +139,13 @@ public class InventoryManager : MonoBehaviour
 
         // 全てnormalBallで初期化
         var bd = allBallDataList.GetNormalBallData();
-        for (int i = 0; i < inventorySize; i++)
+        for (int i = 0; i < INVENTORY_SIZE; i++)
         {
             var ball = CreateBallInstanceFromBallData(bd, i + 1);
             ball.transform.position = inventoryPosition + new Vector3(i, 0, 0);
             SetEvent(ball, i);
         }
-        GameManager.instance.GetComponent<InventoryUI>().SetItem(inventory);
-        GameManager.instance.GetComponent<InventoryUI>().SetCursor(0);
+        GameManager.Instance.GetComponent<InventoryUI>().SetItem(inventory);
+        GameManager.Instance.GetComponent<InventoryUI>().SetCursor(0);
     }
 }

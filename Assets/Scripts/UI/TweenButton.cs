@@ -57,9 +57,11 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
         this.transform.DOScale(defaultScale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
         // マウスからrayを飛ばして、ボタンの上にマウスがあるかどうかを判定する
-        PointerEventData pointerEventData = new PointerEventData(eventSystem);
-        pointerEventData.position = Input.mousePosition;
-        List<RaycastResult> results = new List<RaycastResult>();
+        var pointerEventData = new PointerEventData(eventSystem)
+        {
+            position = Input.mousePosition
+        };
+        var results = new List<RaycastResult>();
         raycaster.Raycast(pointerEventData, results);
         if (results.Count == 0)
         {
@@ -75,12 +77,11 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private void Awake()
     {
         defaultScale = this.transform.localScale.x;
-        if (tweenByClick)
+        if (!tweenByClick) return;
+        
+        if (this.GetComponent<Button>() != null)
         {
-            if (this.GetComponent<Button>() != null)
-            {
-                this.GetComponent<Button>().onClick.AddListener(OnClick);
-            }
+            this.GetComponent<Button>().onClick.AddListener(OnClick);
         }
     }
 

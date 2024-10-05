@@ -22,7 +22,7 @@ public class BallBase : MonoBehaviour
         { BallRarity.Legendary, new Color(1f, 0.5f, 0f) }
     };
 
-    private static int ball_serial = 0;
+    private static int _ballSerial = 0;
 
     public string ballName = "ふつうのボール";
     public string description = "ふつう";
@@ -31,44 +31,44 @@ public class BallBase : MonoBehaviour
     public float size = 1;
     public int attack = 1;
     public Color color = Color.white;
-    public int serial { get; private set; }
+    public int Serial { get; private set; }
     public bool isDestroyed = false;
-    private bool isFreezed = false;
+    private bool isFrozen = false;
     public void Freeze()
     {
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-        isFreezed = true;
+        isFrozen = true;
     }
 
     public void Unfreeze()
     {
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        isFreezed = false;
+        isFrozen = false;
     }
 
 
     protected virtual void Effect()
     {
         // Effect
-        MergeManager.instance.Attack(attack);
+        MergeManager.Instance.Attack(attack);
     }
 
     protected virtual void Awake()
     {
-        serial = ball_serial++;
+        Serial = _ballSerial++;
         GetComponent<SpriteRenderer>().color = color;
         transform.localScale = new Vector3(size, size, size);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (isDestroyed || isFreezed) return;
+        if (isDestroyed || isFrozen) return;
 
         if (other.gameObject.TryGetComponent(out BallBase b))
         {
             if (b.level == this.level)
             {
-                if (this.serial < b.serial)
+                if (this.Serial < b.Serial)
                 {
                     Effect();
                     b.Effect();
@@ -77,7 +77,7 @@ public class BallBase : MonoBehaviour
                     b.isDestroyed = true;
                     Vector3 center = (this.transform.position + other.transform.position) / 2;
                     Quaternion rotation = Quaternion.Lerp(this.transform.rotation, other.transform.rotation, 0.5f);
-                    MergeManager.instance.SpawnBall(level + 1, center, rotation);
+                    MergeManager.Instance.SpawnBall(level + 1, center, rotation);
 
                     Destroy(gameObject);
                     Destroy(other.gameObject);

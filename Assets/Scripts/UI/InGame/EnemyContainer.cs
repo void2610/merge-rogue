@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using DG.Tweening;
 
@@ -18,10 +19,10 @@ public class EnemyContainer : MonoBehaviour
     private List<EnemyData> bosses = new List<EnemyData>();
     [SerializeField]
     private float alignment = 4;
-    private List<GameObject> currentEnemies = new List<GameObject>();
-    private int enemyNum = 4;
+    private readonly List<GameObject> currentEnemies = new List<GameObject>();
+    private const int ENEMY_NUM = 4;
     private int gainedExp = 0;
-    private List<Vector3> positions = new List<Vector3>();
+    private readonly List<Vector3> positions = new List<Vector3>();
 
     public int GetEnemyCount()
     {
@@ -30,8 +31,8 @@ public class EnemyContainer : MonoBehaviour
 
     public List<EnemyBase> GetAllEnemies()
     {
-        List<EnemyBase> enemyBases = new List<EnemyBase>();
-        foreach (GameObject enemy in currentEnemies)
+        var enemyBases = new List<EnemyBase>();
+        foreach (var enemy in currentEnemies)
         {
             enemyBases.Add(enemy.transform.GetChild(0).GetComponent<EnemyBase>());
         }
@@ -41,13 +42,13 @@ public class EnemyContainer : MonoBehaviour
     public void SpawnBoss()
     {
         float total = 0;
-        foreach (EnemyData enemyData in bosses)
+        foreach (var enemyData in bosses)
         {
             total += enemyData.probability;
         }
-        float randomPoint = GameManager.instance.RandomRange(0.0f, total);
+        var randomPoint = GameManager.Instance.RandomRange(0.0f, total);
 
-        foreach (EnemyData enemyData in bosses)
+        foreach (var enemyData in bosses)
         {
             if (randomPoint < enemyData.probability)
             {
@@ -64,15 +65,11 @@ public class EnemyContainer : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            if (currentEnemies.Count >= enemyNum) return;
-            float total = 0;
-            foreach (EnemyData enemyData in enemies)
-            {
-                total += enemyData.probability;
-            }
-            float randomPoint = GameManager.instance.RandomRange(0.0f, total);
+            if (currentEnemies.Count >= ENEMY_NUM) return;
+            var total = enemies.Sum(enemyData => enemyData.probability);
+            var randomPoint = GameManager.Instance.RandomRange(0.0f, total);
 
-            foreach (EnemyData enemyData in enemies)
+            foreach (var enemyData in enemies)
             {
                 if (randomPoint < enemyData.probability)
                 {
@@ -90,15 +87,11 @@ public class EnemyContainer : MonoBehaviour
     {
         for (int i = 0; i < count; i++)
         {
-            if (currentEnemies.Count >= enemyNum) return;
-            float total = 0;
-            foreach (EnemyData enemyData in enemies)
-            {
-                total += enemyData.probability;
-            }
-            float randomPoint = GameManager.instance.RandomRange(0.0f, total);
+            if (currentEnemies.Count >= ENEMY_NUM) return;
+            var total = enemies.Sum(enemyData => enemyData.probability);
+            var randomPoint = GameManager.Instance.RandomRange(0.0f, total);
 
-            foreach (EnemyData enemyData in enemies)
+            foreach (var enemyData in enemies)
             {
                 if (randomPoint < enemyData.probability)
                 {
@@ -118,29 +111,30 @@ public class EnemyContainer : MonoBehaviour
     public void RemoveEnemy(GameObject enemy)
     {
         gainedExp += enemy.GetComponent<EnemyBase>().exp;
-        GameManager.instance.player.AddGold(enemy.GetComponent<EnemyBase>().gold);
-        GameObject g = enemy.transform.parent.gameObject;
+        GameManager.Instance.player.AddGold(enemy.GetComponent<EnemyBase>().gold);
+        var g = enemy.transform.parent.gameObject;
         currentEnemies.Remove(g);
         enemy.GetComponent<EnemyBase>().OnDisappear();
         if (currentEnemies.Count == 0)
         {
-            Utils.instance.WaitAndInvoke(1.0f, () =>
+            Utils.Instance.WaitAndInvoke(1.0f, () =>
             {
-                GameManager.instance.player.AddExp(gainedExp);
-                GameManager.instance.NextStage();
+                GameManager.Instance.player.AddExp(gainedExp);
+                GameManager.Instance.NextStage();
                 gainedExp = 0;
             });
         }
     }
 
-    void Awake()
+    public void Awake()
     {
         positions.Add(this.transform.position + new Vector3(-alignment * 2, 0, 0));
         positions.Add(this.transform.position + new Vector3(-alignment, 0, 0));
         positions.Add(this.transform.position);
         positions.Add(this.transform.position + new Vector3(alignment, 0, 0));
     }
-    void Update()
+
+    public void Update()
     {
         // エディタだけ
         if (!Application.isEditor) return;

@@ -22,7 +22,7 @@ public class TitleMenu : MonoBehaviour
 
     public void StartGame()
     {
-        SeManager.instance.PlaySe("button");
+        SeManager.Instance.PlaySe("button");
         fadeImage.color = new Color(0, 0, 0, 0);
         fadeImage.DOFade(1.0f, 1.0f).OnComplete(() =>
         {
@@ -65,7 +65,7 @@ public class TitleMenu : MonoBehaviour
     public void PlayButtonSe()
     {
         if (Time.time > 0.5f)
-            SeManager.instance.PlaySe("button");
+            SeManager.Instance.PlaySe("button");
     }
 
     private void InitPlayerPrefs()
@@ -101,12 +101,12 @@ public class TitleMenu : MonoBehaviour
 
         bgmSlider.onValueChanged.AddListener((value) =>
         {
-            BgmManager.instance.BgmVolume = value;
+            BgmManager.Instance.BgmVolume = value;
         });
 
         seSlider.onValueChanged.AddListener((value) =>
         {
-            SeManager.instance.SeVolume = value;
+            SeManager.Instance.seVolume = value;
         });
 
         var trigger = seSlider.gameObject.AddComponent<EventTrigger>();
@@ -114,7 +114,7 @@ public class TitleMenu : MonoBehaviour
         entry.eventID = EventTriggerType.PointerUp;
         entry.callback.AddListener(new UnityEngine.Events.UnityAction<BaseEventData>((data) =>
         {
-            SeManager.instance.PlaySe("button");
+            SeManager.Instance.PlaySe("button");
         }));
         trigger.triggers.Add(entry);
 

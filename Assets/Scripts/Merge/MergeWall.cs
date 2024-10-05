@@ -10,22 +10,22 @@ public class MergeWall : MonoBehaviour
     [SerializeField]
     private GameObject floor;
 
-    public float wallWidth { get; private set; } = 2.0f;
+    public float WallWidth { get; private set; } = 2.0f;
     private float defaultY = 0.0f;
 
     public void SetWallWidth(float width)
     {
-        wallWidth = width;
-        leftWall.transform.DOMoveX(-wallWidth / 2, 0.5f);
-        rightWall.transform.DOMoveX(wallWidth / 2, 0.5f);
-        floor.transform.DOScaleX(wallWidth, 0.5f);
+        WallWidth = width;
+        leftWall.transform.DOMoveX(-WallWidth / 2, 0.5f);
+        rightWall.transform.DOMoveX(WallWidth / 2, 0.5f);
+        floor.transform.DOScaleX(WallWidth, 0.5f);
     }
 
     private void Awake()
     {
         defaultY = leftWall.transform.position.y;
-        leftWall.transform.position = new Vector3(-wallWidth / 2, defaultY, 0);
-        rightWall.transform.position = new Vector3(wallWidth / 2, defaultY, 0);
-        floor.transform.localScale = new Vector3(wallWidth, 0.4f, 1);
+        leftWall.transform.position = new Vector3(-WallWidth / 2, defaultY, 0);
+        rightWall.transform.position = new Vector3(WallWidth / 2, defaultY, 0);
+        floor.transform.localScale = new Vector3(WallWidth, 0.4f, 1);
     }
 }
