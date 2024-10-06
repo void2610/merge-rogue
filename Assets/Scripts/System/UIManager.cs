@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -15,15 +16,7 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Image fadeImage;
     [SerializeField]
-    private CanvasGroup pauseMenu;
-    [SerializeField]
-    private CanvasGroup gameOver;
-    [SerializeField]
-    private CanvasGroup clear;
-    [SerializeField]
-    private CanvasGroup levelUpOptions;
-    [SerializeField]
-    private CanvasGroup shopOptions;
+    private List<CanvasGroup> canvasGroups;
     [SerializeField]
     private TextMeshProUGUI coinText;
     [SerializeField]
@@ -40,88 +33,16 @@ public class UIManager : MonoBehaviour
     public int remainingLevelUps;
     // private Player player => GameManager.Instance.player;
 
-    public void EnablePauseMenu(bool e)
+    public void EnableCanvasGroup(string canvasName, bool e)
     {
-        if (e)
-        {
-            pauseMenu.alpha = 1;
-            pauseMenu.interactable = true;
-            pauseMenu.blocksRaycasts = true;
-            Time.timeScale = 0;
-        }
-        else
-        {
-            pauseMenu.alpha = 0;
-            pauseMenu.interactable = false;
-            pauseMenu.blocksRaycasts = false;
-            Time.timeScale = 1;
-        }
+        var canvasGroup = canvasGroups.Find(c => c.name == canvasName);
+        if (canvasGroup == null) return;
+        
+        canvasGroup.alpha = e ? 1 : 0;
+        canvasGroup.interactable = e;
+        canvasGroup.blocksRaycasts = e;
     }
-
-    public void EnableGameOver(bool e)
-    {
-        if (e)
-        {
-            gameOver.alpha = 1;
-            gameOver.interactable = true;
-            gameOver.blocksRaycasts = true;
-        }
-        else
-        {
-            gameOver.alpha = 0;
-            gameOver.interactable = false;
-            gameOver.blocksRaycasts = false;
-        }
-    }
-
-    private void EnableClear(bool e)
-    {
-        if (e)
-        {
-            clear.alpha = 1;
-            clear.interactable = true;
-            clear.blocksRaycasts = true;
-        }
-        else
-        {
-            clear.alpha = 0;
-            clear.interactable = false;
-            clear.blocksRaycasts = false;
-        }
-    }
-
-    public void EnableLevelUpOptions(bool e)
-    {
-        if (e)
-        {
-            levelUpOptions.alpha = 1;
-            levelUpOptions.interactable = true;
-            levelUpOptions.blocksRaycasts = true;
-        }
-        else
-        {
-            levelUpOptions.alpha = 0;
-            levelUpOptions.interactable = false;
-            levelUpOptions.blocksRaycasts = false;
-        }
-    }
-
-    public void EnableShopOptions(bool e)
-    {
-        if (e)
-        {
-            shopOptions.alpha = 1;
-            shopOptions.interactable = true;
-            shopOptions.blocksRaycasts = true;
-        }
-        else
-        {
-            shopOptions.alpha = 0;
-            shopOptions.interactable = false;
-            shopOptions.blocksRaycasts = false;
-        }
-    }
-
+    
     private void UpdateCoinText(int amount)
     {
         coinText.text = "coin: " + amount.ToString();
@@ -146,21 +67,22 @@ public class UIManager : MonoBehaviour
     public void OnClickShopExit()
     {
         SeManager.Instance.PlaySe("button");
-        EnableShopOptions(false);
-        Time.timeScale = 1;
+        EnableCanvasGroup("Shop", false);
         GameManager.Instance.ChangeState(GameManager.GameState.StageMoving);
     }
 
     public void OnClickPause()
     {
         SeManager.Instance.PlaySe("button");
-        EnablePauseMenu(true);
+        Time.timeScale = 0;
+        EnableCanvasGroup("Pause", true);
     }
 
     public void OnClickResume()
     {
         SeManager.Instance.PlaySe("button");
-        EnablePauseMenu(false);
+        Time.timeScale = 1;
+        EnableCanvasGroup("Pause", false);
     }
 
     public void OnClickTitle()
@@ -182,11 +104,11 @@ public class UIManager : MonoBehaviour
         bgmSlider.value = PlayerPrefs.GetFloat("BgmVolume", 1.0f);
         seSlider.value = PlayerPrefs.GetFloat("SeVolume", 1.0f);
 
-        EnablePauseMenu(false);
-        EnableGameOver(false);
-        EnableClear(false);
-        EnableLevelUpOptions(false);
-        EnableShopOptions(false);
+        EnableCanvasGroup("Pause", false);
+        EnableCanvasGroup("Shop", false);
+        EnableCanvasGroup("GameOver", false);
+        EnableCanvasGroup("LevelUp", false);
+        EnableCanvasGroup("Clear", false);
     }
 
     private void Start()

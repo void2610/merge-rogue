@@ -1320,7 +1320,7 @@ GameObject:
   - component: {fileID: 403790022}
   - component: {fileID: 403790023}
   m_Layer: 0
-  m_Name: PauseMenu
+  m_Name: Pause
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2278,11 +2278,12 @@ MonoBehaviour:
   bgmSlider: {fileID: 1144609053041968782}
   seSlider: {fileID: 9088715935136075098}
   fadeImage: {fileID: 1749989334}
-  pauseMenu: {fileID: 403790023}
-  gameOver: {fileID: 1477400322}
-  clear: {fileID: 499408602}
-  levelUpOptions: {fileID: 2045017044}
-  shopOptions: {fileID: 1941433901}
+  canvasGroups:
+  - {fileID: 403790023}
+  - {fileID: 2045017044}
+  - {fileID: 499408602}
+  - {fileID: 1477400322}
+  - {fileID: 1941433901}
   coinText: {fileID: 234176055}
   stageText: {fileID: 509686115}
   expText: {fileID: 931073615}
@@ -2931,8 +2932,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 567445622}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: EnablePauseMenu
-        m_Mode: 6
+        m_MethodName: OnClickResume
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6695,8 +6696,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 567445622}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: EnablePauseMenu
-        m_Mode: 6
+        m_MethodName: OnClickResume
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -7884,8 +7885,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: add89527f36d04d8eaaeaf8f3f0e59a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
-  maxHealth: 100
   attack: 1.5
   levelUpExp: 0a000000140000002800000050000000a0000000400100008002000000050000000a000000140000
   canvas: {fileID: 380910485}

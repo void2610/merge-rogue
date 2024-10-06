@@ -19,7 +19,7 @@ public class MergeManager : MonoBehaviour
 
     public float moveSpeed = 1.0f;
     public float coolTime = 1.0f;
-    public float attakMagnification = 1.0f;
+    public float attackMagnification = 1.0f;
     private float limit = -2.5f;
 
 
@@ -46,7 +46,7 @@ public class MergeManager : MonoBehaviour
             moveSpeed = moveSpeeds[++moveSpeedLevel];
         }
 
-        GameManager.Instance.uiManager.EnableLevelUpOptions(false);
+        GameManager.Instance.uiManager.EnableCanvasGroup("LevelUp", false);
         Time.timeScale = 1.0f;
     }
 
@@ -56,9 +56,7 @@ public class MergeManager : MonoBehaviour
         {
             wall.SetWallWidth(wallWidths[++wallWidthLevel]);
         }
-
-        GameManager.Instance.uiManager.EnableLevelUpOptions(false);
-        Time.timeScale = 1.0f;
+        EndLevelUp();
     }
 
     public void LevelUpCoolTime()
@@ -67,18 +65,25 @@ public class MergeManager : MonoBehaviour
         {
             coolTime = coolTimes[++coolTimeLevel];
         }
-
-        GameManager.Instance.uiManager.EnableLevelUpOptions(false);
-        Time.timeScale = 1.0f;
+        EndLevelUp();
     }
 
     public void LevelUpAttack()
     {
         if (attackLevel < attacks.Count - 1)
         {
-            attakMagnification = attacks[++attackLevel];
+            attackMagnification = attacks[++attackLevel];
         }
-        GameManager.Instance.uiManager.EnableLevelUpOptions(false);
+        EndLevelUp();
+    }
+    
+    private void EndLevelUp()
+    {
+        GameManager.Instance.uiManager.remainingLevelUps--;
+        if (GameManager.Instance.uiManager.remainingLevelUps > 0) return;
+        
+        GameManager.Instance.uiManager.EnableCanvasGroup("LevelUp", false);
+        GameManager.Instance.ChangeState(GameManager.GameState.StageMoving);
         Time.timeScale = 1.0f;
     }
 
@@ -99,7 +104,7 @@ public class MergeManager : MonoBehaviour
     {
         foreach (var e in GameManager.Instance.enemyContainer.GetAllEnemies())
         {
-            var a = (int)(atk * attakMagnification);
+            var a = (int)(atk * attackMagnification);
             e.TakeDamage(a); 
         }
 

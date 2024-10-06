@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
         BattlePreparation,
         Battle,
         BattleResult,
+        LevelUp,
         StageMoving,
         Shop,
         GameOver,
@@ -75,7 +76,7 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         ChangeState(GameState.GameOver);
-        uiManager.EnableGameOver(true);
+        uiManager.EnableCanvasGroup("GameOver", true);
     }
 
     public void ChangeState(GameState newState)
@@ -104,7 +105,7 @@ public class GameManager : MonoBehaviour
             case GameState.Shop:
                 Shop.Instance.OpenShop();
                 Time.timeScale = 0;
-                uiManager.EnableShopOptions(true);
+                uiManager.EnableCanvasGroup("Shop", true);
                 break;
         }
     }
@@ -122,12 +123,12 @@ public class GameManager : MonoBehaviour
             if (isPaused)
             {
                 isPaused = false;
-                uiManager.EnablePauseMenu(false);
+                uiManager.EnableCanvasGroup("Pause", false);
             }
             else
             {
                 isPaused = true;
-                uiManager.EnablePauseMenu(true);
+                uiManager.EnableCanvasGroup("Pause", true);
             }
         }
         switch (state)

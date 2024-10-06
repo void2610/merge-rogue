@@ -104,7 +104,8 @@ public class Player : MonoBehaviour
         SeManager.Instance.PlaySe("levelUp");
         Time.timeScale = 0.0f;
         GameManager.Instance.uiManager.remainingLevelUps++;
-        GameManager.Instance.uiManager.EnableLevelUpOptions(true);
+        GameManager.Instance.uiManager.EnableCanvasGroup("LevelUp", true);
+        GameManager.Instance.ChangeState(GameManager.GameState.LevelUp);
 
         if (exp.Value >= levelUpExp[level - 1])
         {
