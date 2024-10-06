@@ -1,41 +1,38 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.EventSystems;
 using DG.Tweening;
 
 public class Shop : MonoBehaviour
 {
-    public enum ShopState
+    private enum ShopState
     {
         NotSelected,
         Selected,
         Closed
     }
-    public static Shop instance;
+    public static Shop Instance;
 
     [SerializeField]
     private BallDataList allBallDataList;
     private List<BallData> currentItems = new List<BallData>();
-    private int itemNum = 3;
+    private const int ITEM_NUM = 3;
     private Transform itemContainer => this.transform.Find("Items");
-    private List<Vector3> positions = new List<Vector3>();
     private ShopState state = ShopState.Closed;
     private int selectedItem = -1;
 
     public void OpenShop(int count = 3)
     {
-        if (count > itemNum) return;
+        if (count > ITEM_NUM) return;
         state = ShopState.NotSelected;
         currentItems.Clear();
-        currentItems.Add(allBallDataList.list[0]);
-        SetEvent(itemContainer.GetChild(0).gameObject, allBallDataList.list[0], 0);
         currentItems.Add(allBallDataList.list[1]);
-        SetEvent(itemContainer.GetChild(1).gameObject, allBallDataList.list[1], 1);
+        SetEvent(itemContainer.GetChild(0).gameObject, currentItems[0], 0);
         currentItems.Add(allBallDataList.list[2]);
-        SetEvent(itemContainer.GetChild(2).gameObject, allBallDataList.list[2], 2);
+        SetEvent(itemContainer.GetChild(1).gameObject, currentItems[1], 1);
+        currentItems.Add(allBallDataList.list[3]);
+        SetEvent(itemContainer.GetChild(2).gameObject, currentItems[2], 2);
         // TODO: アイテムをランダムに選択
     }
 
@@ -43,7 +40,7 @@ public class Shop : MonoBehaviour
     {
         state = ShopState.Closed;
         selectedItem = -1;
-        for (int i = 0; i < itemNum; i++)
+        for (int i = 0; i < ITEM_NUM; i++)
         {
             itemContainer.GetChild(i).GetComponent<Image>().color = new Color(1, 1, 1, 1);
             itemContainer.GetChild(i).DOScale(1, 0.2f).SetUpdate(true);
@@ -77,19 +74,19 @@ public class Shop : MonoBehaviour
 
     private void SetEvent(GameObject g, BallData ball, int index)
     {
-        TextMeshProUGUI name = g.transform.Find("Text").GetComponent<TextMeshProUGUI>();
-        name.text = ball.name;
-        TextMeshProUGUI price = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
+        var nameText = g.transform.Find("Text").GetComponent<TextMeshProUGUI>();
+        nameText.text = ball.name;
+        var price = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
         price.text = ball.price.ToString();
-        Image image = g.transform.Find("BallIcon").GetComponent<Image>();
+        var image = g.transform.Find("BallIcon").GetComponent<Image>();
         image.sprite = ball.sprite;
-        Button button = g.GetComponent<Button>();
-        if (button != null)
+        var button = g.GetComponent<Button>();
+        if (button)
         {
             button.onClick.AddListener(() =>
             {
                 var item = ball;
-                if (item == null) return;
+                if (!item) return;
                 if (GameManager.Instance.coin >= item.price)
                 {
                     state = ShopState.Selected;
@@ -108,26 +105,21 @@ public class Shop : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {
             Destroy(this.gameObject);
-            return;
         }
-        float offset = 220;
-        positions.Add(this.transform.position + new Vector3(-offset, 0, 0));
-        positions.Add(this.transform.position);
-        positions.Add(this.transform.position + new Vector3(offset, 0, 0));
     }
 
     private void Update()
     {
         if (state == ShopState.NotSelected) return;
 
-        for (int i = 0; i < itemNum; i++)
+        for (int i = 0; i < ITEM_NUM; i++)
         {
             if (i == selectedItem)
             {
@@ -144,18 +136,3 @@ public class Shop : MonoBehaviour
         }
     }
 }
-// var item = ball;
-// if (item == null) return;
-// if (GameManager.instance.coin >= item.price)
-// {
-//     Debug.Log(item.name + "を購入しました");
-//     GameManager.instance.player.AddGold(-item.price);
-//     // TODO: Add item to inventory
-//     Destroy(g);
-//     currentItems.Remove(item);
-//     SeManager.instance.PlaySe("coin");
-// }
-// else
-// {
-//     SeManager.instance.PlaySe("error");
-// }

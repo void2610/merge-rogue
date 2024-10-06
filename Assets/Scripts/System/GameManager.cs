@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
         switch (state)
         {
             case GameState.Shop:
-                Shop.instance.CloseShop();
+                Shop.Instance.CloseShop();
                 this.GetComponent<InventoryUI>().EnableCursor(false);
                 Time.timeScale = 1;
                 break;
@@ -108,7 +108,7 @@ public class GameManager : MonoBehaviour
                 });
                 break;
             case GameState.Shop:
-                Shop.instance.OpenShop();
+                Shop.Instance.OpenShop();
                 Time.timeScale = 0;
                 uiManager.EnableShopOptions(true);
                 break;

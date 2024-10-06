@@ -75,12 +75,14 @@ public class InventoryManager : MonoBehaviour
     {
         GameObject ball = Instantiate(ballBasePrefab, this.transform);
         ball.name = $"{data.name} (Level {level})";
+        BallBase ballBase;
         if (!string.IsNullOrEmpty(data.className))
         {
             System.Type type = System.Type.GetType(data.className);
             if (type != null && typeof(MonoBehaviour).IsAssignableFrom(type))
             {
                 ball.AddComponent(type);
+                ballBase = ball.GetComponent<BallBase>();
             }
             else
             {
@@ -93,7 +95,7 @@ public class InventoryManager : MonoBehaviour
             Debug.LogError("behaviourClassNameが指定されていません。");
             return null;
         }
-        ball.transform.localScale = Vector3.one * sizes[level - 1];
+        ball.transform.localScale = Vector3.one * sizes[level - 1] * ballBase.size;
         ball.GetComponent<SpriteRenderer>().color = Color.HSVToRGB(GameManager.Instance.RandomRange(0.0f, 1.0f), GameManager.Instance.RandomRange(0.0f, 1.0f), 1.0f);
         ball.GetComponent<BallBase>().level = level;
         ball.GetComponent<BallBase>().Freeze();
@@ -112,16 +114,18 @@ public class InventoryManager : MonoBehaviour
     private void SetEvent(GameObject ball, int index)
     {
         ball.AddComponent<EventTrigger>().triggers = new List<EventTrigger.Entry>();
-        EventTrigger.Entry entry = new EventTrigger.Entry();
-        entry.eventID = EventTriggerType.PointerEnter;
+        var entry = new EventTrigger.Entry
+        {
+            eventID = EventTriggerType.PointerEnter
+        };
 
-        entry.callback.AddListener((data) => { GameManager.Instance.GetComponent<InventoryUI>().SetCursor(index); });
+        entry.callback.AddListener(_ => { GameManager.Instance.GetComponent<InventoryUI>().SetCursor(index); });
         ball.GetComponent<EventTrigger>().triggers.Add(entry);
         entry = new EventTrigger.Entry
         {
             eventID = EventTriggerType.PointerClick
         };
-        entry.callback.AddListener((data) => { Shop.instance.BuyBall(index); });
+        entry.callback.AddListener(_ => { Shop.Instance.BuyBall(index); });
         ball.GetComponent<EventTrigger>().triggers.Add(entry);
         inventory.Add(ball);
     }

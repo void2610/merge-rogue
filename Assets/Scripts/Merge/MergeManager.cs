@@ -1,7 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq;
-using DG.Tweening;
 
 public class MergeManager : MonoBehaviour
 {
@@ -13,7 +11,7 @@ public class MergeManager : MonoBehaviour
     }
 
     public static MergeManager Instance;
-    private static readonly int Ratio = Shader.PropertyToID("_Ratio");
+    private static readonly int ratio = Shader.PropertyToID("_Ratio");
 
     [SerializeField] private MergeWall wall;
     [SerializeField] private GameObject mergeParticle;
@@ -21,24 +19,25 @@ public class MergeManager : MonoBehaviour
 
     public float moveSpeed = 1.0f;
     public float coolTime = 1.0f;
+    public float attakMagnification = 1.0f;
     private float limit = -2.5f;
 
 
     public GameObject currentBall;
     public GameObject nextBall;
     private GameObject ballContainer;
-    private float lastFallTime = 0;
+    private float lastFallTime;
 
-    private readonly List<float> moveSpeeds = new List<float> { 0.5f, 1.0f, 1.5f, 2.0f, 2.5f };
-    private int moveSpeedLevel = 0;
-    private readonly List<float> wallWidths = new List<float> { 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f };
-    private int wallWidthLevel = 0;
-    private readonly List<float> coolTimes = new List<float> { 3.0f, 2.5f, 2.0f, 1.5f, 1.25f, 1.0f, 0.75f, 0.5f, 0.25f, 0.1f };
-    private int coolTimeLevel = 0;
-    private List<float> attacks = new List<float> { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f };
-    // private int attackLevel = 0;
-    private Vector3 currentBallPosition = new Vector3(0, 1.0f, 0);
-    private readonly Vector3 nextBallPosition = new Vector3(-2, 1, 0);
+    private readonly List<float> moveSpeeds = new() { 0.5f, 1.0f, 1.5f, 2.0f, 2.5f };
+    private int moveSpeedLevel;
+    private readonly List<float> wallWidths = new() { 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f };
+    private int wallWidthLevel;
+    private readonly List<float> coolTimes = new() { 3.0f, 2.5f, 2.0f, 1.5f, 1.25f, 1.0f, 0.75f, 0.5f, 0.25f, 0.1f };
+    private int coolTimeLevel;
+    private readonly List<float> attacks = new() { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f };
+    private int attackLevel;
+    private Vector3 currentBallPosition = new(0, 1.0f, 0);
+    private readonly Vector3 nextBallPosition = new(-2, 1, 0);
 
     public void LevelUpMoveSpeed()
     {
@@ -75,11 +74,10 @@ public class MergeManager : MonoBehaviour
 
     public void LevelUpAttack()
     {
-        // TODO
-        // if (attackLevel < attacks.Count - 1)
-        // {
-        //     ballAttacks[attackLevel] = attacks[++attackLevel];
-        // }
+        if (attackLevel < attacks.Count - 1)
+        {
+            attakMagnification = attacks[++attackLevel];
+        }
         GameManager.Instance.uiManager.EnableLevelUpOptions(false);
         Time.timeScale = 1.0f;
     }
@@ -101,11 +99,12 @@ public class MergeManager : MonoBehaviour
         Instantiate(mergeParticle, p, Quaternion.identity);
     }
 
-    public void Attack(int atk)
+    public void Attack(float atk)
     {
         foreach (var e in GameManager.Instance.enemyContainer.GetAllEnemies())
         {
-            e.TakeDamage(atk);
+            var a = (int)(atk * attakMagnification);
+            e.TakeDamage(a); 
         }
 
         Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
@@ -150,7 +149,7 @@ public class MergeManager : MonoBehaviour
         limit = wall.WallWidth / 2 + 0.05f;
         float size = currentBall.transform.localScale.x + 0.5f;
         float r = Mathf.Min(1, (Time.time - lastFallTime) / coolTime);
-        fallAnchor.GetComponent<SpriteRenderer>().material.SetFloat(Ratio, r);
+        fallAnchor.GetComponent<SpriteRenderer>().material.SetFloat(ratio, r);
         fallAnchor.transform.localScale = currentBall.transform.localScale * 1.01f;
 
         if (Input.GetKey(KeyCode.A) && currentBallPosition.x - size / 2 > -limit)
