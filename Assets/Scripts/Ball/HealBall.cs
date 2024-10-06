@@ -14,6 +14,7 @@ public class HealBall : BallBase
 
     protected override void Effect()
     {
+        base.Effect();
         GameManager.Instance.player.Heal(this.level);
     }
 }

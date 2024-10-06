@@ -89,14 +89,14 @@ public class UIManager : MonoBehaviour
     {
         SeManager.Instance.PlaySe("button");
         fadeImage.color = new Color(0, 0, 0, 0);
-        fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("TitleScene"));
+        fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("TitleScene")).SetUpdate(true);
     }
 
     public void OnClickRetry()
     {
         SeManager.Instance.PlaySe("button");
         fadeImage.color = new Color(0, 0, 0, 0);
-        fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("MainScene"));
+        fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("MainScene")).SetUpdate(true);
     }
 
     private void Awake()

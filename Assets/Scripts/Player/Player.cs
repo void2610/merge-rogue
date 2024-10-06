@@ -8,8 +8,8 @@ public class Player : MonoBehaviour
 {
     public float attack = 1.5f;
     public readonly ReactiveProperty<int> exp = new(0);
-    public readonly ReactiveProperty<int> health = new(10);
-    public readonly ReactiveProperty<int> maxHealth = new(10);
+    public readonly ReactiveProperty<int> health = new(50);
+    public readonly ReactiveProperty<int> maxHealth = new(50);
     public List<int> levelUpExp = new() { 10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120 };
     public int maxExp { get; private set; } = 10;
     public int level { get; private set; } = 1;

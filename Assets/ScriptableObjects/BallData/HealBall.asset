@@ -16,4 +16,4 @@ MonoBehaviour:
   className: HealBall
   sprite: {fileID: 21300000, guid: 947200ac049fe40379a5fbab7cd014e5, type: 3}
   rarity: 1
-  price: 100
+  price: 50

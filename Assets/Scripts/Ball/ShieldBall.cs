@@ -14,7 +14,7 @@ public class ShieldBall : BallBase
 
     protected override void Effect()
     {
+        base.Effect();
         // TODO: シールド
-        // GameManager.instance.player.Heal(this.level);
     }
 }

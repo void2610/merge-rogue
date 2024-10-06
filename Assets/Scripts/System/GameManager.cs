@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using R3;
+using DG.Tweening;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,7 +22,7 @@ public class GameManager : MonoBehaviour
                 Debug.Log("Seed: " + seed);
             }
             random = new System.Random(seed);
-            DG.Tweening.DOTween.SetTweensCapacity(tweenersCapacity: 200, sequencesCapacity: 200);
+            DOTween.SetTweensCapacity(tweenersCapacity: 800, sequencesCapacity: 800);
         }
         else
         {
