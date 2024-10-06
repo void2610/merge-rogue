@@ -85,12 +85,7 @@ public class MergeManager : MonoBehaviour
     public void SpawnBall(int level, Vector3 p, Quaternion q)
     {
         var ball = InventoryManager.instance.GetBallByLevel(level);
-        if (ball == null)
-        {
-            if(InventoryManager.instance.GetInventory().Count != level)
-                Debug.LogError("生成すべきボールが見つかりません");
-            return;
-        }
+        if (ball == null) return;
 
         ball.transform.position = p;
         ball.transform.rotation = q;

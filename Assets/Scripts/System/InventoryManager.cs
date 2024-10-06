@@ -40,13 +40,15 @@ public class InventoryManager : MonoBehaviour
     // マージ時に次のボールを生成
     public GameObject GetBallByLevel(int level)
     {
-        if (level > 0 && level <= INVENTORY_SIZE)
+        if(level == INVENTORY_SIZE) return null;
+        if (level is <= 0 or > INVENTORY_SIZE)
         {
-            var ball = CopyBall(inventory[level - 1]);
-            ball.GetComponent<BallBase>().Unfreeze();
-            return ball;
+            Debug.LogError("指定されたレベルのボールは存在しません。");
+            return null;
         }
-        return null;
+        var ball = CopyBall(inventory[level - 1]);
+        ball.GetComponent<BallBase>().Unfreeze();
+        return ball;
     }
 
     // 落とすボールを生成してMergeManagerに渡す
