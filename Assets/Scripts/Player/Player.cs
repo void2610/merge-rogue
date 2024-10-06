@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 
@@ -10,12 +9,9 @@ public class Player : MonoBehaviour
     public int health = 100;
     public int maxHealth = 100;
     public float attack = 1.5f;
-    public int gold = 0;
-    public int exp = 0;
+    public int exp;
     public List<int> levelUpExp = new List<int> { 10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120 };
     public int level = 1;
-    public int maxSave = 5;
-    public int save = 0;
 
     [SerializeField]
     private GameObject canvas;
@@ -79,16 +75,6 @@ public class Player : MonoBehaviour
         UpdateStatusDisplay();
     }
 
-    public void AddGold(int amount)
-    {
-        gold += amount;
-        if (gold < 0)
-        {
-            gold = 0;
-        }
-        GameManager.Instance.uiManager.UpdateCoinText(gold);
-    }
-
     private void ShowDamage(int damage)
     {
         float r = UnityEngine.Random.Range(-0.5f, 0.5f);
@@ -147,7 +133,5 @@ public class Player : MonoBehaviour
     {
         health = maxHealth;
         UpdateStatusDisplay();
-
-        GameManager.Instance.uiManager.UpdateCoinText(gold);
     }
 }

@@ -7366,6 +7366,7 @@ MonoBehaviour:
   fallAnchor: {fileID: 632287031}
   moveSpeed: 1
   coolTime: 0.5
+  attakMagnification: 1
   currentBall: {fileID: 0}
   nextBall: {fileID: 0}
 --- !u!1 &1852640721
@@ -7886,12 +7887,9 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   attack: 1.5
-  gold: 0
   exp: 0
   levelUpExp: 0a000000140000002800000050000000a0000000400100008002000000050000000a000000140000
   level: 1
-  maxSave: 5
-  save: 0
   canvas: {fileID: 380910485}
   damageTextPrefab: {fileID: 7173658914585924005, guid: 4fa946622e4bd4de3858712a3e083b3c, type: 3}
 --- !u!1 &1997731558

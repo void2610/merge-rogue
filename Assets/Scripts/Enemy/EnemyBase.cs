@@ -23,7 +23,7 @@ public class EnemyBase : MonoBehaviour
     public int hMin = 1;
     public int attack = 2;
     public int defense = 1;
-    public int gold = 0;
+    public int coin = 0;
     public int exp = 0;
 
     [SerializeField]
@@ -90,7 +90,7 @@ public class EnemyBase : MonoBehaviour
 
     public void OnDisappear()
     {
-        for (int i = 0; i < gold; i++)
+        for (int i = 0; i < coin; i++)
         {
             Utils.Instance.WaitAndInvoke(i * 0.1f, () =>
             {
