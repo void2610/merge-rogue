@@ -97,6 +97,7 @@ public class InventoryManager : MonoBehaviour
         }
         ball.transform.localScale = Vector3.one * sizes[level - 1] * ballBase.size;
         ball.GetComponent<SpriteRenderer>().color = Color.HSVToRGB(GameManager.Instance.RandomRange(0.0f, 1.0f), GameManager.Instance.RandomRange(0.0f, 1.0f), 1.0f);
+        ball.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = data.sprite;
         ball.GetComponent<BallBase>().level = level;
         ball.GetComponent<BallBase>().Freeze();
         return ball;

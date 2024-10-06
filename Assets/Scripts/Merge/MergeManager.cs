@@ -87,7 +87,8 @@ public class MergeManager : MonoBehaviour
         var ball = InventoryManager.instance.GetBallByLevel(level);
         if (ball == null)
         {
-            Debug.LogError("生成すべきボールが見つかりません");
+            if(InventoryManager.instance.GetInventory().Count != level)
+                Debug.LogError("生成すべきボールが見つかりません");
             return;
         }
 
