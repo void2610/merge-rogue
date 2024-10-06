@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using TMPro;
 using DG.Tweening;
+using R3;
 
 public class UIManager : MonoBehaviour
 {
@@ -73,7 +74,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void EnableClear(bool e)
+    private void EnableClear(bool e)
     {
         if (e)
         {
@@ -121,22 +122,22 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void UpdateCoinText(int amount)
+    private void UpdateCoinText(int amount)
     {
         coinText.text = "coin: " + amount.ToString();
     }
 
-    public void UpdateExpText(int now, int max)
+    private void UpdateExpText(int now, int max)
     {
         expText.text = "exp: " + now + "/" + max;
     }
 
-    public void UpdateLevelText(int level)
+    private void UpdateLevelText(int level)
     {
         levelText.text = "level: " + level;
     }
 
-    public void UpdateStageText(int stage)
+    private void UpdateStageText(int stage)
     {
         int s = Mathf.Max(1, stage);
         stageText.text = "stage: " + s;
@@ -176,7 +177,7 @@ public class UIManager : MonoBehaviour
         fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("MainScene"));
     }
 
-    void Awake()
+    private void Awake()
     {
         bgmSlider.value = PlayerPrefs.GetFloat("BgmVolume", 1.0f);
         seSlider.value = PlayerPrefs.GetFloat("SeVolume", 1.0f);
@@ -190,6 +191,24 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        GameManager.Instance.coin.Subscribe(UpdateCoinText).AddTo(this);
+        GameManager.Instance.stageManager.currentStage.Subscribe(UpdateStageText).AddTo(this);
+        GameManager.Instance.player.exp.Subscribe((v) =>
+        {
+            UpdateExpText(v, GameManager.Instance.player.maxExp);
+            UpdateLevelText(GameManager.Instance.player.level);
+        }).AddTo(this);
+        GameManager.Instance.player.health.Subscribe((v) =>
+        {
+            hpSlider.value = v;
+            hpText.text = v + "/" + GameManager.Instance.player.maxHealth;
+        }).AddTo(this);
+        GameManager.Instance.player.maxHealth.Subscribe((v) =>
+        {
+            hpSlider.maxValue = v;
+            hpText.text = GameManager.Instance.player.health.Value + "/" + v;
+        }).AddTo(this);
+        
         bgmSlider.onValueChanged.AddListener((value) =>
         {
             BgmManager.Instance.BgmVolume = value;

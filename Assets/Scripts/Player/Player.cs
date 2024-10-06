@@ -1,83 +1,67 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
 using DG.Tweening;
+using R3;
 
 public class Player : MonoBehaviour
 {
-    public int health = 100;
-    public int maxHealth = 100;
     public float attack = 1.5f;
-    public int exp;
-    public List<int> levelUpExp = new List<int> { 10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120 };
-    public int level = 1;
-
+    public readonly ReactiveProperty<int> exp = new(0);
+    public readonly ReactiveProperty<int> health = new(10);
+    public readonly ReactiveProperty<int> maxHealth = new(10);
+    public List<int> levelUpExp = new() { 10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120 };
+    public int maxExp { get; private set; } = 10;
+    public int level { get; private set; } = 1;
     [SerializeField]
     private GameObject canvas;
     [SerializeField]
     private GameObject damageTextPrefab;
 
-    private void UpdateStatusDisplay()
-    {
-        Slider s = GameManager.Instance.uiManager.hpSlider;
-        s.maxValue = maxHealth;
-        s.value = health;
-        var t = GameManager.Instance.uiManager.hpText;
-        t.text = health + "/" + maxHealth;
-    
-        GameManager.Instance.uiManager.UpdateExpText(exp, levelUpExp[level - 1]);
-        GameManager.Instance.uiManager.UpdateLevelText(level);
-    }
-
     public void TakeDamage(int damage)
     {
         Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.2f);
         ShowDamage(damage);
-        health -= damage;
-        if (health <= 0)
+        health.Value -= damage;
+        if (health.Value <= 0)
         {
-            health = 0;
+            health.Value = 0;
             GameManager.Instance.GameOver();
         }
-        UpdateStatusDisplay();
     }
 
     public void Heal(int amount)
     {
-        if (health >= maxHealth)
+        if (health.Value >= maxHealth.Value)
         {
             return;
         }
 
-        health += amount;
-        if (health > maxHealth)
+        health.Value += amount;
+        if (health.Value > maxHealth.Value)
         {
-            health = maxHealth;
+            health.Value = maxHealth.Value;
         }
-        UpdateStatusDisplay();
     }
 
     public void HealFromItem(int amount)
     {
-        health += amount;
-        if (health > maxHealth + 5)
+        health.Value += amount;
+        if (health.Value > maxHealth.Value + 5)
         {
-            health = maxHealth + 5;
+            health.Value = maxHealth.Value + 5;
         }
-        UpdateStatusDisplay();
     }
 
     public void AddExp(int amount)
     {
-        exp += amount;
+        exp.Value += amount;
         CheckAndLevelUp();
-        UpdateStatusDisplay();
     }
 
     private void ShowDamage(int damage)
     {
-        float r = UnityEngine.Random.Range(-0.5f, 0.5f);
+        var r = Random.Range(-0.5f, 0.5f);
         var g = Instantiate(damageTextPrefab, this.transform.position + new Vector3(r, 0, 0), Quaternion.identity, this.canvas.transform);
         g.GetComponent<TextMeshProUGUI>().text = damage.ToString();
 
@@ -109,29 +93,29 @@ public class Player : MonoBehaviour
 
     private bool CheckAndLevelUp()
     {
-        if (exp < levelUpExp[level - 1])
+        if (exp.Value < levelUpExp[level - 1])
         {
             return false;
         }
 
-        exp -= levelUpExp[level - 1];
+        exp.Value -= levelUpExp[level - 1];
+        maxExp = levelUpExp[level];
         level++;
         SeManager.Instance.PlaySe("levelUp");
         Time.timeScale = 0.0f;
         GameManager.Instance.uiManager.remainingLevelUps++;
         GameManager.Instance.uiManager.EnableLevelUpOptions(true);
 
-        if (exp >= levelUpExp[level - 1])
+        if (exp.Value >= levelUpExp[level - 1])
         {
             CheckAndLevelUp();
         }
-
+        exp.ForceNotify();
         return true;
     }
 
     private void Start()
     {
-        health = maxHealth;
-        UpdateStatusDisplay();
+        health.Value = maxHealth.Value;
     }
 }

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using DG.Tweening;
+using R3;
 
 public class StageManager : MonoBehaviour
 {
@@ -21,12 +22,12 @@ public class StageManager : MonoBehaviour
     private Material m;
 
     public List<StageType> stageTypes = new List<StageType>();
-    private int currentStage = -1;
+    public readonly ReactiveProperty<int> currentStage = new(-1);
     private int enemyStageCount;
 
     public StageType GetCurrentStageType()
     {
-        return stageTypes[currentStage];
+        return stageTypes[currentStage.Value];
     }
 
     public void NextStage()
@@ -42,14 +43,12 @@ public class StageManager : MonoBehaviour
 
         Utils.Instance.WaitAndInvoke(2.0f, () =>
         {
-            currentStage++;
-            if (currentStage >= stageTypes.Count)
-            {
-                currentStage = 0;
-            }
-            GameManager.Instance.uiManager.UpdateStageText(currentStage + 1);
+            if (currentStage.Value + 1 < stageTypes.Count)
+                currentStage.Value++;
+            else
+                currentStage.Value = 0;
 
-            switch (stageTypes[currentStage])
+            switch (stageTypes[currentStage.Value])
             {
                 case StageType.Enemy:
                     enemyStageCount++;
@@ -104,7 +103,6 @@ public class StageManager : MonoBehaviour
     {
         DecideStage();
         stageTypes[0] = StageType.Shop;
-        GameManager.Instance.uiManager.UpdateStageText(currentStage);
         m.SetTextureOffset(mainTex, new Vector2(0, 0));
     }
 }

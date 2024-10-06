@@ -392,7 +392,7 @@ MonoBehaviour:
   hMin: 1
   attack: 1
   defense: 1
-  gold: 1
+  coin: 1
   exp: 1
   canvas: {fileID: 9209736915883113106}
   damageTextPrefab: {fileID: 7173658914585924005, guid: 4fa946622e4bd4de3858712a3e083b3c, type: 3}

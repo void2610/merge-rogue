@@ -1,6 +1,6 @@
 using System;
 using UnityEngine;
-
+using R3;
 
 public class GameManager : MonoBehaviour
 {
@@ -53,18 +53,12 @@ public class GameManager : MonoBehaviour
     public Canvas mainCanvas;
 
     private System.Random random { get; set; }
-    public int coin { get; private set; }
+    public readonly ReactiveProperty<int> coin = new(0);
     private int seed = 42;
     private bool isPaused;
     public Player player => playerObj.GetComponent<Player>();
     public UIManager uiManager => this.GetComponent<UIManager>();
     public StageManager stageManager => GetComponent<StageManager>();
-
-    public void AddCoin(int value)
-    {
-        coin += value;
-        //uiManager.UpdateCoinText(coin);
-    }
 
     public float RandomRange(float min, float max)
     {
@@ -117,7 +111,7 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        if (Application.isEditor) coin = 1000;
+        if (Application.isEditor) coin.Value += 1000;
         ChangeState(GameState.StageMoving);
     }
 
