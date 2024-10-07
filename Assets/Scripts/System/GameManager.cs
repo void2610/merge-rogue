@@ -138,6 +138,22 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.StageMoving:
                 break;
+            case GameState.BattlePreparation:
+                break;
+            case GameState.BattleResult:
+                break;
+            case GameState.LevelUp:
+                break;
+            case GameState.Shop:
+                break;
+            case GameState.GameOver:
+                break;
+            case GameState.Clear:
+                break;
+            case GameState.Other:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
         }
     }
 }
