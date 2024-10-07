@@ -1,7 +1,5 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
 using DG.Tweening;
 
 public class InventoryUI : MonoBehaviour
@@ -10,7 +8,6 @@ public class InventoryUI : MonoBehaviour
     private GameObject cursor;
     private List<GameObject> items = new List<GameObject>();
     private const float SIZE_COEFFICIENT = 8f;
-    private int cursorIndex = 0;
 
     public void SetItem(List<GameObject> inventory)
     {
@@ -23,7 +20,6 @@ public class InventoryUI : MonoBehaviour
         cursor.transform.DOMove(items[index].transform.position, 0.3f).SetUpdate(true).SetEase(Ease.OutQuint);
         var size = items[index].transform.localScale.x * SIZE_COEFFICIENT;
         cursor.transform.DOScale(new Vector3(size, size, 1), 0.3f).SetUpdate(true).SetEase(Ease.OutQuint);
-        cursorIndex = index;
     }
 
     public void EnableCursor(bool b)
