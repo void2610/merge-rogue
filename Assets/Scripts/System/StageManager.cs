@@ -38,7 +38,7 @@ public class StageManager : MonoBehaviour
             SeManager.Instance.PlaySe("footsteps");
         });
         DOTween.To(() => m.GetTextureOffset(mainTex), x => m.SetTextureOffset(mainTex, x), new Vector2(1, 0), 2.0f)
-            .SetEase(Ease.Linear).OnComplete(() =>
+            .SetEase(Ease.InOutSine).OnComplete(() =>
             {
                 m.SetTextureOffset(mainTex, new Vector2(0, 0));
             }).SetUpdate(true);

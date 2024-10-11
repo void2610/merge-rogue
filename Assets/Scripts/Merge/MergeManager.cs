@@ -120,7 +120,7 @@ public class MergeManager : MonoBehaviour
         nextBall.GetComponent<CircleCollider2D>().enabled = false;
     }
 
-    void Awake()
+    private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
@@ -132,17 +132,19 @@ public class MergeManager : MonoBehaviour
         coolTime = coolTimes[0];
     }
 
-    void Start()
+    private void Start()
     {
-        if (Application.isEditor) coolTime = 0.1f;
+        // if (Application.isEditor) coolTime = 0.1f;
 
         nextBall = InventoryManager.instance.GetRandomBall();
+        nextBall.GetComponent<CircleCollider2D>().enabled = false;
         nextBall.transform.position = nextBallPosition;
         currentBall = InventoryManager.instance.GetRandomBall();
+        currentBall.GetComponent<CircleCollider2D>().enabled = false;
         currentBall.transform.position = currentBallPosition;
     }
 
-    void Update()
+    private void Update()
     {
         limit = wall.WallWidth / 2 + 0.05f;
         float size = currentBall.transform.localScale.x + 0.5f;

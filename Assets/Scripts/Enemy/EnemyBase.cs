@@ -1,15 +1,13 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 
 public class EnemyBase : MonoBehaviour
 {
-    public class AttackData
+    protected class AttackData
     {
         public string name;
         public Func<Player, bool> action;
@@ -23,8 +21,8 @@ public class EnemyBase : MonoBehaviour
     public int hMin = 1;
     public int attack = 2;
     public int defense = 1;
-    public int coin = 0;
-    public int exp = 0;
+    public int coin;
+    public int exp;
 
     [SerializeField]
     private GameObject canvas;
@@ -33,8 +31,8 @@ public class EnemyBase : MonoBehaviour
     [SerializeField]
     private GameObject coinPrefab;
 
-    public int health { get; private set; }
-    public int maxHealth { get; private set; }
+    private int health { get; set; }
+    private int maxHealth { get; set; }
 
     protected int turnCount = 0;
     protected List<AttackData> enemyActions = new List<AttackData>();
@@ -43,7 +41,7 @@ public class EnemyBase : MonoBehaviour
     private TextMeshProUGUI healthText => canvas.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
     private Slider healthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
     private Image attackGauge => canvas.transform.Find("AttackGauge").GetComponent<Image>();
-    private float lastAttackTime = 0.0f;
+    private float lastAttackTime;
 
     public void TakeDamage(int damage)
     {
@@ -76,16 +74,16 @@ public class EnemyBase : MonoBehaviour
         GameManager.Instance.player.TakeDamage(attack);
         this.transform.DOMoveX(-0.75f, 0.02f).SetRelative(true).OnComplete(() =>
                 {
-                    this.transform.DOMoveX(0.75f, 0.2f).SetRelative(true).SetEase(Ease.OutExpo);
-                });
+                    this.transform.DOMoveX(0.75f, 0.2f).SetRelative(true).SetEase(Ease.OutExpo).SetLink(gameObject);
+                }).SetLink(gameObject);
         SeManager.Instance.PlaySe("enemyAttack");
     }
 
     private void OnAppear()
     {
         CanvasGroup cg = canvas.GetComponent<CanvasGroup>();
-        cg.DOFade(1, 0.5f);
-        this.GetComponent<SpriteRenderer>().DOFade(1, 0.5f);
+        cg.DOFade(1, 0.5f).SetLink(gameObject);
+        this.GetComponent<SpriteRenderer>().DOFade(1, 0.5f).SetLink(gameObject);
     }
 
     public void OnDisappear()
@@ -98,15 +96,15 @@ public class EnemyBase : MonoBehaviour
             });
         }
         CanvasGroup cg = canvas.GetComponent<CanvasGroup>();
-        cg.DOFade(0, 0.5f);
+        cg.DOFade(0, 0.5f).SetLink(gameObject);
 
         this.GetComponent<SpriteRenderer>().DOFade(0, 0.5f).OnComplete(() =>
         {
             Destroy(this.transform.parent.gameObject);
-        });
+        }).SetLink(gameObject);
     }
 
-    public void Death()
+    private void Death()
     {
         this.transform.parent.parent.GetComponent<EnemyContainer>().RemoveEnemy(this.gameObject);
     }
@@ -118,20 +116,20 @@ public class EnemyBase : MonoBehaviour
         g.GetComponent<TextMeshProUGUI>().text = damage.ToString();
 
         g.GetComponent<TextMeshProUGUI>().color = Color.red;
-        g.GetComponent<TextMeshProUGUI>().DOColor(Color.white, 0.5f);
+        g.GetComponent<TextMeshProUGUI>().DOColor(Color.white, 0.5f).SetLink(g);
 
         g.transform.DOScale(3f, 0.1f).SetEase(Ease.Linear).OnComplete(() =>
         {
-            g.transform.DOScale(1.75f, 0.1f).SetEase(Ease.Linear);
-        });
+            g.transform.DOScale(1.75f, 0.1f).SetEase(Ease.Linear).SetLink(g);
+        }).SetLink(g);
 
-        g.transform.DOMoveX(r > 0.0f ? -1.5f : 1.5f, 2f).SetRelative(true).SetEase(Ease.Linear);
+        g.transform.DOMoveX(r > 0.0f ? -1.5f : 1.5f, 2f).SetRelative(true).SetEase(Ease.Linear).SetLink(g);
 
         g.transform.DOMoveY(0.75f, 0.75f).SetRelative(true).SetEase(Ease.OutQuad).OnComplete(() =>
         {
-            g.GetComponent<TextMeshProUGUI>().DOFade(0, 0.5f);
-            g.transform.DOMoveY(-1f, 0.5f).SetRelative(true).SetEase(Ease.InQuad).OnComplete(() => Destroy(g));
-        });
+            g.GetComponent<TextMeshProUGUI>().DOFade(0, 0.5f).SetLink(g);
+            g.transform.DOMoveY(-1f, 0.5f).SetRelative(true).SetEase(Ease.InQuad).OnComplete(() => Destroy(g)).SetLink(g);
+        }).SetLink(g);
     }
 
     protected virtual void Awake()
