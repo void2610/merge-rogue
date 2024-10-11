@@ -84,6 +84,9 @@ public class GameManager : MonoBehaviour
     {
         switch (state)
         {
+            case GameState.StageMoving:
+                Time.timeScale = 1;
+                break;
             case GameState.Shop:
                 Shop.Instance.CloseShop();
                 Time.timeScale = 1;
@@ -94,9 +97,16 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.StageMoving:
+                Time.timeScale = 0;
+                // レベルアップが残っている場合はレベルアップ画面を表示
+                if (uiManager.remainingLevelUps > 0){
+                     ChangeState(GameState .LevelUp);
+                    break;
+                }
                 stageManager.NextStage();
                 break;
             case GameState.BattlePreparation:
+                // バトル準備
                 Utils.Instance.WaitAndInvoke(1.0f, () =>
                 {
                     ChangeState(GameState.Battle);
@@ -106,6 +116,11 @@ public class GameManager : MonoBehaviour
                 Shop.Instance.OpenShop();
                 Time.timeScale = 0;
                 uiManager.EnableCanvasGroup("Shop", true);
+                break;
+            case GameState.LevelUp:
+                Time.timeScale = 0;
+                // レベルアップ後にtimescaleを戻さない
+                uiManager.EnableCanvasGroup("LevelUp", true);
                 break;
         }
     }

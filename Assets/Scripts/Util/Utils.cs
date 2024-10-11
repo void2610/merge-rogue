@@ -21,7 +21,7 @@ public class Utils : MonoBehaviour
     }
     private IEnumerator _WaitAndInvoke(float time, System.Action action)
     {
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSecondsRealtime(time);
         action();
     }
 }

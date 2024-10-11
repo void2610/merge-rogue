@@ -17,9 +17,9 @@ public class Coin : MonoBehaviour
         // });
 
         if (r > 0.0f)
-            this.transform.DOMoveX(-1.5f, 2f).SetRelative(true);
+            this.transform.DOMoveX(-1.5f, 2f).SetRelative(true).SetUpdate(true);
         else
-            this.transform.DOMoveX(1.5f, 2f).SetRelative(true);
+            this.transform.DOMoveX(1.5f, 2f).SetRelative(true).SetUpdate(true);
 
         this.transform.DOMoveY(-1f, 1.2f).SetEase(Ease.OutBounce).SetRelative(true).OnComplete(() =>
         {
@@ -29,7 +29,7 @@ public class Coin : MonoBehaviour
             {
                 this.GetComponent<SpriteRenderer>().DOFade(0, 0.5f);
                 Destroy(this.gameObject);
-            });
-        });
+            }).SetUpdate(true);
+        }).SetUpdate(true);
     }
 }

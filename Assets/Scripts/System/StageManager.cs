@@ -34,12 +34,14 @@ public class StageManager : MonoBehaviour
     {
         Utils.Instance.WaitAndInvoke(0.2f, () =>
         {
+            Debug.Log("aaaa");
             SeManager.Instance.PlaySe("footsteps");
         });
-        DOTween.To(() => m.GetTextureOffset(mainTex), x => m.SetTextureOffset(mainTex, x), new Vector2(1, 0), 2.0f).SetEase(Ease.Linear).OnComplete(() =>
-        {
-            m.SetTextureOffset(mainTex, new Vector2(0, 0));
-        });
+        DOTween.To(() => m.GetTextureOffset(mainTex), x => m.SetTextureOffset(mainTex, x), new Vector2(1, 0), 2.0f)
+            .SetEase(Ease.Linear).OnComplete(() =>
+            {
+                m.SetTextureOffset(mainTex, new Vector2(0, 0));
+            }).SetUpdate(true);
 
         Utils.Instance.WaitAndInvoke(2.0f, () =>
         {

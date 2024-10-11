@@ -45,9 +45,7 @@ public class MergeManager : MonoBehaviour
         {
             moveSpeed = moveSpeeds[++moveSpeedLevel];
         }
-
-        GameManager.Instance.uiManager.EnableCanvasGroup("LevelUp", false);
-        Time.timeScale = 1.0f;
+        EndLevelUp();
     }
 
     public void LevelUpWallWidth()
@@ -84,7 +82,6 @@ public class MergeManager : MonoBehaviour
         
         GameManager.Instance.uiManager.EnableCanvasGroup("LevelUp", false);
         GameManager.Instance.ChangeState(GameManager.GameState.StageMoving);
-        Time.timeScale = 1.0f;
     }
 
     public void SpawnBall(int level, Vector3 p, Quaternion q)
@@ -176,10 +173,5 @@ public class MergeManager : MonoBehaviour
 
         currentBall.transform.position = currentBallPosition;
         fallAnchor.transform.position = currentBallPosition;
-
-        // var current = InventoryManager.instance.currentBallData;
-        // currentBall.GetComponent<SpriteRenderer>().sprite = current.ball.sprite;
-        // currentBall.GetComponent<SpriteRenderer>().color = current.color;
-        // currentBall.transform.localScale = Vector3.one * current.ball.size * current.size;
     }
 }

@@ -19,6 +19,7 @@ public class InventoryManager : MonoBehaviour
     private const int INVENTORY_SIZE = 6;
     private readonly List<float> sizes = new List<float> { 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
     private readonly List<float> probabilities = new List<float> { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f };
+    private readonly List<Color> colors = new List<Color> { Color.red, Color.green, Color.blue, Color.yellow, Color.magenta, Color.cyan };
 
     // ボールを入れ替える
     public void SetBall(BallData data, int level)
@@ -98,7 +99,7 @@ public class InventoryManager : MonoBehaviour
             return null;
         }
         ball.transform.localScale = Vector3.one * sizes[level - 1] * ballBase.size;
-        ball.GetComponent<SpriteRenderer>().color = Color.HSVToRGB(GameManager.Instance.RandomRange(0.0f, 1.0f), GameManager.Instance.RandomRange(0.0f, 1.0f), 1.0f);
+        ball.GetComponent<SpriteRenderer>().color = colors[level - 1];
         ball.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = data.sprite;
         ball.GetComponent<BallBase>().level = level;
         ball.GetComponent<BallBase>().Freeze();
