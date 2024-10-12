@@ -22,9 +22,9 @@ public class Coin : MonoBehaviour
             this.transform.DOPath(new [] { this.transform.position, middle, target }, 1f).SetEase(Ease.OutExpo
             ).OnComplete(() =>
             {
-                this.GetComponent<SpriteRenderer>().DOFade(0, 0.5f);
+                this.GetComponent<SpriteRenderer>().DOFade(0, 0.5f).SetLink(gameObject);
                 Destroy(this.gameObject);
-            }).SetUpdate(true);
-        }).SetUpdate(true);
+            }).SetUpdate(true).SetLink(gameObject);
+        }).SetUpdate(true).SetLink(gameObject);
     }
 }

@@ -18,9 +18,7 @@ public class MergeManager : MonoBehaviour
     [SerializeField] private MergeWall wall;
     [SerializeField] private GameObject mergeParticle;
     [SerializeField] private GameObject fallAnchor;
-
-    public float moveSpeed = 1.0f;
-    public float coolTime = 1.0f;
+    
     public float attackMagnification = 1.0f;
     private float limit = -2.5f;
 
@@ -36,9 +34,9 @@ public class MergeManager : MonoBehaviour
     private int attackLevel;
     private Vector3 currentBallPosition = new(0, 1.0f, 0);
     private readonly Vector3 nextBallPosition = new(-2, 1, 0);
-    private readonly float moveSpeeds = 1.0f;
-    private readonly float coolTimes = 0.5f;
-    private int ballPerOneTurn = 3;
+    private const float MOVE_SPEED = 1.0f;
+    private const float COOL_TIME = 0.5f;
+    private readonly int ballPerOneTurn = 3;
     private int remainingBalls = 0;
     private int attackCount = 0;
     private Dictionary<Rigidbody2D, float> stopTimers = null;
@@ -74,6 +72,13 @@ public class MergeManager : MonoBehaviour
     public void ResetRemainingBalls()
     {
         remainingBalls = ballPerOneTurn;
+        
+        nextBall = InventoryManager.instance.GetRandomBall();
+        nextBall.GetComponent<CircleCollider2D>().enabled = false;
+        nextBall.transform.position = nextBallPosition;
+        currentBall = InventoryManager.instance.GetRandomBall();
+        currentBall.GetComponent<CircleCollider2D>().enabled = false;
+        currentBall.transform.position = currentBallPosition;
     }
 
     public void SpawnBall(int level, Vector3 p, Quaternion q)
@@ -105,6 +110,9 @@ public class MergeManager : MonoBehaviour
         SeManager.Instance.PlaySe("playerAttack");
         Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
         attackCount = 0;
+        
+        if(GameManager.Instance.enemyContainer.GetAllEnemies().Count > 0)
+            GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
     }
     
     public void AddAttackCount(float atk)
@@ -114,14 +122,28 @@ public class MergeManager : MonoBehaviour
 
     private void FallAndDecideNextBall()
     {
-        currentBall.GetComponent<BallBase>().Unfreeze();
-        currentBall.GetComponent<CircleCollider2D>().enabled = true;
-        currentBall.transform.SetParent(ballContainer.transform);
-        currentBall = nextBall;
-        currentBall.transform.position = currentBallPosition;
-        nextBall = InventoryManager.instance.GetRandomBall();
-        nextBall.transform.position = nextBallPosition;
-        nextBall.GetComponent<CircleCollider2D>().enabled = false;
+        if (--remainingBalls > 0)
+        {
+            currentBall.GetComponent<BallBase>().Unfreeze();
+            currentBall.GetComponent<CircleCollider2D>().enabled = true;
+            currentBall.transform.SetParent(ballContainer.transform);
+            currentBall = nextBall;
+            currentBall.transform.position = currentBallPosition;
+            if (remainingBalls > 1)
+            {
+                nextBall = InventoryManager.instance.GetRandomBall();
+                nextBall.transform.position = nextBallPosition;
+                nextBall.GetComponent<CircleCollider2D>().enabled = false;
+            }
+        }
+        else
+        {
+            currentBall.GetComponent<BallBase>().Unfreeze();
+            currentBall.GetComponent<CircleCollider2D>().enabled = true;
+            currentBall.transform.SetParent(ballContainer.transform);
+            currentBall = null;
+            nextBall = null;
+        }
     }
     
     private bool IsAllBallsStopped()
@@ -155,16 +177,8 @@ public class MergeManager : MonoBehaviour
     private void Start()
     {
         // if (Application.isEditor) coolTime = 0.1f;
-
-        nextBall = InventoryManager.instance.GetRandomBall();
-        nextBall.GetComponent<CircleCollider2D>().enabled = false;
-        nextBall.transform.position = nextBallPosition;
-        currentBall = InventoryManager.instance.GetRandomBall();
-        currentBall.GetComponent<CircleCollider2D>().enabled = false;
-        currentBall.transform.position = currentBallPosition;
         
         fallAnchor.GetComponent<SpriteRenderer>().material.SetFloat(ratio, 1);
-        fallAnchor.transform.localScale = currentBall.transform.localScale * 1.01f;
     }
 
     private void Update()
@@ -177,29 +191,28 @@ public class MergeManager : MonoBehaviour
         
         limit = wall.WallWidth / 2 + 0.05f;
         float size = currentBall.transform.localScale.x + 0.5f;
-        float r = Mathf.Min(1, (Time.time - lastFallTime) / coolTime);
+        float r = Mathf.Min(1, (Time.time - lastFallTime) / COOL_TIME);
         fallAnchor.GetComponent<SpriteRenderer>().material.SetFloat(ratio, r);
         fallAnchor.transform.localScale = currentBall.transform.localScale * 1.01f;
         
         if (Input.GetKey(KeyCode.A) && currentBallPosition.x - size / 2 > -limit)
         {
-            currentBallPosition += Vector3.left * (moveSpeed * Time.deltaTime);
+            currentBallPosition += Vector3.left * (MOVE_SPEED * Time.deltaTime);
         }
 
         if (Input.GetKey(KeyCode.D) && currentBallPosition.x + size / 2 < limit)
         {
-            currentBallPosition += Vector3.right * (moveSpeed * Time.deltaTime);
+            currentBallPosition += Vector3.right * (MOVE_SPEED * Time.deltaTime);
         }
         
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastFallTime > coolTime && remainingBalls > 0)
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastFallTime > COOL_TIME && remainingBalls > 0)
         {
             SeManager.Instance.PlaySe("fall");
             lastFallTime = Time.time;
             FallAndDecideNextBall();
-            remainingBalls--;
-        }
             
-        currentBall.transform.position = currentBallPosition;
+        }
+        if(currentBall) currentBall.transform.position = currentBallPosition;
         fallAnchor.transform.position = currentBallPosition;
     }
 }

@@ -120,7 +120,6 @@ public class EnemyContainer : MonoBehaviour
             Utils.Instance.WaitAndInvoke(2.0f, () =>
             {
                 GameManager.Instance.player.AddExp(gainedExp);
-                GameManager.Instance.ChangeState(GameManager.GameState.StageMoving);
                 gainedExp = 0;
             });
         }

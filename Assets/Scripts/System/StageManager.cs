@@ -32,6 +32,7 @@ public class StageManager : MonoBehaviour
 
     public void NextStage()
     {
+        Debug.Log("NextStage");
         Utils.Instance.WaitAndInvoke(0.2f, () =>
         {
             SeManager.Instance.PlaySe("footsteps");
@@ -40,7 +41,7 @@ public class StageManager : MonoBehaviour
             .SetEase(Ease.InOutSine).OnComplete(() =>
             {
                 m.SetTextureOffset(mainTex, new Vector2(0, 0));
-            }).SetUpdate(true);
+            }).SetUpdate(true); 
 
         Utils.Instance.WaitAndInvoke(2.0f, () =>
         {

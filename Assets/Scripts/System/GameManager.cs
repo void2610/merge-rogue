@@ -100,12 +100,12 @@ public class GameManager : MonoBehaviour
         {
             case GameState.StageMoving:
                 Time.timeScale = 0;
+                Debug.Log(uiManager.remainingLevelUps);
                 // レベルアップが残っている場合はレベルアップ画面を表示
-                if (uiManager.remainingLevelUps > 0){
+                if (uiManager.remainingLevelUps > 0)
                      ChangeState(GameState .LevelUp);
-                    break;
-                }
-                stageManager.NextStage();
+                else
+                    stageManager.NextStage();
                 break;
             case GameState.BattlePreparation:
                 // バトル準備
@@ -122,10 +122,6 @@ public class GameManager : MonoBehaviour
                 Utils.Instance.WaitAndInvoke(1f, () =>
                 {
                     MergeManager.Instance.Attack();
-                    Utils.Instance.WaitAndInvoke(1f, () =>
-                    {
-                        ChangeState(GameState.EnemyAttack);
-                    });
                 });
                 break;
             case GameState.EnemyAttack:
