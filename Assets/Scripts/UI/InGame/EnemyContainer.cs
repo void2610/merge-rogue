@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using UnityEngine;
 
 public class EnemyContainer : MonoBehaviour
@@ -115,13 +117,31 @@ public class EnemyContainer : MonoBehaviour
         enemy.GetComponent<EnemyBase>().OnDisappear();
         if (currentEnemies.Count == 0)
         {
-            Utils.Instance.WaitAndInvoke(1.0f, () =>
+            Utils.Instance.WaitAndInvoke(2.0f, () =>
             {
                 GameManager.Instance.player.AddExp(gainedExp);
                 GameManager.Instance.ChangeState(GameManager.GameState.StageMoving);
                 gainedExp = 0;
             });
         }
+    }
+    
+    public void Action()
+    {
+        StartCoroutine(AttackPlayerCoroutine());
+    }
+
+    private IEnumerator AttackPlayerCoroutine()
+    {
+        foreach (var enemy in currentEnemies)
+        {
+            var enemyBase = enemy.transform.GetChild(0).GetComponent<EnemyBase>();
+            enemyBase.Action();
+            // 0.5秒待つ
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        GameManager.Instance.ChangeState(GameManager.GameState.Merge);
     }
 
     public void Awake()
@@ -130,20 +150,5 @@ public class EnemyContainer : MonoBehaviour
         positions.Add(this.transform.position + new Vector3(-alignment, 0, 0));
         positions.Add(this.transform.position);
         positions.Add(this.transform.position + new Vector3(alignment, 0, 0));
-    }
-
-    public void Update()
-    {
-        // エディタだけ
-        if (!Application.isEditor) return;
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            SpawnEnemy();
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            //PlayerPrefsをリセット
-            PlayerPrefs.DeleteAll();
-        }
     }
 }

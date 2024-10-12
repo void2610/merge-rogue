@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
     public enum GameState
     {
         BattlePreparation,
-        Battle,
+        Merge,
         PlayerAttack,
         EnemyAttack,
         BattleResult,
@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
         Clear,
         Other
     }
-    public GameState state = GameState.Battle;
+    public GameState state = GameState.Merge;
 
 
     [SerializeField]
@@ -111,19 +111,25 @@ public class GameManager : MonoBehaviour
                 // バトル準備
                 Utils.Instance.WaitAndInvoke(1.0f, () =>
                 {
-                    ChangeState(GameState.Battle);
+                    ChangeState(GameState.Merge);
                 });
+                break;
+            case GameState.Merge:
+                MergeManager.Instance.ResetRemainingBalls();
                 break;
             case GameState.PlayerAttack:
                 // 攻撃して、敵の攻撃に移る
-                Utils.Instance.WaitAndInvoke(0.5f, () =>
+                Utils.Instance.WaitAndInvoke(1f, () =>
                 {
                     MergeManager.Instance.Attack();
-                    Utils.Instance.WaitAndInvoke(0.5f, () =>
+                    Utils.Instance.WaitAndInvoke(1f, () =>
                     {
                         ChangeState(GameState.EnemyAttack);
                     });
                 });
+                break;
+            case GameState.EnemyAttack:
+                enemyContainer.Action();
                 break;
             case GameState.Shop:
                 Shop.Instance.OpenShop();

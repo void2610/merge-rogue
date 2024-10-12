@@ -16,7 +16,7 @@ public class EnemyBase : MonoBehaviour
         public string description;
     }
     public string enemyName = "Enemy";
-    public float attackSpeed = 1.0f;
+    public int actionInterval = 1;
     public int hMax = 100;
     public int hMin = 1;
     public int attack = 2;
@@ -40,8 +40,7 @@ public class EnemyBase : MonoBehaviour
 
     private TextMeshProUGUI healthText => canvas.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
     private Slider healthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
-    private Image attackGauge => canvas.transform.Find("AttackGauge").GetComponent<Image>();
-    private float lastAttackTime;
+    private TextMeshProUGUI attackCountText => canvas.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
 
     public void TakeDamage(int damage)
     {
@@ -57,15 +56,23 @@ public class EnemyBase : MonoBehaviour
         }
     }
 
-    public void Heal(int amount)
+    public void Action()
     {
-        health += amount;
-        healthSlider.value = health;
-        healthText.text = health + "/" + maxHealth;
-        if (health > maxHealth)
+        turnCount++;
+        if(turnCount == actionInterval)
         {
-            health = maxHealth;
+            turnCount = 0;
+            Attack();
         }
+        else
+        {
+            this.transform.DOMoveY(0.75f, 0.2f).SetRelative(true).OnComplete(() =>
+            {
+                this.transform.DOMoveY(-.75f, 0.2f).SetRelative(true).SetEase(Ease.OutExpo).SetLink(gameObject);
+            }).SetLink(gameObject);
+        }
+
+        attackCountText.text = (actionInterval - turnCount).ToString();
     }
 
     // 返り値で、攻撃モーションを再生するかどうかを返す
@@ -143,24 +150,8 @@ public class EnemyBase : MonoBehaviour
         healthSlider.maxValue = maxHealth;
         healthSlider.value = health;
         healthText.text = health + "/" + maxHealth;
-
+        attackCountText.text = (actionInterval - turnCount).ToString();
+        
         OnAppear();
-    }
-
-    protected virtual void Update()
-    {
-        if (GameManager.Instance.state != GameManager.GameState.Battle) return;
-
-        attackGauge.fillAmount = (Time.time - lastAttackTime) / attackSpeed;
-
-        if (Time.time - lastAttackTime > attackSpeed && lastAttackTime > 0)
-        {
-            lastAttackTime = Time.time;
-            Attack();
-        }
-        else if (lastAttackTime == 0)
-        {
-            lastAttackTime = Time.time;
-        }
     }
 }

@@ -47,7 +47,7 @@ MonoBehaviour:
   seMixerGroup: {fileID: -2914203093863034194, guid: f789843a274c340cb976f3e5fb359cf3, type: 2}
   soundDatas:
   - name: playerAttack
-    audioClip: {fileID: 8300000, guid: 0bd254bf6869044f1956508e3975a305, type: 3}
+    audioClip: {fileID: 8300000, guid: 1b8c24557f80a4d248e197d1ea1a8142, type: 3}
     volume: 1
   - name: enemyAttack
     audioClip: {fileID: 8300000, guid: 1b8c24557f80a4d248e197d1ea1a8142, type: 3}
