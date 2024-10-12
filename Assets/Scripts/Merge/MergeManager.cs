@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
+using TMPro;
 
 public class MergeManager : MonoBehaviour
 {
@@ -18,10 +19,11 @@ public class MergeManager : MonoBehaviour
     [SerializeField] private MergeWall wall;
     [SerializeField] private GameObject mergeParticle;
     [SerializeField] private GameObject fallAnchor;
+    [SerializeField] private TextMeshProUGUI ballCountText;
+    [SerializeField] private TextMeshProUGUI attackCountText;
     
     public float attackMagnification = 1.0f;
     private float limit = -2.5f;
-
 
     public GameObject currentBall;
     public GameObject nextBall;
@@ -33,7 +35,7 @@ public class MergeManager : MonoBehaviour
     private readonly List<float> attacks = new() { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f };
     private int attackLevel;
     private Vector3 currentBallPosition = new(0, 1.0f, 0);
-    private readonly Vector3 nextBallPosition = new(-2, 1, 0);
+    private readonly Vector3 nextBallPosition = new(-3.5f, 1, 0);
     private const float MOVE_SPEED = 1.0f;
     private const float COOL_TIME = 0.5f;
     private readonly int ballPerOneTurn = 3;
@@ -41,6 +43,7 @@ public class MergeManager : MonoBehaviour
     private int attackCount = 0;
     private Dictionary<Rigidbody2D, float> stopTimers = null;
     private int timerCount = 0;
+    private Tween attackCountTween;
     
     public void LevelUpWallWidth()
     {
@@ -79,6 +82,8 @@ public class MergeManager : MonoBehaviour
         currentBall = InventoryManager.instance.GetRandomBall();
         currentBall.GetComponent<CircleCollider2D>().enabled = false;
         currentBall.transform.position = currentBallPosition;
+        
+        ballCountText.text = remainingBalls + "/" + ballPerOneTurn;
     }
 
     public void SpawnBall(int level, Vector3 p, Quaternion q)
@@ -110,6 +115,7 @@ public class MergeManager : MonoBehaviour
         SeManager.Instance.PlaySe("playerAttack");
         Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
         attackCount = 0;
+        attackCountText.text = "0";
         
         if(GameManager.Instance.enemyContainer.GetAllEnemies().Count > 0)
             GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
@@ -117,7 +123,9 @@ public class MergeManager : MonoBehaviour
     
     public void AddAttackCount(float atk)
     {  
-        attackCount += (int)(atk * attackMagnification);
+        var first = attackCount;
+        var target = attackCount += (int)(atk * attackMagnification);
+        DOTween.To(() => first, x => attackCountText.text =  x.ToString(), target, (target - first) * 0.1f);
     }
 
     private void FallAndDecideNextBall()
@@ -144,6 +152,7 @@ public class MergeManager : MonoBehaviour
             currentBall = null;
             nextBall = null;
         }
+        ballCountText.text = remainingBalls + "/" + ballPerOneTurn;
     }
     
     private bool IsAllBallsStopped()
@@ -172,6 +181,7 @@ public class MergeManager : MonoBehaviour
 
         ballContainer = new GameObject("BallContainer");
         wall.SetWallWidth(wallWidths[0]);
+        attackCountText.text = "0";
     }
 
     private void Start()

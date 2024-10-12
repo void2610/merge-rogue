@@ -61,7 +61,7 @@ Material:
     - _EnableExternalAlpha: 0
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Ratio: 0.5
+    - _Ratio: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
