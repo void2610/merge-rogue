@@ -6,22 +6,17 @@ using R3;
 
 public class Player : MonoBehaviour
 {
-    public float attack = 1.5f;
     public readonly ReactiveProperty<int> exp = new(0);
     public readonly ReactiveProperty<int> health = new(50);
     public readonly ReactiveProperty<int> maxHealth = new(50);
     public List<int> levelUpExp = new() { 10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120 };
     public int maxExp { get; private set; } = 10;
     public int level { get; private set; } = 1;
-    [SerializeField]
-    private GameObject canvas;
-    [SerializeField]
-    private GameObject damageTextPrefab;
 
     public void TakeDamage(int damage)
     {
         Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.2f);
-        ShowDamage(damage);
+        GameManager.Instance.ShowDamage(damage, this.transform.position);
         health.Value -= damage;
         if (health.Value <= 0)
         {
@@ -58,36 +53,7 @@ public class Player : MonoBehaviour
         exp.Value += amount;
         if(!CheckAndLevelUp()) GameManager.Instance.ChangeState(GameManager.GameState.StageMoving);
     }
-
-    private void ShowDamage(int damage)
-    {
-        var r = Random.Range(-0.5f, 0.5f);
-        var g = Instantiate(damageTextPrefab, this.transform.position + new Vector3(r, 0, 0), Quaternion.identity, this.canvas.transform);
-        g.GetComponent<TextMeshProUGUI>().text = damage.ToString();
-
-        g.GetComponent<TextMeshProUGUI>().color = new Color(1, 0, 0);
-        g.GetComponent<TextMeshProUGUI>().DOColor(new Color(1, 1, 1), 0.5f).SetLink(g);
-        g.transform.DOScale(3f, 0.1f).SetEase(Ease.Linear).OnComplete(() =>
-        {
-            g.transform.DOScale(1.75f, 0.1f).SetEase(Ease.Linear).SetLink(g);
-        }).SetLink(g);
-
-        if (r > 0.0f)
-            g.transform.DOMoveX(-1.5f, 2f).SetRelative(true).SetEase(Ease.Linear).SetLink(g);
-        else
-            g.transform.DOMoveX(1.5f, 2f).SetRelative(true).SetEase(Ease.Linear).SetLink(g);
-
-        g.transform.DOMoveY(0.75f, 0.75f).SetRelative(true).SetEase(Ease.OutQuad).OnComplete(() =>
-        {
-            g.GetComponent<TextMeshProUGUI>().DOFade(0, 0.5f).SetLink(g);
-            g.transform.DOMoveY(-1f, 0.5f).SetRelative(true).SetEase(Ease.InQuad).SetLink(g);
-        }).SetLink(g);
-        Utils.Instance.WaitAndInvoke(5f, () =>
-        {
-            Destroy(g);
-        });
-    }
-
+    
     private bool CheckAndLevelUp()
     {
         if (exp.Value < levelUpExp[level - 1])

@@ -27,8 +27,6 @@ public class EnemyBase : MonoBehaviour
     [SerializeField]
     private GameObject canvas;
     [SerializeField]
-    private GameObject damageTextPrefab;
-    [SerializeField]
     private GameObject coinPrefab;
 
     private int health { get; set; }
@@ -44,7 +42,7 @@ public class EnemyBase : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        ShowDamage(damage);
+        GameManager.Instance.ShowDamage(damage, this.transform.position);
         health -= damage;
         healthSlider.value = health;
         healthText.text = health + "/" + maxHealth;
@@ -114,29 +112,6 @@ public class EnemyBase : MonoBehaviour
     private void Death()
     {
         this.transform.parent.parent.GetComponent<EnemyContainer>().RemoveEnemy(this.gameObject);
-    }
-
-    private void ShowDamage(int damage)
-    {
-        var r = UnityEngine.Random.Range(-0.5f, 0.5f);
-        var g = Instantiate(damageTextPrefab, this.transform.position + new Vector3(r, 0, 0), Quaternion.identity, this.canvas.transform);
-        g.GetComponent<TextMeshProUGUI>().text = damage.ToString();
-
-        g.GetComponent<TextMeshProUGUI>().color = Color.red;
-        g.GetComponent<TextMeshProUGUI>().DOColor(Color.white, 0.5f).SetLink(g);
-
-        g.transform.DOScale(3f, 0.1f).SetEase(Ease.Linear).OnComplete(() =>
-        {
-            g.transform.DOScale(1.75f, 0.1f).SetEase(Ease.Linear).SetLink(g);
-        }).SetLink(g);
-
-        g.transform.DOMoveX(r > 0.0f ? -1.5f : 1.5f, 2f).SetRelative(true).SetEase(Ease.Linear).SetLink(g);
-
-        g.transform.DOMoveY(0.75f, 0.75f).SetRelative(true).SetEase(Ease.OutQuad).OnComplete(() =>
-        {
-            g.GetComponent<TextMeshProUGUI>().DOFade(0, 0.5f).SetLink(g);
-            g.transform.DOMoveY(-1f, 0.5f).SetRelative(true).SetEase(Ease.InQuad).OnComplete(() => Destroy(g)).SetLink(g);
-        }).SetLink(g);
     }
 
     protected virtual void Awake()

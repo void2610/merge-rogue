@@ -20,7 +20,7 @@ public class MergeManager : MonoBehaviour
     [SerializeField] private GameObject mergeParticle;
     [SerializeField] private GameObject fallAnchor;
     [SerializeField] private TextMeshProUGUI ballCountText;
-    [SerializeField] private TextMeshProUGUI attackCountText;
+    [SerializeField] private AttackCountUI attackCountUI;
     
     public float attackMagnification = 1.0f;
     private float limit = -2.5f;
@@ -101,7 +101,11 @@ public class MergeManager : MonoBehaviour
 
     public void Attack()
     {
-        if (attackCount == 0) return;
+        if (attackCount == 0)
+        {
+            GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
+            return;
+        }
         
         foreach (var e in GameManager.Instance.enemyContainer.GetAllEnemies())
         {
@@ -115,7 +119,7 @@ public class MergeManager : MonoBehaviour
         SeManager.Instance.PlaySe("playerAttack");
         Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
         attackCount = 0;
-        attackCountText.text = "0";
+        attackCountUI.SetAttackCount(0);
         
         if(GameManager.Instance.enemyContainer.GetAllEnemies().Count > 0)
             GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
@@ -123,9 +127,8 @@ public class MergeManager : MonoBehaviour
     
     public void AddAttackCount(float atk)
     {  
-        var first = attackCount;
-        var target = attackCount += (int)(atk * attackMagnification);
-        DOTween.To(() => first, x => attackCountText.text =  x.ToString(), target, (target - first) * 0.1f);
+        attackCount += (int)(atk * attackMagnification);
+        attackCountUI.SetAttackCount(attackCount);
     }
 
     private void FallAndDecideNextBall()
@@ -181,7 +184,6 @@ public class MergeManager : MonoBehaviour
 
         ballContainer = new GameObject("BallContainer");
         wall.SetWallWidth(wallWidths[0]);
-        attackCountText.text = "0";
     }
 
     private void Start()

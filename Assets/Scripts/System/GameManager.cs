@@ -45,16 +45,13 @@ public class GameManager : MonoBehaviour
         Other
     }
     public GameState state = GameState.Merge;
-
-
-    [SerializeField]
-    private GameObject playerObj;
-    [SerializeField]
-    public EnemyContainer enemyContainer;
-    [SerializeField]
-    public Shop shop;
-    [SerializeField]
-    public Canvas mainCanvas;
+    
+    
+    [SerializeField] private GameObject playerObj;
+    [SerializeField] public EnemyContainer enemyContainer;
+    [SerializeField] public Shop shop;
+    [SerializeField] public Canvas mainCanvas;
+    [SerializeField] private GameObject damageTextPrefab;
 
     private System.Random random { get; set; }
     public readonly ReactiveProperty<int> coin = new(0);
@@ -74,6 +71,12 @@ public class GameManager : MonoBehaviour
     {
         int randomValue = this.random.Next(min, max);
         return randomValue;
+    }
+
+    public void ShowDamage(int damage, Vector3 pos)
+    {
+        var damageText = Instantiate(damageTextPrefab, pos, Quaternion.identity, mainCanvas.transform);
+        damageText.GetComponent<DamageText>().SetUp(damage);
     }
 
     public void GameOver()
@@ -100,7 +103,6 @@ public class GameManager : MonoBehaviour
         {
             case GameState.StageMoving:
                 Time.timeScale = 0;
-                Debug.Log(uiManager.remainingLevelUps);
                 // レベルアップが残っている場合はレベルアップ画面を表示
                 if (uiManager.remainingLevelUps > 0)
                      ChangeState(GameState .LevelUp);

@@ -2338,7 +2338,8 @@ MonoBehaviour:
   playerObj: {fileID: 1993390309}
   enemyContainer: {fileID: 198190389}
   shop: {fileID: 0}
-  mainCanvas: {fileID: 0}
+  mainCanvas: {fileID: 380910488}
+  damageTextPrefab: {fileID: 7173658914585924005, guid: 4fa946622e4bd4de3858712a3e083b3c, type: 3}
 --- !u!114 &567445624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6996,6 +6997,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1546659871}
   - component: {fileID: 1546659873}
+  - component: {fileID: 1546659874}
   - component: {fileID: 1546659872}
   m_Layer: 5
   m_Name: AttackCountText
@@ -7122,6 +7124,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1546659870}
   m_CullTransparentMesh: 1
+--- !u!114 &1546659874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546659870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8389951a757c34b26b10baf128249338, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  attackCountText: {fileID: 0}
 --- !u!1 &1566874249
 GameObject:
   m_ObjectHideFlags: 0
@@ -7744,7 +7759,7 @@ MonoBehaviour:
   mergeParticle: {fileID: 1620409693136122509, guid: adb71434fa9c04035a16947c624e5be2, type: 3}
   fallAnchor: {fileID: 632287031}
   ballCountText: {fileID: 595156495}
-  attackCountText: {fileID: 1546659872}
+  attackCountUI: {fileID: 1546659874}
   attackMagnification: 1
   currentBall: {fileID: 0}
   nextBall: {fileID: 0}
