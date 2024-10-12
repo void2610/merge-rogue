@@ -34,6 +34,8 @@ public class GameManager : MonoBehaviour
     {
         BattlePreparation,
         Battle,
+        PlayerAttack,
+        EnemyAttack,
         BattleResult,
         LevelUp,
         StageMoving,
@@ -112,6 +114,17 @@ public class GameManager : MonoBehaviour
                     ChangeState(GameState.Battle);
                 });
                 break;
+            case GameState.PlayerAttack:
+                // 攻撃して、敵の攻撃に移る
+                Utils.Instance.WaitAndInvoke(0.5f, () =>
+                {
+                    MergeManager.Instance.Attack();
+                    Utils.Instance.WaitAndInvoke(0.5f, () =>
+                    {
+                        ChangeState(GameState.EnemyAttack);
+                    });
+                });
+                break;
             case GameState.Shop:
                 Shop.Instance.OpenShop();
                 Time.timeScale = 0;
@@ -145,29 +158,6 @@ public class GameManager : MonoBehaviour
                 isPaused = true;
                 uiManager.EnableCanvasGroup("Pause", true);
             }
-        }
-        switch (state)
-        {
-            case GameState.Battle:
-                break;
-            case GameState.StageMoving:
-                break;
-            case GameState.BattlePreparation:
-                break;
-            case GameState.BattleResult:
-                break;
-            case GameState.LevelUp:
-                break;
-            case GameState.Shop:
-                break;
-            case GameState.GameOver:
-                break;
-            case GameState.Clear:
-                break;
-            case GameState.Other:
-                break;
-            default:
-                throw new ArgumentOutOfRangeException();
         }
     }
 }

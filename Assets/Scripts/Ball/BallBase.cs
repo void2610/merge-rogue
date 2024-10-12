@@ -39,7 +39,7 @@ public class BallBase : MonoBehaviour
     protected virtual void Effect()
     {
         // Effect
-        MergeManager.Instance.Attack(attack * level);
+        MergeManager.Instance.AddAttackCount(attack * level);
     }
 
     protected virtual void Awake()

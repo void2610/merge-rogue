@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 public class MergeManager : MonoBehaviour
 {
@@ -28,16 +29,20 @@ public class MergeManager : MonoBehaviour
     private GameObject ballContainer;
     private float lastFallTime;
 
+
     private readonly List<float> moveSpeeds = new() { 0.5f, 1.0f, 1.5f, 2.0f, 2.5f };
     private int moveSpeedLevel;
     private readonly List<float> wallWidths = new() { 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f, 5.5f, 6.0f, 6.5f };
     private int wallWidthLevel;
-    private readonly List<float> coolTimes = new() { 3.0f, 2.5f, 2.0f, 1.5f, 1.25f, 1.0f, 0.75f, 0.5f, 0.25f, 0.1f };
+    private readonly List<float> coolTimes = new() { 0.5f, 0.25f, 0.1f };
     private int coolTimeLevel;
     private readonly List<float> attacks = new() { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f };
     private int attackLevel;
     private Vector3 currentBallPosition = new(0, 1.0f, 0);
     private readonly Vector3 nextBallPosition = new(-2, 1, 0);
+    private int ballPerOneTurn = 3;
+    private int remainingBalls = 3;
+    private int attackCount = 0;
 
     public void LevelUpMoveSpeed()
     {
@@ -75,13 +80,18 @@ public class MergeManager : MonoBehaviour
         EndLevelUp();
     }
     
-    private void EndLevelUp()
+    private static void EndLevelUp()
     {
         GameManager.Instance.uiManager.remainingLevelUps--;
         if (GameManager.Instance.uiManager.remainingLevelUps > 0) return;
         
         GameManager.Instance.uiManager.EnableCanvasGroup("LevelUp", false);
         GameManager.Instance.ChangeState(GameManager.GameState.StageMoving);
+    }
+    
+    public void ResetRemainingBalls()
+    {
+        remainingBalls = ballPerOneTurn;
     }
 
     public void SpawnBall(int level, Vector3 p, Quaternion q)
@@ -97,15 +107,20 @@ public class MergeManager : MonoBehaviour
         Instantiate(mergeParticle, p, Quaternion.identity);
     }
 
-    public void Attack(float atk)
+    public void Attack()
     {
         foreach (var e in GameManager.Instance.enemyContainer.GetAllEnemies())
         {
-            var a = (int)(atk * attackMagnification);
-            e.TakeDamage(a); 
+            e.TakeDamage(attackCount);
         }
 
         Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
+        attackCount = 0;
+    }
+    
+    public void AddAttackCount(float atk)
+    {  
+        attackCount += (int)(atk * attackMagnification);
     }
 
     private void FallAndDecideNextBall()
@@ -165,11 +180,22 @@ public class MergeManager : MonoBehaviour
         if (GameManager.Instance.state == GameManager.GameState.Battle ||
             GameManager.Instance.state == GameManager.GameState.BattlePreparation)
         {
-            if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastFallTime > coolTime)
+            if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastFallTime > coolTime && remainingBalls > 0)
             {
                 SeManager.Instance.PlaySe("fall");
                 lastFallTime = Time.time;
                 FallAndDecideNextBall();
+                remainingBalls--;
+            }
+        }
+
+        if (remainingBalls == 0)
+        {
+            // TODO: 重いかも
+            var balls = ballContainer.GetComponentsInChildren<Rigidbody2D>().Select(t => t.gameObject).ToList();
+            if (!balls.Any(b => b.GetComponent<Rigidbody2D>().velocity.magnitude > 0.1f))
+            {
+                GameManager.Instance.ChangeState(GameManager.GameState.PlayerAttack);
             }
         }
 
