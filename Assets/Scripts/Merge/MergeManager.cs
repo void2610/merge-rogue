@@ -84,6 +84,7 @@ public class MergeManager : MonoBehaviour
         currentBall.transform.position = currentBallPosition;
         
         ballCountText.text = remainingBalls + "/" + ballPerOneTurn;
+        attackCountUI.SetAttackCount(0);
     }
 
     public void SpawnBall(int level, Vector3 p, Quaternion q)
@@ -170,7 +171,7 @@ public class MergeManager : MonoBehaviour
         foreach (var b in stopTimers.Keys)
         {
             if (b.velocity.magnitude > 0.1f) return false;
-            if (Time.time - stopTimers[b] < 1.5f) return false;
+            if (Time.time - stopTimers[b] < 0.5f) return false;
         }
 
         stopTimers = null;

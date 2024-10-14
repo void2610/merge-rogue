@@ -7,19 +7,18 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance { get; private set; }
 
-    [SerializeField]
-    private Vector3 inventoryPosition = new Vector3(0, -4, 0);
-    [SerializeField]
-    private List<GameObject> inventory = new List<GameObject>();
+
     [SerializeField]
     private BallDataList allBallDataList;
     [SerializeField]
     private GameObject ballBasePrefab;
 
-    private const int INVENTORY_SIZE = 6;
-    private readonly List<float> sizes = new List<float> { 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
-    private readonly List<float> probabilities = new List<float> { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f };
-    private readonly List<Color> colors = new List<Color> { Color.red, Color.green, Color.blue, Color.yellow, Color.magenta, Color.cyan };
+    private Vector3 inventoryPosition = new Vector3(0, 4, 0);
+    private List<GameObject> inventory = new List<GameObject>();
+    private const int INVENTORY_SIZE = 9;
+    private readonly List<float> sizes = new List<float> { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f };
+    private readonly List<float> probabilities = new List<float> { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+    private readonly List<Color> colors = new List<Color> { Color.gray, Color.green, Color.blue,  Color.magenta, Color.yellow, Color.red, Color.cyan, Color.black, Color.white };
 
     // ボールを入れ替える
     public void SetBall(BallData data, int level)
@@ -41,7 +40,6 @@ public class InventoryManager : MonoBehaviour
     // マージ時に次のボールを生成
     public GameObject GetBallByLevel(int level)
     {
-        if(level == INVENTORY_SIZE) return null;
         if (level is <= 0 or > INVENTORY_SIZE)
         {
             Debug.LogError("指定されたレベルのボールは存在しません。");
@@ -150,7 +148,7 @@ public class InventoryManager : MonoBehaviour
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
             var ball = CreateBallInstanceFromBallData(bd, i + 1);
-            ball.transform.position = inventoryPosition + new Vector3(i, 0, 0);
+            ball.transform.position = inventoryPosition + new Vector3(i*0.9f, 0, 0);
             SetEvent(ball, i);
         }
         GameManager.Instance.GetComponent<InventoryUI>().SetItem(inventory);
