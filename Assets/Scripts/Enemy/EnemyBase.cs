@@ -64,9 +64,9 @@ public class EnemyBase : MonoBehaviour
         }
         else
         {
-            this.transform.DOMoveY(0.75f, 0.2f).SetRelative(true).SetEase(Ease.InCubic).OnComplete(() =>
+            this.transform.DOMoveY(0.75f, 0.15f).SetRelative(true).SetEase(Ease.InQuad).OnComplete(() =>
             {
-                this.transform.DOMoveY(-.75f, 0.2f).SetRelative(true).SetEase(Ease.OutCubic).SetLink(gameObject);
+                this.transform.DOMoveY(-.75f, 0.15f).SetRelative(true).SetEase(Ease.OutQuad).SetLink(gameObject);
             }).SetLink(gameObject);
         }
 
@@ -114,12 +114,13 @@ public class EnemyBase : MonoBehaviour
         this.transform.parent.parent.GetComponent<EnemyContainer>().RemoveEnemy(this.gameObject);
     }
 
-    protected virtual void Awake()
+    public virtual void Init(float magnification)
     {
-        maxHealth = GameManager.Instance.RandomRange(hMin, hMax);
+        maxHealth = (int)(GameManager.Instance.RandomRange(hMin, hMax) * magnification);
         health = maxHealth;
+        attack = (int)(attack * magnification);
 
-        this.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+        GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         canvas.GetComponent<CanvasGroup>().alpha = 0;
 
         healthSlider.maxValue = maxHealth;

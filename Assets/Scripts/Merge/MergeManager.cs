@@ -38,11 +38,11 @@ public class MergeManager : MonoBehaviour
     private readonly Vector3 nextBallPosition = new(-3.5f, 1, 0);
     private const float MOVE_SPEED = 1.0f;
     private const float COOL_TIME = 0.5f;
-    private readonly int ballPerOneTurn = 3;
-    private int remainingBalls = 0;
-    private int attackCount = 0;
-    private Dictionary<Rigidbody2D, float> stopTimers = null;
-    private int timerCount = 0;
+    private int ballPerOneTurn = 1;
+    private int remainingBalls;
+    private int attackCount;
+    private Dictionary<Rigidbody2D, float> stopTimers;
+    private int timerCount;
     private Tween attackCountTween;
     
     public void LevelUpWallWidth()
@@ -63,6 +63,12 @@ public class MergeManager : MonoBehaviour
         EndLevelUp();
     }
     
+    public void LevelUpBallAmount()
+    {
+        ballPerOneTurn++;
+        EndLevelUp();
+    }
+    
     private static void EndLevelUp()
     {
         GameManager.Instance.uiManager.remainingLevelUps--;
@@ -75,10 +81,13 @@ public class MergeManager : MonoBehaviour
     public void ResetRemainingBalls()
     {
         remainingBalls = ballPerOneTurn;
-        
-        nextBall = InventoryManager.instance.GetRandomBall();
-        nextBall.GetComponent<CircleCollider2D>().enabled = false;
-        nextBall.transform.position = nextBallPosition;
+
+        if (ballPerOneTurn > 2)
+        {
+            nextBall = InventoryManager.instance.GetRandomBall();
+            nextBall.GetComponent<CircleCollider2D>().enabled = false;
+            nextBall.transform.position = nextBallPosition;
+        }
         currentBall = InventoryManager.instance.GetRandomBall();
         currentBall.GetComponent<CircleCollider2D>().enabled = false;
         currentBall.transform.position = currentBallPosition;
@@ -122,7 +131,7 @@ public class MergeManager : MonoBehaviour
         attackCount = 0;
         attackCountUI.SetAttackCount(0);
         
-        if(GameManager.Instance.enemyContainer.GetAllEnemies().Count > 0)
+        if(GameManager.Instance.enemyContainer.GetEnemyCount() > 0)
             GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
     }
     
@@ -164,7 +173,7 @@ public class MergeManager : MonoBehaviour
         if (GameManager.Instance.state != GameManager.GameState.Merge || remainingBalls != 0) return false;
         
         if(stopTimers == null || timerCount != ballContainer.GetComponentsInChildren<Rigidbody2D>().Length){
-            stopTimers = ballContainer.GetComponentsInChildren<Rigidbody2D>().ToDictionary(b => b, b => Time.time);
+            stopTimers = ballContainer.GetComponentsInChildren<Rigidbody2D>().ToDictionary(b => b, _ => Time.time);
             timerCount = stopTimers.Count;
         }
         
@@ -190,7 +199,6 @@ public class MergeManager : MonoBehaviour
     private void Start()
     {
         // if (Application.isEditor) coolTime = 0.1f;
-        
         fallAnchor.GetComponent<SpriteRenderer>().material.SetFloat(ratio, 1);
     }
 

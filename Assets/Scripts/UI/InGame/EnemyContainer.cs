@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using UnityEngine;
 
 public class EnemyContainer : MonoBehaviour
@@ -16,13 +15,13 @@ public class EnemyContainer : MonoBehaviour
     [SerializeField]
     private List<EnemyData> enemies;
     [SerializeField]
-    private List<EnemyData> bosses = new List<EnemyData>();
+    private List<EnemyData> bosses = new();
     [SerializeField]
     private float alignment = 4;
-    private readonly List<GameObject> currentEnemies = new List<GameObject>();
+    private readonly List<GameObject> currentEnemies = new();
     private const int ENEMY_NUM = 4;
     private int gainedExp;
-    private readonly List<Vector3> positions = new List<Vector3>();
+    private readonly List<Vector3> positions = new();
 
     public int GetEnemyCount()
     {
@@ -74,6 +73,8 @@ public class EnemyContainer : MonoBehaviour
                 if (randomPoint < enemyData.probability)
                 {
                     var e = Instantiate(enemyData.prefab, this.transform);
+                    float m = 1 + GameManager.Instance.stageManager.currentStage.Value * 0.1f;
+                    e.transform.GetComponentsInChildren<EnemyBase>()[0].Init(m);
                     currentEnemies.Add(e);
                     e.transform.position = positions[currentEnemies.Count - 1];
                     break;

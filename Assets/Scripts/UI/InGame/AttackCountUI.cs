@@ -11,17 +11,22 @@ public class AttackCountUI : MonoBehaviour
     
     public void SetAttackCount(int target)
     {
-        if(target == 0) return;
+        if (target == 0)
+        {
+            attackCountText.text = "0";
+            attackCountText.transform.DOScale(Vector3.one, 0.03f);
+            return;
+        }
         
         float inDuration = 0.03f + (target * 0.0001f);
         float outDuration = inDuration * 15;
-        float size = 1 + (target * 0.005f);
+        float size = 1 + (target * 0.01f);
         float angle = 5 + (target * 0.05f);
         attackCountText.text = target.ToString();
         
-        attackCountText.transform.DOScale(Vector3.one * size, inDuration)
+        attackCountText.transform.DOScale(Vector3.one * (size * 3), inDuration)
             .OnComplete(() => 
-                    attackCountText.transform.DOScale(Vector3.one, outDuration).SetEase(Ease.OutBounce)
+                    attackCountText.transform.DOScale(Vector3.one * size, outDuration).SetEase(Ease.OutBounce)
             );
         // 少し時計回りに傾く
        attackCountText.transform.DORotate(new Vector3(0, 0, angle), inDuration)
