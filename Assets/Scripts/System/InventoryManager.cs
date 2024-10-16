@@ -6,8 +6,7 @@ using System.Linq;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance { get; private set; }
-
-
+    
     [SerializeField]
     private BallDataList allBallDataList;
     [SerializeField]
