@@ -5,12 +5,17 @@ using DG.Tweening;
 public class AttackCountUI : MonoBehaviour
 {
     [SerializeField] private TMPro.TextMeshProUGUI attackCountText;
-    private Tween shakeTween;
     private const int VIBRATO = 10;
     private const float RANDOMNESS = 90.0f;
     
+    private Tween sizeTween;
+    private Tween angleTween;
+    
     public void SetAttackCount(int target)
     {
+        sizeTween?.Kill();
+        angleTween?.Kill();
+        
         if (target == 0)
         {
             attackCountText.text = "0";
@@ -24,12 +29,12 @@ public class AttackCountUI : MonoBehaviour
         float angle = 5 + (target * 0.05f);
         attackCountText.text = target.ToString();
         
-        attackCountText.transform.DOScale(Vector3.one * (size * 3), inDuration)
+        sizeTween = attackCountText.transform.DOScale(Vector3.one * (size * 3), inDuration)
             .OnComplete(() => 
                     attackCountText.transform.DOScale(Vector3.one * size, outDuration).SetEase(Ease.OutBounce)
             );
         // 少し時計回りに傾く
-       attackCountText.transform.DORotate(new Vector3(0, 0, angle), inDuration)
+       angleTween = attackCountText.transform.DORotate(new Vector3(0, 0, angle), inDuration)
             .OnComplete(() =>
                 {
                     attackCountText.transform.DORotate(new Vector3(0, 0, 0), outDuration).SetEase(Ease.OutBounce);
@@ -41,6 +46,5 @@ public class AttackCountUI : MonoBehaviour
     {
         attackCountText = GetComponent<TMPro.TextMeshProUGUI>();
         attackCountText.text = "0";
-        shakeTween = transform.DOShakePosition(1.0f, 0, VIBRATO, RANDOMNESS, false, false).SetLoops(-1);
     }
 }

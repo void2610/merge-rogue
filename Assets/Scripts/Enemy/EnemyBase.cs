@@ -64,9 +64,9 @@ public class EnemyBase : MonoBehaviour
         }
         else
         {
-            this.transform.DOMoveY(0.75f, 0.15f).SetRelative(true).SetEase(Ease.InQuad).OnComplete(() =>
+            this.transform.DOMoveY(0.75f, 0.1f).SetRelative(true).SetEase(Ease.OutQuad).OnComplete(() =>
             {
-                this.transform.DOMoveY(-.75f, 0.15f).SetRelative(true).SetEase(Ease.OutQuad).SetLink(gameObject);
+                this.transform.DOMoveY(-.75f, 0.1f).SetRelative(true).SetEase(Ease.InQuad).SetLink(gameObject);
             }).SetLink(gameObject);
         }
 
@@ -93,6 +93,7 @@ public class EnemyBase : MonoBehaviour
 
     public void OnDisappear()
     {
+        SeManager.Instance.PlaySe("coin");
         for (int i = 0; i < coin; i++)
         {
             Utils.Instance.WaitAndInvoke(i * 0.1f, () =>

@@ -6,8 +6,6 @@ public class Coin : MonoBehaviour
     private readonly Vector3 target = new(-8.5f, 4.75f, 0);
     private void Start()
     {
-        SeManager.Instance.PlaySe("coin");
-
         var r = Random.Range(-0.1f, 0.1f);
         this.transform.position += new Vector3(r, 1, 0);
 

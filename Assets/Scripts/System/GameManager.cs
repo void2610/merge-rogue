@@ -144,7 +144,6 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        if (Application.isEditor) coin.Value += 1000;
         ChangeState(GameState.StageMoving);
     }
 
