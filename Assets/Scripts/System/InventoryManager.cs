@@ -13,12 +13,12 @@ public class InventoryManager : MonoBehaviour
     [SerializeField]
     private GameObject ballBasePrefab;
 
-    private Vector3 inventoryPosition = new Vector3(0, 4, 0);
-    private List<GameObject> inventory = new List<GameObject>();
     private const int INVENTORY_SIZE = 9;
-    private readonly List<float> sizes = new List<float> { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f };
-    private readonly List<float> probabilities = new List<float> { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
-    private readonly List<Color> colors = new List<Color> { Color.gray, Color.green, Color.blue,  Color.magenta, Color.yellow, Color.red, Color.cyan, Color.black, Color.white };
+    private readonly List<GameObject> inventory = new();
+    private readonly Vector3 inventoryPosition = new(5.0f, -1.0f, 0);
+    private readonly List<float> sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f };
+    private readonly List<float> probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
+    private readonly List<Color> colors = new() { Color.gray, Color.green, Color.blue,  Color.magenta, Color.yellow, Color.red, Color.cyan, Color.black, Color.white };
 
     // ボールを入れ替える
     public void SetBall(BallData data, int level)
@@ -147,8 +147,11 @@ public class InventoryManager : MonoBehaviour
         var bd = allBallDataList.GetNormalBallData();
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
+            float angle = -i * Mathf.PI * 2 / INVENTORY_SIZE;
+            float x = Mathf.Cos(angle) * 2;
+            float y = Mathf.Sin(angle) * 2;
             var ball = CreateBallInstanceFromBallData(bd, i + 1);
-            ball.transform.position = inventoryPosition + new Vector3(i*0.9f, 0, 0);
+            ball.transform.position = inventoryPosition + new Vector3(x, y, 0);
             SetEvent(ball, i);
         }
         GameManager.Instance.GetComponent<InventoryUI>().SetItem(inventory);

@@ -21,8 +21,9 @@ public class BallBase : MonoBehaviour
     public float attack = 1;
     public Color color = Color.white;
     public int serial { get; private set; }
+    public bool isFrozen { get; private set; } = false;
     public bool isDestroyed;
-    private bool isFrozen;
+    
     public void Freeze()
     {
         GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;

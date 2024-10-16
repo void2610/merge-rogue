@@ -10,6 +10,7 @@ public class AttackCountUI : MonoBehaviour
     
     private Tween sizeTween;
     private Tween angleTween;
+    private float defaultSize;
     
     public void SetAttackCount(int target)
     {
@@ -19,7 +20,7 @@ public class AttackCountUI : MonoBehaviour
         if (target == 0)
         {
             attackCountText.text = "0";
-            attackCountText.transform.DOScale(Vector3.one, 0.03f);
+            attackCountText.transform.DOScale(Vector3.one * defaultSize, 0.03f);
             return;
         }
         
@@ -29,9 +30,9 @@ public class AttackCountUI : MonoBehaviour
         float angle = 5 + (target * 0.05f);
         attackCountText.text = target.ToString();
         
-        sizeTween = attackCountText.transform.DOScale(Vector3.one * (size * 3), inDuration)
+        sizeTween = attackCountText.transform.DOScale(Vector3.one * (defaultSize * (size * 3)), inDuration)
             .OnComplete(() => 
-                    attackCountText.transform.DOScale(Vector3.one * size, outDuration).SetEase(Ease.OutBounce)
+                    attackCountText.transform.DOScale(Vector3.one * (defaultSize * size), outDuration).SetEase(Ease.OutBounce)
             );
         // 少し時計回りに傾く
        angleTween = attackCountText.transform.DORotate(new Vector3(0, 0, angle), inDuration)
@@ -46,5 +47,6 @@ public class AttackCountUI : MonoBehaviour
     {
         attackCountText = GetComponent<TMPro.TextMeshProUGUI>();
         attackCountText.text = "0";
+        defaultSize = attackCountText.transform.localScale.x;
     }
 }
