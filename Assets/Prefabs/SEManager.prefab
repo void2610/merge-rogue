@@ -60,7 +60,7 @@ MonoBehaviour:
     volume: 1
   - name: levelUp
     audioClip: {fileID: 8300000, guid: 295aecdfed9e64deeab79853422071f4, type: 3}
-    volume: 0.1
+    volume: 0.2
   - name: footstep
     audioClip: {fileID: 8300000, guid: dea09f1f07d11490ba4ccac854c2d760, type: 3}
     volume: 1
