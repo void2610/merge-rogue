@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -25,27 +26,36 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private EventSystem eventSystem;
 
     private float defaultScale = 1.0f;
+    private List<Tween> tweens = new();
 
     private void OnClick()
     {
-        this.transform.DOScale(defaultScale * scale, duration).SetEase(Ease.OutElastic);
+        var t = this.transform.DOScale(defaultScale * scale, duration).SetEase(Ease.OutElastic);
+        tweens.Add(t);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (tweenByPointer && this.GetComponent<Button>()?.interactable == true)
-            this.transform.DOScale(defaultScale * scale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
+        {
+            var t = this.transform.DOScale(defaultScale * scale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
+            tweens.Add(t);
+        }
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         if (tweenByPointer)
-            this.transform.DOScale(defaultScale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
+        {
+            var t = this.transform.DOScale(defaultScale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
+            tweens.Add(t);
+        }
     }
 
     public void ResetScale()
     {
-        this.transform.DOScale(defaultScale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
+        var t = this.transform.DOScale(defaultScale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
+        tweens.Add(t);
     }
 
     public void CheckMouseAndTween()
@@ -55,7 +65,8 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
             Debug.LogError("Raycaster or EventSystem is not assigned.");
             return;
         }
-        this.transform.DOScale(defaultScale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
+        var t = this.transform.DOScale(defaultScale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
+        tweens.Add(t);
         // マウスからrayを飛ばして、ボタンの上にマウスがあるかどうかを判定する
         var pointerEventData = new PointerEventData(eventSystem)
         {
@@ -70,7 +81,8 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         // UI要素にヒットしたか確認
         if (results[0].gameObject == this.gameObject || results[0].gameObject.transform.IsChildOf(this.transform))
         {
-            this.transform.DOScale(defaultScale * scale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
+            var t2 = this.transform.DOScale(defaultScale * scale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
+            tweens.Add(t2);
         }
     }
 
@@ -88,5 +100,13 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private void Start()
     {
         defaultScale = this.transform.localScale.x;
+    }
+
+    private void OnDestroy()
+    {
+        foreach (var t in tweens)
+        {
+            t?.Kill();
+        }
     }
 }
