@@ -50,6 +50,7 @@ public class Shop : MonoBehaviour
 
     public void BuyBall(int index)
     {
+        if(selectedItem == -1) return;
         var item = currentItems[selectedItem];
         if (item == null) return;
 
