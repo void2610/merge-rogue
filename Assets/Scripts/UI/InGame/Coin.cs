@@ -14,7 +14,7 @@ public class Coin : MonoBehaviour
         else
             this.transform.DOMoveX(1.5f, 2f).SetRelative(true).SetUpdate(true).SetLink(gameObject);
 
-        this.transform.DOMoveY(-1f, 1.2f).SetEase(Ease.OutBounce).SetRelative(true).OnComplete(() =>
+        this.transform.DOMoveY(-1.1f, 1.5f).SetEase(Ease.OutBounce).SetRelative(true).OnComplete(() =>
         {
             var middle = new Vector3(((this.transform.position.x + target.x) / 2) + 0.5f, ((this.transform.position.y + target.y) / 2) + 0.5f, 0);
             this.transform.DOPath(new [] { this.transform.position, middle, target }, 1f).SetEase(Ease.OutExpo
