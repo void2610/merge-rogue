@@ -50,7 +50,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     // 落とすボールを生成してMergeManagerに渡す
-    public GameObject GetRandomBall()
+    public GameObject GetRandomBall(Vector3 position = default)
     {
         GameObject ball;
         float total = probabilities.Sum();
@@ -59,13 +59,13 @@ public class InventoryManager : MonoBehaviour
         {
             if (r < probabilities[i])
             {
-                ball = CopyBall(inventory[i]);
+                ball = CopyBall(inventory[i], position);
                 ball.GetComponent<BallBase>().Freeze();
                 return ball;
             }
             r -= probabilities[i];
         }
-        ball = CopyBall(inventory[0]);
+        ball = CopyBall(inventory[0], position);
         ball.GetComponent<BallBase>().Freeze();
         return ball;
     }
@@ -103,9 +103,9 @@ public class InventoryManager : MonoBehaviour
         return ball;
     }
 
-    private GameObject CopyBall(GameObject ball)
+    private GameObject CopyBall(GameObject ball, Vector3 position = default)
     {
-        GameObject newBall = Instantiate(ball);
+        var newBall = Instantiate(ball, position, Quaternion.identity);
         newBall.transform.localScale = ball.transform.localScale;
         newBall.GetComponent<SpriteRenderer>().color = ball.GetComponent<SpriteRenderer>().color;
         Destroy(newBall.GetComponent<EventTrigger>());
@@ -151,6 +151,7 @@ public class InventoryManager : MonoBehaviour
             float y = Mathf.Sin(angle) * 2;
             var ball = CreateBallInstanceFromBallData(bd, i + 1);
             ball.transform.position = inventoryPosition + new Vector3(x, y, 0);
+            ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
             SetEvent(ball, i);
         }
         GameManager.Instance.GetComponent<InventoryUI>().SetItem(inventory);

@@ -26,13 +26,11 @@ public class BallBase : MonoBehaviour
     
     public void Freeze()
     {
-        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         isFrozen = true;
     }
 
     public void Unfreeze()
     {
-        GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         isFrozen = false;
     }
 
