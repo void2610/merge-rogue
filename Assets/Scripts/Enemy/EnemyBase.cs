@@ -64,9 +64,9 @@ public class EnemyBase : MonoBehaviour
         }
         else
         {
-            this.transform.DOMoveY(0.75f, 0.1f).SetRelative(true).SetEase(Ease.OutQuad).OnComplete(() =>
+            this.transform.DOMoveY(0.75f, 0.05f).SetRelative(true).SetEase(Ease.OutQuad).OnComplete(() =>
             {
-                this.transform.DOMoveY(-.75f, 0.1f).SetRelative(true).SetEase(Ease.InQuad).SetLink(gameObject);
+                this.transform.DOMoveY(-.75f, 0.05f).SetRelative(true).SetEase(Ease.InQuad).SetLink(gameObject);
             }).SetLink(gameObject);
         }
 
