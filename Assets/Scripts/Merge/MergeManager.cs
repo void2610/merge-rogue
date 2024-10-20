@@ -198,7 +198,6 @@ public class MergeManager : MonoBehaviour
 
         ballContainer = new GameObject("BallContainer");
         wall.SetWallWidth(wallWidths[0]);
-        ballPerOneTurn = 2;
     }
 
     private void Start()

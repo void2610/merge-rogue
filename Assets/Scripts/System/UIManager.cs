@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 using TMPro;
 using DG.Tweening;
 using R3;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class UIManager : MonoBehaviour
 {
@@ -15,6 +17,8 @@ public class UIManager : MonoBehaviour
     private Slider seSlider;
     [SerializeField]
     private Image fadeImage;
+
+    [SerializeField] private Volume volume;
     [SerializeField]
     private List<CanvasGroup> canvasGroups;
     [SerializeField]
@@ -98,6 +102,17 @@ public class UIManager : MonoBehaviour
         fadeImage.color = new Color(0, 0, 0, 0);
         fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("MainScene")).SetUpdate(true);
     }
+    
+    public void SetVignette(float value)
+    {
+        Vignette vignette;
+        if(!volume.profile.TryGet(out vignette)) return;
+        
+        Debug.Log(vignette);
+        Debug.Log(value);
+        
+        vignette.intensity.value = value;
+    }
 
     private void Awake()
     {
@@ -124,6 +139,10 @@ public class UIManager : MonoBehaviour
         {
             hpSlider.value = v;
             hpText.text = v + "/" + GameManager.Instance.player.maxHealth;
+            if (v < 30)
+            {
+                SetVignette(((30.0f-v)/30.0f)*0.3f);
+            }
         }).AddTo(this);
         GameManager.Instance.player.maxHealth.Subscribe((v) =>
         {

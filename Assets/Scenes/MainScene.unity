@@ -2104,6 +2104,7 @@ MonoBehaviour:
   bgmSlider: {fileID: 1144609053041968782}
   seSlider: {fileID: 9088715935136075098}
   fadeImage: {fileID: 1749989334}
+  volume: {fileID: 703202738}
   canvasGroups:
   - {fileID: 403790023}
   - {fileID: 2045017044}
