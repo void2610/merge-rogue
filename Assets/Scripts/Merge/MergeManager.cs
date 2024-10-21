@@ -86,12 +86,13 @@ public class MergeManager : MonoBehaviour
         {
             nextBall = InventoryManager.instance.GetRandomBall(nextBallPosition);
         }
-        currentBall = InventoryManager.instance.GetRandomBall(fallAnchor.transform.position + Vector3.up*0.8f);
+        currentBall = InventoryManager.instance.GetRandomBall(fallAnchor.transform.position - Vector3.up * 0.2f);
         currentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         fallAnchor.GetComponent<HingeJoint2D>().connectedBody = currentBall.GetComponent<Rigidbody2D>();
         
         ballCountText.text = remainingBalls + "/" + ballPerOneTurn;
         attackCountUI.SetAttackCount(0);
+        fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = true;
     }
 
     public void SpawnBall(int level, Vector3 p, Quaternion q)
@@ -165,9 +166,9 @@ public class MergeManager : MonoBehaviour
         }
         else
         {
-
             currentBall = null;
             nextBall = null;
+            fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = false;
         }
         ballCountText.text = remainingBalls + "/" + ballPerOneTurn;
     }
@@ -198,12 +199,15 @@ public class MergeManager : MonoBehaviour
 
         ballContainer = new GameObject("BallContainer");
         wall.SetWallWidth(wallWidths[0]);
+        fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = false;
     }
 
     private void Start()
     {
         // if (Application.isEditor) coolTime = 0.1f;
         ballGauge.GetComponent<SpriteRenderer>().material.SetFloat(ratio, 1);
+        fallAnchor.transform.position = currentBallPosition;
+        // FIXME: currentBallと落としたballが反応して消える
     }
 
     private void Update()
@@ -237,7 +241,6 @@ public class MergeManager : MonoBehaviour
             SeManager.Instance.PlaySe("fall");
             lastFallTime = Time.time;
             FallAndDecideNextBall();
-            
         }
         fallAnchor.transform.position = currentBallPosition;
     }
