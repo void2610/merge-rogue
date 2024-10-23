@@ -105,6 +105,5 @@ public class StageManager : MonoBehaviour
     {
         DecideStage();
         // stageTypes[0] = StageType.Shop;
-        m.SetTextureOffset(mainTex, new Vector2(0, 0));
-    }
+        m.SetTextureOffset(mainTex, new Vector2(0, 0)); }
 }

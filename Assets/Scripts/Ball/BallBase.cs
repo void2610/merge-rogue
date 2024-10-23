@@ -1,4 +1,5 @@
 using UnityEngine;
+using DG.Tweening;
 
 public class BallBase : MonoBehaviour
 {
@@ -48,6 +49,13 @@ public class BallBase : MonoBehaviour
         transform.localScale = new Vector3(size, size, size);
     }
 
+    private void Start()
+    {
+        var t = transform.localScale.x;
+        transform.localScale = Vector3.zero;
+        transform.DOScale(t, 0.2f).SetEase(Ease.OutBack).SetUpdate(true);
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (isDestroyed || isFrozen) return;
@@ -67,10 +75,18 @@ public class BallBase : MonoBehaviour
                     Quaternion rotation = Quaternion.Lerp(this.transform.rotation, other.transform.rotation, 0.5f);
                     MergeManager.Instance.SpawnBall(level + 1, center, rotation);
 
-                    Destroy(gameObject);
-                    Destroy(other.gameObject);
+                    DestroyBall();
+                    b.DestroyBall();
                 }
             }
         }
+    }
+    
+    public void DestroyBall()
+    {
+        transform.DOScale(0, 0.2f).SetEase(Ease.InBack).OnComplete(() =>
+        {
+            Destroy(gameObject);
+        });
     }
 }
