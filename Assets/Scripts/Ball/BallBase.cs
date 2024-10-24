@@ -62,7 +62,7 @@ public class BallBase : MonoBehaviour
 
         if (other.gameObject.TryGetComponent(out BallBase b))
         {
-            if (b.level == this.level)
+            if (b.level == this.level && !b.isFrozen && !b.isDestroyed)
             {
                 if (this.serial < b.serial)
                 {
