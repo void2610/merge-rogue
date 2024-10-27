@@ -145,7 +145,7 @@ ScriptedImporter:
     uvTransform: {x: 4, y: 4}
   - name: slime_Frame_1
     originalName: 
-    pivot: {x: 0.5, y: 0.14285715}
+    pivot: {x: 0.5, y: 0}
     alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
@@ -154,7 +154,7 @@ ScriptedImporter:
       x: 4
       y: 19
       width: 6
-      height: 7
+      height: 6
     spriteID: 7e7752157853043e7ad3d433d53d240c
     spriteBone: []
     spriteOutline: []
@@ -187,9 +187,9 @@ ScriptedImporter:
       additiveSortOrder: 0
       cellRect:
         x: 1
-        y: -1
+        y: 0
         width: 6
-        height: 7
+        height: 6
       spriteId: 7e7752157853043e7ad3d433d53d240c
     linkedCells: []
     parentIndex: -1
