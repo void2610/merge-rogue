@@ -90,11 +90,9 @@ public class GameManager : MonoBehaviour
         switch (state)
         {
             case GameState.StageMoving:
-                Time.timeScale = 1;
                 break;
             case GameState.Shop:
                 Shop.Instance.CloseShop();
-                Time.timeScale = 1;
                 break;
         }
         state = newState;
@@ -102,10 +100,9 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.StageMoving:
-                Time.timeScale = 0;
                 // レベルアップが残っている場合はレベルアップ画面を表示
                 if (uiManager.remainingLevelUps > 0)
-                     ChangeState(GameState .LevelUp);
+                    ChangeState(GameState.LevelUp);
                 else
                     stageManager.NextStage();
                 break;
@@ -117,10 +114,11 @@ public class GameManager : MonoBehaviour
                 });
                 break;
             case GameState.Merge:
+                Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
                 MergeManager.Instance.ResetRemainingBalls();
                 break;
             case GameState.PlayerAttack:
-                // 攻撃して、敵の攻撃に移る
+                Physics2D.simulationMode = SimulationMode2D.Script;
                 Utils.Instance.WaitAndInvoke(1f, () =>
                 {
                     MergeManager.Instance.Attack();
@@ -131,12 +129,9 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Shop:
                 Shop.Instance.OpenShop();
-                Time.timeScale = 0;
                 uiManager.EnableCanvasGroup("Shop", true);
                 break;
             case GameState.LevelUp:
-                Time.timeScale = 0;
-                // レベルアップ後にtimescaleを戻さない
                 uiManager.EnableCanvasGroup("LevelUp", true);
                 break;
         }
