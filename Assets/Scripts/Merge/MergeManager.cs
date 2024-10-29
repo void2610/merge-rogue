@@ -15,10 +15,12 @@ public class MergeManager : MonoBehaviour
 
     public static MergeManager Instance;
     private static readonly int ratio = Shader.PropertyToID("_Ratio");
+    private static readonly int alpha = Shader.PropertyToID("_Alpha");
 
     [SerializeField] private MergeWall wall;
     [SerializeField] private GameObject mergeParticle;
     [SerializeField] private GameObject fallAnchor;
+    [SerializeField] private Material arrowMaterial;
     [SerializeField] private GameObject ballGauge;
     [SerializeField] private TextMeshProUGUI ballCountText;
     [SerializeField] private AttackCountUI attackCountUI;
@@ -91,8 +93,9 @@ public class MergeManager : MonoBehaviour
         fallAnchor.GetComponent<HingeJoint2D>().connectedBody = currentBall.GetComponent<Rigidbody2D>();
         
         ballCountText.text = remainingBalls + "/" + ballPerOneTurn;
-        attackCountUI.SetAttackCount(0);
         fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = true;
+        //arrowMaterial.SetFloat(Alpha, 0); をフェードさせる
+        DOTween.To(() => arrowMaterial.GetFloat(alpha), x => arrowMaterial.SetFloat(alpha, x), 1, 0.5f);
     }
 
     public void SpawnBall(int level, Vector3 p, Quaternion q)
@@ -169,6 +172,8 @@ public class MergeManager : MonoBehaviour
             currentBall = null;
             nextBall = null;
             fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = false;
+            DOTween.To(() => arrowMaterial.GetFloat(alpha), x => arrowMaterial.SetFloat(alpha, x), 0, 0.5f);
+
         }
         ballCountText.text = remainingBalls + "/" + ballPerOneTurn;
     }

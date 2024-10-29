@@ -7415,6 +7415,7 @@ MonoBehaviour:
   wall: {fileID: 774851889}
   mergeParticle: {fileID: 1620409693136122509, guid: adb71434fa9c04035a16947c624e5be2, type: 3}
   fallAnchor: {fileID: 632287031}
+  arrowMaterial: {fileID: 2100000, guid: 7158305c99d774c409c2d3ec56e60442, type: 2}
   ballGauge: {fileID: 738866161}
   ballCountText: {fileID: 595156495}
   attackCountUI: {fileID: 1546659874}
