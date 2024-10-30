@@ -128,7 +128,14 @@ public class EnemyBase : MonoBehaviour
         healthSlider.value = health;
         healthText.text = health + "/" + maxHealth;
         attackCountText.text = (actionInterval - turnCount).ToString();
-        
+
+        ColorManager.Instance.AddColorObject(this.gameObject, ColorManager.ColorType.Accent);
+        var fill = healthSlider.transform.Find("Fill Area").Find("Fill").gameObject;
+        ColorManager.Instance.AddColorObject(fill, ColorManager.ColorType.Accent);
+        var background = healthSlider.transform.Find("Background").gameObject;
+        ColorManager.Instance.AddColorObject(background, ColorManager.ColorType.Background);
+        ColorManager.Instance.AddColorObject(attackCountText.gameObject, ColorManager.ColorType.Secondary);
+
         OnAppear();
     }
 }
