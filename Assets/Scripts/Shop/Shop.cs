@@ -21,6 +21,7 @@ public class Shop : MonoBehaviour
     private Transform itemContainer => this.transform.Find("Items");
     private ShopState state = ShopState.Closed;
     private int selectedItem = -1;
+    private float defaultScale = 1.0f;
 
     public void OpenShop(int count = 3)
     {
@@ -61,7 +62,7 @@ public class Shop : MonoBehaviour
             InventoryManager.instance.SetBall(item, index + 1);
             SeManager.Instance.PlaySe("coin");
 
-            itemContainer.GetChild(selectedItem).DOScale(1, 0.2f).SetUpdate(true);
+            itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.2f).SetUpdate(true);
             state = ShopState.NotSelected;
             GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(false);
             GameManager.Instance.GetComponent<InventoryUI>().SetCursor(0);
@@ -82,6 +83,7 @@ public class Shop : MonoBehaviour
         var image = g.transform.Find("BallIcon").GetComponent<Image>();
         image.sprite = ball.sprite;
         var button = g.GetComponent<Button>();
+        defaultScale = g.transform.localScale.x;
         if (button)
         {
             button.onClick.AddListener(() =>
@@ -92,7 +94,7 @@ public class Shop : MonoBehaviour
                 {
                     state = ShopState.Selected;
                     selectedItem = index;
-                    g.transform.DOScale(1.2f, 0.2f).SetUpdate(true);
+                    g.transform.DOScale(defaultScale * 1.2f, 0.2f).SetUpdate(true);
                     GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(true);
                     SeManager.Instance.PlaySe("button");
                 }
@@ -129,9 +131,9 @@ public class Shop : MonoBehaviour
             else
             {
                 itemContainer.GetChild(i).GetComponent<Image>().color = new Color(0.7f, 0.7f, 0.7f, 1);
-                if (itemContainer.GetChild(i).localScale.x > 1)
+                if (itemContainer.GetChild(i).localScale.x > defaultScale)
                 {
-                    itemContainer.GetChild(i).DOScale(1, 0.2f).SetUpdate(true);
+                    itemContainer.GetChild(i).DOScale(defaultScale, 0.2f).SetUpdate(true);
                 }
             }
         }

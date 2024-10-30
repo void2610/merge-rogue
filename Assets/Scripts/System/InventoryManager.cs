@@ -25,7 +25,8 @@ public class InventoryManager : MonoBehaviour
         if (level is <= 0 or > INVENTORY_SIZE) return;
         var old = inventory[level - 1];
         var ball = CreateBallInstanceFromBallData(data, level);
-        ball.transform.position = inventoryPosition + new Vector3(level - 1, 0, 0);
+        ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+        ball.transform.position = old.transform.position;
         inventory[level - 1] = ball;
         GameManager.Instance.GetComponent<InventoryUI>().SetItem(inventory);
         Destroy(old);
@@ -130,6 +131,14 @@ public class InventoryManager : MonoBehaviour
         ball.GetComponent<EventTrigger>().triggers.Add(entry);
         inventory.Add(ball);
     }
+    
+    private Vector3 CalcInventoryPosition(int index)
+    {
+        float angle = -index * Mathf.PI * 2 / INVENTORY_SIZE;
+        float x = Mathf.Cos(angle) * 2;
+        float y = Mathf.Sin(angle) * 2;
+        return inventoryPosition + new Vector3(x, y, 0);
+    }
 
     private void Awake()
     {
@@ -146,11 +155,8 @@ public class InventoryManager : MonoBehaviour
         var bd = allBallDataList.GetNormalBallData();
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
-            float angle = -i * Mathf.PI * 2 / INVENTORY_SIZE;
-            float x = Mathf.Cos(angle) * 2;
-            float y = Mathf.Sin(angle) * 2;
             var ball = CreateBallInstanceFromBallData(bd, i + 1);
-            ball.transform.position = inventoryPosition + new Vector3(x, y, 0);
+            ball.transform.position = CalcInventoryPosition(i);
             ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
             SetEvent(ball, i);
         }
