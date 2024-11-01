@@ -17,7 +17,7 @@ public class BgmManager : MonoBehaviour
     [SerializeField]
     private bool playOnStart = true;
     [SerializeField]
-    private AudioMixer mixer;
+    private AudioMixerGroup bmgMixerGroup;
     [SerializeField]
     private List<SoundData> bgmList = new List<SoundData>();
 
@@ -42,7 +42,7 @@ public class BgmManager : MonoBehaviour
             }
             volume = value;
             PlayerPrefs.SetFloat("BgmVolume", value);
-            mixer.SetFloat("BgmVolume", Mathf.Log10(value) * 20);
+            bmgMixerGroup.audioMixer.SetFloat("BgmVolume", Mathf.Log10(value) * 20);
             AudioSource.volume = currentBGM != null ? currentBGM.volume : 1;
         }
     }
@@ -92,8 +92,9 @@ public class BgmManager : MonoBehaviour
     private void Start()
     {
         volume = PlayerPrefs.GetFloat("BgmVolume", 1.0f);
-        mixer.SetFloat("BgmVolume", Mathf.Log10(volume) * 20);
+        bmgMixerGroup.audioMixer.SetFloat("BgmVolume", Mathf.Log10(volume) * 20);
         AudioSource.volume = 0;
+        AudioSource.outputAudioMixerGroup = bmgMixerGroup;
         if (playOnStart)
         {
             isPlaying = true;

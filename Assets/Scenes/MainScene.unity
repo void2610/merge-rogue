@@ -3771,8 +3771,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 2467584790655498006, guid: f789843a274c340cb976f3e5fb359cf3, type: 2}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 83e4291cf23f547d094863888a9a8a89, type: 3}
+  m_Resource: {fileID: 8300000, guid: 83e4291cf23f547d094863888a9a8a89, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -3867,7 +3867,7 @@ Transform:
   m_GameObject: {fileID: 891134755}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 464.4744, y: 263.18198, z: 12689.24}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3886,8 +3886,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playOnStart: 1
-  mixer: {fileID: 24100000, guid: f789843a274c340cb976f3e5fb359cf3, type: 2}
-  bgmList: []
+  bmgMixerGroup: {fileID: 2467584790655498006, guid: f789843a274c340cb976f3e5fb359cf3, type: 2}
+  bgmList:
+  - audioClip: {fileID: 8300000, guid: 0d4d930d3b1c34e5da124ced2a6eae71, type: 3}
+    volume: 1
+  - audioClip: {fileID: 8300000, guid: de080117f31d2436ba8d11fbf8cc20ce, type: 3}
+    volume: 1
+  - audioClip: {fileID: 8300000, guid: 83e4291cf23f547d094863888a9a8a89, type: 3}
+    volume: 1
 --- !u!1 &892242988
 GameObject:
   m_ObjectHideFlags: 0
