@@ -3888,9 +3888,9 @@ MonoBehaviour:
   playOnStart: 1
   bmgMixerGroup: {fileID: 2467584790655498006, guid: f789843a274c340cb976f3e5fb359cf3, type: 2}
   bgmList:
-  - audioClip: {fileID: 8300000, guid: 0d4d930d3b1c34e5da124ced2a6eae71, type: 3}
+  - audioClip: {fileID: 8300000, guid: 4bd83efd0496444c9845bccfc5798993, type: 3}
     volume: 1
-  - audioClip: {fileID: 8300000, guid: de080117f31d2436ba8d11fbf8cc20ce, type: 3}
+  - audioClip: {fileID: 8300000, guid: 29aa3941e2cae40ae8a2c9da09e028e9, type: 3}
     volume: 1
   - audioClip: {fileID: 8300000, guid: 83e4291cf23f547d094863888a9a8a89, type: 3}
     volume: 1
