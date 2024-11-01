@@ -73,7 +73,7 @@ public class EnemyContainer : MonoBehaviour
                 if (randomPoint < enemyData.probability)
                 {
                     var e = Instantiate(enemyData.prefab, this.transform);
-                    float m = 1 + GameManager.Instance.stageManager.currentStage.Value * 0.1f;
+                    float m = 1 + GameManager.Instance.stageManager.currentStage.Value * 0.2f;
                     e.transform.GetComponentsInChildren<EnemyBase>()[0].Init(m);
                     currentEnemies.Add(e);
                     e.transform.position = positions[currentEnemies.Count - 1];

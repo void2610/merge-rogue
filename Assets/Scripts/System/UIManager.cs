@@ -154,7 +154,6 @@ public class UIManager : MonoBehaviour
         {
             BgmManager.Instance.BgmVolume = value;
         });
-
         seSlider.onValueChanged.AddListener((value) =>
         {
             SeManager.Instance.seVolume = value;

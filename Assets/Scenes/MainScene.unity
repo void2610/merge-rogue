@@ -438,7 +438,7 @@ GameObject:
   - component: {fileID: 154657690}
   - component: {fileID: 154657689}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: BackCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -458,7 +458,7 @@ RectTransform:
   m_Children:
   - {fileID: 536529467}
   - {fileID: 676991511}
-  m_Father: {fileID: 774851888}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2924,7 +2924,7 @@ Transform:
   m_GameObject: {fileID: 774851887}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 2, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2932,7 +2932,6 @@ Transform:
   - {fileID: 1066192358}
   - {fileID: 1461756397}
   - {fileID: 1354840294}
-  - {fileID: 154657688}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &774851889
@@ -2950,6 +2949,7 @@ MonoBehaviour:
   leftWall: {fileID: 1984357586}
   rightWall: {fileID: 1066192357}
   floor: {fileID: 1461756396}
+  xOffset: 2
 --- !u!1 &813430540
 GameObject:
   m_ObjectHideFlags: 0
@@ -10082,6 +10082,7 @@ SceneRoots:
   - {fileID: 703202739}
   - {fileID: 774851888}
   - {fileID: 1993390313}
+  - {fileID: 154657688}
   - {fileID: 380910489}
   - {fileID: 114142658}
   - {fileID: 198190388}
