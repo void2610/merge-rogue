@@ -49,7 +49,6 @@ public class InventoryManager : MonoBehaviour
         }
         var ball = CopyBall(inventory[level - 1]);
         ball.GetComponent<BallBase>().Unfreeze();
-        ball.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
         return ball;
     }
 
@@ -65,14 +64,12 @@ public class InventoryManager : MonoBehaviour
             {
                 ball = CopyBall(inventory[i], position);
                 ball.GetComponent<BallBase>().Freeze();
-                ball.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
                 return ball;
             }
             r -= probabilities[i];
         }
         ball = CopyBall(inventory[0], position);
         ball.GetComponent<BallBase>().Freeze();
-        ball.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.None;
         return ball;
     }
 
@@ -103,9 +100,8 @@ public class InventoryManager : MonoBehaviour
         }
         ball.transform.localScale = Vector3.one * sizes[level - 1] * ballBase.size;
         // HDRカラーに変換
-        var color = colors[level - 1] * 1.5f;
+        var color = colors[level - 1] * 1.2f;
         ball.GetComponent<SpriteRenderer>().color = color;
-        ball.GetComponent<SpriteRenderer>().maskInteraction = SpriteMaskInteraction.VisibleInsideMask;
         ball.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = data.sprite;
         ball.GetComponent<BallBase>().level = level;
         ball.GetComponent<BallBase>().Freeze();

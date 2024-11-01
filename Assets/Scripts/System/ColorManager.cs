@@ -65,23 +65,20 @@ public class ColorManager : MonoBehaviour
         }
     }
     
-    public void RemoveColorObject(GameObject obj)
+    public Color GetColor(ColorType colorType)
     {
-        if(primaryColorObjects.Contains(obj))
+        switch (colorType)
         {
-            primaryColorObjects.Remove(obj);
-        }
-        if(secondaryColorObjects.Contains(obj))
-        {
-            secondaryColorObjects.Remove(obj);
-        }
-        if(accentColorObjects.Contains(obj))
-        {
-            accentColorObjects.Remove(obj);
-        }
-        if(backgroundColorObjects.Contains(obj))
-        {
-            backgroundColorObjects.Remove(obj);
+            case ColorType.Primary:
+                return primaryColor;
+            case ColorType.Secondary:
+                return secondaryColor;
+            case ColorType.Accent:
+                return accentColor;
+            case ColorType.Background:
+                return backgroundColor;
+            default:
+                return Color.white;
         }
     }
     
