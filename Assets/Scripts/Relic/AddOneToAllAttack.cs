@@ -1,16 +1,13 @@
 using UnityEngine;
 
-public class AddOneToAllAttack : MonoBehaviour
+public class AddOneToAllAttack : MonoBehaviour, IRelicBehavior
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public IRelicBehavior.EffectTiming timing => IRelicBehavior.EffectTiming.OnPlayerAttack;
+    public void ApplyEffect()
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public void RemoveEffect()
     {
-        
     }
 }

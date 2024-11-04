@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 public class RelicManager : MonoBehaviour
 {
+    [SerializeField] RelicData testRelic;
+    
     private List<RelicData> relics = new();
     
     public void AddRelic(RelicData relic)
@@ -28,5 +30,10 @@ public class RelicManager : MonoBehaviour
         }
         
         behaviour.ApplyEffect();
+    }
+
+    private void Start()
+    {
+        AddRelic(testRelic);
     }
 }
