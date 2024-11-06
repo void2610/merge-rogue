@@ -52,6 +52,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public Shop shop;
     [SerializeField] public Canvas mainCanvas;
     [SerializeField] private GameObject damageTextPrefab;
+    [SerializeField] private GameObject mergeTextPrefab;
 
     private System.Random random { get; set; }
     public readonly ReactiveProperty<int> coin = new(0);
@@ -77,6 +78,12 @@ public class GameManager : MonoBehaviour
     {
         var damageText = Instantiate(damageTextPrefab, pos, Quaternion.identity, mainCanvas.transform);
         damageText.GetComponent<DamageText>().SetUp(damage);
+    }
+    
+    public void ShowMergeText(int value, Vector3 pos)
+    {
+        var mergeText = Instantiate(mergeTextPrefab, pos, Quaternion.identity, mainCanvas.transform);
+        mergeText.GetComponent<MergeText>().SetUp(value);
     }
     
     public void AddCoin(int amount)

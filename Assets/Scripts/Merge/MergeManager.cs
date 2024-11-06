@@ -24,7 +24,6 @@ public class MergeManager : MonoBehaviour
     [SerializeField] private Material arrowMaterial;
     [SerializeField] private GameObject ballGauge;
     [SerializeField] private TextMeshProUGUI ballCountText;
-    [SerializeField] private AttackCountUI attackCountUI;
     [SerializeField] private Vector3 nextBallPosition;
     
     public float attackMagnification = 1.0f;
@@ -136,7 +135,7 @@ public class MergeManager : MonoBehaviour
         SeManager.Instance.PlaySe("playerAttack");
         Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
         attackCount = 0;
-        attackCountUI.SetAttackCount(0);
+        // attackCountUI.SetAttackCount(0);
 
         if (GameManager.Instance.enemyContainer.GetEnemyCount() > 0)
         {
@@ -145,10 +144,11 @@ public class MergeManager : MonoBehaviour
         }
     }
 
-    public void AddAttackCount(float atk)
+    public void AddAttackCount(float atk, Vector3 p)
     {  
         attackCount += (int)atk;
-        attackCountUI.SetAttackCount(attackCount);
+        GameManager.Instance.ShowMergeText((int)atk, p);
+        // attackCountUI.SetAttackCount(attackCount);
     }
 
     private void FallAndDecideNextBall()

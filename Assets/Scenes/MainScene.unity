@@ -2345,9 +2345,9 @@ MonoBehaviour:
   - {fileID: 499408602}
   - {fileID: 1477400322}
   - {fileID: 1941433901}
-  coinText: {fileID: 234176055}
-  stageText: {fileID: 509686115}
-  expText: {fileID: 931073615}
+  coinText: {fileID: 1007425568}
+  stageText: {fileID: 400580596}
+  expText: {fileID: 1932937372}
   levelText: {fileID: 829014378}
   hpSlider: {fileID: 1951852459}
   hpText: {fileID: 1566874251}
@@ -2370,6 +2370,7 @@ MonoBehaviour:
   shop: {fileID: 0}
   mainCanvas: {fileID: 380910488}
   damageTextPrefab: {fileID: 7173658914585924005, guid: 4fa946622e4bd4de3858712a3e083b3c, type: 3}
+  mergeTextPrefab: {fileID: 7173658914585924005, guid: d15f3edae417a4c00a382e23f63f9989, type: 3}
 --- !u!114 &567445624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8033,7 +8034,6 @@ MonoBehaviour:
   arrowMaterial: {fileID: 2100000, guid: 7158305c99d774c409c2d3ec56e60442, type: 2}
   ballGauge: {fileID: 738866161}
   ballCountText: {fileID: 595156495}
-  attackCountUI: {fileID: 1546659874}
   nextBallPosition: {x: -1.87, y: 1.9, z: 0}
   attackMagnification: 1
   currentBall: {fileID: 0}
@@ -8285,7 +8285,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allBallDataList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
   ballBasePrefab: {fileID: 5528515049713681562, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
-  inventoryPosition: {x: 0, y: 1.914, z: 0}
+  inventoryPosition: {x: 0, y: 1.9125, z: 0}
 --- !u!4 &1883030246
 Transform:
   m_ObjectHideFlags: 0
