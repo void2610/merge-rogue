@@ -14,12 +14,12 @@ public class GameManager : MonoBehaviour
             if (PlayerPrefs.GetString("SeedText", "") == "")
             {
                 seed = (int)DateTime.Now.Ticks;
-                Debug.Log("Random");
+                // Debug.Log("Random");
             }
             else
             {
                 seed = PlayerPrefs.GetInt("Seed", seed);
-                Debug.Log("Seed: " + seed);
+                // Debug.Log("Seed: " + seed);
             }
             random = new System.Random(seed);
             DOTween.SetTweensCapacity(tweenersCapacity: 800, sequencesCapacity: 800);
@@ -82,10 +82,9 @@ public class GameManager : MonoBehaviour
     public void AddCoin(int amount)
     {
         EventManager.OnCoinGain.Trigger(amount);
-        Debug.Log($"add coin: {coin.Value}");
-        coin.Value += EventManager.OnCoinGain.Value;
-        
-        EventManager.OnCoinGain.Reset();
+        var c = EventManager.OnCoinGain.GetAndReset();
+        Debug.Log($"add coin: {c}");
+        coin.Value += c;
     }
     
     public void SubstractCoin(int amount)
@@ -110,7 +109,7 @@ public class GameManager : MonoBehaviour
                 break;
         }
         state = newState;
-        Debug.Log("State: " + state);
+        // Debug.Log("State: " + state);
         switch (newState)
         {
             case GameState.StageMoving:

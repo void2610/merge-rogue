@@ -24,7 +24,6 @@ public class MergeWall : MonoBehaviour
         WallWidth = width;
         // 1.5から10をminWidthからmaxWidthの範囲に収める
         float ratio = (width - 1.5f) / 8.5f;
-        Debug.Log(ratio);
         image.sizeDelta = new Vector2(minWidth + (maxWidth - minWidth) * ratio, image.sizeDelta.y);
         
         leftWall.transform.DOMoveX(-WallWidth / 2 + xOffset, 0.5f);

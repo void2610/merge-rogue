@@ -7,4 +7,17 @@ public static class EventManager
     public static readonly GameEvent<int> OnCoinGain = new (0);
     // プレイヤーの攻撃時: プレイヤーの攻撃力
     public static readonly GameEvent<int> OnPlayerAttack = new (0);
+    
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetEventManager()
+    {
+        foreach(var p in typeof(EventManager).GetFields())
+        {
+            if(p.FieldType == typeof(GameEvent<int>))
+            {
+                var e = (GameEvent<int>)p.GetValue(null);
+                e.ResetAll();
+            }
+        }
+    }
 }

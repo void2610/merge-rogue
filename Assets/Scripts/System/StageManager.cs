@@ -32,7 +32,6 @@ public class StageManager : MonoBehaviour
 
     public void NextStage()
     {
-        Debug.Log("NextStage");
         Utils.Instance.WaitAndInvoke(0.2f, () =>
         {
             SeManager.Instance.PlaySe("footsteps");

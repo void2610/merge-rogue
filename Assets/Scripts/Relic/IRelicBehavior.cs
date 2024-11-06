@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using R3;
+
 public interface IRelicBehavior
 {
     public enum EffectTiming
@@ -9,8 +13,8 @@ public interface IRelicBehavior
         OnEnemyAttack,         // 敵の攻撃時
         OnEnemySpawn,          // 敵出現時
         OnEnemyDefeated,       // 敵撃破時
-        OnCoinAcquired,        // コイン獲得時
-        OnExperienceGained,    // 経験値獲得時
+        OnCoinGain,        // コイン獲得時
+        OnExperienceGain,    // 経験値獲得時
         OnLevelUp,             // レベルアップ時
         OnStageClear,          // ステージクリア時
         OnStageStart,          // ステージ開始時
@@ -26,6 +30,7 @@ public interface IRelicBehavior
         OnItemPurchased        // ショップで購入時
     }
     public EffectTiming timing { get; }
+    public List<IDisposable> disposables { get; set; }
     
     void ApplyEffect();
     void RemoveEffect();

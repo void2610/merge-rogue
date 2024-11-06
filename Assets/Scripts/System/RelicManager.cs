@@ -6,6 +6,7 @@ public class RelicManager : MonoBehaviour
     [SerializeField] RelicData testRelic;
     
     private List<RelicData> relics = new();
+    private List<IRelicBehavior> behaviors = new();
     
     public void AddRelic(RelicData relic)
     {
@@ -15,6 +16,16 @@ public class RelicManager : MonoBehaviour
     
     public void RemoveRelic(RelicData relic)
     {
+        var index = relics.FindIndex(r => r.id == relic.id);
+        if(index == -1)
+        {
+            Debug.LogError("指定されたレリックが存在しません: " + relic.id);
+            return;
+        }
+
+        var behavior = behaviors[index];
+        behavior.RemoveEffect();
+        behaviors.Remove(behavior);
         relics.Remove(relic);
     }
     
@@ -30,6 +41,7 @@ public class RelicManager : MonoBehaviour
         }
         
         behaviour.ApplyEffect();
+        behaviors.Add(behaviour);
     }
 
     private void Start()
