@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ea15ec46a0e9462fbeffeca47750745, type: 3}
   m_Name: AllRelicDataList
   m_EditorClassIdentifier: 
-  list: []
+  list:
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 62bb1794e6a1b410ebd26bc6faedb702, type: 2}

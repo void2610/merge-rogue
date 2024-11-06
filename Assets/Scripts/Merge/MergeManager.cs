@@ -25,6 +25,7 @@ public class MergeManager : MonoBehaviour
     [SerializeField] private GameObject ballGauge;
     [SerializeField] private TextMeshProUGUI ballCountText;
     [SerializeField] private AttackCountUI attackCountUI;
+    [SerializeField] private Vector3 nextBallPosition;
     
     public float attackMagnification = 1.0f;
     private float limit = -2.5f;
@@ -39,7 +40,6 @@ public class MergeManager : MonoBehaviour
     private readonly List<float> attacks = new() { 1.0f, 1.25f, 1.5f, 1.75f, 2.0f, 2.25f, 2.5f, 2.75f, 3.0f, 3.25f, 3.5f, 3.75f, 4.0f, 4.25f, 4.5f, 4.75f, 5.0f, 5.25f, 5.5f, 5.75f, 6.0f };
     private int attackLevel;
     private Vector3 currentBallPosition = new(0, 1.5f, 0);
-    private readonly Vector3 nextBallPosition = new(-3.5f, 1, 0);
     private const float MOVE_SPEED = 1.0f;
     private const float COOL_TIME = 0.5f;
     private int ballPerOneTurn = 2;
@@ -120,11 +120,8 @@ public class MergeManager : MonoBehaviour
             return;
         }
         
-        Debug.Log((int)(attackCount * attackMagnification));
         EventManager.OnPlayerAttack.Trigger((int)(attackCount * attackMagnification));
         var atk = EventManager.OnPlayerAttack.GetAndResetValue();
-        Debug.Log(atk);
-
         foreach (var e in GameManager.Instance.enemyContainer.GetAllEnemies())
         {
             e.TakeDamage(atk);
@@ -256,6 +253,6 @@ public class MergeManager : MonoBehaviour
         }
         
         if(Input.GetKeyDown(KeyCode.L)) LevelUpWallWidth();
-        fallAnchor.transform.position = currentBallPosition + new Vector3(2, 0, 0);
+        fallAnchor.transform.position = currentBallPosition + new Vector3(0, 0, 0);
     }
 }

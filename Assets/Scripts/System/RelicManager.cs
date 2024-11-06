@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class RelicManager : MonoBehaviour
 {
-    [SerializeField] RelicData testRelic;
+    [SerializeField] private RelicDataList allRelics;
     
     private List<RelicData> relics = new();
     private List<IRelicBehavior> behaviors = new();
@@ -44,13 +44,8 @@ public class RelicManager : MonoBehaviour
         behaviors.Add(behaviour);
     }
 
-    private void Update()
+    private void Start()
     {
-        if (Time.frameCount == 100)
-        {
-            AddRelic(testRelic);
-            AddRelic(testRelic);
-            GameManager.Instance.AddCoin(100);
-        }
+        allRelics.Register();
     }
 }

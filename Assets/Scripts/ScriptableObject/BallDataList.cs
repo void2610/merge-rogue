@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 using System.Linq;
+using UnityEditor;
 
 [CreateAssetMenu(fileName = "BallDataList", menuName = "Scriptable Objects/BallDataList")]
 public class BallDataList : ScriptableObject
@@ -15,12 +16,28 @@ public class BallDataList : ScriptableObject
         list.Clear();
     }
 
-    public void InitId()
+    public void Register()
     {
-        for (int i = 0; i < list.Count; i++)
+#if UNITY_EDITOR
+        // ScriptableObject (このスクリプト) と同じディレクトリパスを取得
+        string path = AssetDatabase.GetAssetPath(this);
+        path = System.IO.Path.GetDirectoryName(path);
+
+        // 指定ディレクトリ内の全てのRelicDataを検索
+        string[] guids = AssetDatabase.FindAssets("t:BallData", new[] { path });
+        
+        // 検索結果をリストに追加
+        list.Clear();
+        foreach (string guid in guids)
         {
-            list[i].id = i;
+            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            var ballData = AssetDatabase.LoadAssetAtPath<BallData>(assetPath);
+            if (ballData != null)
+            {
+                list.Add(ballData);
+            }
         }
+#endif
     }
 
     public List<BallData> GetBallDataFromRarity(BallData.BallRarity r)
