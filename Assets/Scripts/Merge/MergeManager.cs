@@ -34,7 +34,7 @@ public class MergeManager : MonoBehaviour
     private GameObject ballContainer;
     private float lastFallTime;
     
-    private readonly List<float> wallWidths = new() { 1.5f, 1.75f, 2.0f, 2.25f, 2.5f, 2.75f, 3.0f, 3.25f, 3.5f, 3.75f, 4.0f, 4.25f, 4.5f, 4.75f, 5.0f, 5.25f, 5.5f, 5.75f, 6.0f, 6.25f, 6.5f, 6.75f, 7.0f, 7.25f, 7.5f, 7.75f, 8.0f, 8.25f, 8.5f, 8.75f, 9.0f, 9.25f, 9.5f, 9.75f, 10.0f };
+    private readonly List<float> wallWidths = new() { 2.5f, 2.75f, 3.0f, 3.25f, 3.5f, 3.75f, 4.0f, 4.25f, 4.5f, 4.75f, 5.0f, 5.25f, 5.5f, 5.75f, 6.0f, 6.25f, 6.5f, 6.75f, 7.0f, 7.25f, 7.5f, 7.75f, 8.0f, 8.25f, 8.5f, 8.75f, 9.0f, 9.25f, 9.5f, 9.75f, 10.0f };
     private int wallWidthLevel;
     private readonly List<float> attacks = new() { 1.0f, 1.25f, 1.5f, 1.75f, 2.0f, 2.25f, 2.5f, 2.75f, 3.0f, 3.25f, 3.5f, 3.75f, 4.0f, 4.25f, 4.5f, 4.75f, 5.0f, 5.25f, 5.5f, 5.75f, 6.0f };
     private int attackLevel;
@@ -119,10 +119,15 @@ public class MergeManager : MonoBehaviour
             GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
             return;
         }
+        
+        Debug.Log((int)(attackCount * attackMagnification));
+        EventManager.OnPlayerAttack.Trigger((int)(attackCount * attackMagnification));
+        var atk = EventManager.OnPlayerAttack.GetAndResetValue();
+        Debug.Log(atk);
 
         foreach (var e in GameManager.Instance.enemyContainer.GetAllEnemies())
         {
-            e.TakeDamage((int)(attackCount * attackMagnification));
+            e.TakeDamage(atk);
         }
 
         GameManager.Instance.player.gameObject.transform.DOMoveX(0.75f, 0.02f).SetRelative(true).OnComplete(() =>

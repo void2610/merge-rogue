@@ -14,7 +14,7 @@ public class MergeWall : MonoBehaviour
     [SerializeField]
     private float xOffset = 0.0f;
 
-    public float WallWidth { get; private set; } = 1.5f;
+    public float WallWidth { get; private set; } = 2.5f;
     private float defaultY = 0.0f;
     private float minWidth = 80.0f;
     private float maxWidth = 365.0f;
@@ -24,7 +24,7 @@ public class MergeWall : MonoBehaviour
         WallWidth = width;
         // 1.5から10をminWidthからmaxWidthの範囲に収める
         float ratio = (width - 1.5f) / 8.5f;
-        image.sizeDelta = new Vector2(minWidth + (maxWidth - minWidth) * ratio, image.sizeDelta.y);
+        image.DOSizeDelta(new Vector2(minWidth + (maxWidth - minWidth) * ratio, image.sizeDelta.y), 0.5f);
         
         leftWall.transform.DOMoveX(-WallWidth / 2 + xOffset, 0.5f);
         rightWall.transform.DOMoveX(WallWidth / 2 + xOffset, 0.5f);

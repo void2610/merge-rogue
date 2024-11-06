@@ -8,7 +8,7 @@ public class AddOneToAllAttack : MonoBehaviour, IRelicBehavior
     private IDisposable disposable;    
     public void ApplyEffect()
     {
-        disposable = EventManager.OnCoinGain.Subscribe(Effect);
+        disposable = EventManager.OnPlayerAttack.Subscribe(Effect);
     }
 
     public void RemoveEffect()
@@ -18,12 +18,8 @@ public class AddOneToAllAttack : MonoBehaviour, IRelicBehavior
     
     private void Effect(Unit _)
     {
-        // var health = GameManager.Instance.player.health.Value;
-        // if(health > 40)
-        // {
-        //     var x = EventManager.OnCoinGain.GetValue();
-        //     EventManager.OnCoinGain.SetValue(x * 2);
-        //     Debug.Log($"DoubleCoinsWhenLowHealth: Effect {x} -> {x * 2}");
-        // }
+        var x = EventManager.OnPlayerAttack.GetValue();
+        EventManager.OnPlayerAttack.SetValue(x + 1);
+        Debug.Log($"AddOneToAllAttack: Effect {x} -> {EventManager.OnPlayerAttack.GetValue()}");
     }
 }

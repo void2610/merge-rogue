@@ -12,13 +12,13 @@ public class InventoryManager : MonoBehaviour
     [SerializeField]
     private GameObject ballBasePrefab;
 
-    private const int INVENTORY_SIZE = 9;
+    private const int INVENTORY_SIZE = 7;
     private readonly List<GameObject> inventory = new();
     [SerializeField]
     private Vector3 inventoryPosition = new(5.5f, -1.0f, 0);
-    private readonly List<float> sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f, 1.1f, 1.2f };
-    private readonly List<float> probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f };
-    private readonly List<Color> colors = new() { new Color(0.5f,0.5f,0.5f), Color.green, Color.blue,  Color.magenta, Color.yellow, Color.red, Color.cyan, Color.black, Color.white };
+    private readonly List<float> sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
+    private readonly List<float> probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f };
+    private readonly List<Color> colors = new() { new Color(0.5f,0.5f,0.5f), Color.green, Color.blue,  Color.magenta, Color.yellow, Color.red, Color.cyan};
 
     // ボールを入れ替える
     public void SetBall(BallData data, int level)
