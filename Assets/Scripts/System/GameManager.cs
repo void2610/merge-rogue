@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
     public void AddCoin(int amount)
     {
         EventManager.OnCoinGain.Trigger(amount);
-        var c = EventManager.OnCoinGain.GetAndReset();
+        var c = EventManager.OnCoinGain.GetAndResetValue();
         Debug.Log($"add coin: {c}");
         coin.Value += c;
     }
@@ -153,7 +153,6 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         ChangeState(GameState.StageMoving);
-        AddCoin(100);
     }
 
     private void Update()

@@ -8,6 +8,7 @@ public static class EventManager
     // プレイヤーの攻撃時: プレイヤーの攻撃力
     public static readonly GameEvent<int> OnPlayerAttack = new (0);
     
+    // ゲーム開始時にイベントをリセット
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetEventManager()
     {

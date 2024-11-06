@@ -44,8 +44,13 @@ public class RelicManager : MonoBehaviour
         behaviors.Add(behaviour);
     }
 
-    private void Start()
+    private void Update()
     {
-        AddRelic(testRelic);
+        if (Time.frameCount == 100)
+        {
+            AddRelic(testRelic);
+            AddRelic(testRelic);
+            GameManager.Instance.AddCoin(100);
+        }
     }
 }

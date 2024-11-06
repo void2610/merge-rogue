@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using R3;
 using UnityEngine;
 
 public class AddOneToAllAttack : MonoBehaviour, IRelicBehavior
@@ -21,7 +22,7 @@ public class AddOneToAllAttack : MonoBehaviour, IRelicBehavior
         }
     }
     
-    private void Effect(int x)
+    private void Effect(Unit _)
     {
         // var health = GameManager.Instance.player.health.Value;
         // if(health < 40)

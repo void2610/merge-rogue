@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using R3;
 
 public class DoubleCoinsWhenLowHealth : MonoBehaviour, IRelicBehavior
 {
@@ -21,12 +22,13 @@ public class DoubleCoinsWhenLowHealth : MonoBehaviour, IRelicBehavior
         }
     }
     
-    private void Effect(int x)
+    private void Effect(Unit _)
     {
         var health = GameManager.Instance.player.health.Value;
         if(health > 40)
         {
-            EventManager.OnCoinGain.UpdateValue(x * 2);
+            var x = EventManager.OnCoinGain.GetValue();
+            EventManager.OnCoinGain.SetValue(x * 2);
             Debug.Log($"DoubleCoinsWhenLowHealth: Effect {x} -> {x * 2}");
         }
     }
