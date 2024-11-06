@@ -83,7 +83,6 @@ public class GameManager : MonoBehaviour
     {
         EventManager.OnCoinGain.Trigger(amount);
         var c = EventManager.OnCoinGain.GetAndResetValue();
-        Debug.Log($"add coin: {c}");
         coin.Value += c;
     }
     

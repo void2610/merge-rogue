@@ -107,10 +107,6 @@ public class UIManager : MonoBehaviour
     {
         Vignette vignette;
         if(!volume.profile.TryGet(out vignette)) return;
-        
-        Debug.Log(vignette);
-        Debug.Log(value);
-        
         vignette.intensity.value = value;
     }
 

@@ -21,15 +21,13 @@ public class GameEvent<T>
     // イベントを発行
     public void Trigger(T data)
     {
-        Debug.Log($"Trigger: {data}");
-        value = data;            // 値を更新
-        subject.OnNext(Unit.Default);  // イベント発行
+        value = data;
+        subject.OnNext(Unit.Default);
     }
     
     public void SetValue(T data)
     {
         value = data;
-        Debug.Log($"new value: {value}");
     }
     
     public T GetValue()
@@ -43,8 +41,7 @@ public class GameEvent<T>
         Reset();
         return v;
     }
-
-    // イベント発行後に変数を初期値に戻す
+    
     public void Reset()
     {
         value = initialValue;

@@ -5,21 +5,15 @@ using R3;
 
 public class DoubleCoinsWhenLowHealth : MonoBehaviour, IRelicBehavior
 {
-    public IRelicBehavior.EffectTiming timing => IRelicBehavior.EffectTiming.OnCoinGain;
-    public List<IDisposable> disposables { get; set; } = new ();
-    
+    private IDisposable disposable;    
     public void ApplyEffect()
     {
-        var d = EventManager.OnCoinGain.Subscribe(Effect);
-        disposables.Add(d);
+        disposable = EventManager.OnCoinGain.Subscribe(Effect);
     }
 
     public void RemoveEffect()
     {
-        foreach(var d in disposables)
-        {
-            d.Dispose();
-        }
+        disposable.Dispose();
     }
     
     private void Effect(Unit _)
