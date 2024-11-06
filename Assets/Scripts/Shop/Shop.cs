@@ -58,7 +58,7 @@ public class Shop : MonoBehaviour
         if (GameManager.Instance.coin.Value >= item.price)
         {
             Debug.Log(item.name + "を購入しました");
-            GameManager.Instance.coin.Value -= item.price;
+            GameManager.Instance.SubstractCoin(item.price);
             InventoryManager.instance.SetBall(item, index + 1);
             SeManager.Instance.PlaySe("coin");
 

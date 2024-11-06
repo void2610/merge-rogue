@@ -78,6 +78,20 @@ public class GameManager : MonoBehaviour
         var damageText = Instantiate(damageTextPrefab, pos, Quaternion.identity, mainCanvas.transform);
         damageText.GetComponent<DamageText>().SetUp(damage);
     }
+    
+    public void AddCoin(int amount)
+    {
+        EventManager.OnCoinGain.Trigger(amount);
+        Debug.Log($"add coin: {coin.Value}");
+        coin.Value += EventManager.OnCoinGain.Value;
+        
+        EventManager.OnCoinGain.Reset();
+    }
+    
+    public void SubstractCoin(int amount)
+    {
+        coin.Value -= amount;
+    }
 
     public void GameOver()
     {
@@ -140,7 +154,7 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         ChangeState(GameState.StageMoving);
-        coin.Value += 10000;
+        AddCoin(100);
     }
 
     private void Update()
