@@ -31,8 +31,8 @@ public class RelicDataList : ScriptableObject
         list.Clear();
         foreach (string guid in guids)
         {
-            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            RelicData relicData = AssetDatabase.LoadAssetAtPath<RelicData>(assetPath);
+            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            var relicData = AssetDatabase.LoadAssetAtPath<RelicData>(assetPath);
             if (relicData != null)
             {
                 list.Add(relicData);
@@ -41,7 +41,7 @@ public class RelicDataList : ScriptableObject
 #endif
     }
         
-    public List<RelicData> GetRelicDataFromRarity(RelicData.RelicRarity r)
+    public List<RelicData> GetRelicDataFromRarity(RelicRarity r)
     {
         var result = new List<RelicData>();
         foreach (var bd in list)

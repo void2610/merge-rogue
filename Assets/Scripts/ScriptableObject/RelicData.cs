@@ -1,15 +1,10 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 [CreateAssetMenu(fileName = "RelicData", menuName = "Scriptable Objects/RelicData")]
 public class RelicData : ScriptableObject
 {
-    public enum RelicRarity
-    {
-        Common,
-        Rare,
-        Epic,
-        Legendary
-    }
+    public List<EffectTiming> timing;
 
     public int id;
     public string className;

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ffaf8ec3e9d4f489befd2ffee17c75, type: 3}
   m_Name: DoubleCoinsWhenLowHealth
   m_EditorClassIdentifier: 
+  timing: 07000000
   id: 0
   className: DoubleCoinsWhenLowHealth
   sprite: {fileID: 21300002, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}

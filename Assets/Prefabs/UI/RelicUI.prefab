@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 2389304837437767855}
   - component: {fileID: 2661135996180056824}
   m_Layer: 5
-  m_Name: RelicIcon
+  m_Name: RelicImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -212,3 +212,5 @@ MonoBehaviour:
   relicImage: {fileID: 2661135996180056824}
   relicName: {fileID: 0}
   relicDescription: {fileID: 0}
+  bloomImage: {fileID: 2661135996180056824}
+  bloomColor: {r: 0, g: 0, b: 0, a: 0}

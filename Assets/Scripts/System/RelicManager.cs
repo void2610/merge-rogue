@@ -13,6 +13,9 @@ public class RelicManager : MonoBehaviour
     
     private List<RelicData> relics = new();
     private List<IRelicBehavior> behaviors = new();
+    private List<RelicUI> relicUIs = new();
+    
+    private EffectTiming currentTiming;
     
     public void AddRelic(RelicData relic)
     {
@@ -62,13 +65,8 @@ public class RelicManager : MonoBehaviour
     private void Start()
     {
         allRelics.Register();
-
         
-    }
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.R))
+        for (var i = 0; i < 10; i++)
         {
             AddRelic(allRelics.list[0]);
         }
