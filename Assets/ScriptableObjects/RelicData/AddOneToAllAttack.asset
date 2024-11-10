@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87ffaf8ec3e9d4f489befd2ffee17c75, type: 3}
   m_Name: AddOneToAllAttack
   m_EditorClassIdentifier: 
-  timing: 02000000
+  timing: 03000000
   id: 0
   className: AddOneToAllAttack
   sprite: {fileID: 2437483765381717123, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}

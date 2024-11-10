@@ -1,8 +1,11 @@
+using System;
 using R3;
 using UnityEngine;
 
 public static class EventManager
 {
+    // ゲーム開始時: なし
+    public static readonly GameEvent<int> OnGameStart = new (0);
     // コイン獲得時: コイン獲得量
     public static readonly GameEvent<int> OnCoinGain = new (0);
     // 経験値獲得時: 経験値獲得量
@@ -27,6 +30,9 @@ public static class EventManager
     public static readonly GameEvent<bool> OnPlayerDeath = new (false);
     
 
+    private static ReactiveProperty<EffectTiming> currentTiming = new (EffectTiming.OnGameStart);
+    public static ReadOnlyReactiveProperty<EffectTiming> CurrentTiming => currentTiming;
+
     // ゲーム開始時にイベントをリセット
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetEventManager()
@@ -38,6 +44,79 @@ public static class EventManager
                 var e = (GameEvent<int>)p.GetValue(null);
                 e.ResetAll();
             }
+            else if(p.FieldType == typeof(GameEvent<float>))
+            {
+                var e = (GameEvent<float>)p.GetValue(null);
+                e.ResetAll();
+            }
+            else if(p.FieldType == typeof(GameEvent<bool>))
+            {
+                var e = (GameEvent<bool>)p.GetValue(null);
+                e.ResetAll();
+            }
         }
+        currentTiming.Value = EffectTiming.OnGameStart;
+    }
+    
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void Initialize()
+    {
+        OnGameStart.Subscribe(_ => currentTiming.Value = EffectTiming.OnGameStart);
+        OnCoinGain.Subscribe(_ => currentTiming.Value = EffectTiming.OnCoinGain);
+        OnPlayerExpGain.Subscribe(_ => currentTiming.Value = EffectTiming.OnExperienceGain);
+        OnPlayerAttack.Subscribe(_ => currentTiming.Value = EffectTiming.OnPlayerAttack);
+        OnPlayerDamage.Subscribe(_ => currentTiming.Value = EffectTiming.OnPlayerDamaged);
+        OnPlayerHeal.Subscribe(_ => currentTiming.Value = EffectTiming.OnPlayerHeal);
+        OnEnemySpawn.Subscribe(_ => currentTiming.Value = EffectTiming.OnEnemySpawn);
+        OnEnemyInit.Subscribe(_ => currentTiming.Value = EffectTiming.OnEnemySpawn);
+        OnEnemyAttack.Subscribe(_ => currentTiming.Value = EffectTiming.OnEnemyAttack);
+        OnEnemyDamage.Subscribe(_ => currentTiming.Value = EffectTiming.OnEnemyAttack);
+        OnEnemyHeal.Subscribe(_ => currentTiming.Value = EffectTiming.OnEnemyHeal);
+        OnPlayerDeath.Subscribe(_ => currentTiming.Value = EffectTiming.OnPlayerDeath);
+    }
+    
+    public static IDisposable SubscribeFromTiming(EffectTiming timing, Action<Unit> action)
+    {
+        IDisposable disposable = null;
+        switch (timing)
+        {
+            case EffectTiming.OnGameStart:
+                disposable = OnGameStart.Subscribe(action);
+                break;
+            case EffectTiming.OnCoinGain:
+                disposable = OnCoinGain.Subscribe(action);
+                break;
+            case EffectTiming.OnExperienceGain:
+                disposable = OnPlayerExpGain.Subscribe(action);
+                break;
+            case EffectTiming.OnPlayerAttack:
+                disposable = OnPlayerAttack.Subscribe(action);
+                break;
+            case EffectTiming.OnPlayerDamaged:
+                disposable = OnPlayerDamage.Subscribe(action);
+                break;
+            case EffectTiming.OnPlayerHeal:
+                disposable = OnPlayerHeal.Subscribe(action);
+                break;
+            case EffectTiming.OnEnemySpawn:
+                disposable = OnEnemySpawn.Subscribe(action);
+                break;
+            case EffectTiming.OnEnemyInit:
+                disposable = OnEnemyInit.Subscribe(action);
+                break;
+            case EffectTiming.OnEnemyAttack:
+                disposable = OnEnemyAttack.Subscribe(action);
+                break;
+            case EffectTiming.OnEnemyHeal:
+                disposable = OnEnemyHeal.Subscribe(action);
+                break;
+            case EffectTiming.OnPlayerDeath:
+                disposable = OnPlayerDeath.Subscribe(action);
+                break;
+            default:
+                Debug.LogError("指定されたタイミングは存在しません: " + timing);
+                break;
+        }
+        return disposable;
     }
 }

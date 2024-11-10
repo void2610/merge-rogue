@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using R3;
 
 public class RelicManager : MonoBehaviour
 {
@@ -37,6 +38,8 @@ public class RelicManager : MonoBehaviour
         behavior.RemoveEffect();
         behaviors.Remove(behavior);
         relics.Remove(relic);
+        Destroy(relicUIs[index].gameObject);
+        relicUIs.RemoveAt(index);
     }
     
     private void CreateRelicUI(RelicData r)
@@ -45,6 +48,7 @@ public class RelicManager : MonoBehaviour
         go.transform.localPosition = relicGridPosition + new Vector3(relicOffset.x * ((relics.Count - 1) / relicGridSize.y), -relicOffset.y * ((relics.Count - 1) % relicGridSize.y));
         var relicUI = go.GetComponent<RelicUI>();
         relicUI.SetRelicData(r);
+        relicUIs.Add(relicUI);
     }
     
     private void ApplyEffect(RelicData r)
@@ -70,5 +74,6 @@ public class RelicManager : MonoBehaviour
         {
             AddRelic(allRelics.list[0]);
         }
+
     }
 }

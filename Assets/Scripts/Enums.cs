@@ -1,10 +1,14 @@
 public enum EffectTiming
 {
+    OnGameStart,           // ゲーム開始時
     OnAcquisition,         // レリック獲得時
     AlwaysActive,          // 常に
     OnPlayerAttack,        // プレイヤーの攻撃時
     OnPlayerDamaged,       // プレイヤーがダメージを受けた時
+    OnPlayerHeal,          // プレイヤーが回復した時
     OnEnemyAttack,         // 敵の攻撃時
+    OnEnemyHeal,           // 敵が回復した時
+    OnEnemyInit,           // 敵初期化時
     OnEnemySpawn,          // 敵出現時
     OnEnemyDefeated,       // 敵撃破時
     OnCoinGain,        // コイン獲得時

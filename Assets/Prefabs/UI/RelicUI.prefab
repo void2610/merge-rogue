@@ -212,5 +212,4 @@ MonoBehaviour:
   relicImage: {fileID: 2661135996180056824}
   relicName: {fileID: 0}
   relicDescription: {fileID: 0}
-  bloomImage: {fileID: 2661135996180056824}
-  bloomColor: {r: 0, g: 0, b: 0, a: 0}
+  bloomImage: {fileID: 4532793102957394323}
