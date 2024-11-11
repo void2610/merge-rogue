@@ -5,9 +5,11 @@ using R3;
 
 public class SometimeCopyDropBall : MonoBehaviour, IRelicBehavior
 {
-    private IDisposable disposable;    
-    public void ApplyEffect()
+    private IDisposable disposable;
+    private RelicUI ui;
+    public void ApplyEffect(RelicUI relicUI)
     {
+        ui = relicUI;
         disposable = EventManager.OnBallDropped.Subscribe(Effect);
     }
 
@@ -23,6 +25,7 @@ public class SometimeCopyDropBall : MonoBehaviour, IRelicBehavior
         {
             var x = EventManager.OnBallDropped.GetValue();
             EventManager.OnBallDropped.SetValue(x + 1);
+            ui.ActivateUI();
             Debug.Log($"SometimeCopyDropBall: Effect {x} -> {EventManager.OnBallDropped.GetValue()}");
         }
     }

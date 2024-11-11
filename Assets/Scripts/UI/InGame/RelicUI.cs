@@ -20,24 +20,18 @@ public class RelicUI : MonoBehaviour
     {
         this.relicData = r;
         relicImage.sprite = relicData.sprite;
-        
-        if (relicData.timing.Contains(EffectTiming.AlwaysActive))
-        {
-            bloomImage.DOColor(bloomColor, 0.1f).SetLink(gameObject);
-            return;
-        }
-
-        foreach (var t in relicData.timing.Where(t => t != EffectTiming.AlwaysActive))
-        {
-            EventManager.SubscribeFromTiming(t, ActivateUI).AddTo(this);
-        }
     }
     
-    private void ActivateUI(Unit _)
+    public void ActivateUI()
     {
         bloomImage.DOColor(bloomColor, 0.1f).OnComplete(() =>
         {
             bloomImage.DOColor(defaultColor, 0.5f).SetDelay(0.75f).SetLink(gameObject);
         }).SetLink(gameObject);
+    }
+    
+    public void AlwaysActive()
+    {
+        bloomImage.DOColor(bloomColor, 0.1f).SetLink(gameObject);
     }
 }

@@ -5,10 +5,12 @@ using R3;
 
 public class DoubleCoinsWhenLowHealth : MonoBehaviour, IRelicBehavior
 {
-    private IDisposable disposable;    
-    public void ApplyEffect()
+    private IDisposable disposable;
+    private RelicUI ui;
+    public void ApplyEffect(RelicUI relicUI)
     {
         disposable = EventManager.OnCoinGain.Subscribe(Effect);
+        ui = relicUI;
     }
 
     public void RemoveEffect()
@@ -23,6 +25,7 @@ public class DoubleCoinsWhenLowHealth : MonoBehaviour, IRelicBehavior
         {
             var x = EventManager.OnCoinGain.GetValue();
             EventManager.OnCoinGain.SetValue(x * 2);
+            ui.ActivateUI();
             Debug.Log($"DoubleCoinsWhenLowHealth: Effect {x} -> {x * 2}");
         }
     }

@@ -23,8 +23,8 @@ public class RelicManager : MonoBehaviour
     public void AddRelic(RelicData relic)
     {
         relics.Add(relic);
-        CreateRelicUI(relic);
-        ApplyEffect(relic);
+        var rui = CreateRelicUI(relic);
+        ApplyEffect(relic, rui);
     }
     
     public void RemoveRelic(RelicData relic)
@@ -44,16 +44,17 @@ public class RelicManager : MonoBehaviour
         relicUIs.RemoveAt(index);
     }
     
-    private void CreateRelicUI(RelicData r)
+    private RelicUI CreateRelicUI(RelicData r)
     {
         var go = Instantiate(relicPrefab, relicContainer);
         go.transform.localPosition = relicGridPosition + new Vector3(relicOffset.x * ((relics.Count - 1) / relicGridSize.y), -relicOffset.y * ((relics.Count - 1) % relicGridSize.y));
         var relicUI = go.GetComponent<RelicUI>();
         relicUI.SetRelicData(r);
         relicUIs.Add(relicUI);
+        return relicUI;
     }
     
-    private void ApplyEffect(RelicData r)
+    private void ApplyEffect(RelicData r, RelicUI rui)
     {
         IRelicBehavior behaviour = null;
         var type = System.Type.GetType(r.className);
@@ -64,7 +65,7 @@ public class RelicManager : MonoBehaviour
             return;
         }
         
-        behaviour.ApplyEffect();
+        behaviour.ApplyEffect(rui);
         behaviors.Add(behaviour);
     }
 

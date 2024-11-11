@@ -4,6 +4,6 @@ using R3;
 
 public interface IRelicBehavior
 {
-    void ApplyEffect();
+    void ApplyEffect(RelicUI relicUI);
     void RemoveEffect();
 }
