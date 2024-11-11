@@ -38,7 +38,7 @@ public class MergeManager : MonoBehaviour
     private int wallWidthLevel;
     private readonly List<float> attacks = new() { 1.0f, 1.25f, 1.5f, 1.75f, 2.0f, 2.25f, 2.5f, 2.75f, 3.0f, 3.25f, 3.5f, 3.75f, 4.0f, 4.25f, 4.5f, 4.75f, 5.0f, 5.25f, 5.5f, 5.75f, 6.0f };
     private int attackLevel;
-    private Vector3 currentBallPosition = new(0, 1.5f, 0);
+    private Vector3 currentBallPosition = new(0, 1f, 0);
     private const float MOVE_SPEED = 1.0f;
     private const float COOL_TIME = 0.5f;
     private int ballPerOneTurn = 2;
@@ -153,9 +153,25 @@ public class MergeManager : MonoBehaviour
 
     private void FallAndDecideNextBall()
     {
-        currentBall.GetComponent<BallBase>().Unfreeze();
-        currentBall.transform.SetParent(ballContainer.transform);
-        fallAnchor.GetComponent<HingeJoint2D>().connectedBody = null;
+        EventManager.OnBallDropped.Trigger(1);
+        var n = EventManager.OnBallDropped.GetAndResetValue();
+        if (n >= 1)
+        {
+            currentBall.GetComponent<BallBase>().Unfreeze();
+            currentBall.transform.SetParent(ballContainer.transform);
+            fallAnchor.GetComponent<HingeJoint2D>().connectedBody = null;
+        }
+
+        n--;
+        // Eventによって個数が変わる
+        for(var i = 0; i < n; i++)
+        {
+            var l = currentBall.GetComponent<BallBase>().level;
+            var p = new Vector3(GameManager.Instance.RandomRange(-1f, 1f), 0.8f, 0);
+            SpawnBall(l, p, Quaternion.identity);
+        }
+        
+
         if (--remainingBalls > 0)
         {
             currentBall = nextBall;
@@ -175,7 +191,6 @@ public class MergeManager : MonoBehaviour
             nextBall = null;
             fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = false;
             DOTween.To(() => arrowMaterial.GetFloat(alpha), x => arrowMaterial.SetFloat(alpha, x), 0, 0.5f);
-
         }
         ballCountText.text = remainingBalls + "/" + ballPerOneTurn;
     }

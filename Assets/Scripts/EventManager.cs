@@ -28,6 +28,8 @@ public static class EventManager
     public static readonly GameEvent<int> OnEnemyHeal = new (0);
     // プレイヤー死亡時: 復活するかどうか
     public static readonly GameEvent<bool> OnPlayerDeath = new (false);
+    // ボールを落とした時: ボールの個数
+    public static readonly GameEvent<int> OnBallDropped = new (0);
     
 
     private static ReactiveProperty<EffectTiming> currentTiming = new (EffectTiming.OnGameStart);
@@ -73,6 +75,7 @@ public static class EventManager
         OnEnemyDamage.Subscribe(_ => currentTiming.Value = EffectTiming.OnEnemyAttack);
         OnEnemyHeal.Subscribe(_ => currentTiming.Value = EffectTiming.OnEnemyHeal);
         OnPlayerDeath.Subscribe(_ => currentTiming.Value = EffectTiming.OnPlayerDeath);
+        OnBallDropped.Subscribe(_ => currentTiming.Value = EffectTiming.OnBallDropped);
     }
     
     public static IDisposable SubscribeFromTiming(EffectTiming timing, Action<Unit> action)
@@ -112,6 +115,9 @@ public static class EventManager
                 break;
             case EffectTiming.OnPlayerDeath:
                 disposable = OnPlayerDeath.Subscribe(action);
+                break;
+            case EffectTiming.OnBallDropped:
+                disposable = OnBallDropped.Subscribe(action);
                 break;
             default:
                 Debug.LogError("指定されたタイミングは存在しません: " + timing);

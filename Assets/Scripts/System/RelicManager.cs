@@ -11,6 +11,8 @@ public class RelicManager : MonoBehaviour
     [SerializeField] private Vector2Int relicGridSize;
     [SerializeField] private Vector2 relicOffset;
     
+    [SerializeField] private List<RelicData> testRelics;
+    
     
     private List<RelicData> relics = new();
     private List<IRelicBehavior> behaviors = new();
@@ -70,9 +72,9 @@ public class RelicManager : MonoBehaviour
     {
         allRelics.Register();
         
-        for (var i = 0; i < 10; i++)
+        foreach (var r in testRelics)
         {
-            AddRelic(allRelics.list[0]);
+            AddRelic(r);
         }
 
     }

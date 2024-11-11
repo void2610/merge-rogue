@@ -35,6 +35,9 @@ public class RelicUI : MonoBehaviour
     
     private void ActivateUI(Unit _)
     {
-        bloomImage.DOColor(bloomColor, 0.1f).OnComplete(() => DOVirtual.DelayedCall(0.75f, () => bloomImage.DOColor(defaultColor, 0.5f).SetLink(gameObject)).SetLink(gameObject)).SetLink(gameObject);
+        bloomImage.DOColor(bloomColor, 0.1f).OnComplete(() =>
+        {
+            bloomImage.DOColor(defaultColor, 0.5f).SetDelay(0.75f).SetLink(gameObject);
+        }).SetLink(gameObject);
     }
 }

@@ -31,6 +31,7 @@ public enum EffectTiming
 public enum RelicRarity
 {
     Common,
+    Uncommon,
     Rare,
     Epic,
     Legendary
@@ -39,6 +40,7 @@ public enum RelicRarity
 public enum BallRarity
 {
     Common,
+    Uncommon,
     Rare,
     Epic,
     Legendary
