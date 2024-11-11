@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using DG.Tweening;
 
 public class EnemyContainer : MonoBehaviour
 {
@@ -112,7 +113,11 @@ public class EnemyContainer : MonoBehaviour
     public void RemoveEnemy(GameObject enemy)
     {
         gainedExp += enemy.GetComponent<EnemyBase>().exp;
-        GameManager.Instance.AddCoin(enemy.GetComponent<EnemyBase>().coin);
+        // 0.5秒待つ
+        // DOVirtual.DelayedCall(0.5f, () =>
+        // {
+        //     GameManager.Instance.AddCoin(enemy.GetComponent<EnemyBase>().coin);
+        // });        
         var g = enemy.transform.parent.gameObject;
         currentEnemies.Remove(g);
         enemy.GetComponent<EnemyBase>().OnDisappear();

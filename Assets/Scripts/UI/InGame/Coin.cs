@@ -16,6 +16,7 @@ public class Coin : MonoBehaviour
 
         this.transform.DOMoveY(-1.1f, 1.5f).SetEase(Ease.OutBounce).SetRelative(true).OnComplete(() =>
         {
+            GameManager.Instance.AddCoin(1);
             var middle = new Vector3(((this.transform.position.x + target.x) / 2) + 0.5f, ((this.transform.position.y + target.y) / 2) + 0.5f, 0);
             this.transform.DOPath(new [] { this.transform.position, middle, target }, 1f).SetEase(Ease.OutExpo
             ).OnComplete(() =>
