@@ -4008,13 +4008,14 @@ MonoBehaviour:
   accentColorObjects:
   - {fileID: 1717172290}
   - {fileID: 1880978489}
-  backgroundColor: {r: 0.54901963, g: 0.54901963, b: 0.54901963, a: 1}
+  backgroundColor: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
   backgroundColorObjects:
   - {fileID: 1296743692}
   - {fileID: 676991510}
   - {fileID: 2145837274}
   - {fileID: 1291382172}
   - {fileID: 331229004}
+  - {fileID: 1927385923}
 --- !u!4 &889592006
 Transform:
   m_ObjectHideFlags: 0
