@@ -29,8 +29,8 @@ public class EnemyBase : MonoBehaviour
     [SerializeField]
     private GameObject coinPrefab;
 
-    private int health { get; set; }
-    private int maxHealth { get; set; }
+    public int health { get; protected set; }
+    public int maxHealth { get; protected set; }
 
     protected int turnCount = 0;
     protected List<AttackData> enemyActions = new List<AttackData>();

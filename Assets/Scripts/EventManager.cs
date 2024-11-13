@@ -10,8 +10,9 @@ public static class EventManager
     public static readonly GameEvent<int> OnCoinGain = new (0);
     // 経験値獲得時: 経験値獲得量
     public static readonly GameEvent<int> OnPlayerExpGain = new (0);
-    // プレイヤーの攻撃時: プレイヤーの攻撃力
-    public static readonly GameEvent<int> OnPlayerAttack = new (0);
+    // プレイヤーの攻撃時: (プレイヤーの攻撃力, 全体攻撃かどうか)
+ public static readonly GameEvent<(int, bool)> OnPlayerAttack = new ((0, false));
+    // プレイヤーの攻撃時: プレイヤーの攻撃範囲
     // プレイヤーのダメージ時: プレイヤーのダメージ量
     public static readonly GameEvent<int> OnPlayerDamage = new (0);
     // プレイヤーの回復時: プレイヤーの回復量

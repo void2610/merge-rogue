@@ -26,7 +26,6 @@ public class SometimeCopyDropBall : MonoBehaviour, IRelicBehavior
             var x = EventManager.OnBallDropped.GetValue();
             EventManager.OnBallDropped.SetValue(x + 1);
             ui.ActivateUI();
-            Debug.Log($"SometimeCopyDropBall: Effect {x} -> {EventManager.OnBallDropped.GetValue()}");
         }
     }
 }

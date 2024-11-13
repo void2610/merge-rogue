@@ -26,7 +26,6 @@ public class DoubleCoinsWhenLowHealth : MonoBehaviour, IRelicBehavior
             var x = EventManager.OnCoinGain.GetValue();
             EventManager.OnCoinGain.SetValue(x * 2);
             ui.ActivateUI();
-            Debug.Log($"DoubleCoinsWhenLowHealth: Effect {x} -> {x * 2}");
         }
     }
 }

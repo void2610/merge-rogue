@@ -130,6 +130,30 @@ public class EnemyContainer : MonoBehaviour
             });
         }
     }
+
+    public void AttackEnemy(int damage, bool isAll = false)
+    {
+        Debug.Log(damage);
+        var enemies = GetAllEnemies();
+        if(isAll){
+            foreach (var e in enemies)
+            {
+                e.TakeDamage(damage);
+            }
+        }
+        else
+        {
+            // 一番前の敵を攻撃、攻撃力が残っていたら次の敵を攻撃
+            foreach (var e in enemies)
+            {
+                if (damage <= 0) break;
+                var actualDamage = damage > e.health ? e.health : damage;
+                if (enemies.IndexOf(e) == enemies.Count - 1) actualDamage = damage;
+                e.TakeDamage(actualDamage);
+                damage -= actualDamage;
+            }
+        }
+    }
     
     public void Action()
     {

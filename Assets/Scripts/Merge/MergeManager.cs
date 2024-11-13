@@ -119,24 +119,24 @@ public class MergeManager : MonoBehaviour
             return;
         }
         
-        EventManager.OnPlayerAttack.Trigger((int)(attackCount * attackMagnification));
+        // イベントでパラメータを更新
+        (int, bool) p = ((int)(attackCount * attackMagnification), false);
+        EventManager.OnPlayerAttack.Trigger(p);
         var atk = EventManager.OnPlayerAttack.GetAndResetValue();
-        foreach (var e in GameManager.Instance.enemyContainer.GetAllEnemies())
-        {
-            e.TakeDamage(atk);
-        }
-
+        
+        // 攻撃処理
+        GameManager.Instance.enemyContainer.AttackEnemy(atk.Item1, atk.Item2);
+        // 攻撃アニメーション
         GameManager.Instance.player.gameObject.transform.DOMoveX(0.75f, 0.02f).SetRelative(true).OnComplete(() =>
         {
             GameManager.Instance.player.gameObject.transform.DOMoveX(-0.75f, 0.2f).SetRelative(true)
                 .SetEase(Ease.OutExpo);
         });
-
         SeManager.Instance.PlaySe("playerAttack");
         Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
         attackCount = 0;
-        // attackCountUI.SetAttackCount(0);
 
+        // 敵が残っていたら敵の攻撃へ
         if (GameManager.Instance.enemyContainer.GetEnemyCount() > 0)
         {
             Utils.Instance.WaitAndInvoke(0.75f,
