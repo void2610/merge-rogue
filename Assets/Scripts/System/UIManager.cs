@@ -11,36 +11,26 @@ using UnityEngine.Rendering.Universal;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField]
-    private Slider bgmSlider;
-    [SerializeField]
-    private Slider seSlider;
-    [SerializeField]
-    private Image fadeImage;
+    [SerializeField] private Slider bgmSlider;
+    [SerializeField] private Slider seSlider;
+    [SerializeField] private Image fadeImage;
+    [SerializeField] private RelicDescriptionWindow relicDescriptionWindow;
 
     [SerializeField] private Volume volume;
-    [SerializeField]
-    private List<CanvasGroup> canvasGroups;
-    [SerializeField]
-    private TextMeshProUGUI coinText;
-    [SerializeField]
-    private TextMeshProUGUI stageText;
-    [SerializeField]
-    private TextMeshProUGUI expText;
-    [SerializeField]
-    private TextMeshProUGUI levelText;
-    [SerializeField]
-    public Slider hpSlider;
-    [SerializeField]
-    public TextMeshProUGUI hpText;
+    [SerializeField] private List<CanvasGroup> canvasGroups;
+    [SerializeField] private TextMeshProUGUI coinText;
+    [SerializeField] private TextMeshProUGUI stageText;
+    [SerializeField] private TextMeshProUGUI expText;
+    [SerializeField] private TextMeshProUGUI levelText;
+    [SerializeField] public Slider hpSlider;
+    [SerializeField] public TextMeshProUGUI hpText;
 
     public int remainingLevelUps;
-    // private Player player => GameManager.Instance.player;
 
     public void EnableCanvasGroup(string canvasName, bool e)
     {
         var canvasGroup = canvasGroups.Find(c => c.name == canvasName);
-        if (canvasGroup == null) return;
+        if (!canvasGroup) return;
         
         canvasGroup.alpha = e ? 1 : 0;
         canvasGroup.interactable = e;
@@ -108,6 +98,16 @@ public class UIManager : MonoBehaviour
         Vignette vignette;
         if(!volume.profile.TryGet(out vignette)) return;
         vignette.intensity.value = value;
+    }
+    
+    public void ShowRelicDescriptionWindow(RelicData r, Vector3 pos)
+    {
+        relicDescriptionWindow.ShowWindow(r, pos);
+    }
+    
+    public void HideRelicDescriptionWindow()
+    {
+        relicDescriptionWindow.HideWindow();
     }
 
     private void Awake()

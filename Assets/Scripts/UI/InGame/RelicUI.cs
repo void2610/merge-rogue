@@ -1,6 +1,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using R3;
 using DG.Tweening;
 
@@ -20,6 +21,15 @@ public class RelicUI : MonoBehaviour
     {
         this.relicData = r;
         relicImage.sprite = relicData.sprite;
+        
+        // イベントを登録
+        var trigger = GetComponent<EventTrigger>();
+        var entry = new EventTrigger.Entry {eventID = EventTriggerType.PointerEnter};
+        entry.callback.AddListener((data) => GameManager.Instance.uiManager.ShowRelicDescriptionWindow(relicData, transform.position));
+        trigger.triggers.Add(entry);
+        var entry2 = new EventTrigger.Entry {eventID = EventTriggerType.PointerExit};
+        entry2.callback.AddListener((data) => GameManager.Instance.uiManager.HideRelicDescriptionWindow());
+        trigger.triggers.Add(entry2);
     }
     
     public void ActivateUI()
