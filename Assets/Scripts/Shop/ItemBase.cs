@@ -25,6 +25,6 @@ public class ItemBase : MonoBehaviour
         nameText.text = itemName;
         priceText.text = price.ToString();
         image.sprite = icon;
-        image.GetComponent<OverRayWindow>().text = description;
+        // image.GetComponent<OverRayWindow>().text = description;
     }
 }
