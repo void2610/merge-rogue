@@ -75,7 +75,7 @@ public class Shop : MonoBehaviour
 
     private void SetEvent(GameObject g, BallData ball, int index)
     {
-        var nameText = g.transform.Find("Text").GetComponent<TextMeshProUGUI>();
+        var nameText = g.transform.Find("Name").GetComponent<TextMeshProUGUI>();
         nameText.text = ball.name;
         var price = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
         price.text = ball.price.ToString();
