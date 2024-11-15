@@ -1,12 +1,20 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using R3;
 
 public class StageManager : MonoBehaviour
 {
-    private static readonly int mainTex = Shader.PropertyToID("_MainTex");
-
+    [Serializable]
+    private class StageData
+    {
+        public StageType stageType;
+        public float probability;
+        public int interval;
+    }
+    
     public enum StageType
     {
         Enemy,
@@ -16,13 +24,13 @@ public class StageManager : MonoBehaviour
         Other,
     }
 
-    [SerializeField]
-    private int enemyStageNum = 3;
-    [SerializeField]
-    private Material m;
-
-    public List<StageType> stageTypes = new List<StageType>();
+    [SerializeField] private Material m;
+    [SerializeField] private int stageLength = 10;
+    [SerializeField] private List<StageData> stageData　= new();
+    [SerializeField] private List<StageType> stageTypes = new();
+    
     public readonly ReactiveProperty<int> currentStage = new(-1);
+    private static readonly int mainTex = Shader.PropertyToID("_MainTex");
     private int enemyStageCount;
 
     public StageType GetCurrentStageType()
@@ -75,34 +83,46 @@ public class StageManager : MonoBehaviour
 
     private void DecideStage()
     {
-        int shopNum = enemyStageNum / 2;
-        stageTypes.Clear();
-        for (int i = 0; i < enemyStageNum + shopNum; i++) stageTypes.Add(StageType.Other);
+        var availableStages = new List<StageType>();
+        var stageIntervals = new Dictionary<StageType, int>();
 
-        for (int i = 0; i < shopNum; i++)
+        foreach (var data in stageData)
         {
-            int index = GameManager.Instance.RandomRange(1, stageTypes.Count);
-            if (stageTypes[index] == StageType.Shop)
+            for (var i = 0; i < data.probability * 100; i++)
             {
-                i--;
-                continue;
+                availableStages.Add(data.stageType);
             }
-            stageTypes[index] = StageType.Shop;
+            stageIntervals[data.stageType] = 0;
         }
 
-        for (int i = 0; i < stageTypes.Count; i++)
+        for (var i = 0; i < stageLength; i++)
         {
-            if (stageTypes[i] == StageType.Other || stageTypes[i] == StageType.Shop)
+            var selectableStages = availableStages.FindAll(stage => stageIntervals[stage] <= 0);
+            if (selectableStages.Count == 0)
             {
-                stageTypes[i] = StageType.Enemy;
+                foreach (var key in stageIntervals.Keys.ToList())
+                {
+                    stageIntervals[key]--;
+                }
+                selectableStages = availableStages;
             }
+
+            StageType selectedStage = selectableStages[UnityEngine.Random.Range(0, selectableStages.Count)];
+            stageTypes.Add(selectedStage);
+
+            foreach (var key in stageIntervals.Keys.ToList())
+            {
+                stageIntervals[key]--;
+            }
+            stageIntervals[selectedStage] = stageData.Find(data => data.stageType == selectedStage).interval;
         }
-        stageTypes.Add(StageType.Boss);
     }
 
     public void Start()
     {
         DecideStage();
-        stageTypes[0] = StageType.Shop;
-        m.SetTextureOffset(mainTex, new Vector2(0, 0)); }
+        stageTypes[0] = StageType.Enemy;
+        
+        m.SetTextureOffset(mainTex, new Vector2(0, 0)); 
+    }
 }
