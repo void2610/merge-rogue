@@ -785,7 +785,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.5
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.75
+  m_Intensity: 1
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 6754ebef000000005525a92e8f724d3b83cb1cab
@@ -11672,6 +11672,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 519420032}
   - {fileID: 703202739}
+  - {fileID: 207604139}
   - {fileID: 1291382174}
   - {fileID: 1315849927}
   - {fileID: 774851888}
@@ -11691,5 +11692,4 @@ SceneRoots:
   - {fileID: 1843446103}
   - {fileID: 856787561}
   - {fileID: 889592006}
-  - {fileID: 207604139}
   - {fileID: 880282179}

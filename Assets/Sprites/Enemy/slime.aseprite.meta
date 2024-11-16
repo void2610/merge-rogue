@@ -97,7 +97,7 @@ ScriptedImporter:
     addSortingGroup: 1
     addShadowCasters: 0
   importFileNodeState: 1
-  platformSettingsDirtyTick: 638656687866745020
+  platformSettingsDirtyTick: 638673649917076400
   textureAssetName: 
   singleSpriteImportData:
   - name: 
@@ -125,7 +125,7 @@ ScriptedImporter:
   - name: slime_Frame_0
     originalName: 
     pivot: {x: 0.5, y: 0}
-    alignment: 9
+    alignment: 7
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
@@ -134,7 +134,7 @@ ScriptedImporter:
       y: 4
       width: 6
       height: 7
-    spriteID: 2786ad31c9836466aaf10b9df369ee1b
+    spriteID: b748e2d0522474ed3b1e2df5221267b7
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -155,7 +155,7 @@ ScriptedImporter:
       y: 19
       width: 6
       height: 6
-    spriteID: 7e7752157853043e7ad3d433d53d240c
+    spriteID: 02a4043dfde2e49d0b262fb95f6e2a26
     spriteBone: []
     spriteOutline: []
     vertices: []
@@ -181,7 +181,7 @@ ScriptedImporter:
         y: 0
         width: 6
         height: 7
-      spriteId: 2786ad31c9836466aaf10b9df369ee1b
+      spriteId: b748e2d0522474ed3b1e2df5221267b7
     - name: slime_Frame_1
       frameIndex: 1
       additiveSortOrder: 0
@@ -190,7 +190,7 @@ ScriptedImporter:
         y: 0
         width: 6
         height: 6
-      spriteId: 7e7752157853043e7ad3d433d53d240c
+      spriteId: 02a4043dfde2e49d0b262fb95f6e2a26
     linkedCells: []
     parentIndex: -1
   platformSettings:
