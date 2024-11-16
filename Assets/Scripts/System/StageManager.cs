@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DG.Tweening;
 using R3;
+using Random = UnityEngine.Random;
 
 public class StageManager : MonoBehaviour
 {
@@ -24,7 +25,13 @@ public class StageManager : MonoBehaviour
         Other,
     }
 
+    [Header("背景")]
     [SerializeField] private Material m;
+    [SerializeField] private List<GameObject> torches = new();
+    [SerializeField] private Vector3 defaultTorchPosition;
+    [SerializeField] private float torchInterval = 5;
+
+    [Header("ステージ")]
     [SerializeField] private int stageLength = 10;
     [SerializeField] private List<StageData> stageData　= new();
     [SerializeField] private List<StageType> stageTypes = new();
@@ -32,6 +39,7 @@ public class StageManager : MonoBehaviour
     public readonly ReactiveProperty<int> currentStage = new(-1);
     private static readonly int mainTex = Shader.PropertyToID("_MainTex");
     private int enemyStageCount;
+    private Tween torchTween;
 
     public StageType GetCurrentStageType()
     {
@@ -40,6 +48,7 @@ public class StageManager : MonoBehaviour
 
     public void NextStage()
     {
+        // 演出
         Utils.Instance.WaitAndInvoke(0.2f, () =>
         {
             SeManager.Instance.PlaySe("footsteps");
@@ -48,8 +57,28 @@ public class StageManager : MonoBehaviour
             .SetEase(Ease.InOutSine).OnComplete(() =>
             {
                 m.SetTextureOffset(mainTex, new Vector2(0, 0));
+                
+                var tmp = torches[0];
+                torches.RemoveAt(0);
+                torches.Add(tmp);
+                torchTween.Kill();
+                tmp.transform.position = defaultTorchPosition + new Vector3(torchInterval * (torches.Count-1), 0, 0);
+                Debug.Log(tmp.transform.position);
             }).SetUpdate(true); 
+        
+        for(var i = 0; i < torches.Count; i++)
+        {
+            var t = torches[i];
+            var tween = t.transform.DOMove(t.transform.position - new Vector3(torchInterval, 0, 0), 2.0f)
+                .SetEase(Ease.InOutSine)
+                .SetUpdate(true);
+            if (i == 0) torchTween = tween;
+        }
+        torches[^1].SetActive(Random.Range(0.0f, 1.0f) < 0.5f);
 
+        
+
+        // ステージ進行
         Utils.Instance.WaitAndInvoke(2.0f, () =>
         {
             if (currentStage.Value + 1 < stageTypes.Count)
