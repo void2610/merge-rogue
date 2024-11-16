@@ -22,6 +22,6 @@ public class AddOneToAllAttack : MonoBehaviour, IRelicBehavior
     {
         var x = EventManager.OnPlayerAttack.GetValue();
         EventManager.OnPlayerAttack.SetValue((x.Item1 + 1, x.Item2));
-        ui.ActivateUI();
+        ui?.ActivateUI();
     }
 }

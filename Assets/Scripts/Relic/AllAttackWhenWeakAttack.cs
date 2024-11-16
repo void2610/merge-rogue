@@ -24,7 +24,7 @@ public class AllAttackWhenWeakAttack : MonoBehaviour, IRelicBehavior
         if (x.Item1 < 10)
         {
             EventManager.OnPlayerAttack.SetValue((x.Item1, true));
-            ui.ActivateUI();
+            ui?.ActivateUI();
         }
     }
 }
