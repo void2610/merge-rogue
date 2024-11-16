@@ -63,7 +63,6 @@ public class StageManager : MonoBehaviour
                 torches.Add(tmp);
                 torchTween.Kill();
                 tmp.transform.position = defaultTorchPosition + new Vector3(torchInterval * (torches.Count-1), 0, 0);
-                Debug.Log(tmp.transform.position);
             }).SetUpdate(true); 
         
         for(var i = 0; i < torches.Count; i++)
