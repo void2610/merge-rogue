@@ -20,6 +20,7 @@ public class MergeManager : MonoBehaviour
 
     [SerializeField] private MergeWall wall;
     [SerializeField] private GameObject mergeParticle;
+    [SerializeField] private GameObject mergePowerParticle;
     [SerializeField] private GameObject fallAnchor;
     [SerializeField] private Material arrowMaterial;
     [SerializeField] private GameObject ballGauge;
@@ -109,6 +110,7 @@ public class MergeManager : MonoBehaviour
         int i = Random.Range(0, 5);
         SeManager.Instance.PlaySe("ball" + i);
         Instantiate(mergeParticle, p, Quaternion.identity);
+        Instantiate(mergePowerParticle, p, Quaternion.identity);
     }
 
     public void Attack()

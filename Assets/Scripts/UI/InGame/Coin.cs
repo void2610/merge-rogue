@@ -3,7 +3,7 @@ using DG.Tweening;
 
 public class Coin : MonoBehaviour
 {
-    private readonly Vector3 target = new(-8.5f, 4.75f, 0);
+    private readonly Vector3 target = new(7.5f, 4.5f, 0);
     private void Start()
     {
         var r = Random.Range(-0.1f, 0.1f);
@@ -17,12 +17,14 @@ public class Coin : MonoBehaviour
         this.transform.DOMoveY(-1.1f, 1.5f).SetEase(Ease.OutBounce).SetRelative(true).OnComplete(() =>
         {
             GameManager.Instance.AddCoin(1);
+            
             var middle = new Vector3(((this.transform.position.x + target.x) / 2) + 0.5f, ((this.transform.position.y + target.y) / 2) + 0.5f, 0);
-            this.transform.DOPath(new [] { this.transform.position, middle, target }, 1f).SetEase(Ease.OutExpo
+            this.transform.DOPath(new [] { this.transform.position, middle, target }, 0.8f).SetEase(Ease.OutExpo
             ).OnComplete(() =>
             {
-                this.GetComponent<SpriteRenderer>().DOFade(0, 0.5f).SetLink(gameObject);
-                Destroy(this.gameObject);
+                this.GetComponent<SpriteRenderer>().DOFade(0, 0.3f).OnComplete(() =>
+                    Destroy(this.gameObject)
+                ).SetUpdate(true).SetLink(gameObject);
             }).SetUpdate(true).SetLink(gameObject);
         }).SetUpdate(true).SetLink(gameObject);
     }
