@@ -23,6 +23,9 @@ public class NewMonoBehaviourScript : MonoBehaviour
     {
         if (pos != null) targetPosition = (Vector3)pos;
         if (dur > 0.0f) duration = dur;
+        
+        duration = Random.Range(Mathf.Max(0.01f, duration - 1f), duration + 1f);
+        
         destroyOnComplete = doc;
 
         // 現在位置とターゲット位置を取得

@@ -25,7 +25,7 @@ public class RelicUI : MonoBehaviour
         // イベントを登録
         var trigger = GetComponent<EventTrigger>();
         var entry = new EventTrigger.Entry {eventID = EventTriggerType.PointerEnter};
-        entry.callback.AddListener((data) => GameManager.Instance.uiManager.ShowRelicDescriptionWindow(relicData, transform.position));
+        entry.callback.AddListener((data) => GameManager.Instance.uiManager.ShowRelicDescriptionWindow(relicData, transform.position + new Vector3(2.55f,0,0)));
         trigger.triggers.Add(entry);
         var entry2 = new EventTrigger.Entry {eventID = EventTriggerType.PointerExit};
         entry2.callback.AddListener((data) => GameManager.Instance.uiManager.HideRelicDescriptionWindow());

@@ -134,7 +134,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPosition: {x: -5.75, y: 2, z: 0}
-  duration: 2
+  duration: 1.5
   intermediatePointCount: 10
   maxControlPointOffset: 2.5
   destroyOnComplete: 1
