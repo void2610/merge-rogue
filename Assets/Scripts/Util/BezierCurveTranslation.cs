@@ -45,7 +45,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
             .OnComplete(() =>
             {
                 if(vfx != null) vfx.Stop();
-                if (destroyOnComplete) StartCoroutine(waitAndDestroy(1f));
+                if (destroyOnComplete) StartCoroutine(waitAndDestroy(5f));
             });
     }
 

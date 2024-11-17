@@ -98,7 +98,8 @@ public class EnemyBase : MonoBehaviour
         {
             Utils.Instance.WaitAndInvoke(i * 0.1f, () =>
             {
-                Instantiate(coinPrefab, this.transform.position, Quaternion.identity);
+                var c = Instantiate(coinPrefab).GetComponent<Coin>();
+                c.SetUp(this.transform.position.x);
             });
         }
         CanvasGroup cg = canvas.GetComponent<CanvasGroup>();

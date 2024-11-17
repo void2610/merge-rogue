@@ -76,8 +76,8 @@ public class GameManager : MonoBehaviour
 
     public void ShowDamage(int damage, Vector3 pos)
     {
-        var damageText = Instantiate(damageTextPrefab, pos, Quaternion.identity, mainCanvas.transform);
-        damageText.GetComponent<DamageText>().SetUp(damage);
+        var damageText = Instantiate(damageTextPrefab, mainCanvas.transform).GetComponent<DamageText>();
+        damageText.SetUp(damage, pos.x);
     }
     
     public void ShowMergeText(int value, Vector3 pos)
