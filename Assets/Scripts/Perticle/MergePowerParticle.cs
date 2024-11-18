@@ -3,7 +3,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.VFX;
 
-public class NewMonoBehaviourScript : MonoBehaviour
+public class MergePowerParticle : MonoBehaviour
 {
     [SerializeField] private Vector3 targetPosition = Vector3.zero; // 移動先の座標
     [SerializeField] private float duration = 2f; // 移動時間
@@ -12,6 +12,8 @@ public class NewMonoBehaviourScript : MonoBehaviour
     [SerializeField] private bool destroyOnComplete = true; // 移動完了時にオブジェクトを破棄するか
     
     private VisualEffect vfx;
+    public string velocityProperty = "ObjectVelocity";
+    private Vector3 previousPosition;
 
     /// <summary>
     /// 指定された座標までカーブを描いて移動
@@ -80,6 +82,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
             midpoint += randomOffset;
 
             points[i] = midpoint;
+            points[i].z = 0;
         }
 
         return points;
@@ -94,6 +97,22 @@ public class NewMonoBehaviourScript : MonoBehaviour
     private void Start()
     {
         vfx = GetComponent<VisualEffect>();
+        previousPosition = transform.position;
         MoveTo();
+    }
+
+    private void Update()
+    {
+        // 移動速度を計算
+        var velocity = (transform.position - previousPosition) / Time.deltaTime;
+
+        // VFX Graphに速度を送信
+        if (vfx)
+        {
+            vfx.SetVector3(velocityProperty, velocity);
+        }
+
+        // 現在位置を更新
+        previousPosition = transform.position;
     }
 }
