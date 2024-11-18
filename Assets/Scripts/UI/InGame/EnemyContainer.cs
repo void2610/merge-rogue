@@ -133,6 +133,11 @@ public class EnemyContainer : MonoBehaviour
 
     public void AttackEnemy(int damage, bool isAll = false)
     {
+        StartCoroutine(AttackEnemyCoroutine(damage, isAll));
+    }
+    
+    private IEnumerator AttackEnemyCoroutine(int damage, bool isAll = false)
+    {
         var es = GetAllEnemies();
         if(isAll){
             foreach (var e in es)
@@ -150,7 +155,17 @@ public class EnemyContainer : MonoBehaviour
                 if (es.IndexOf(e) == es.Count - 1) actualDamage = damage;
                 e.TakeDamage(actualDamage);
                 damage -= actualDamage;
+                // 待つ
+                // TODO: 敵の攻撃が始まってしまうので、攻撃が終わるまで敵が待つようにする
+                yield return new WaitForSeconds(0.3f);
             }
+        }
+        
+        // 敵が残っていたら敵の攻撃へ
+        if (GameManager.Instance.enemyContainer.GetEnemyCount() > 0)
+        {
+            Utils.Instance.WaitAndInvoke(0.75f,
+                () => GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack));
         }
     }
     

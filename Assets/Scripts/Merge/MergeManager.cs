@@ -137,13 +137,6 @@ public class MergeManager : MonoBehaviour
         SeManager.Instance.PlaySe("playerAttack");
         Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
         attackCount = 0;
-
-        // 敵が残っていたら敵の攻撃へ
-        if (GameManager.Instance.enemyContainer.GetEnemyCount() > 0)
-        {
-            Utils.Instance.WaitAndInvoke(0.75f,
-                () => GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack));
-        }
     }
 
     public void AddAttackCount(float atk, Vector3 p)

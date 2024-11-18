@@ -8,7 +8,6 @@ public class DamageText : MonoBehaviour
 
     public void SetUp(int damage, float xPos){
         this.transform.position = new Vector3(xPos, FLOOR + 1, 0);
-        Debug.Log("Damage position: " + this.transform.position);
         
         var t = GetComponent<TextMeshProUGUI>();
         var dir = Random.Range(-0.5f, 0.5f);

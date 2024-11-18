@@ -52,7 +52,7 @@ VisualEffect:
   m_PropertySheet:
     m_Float:
       m_Array:
-      - m_Value: 2
+      - m_Value: 4
         m_Name: Emission
         m_Overridden: 1
       - m_Value: 50
@@ -126,7 +126,7 @@ VFXRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -500
 --- !u!114 &5796793875450407974
 MonoBehaviour:
   m_ObjectHideFlags: 0

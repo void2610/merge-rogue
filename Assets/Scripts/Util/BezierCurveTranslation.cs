@@ -19,7 +19,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
     /// <param name="pos">移動先の座標</param>
     /// <param name="dur">移動時間</param>
     /// <param name="doc">移動完了時にオブジェクトを破棄するか</param>
-    public void MoveTo(Vector3? pos = null, float dur = -1.0f, bool doc = true)
+    private void MoveTo(Vector3? pos = null, float dur = -1.0f, bool doc = true)
     {
         if (pos != null) targetPosition = (Vector3)pos;
         if (dur > 0.0f) duration = dur;
@@ -44,9 +44,16 @@ public class NewMonoBehaviourScript : MonoBehaviour
             .SetEase(Ease.InOutSine) // 移動のスムーズさ
             .OnComplete(() =>
             {
-                if(vfx != null) vfx.Stop();
-                if (destroyOnComplete) StartCoroutine(waitAndDestroy(5f));
+
+                if (destroyOnComplete) StartCoroutine(WaitAndDestroy(5f));
             });
+        
+        // 少し早めにVFXを停止
+        DOVirtual.DelayedCall(duration - 0.2f, () =>
+        {
+            if (vfx != null) vfx.Stop();
+        });
+        
     }
 
     /// <summary>
@@ -58,13 +65,13 @@ public class NewMonoBehaviourScript : MonoBehaviour
     private Vector3[] GenerateIntermediatePoints(Vector3 start, Vector3 end)
     {
         var points = new Vector3[intermediatePointCount + 2]; // 開始点と終了点を含む
-        Vector3 randomOffset = Random.insideUnitSphere * maxControlPointOffset;
+        var randomOffset = Random.insideUnitSphere * maxControlPointOffset;
 
         points[0] = start;
         points[^1] = end;
 
         // 中間点を計算
-        for (int i = 1; i <= intermediatePointCount; i++)
+        for (var i = 1; i <= intermediatePointCount; i++)
         {
             float t = (float)i / (intermediatePointCount + 1); // 進行割合
             var midpoint = Vector3.Lerp(start, end, t); // 線形補間で中間位置を計算
@@ -78,7 +85,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
         return points;
     }
     
-    private IEnumerator waitAndDestroy(float time)
+    private IEnumerator WaitAndDestroy(float time)
     {
         yield return new WaitForSeconds(time);
         Destroy(this.gameObject);

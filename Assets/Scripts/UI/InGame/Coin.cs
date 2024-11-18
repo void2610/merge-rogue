@@ -10,7 +10,6 @@ public class Coin : MonoBehaviour
     {
         var r = Random.Range(-0.1f, 0.1f);
         this.transform.position = new Vector3(xPos + r, FLOOR + 1, 0);
-        Debug.Log("Coin position: " + this.transform.position);
 
         if (r > 0.0f)
             this.transform.DOMoveX(-1.5f, 2f).SetRelative(true).SetUpdate(true).SetLink(gameObject);
