@@ -21,6 +21,7 @@ public class MergeManager : MonoBehaviour
     [SerializeField] private MergeWall wall;
     [SerializeField] private GameObject mergeParticle;
     [SerializeField] private GameObject mergePowerParticle;
+    [SerializeField] public PhysicsMaterial2D wallMaterial;
     [SerializeField] private GameObject fallAnchor;
     [SerializeField] private Material arrowMaterial;
     [SerializeField] private GameObject ballGauge;
@@ -79,6 +80,11 @@ public class MergeManager : MonoBehaviour
         
         GameManager.Instance.uiManager.EnableCanvasGroup("LevelUp", false);
         GameManager.Instance.ChangeState(GameManager.GameState.StageMoving);
+    }
+    
+    public PhysicsMaterial2D GetWallMaterial()
+    {
+        return wallMaterial;
     }
     
     public void ResetRemainingBalls()

@@ -40,7 +40,7 @@ public class BallDataList : ScriptableObject
 #endif
     }
 
-    public List<BallData> GetBallDataFromRarity(BallRarity r)
+    public List<BallData> GetBallDataFromRarity(Rarity r)
     {
         List<BallData> result = new List<BallData>();
         foreach (BallData bd in list)

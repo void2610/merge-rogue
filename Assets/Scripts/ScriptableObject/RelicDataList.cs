@@ -41,7 +41,7 @@ public class RelicDataList : ScriptableObject
 #endif
     }
         
-    public List<RelicData> GetRelicDataFromRarity(RelicRarity r)
+    public List<RelicData> GetRelicDataFromRarity(Rarity r)
     {
         var result = new List<RelicData>();
         foreach (var bd in list)

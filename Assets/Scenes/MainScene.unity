@@ -4313,6 +4313,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: df8d907a9c9f9425b835b3977d044c1c, type: 2}
   - {fileID: 11400000, guid: 62bb1794e6a1b410ebd26bc6faedb702, type: 2}
   - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 56bb238d61de24ef19954daef4111c9a, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -5879,7 +5880,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: bd5a1f84996314084a6287bd54bb2089, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -7905,7 +7906,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: bd5a1f84996314084a6287bd54bb2089, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -8828,6 +8829,7 @@ MonoBehaviour:
   wall: {fileID: 774851889}
   mergeParticle: {fileID: 1620409693136122509, guid: adb71434fa9c04035a16947c624e5be2, type: 3}
   mergePowerParticle: {fileID: 7949084058323581054, guid: 02d4b18e706584da2a8222cfa6113a02, type: 3}
+  wallMaterial: {fileID: 6200000, guid: bd5a1f84996314084a6287bd54bb2089, type: 2}
   fallAnchor: {fileID: 632287031}
   arrowMaterial: {fileID: 2100000, guid: 7158305c99d774c409c2d3ec56e60442, type: 2}
   ballGauge: {fileID: 738866161}
@@ -9769,7 +9771,7 @@ BoxCollider2D:
   m_Enabled: 1
   serializedVersion: 3
   m_Density: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: bd5a1f84996314084a6287bd54bb2089, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

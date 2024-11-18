@@ -9,6 +9,6 @@ public class RelicData : ScriptableObject
     public Sprite sprite;
     public string displayName;
     public string description;
-    public RelicRarity rarity;
+    public Rarity rarity;
     public int price;
 }

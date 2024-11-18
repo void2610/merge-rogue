@@ -14,6 +14,7 @@ public class RelicDescriptionWindow : MonoBehaviour
         this.gameObject.SetActive(true);
 
         nameText.text = r.displayName;
+        nameText.color = RarityColors.GetColor(r.rarity);
         descriptionText.text = r.description;
 
         // ワールド座標をRectTransformのローカル座標に変換
