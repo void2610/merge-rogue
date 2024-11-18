@@ -1505,7 +1505,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1725942230}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.28
+  m_Size: 0.099999994
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2633,7 +2633,121 @@ MonoBehaviour:
     - You can modify the code only for your own use and you
     cannot redistribute modified versions (but you can send pull requests to me)
 
-'
+
+
+    NuGetForUnity
+
+    --------------------------
+
+    MIT
+    License
+
+
+    Copyright (c) 2018 Patrick McCarthy
+
+
+    Permission is hereby
+    granted, free of charge, to any person obtaining a copy
+
+    of this software
+    and associated documentation files (the "Software"), to deal
+
+    in the Software
+    without restriction, including without limitation the rights
+
+    to use, copy,
+    modify, merge, publish, distribute, sublicense, and/or sell
+
+    copies of the
+    Software, and to permit persons to whom the Software is
+
+    furnished to do
+    so, subject to the following conditions:
+
+
+    The above copyright notice and
+    this permission notice shall be included in all
+
+    copies or substantial portions
+    of the Software.
+
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF
+    ANY KIND, EXPRESS OR
+
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+    OF MERCHANTABILITY,
+
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE
+
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+    DAMAGES OR OTHER
+
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+    ARISING FROM,
+
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
+    DEALINGS IN THE
+
+    SOFTWARE.
+
+
+    R3
+
+    --------------------------
+
+    MIT
+    License
+
+
+    Copyright (c) 2024 Cysharp, Inc.
+
+
+    Permission is hereby granted,
+    free of charge, to any person obtaining a copy
+
+    of this software and associated
+    documentation files (the "Software"), to deal
+
+    in the Software without restriction,
+    including without limitation the rights
+
+    to use, copy, modify, merge, publish,
+    distribute, sublicense, and/or sell
+
+    copies of the Software, and to permit
+    persons to whom the Software is
+
+    furnished to do so, subject to the following
+    conditions:
+
+
+    The above copyright notice and this permission notice shall
+    be included in all
+
+    copies or substantial portions of the Software.
+
+
+    THE
+    SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+
+    IMPLIED,
+    INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+
+    FITNESS
+    FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+
+    AUTHORS
+    OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+
+    LIABILITY,
+    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+
+    OUT OF
+    OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+
+    SOFTWARE.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 51b066cd8e0b7476c94d04d3a90a0709, type: 2}
   m_sharedMaterial: {fileID: 322069558015029290, guid: 51b066cd8e0b7476c94d04d3a90a0709, type: 2}
@@ -2947,7 +3061,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 1250}
+  m_SizeDelta: {x: 0, y: 3500}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &1878365807
 PrefabInstance:
