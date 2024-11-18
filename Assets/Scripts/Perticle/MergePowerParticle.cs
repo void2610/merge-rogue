@@ -49,7 +49,7 @@ public class NewMonoBehaviourScript : MonoBehaviour
             });
         
         // 少し早めにVFXを停止
-        DOVirtual.DelayedCall(duration - 0.2f, () =>
+        DOVirtual.DelayedCall(duration - 0.3f, () =>
         {
             if (vfx != null) vfx.Stop();
         });
