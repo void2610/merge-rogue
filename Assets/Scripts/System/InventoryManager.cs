@@ -99,7 +99,7 @@ public class InventoryManager : MonoBehaviour
         }
         ball.transform.localScale = Vector3.one * sizes[level - 1] * ballBase.size;
         // HDRカラーに変換
-        var color = MyColors.GetBallColor(level - 1) * 1.2f;
+        var color = MyColors.GetBallColor(level - 1) * 1.1f;
         ball.GetComponent<SpriteRenderer>().color = color;
         ball.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = data.sprite;
         ball.GetComponent<BallBase>().level = level;

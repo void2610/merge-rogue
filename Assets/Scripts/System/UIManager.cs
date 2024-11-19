@@ -49,6 +49,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateLevelText(int level)
     {
+        if (!levelText) return;
         levelText.text = "level: " + level;
     }
 

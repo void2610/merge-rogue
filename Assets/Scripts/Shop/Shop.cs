@@ -14,9 +14,11 @@ public class Shop : MonoBehaviour
     }
     public static Shop Instance;
 
-    [SerializeField]
-    private BallDataList allBallDataList;
-    private List<BallData> currentItems = new List<BallData>();
+    [SerializeField] private BallDataList allBallDataList;
+    [SerializeField] private RelicDataList allRelicDataList;
+    
+    private List<BallData> currentBallItems = new ();
+    private List<RelicData> currentRelicItems = new ();
     private const int ITEM_NUM = 3;
     private Transform itemContainer => this.transform.Find("Items");
     private ShopState state = ShopState.Closed;
@@ -27,13 +29,13 @@ public class Shop : MonoBehaviour
     {
         if (count > ITEM_NUM) return;
         state = ShopState.NotSelected;
-        currentItems.Clear();
-        currentItems.Add(allBallDataList.list[1]);
-        SetEvent(itemContainer.GetChild(0).gameObject, currentItems[0], 0);
-        currentItems.Add(allBallDataList.list[2]);
-        SetEvent(itemContainer.GetChild(1).gameObject, currentItems[1], 1);
-        currentItems.Add(allBallDataList.list[3]);
-        SetEvent(itemContainer.GetChild(2).gameObject, currentItems[2], 2);
+        currentBallItems.Clear();
+        currentBallItems.Add(allBallDataList.list[1]);
+        SetEvent(itemContainer.GetChild(0).gameObject, currentBallItems[0], 0);
+        currentBallItems.Add(allBallDataList.list[2]);
+        SetEvent(itemContainer.GetChild(1).gameObject, currentBallItems[1], 1);
+        currentBallItems.Add(allBallDataList.list[3]);
+        SetEvent(itemContainer.GetChild(2).gameObject, currentBallItems[2], 2);
         // TODO: アイテムをランダムに選択
     }
 
@@ -52,7 +54,7 @@ public class Shop : MonoBehaviour
     public void BuyBall(int index)
     {
         if(selectedItem == -1) return;
-        var item = currentItems[selectedItem];
+        var item = currentBallItems[selectedItem];
         if (item == null) return;
 
         if (GameManager.Instance.coin.Value >= item.price)
