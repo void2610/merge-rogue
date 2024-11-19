@@ -9,27 +9,17 @@ public class MergePowerParticle : MonoBehaviour
     [SerializeField] private float duration = 2f; // 移動時間
     [SerializeField] private int intermediatePointCount = 3; // 中間点の数
     [SerializeField] private float maxControlPointOffset = 3f; // 制御点オフセットの最大値
-    [SerializeField] private bool destroyOnComplete = true; // 移動完了時にオブジェクトを破棄するか
     
     private VisualEffect vfx;
-    public string velocityProperty = "ObjectVelocity";
     private Vector3 previousPosition;
-
-    /// <summary>
-    /// 指定された座標までカーブを描いて移動
-    /// </summary>
-    /// <param name="pos">移動先の座標</param>
-    /// <param name="dur">移動時間</param>
-    /// <param name="doc">移動完了時にオブジェクトを破棄するか</param>
-    private void MoveTo(Vector3? pos = null, float dur = -1.0f, bool doc = true)
+    
+    public void MoveTo(Color color)
     {
-        if (pos != null) targetPosition = (Vector3)pos;
-        if (dur > 0.0f) duration = dur;
+        vfx = GetComponent<VisualEffect>();
+        vfx.SetVector3("Color", new Vector3(color.r, color.g, color.b));
         
         duration = Random.Range(Mathf.Max(0.01f, duration - 1f), duration + 1f);
         
-        destroyOnComplete = doc;
-
         // 現在位置とターゲット位置を取得
         var startPosition = transform.position;
 
@@ -41,13 +31,12 @@ public class MergePowerParticle : MonoBehaviour
                 pathPoints,
                 duration,
                 PathType.CatmullRom, // Catmull-Romスプラインを使用
-                PathMode.Full3D      // 3D空間での移動
+                PathMode.Sidescroller2D
             )
             .SetEase(Ease.InOutSine) // 移動のスムーズさ
             .OnComplete(() =>
             {
-
-                if (destroyOnComplete) StartCoroutine(WaitAndDestroy(5f));
+                StartCoroutine(WaitAndDestroy(5f));
             });
         
         // 少し早めにVFXを停止
@@ -55,15 +44,8 @@ public class MergePowerParticle : MonoBehaviour
         {
             if (vfx != null) vfx.Stop();
         });
-        
     }
 
-    /// <summary>
-    /// 開始点と終了点の間に中間点を生成
-    /// </summary>
-    /// <param name="start">開始点</param>
-    /// <param name="end">終了点</param>
-    /// <returns>中間点を含む座標配列</returns>
     private Vector3[] GenerateIntermediatePoints(Vector3 start, Vector3 end)
     {
         var points = new Vector3[intermediatePointCount + 2]; // 開始点と終了点を含む
@@ -92,27 +74,5 @@ public class MergePowerParticle : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
         Destroy(this.gameObject);
-    }
-
-    private void Start()
-    {
-        vfx = GetComponent<VisualEffect>();
-        previousPosition = transform.position;
-        MoveTo();
-    }
-
-    private void Update()
-    {
-        // 移動速度を計算
-        var velocity = (transform.position - previousPosition) / Time.deltaTime;
-
-        // VFX Graphに速度を送信
-        if (vfx)
-        {
-            vfx.SetVector3(velocityProperty, velocity);
-        }
-
-        // 現在位置を更新
-        previousPosition = transform.position;
     }
 }

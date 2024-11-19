@@ -18,7 +18,6 @@ public class InventoryManager : MonoBehaviour
     private Vector3 inventoryPosition = new(5.5f, -1.0f, 0);
     private readonly List<float> sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
     private readonly List<float> probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f };
-    private readonly List<Color> colors = new() { new Color(0.5f,0.5f,0.5f), Color.green, Color.blue,  Color.magenta, Color.yellow, Color.red, Color.cyan};
 
     // ボールを入れ替える
     public void SetBall(BallData data, int level)
@@ -100,7 +99,7 @@ public class InventoryManager : MonoBehaviour
         }
         ball.transform.localScale = Vector3.one * sizes[level - 1] * ballBase.size;
         // HDRカラーに変換
-        var color = colors[level - 1] * 1.2f;
+        var color = MyColors.GetBallColor(level - 1) * 1.2f;
         ball.GetComponent<SpriteRenderer>().color = color;
         ball.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = data.sprite;
         ball.GetComponent<BallBase>().level = level;

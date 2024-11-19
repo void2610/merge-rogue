@@ -42,7 +42,7 @@ public enum Rarity
     Legendary
 }
 
-public static class RarityColors
+public static class MyColors
 {
     /// <summary>
     /// レアリティに紐づく色を保持する辞書
@@ -55,20 +55,49 @@ public static class RarityColors
         { Rarity.Epic, new Color(0.7f, 0.3f, 0.9f) },        // 紫
         { Rarity.Legendary, new Color(1f, 0.8f, 0f) }        // 金
     };
+    
+    /// <summary>
+    /// ボールの色を保持する辞書
+    /// </summary>
+    private static readonly List<Color> ballColors = new()
+    {
+        new Color(0.5f,0.5f,0.5f),
+        Color.green,
+        Color.blue,
+        Color.magenta,
+        Color.yellow,
+        Color.red,
+        Color.cyan
+    };
+
 
     /// <summary>
     /// レアリティに対応する色を取得する
     /// </summary>
     /// <param name="rarity">レアリティ</param>
     /// <returns>紐づけられた色</returns>
-    public static Color GetColor(Rarity rarity)
+    public static Color GetRarityColor(Rarity rarity)
     {
-        if (rarityToColorMap.TryGetValue(rarity, out Color color))
+        if (rarityToColorMap.TryGetValue(rarity, out var color))
         {
             return color;
         }
 
         // デフォルトの色を返す（例: 白）
         return Color.white;
+    }
+    
+    /// <summary>
+    /// ボールの色を取得する
+    /// </summary>
+    /// <param name="level">ボールのレベル</param>
+    /// <returns>ボールの色</returns>
+    public static Color GetBallColor(int level)
+    {
+        if (level < 0 || level >= ballColors.Count)
+        {
+            return Color.white;
+        }
+        return ballColors[level];
     }
 }

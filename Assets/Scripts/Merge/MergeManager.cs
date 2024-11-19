@@ -116,7 +116,9 @@ public class MergeManager : MonoBehaviour
         int i = Random.Range(0, 5);
         SeManager.Instance.PlaySe("ball" + i);
         Instantiate(mergeParticle, p, Quaternion.identity);
-        Instantiate(mergePowerParticle, p, Quaternion.identity);
+        var mpp = Instantiate(mergePowerParticle, p, Quaternion.identity).GetComponent<MergePowerParticle>();
+        mpp.MoveTo(MyColors.GetBallColor(level-2));
+        Debug.Log(level -2);
     }
 
     public void Attack()
@@ -222,6 +224,7 @@ public class MergeManager : MonoBehaviour
 
         ballContainer = new GameObject("BallContainer");
         wall.SetWallWidth(wallWidths[0]);
+        wallMaterial.bounciness = 0.0f;
         fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = false;
         arrowMaterial.SetFloat(alpha, 0);
         ballCountText.text = remainingBalls + "/" + ballPerOneTurn;
