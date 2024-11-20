@@ -5,6 +5,10 @@ using DG.Tweening;
 public class MergeText : MonoBehaviour
 {
     public void SetUp(int damage){
+        var x = Random.Range(-1.0f, 1.0f);
+        var y = Random.Range(-0.25f, 1.0f);
+        transform.position += new Vector3(x, y, 0);
+        
         var t = GetComponent<TextMeshProUGUI>();
         
         t.text = damage.ToString();

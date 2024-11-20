@@ -55,7 +55,7 @@ public class Shop : MonoBehaviour
         for (int i = 0; i < ITEM_NUM; i++)
         {
             itemContainer.GetChild(i).GetComponent<Image>().color = new Color(1, 1, 1, 1);
-            itemContainer.GetChild(i).DOScale(1, 0.2f).SetUpdate(true);
+            itemContainer.GetChild(i).DOScale(1, 0.1f).SetUpdate(true);
         }
         GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(false);
     }
@@ -87,14 +87,14 @@ public class Shop : MonoBehaviour
             if (isBall)
             {
                 InventoryManager.instance.SetBall(ball, index + 1);
-                itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.2f).SetUpdate(true);
+                itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.1f).SetUpdate(true);
                 GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(false);
                 GameManager.Instance.GetComponent<InventoryUI>().SetCursor(0);
             }
             else
             {
                 RelicManager.Instance.AddRelic(relic);
-                itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.2f).SetUpdate(true);
+                itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.1f).SetUpdate(true);
             }
             
             GameManager.Instance.SubstractCoin(itemPrice);
@@ -127,7 +127,7 @@ public class Shop : MonoBehaviour
                 {
                     state = ShopState.Selected;
                     selectedItem = index;
-                    g.transform.DOScale(defaultScale * 1.2f, 0.2f).SetUpdate(true);
+                    g.transform.DOScale(defaultScale * 1.2f, 0.1f).SetUpdate(true);
                     GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(true);
                     SeManager.Instance.PlaySe("button");
                 }
@@ -170,7 +170,7 @@ public class Shop : MonoBehaviour
                 {
                     state = ShopState.Selected;
                     selectedItem = index;
-                    g.transform.DOScale(defaultScale * 1.2f, 0.2f).SetUpdate(true);
+                    g.transform.DOScale(defaultScale * 1.2f, 0.1f).SetUpdate(true);
                     SeManager.Instance.PlaySe("button");
                 }
                 else
@@ -216,7 +216,7 @@ public class Shop : MonoBehaviour
                 itemContainer.GetChild(i).GetComponent<Image>().color = new Color(0.7f, 0.7f, 0.7f, 1);
                 if (itemContainer.GetChild(i).localScale.x > defaultScale)
                 {
-                    itemContainer.GetChild(i).DOScale(defaultScale, 0.2f).SetUpdate(true);
+                    itemContainer.GetChild(i).DOScale(defaultScale, 0.1f).SetUpdate(true);
                 }
             }
         }

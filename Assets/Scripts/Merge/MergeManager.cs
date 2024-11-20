@@ -129,7 +129,7 @@ public class MergeManager : MonoBehaviour
         }
         
         // イベントでパラメータを更新
-        (int, bool) p = ((int)(attackCount * attackMagnification), false);
+        var p = ((int)(attackCount * attackMagnification), false);
         EventManager.OnPlayerAttack.Trigger(p);
         var atk = EventManager.OnPlayerAttack.GetAndResetValue();
         
@@ -149,7 +149,7 @@ public class MergeManager : MonoBehaviour
     public void AddAttackCount(float atk, Vector3 p)
     {  
         attackCount += (int)atk;
-        GameManager.Instance.ShowMergeText((int)atk, p);
+        GameManager.Instance.ShowMergeText(attackCount, p);
         // attackCountUI.SetAttackCount(attackCount);
     }
 
