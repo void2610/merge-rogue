@@ -27,6 +27,9 @@ public class Player : MonoBehaviour
 
     public void Heal(int amount)
     {
+        ParticleManager.Instance.HealParticleToPlayer();
+        SeManager.Instance.PlaySe("heal");
+
         if (health.Value >= maxHealth.Value)
         {
             return;

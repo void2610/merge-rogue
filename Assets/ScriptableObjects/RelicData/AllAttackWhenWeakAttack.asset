@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 0
   className: AllAttackWhenWeakAttack
   sprite: {fileID: 1023881543254830229, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
-  displayName: "\u5F31\u8005\u6551\u6E08"
+  displayName: "\u98A8\u306E\u30DE\u30F3\u30C8"
   description: "\u653B\u6483\u529B\u304C10\u4EE5\u4E0B\u306E\u6642\u3001\u5168\u4F53\u653B\u6483\u306B\u306A\u308B"
   rarity: 2
   price: 100
