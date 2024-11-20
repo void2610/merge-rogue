@@ -16,7 +16,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider seSlider;
     [SerializeField] private Image fadeImage;
     [SerializeField] private RelicDescriptionWindow relicDescriptionWindow;
-
+    [SerializeField] private BallDescriptionWindow ballDescriptionWindow;
+    
     [SerializeField] private Volume volume;
     [SerializeField] private List<CanvasGroup> canvasGroups;
     [SerializeField] private TextMeshProUGUI coinText;
@@ -107,9 +108,19 @@ public class UIManager : MonoBehaviour
         relicDescriptionWindow.ShowWindow(r, pos);
     }
     
+    public void ShowBallDescriptionWindow(BallData b, Vector3 pos)
+    {
+        ballDescriptionWindow.ShowWindow(b, pos);
+    }
+    
     public void HideRelicDescriptionWindow()
     {
         relicDescriptionWindow.HideWindow();
+    }
+    
+    public void HideBallDescriptionWindow()
+    {
+        ballDescriptionWindow.HideWindow();
     }
 
     private void Awake()

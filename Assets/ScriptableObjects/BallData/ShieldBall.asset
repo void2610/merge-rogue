@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   className: ShieldBall
+  displayName: "\u30B7\u30FC\u30EB\u30C9\u30DC\u30FC\u30EB"
+  description: "\u5B88\u8B77\u308B\u305C"
   sprite: {fileID: -3261829134322765937, guid: 2fd919f8b78aa4df085e290575a2e038, type: 3}
   rarity: 1
   price: 50

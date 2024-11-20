@@ -137,6 +137,14 @@ public class Shop : MonoBehaviour
                 }
             });
         }
+        
+        Utils.Instance.AddEventToObject(g, () => { 
+            GameManager.Instance.uiManager.ShowBallDescriptionWindow(ball,
+                g.transform.position + new Vector3(3f, 0, 0));
+        }, EventTriggerType.PointerEnter);
+        Utils.Instance.AddEventToObject(g, () => { 
+            GameManager.Instance.uiManager.HideBallDescriptionWindow();
+        }, EventTriggerType.PointerExit);
     }
     
     private void SetRelicEvent(GameObject g, RelicData relic, int index)

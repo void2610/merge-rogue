@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   className: BigBall
+  displayName: "\u30C7\u30AB\u3044\u30DC\u30FC\u30EB"
+  description: "\u5927\u304D\u3044\u4EE3\u308F\u308A\u306B\u653B\u6483\u529B\u304C\u9AD8\u3044"
   sprite: {fileID: -5920518178886362482, guid: 7d25eb6cc8df34beeb45ced10b075ad8, type: 3}
   rarity: 0
   price: 20
