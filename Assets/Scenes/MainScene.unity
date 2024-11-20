@@ -1018,6 +1018,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healParticlePrefab: {fileID: 443494868773313826, guid: bd5fe67f0758d480088c2d39d5537b5d, type: 3}
+  mergeParticle: {fileID: 1620409693136122509, guid: adb71434fa9c04035a16947c624e5be2, type: 3}
+  mergePowerParticle: {fileID: 7949084058323581054, guid: 02d4b18e706584da2a8222cfa6113a02, type: 3}
+  damageTextPrefab: {fileID: 7173658914585924005, guid: 4fa946622e4bd4de3858712a3e083b3c, type: 3}
+  mergeTextPrefab: {fileID: 7173658914585924005, guid: d15f3edae417a4c00a382e23f63f9989, type: 3}
 --- !u!4 &318840770
 Transform:
   m_ObjectHideFlags: 0
@@ -2532,8 +2536,6 @@ MonoBehaviour:
   enemyContainer: {fileID: 198190389}
   shop: {fileID: 0}
   mainCanvas: {fileID: 380910488}
-  damageTextPrefab: {fileID: 7173658914585924005, guid: 4fa946622e4bd4de3858712a3e083b3c, type: 3}
-  mergeTextPrefab: {fileID: 7173658914585924005, guid: d15f3edae417a4c00a382e23f63f9989, type: 3}
 --- !u!114 &567445624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8767,8 +8769,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wall: {fileID: 774851889}
-  mergeParticle: {fileID: 1620409693136122509, guid: adb71434fa9c04035a16947c624e5be2, type: 3}
-  mergePowerParticle: {fileID: 7949084058323581054, guid: 02d4b18e706584da2a8222cfa6113a02, type: 3}
   wallMaterial: {fileID: 6200000, guid: bd5a1f84996314084a6287bd54bb2089, type: 2}
   fallAnchor: {fileID: 632287031}
   arrowMaterial: {fileID: 2100000, guid: 7158305c99d774c409c2d3ec56e60442, type: 2}

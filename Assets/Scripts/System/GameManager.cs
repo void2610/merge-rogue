@@ -51,8 +51,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] public EnemyContainer enemyContainer;
     [SerializeField] public Shop shop;
     [SerializeField] public Canvas mainCanvas;
-    [SerializeField] private GameObject damageTextPrefab;
-    [SerializeField] private GameObject mergeTextPrefab;
 
     private System.Random random { get; set; }
     public readonly ReactiveProperty<int> coin = new(0);
@@ -64,26 +62,14 @@ public class GameManager : MonoBehaviour
 
     public float RandomRange(float min, float max)
     {
-        float randomValue = (float)(this.random.NextDouble() * (max - min) + min);
+        var randomValue = (float)(this.random.NextDouble() * (max - min) + min);
         return randomValue;
     }
 
     public int RandomRange(int min, int max)
     {
-        int randomValue = this.random.Next(min, max);
+        var randomValue = this.random.Next(min, max);
         return randomValue;
-    }
-
-    public void ShowDamage(int damage, Vector3 pos)
-    {
-        var damageText = Instantiate(damageTextPrefab, mainCanvas.transform).GetComponent<DamageText>();
-        damageText.SetUp(damage, pos.x);
-    }
-    
-    public void ShowMergeText(int value, Vector3 pos)
-    {
-        var mergeText = Instantiate(mergeTextPrefab, pos, Quaternion.identity, mainCanvas.transform);
-        mergeText.GetComponent<MergeText>().SetUp(value);
     }
     
     public void AddCoin(int amount)

@@ -15,6 +15,12 @@ public class ParticleManager : MonoBehaviour
     public static ParticleManager Instance;
     
     [SerializeField] private GameObject healParticlePrefab;
+    [SerializeField] private GameObject mergeParticle;
+    [SerializeField] private GameObject mergePowerParticle;
+    [SerializeField] private GameObject damageTextPrefab;
+    [SerializeField] private GameObject mergeTextPrefab;
+    
+    private Canvas mainCanvas => GameManager.Instance.mainCanvas;
     
     public void HealParticle(Vector3 pos)
     {
@@ -25,6 +31,29 @@ public class ParticleManager : MonoBehaviour
     {
         var pos = new Vector3(-5.7f, 3.1f, 0);
         Instantiate(healParticlePrefab, pos, Quaternion.identity);
+    }
+    
+    public void MergeParticle(Vector3 pos)
+    {
+        Instantiate(mergeParticle, pos, Quaternion.identity);
+    }
+    
+    public void MergePowerParticle(Vector3 pos, Color color)
+    {
+        var mpp = Instantiate(mergePowerParticle, pos, Quaternion.identity).GetComponent<MergePowerParticle>();
+        mpp.MoveTo(color);
+    }
+    
+    public void MergeText(int value, Vector3 pos)
+    {
+        var mergeText = Instantiate(mergeTextPrefab, pos, Quaternion.identity, mainCanvas.transform);
+        mergeText.GetComponent<MergeText>().SetUp(value);
+    }
+    
+    public void DamageText(int value, float xPos)
+    {
+        var damageText = Instantiate(damageTextPrefab, mainCanvas.transform);
+        damageText.GetComponent<DamageText>().SetUp(value, xPos);
     }
     
     private void Awake()

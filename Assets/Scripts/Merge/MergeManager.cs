@@ -19,8 +19,6 @@ public class MergeManager : MonoBehaviour
     private static readonly int alpha = Shader.PropertyToID("_Alpha");
 
     [SerializeField] private MergeWall wall;
-    [SerializeField] private GameObject mergeParticle;
-    [SerializeField] private GameObject mergePowerParticle;
     [SerializeField] public PhysicsMaterial2D wallMaterial;
     [SerializeField] private GameObject fallAnchor;
     [SerializeField] private Material arrowMaterial;
@@ -115,9 +113,8 @@ public class MergeManager : MonoBehaviour
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         int i = Random.Range(0, 5);
         SeManager.Instance.PlaySe("ball" + i);
-        Instantiate(mergeParticle, p, Quaternion.identity);
-        var mpp = Instantiate(mergePowerParticle, p, Quaternion.identity).GetComponent<MergePowerParticle>();
-        mpp.MoveTo(MyColors.GetBallColor(level-2));
+        ParticleManager.Instance.MergeParticle(p);
+        ParticleManager.Instance.MergePowerParticle(p, MyColors.GetBallColor(level-2));
     }
 
     public void Attack()
@@ -149,7 +146,7 @@ public class MergeManager : MonoBehaviour
     public void AddAttackCount(float atk, Vector3 p)
     {  
         attackCount += (int)atk;
-        GameManager.Instance.ShowMergeText(attackCount, p);
+        ParticleManager.Instance.MergeText(attackCount, p);
         // attackCountUI.SetAttackCount(attackCount);
     }
 
