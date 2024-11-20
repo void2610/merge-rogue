@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public class Shop : MonoBehaviour
 {
@@ -121,9 +122,8 @@ public class Shop : MonoBehaviour
         {
             button.onClick.AddListener(() =>
             {
-                var item = ball;
-                if (!item) return;
-                if (GameManager.Instance.coin.Value >= item.price)
+                if (!ball) return;
+                if (GameManager.Instance.coin.Value >= ball.price)
                 {
                     state = ShopState.Selected;
                     selectedItem = index;
@@ -169,6 +169,14 @@ public class Shop : MonoBehaviour
                 }
             });
         }
+
+        Utils.Instance.AddEventToObject(g, () => { 
+            GameManager.Instance.uiManager.ShowRelicDescriptionWindow(relic,
+            g.transform.position + new Vector3(3f, 0, 0));
+        }, EventTriggerType.PointerEnter);
+        Utils.Instance.AddEventToObject(g, () => { 
+            GameManager.Instance.uiManager.HideRelicDescriptionWindow();
+        }, EventTriggerType.PointerExit);
     }
 
     private void Awake()

@@ -77,7 +77,10 @@ public class RelicManager : MonoBehaviour
         else Destroy(this);
         
         allRelics.Register();
-        
+    }
+
+    private void Start()
+    {
         foreach (var r in testRelics)
         {
             AddRelic(r);
