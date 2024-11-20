@@ -4,6 +4,8 @@ using R3;
 
 public class RelicManager : MonoBehaviour
 {
+    public static RelicManager Instance;
+    
     [SerializeField] private RelicDataList allRelics;
     [SerializeField] private GameObject relicPrefab;
     [SerializeField] private Transform relicContainer;
@@ -68,15 +70,17 @@ public class RelicManager : MonoBehaviour
         behaviour.ApplyEffect(rui);
         behaviors.Add(behaviour);
     }
-
-    private void Start()
+    
+    private void Awake()
     {
+        if (Instance == null) Instance = this;
+        else Destroy(this);
+        
         allRelics.Register();
         
         foreach (var r in testRelics)
         {
             AddRelic(r);
         }
-
     }
 }

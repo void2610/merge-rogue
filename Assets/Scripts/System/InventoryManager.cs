@@ -75,7 +75,7 @@ public class InventoryManager : MonoBehaviour
     // ボールのコピー元となるオブジェクトを生成、ステータス変化はこのオブジェクトに対して行う
     private GameObject CreateBallInstanceFromBallData(BallData data, int level)
     {
-        GameObject ball = Instantiate(ballBasePrefab, this.transform);
+        var ball = Instantiate(ballBasePrefab, this.transform);
         ball.name = $"{data.name} (Level {level})";
         BallBase ballBase;
         if (!string.IsNullOrEmpty(data.className))
@@ -130,7 +130,7 @@ public class InventoryManager : MonoBehaviour
         {
             eventID = EventTriggerType.PointerClick
         };
-        entry.callback.AddListener(_ => { Shop.Instance.BuyBall(index); });
+        entry.callback.AddListener(_ => { Shop.Instance.BuyItem(index); });
         ball.GetComponent<EventTrigger>().triggers.Add(entry);
         inventory.Add(ball);
     }
@@ -150,9 +150,12 @@ public class InventoryManager : MonoBehaviour
         {
             Destroy(this);
         }
+        
+        allBallDataList.Register();
 
         // 全てnormalBallで初期化
-        var bd = allBallDataList.GetNormalBallData();
+        var bd = allBallDataList.normalBall;
+        Debug.Log(bd.name);
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
             var ball = CreateBallInstanceFromBallData(bd, i + 1);

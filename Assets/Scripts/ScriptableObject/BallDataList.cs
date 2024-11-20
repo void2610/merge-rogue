@@ -9,41 +9,46 @@ using UnityEditor;
 public class BallDataList : ScriptableObject
 {
     [SerializeField]
-    public List<BallData> list = new List<BallData>();
+    public List<BallData> allBalls = new List<BallData>();
+    public List<BallData> ballsExceptNormal = new List<BallData>();
+    [SerializeField]
+    public BallData normalBall;
 
     public void Reset()
     {
-        list.Clear();
+        allBalls.Clear();
     }
 
     public void Register()
     {
 #if UNITY_EDITOR
         // ScriptableObject (このスクリプト) と同じディレクトリパスを取得
-        string path = AssetDatabase.GetAssetPath(this);
+        var path = AssetDatabase.GetAssetPath(this);
         path = System.IO.Path.GetDirectoryName(path);
 
         // 指定ディレクトリ内の全てのRelicDataを検索
-        string[] guids = AssetDatabase.FindAssets("t:BallData", new[] { path });
+        var guids = AssetDatabase.FindAssets("t:BallData", new[] { path });
         
         // 検索結果をリストに追加
-        list.Clear();
+        allBalls.Clear();
         foreach (string guid in guids)
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);
             var ballData = AssetDatabase.LoadAssetAtPath<BallData>(assetPath);
             if (ballData != null)
             {
-                list.Add(ballData);
+                allBalls.Add(ballData);
             }
         }
+        
+        ballsExceptNormal = allBalls.Where(x => x.className != "NormalBall").ToList();
 #endif
     }
 
     public List<BallData> GetBallDataFromRarity(Rarity r)
     {
-        List<BallData> result = new List<BallData>();
-        foreach (BallData bd in list)
+        var result = new List<BallData>();
+        foreach (var bd in allBalls)
         {
             if (bd.rarity == r)
             {
@@ -51,10 +56,5 @@ public class BallDataList : ScriptableObject
             }
         }
         return result;
-    }
-
-    public BallData GetNormalBallData()
-    {
-        return list.FirstOrDefault(x => x.className == "NormalBall");
     }
 }

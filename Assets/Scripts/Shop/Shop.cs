@@ -16,27 +16,35 @@ public class Shop : MonoBehaviour
 
     [SerializeField] private BallDataList allBallDataList;
     [SerializeField] private RelicDataList allRelicDataList;
-    
-    private List<BallData> currentBallItems = new ();
-    private List<RelicData> currentRelicItems = new ();
-    private const int ITEM_NUM = 3;
+
+    private List<object> currentItems = new();
+    private const int ITEM_NUM = 6;
     private Transform itemContainer => this.transform.Find("Items");
     private ShopState state = ShopState.Closed;
     private int selectedItem = -1;
     private float defaultScale = 1.0f;
 
-    public void OpenShop(int count = 3)
+    public void OpenShop(int count = 6)
     {
         if (count > ITEM_NUM) return;
         state = ShopState.NotSelected;
-        currentBallItems.Clear();
-        currentBallItems.Add(allBallDataList.list[1]);
-        SetEvent(itemContainer.GetChild(0).gameObject, currentBallItems[0], 0);
-        currentBallItems.Add(allBallDataList.list[2]);
-        SetEvent(itemContainer.GetChild(1).gameObject, currentBallItems[1], 1);
-        currentBallItems.Add(allBallDataList.list[3]);
-        SetEvent(itemContainer.GetChild(2).gameObject, currentBallItems[2], 2);
-        // TODO: アイテムをランダムに選択
+        currentItems.Clear();
+        
+        for(var i = 0; i < ITEM_NUM; i++)
+        {
+            var isBall = GameManager.Instance.RandomRange(0.0f, 1.0f) > 0.5f;
+            var index = GameManager.Instance.RandomRange(0, isBall ? allBallDataList.ballsExceptNormal.Count : allRelicDataList.list.Count);
+            if (isBall)
+            {
+                currentItems.Add(allBallDataList.ballsExceptNormal[index]);
+                SetBallEvent(itemContainer.GetChild(i).gameObject, allBallDataList.ballsExceptNormal[index], i);
+            }
+            else
+            {
+                currentItems.Add(allRelicDataList.list[index]);
+                SetRelicEvent(itemContainer.GetChild(i).gameObject, allRelicDataList.list[index], i);
+            }
+        }
     }
 
     public void CloseShop()
@@ -51,22 +59,46 @@ public class Shop : MonoBehaviour
         GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(false);
     }
 
-    public void BuyBall(int index)
+    public void BuyItem(int index)
     {
+        var isBall = currentItems[index] is BallData;
+        BallData ball = null;
+        RelicData relic = null;
         if(selectedItem == -1) return;
-        var item = currentBallItems[selectedItem];
+        var item = currentItems[selectedItem];
         if (item == null) return;
-
-        if (GameManager.Instance.coin.Value >= item.price)
+        var itemPrice = -1;
+        if (isBall)
         {
-            GameManager.Instance.SubstractCoin(item.price);
-            InventoryManager.instance.SetBall(item, index + 1);
-            SeManager.Instance.PlaySe("coin");
+            ball = item as BallData;
+            if (ball != null) itemPrice = ball.price;
+        }
+        else
+        {
+            relic = item as RelicData;
+            if (relic != null) itemPrice = relic.price;
+        }
+        
+        if (itemPrice == -1) return;
 
-            itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.2f).SetUpdate(true);
+        if (GameManager.Instance.coin.Value >= itemPrice)
+        {
+            if (isBall)
+            {
+                InventoryManager.instance.SetBall(ball, index + 1);
+                itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.2f).SetUpdate(true);
+                GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(false);
+                GameManager.Instance.GetComponent<InventoryUI>().SetCursor(0);
+            }
+            else
+            {
+                RelicManager.Instance.AddRelic(relic);
+                itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.2f).SetUpdate(true);
+            }
+            
+            GameManager.Instance.SubstractCoin(itemPrice);
+            SeManager.Instance.PlaySe("coin");
             state = ShopState.NotSelected;
-            GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(false);
-            GameManager.Instance.GetComponent<InventoryUI>().SetCursor(0);
             selectedItem = -1;
         }
         else
@@ -75,14 +107,14 @@ public class Shop : MonoBehaviour
         }
     }
 
-    private void SetEvent(GameObject g, BallData ball, int index)
+    private void SetBallEvent(GameObject g, BallData ball, int index)
     {
-        var nameText = g.transform.Find("Name").GetComponent<TextMeshProUGUI>();
-        nameText.text = ball.name;
         var price = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
         price.text = ball.price.ToString();
-        var image = g.transform.Find("BallIcon").GetComponent<Image>();
+        var image = g.transform.Find("Icon").GetComponent<Image>();
         image.sprite = ball.sprite;
+        var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
+        ballImage.color = new Color(0.6f, 0.6f, 0.6f, 1);
         var button = g.GetComponent<Button>();
         defaultScale = g.transform.localScale.x;
         if (button)
@@ -90,6 +122,38 @@ public class Shop : MonoBehaviour
             button.onClick.AddListener(() =>
             {
                 var item = ball;
+                if (!item) return;
+                if (GameManager.Instance.coin.Value >= item.price)
+                {
+                    state = ShopState.Selected;
+                    selectedItem = index;
+                    g.transform.DOScale(defaultScale * 1.2f, 0.2f).SetUpdate(true);
+                    GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(true);
+                    SeManager.Instance.PlaySe("button");
+                }
+                else
+                {
+                    SeManager.Instance.PlaySe("error");
+                }
+            });
+        }
+    }
+    
+    private void SetRelicEvent(GameObject g, RelicData relic, int index)
+    {
+        var price = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
+        price.text = relic.price.ToString();
+        var image = g.transform.Find("Icon").GetComponent<Image>();
+        image.sprite = relic.sprite;
+        var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
+        ballImage.color = new Color(1, 1, 1, 0);
+        var button = g.GetComponent<Button>();
+        defaultScale = g.transform.localScale.x;
+        if (button)
+        {
+            button.onClick.AddListener(() =>
+            {
+                var item = relic;
                 if (!item) return;
                 if (GameManager.Instance.coin.Value >= item.price)
                 {
