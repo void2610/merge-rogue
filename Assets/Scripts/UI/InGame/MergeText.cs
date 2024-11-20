@@ -12,7 +12,7 @@ public class MergeText : MonoBehaviour
         float s = 2 * (1 + ((damage - 15) / 75f));
         transform.DOScale(s, 0);
         
-        transform.DOMoveY(0.75f, 1.5f).SetRelative(true).SetEase(Ease.OutCubic).SetLink(gameObject);
-        t.DOFade(0, 1f).SetEase(Ease.Linear).SetLink(gameObject).OnComplete(() => Destroy(gameObject));
+        transform.DOMoveY(0.75f, 2f).SetRelative(true).SetEase(Ease.OutCubic).SetLink(gameObject);
+        t.DOFade(0, 1.5f).SetEase(Ease.Linear).SetLink(gameObject).OnComplete(() => Destroy(gameObject));
     }
 }

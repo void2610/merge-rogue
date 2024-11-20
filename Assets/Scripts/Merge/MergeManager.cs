@@ -118,7 +118,6 @@ public class MergeManager : MonoBehaviour
         Instantiate(mergeParticle, p, Quaternion.identity);
         var mpp = Instantiate(mergePowerParticle, p, Quaternion.identity).GetComponent<MergePowerParticle>();
         mpp.MoveTo(MyColors.GetBallColor(level-2));
-        Debug.Log(level -2);
     }
 
     public void Attack()

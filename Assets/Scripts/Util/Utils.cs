@@ -17,7 +17,7 @@ public class Utils : MonoBehaviour
         }
     }
     
-    public void AddEventToObject(GameObject obj, System.Action action, EventTriggerType type)
+    public static void AddEventToObject(GameObject obj, System.Action action, EventTriggerType type)
     {
         var trigger = obj.GetComponent<EventTrigger>();
         if (trigger == null)
@@ -28,6 +28,13 @@ public class Utils : MonoBehaviour
         var entry = new EventTrigger.Entry {eventID = type};
         entry.callback.AddListener((data) => action());
         trigger.triggers.Add(entry);
+    }
+    
+    public static void RemoveAllEventFromObject(GameObject obj)
+    {
+        var trigger = obj.GetComponent<EventTrigger>();
+        if (trigger == null) return;
+        trigger.triggers.Clear();
     }
     
     public void WaitAndInvoke(float time, System.Action action)

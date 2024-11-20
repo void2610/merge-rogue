@@ -23,12 +23,12 @@ public class RelicUI : MonoBehaviour
         relicImage.sprite = relicData.sprite;
         
         // イベントを登録
-        Utils.Instance.AddEventToObject(this.gameObject,  () =>
+        Utils.AddEventToObject(this.gameObject,  () =>
         {
             GameManager.Instance.uiManager.ShowRelicDescriptionWindow(relicData,
                 transform.position + new Vector3(2.55f, 0, 0));
         }, EventTriggerType.PointerEnter);
-        Utils.Instance.AddEventToObject(this.gameObject,  () =>
+        Utils.AddEventToObject(this.gameObject,  () =>
         {
             GameManager.Instance.uiManager.HideRelicDescriptionWindow();
         }, EventTriggerType.PointerExit);

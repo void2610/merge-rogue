@@ -43,7 +43,7 @@ public class InventoryManager : MonoBehaviour
     {
         if (level is <= 0 or > INVENTORY_SIZE)
         {
-            Debug.LogError("指定されたレベルのボールは存在しません。");
+            // Debug.LogError("指定されたレベルのボールは存在しません。");
             return null;
         }
         var ball = CopyBall(inventory[level - 1]);
@@ -155,7 +155,6 @@ public class InventoryManager : MonoBehaviour
 
         // 全てnormalBallで初期化
         var bd = allBallDataList.normalBall;
-        Debug.Log(bd.name);
         for (int i = 0; i < INVENTORY_SIZE; i++)
         {
             var ball = CreateBallInstanceFromBallData(bd, i + 1);
