@@ -161,14 +161,15 @@ public class Shop : MonoBehaviour
         {
             button.onClick.AddListener(() =>
             {
-                var item = relic;
-                if (!item) return;
-                if (GameManager.Instance.coin.Value >= item.price)
+                if (!relic) return;
+                if (selectedItem == index && state == ShopState.Selected) BuyItem(index);
+                
+                else
+                if (GameManager.Instance.coin.Value >= relic.price)
                 {
                     state = ShopState.Selected;
                     selectedItem = index;
                     g.transform.DOScale(defaultScale * 1.2f, 0.2f).SetUpdate(true);
-                    GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(true);
                     SeManager.Instance.PlaySe("button");
                 }
                 else
