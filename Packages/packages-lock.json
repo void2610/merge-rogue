@@ -17,14 +17,13 @@
       "url": "https://package.openupm.com"
     },
     "com.singularitygroup.hotreload": {
-      "version": "git+https://gitlab.hotreload.net/root/hot-reload-releases.git#1.12.12",
+      "version": "file:com.singularitygroup.hotreload",
       "depth": 0,
-      "source": "git",
+      "source": "embedded",
       "dependencies": {
         "com.unity.ugui": "1.0.0",
         "com.unity.modules.unitywebrequest": "1.0.0"
-      },
-      "hash": "56b69dfe27d695bee44ce09f419003c3c4ca9731"
+      }
     },
     "com.unity.2d.animation": {
       "version": "10.1.1",
