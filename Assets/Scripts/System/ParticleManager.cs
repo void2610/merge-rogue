@@ -44,10 +44,11 @@ public class ParticleManager : MonoBehaviour
         mpp.MoveTo(color);
     }
     
-    public void MergeText(int value, Vector3 pos)
+    public void MergeText(int value, Vector3 pos, Color color = default)
     {
         var mergeText = Instantiate(mergeTextPrefab, pos, Quaternion.identity, mainCanvas.transform);
-        mergeText.GetComponent<MergeText>().SetUp(value);
+        if (color == default) color = Color.white;
+        mergeText.GetComponent<MergeText>().SetUp(value, color);
     }
     
     public void DamageText(int value, float xPos)

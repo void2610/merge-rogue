@@ -43,7 +43,8 @@ public class MergeManager : MonoBehaviour
     private const float COOL_TIME = 0.5f;
     private int ballPerOneTurn = 2;
     private int remainingBalls;
-    private int attackCount;
+    private int singleAttackCount;
+    private int allAttackCount;
     private Dictionary<Rigidbody2D, float> stopTimers;
     private int timerCount;
     
@@ -115,14 +116,14 @@ public class MergeManager : MonoBehaviour
 
     public void Attack()
     {
-        if (attackCount == 0)
+        if (singleAttackCount <= 0 && allAttackCount <= 0)
         {
             GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
             return;
         }
         
         // イベントでパラメータを更新
-        var p = ((int)(attackCount * attackMagnification), false);
+        var p = ((int)(singleAttackCount * attackMagnification), (int)(allAttackCount * attackMagnification));
         EventManager.OnPlayerAttack.Trigger(p);
         var atk = EventManager.OnPlayerAttack.GetAndResetValue();
         
@@ -136,14 +137,20 @@ public class MergeManager : MonoBehaviour
         });
         SeManager.Instance.PlaySe("playerAttack");
         Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
-        attackCount = 0;
+        singleAttackCount = 0;
+        allAttackCount = 0;
     }
 
-    public void AddAttackCount(float atk, Vector3 p)
+    public void AddSingleAttackCount(float atk, Vector3 p)
     {  
-        attackCount += (int)atk;
-        ParticleManager.Instance.MergeText(attackCount, p);
-        // attackCountUI.SetAttackCount(attackCount);
+        singleAttackCount += (int)atk;
+        ParticleManager.Instance.MergeText(singleAttackCount, p);
+    }
+    
+    public void AddAllAttackCount(float atk, Vector3 p)
+    {
+        allAttackCount += (int)atk;
+        ParticleManager.Instance.MergeText(allAttackCount, p, Color.red);
     }
 
     private void FallAndDecideNextBall()

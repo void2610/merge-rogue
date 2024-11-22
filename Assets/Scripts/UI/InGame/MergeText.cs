@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class MergeText : MonoBehaviour
 {
-    public void SetUp(int damage){
+    public void SetUp(int damage, Color color = default){
         var x = Random.Range(-1.0f, 1.0f);
         var y = Random.Range(-0.25f, 1.0f);
         transform.position += new Vector3(x, y, 0);
@@ -12,6 +12,7 @@ public class MergeText : MonoBehaviour
         var t = GetComponent<TextMeshProUGUI>();
         
         t.text = damage.ToString();
+        t.color = color;
 
         float s = 2 * (1 + ((damage - 15) / 75f));
         transform.DOScale(s, 0);

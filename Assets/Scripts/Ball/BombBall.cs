@@ -13,8 +13,11 @@ public class BombBall : BallBase
 
     protected override void Effect(BallBase other)
     {
-        base.Effect(other);
         // 全体攻撃しつつ、周りのボールを消す
+        base.Effect(other);
+        
+        var r = new Vector3(Random.Range(-0.75f, 0.75f), Random.Range(-0.75f, 0.75f), 0);
+        MergeManager.Instance.AddAllAttackCount(attack * level, this.transform.position + r);
 
         var hitColliders = Physics2D.OverlapCircleAll(this.transform.position, size);
 

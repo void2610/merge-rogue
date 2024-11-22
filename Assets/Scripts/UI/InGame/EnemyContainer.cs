@@ -131,35 +131,42 @@ public class EnemyContainer : MonoBehaviour
         }
     }
 
-    public void AttackEnemy(int damage, bool isAll = false)
+    public void AttackEnemy(int singleDamage, int allDamage)
     {
-        StartCoroutine(AttackEnemyCoroutine(damage, isAll));
+        StartCoroutine(AttackEnemyCoroutine(singleDamage, allDamage));
     }
     
-    private IEnumerator AttackEnemyCoroutine(int damage, bool isAll = false)
+    private IEnumerator AttackEnemyCoroutine(int singleDamage, int allDamage)
     {
+        Debug.Log($"singleDamage: {singleDamage}, allDamage: {allDamage}");
         var es = GetAllEnemies();
-        if(isAll){
-            foreach (var e in es)
-            {
-                e.TakeDamage(damage);
-            }
-        }
-        else
+        
+        // 全体攻撃
+        if (allDamage > 0)
         {
-            // 一番前の敵を攻撃、攻撃力が残っていたら次の敵を攻撃
             foreach (var e in es)
             {
-                if (damage <= 0) break;
-                var actualDamage = damage > e.health ? e.health : damage;
-                if (es.IndexOf(e) == es.Count - 1) actualDamage = damage;
-                e.TakeDamage(actualDamage);
-                damage -= actualDamage;
-                // 待つ
-                // TODO: 敵の攻撃が始まってしまうので、攻撃が終わるまで敵が待つようにする
-                yield return new WaitForSeconds(0.3f);
+                e.TakeDamage(allDamage);
+                yield return new WaitForSeconds(0.5f);
             }
         }
+
+        if (GameManager.Instance.enemyContainer.GetEnemyCount() == 0) yield break;
+
+        // 単体攻撃
+        // 一番前の敵を攻撃、攻撃力が残っていたら次の敵を攻撃
+        foreach (var e in es)
+        {
+            if (singleDamage <= 0) break;
+            var actualDamage = singleDamage > e.health ? e.health : singleDamage;
+            if (es.IndexOf(e) == es.Count - 1) actualDamage = singleDamage;
+            e.TakeDamage(actualDamage);
+            singleDamage -= actualDamage;
+            // 待つ
+            // TODO: 敵の攻撃が始まってしまうので、攻撃が終わるまで敵が待つようにする
+            yield return new WaitForSeconds(0.3f);
+        }
+        
         
         // 敵が残っていたら敵の攻撃へ
         if (GameManager.Instance.enemyContainer.GetEnemyCount() > 0)

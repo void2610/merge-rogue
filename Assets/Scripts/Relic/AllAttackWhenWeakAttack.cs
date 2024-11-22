@@ -23,7 +23,8 @@ public class AllAttackWhenWeakAttack : MonoBehaviour, IRelicBehavior
         var x = EventManager.OnPlayerAttack.GetValue();
         if (x.Item1 < 10)
         {
-            EventManager.OnPlayerAttack.SetValue((x.Item1, true));
+            // 全体攻撃に変換
+            EventManager.OnPlayerAttack.SetValue((0, x.Item1 + x.Item2));
             ui?.ActivateUI();
         }
     }

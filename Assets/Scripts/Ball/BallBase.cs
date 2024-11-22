@@ -37,7 +37,7 @@ public class BallBase : MonoBehaviour
     {
         // Effect
         var r = new Vector3(Random.Range(-0.75f, 0.75f), Random.Range(-0.75f, 0.75f), 0);
-        MergeManager.Instance.AddAttackCount(attack * level, this.transform.position + r);
+        MergeManager.Instance.AddSingleAttackCount(attack * level, this.transform.position + r);
     }
 
     protected virtual void Awake()
@@ -89,7 +89,7 @@ public class BallBase : MonoBehaviour
     protected void DefaultMergeParticle()
     {
         ParticleManager.Instance.MergeParticle(this.transform.position);
-        ParticleManager.Instance.MergePowerParticle(this.transform.position, MyColors.GetBallColor(level-2));
+        ParticleManager.Instance.MergePowerParticle(this.transform.position, MyColors.GetBallColor(level-1));
         
         var i = Random.Range(0, 5);
         SeManager.Instance.PlaySe("ball" + i);
