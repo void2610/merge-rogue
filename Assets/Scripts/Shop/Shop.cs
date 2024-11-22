@@ -60,42 +60,45 @@ public class Shop : MonoBehaviour
         GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(false);
     }
 
-    public void BuyItem(int index)
+    public void BuyBall(int inventoryIndex)
     {
-        var isBall = currentItems[index] is BallData;
-        BallData ball = null;
-        RelicData relic = null;
         if(selectedItem == -1) return;
-        var item = currentItems[selectedItem];
-        if (item == null) return;
-        var itemPrice = -1;
-        if (isBall)
+        
+        var ball = currentItems[selectedItem] as BallData;
+        if (ball == null) return;
+        var itemPrice = ball.price;
+        
+        if (GameManager.Instance.coin.Value >= itemPrice)
         {
-            ball = item as BallData;
-            if (ball) itemPrice = ball.price;
+            InventoryManager.instance.SetBall(ball, inventoryIndex + 1);
+            itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.1f).SetUpdate(true);
+            GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(false);
+            GameManager.Instance.GetComponent<InventoryUI>().SetCursor(0);
+            
+            GameManager.Instance.SubstractCoin(itemPrice);
+            SeManager.Instance.PlaySe("coin");
+            state = ShopState.NotSelected;
+            selectedItem = -1;
         }
         else
         {
-            relic = item as RelicData;
-            if (relic) itemPrice = relic.price;
+            SeManager.Instance.PlaySe("error");
         }
-        
-        if (itemPrice == -1) return;
+    }
 
+    public void BuyRelic(int shopItemIndex)
+    {
+        if(selectedItem == -1) return;
+
+        var relic = currentItems[selectedItem] as RelicData;
+        if (relic == null) return;
+        var itemPrice = relic.price;
+        
+        
         if (GameManager.Instance.coin.Value >= itemPrice)
         {
-            if (isBall)
-            {
-                InventoryManager.instance.SetBall(ball, index + 1);
-                itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.1f).SetUpdate(true);
-                GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(false);
-                GameManager.Instance.GetComponent<InventoryUI>().SetCursor(0);
-            }
-            else
-            {
-                RelicManager.Instance.AddRelic(relic);
-                itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.1f).SetUpdate(true);
-            }
+            RelicManager.Instance.AddRelic(relic);
+            itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.1f).SetUpdate(true);
             
             GameManager.Instance.SubstractCoin(itemPrice);
             SeManager.Instance.PlaySe("coin");
@@ -163,7 +166,7 @@ public class Shop : MonoBehaviour
             button.onClick.AddListener(() =>
             {
                 if (!relic) return;
-                if (selectedItem == index && state == ShopState.Selected) BuyItem(index);
+                if (selectedItem == index && state == ShopState.Selected) BuyRelic(index);
                 
                 else
                 if (GameManager.Instance.coin.Value >= relic.price)

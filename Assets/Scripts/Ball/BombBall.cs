@@ -9,10 +9,6 @@ public class BombBall : BallBase
         
         size = 1.25f;
         attack = 2;
-        
-        // circleCollider2D = this.gameObject.AddComponent<CircleCollider2D>();
-        // circleCollider2D.radius = this.size;
-        // circleCollider2D.isTrigger = true;
     }
 
     protected override void Effect(BallBase other)
