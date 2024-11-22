@@ -57,4 +57,9 @@ public class BallDataList : ScriptableObject
         }
         return result;
     }
+    
+    public BallData GetBallDataFromClassName(string className)
+    {
+        return allBalls.FirstOrDefault(bd => bd.className == className);
+    }
 }

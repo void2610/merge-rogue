@@ -155,7 +155,7 @@ public class InventoryManager : MonoBehaviour
 
         // 全てnormalBallで初期化
         var bd = allBallDataList.normalBall;
-        for (int i = 0; i < INVENTORY_SIZE; i++)
+        for (var i = 0; i < INVENTORY_SIZE; i++)
         {
             var ball = CreateBallInstanceFromBallData(bd, i + 1);
             ball.transform.position = CalcInventoryPosition(i);

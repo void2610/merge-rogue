@@ -14,9 +14,6 @@ public class BallBase : MonoBehaviour
 
     private static int ballSerial;
 
-    public string ballName = "ふつうのボール";
-    public string description = "ふつう";
-    public BallRarity rarity = BallRarity.Common;
     public int level = 1;
     public float size = 1;
     public float attack = 1;
@@ -36,7 +33,7 @@ public class BallBase : MonoBehaviour
     }
 
 
-    protected virtual void Effect()
+    protected virtual void Effect(BallBase other)
     {
         // Effect
         var r = new Vector3(Random.Range(-0.75f, 0.75f), Random.Range(-0.75f, 0.75f), 0);
@@ -67,27 +64,34 @@ public class BallBase : MonoBehaviour
             {
                 if (this.serial < b.serial)
                 {
-                    Effect();
-                    b.Effect();
-
-                    isDestroyed = true;
-                    b.isDestroyed = true;
-                    Vector3 center = (this.transform.position + other.transform.position) / 2;
-                    Quaternion rotation = Quaternion.Lerp(this.transform.rotation, other.transform.rotation, 0.5f);
+                    var center = (this.transform.position + other.transform.position) / 2;
+                    var rotation = Quaternion.Lerp(this.transform.rotation, other.transform.rotation, 0.5f);
                     MergeManager.Instance.SpawnBall(level + 1, center, rotation);
 
-                    DestroyBall();
-                    b.DestroyBall();
+                    EffectAndDestroy(b);
+                    b.EffectAndDestroy(this);
                 }
             }
         }
     }
     
-    public void DestroyBall()
+    public void EffectAndDestroy(BallBase other)
     {
+        Effect(other);
+        this.isDestroyed = true;
+        
         transform.DOScale(0, 0.2f).SetEase(Ease.InBack).OnComplete(() =>
         {
             Destroy(gameObject);
         });
+    }
+    
+    protected void DefaultMergeParticle()
+    {
+        ParticleManager.Instance.MergeParticle(this.transform.position);
+        ParticleManager.Instance.MergePowerParticle(this.transform.position, MyColors.GetBallColor(level-2));
+        
+        var i = Random.Range(0, 5);
+        SeManager.Instance.PlaySe("ball" + i);
     }
 }

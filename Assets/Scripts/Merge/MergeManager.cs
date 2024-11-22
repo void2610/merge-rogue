@@ -111,10 +111,6 @@ public class MergeManager : MonoBehaviour
         ball.transform.rotation = q;
         ball.transform.SetParent(ballContainer.transform);
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        int i = Random.Range(0, 5);
-        SeManager.Instance.PlaySe("ball" + i);
-        ParticleManager.Instance.MergeParticle(p);
-        ParticleManager.Instance.MergePowerParticle(p, MyColors.GetBallColor(level-2));
     }
 
     public void Attack()

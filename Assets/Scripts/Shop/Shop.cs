@@ -72,12 +72,12 @@ public class Shop : MonoBehaviour
         if (isBall)
         {
             ball = item as BallData;
-            if (ball != null) itemPrice = ball.price;
+            if (ball) itemPrice = ball.price;
         }
         else
         {
             relic = item as RelicData;
-            if (relic != null) itemPrice = relic.price;
+            if (relic) itemPrice = relic.price;
         }
         
         if (itemPrice == -1) return;

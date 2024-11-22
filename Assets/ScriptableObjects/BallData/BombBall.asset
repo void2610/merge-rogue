@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e20d261e1bba4e309354d2a524b6d0d, type: 3}
+  m_Name: BombBall
+  m_EditorClassIdentifier: 
+  id: 0
+  className: BombBall
+  displayName: "\u30D0\u30AF\u30C0\u30F3"
+  description: "\u30B7\u30F3\u30D7\u30EB\u306B\u7206\u5F3E"
+  sprite: {fileID: 8678780475385641507, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  rarity: 4
+  price: 1000
