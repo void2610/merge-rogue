@@ -138,12 +138,12 @@ public class EnemyContainer : MonoBehaviour
     
     private IEnumerator AttackEnemyCoroutine(int singleDamage, int allDamage)
     {
-        Debug.Log($"singleDamage: {singleDamage}, allDamage: {allDamage}");
         var es = GetAllEnemies();
         
         // 全体攻撃
         if (allDamage > 0)
         {
+            SeManager.Instance.PlaySe("playerAttack");
             foreach (var e in es)
             {
                 e.TakeDamage(allDamage);
@@ -163,7 +163,7 @@ public class EnemyContainer : MonoBehaviour
             e.TakeDamage(actualDamage);
             singleDamage -= actualDamage;
             // 待つ
-            // TODO: 敵の攻撃が始まってしまうので、攻撃が終わるまで敵が待つようにする
+            SeManager.Instance.PlaySe("playerAttack");
             yield return new WaitForSeconds(0.3f);
         }
         

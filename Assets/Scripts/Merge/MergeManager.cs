@@ -135,7 +135,7 @@ public class MergeManager : MonoBehaviour
             GameManager.Instance.player.gameObject.transform.DOMoveX(-0.75f, 0.2f).SetRelative(true)
                 .SetEase(Ease.OutExpo);
         });
-        SeManager.Instance.PlaySe("playerAttack");
+        // SeManager.Instance.PlaySe("playerAttack");
         Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
         singleAttackCount = 0;
         allAttackCount = 0;

@@ -42,7 +42,7 @@ public class EnemyBase : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if(this.gameObject) return;
+        if(!this.gameObject) return;
         
         ParticleManager.Instance.DamageText(damage, this.transform.position.x);
         health -= damage;

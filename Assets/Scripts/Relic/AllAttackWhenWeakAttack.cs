@@ -21,7 +21,7 @@ public class AllAttackWhenWeakAttack : MonoBehaviour, IRelicBehavior
     private void Effect(Unit _)
     {
         var x = EventManager.OnPlayerAttack.GetValue();
-        if (x.Item1 < 10)
+        if (x.Item1 + x.Item2 < 10)
         {
             // 全体攻撃に変換
             EventManager.OnPlayerAttack.SetValue((0, x.Item1 + x.Item2));
