@@ -88,3 +88,6 @@ MonoBehaviour:
   - name: footsteps
     audioClip: {fileID: 8300000, guid: dea09f1f07d11490ba4ccac854c2d760, type: 3}
     volume: 1
+  - name: heal
+    audioClip: {fileID: 8300000, guid: 71a849ee2bc83430d86bbf5c8f9039a6, type: 3}
+    volume: 0.5
