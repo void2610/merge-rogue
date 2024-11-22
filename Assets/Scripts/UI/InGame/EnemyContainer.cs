@@ -147,8 +147,8 @@ public class EnemyContainer : MonoBehaviour
             foreach (var e in es)
             {
                 e.TakeDamage(allDamage);
-                yield return new WaitForSeconds(0.5f);
             }
+            yield return new WaitForSeconds(0.5f);
         }
 
         if (GameManager.Instance.enemyContainer.GetEnemyCount() == 0) yield break;
