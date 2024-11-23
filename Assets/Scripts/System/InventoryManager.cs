@@ -130,7 +130,7 @@ public class InventoryManager : MonoBehaviour
         {
             eventID = EventTriggerType.PointerClick
         };
-        entry.callback.AddListener(_ => { Shop.Instance.BuyItem(index); });
+        entry.callback.AddListener(_ => { Shop.Instance.BuyBall(index); });
         ball.GetComponent<EventTrigger>().triggers.Add(entry);
         inventory.Add(ball);
     }
@@ -154,7 +154,7 @@ public class InventoryManager : MonoBehaviour
         allBallDataList.Register();
 
         // 全てnormalBallで初期化
-        var bd = allBallDataList.normalBall;
+        var bd = allBallDataList.GetBallDataFromClassName("NormalBall");
         for (var i = 0; i < INVENTORY_SIZE; i++)
         {
             var ball = CreateBallInstanceFromBallData(bd, i + 1);

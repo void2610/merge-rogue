@@ -144,6 +144,7 @@ public class EnemyContainer : MonoBehaviour
         if (allDamage > 0)
         {
             SeManager.Instance.PlaySe("playerAttack");
+            Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, allDamage * 0.06f);
             foreach (var e in es)
             {
                 e.TakeDamage(allDamage);
@@ -162,8 +163,10 @@ public class EnemyContainer : MonoBehaviour
             if (es.IndexOf(e) == es.Count - 1) actualDamage = singleDamage;
             e.TakeDamage(actualDamage);
             singleDamage -= actualDamage;
-            // 待つ
+            
             SeManager.Instance.PlaySe("playerAttack");
+            // TODO: もう少しなだらかな上昇幅がいいかも
+            Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, actualDamage * 0.03f);
             yield return new WaitForSeconds(0.3f);
         }
         

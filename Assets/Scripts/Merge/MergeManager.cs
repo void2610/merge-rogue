@@ -136,7 +136,6 @@ public class MergeManager : MonoBehaviour
                 .SetEase(Ease.OutExpo);
         });
         // SeManager.Instance.PlaySe("playerAttack");
-        Camera.main?.GetComponent<CameraMove>().ShakeCamera(0.5f, 0.3f);
         singleAttackCount = 0;
         allAttackCount = 0;
     }

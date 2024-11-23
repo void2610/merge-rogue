@@ -22,6 +22,7 @@ public class BombBall : BallBase
         var hitColliders = Physics2D.OverlapCircleAll(this.transform.position, size);
 
         // 取得したコライダーをリストに変換
+        // TODO: たまにフリーズする
         for(var i = 0; i < hitColliders.Length; i++)
         {
             var col = hitColliders[i];
@@ -34,7 +35,6 @@ public class BombBall : BallBase
             if (ball == null) continue;
             if (ball.isFrozen || ball.isDestroyed) continue;
             
-            Debug.Log($"Hit object: {col.gameObject.name}");
             ball.EffectAndDestroy(this);
         }
         

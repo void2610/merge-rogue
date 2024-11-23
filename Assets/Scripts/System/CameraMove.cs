@@ -5,7 +5,7 @@ public class CameraMove : MonoBehaviour
 {
     private Vector3 initPosition;
 
-    void Start()
+    private void Start()
     {
         // 初期位置を保存
         initPosition = this.transform.position;
