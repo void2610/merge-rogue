@@ -35,6 +35,7 @@ public class BombBall : BallBase
             if (ball == null) continue;
             if (ball.isFrozen || ball.isDestroyed) continue;
             
+            ball.isDestroyed = true;
             ball.EffectAndDestroy(this);
         }
         
