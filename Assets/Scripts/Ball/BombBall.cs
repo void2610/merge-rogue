@@ -16,8 +16,7 @@ public class BombBall : BallBase
         // 全体攻撃しつつ、周りのボールを消す
         base.Effect(other);
         
-        var r = new Vector3(Random.Range(-0.75f, 0.75f), Random.Range(-0.75f, 0.75f), 0);
-        MergeManager.Instance.AddAllAttackCount(attack * level, this.transform.position + r);
+        MergeManager.Instance.AddAllAttackCount(attack * level, this.transform.position);
 
         var hitColliders = Physics2D.OverlapCircleAll(this.transform.position, size);
 

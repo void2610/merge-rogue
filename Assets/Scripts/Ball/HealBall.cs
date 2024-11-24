@@ -14,7 +14,7 @@ public class HealBall : BallBase
     {
         base.Effect(other);
         
-        GameManager.Instance.player.Heal(this.level);
         DefaultMergeParticle();
+        GameManager.Instance.player.Heal(this.level);
     }
 }

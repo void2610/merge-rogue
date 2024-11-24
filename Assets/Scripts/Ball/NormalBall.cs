@@ -14,5 +14,6 @@ public class NormalBall : BallBase
     {
         base.Effect(other);
         DefaultMergeParticle();
+        MergeManager.Instance.AddSingleAttackCount(attack * level, this.transform.position);
     }
 }

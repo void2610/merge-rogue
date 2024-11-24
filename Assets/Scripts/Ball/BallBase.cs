@@ -36,8 +36,6 @@ public class BallBase : MonoBehaviour
     protected virtual void Effect(BallBase other)
     {
         // Effect
-        var r = new Vector3(Random.Range(-0.75f, 0.75f), Random.Range(-0.75f, 0.75f), 0);
-        MergeManager.Instance.AddSingleAttackCount(attack * level, this.transform.position + r);
     }
 
     protected virtual void Awake()

@@ -46,7 +46,8 @@ public class ParticleManager : MonoBehaviour
     
     public void MergeText(int value, Vector3 pos, Color color = default)
     {
-        var mergeText = Instantiate(mergeTextPrefab, pos, Quaternion.identity, mainCanvas.transform);
+        var r = new Vector3(UnityEngine.Random.Range(-0.75f, 0.75f), UnityEngine.Random.Range(-0.75f, 0.75f), 0);
+        var mergeText = Instantiate(mergeTextPrefab, pos + r, Quaternion.identity, mainCanvas.transform);
         if (color == default) color = Color.white;
         mergeText.GetComponent<MergeText>().SetUp(value, color);
     }
