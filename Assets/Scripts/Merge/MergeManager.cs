@@ -154,25 +154,11 @@ public class MergeManager : MonoBehaviour
 
     private void FallAndDecideNextBall()
     {
-        EventManager.OnBallDropped.Trigger(1);
-        var n = EventManager.OnBallDropped.GetAndResetValue();
-        if (n >= 1)
-        {
-            currentBall.GetComponent<BallBase>().Unfreeze();
-            currentBall.transform.SetParent(ballContainer.transform);
-            fallAnchor.GetComponent<HingeJoint2D>().connectedBody = null;
-        }
-
-        n--;
-        // Eventによって個数が変わる
-        for(var i = 0; i < n; i++)
-        {
-            var l = currentBall.GetComponent<BallBase>().level;
-            var p = new Vector3(GameManager.Instance.RandomRange(-1f, 1f), 0.8f, 0);
-            SpawnBall(l, p, Quaternion.identity);
-        }
+        EventManager.OnBallDropped.Trigger(0);
+        currentBall.GetComponent<BallBase>().Unfreeze();
+        currentBall.transform.SetParent(ballContainer.transform);
+        fallAnchor.GetComponent<HingeJoint2D>().connectedBody = null;
         
-
         if (--remainingBalls > 0)
         {
             currentBall = nextBall;

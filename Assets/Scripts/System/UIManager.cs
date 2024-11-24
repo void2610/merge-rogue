@@ -57,7 +57,7 @@ public class UIManager : MonoBehaviour
 
     private void UpdateStageText(int stage)
     {
-        int s = Mathf.Max(1, stage);
+        int s = Mathf.Max(1, stage + 1);
         stageText.text = "stage: " + s;
     }
 

@@ -29,7 +29,7 @@ public static class EventManager
     public static readonly GameEvent<int> OnEnemyHeal = new (0);
     // プレイヤー死亡時: 復活するかどうか
     public static readonly GameEvent<bool> OnPlayerDeath = new (false);
-    // ボールを落とした時: ボールの個数
+    // ボールを落とした時: なし
     public static readonly GameEvent<int> OnBallDropped = new (0);
     
     // ゲーム開始時にイベントをリセット

@@ -4,7 +4,7 @@ using DG.Tweening;
 
 public class DamageText : MonoBehaviour
 {
-    private const float FLOOR = 2.8f;
+    private const float FLOOR = 2.9f;
 
     public void SetUp(int damage, float xPos){
         this.transform.position = new Vector3(xPos, FLOOR + 1, 0);
