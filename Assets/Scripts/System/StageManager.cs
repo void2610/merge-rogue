@@ -98,6 +98,7 @@ public class StageManager : MonoBehaviour
                     break;
                 case StageType.Shop:
                     GameManager.Instance.ChangeState(GameManager.GameState.Shop);
+                    EventManager.OnShopEnter.Trigger(0);
                     break;
                 case StageType.Events:
                     GameManager.Instance.ChangeState(GameManager.GameState.Other);

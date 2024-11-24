@@ -31,6 +31,12 @@ public static class EventManager
     public static readonly GameEvent<bool> OnPlayerDeath = new (false);
     // ボールを落とした時: なし
     public static readonly GameEvent<int> OnBallDropped = new (0);
+    // ショップに入った時: なし
+    public static readonly GameEvent<int> OnShopEnter = new (0);
+    // ショップから出た時: なし
+    public static readonly GameEvent<int> OnShopExit = new (0);
+    // ショップでアイテムを購入した時: なし
+    public static readonly GameEvent<int> OnItemPurchased = new (0);
     
     // ゲーム開始時にイベントをリセット
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
