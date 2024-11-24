@@ -7,10 +7,10 @@ using R3;
 public class Player : MonoBehaviour
 {
     public readonly ReactiveProperty<int> exp = new(0);
-    public readonly ReactiveProperty<int> health = new(50);
-    public readonly ReactiveProperty<int> maxHealth = new(50);
+    public readonly ReactiveProperty<int> health = new(100);
+    public readonly ReactiveProperty<int> maxHealth = new(100);
     public List<int> levelUpExp = new() { 10, 20, 40, 80, 160, 320, 640, 1280, 2560, 5120 };
-    public int maxExp { get; private set; } = 10;
+    public int maxExp { get; private set; } = 100;
     public int level { get; private set; } = 1;
 
     public void TakeDamage(int damage)

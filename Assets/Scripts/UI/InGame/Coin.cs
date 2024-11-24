@@ -4,7 +4,7 @@ using DG.Tweening;
 public class Coin : MonoBehaviour
 {
     private readonly Vector3 target = new(7.5f, 4.5f, 0);
-    private const float FLOOR = 2.7f;
+    private const float FLOOR = 2.75f;
 
     public void SetUp(float xPos)
     {
