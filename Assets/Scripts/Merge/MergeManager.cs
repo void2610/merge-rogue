@@ -234,7 +234,7 @@ public class MergeManager : MonoBehaviour
         limit = wall.WallWidth / 2 + 0.05f;
         float size = currentBall.transform.localScale.x + 0.5f;
         float r = Mathf.Min(1, (Time.time - lastFallTime) / COOL_TIME);
-        ballGauge.GetComponent<SpriteRenderer>().material.SetFloat(ratio, r);
+        ballGauge.GetComponent<SpriteRenderer>().material.SetFloat(ratio, r + 0.1f);
         ballGauge.transform.localScale = currentBall.transform.localScale * 1.01f;
         ballGauge.transform.position = currentBall.transform.position;
         
