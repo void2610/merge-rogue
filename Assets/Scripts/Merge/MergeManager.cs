@@ -92,9 +92,9 @@ public class MergeManager : MonoBehaviour
 
         if (ballPerOneTurn > 1)
         {
-            nextBall = InventoryManager.instance.GetRandomBall(nextBallPosition);
+            nextBall = InventoryManager.Instance.GetRandomBall(nextBallPosition);
         }
-        currentBall = InventoryManager.instance.GetRandomBall(fallAnchor.transform.position - Vector3.up * 0.2f);
+        currentBall = InventoryManager.Instance.GetRandomBall(fallAnchor.transform.position - Vector3.up * 0.2f);
         currentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         fallAnchor.GetComponent<HingeJoint2D>().connectedBody = currentBall.GetComponent<Rigidbody2D>();
         
@@ -105,7 +105,7 @@ public class MergeManager : MonoBehaviour
 
     public void SpawnBall(int level, Vector3 p, Quaternion q)
     {
-        var ball = InventoryManager.instance.GetBallByLevel(level);
+        var ball = InventoryManager.Instance.GetBallByLevel(level);
         if (ball == null) return;
 
         ball.transform.position = p;
@@ -162,13 +162,13 @@ public class MergeManager : MonoBehaviour
         if (--remainingBalls > 0)
         {
             currentBall = nextBall;
-            if(!currentBall) currentBall = InventoryManager.instance.GetRandomBall();
+            if(!currentBall) currentBall = InventoryManager.Instance.GetRandomBall();
             currentBall.transform.position = fallAnchor.transform.position;
             currentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
             fallAnchor.GetComponent<HingeJoint2D>().connectedBody = currentBall.GetComponent<Rigidbody2D>();
             if (remainingBalls > 1)
             {
-                nextBall = InventoryManager.instance.GetRandomBall();
+                nextBall = InventoryManager.Instance.GetRandomBall();
                 nextBall.transform.position = nextBallPosition;
             }
         }

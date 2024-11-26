@@ -62,6 +62,8 @@ public class BallBase : MonoBehaviour
             {
                 if (this.serial < b.serial)
                 {
+                    EventManager.OnBallMerged.Trigger(this.level);
+                    
                     var center = (this.transform.position + other.transform.position) / 2;
                     var rotation = Quaternion.Lerp(this.transform.rotation, other.transform.rotation, 0.5f);
                     MergeManager.Instance.SpawnBall(level + 1, center, rotation);

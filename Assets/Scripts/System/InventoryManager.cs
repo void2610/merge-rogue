@@ -5,14 +5,14 @@ using System.Linq;
 
 public class InventoryManager : MonoBehaviour
 {
-    public static InventoryManager instance { get; private set; }
+    public static InventoryManager Instance { get; private set; }
     
     [SerializeField]
     private BallDataList allBallDataList;
     [SerializeField]
     private GameObject ballBasePrefab;
 
-    private const int INVENTORY_SIZE = 7;
+    public const int INVENTORY_SIZE = 7;
     private readonly List<GameObject> inventory = new();
     [SerializeField]
     private Vector3 inventoryPosition = new(5.5f, -1.0f, 0);
@@ -142,9 +142,9 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {

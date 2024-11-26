@@ -4392,6 +4392,7 @@ MonoBehaviour:
   testRelics:
   - {fileID: 11400000, guid: 61c100e63844c4ca3a80b6bbfc6f7df1, type: 2}
   - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 675d8851e2a1445e9b0080953d7f178e, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0

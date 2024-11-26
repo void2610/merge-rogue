@@ -70,7 +70,7 @@ public class Shop : MonoBehaviour
         
         if (GameManager.Instance.coin.Value >= itemPrice)
         {
-            InventoryManager.instance.SetBall(ball, inventoryIndex + 1);
+            InventoryManager.Instance.SetBall(ball, inventoryIndex + 1);
             itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.1f).SetUpdate(true);
             GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(false);
             GameManager.Instance.GetComponent<InventoryUI>().SetCursor(0);

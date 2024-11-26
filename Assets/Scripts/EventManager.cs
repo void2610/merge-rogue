@@ -11,8 +11,7 @@ public static class EventManager
     // 経験値獲得時: 経験値獲得量
     public static readonly GameEvent<int> OnPlayerExpGain = new (0);
     // プレイヤーの攻撃時: (単体攻撃の攻撃力, 全体攻撃の攻撃力)
- public static readonly GameEvent<(int, int)> OnPlayerAttack = new ((0, 0));
-    // プレイヤーの攻撃時: プレイヤーの攻撃範囲
+    public static readonly GameEvent<(int, int)> OnPlayerAttack = new ((0, 0));
     // プレイヤーのダメージ時: プレイヤーのダメージ量
     public static readonly GameEvent<int> OnPlayerDamage = new (0);
     // プレイヤーの回復時: プレイヤーの回復量
@@ -31,6 +30,8 @@ public static class EventManager
     public static readonly GameEvent<bool> OnPlayerDeath = new (false);
     // ボールを落とした時: なし
     public static readonly GameEvent<int> OnBallDropped = new (0);
+    // ボールをマージした時: マージしたボールのレベル
+    public static readonly GameEvent<int> OnBallMerged = new (0);
     // ショップに入った時: なし
     public static readonly GameEvent<int> OnShopEnter = new (0);
     // ショップから出た時: なし
