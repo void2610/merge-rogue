@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class DoubleCoinsWhenLowHealth : MonoBehaviour, IRelicBehavior
+public class DoubleCoinsWhenNearFullHealth : MonoBehaviour, IRelicBehavior
 {
     private IDisposable disposable;
     private RelicUI ui;
@@ -21,7 +21,8 @@ public class DoubleCoinsWhenLowHealth : MonoBehaviour, IRelicBehavior
     private void Effect(Unit _)
     {
         var health = GameManager.Instance.player.health.Value;
-        if(health > 40)
+        var maxHealth = GameManager.Instance.player.maxHealth.Value;
+        if(health > maxHealth * 0.8f)
         {
             var x = EventManager.OnCoinGain.GetValue();
             EventManager.OnCoinGain.SetValue(x * 2);

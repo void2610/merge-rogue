@@ -4390,9 +4390,7 @@ MonoBehaviour:
   relicGridSize: {x: 3, y: 7}
   relicOffset: {x: 50, y: 47}
   testRelics:
-  - {fileID: 11400000, guid: 61c100e63844c4ca3a80b6bbfc6f7df1, type: 2}
-  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
-  - {fileID: 11400000, guid: 675d8851e2a1445e9b0080953d7f178e, type: 2}
+  - {fileID: 11400000, guid: 62bb1794e6a1b410ebd26bc6faedb702, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
