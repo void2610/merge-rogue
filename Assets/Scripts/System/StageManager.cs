@@ -150,7 +150,7 @@ public class StageManager : MonoBehaviour
     public void Start()
     {
         DecideStage();
-        stageTypes[0] = StageType.Shop;
+        stageTypes[0] = StageType.Enemy;
         
         m.SetTextureOffset(mainTex, new Vector2(0, 0)); 
     }

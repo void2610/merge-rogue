@@ -18,4 +18,4 @@ MonoBehaviour:
   displayName: "\u5927\u5929\u4F7F\u306E\u606F\u5439"
   description: "\u4E00\u756A\u5927\u304D\u3044\u30DC\u30FC\u30EB\u3092\u6D88\u3057\u305F\u6642\u3001\u6700\u5927HP\u306E25%\u3092\u56DE\u5FA9\u3059\u308B"
   rarity: 2
-  price: 100
+  price: 50
