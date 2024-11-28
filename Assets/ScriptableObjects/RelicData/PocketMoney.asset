@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   className: PocketMoney
-  sprite: {fileID: 8814212362280375727, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  sprite: {fileID: 21300000, guid: df392ad408bd540d9b35a57c3c10db9f, type: 3}
   displayName: "\u304A\u5C0F\u9063\u3044"
   description: "\u30B7\u30E7\u30C3\u30D7\u306B\u5165\u3063\u305F\u6642\u306B100\u30B3\u30A4\u30F3\u3092\u5F97\u308B"
   rarity: 1

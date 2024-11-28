@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87ffaf8ec3e9d4f489befd2ffee17c75, type: 3}
-  m_Name: AddElasticityToWall
+  m_Name: DoubleAttackWhenLowHealth
   m_EditorClassIdentifier: 
   id: 0
-  className: AddElasticityToWall
-  sprite: {fileID: -5280445232346302118, guid: bea7b6a65f1a84960b1e46baad469da4, type: 3}
-  displayName: "\u30B9\u30E9\u30A4\u30E0\u58C1"
-  description: "\u58C1\u3068\u5E8A\u304C\u8DF3\u306D\u308B\u3088\u3046\u306B\u306A\u308B"
+  className: DoubleAttackWhenLowHealth
+  sprite: {fileID: 21300000, guid: 82ebb9d8a1fb64509990b942b9e86bb8, type: 3}
+  displayName: "\u98A8\u524D\u306E\u71C8"
+  description: "HP\u304C20\u4EE5\u4E0B\u306E\u6642\u3001\u653B\u6483\u529B\u304C2\u500D\u306B\u306A\u308B"
   rarity: 1
   price: 75
