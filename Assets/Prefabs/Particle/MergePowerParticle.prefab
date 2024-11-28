@@ -64,6 +64,9 @@ VisualEffect:
       - m_Value: 0.45
         m_Name: Velocity
         m_Overridden: 1
+      - m_Value: 0.7
+        m_Name: Size
+        m_Overridden: 1
     m_Vector2f:
       m_Array: []
     m_Vector3f:
@@ -143,4 +146,3 @@ MonoBehaviour:
   duration: 1.2
   intermediatePointCount: 5
   maxControlPointOffset: 2.5
-  destroyOnComplete: 1
