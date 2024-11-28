@@ -98,11 +98,9 @@ public class EnemyBase : MonoBehaviour
         SeManager.Instance.PlaySe("coin");
         for (int i = 0; i < coin; i++)
         {
-            Utils.Instance.WaitAndInvoke(i * 0.1f, () =>
-            {
-                var c = Instantiate(coinPrefab).GetComponent<Coin>();
-                c?.SetUp(this.transform.position.x);
-            });
+            // コイン出現中に敵が消えるとエラーが出る
+            var c = Instantiate(coinPrefab).GetComponent<Coin>();
+            c?.SetUp(this.transform.position.x);
         }
         CanvasGroup cg = canvas.GetComponent<CanvasGroup>();
         cg.DOFade(0, 0.5f).SetLink(gameObject);

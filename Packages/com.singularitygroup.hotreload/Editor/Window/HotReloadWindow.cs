@@ -28,6 +28,8 @@ namespace SingularityGroup.HotReload.Editor {
         int selectedTab;
 
         internal static Vector2 scrollPos;
+        
+        static Timer timer; 
 
 
         HotReloadRunTab runTab;
@@ -51,14 +53,10 @@ namespace SingularityGroup.HotReload.Editor {
 
         static readonly PackageUpdateChecker packageUpdateChecker = new PackageUpdateChecker();
 
-        [MenuItem("Window/Hot Reload &#H")]
+        [MenuItem("Window/Hot Reload/Open &#H")]
         internal static void Open() {
             // opening the window on CI systems was keeping Unity open indefinitely
-            if (EditorWindowHelper.IsHumanControllingUs() 
-                // Don't open Hot Reload window inside Virtual Player folder
-                // This is a heuristic since user might have the main player inside VP user-created folder, but that will be rare
-                && new DirectoryInfo(Path.GetFullPath("..")).Name != "VP"
-            ) {
+            if (EditorWindowHelper.IsHumanControllingUs()) {
                 if (Current) {
                     Current.Show();
                     Current.Focus();
@@ -67,8 +65,20 @@ namespace SingularityGroup.HotReload.Editor {
                 }
             }
         }
+        
+        [MenuItem("Window/Hot Reload/Recompile")]
+        internal static void Recompile() {
+            HotReloadRunTab.Recompile();
+        }
+
+        void OnInterval(object o) {
+            HotReloadRunTab.RepaintInstant();
+        }
 
         void OnEnable() {
+            if (timer == null) {
+                timer = new Timer(OnInterval, null, 20 * 1000, 20 * 1000);
+            }
             Current = this;
             if (cancelTokenSource != null) {
                 cancelTokenSource.Cancel();
@@ -102,6 +112,8 @@ namespace SingularityGroup.HotReload.Editor {
             if (Current == this) {
                 Current = null;
             }
+            timer.Dispose();
+            timer = null;
         }
 
         internal void SelectTab(Type tabType) {

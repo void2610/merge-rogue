@@ -2562,8 +2562,8 @@ MonoBehaviour:
     probability: 1
     interval: 0
   - stageType: 1
-    probability: 0.6
-    interval: 3
+    probability: 1
+    interval: 2
   stageTypes: 
 --- !u!114 &567445625
 MonoBehaviour:
