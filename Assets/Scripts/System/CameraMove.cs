@@ -3,7 +3,20 @@ using DG.Tweening;
 
 public class CameraMove : MonoBehaviour
 {
+    public static CameraMove Instance { get; private set; }
     private Vector3 initPosition;
+    
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
     private void Start()
     {
