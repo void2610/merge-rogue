@@ -8,15 +8,12 @@ public class Coin : MonoBehaviour
 
     public void SetUp(float xPos)
     {
-        var r = Random.Range(-0.1f, 0.1f);
-        this.transform.position = new Vector3(xPos + r, FLOOR + 1, 0);
+        var rx = Random.Range(-1f, 1f);
+        this.transform.position = new Vector3(xPos, FLOOR + 1, 0);
+        var rt = Random.Range(0.75f, 1.5f);
 
-        if (r > 0.0f)
-            this.transform.DOMoveX(-1.5f, 2f).SetRelative(true).SetUpdate(true).SetLink(gameObject);
-        else
-            this.transform.DOMoveX(1.5f, 2f).SetRelative(true).SetUpdate(true).SetLink(gameObject);
-
-        this.transform.DOMoveY(FLOOR, 1.5f).SetEase(Ease.OutBounce).OnComplete(() =>
+        this.transform.DOMoveX(1.5f * rx, rt + 0.5f).SetRelative(true).SetUpdate(true).SetLink(gameObject);
+        this.transform.DOMoveY(FLOOR, rt).SetEase(Ease.OutBounce).OnComplete(() =>
         {
             var middle = new Vector3(((this.transform.position.x + target.x) / 2) + 0.5f, ((this.transform.position.y + target.y) / 2) + 0.5f, 0);
             this.transform.DOPath(new [] { this.transform.position, middle, target }, 0.8f).SetEase(Ease.OutExpo

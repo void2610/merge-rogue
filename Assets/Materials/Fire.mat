@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: UmbraHands
+  m_Name: Fire
   m_Shader: {fileID: -6465566751694194690, guid: fbaf675543a424f01a58b072c6655b3c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -18,7 +18,8 @@ Material:
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
-  disabledShaderPasses: []
+  disabledShaderPasses:
+  - MOTIONVECTORS
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -58,13 +59,15 @@ Material:
     m_Ints: []
     m_Floats:
     - _EnableExternalAlpha: 0
+    - _QueueControl: 0
+    - _QueueOffset: 0
     m_Colors:
-    - _BloomColor: {r: 0, g: 1.2985896, b: 11.984315, a: 1}
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _BloomColor: {r: 0.8907395, g: 0.04973394, b: 0, a: 1}
+    - _Color: {r: 2, g: 2, b: 2, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &332329431214322355
+--- !u!114 &3496030455494749403
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
