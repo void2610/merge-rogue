@@ -81,9 +81,12 @@ public class RelicManager : MonoBehaviour
 
     private void Start()
     {
-        foreach (var r in testRelics)
+        if (UnityEngine.Application.isEditor)
         {
-            AddRelic(r);
+            foreach (var r in testRelics)
+            {
+                AddRelic(r);
+            }
         }
     }
 }
