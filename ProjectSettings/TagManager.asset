@@ -38,6 +38,9 @@ TagManager:
   - 
   - 
   m_SortingLayers:
+  - name: RenderTexture
+    uniqueID: 2146775217
+    locked: 0
   - name: BackUI
     uniqueID: 4025177191
     locked: 0
