@@ -113,6 +113,8 @@ public class EnemyBase : MonoBehaviour
 
     private void Death()
     {
+        EventManager.OnEnemyDefeated.Trigger(this);
+        
         this.transform.parent.parent.GetComponent<EnemyContainer>().RemoveEnemy(this.gameObject);
     }
 

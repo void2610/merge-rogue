@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87ffaf8ec3e9d4f489befd2ffee17c75, type: 3}
+  m_Name: HealWhenDefeatEnemy
+  m_EditorClassIdentifier: 
+  id: 0
+  className: HealWhenDefeatEnemy
+  sprite: {fileID: -5049782452158657568, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  displayName: "\u5438\u8840\u9B3C\u306E\u30AD\u30D0"
+  description: "\u6575\u3092\u5012\u3057\u305F\u6642\u306BHP\u3092\u5C11\u3057\u56DE\u5FA9\u3059\u308B"
+  rarity: 1
+  price: 50
