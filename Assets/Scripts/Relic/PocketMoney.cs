@@ -20,7 +20,7 @@ public class PocketMoney : MonoBehaviour, IRelicBehavior
     
     private void Effect(Unit _)
     {
-        GameManager.Instance.AddCoin(100);
+        GameManager.Instance.AddCoin(10);
         ui?.ActivateUI();
     }
 }
