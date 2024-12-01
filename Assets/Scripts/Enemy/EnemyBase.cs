@@ -83,7 +83,6 @@ public class EnemyBase : MonoBehaviour
                 {
                     this.transform.DOMoveX(0.75f, 0.2f).SetRelative(true).SetEase(Ease.OutExpo).SetLink(gameObject);
                 }).SetLink(gameObject);
-        SeManager.Instance.PlaySe("enemyAttack");
     }
 
     private void OnAppear()

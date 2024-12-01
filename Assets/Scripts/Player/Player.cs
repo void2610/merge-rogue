@@ -15,7 +15,8 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        CameraMove.Instance.ShakeCamera(0.5f, 0.2f);
+        SeManager.Instance.PlaySe("enemyAttack");
+        CameraMove.Instance.ShakeCamera(0.5f, 0.15f);
         ParticleManager.Instance.DamageText(damage, this.transform.position.x);
         health.Value -= damage;
         if (health.Value <= 0)

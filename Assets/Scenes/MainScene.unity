@@ -4500,7 +4500,21 @@ MonoBehaviour:
   relicGridSize: {x: 3, y: 7}
   relicOffset: {x: 50, y: 47}
   testRelics:
-  - {fileID: 11400000, guid: 4ce3f62c2c95844fd8ddbabd6d11d185, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -11098,6 +11112,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.data[0].volume
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.data[1].volume
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: soundDatas.Array.data[14].volume
       value: 0.1
