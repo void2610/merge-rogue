@@ -50,7 +50,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject playerObj;
     [SerializeField] public EnemyContainer enemyContainer;
     [SerializeField] public Shop shop;
-    [SerializeField] public Canvas mainCanvas;
+    [SerializeField] public Canvas pixelCanvas;
+    [SerializeField] public Canvas uiCanvas;
 
     private System.Random random { get; set; }
     public readonly ReactiveProperty<int> coin = new(0);
@@ -145,6 +146,7 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         ChangeState(GameState.StageMoving);
+        AddCoin(1000);
     }
 
     private void Update()

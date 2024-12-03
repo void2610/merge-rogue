@@ -2575,7 +2575,6 @@ GameObject:
   - component: {fileID: 567445623}
   - component: {fileID: 567445622}
   - component: {fileID: 567445624}
-  - component: {fileID: 567445625}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -2645,7 +2644,8 @@ MonoBehaviour:
   playerObj: {fileID: 1993390309}
   enemyContainer: {fileID: 198190389}
   shop: {fileID: 0}
-  mainCanvas: {fileID: 380910488}
+  pixelCanvas: {fileID: 1786606952}
+  uiCanvas: {fileID: 380910488}
 --- !u!114 &567445624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2675,19 +2675,6 @@ MonoBehaviour:
     probability: 1
     interval: 2
   stageTypes: 
---- !u!114 &567445625
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 567445620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1103410e159dc496dad0e6af57ef2439, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cursor: {fileID: 856787559}
 --- !u!1 &581884005 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3559292517470076089, guid: f5b253d8f0f3e46d3bd8b4ad4c4520e6, type: 3}
@@ -4499,22 +4486,7 @@ MonoBehaviour:
   relicGridPosition: {x: -440, y: 42.5, z: 0}
   relicGridSize: {x: 3, y: 7}
   relicOffset: {x: 50, y: 47}
-  testRelics:
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  testRelics: []
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -9430,6 +9402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1883030246}
   - component: {fileID: 1883030245}
+  - component: {fileID: 1883030247}
   m_Layer: 0
   m_Name: Inventory
   m_TagString: Untagged
@@ -9451,7 +9424,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   allBallDataList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
   ballBasePrefab: {fileID: 5528515049713681562, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
-  inventoryPosition: {x: 0, y: 1.92, z: 0}
+  inventoryPosition: {x: 0, y: -3, z: 0}
 --- !u!4 &1883030246
 Transform:
   m_ObjectHideFlags: 0
@@ -9467,6 +9440,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1883030247
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1883030244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1103410e159dc496dad0e6af57ef2439, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballUIPrefab: {fileID: 5315751102541514650, guid: 99dbff61fceb64a369f7d0f952d05246, type: 3}
+  inventoryPosition: {x: 0, y: 1.9, z: 0}
+  cursor: {fileID: 856787559}
 --- !u!4 &1901699993 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5786907691894850478, guid: f5b253d8f0f3e46d3bd8b4ad4c4520e6, type: 3}
