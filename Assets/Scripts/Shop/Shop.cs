@@ -86,14 +86,13 @@ public class Shop : MonoBehaviour
         }
     }
 
-    public void BuyRelic(int shopItemIndex)
+    private void BuyRelic(int shopItemIndex)
     {
         if(selectedItem == -1) return;
 
         var relic = currentItems[selectedItem] as RelicData;
-        if (relic == null) return;
+        if (!relic) return;
         var itemPrice = relic.price;
-        
         
         if (GameManager.Instance.coin.Value >= itemPrice)
         {
@@ -165,20 +164,26 @@ public class Shop : MonoBehaviour
         {
             button.onClick.AddListener(() =>
             {
+                InventoryManager.Instance.inventoryUI.EnableCursor(false);
                 if (!relic) return;
-                if (selectedItem == index && state == ShopState.Selected) BuyRelic(index);
                 
-                else
-                if (GameManager.Instance.coin.Value >= relic.price)
+                if (selectedItem == index && state == ShopState.Selected)
                 {
-                    state = ShopState.Selected;
-                    selectedItem = index;
-                    g.transform.DOScale(defaultScale * 1.2f, 0.1f).SetUpdate(true);
-                    SeManager.Instance.PlaySe("button");
+                    BuyRelic(index);
                 }
                 else
                 {
-                    SeManager.Instance.PlaySe("error");
+                    if (GameManager.Instance.coin.Value >= relic.price)
+                    {
+                        state = ShopState.Selected;
+                        selectedItem = index;
+                        g.transform.DOScale(defaultScale * 1.2f, 0.1f).SetUpdate(true);
+                        SeManager.Instance.PlaySe("button");
+                    }
+                    else
+                    {
+                        SeManager.Instance.PlaySe("error");
+                    }
                 }
             });
         }
