@@ -77,7 +77,6 @@ public class InventoryManager : MonoBehaviour
         var ball = Instantiate(ballBasePrefab, this.transform);
         ball.name = $"{data.name} (Level {level})";
         BallBase ballBase;
-        Debug.Log(System.Type.GetType("NormalBall"));
         if (!string.IsNullOrEmpty(data.className))
         {
             System.Type type = System.Type.GetType(data.className);
