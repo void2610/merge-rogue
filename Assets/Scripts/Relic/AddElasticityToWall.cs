@@ -23,7 +23,7 @@ public class AddElasticityToWall : MonoBehaviour, IRelicBehavior
     
     private void Effect(Unit _)
     {
-        pm.bounciness = 0.6f;
+        pm.bounciness = 0.8f;
         ui?.AlwaysActive();
     }
 }
