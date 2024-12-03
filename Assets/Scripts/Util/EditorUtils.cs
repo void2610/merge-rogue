@@ -10,7 +10,6 @@ public class EditorUtils : MonoBehaviour
     private void OnEnable()
     {
 #if UNITY_EDITOR
-        // 再生モード変更時のイベントに登録
         EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
 #endif
     }
@@ -18,7 +17,6 @@ public class EditorUtils : MonoBehaviour
     private void OnDisable()
     {
 #if UNITY_EDITOR
-        // 再生モード変更時のイベントから解除
         EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
 #endif
     }
@@ -27,7 +25,6 @@ public class EditorUtils : MonoBehaviour
     {
         if (state == PlayModeStateChange.ExitingPlayMode)
         {
-            // 再生終了時にマテリアルのパラメータをリセット
             ResetMaterialParameters();
         }
     }
@@ -35,7 +32,7 @@ public class EditorUtils : MonoBehaviour
     private void ResetMaterialParameters()
     {
         if (backgroundMaterial != null && arrowMaterial != null) {
-            backgroundMaterial.SetTextureOffset("_MainTex", Vector2.zero);
+            backgroundMaterial.mainTextureOffset = Vector2.zero;
             arrowMaterial.SetFloat("_Alpha", 1.0f);
         
             Debug.Log("Material parameters reset to default.");
