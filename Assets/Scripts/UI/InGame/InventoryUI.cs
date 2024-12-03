@@ -1,17 +1,43 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject cursor;
+    [SerializeField] private GameObject ballUIPrefab;
+    [SerializeField] private Vector3 inventoryPosition;
+    [SerializeField] private GameObject inventoryUIContainer;
+    [SerializeField] private GameObject cursor;
     private List<GameObject> items = new List<GameObject>();
     private const float SIZE_COEFFICIENT = 8f;
+    private static List<float> ballSizes => InventoryManager.Instance.sizes;
 
-    public void SetItem(List<GameObject> inventory)
+    public void CreateBallUI(GameObject ball, int level)
     {
-        items = inventory;
+        var g = Instantiate(ballUIPrefab, inventoryUIContainer.transform);
+        
+        g.transform.position = CalcInventoryPosition(level);
+        g.transform.localScale = ball.transform.localScale * 1;
+        
+        var color = ball.GetComponent<SpriteRenderer>().color;
+        g.GetComponent<Image>().color = color;
+        
+        var sprite = ball.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite;
+        if (sprite != null) g.transform.Find("Icon").GetComponent<Image>().sprite = sprite;
+        else g.transform.Find("Icon").GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        
+        SetEvent(g, level);
+        if (items.Count <= level)
+        {
+            items.Add(g);
+        }
+        else
+        {
+            Destroy(items[level]);
+            items[level] = g;
+        }
     }
 
     public void SetCursor(int index)
@@ -25,6 +51,30 @@ public class InventoryUI : MonoBehaviour
     public void EnableCursor(bool b)
     {
         cursor.GetComponent<SpriteRenderer>().enabled = b;
+    }
+    
+    private void SetEvent(GameObject ball, int index)
+    {
+        ball.AddComponent<EventTrigger>().triggers = new List<EventTrigger.Entry>();
+        var entry = new EventTrigger.Entry
+        {
+            eventID = EventTriggerType.PointerEnter
+        };
+
+        entry.callback.AddListener(_ => { SetCursor(index); });
+        ball.GetComponent<EventTrigger>().triggers.Add(entry);
+        entry = new EventTrigger.Entry
+        {
+            eventID = EventTriggerType.PointerClick
+        };
+        entry.callback.AddListener(_ => { Shop.Instance.BuyBall(index); });
+        ball.GetComponent<EventTrigger>().triggers.Add(entry);
+        // inventory.Add(ball);
+    }
+    
+    private Vector3 CalcInventoryPosition(int index)
+    {
+        return inventoryPosition + new Vector3(index * (0.6f + ballSizes[index] * 0.5f), 0, 0);
     }
 
     private void Awake()

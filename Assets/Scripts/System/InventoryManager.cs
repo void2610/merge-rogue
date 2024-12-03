@@ -7,16 +7,14 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
     
-    [SerializeField]
-    private BallDataList allBallDataList;
-    [SerializeField]
-    private GameObject ballBasePrefab;
+    [SerializeField] private BallDataList allBallDataList;
+    [SerializeField] private GameObject ballBasePrefab;
+    [SerializeField] private Vector3 inventoryPosition = new(5.5f, -1.0f, 0);
 
     public const int INVENTORY_SIZE = 7;
+    public InventoryUI inventoryUI => this.GetComponent<InventoryUI>();
     private readonly List<GameObject> inventory = new();
-    [SerializeField]
-    private Vector3 inventoryPosition = new(5.5f, -1.0f, 0);
-    private readonly List<float> sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
+    public readonly List<float> sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
     private readonly List<float> probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f };
 
     // ボールを入れ替える
@@ -28,8 +26,7 @@ public class InventoryManager : MonoBehaviour
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         ball.transform.position = CalcInventoryPosition(level - 1);
         inventory[level - 1] = ball;
-        SetEvent(ball, level - 1);
-        GameManager.Instance.GetComponent<InventoryUI>().SetItem(inventory);
+        inventoryUI.CreateBallUI(ball, level - 1);
         if(old) Destroy(old);
     }
 
@@ -67,6 +64,8 @@ public class InventoryManager : MonoBehaviour
             }
             r -= probabilities[i];
         }
+        
+        // みつからなかった場合は一番最初のボールを返す
         ball = CopyBall(inventory[0], position);
         ball.GetComponent<BallBase>().Freeze();
         return ball;
@@ -78,6 +77,7 @@ public class InventoryManager : MonoBehaviour
         var ball = Instantiate(ballBasePrefab, this.transform);
         ball.name = $"{data.name} (Level {level})";
         BallBase ballBase;
+        Debug.Log(System.Type.GetType("NormalBall"));
         if (!string.IsNullOrEmpty(data.className))
         {
             System.Type type = System.Type.GetType(data.className);
@@ -116,24 +116,6 @@ public class InventoryManager : MonoBehaviour
         return newBall;
     }
 
-    private void SetEvent(GameObject ball, int index)
-    {
-        ball.AddComponent<EventTrigger>().triggers = new List<EventTrigger.Entry>();
-        var entry = new EventTrigger.Entry
-        {
-            eventID = EventTriggerType.PointerEnter
-        };
-
-        entry.callback.AddListener(_ => { GameManager.Instance.GetComponent<InventoryUI>().SetCursor(index); });
-        ball.GetComponent<EventTrigger>().triggers.Add(entry);
-        entry = new EventTrigger.Entry
-        {
-            eventID = EventTriggerType.PointerClick
-        };
-        entry.callback.AddListener(_ => { Shop.Instance.BuyBall(index); });
-        ball.GetComponent<EventTrigger>().triggers.Add(entry);
-        inventory.Add(ball);
-    }
     
     private Vector3 CalcInventoryPosition(int index)
     {
@@ -160,9 +142,10 @@ public class InventoryManager : MonoBehaviour
             var ball = CreateBallInstanceFromBallData(bd, i + 1);
             ball.transform.position = CalcInventoryPosition(i);
             ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-            SetEvent(ball, i);
+            inventoryUI.CreateBallUI(ball, i);
+            inventory.Add(ball);
         }
-        GameManager.Instance.GetComponent<InventoryUI>().SetItem(inventory);
-        GameManager.Instance.GetComponent<InventoryUI>().SetCursor(0);
+        
+        inventoryUI.SetCursor(0);
     }
 }

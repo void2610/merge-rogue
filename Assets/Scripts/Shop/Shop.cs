@@ -57,7 +57,7 @@ public class Shop : MonoBehaviour
             itemContainer.GetChild(i).GetComponent<Image>().color = new Color(1, 1, 1, 1);
             itemContainer.GetChild(i).DOScale(1, 0.1f).SetUpdate(true);
         }
-        GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(false);
+        InventoryManager.Instance.inventoryUI.EnableCursor(false);
     }
 
     public void BuyBall(int inventoryIndex)
@@ -72,8 +72,8 @@ public class Shop : MonoBehaviour
         {
             InventoryManager.Instance.SetBall(ball, inventoryIndex + 1);
             itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.1f).SetUpdate(true);
-            GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(false);
-            GameManager.Instance.GetComponent<InventoryUI>().SetCursor(0);
+            InventoryManager.Instance.inventoryUI.EnableCursor(false);
+            InventoryManager.Instance.inventoryUI.SetCursor(0);
             
             GameManager.Instance.SubstractCoin(itemPrice);
             SeManager.Instance.PlaySe("coin");
@@ -131,7 +131,7 @@ public class Shop : MonoBehaviour
                     state = ShopState.Selected;
                     selectedItem = index;
                     g.transform.DOScale(defaultScale * 1.2f, 0.1f).SetUpdate(true);
-                    GameManager.Instance.GetComponent<InventoryUI>().EnableCursor(true);
+                    InventoryManager.Instance.inventoryUI.EnableCursor(true);
                     SeManager.Instance.PlaySe("button");
                 }
                 else
