@@ -145,6 +145,19 @@ public class StageManager : MonoBehaviour
             startNode.connections.Add(n);
         }
         
+        for (var i = 1; i < mapSize.x - 1; i++)
+        {
+            for (var j = 0; j < mapSize.y; j++)
+            {
+                if (mapNodes[i][j].type == StageType.Undefined) continue;
+                foreach (var n in mapNodes[i+1])
+                {
+                    if (n.type == StageType.Undefined) continue;
+                    mapNodes[i][j].connections.Add(n);
+                }
+            }
+        }
+        
         foreach (var n in mapNodes[^2])
         {
             if (n.type == StageType.Undefined) continue;
@@ -170,6 +183,19 @@ public class StageManager : MonoBehaviour
         {
             if (c.type == StageType.Undefined) continue;
             DrawLine(mapNodes[0][0], c);
+        }
+        
+        for (var i = 1; i < mapSize.x; i++)
+        {
+            for (var j = 0; j < mapSize.y; j++)
+            {
+                if (mapNodes[i][j].type == StageType.Undefined) continue;
+                foreach (var c in mapNodes[i][j].connections)
+                {
+                    if (c.type == StageType.Undefined) continue;
+                    DrawLine(mapNodes[i][j], c);
+                }
+            }
         }
         
         foreach (var c in mapNodes[^2])
