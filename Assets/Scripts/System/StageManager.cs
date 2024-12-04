@@ -32,6 +32,7 @@ public class StageManager : MonoBehaviour
     public class StageNode
     {
         public StageType type;             // ステージの種類
+        public Vector2 position;           // マップ上の位置
         public List<StageNode> connections; // 次のステージへの接続
 
         public StageNode(StageType t)
@@ -55,6 +56,7 @@ public class StageManager : MonoBehaviour
     [Header("マップ描画")]
     [SerializeField] private GameObject mapBackground;
     [SerializeField] private GameObject mapNodePrefab;
+    [SerializeField] private GameObject mapConnectionPrefab;
     [SerializeField] private Vector2 mapOffset;
     [SerializeField] private Vector2 mapMargin;
 
@@ -76,9 +78,25 @@ public class StageManager : MonoBehaviour
 
     private StageData ChoseStage()
     {
-        var sum = stageData.Sum(s => s.probability);
-        var r = GameManager.Instance.RandomRange(0.0f, sum);
-        return stageData.FirstOrDefault(s => r < s.probability) ?? stageData[0];
+        float sum = 0;
+        foreach (var s in stageData)
+        {
+            sum += s.probability;
+        }
+
+        float r = GameManager.Instance.RandomRange(0.0f, sum);
+        float cumulative = 0;
+
+        foreach (var s in stageData)
+        {
+            cumulative += s.probability;
+            if (r < cumulative)
+            {
+                return s;
+            }
+        }
+
+        return stageData[0];
     }
     
     private void GenerateMap()
@@ -93,11 +111,12 @@ public class StageManager : MonoBehaviour
             }
         }
         
-        // スタートノードを作成
+        // ノードを作成
         var startNode = new StageNode(StageType.Enemy);
         mapNodes[0] = new List<StageNode> {startNode};
+        mapNodes[0][0].position = new Vector2(mapOffset.x, mapOffset.y);
 
-        // 中間階層のノードを作成
+        var mid = (mapSize.x / 2);
         for (var i = 1; i < mapSize.x; i++)
         {
             var cnt = GameManager.Instance.RandomRange(3, mapSize.x-1);
@@ -110,32 +129,70 @@ public class StageManager : MonoBehaviour
                     continue;
                 }
                 mapNodes[i][r] = new StageNode(ChoseStage().stageType);
+                var my = (r - mid) * mapMargin.y;
+                mapNodes[i][r].position = new Vector2((i * mapMargin.x) + mapOffset.x, my + mapOffset.y);
             }
         }
         
-        var b = new StageNode(StageType.Boss);
-        mapNodes.Add(new List<StageNode> {b});
+        var bossNode = new StageNode(StageType.Boss);
+        mapNodes.Add(new List<StageNode> {bossNode});
+        mapNodes[^1][0].position = new Vector2((mapSize.x * mapMargin.x) + mapOffset.x, mapOffset.y);
+        
+        // ノード間を接続
+        foreach (var n in mapNodes[1])
+        {
+            if (n.type == StageType.Undefined) continue;
+            startNode.connections.Add(n);
+        }
+        
+        foreach (var n in mapNodes[^2])
+        {
+            if (n.type == StageType.Undefined) continue;
+            n.connections.Add(bossNode);
+        }
+    }
+    
+    private void DrawLine(StageNode a, StageNode b)
+    {
+        var g = Instantiate(mapConnectionPrefab,a.position, Quaternion.identity, mapBackground.transform);
+        g.name = $"{a.type} -> {b.type}";
+        var line = g.GetComponent<UILineRenderer>();
+        var p1 = Camera.main.WorldToScreenPoint(a.position);
+        var p2 = Camera.main.WorldToScreenPoint(b.position);
+        var pos = new Vector2(p2.x - p1.x - 35, p2.y - p1.y);
+        line.points = new Vector2[2] {Vector2.zero, pos};
     }
 
     private void DrawMap()
     {
-        var s = Instantiate(mapNodePrefab, new Vector3(mapOffset.x, mapOffset.y, 0), Quaternion.identity, mapBackground.transform);
+        // 先にノード間の線を描画
+        foreach (var c in mapNodes[0][0].connections)
+        {
+            if (c.type == StageType.Undefined) continue;
+            DrawLine(mapNodes[0][0], c);
+        }
+        
+        foreach (var c in mapNodes[^2])
+        {
+            if (c.type == StageType.Undefined) continue;
+            DrawLine(c, mapNodes[^1][0]);
+        }
+        
+        // ノードを描画
+        var s = Instantiate(mapNodePrefab, mapNodes[0][0].position , Quaternion.identity, mapBackground.transform);
         s.GetComponent<Image>().sprite = mapNodes[0][0].GetIcon(stageData);
 
-        var mid = (mapSize.x / 2);
-        Debug.Log(mid);
         for (var i = 1; i < mapSize.x; i++)
         {
             for (var j = 0; j < mapSize.y; j++)
             {
                 if (mapNodes[i][j].type == StageType.Undefined) continue;
-                var my = (j - mid) * mapMargin.y;
-                var g = Instantiate(mapNodePrefab, new Vector3((i * mapMargin.x) + mapOffset.x, my + mapOffset.y, 0), Quaternion.identity, mapBackground.transform);
+                var g = Instantiate(mapNodePrefab, mapNodes[i][j].position, Quaternion.identity, mapBackground.transform);
                 g.GetComponent<Image>().sprite = mapNodes[i][j].GetIcon(stageData);
             }
         }
         
-        var e = Instantiate(mapNodePrefab, new Vector3((mapSize.x * mapMargin.x) + mapOffset.x, mapOffset.y, 0), Quaternion.identity, mapBackground.transform);
+        var e = Instantiate(mapNodePrefab, mapNodes[^1][0].position, Quaternion.identity, mapBackground.transform);
         e.GetComponent<Image>().sprite = mapNodes[^1][0].GetIcon(stageData);
     }
 

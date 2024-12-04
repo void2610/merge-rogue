@@ -2698,6 +2698,7 @@ MonoBehaviour:
   torchInterval: 5
   mapBackground: {fileID: 2066958733}
   mapNodePrefab: {fileID: 3540213210033325969, guid: 4386ef4bca5d44721b4062aaebf2be73, type: 3}
+  mapConnectionPrefab: {fileID: 2000249465076816775, guid: 0fe2ec4d5ae3943b6b451329d71a9a0f, type: 3}
   mapOffset: {x: -6.7, y: -0.75}
   mapMargin: {x: 1.9, y: 0.9}
   stageData:
@@ -2706,15 +2707,15 @@ MonoBehaviour:
     interval: 0
     icon: {fileID: -9160987577138628238, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
   - stageType: 1
-    probability: 1
+    probability: 0.5
     interval: 2
-    icon: {fileID: 9112743452827066768, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+    icon: {fileID: 21300000, guid: df392ad408bd540d9b35a57c3c10db9f, type: 3}
   - stageType: 2
     probability: 1
     interval: 2
-    icon: {fileID: 1896382066041297041, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+    icon: {fileID: 21300000, guid: 141dcd1439a644dbc95eaf535c21d822, type: 3}
   - stageType: 3
-    probability: 1
+    probability: 0.5
     interval: 2
     icon: {fileID: 8954016801280762372, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
   - stageType: 4
@@ -4971,6 +4972,10 @@ PrefabInstance:
     - target: {fileID: 8330596388593968222, guid: 3fe5237b4f23740c7b070957eac1f3ba, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8330596388593968222, guid: 3fe5237b4f23740c7b070957eac1f3ba, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8883364435546100084, guid: 3fe5237b4f23740c7b070957eac1f3ba, type: 3}
       propertyPath: m_Pivot.x
