@@ -2698,14 +2698,13 @@ MonoBehaviour:
   torchInterval: 5
   mapBackground: {fileID: 2066958733}
   mapNodePrefab: {fileID: 3540213210033325969, guid: 4386ef4bca5d44721b4062aaebf2be73, type: 3}
-  mapOffset: {x: -6.1, y: -0.5}
-  mapMargin: {x: 2, y: 0}
-  stageLength: 5
+  mapOffset: {x: -6.7, y: -0.75}
+  mapMargin: {x: 1.9, y: 0.9}
   stageData:
   - stageType: 0
     probability: 1
     interval: 0
-    icon: {fileID: 1023881543254830229, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+    icon: {fileID: -9160987577138628238, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
   - stageType: 1
     probability: 1
     interval: 2
@@ -2719,13 +2718,15 @@ MonoBehaviour:
     interval: 2
     icon: {fileID: 8954016801280762372, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
   - stageType: 4
-    probability: 1
+    probability: 0
     interval: 2
     icon: {fileID: -9021633436630479557, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  - stageType: 5
+    probability: 0
+    interval: 2
+    icon: {fileID: 0}
   stageTypes: 
-  startNode:
-    type: 0
-    connections: []
+  mapSize: {x: 7, y: 7}
 --- !u!1 &581884005 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3559292517470076089, guid: f5b253d8f0f3e46d3bd8b4ad4c4520e6, type: 3}
@@ -11069,8 +11070,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -30}
-  m_SizeDelta: {x: 130, y: 160}
+  m_AnchoredPosition: {x: 0, y: -40}
+  m_SizeDelta: {x: 140, y: 180}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2066958735
 MonoBehaviour:

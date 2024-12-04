@@ -25,6 +25,7 @@ public class StageManager : MonoBehaviour
         Events,
         Treasure,
         Boss,
+        Undefined
     }
     
     [Serializable]
@@ -58,10 +59,10 @@ public class StageManager : MonoBehaviour
     [SerializeField] private Vector2 mapMargin;
 
     [Header("ステージ")]
-    [SerializeField] private int stageLength = 10;
     [SerializeField] private List<StageData> stageData　= new();
     [SerializeField] private List<StageType> stageTypes = new();
-    [SerializeField] private StageNode startNode;
+    [SerializeField] private Vector2Int mapSize;
+    private List<List<StageNode>> mapNodes = new();
     
     public readonly ReactiveProperty<int> currentStage = new(-1);
     private static readonly int mainTex = Shader.PropertyToID("_MainTex");
@@ -77,72 +78,65 @@ public class StageManager : MonoBehaviour
     {
         var sum = stageData.Sum(s => s.probability);
         var r = GameManager.Instance.RandomRange(0.0f, sum);
-        return stageData.First(s => r < s.probability);
+        return stageData.FirstOrDefault(s => r < s.probability) ?? stageData[0];
     }
     
     private void GenerateMap()
     {
-        // スタートノードを作成
-        var current = new StageNode(StageType.Enemy);
-        startNode = current;
-
-        // 中間階層のノードを作成
-        for (var i = 0; i < stageLength; i++)
+        // マップの初期化
+        for(var i = 0; i < mapSize.x; i++)
         {
-            var type = (StageType)GameManager.Instance.RandomRange(0, Enum.GetValues(typeof(StageType)).Length - 1);
-            current.connections.Add(new StageNode(type));
-            current = current.connections[0];
-        }
-
-        // ノードをランダムに接続
-        // var current = s;
-        // foreach (var node in intermediateNodes)
-        // {
-        //     current.connections.Add(node);
-        //     current = node;
-        // }
-        
-        // ゴールノードを作成
-        var goalNode = new StageNode(StageType.Boss);
-        current.connections.Add(goalNode); // 最後の中間階層をゴールに接続
-
-        // ランダムに枝分かれを追加
-        // foreach (var node in intermediateNodes)
-        // {
-        //     if (GameManager.Instance.RandomRange(0.0f, 1.0f) < 0.5f)
-        //     {
-        //         var type = (StageType)GameManager.Instance.RandomRange(0, Enum.GetValues(typeof(StageType)).Length - 1);
-        //         var branch = new StageNode(type);
-        //         node.connections.Add(branch);
-        //     }
-        // }
-    }
-
-    private void DrawMap(StageNode node)
-    {
-        int depth = 0;
-        var start = Instantiate(mapNodePrefab, new Vector3((depth * mapMargin.x) + mapOffset.x, mapOffset.y, 0), Quaternion.identity, mapBackground.transform);
-        start.GetComponent<Image>().sprite = node.GetIcon(stageData);
-        Debug.Log(node.type);
-
-        while (true)
-        {
-            depth++;
-            if (node.connections.Count == 0) break;
-            node = node.connections[0];
-            Debug.Log(node.type);
-            int index = 0;
-            foreach (var c in node.connections)
+            mapNodes.Add(new List<StageNode>());
+            for(var j = 0; j < mapSize.y; j++)
             {
-                var g = Instantiate(mapNodePrefab, new Vector3((depth * mapMargin.x) + mapOffset.x, (index * mapMargin.y) + mapOffset.y, 0), Quaternion.identity, mapBackground.transform);
-                g.GetComponent<Image>().sprite = node.GetIcon(stageData);
-                index++;
+                mapNodes[i].Add(new StageNode(StageType.Undefined));
             }
         }
+        
+        // スタートノードを作成
+        var startNode = new StageNode(StageType.Enemy);
+        mapNodes[0] = new List<StageNode> {startNode};
 
-        depth--;
-        var boss = Instantiate(mapNodePrefab, new Vector3((depth * mapMargin.x) + mapOffset.x, mapOffset.y, 0), Quaternion.identity, mapBackground.transform);
-        boss.GetComponent<Image>().sprite = node.GetIcon(stageData);
+        // 中間階層のノードを作成
+        for (var i = 1; i < mapSize.x; i++)
+        {
+            var cnt = GameManager.Instance.RandomRange(3, mapSize.x-1);
+            for(var j = 0; j < cnt; j++)
+            {
+                var r = GameManager.Instance.RandomRange(0, mapSize.y);
+                if (mapNodes[i][r].type != StageType.Undefined)
+                {
+                    j--;
+                    continue;
+                }
+                mapNodes[i][r] = new StageNode(ChoseStage().stageType);
+            }
+        }
+        
+        var b = new StageNode(StageType.Boss);
+        mapNodes.Add(new List<StageNode> {b});
+    }
+
+    private void DrawMap()
+    {
+        var s = Instantiate(mapNodePrefab, new Vector3(mapOffset.x, mapOffset.y, 0), Quaternion.identity, mapBackground.transform);
+        s.GetComponent<Image>().sprite = mapNodes[0][0].GetIcon(stageData);
+
+        var mid = (mapSize.x / 2);
+        Debug.Log(mid);
+        for (var i = 1; i < mapSize.x; i++)
+        {
+            for (var j = 0; j < mapSize.y; j++)
+            {
+                if (mapNodes[i][j].type == StageType.Undefined) continue;
+                var my = (j - mid) * mapMargin.y;
+                var g = Instantiate(mapNodePrefab, new Vector3((i * mapMargin.x) + mapOffset.x, my + mapOffset.y, 0), Quaternion.identity, mapBackground.transform);
+                g.GetComponent<Image>().sprite = mapNodes[i][j].GetIcon(stageData);
+            }
+        }
+        
+        var e = Instantiate(mapNodePrefab, new Vector3((mapSize.x * mapMargin.x) + mapOffset.x, mapOffset.y, 0), Quaternion.identity, mapBackground.transform);
+        e.GetComponent<Image>().sprite = mapNodes[^1][0].GetIcon(stageData);
     }
 
     public void NextStage()
@@ -209,11 +203,50 @@ public class StageManager : MonoBehaviour
             }
         });
     }
+    
+    private void DecideStage()
+    {
+        var availableStages = new List<StageType>();
+        var stageIntervals = new Dictionary<StageType, int>();
+
+        foreach (var data in stageData)
+        {
+            for (var i = 0; i < data.probability * 100; i++)
+            {
+                availableStages.Add(data.stageType);
+            }
+            stageIntervals[data.stageType] = 0;
+        }
+
+        for (var i = 0; i < mapSize.y; i++)
+        {
+            var selectableStages = availableStages.FindAll(stage => stageIntervals[stage] <= 0);
+            if (selectableStages.Count == 0)
+            {
+                foreach (var key in stageIntervals.Keys.ToList())
+                {
+                    stageIntervals[key]--;
+                }
+                selectableStages = availableStages;
+            }
+
+            StageType selectedStage = selectableStages[UnityEngine.Random.Range(0, selectableStages.Count)];
+            stageTypes.Add(selectedStage);
+
+            foreach (var key in stageIntervals.Keys.ToList())
+            {
+                stageIntervals[key]--;
+            }
+            stageIntervals[selectedStage] = stageData.Find(data => data.stageType == selectedStage).interval;
+        }
+    }
 
     public void Start()
     {
         GenerateMap();
-        DrawMap(startNode);
+        DrawMap();
+        
+        // DecideStage();
         // stageTypes[0] = StageType.Shop;
         
         m.SetTextureOffset(mainTex, new Vector2(0, 0)); 
