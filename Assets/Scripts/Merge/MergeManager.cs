@@ -224,7 +224,6 @@ public class MergeManager : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Return)) LevelUpWallWidth();
         if (IsAllBallsStopped())
         {
             GameManager.Instance.ChangeState(GameManager.GameState.PlayerAttack);
