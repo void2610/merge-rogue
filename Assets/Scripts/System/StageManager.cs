@@ -64,6 +64,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private List<StageData> stageData　= new();
     [SerializeField] private List<StageType> stageTypes = new();
     [SerializeField] private Vector2Int mapSize;
+    [SerializeField] private int pathCount;
     private List<List<StageNode>> mapNodes = new();
     
     public readonly ReactiveProperty<int> currentStage = new(-1);
@@ -102,68 +103,61 @@ public class StageManager : MonoBehaviour
     private void GenerateMap()
     {
         // マップの初期化
-        for(var i = 0; i < mapSize.x; i++)
+        for (var i = 0; i < mapSize.x; i++)
         {
             mapNodes.Add(new List<StageNode>());
-            for(var j = 0; j < mapSize.y; j++)
-            {
-                mapNodes[i].Add(new StageNode(StageType.Undefined));
-            }
-        }
-        
-        // ノードを作成
-        var startNode = new StageNode(StageType.Enemy);
-        mapNodes[0] = new List<StageNode> {startNode};
-        mapNodes[0][0].position = new Vector2(mapOffset.x, mapOffset.y);
-
-        var mid = (mapSize.x / 2);
-        for (var i = 1; i < mapSize.x; i++)
-        {
-            var cnt = GameManager.Instance.RandomRange(3, mapSize.x-1);
-            for(var j = 0; j < cnt; j++)
-            {
-                var r = GameManager.Instance.RandomRange(0, mapSize.y);
-                if (mapNodes[i][r].type != StageType.Undefined)
-                {
-                    j--;
-                    continue;
-                }
-                mapNodes[i][r] = new StageNode(ChoseStage().stageType);
-                var my = (r - mid) * mapMargin.y;
-                mapNodes[i][r].position = new Vector2((i * mapMargin.x) + mapOffset.x, my + mapOffset.y);
-            }
-        }
-        
-        var bossNode = new StageNode(StageType.Boss);
-        mapNodes.Add(new List<StageNode> {bossNode});
-        mapNodes[^1][0].position = new Vector2((mapSize.x * mapMargin.x) + mapOffset.x, mapOffset.y);
-        
-        // ノード間を接続
-        foreach (var n in mapNodes[1])
-        {
-            if (n.type == StageType.Undefined) continue;
-            startNode.connections.Add(n);
-        }
-        
-        for (var i = 1; i < mapSize.x - 1; i++)
-        {
+            var mid = mapSize.y / 2;
             for (var j = 0; j < mapSize.y; j++)
             {
-                if (mapNodes[i][j].type == StageType.Undefined) continue;
-                foreach (var n in mapNodes[i+1])
+                mapNodes[i].Add(new StageNode(StageType.Undefined));
+                var my = (j - mid) * mapMargin.y;
+                mapNodes[i][j].position = new Vector2((i * mapMargin.x) + mapOffset.x, my + mapOffset.y);
+            }
+        }
+
+        // スタートノードを作成
+        var startNode = new StageNode(StageType.Enemy);
+        mapNodes[0][0] = startNode;
+        mapNodes[0][0].position = new Vector2(mapOffset.x, mapOffset.y);
+
+        // ゴールノードを作成
+        var bossNode = new StageNode(StageType.Boss);
+        mapNodes[^1][0] = bossNode;
+        mapNodes[^1][0].position = new Vector2((mapSize.x * mapMargin.x) + mapOffset.x, mapOffset.y);
+
+        // スタートからゴールに向かってランダムに接続
+        for (var _ = 0; _ < pathCount; _++)
+        {
+            StageNode currentNode = mapNodes[0][0];
+            for (var i = 1; i < mapSize.x; i++)
+            {
+                int currentY = mapNodes[i-1].FindIndex(node => node == currentNode);
+                int randomYOffset = GameManager.Instance.RandomRange(-1, 2); // -1から1までの値
+                int nextY = Mathf.Clamp(currentY + randomYOffset, 0, mapSize.y - 1);
+                
+                if( i == 1) nextY = GameManager.Instance.RandomRange(0, mapSize.y);
+                var nextNode = mapNodes[i][nextY];
+                currentNode.connections.Add(nextNode);
+                currentNode = nextNode;
+            }
+        }
+
+        // ゴールノードと接続
+        // currentNode.connections.Add(bossNode);
+
+        // Undefined以外のステージタイプを割り当てる
+        foreach (var column in mapNodes)
+        {
+            foreach (var node in column)
+            {
+                if (node.connections.Count > 0)
                 {
-                    if (n.type == StageType.Undefined) continue;
-                    mapNodes[i][j].connections.Add(n);
+                    node.type = ChoseStage().stageType; // ランダムにステージタイプを割り当てる
                 }
             }
         }
-        
-        foreach (var n in mapNodes[^2])
-        {
-            if (n.type == StageType.Undefined) continue;
-            n.connections.Add(bossNode);
-        }
     }
+
     
     private void DrawLine(StageNode a, StageNode b)
     {
@@ -173,6 +167,7 @@ public class StageManager : MonoBehaviour
         var p1 = Camera.main.WorldToScreenPoint(a.position);
         var p2 = Camera.main.WorldToScreenPoint(b.position);
         var pos = new Vector2(p2.x - p1.x - 35, p2.y - p1.y);
+        if(b == mapNodes[^1][0]) pos.x -= 35;
         line.points = new Vector2[2] {Vector2.zero, pos};
     }
 
