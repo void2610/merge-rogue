@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
     public void AddExp(int amount)
     {
         exp.Value += amount;
-        if(!CheckAndLevelUp()) GameManager.Instance.ChangeState(GameManager.GameState.StageMoving);
+        if(!CheckAndLevelUp()) GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
     }
     
     private bool CheckAndLevelUp()

@@ -14,7 +14,6 @@ public class StageManager : MonoBehaviour
     {
         public StageType stageType;
         public float probability;
-        public int interval;
         public Sprite icon;
     }
     
@@ -34,6 +33,7 @@ public class StageManager : MonoBehaviour
         public StageType type;             // ステージの種類
         public Vector2 position;           // マップ上の位置
         public List<StageNode> connections; // 次のステージへの接続
+        public GameObject obj;             // マップ上のオブジェクト
 
         public StageNode(StageType t)
         {
@@ -65,16 +65,18 @@ public class StageManager : MonoBehaviour
     [SerializeField] private List<StageType> stageTypes = new();
     [SerializeField] private Vector2Int mapSize;
     [SerializeField] private int pathCount;
-    private List<List<StageNode>> mapNodes = new();
+    public readonly ReactiveProperty<int> currentStageCount = new(-1);
+    private readonly List<List<StageNode>> mapNodes = new();
+    private readonly ReactiveProperty<StageNode> currentStage = new();
+
     
-    public readonly ReactiveProperty<int> currentStage = new(-1);
     private static readonly int mainTex = Shader.PropertyToID("_MainTex");
     private int enemyStageCount;
     private Tween torchTween;
 
     public StageType GetCurrentStageType()
     {
-        return stageTypes[currentStage.Value];
+        return stageTypes[currentStageCount.Value];
     }
 
     private StageData ChoseStage()
@@ -166,9 +168,28 @@ public class StageManager : MonoBehaviour
         var line = g.GetComponent<UILineRenderer>();
         var p1 = Camera.main.WorldToScreenPoint(a.position);
         var p2 = Camera.main.WorldToScreenPoint(b.position);
-        var pos = new Vector2(p2.x - p1.x - 35, p2.y - p1.y);
-        if(b == mapNodes[^1][0]) pos.x -= 35;
+        var pos = new Vector2(p2.x - p1.x, p2.y - p1.y);
         line.points = new Vector2[2] {Vector2.zero, pos};
+    }
+    
+    private void SetButtonEvent()
+    {
+        foreach (var column in mapNodes)
+        {
+            foreach (var node in column)
+            {
+                if (node.type == StageType.Undefined) continue;
+                var button = node.obj.GetComponent<Button>();
+                foreach (var c in node.connections)
+                {
+                    if (c.type == StageType.Undefined) continue;
+                    button.onClick.AddListener(() =>
+                    {
+                        NextStage(c);
+                    });
+                }
+            }
+        }
     }
 
     private void DrawMap()
@@ -201,7 +222,9 @@ public class StageManager : MonoBehaviour
         
         // ノードを描画
         var s = Instantiate(mapNodePrefab, mapNodes[0][0].position , Quaternion.identity, mapBackground.transform);
+        s.name = $"{mapNodes[0][0].type}";
         s.GetComponent<Image>().sprite = mapNodes[0][0].GetIcon(stageData);
+        mapNodes[0][0].obj = s;
 
         for (var i = 1; i < mapSize.x; i++)
         {
@@ -209,18 +232,38 @@ public class StageManager : MonoBehaviour
             {
                 if (mapNodes[i][j].type == StageType.Undefined) continue;
                 var g = Instantiate(mapNodePrefab, mapNodes[i][j].position, Quaternion.identity, mapBackground.transform);
+                g.name = $"{mapNodes[i][j].type}";
                 g.GetComponent<Image>().sprite = mapNodes[i][j].GetIcon(stageData);
+                mapNodes[i][j].obj = g;
             }
         }
         
         var e = Instantiate(mapNodePrefab, mapNodes[^1][0].position, Quaternion.identity, mapBackground.transform);
+        e.name = $"{mapNodes[^1][0].type}";
         e.GetComponent<Image>().sprite = mapNodes[^1][0].GetIcon(stageData);
+        mapNodes[^1][0].obj = e;
     }
 
-    public void NextStage()
+    public void SetNextNodeActive()
     {
-        return;
+        var nextNodes = currentStage.Value.connections;
+        
+        foreach (var column in mapNodes)
+        {
+            foreach (var node in column)
+            {
+                if (node.type == StageType.Undefined) continue;
+                
+                var button = node.obj.GetComponent<Button>();
+                button.interactable = nextNodes.Contains(node);
+            }
+        }
+    }
+
+    public void NextStage(StageNode next)
+    {
         // 演出
+        GameManager.Instance.uiManager.EnableCanvasGroup("Map", false);
         Utils.Instance.WaitAndInvoke(0.2f, () =>
         {
             SeManager.Instance.PlaySe("footsteps");
@@ -246,21 +289,22 @@ public class StageManager : MonoBehaviour
             if (i == 0) torchTween = tween;
         }
         torches[^1].SetActive(Random.Range(0.0f, 1.0f) < 0.5f);
-
         
-
         // ステージ進行
         Utils.Instance.WaitAndInvoke(2.0f, () =>
         {
-            if (currentStage.Value + 1 < stageTypes.Count)
-                currentStage.Value++;
+            if (currentStageCount.Value + 1 < stageTypes.Count)
+                currentStageCount.Value++;
             else
-                currentStage.Value = 0;
+                currentStageCount.Value = 0;
+            
+            currentStage.Value = next;
 
-            switch (stageTypes[currentStage.Value])
+            switch (currentStage.Value.type)
             {
                 case StageType.Enemy:
-                    enemyStageCount++;
+                    enemyStageCount = GameManager.Instance.RandomRange(1, 4) + (int)(currentStageCount.Value / 3);
+                    // 敵の出現量を指定
                     GameManager.Instance.enemyContainer.SpawnEnemy(enemyStageCount);
                     GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
                     break;
@@ -281,51 +325,14 @@ public class StageManager : MonoBehaviour
             }
         });
     }
-    
-    private void DecideStage()
-    {
-        var availableStages = new List<StageType>();
-        var stageIntervals = new Dictionary<StageType, int>();
 
-        foreach (var data in stageData)
-        {
-            for (var i = 0; i < data.probability * 100; i++)
-            {
-                availableStages.Add(data.stageType);
-            }
-            stageIntervals[data.stageType] = 0;
-        }
-
-        for (var i = 0; i < mapSize.y; i++)
-        {
-            var selectableStages = availableStages.FindAll(stage => stageIntervals[stage] <= 0);
-            if (selectableStages.Count == 0)
-            {
-                foreach (var key in stageIntervals.Keys.ToList())
-                {
-                    stageIntervals[key]--;
-                }
-                selectableStages = availableStages;
-            }
-
-            StageType selectedStage = selectableStages[UnityEngine.Random.Range(0, selectableStages.Count)];
-            stageTypes.Add(selectedStage);
-
-            foreach (var key in stageIntervals.Keys.ToList())
-            {
-                stageIntervals[key]--;
-            }
-            stageIntervals[selectedStage] = stageData.Find(data => data.stageType == selectedStage).interval;
-        }
-    }
-
-    public void Start()
+    public void Awake()
     {
         GenerateMap();
+        mapNodes[0][0].type = StageType.Enemy;
+        currentStage.Value = mapNodes[0][0];
         DrawMap();
-        
-        // DecideStage();
-        // stageTypes[0] = StageType.Shop;
+        SetButtonEvent();
         
         m.SetTextureOffset(mainTex, new Vector2(0, 0)); 
     }

@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
         EnemyAttack,
         BattleResult,
         LevelUp,
+        MapSelect,
         StageMoving,
         Shop,
         GameOver,
@@ -95,8 +96,6 @@ public class GameManager : MonoBehaviour
     {
         switch (state)
         {
-            case GameState.StageMoving:
-                break;
             case GameState.Shop:
                 Shop.Instance.CloseShop();
                 break;
@@ -110,7 +109,7 @@ public class GameManager : MonoBehaviour
                 if (uiManager.remainingLevelUps > 0)
                     ChangeState(GameState.LevelUp);
                 else
-                    stageManager.NextStage();
+                    ChangeState(GameState.MapSelect);
                 break;
             case GameState.BattlePreparation:
                 // バトル準備
@@ -132,6 +131,10 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.EnemyAttack:
                 enemyContainer.Action();
+                break;
+            case GameState.MapSelect:
+                uiManager.EnableCanvasGroup("Map", true);
+                stageManager.SetNextNodeActive();
                 break;
             case GameState.Shop:
                 Shop.Instance.OpenShop();

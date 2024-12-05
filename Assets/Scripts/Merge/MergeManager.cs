@@ -78,7 +78,7 @@ public class MergeManager : MonoBehaviour
         if (GameManager.Instance.uiManager.remainingLevelUps > 0) return;
         
         GameManager.Instance.uiManager.EnableCanvasGroup("LevelUp", false);
-        GameManager.Instance.ChangeState(GameManager.GameState.StageMoving);
+        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
     }
     
     public PhysicsMaterial2D GetWallMaterial()

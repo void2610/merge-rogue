@@ -65,7 +65,7 @@ public class UIManager : MonoBehaviour
     {
         SeManager.Instance.PlaySe("button");
         EnableCanvasGroup("Shop", false);
-        GameManager.Instance.ChangeState(GameManager.GameState.StageMoving);
+        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
     }
 
     public void OnClickPause()
@@ -133,12 +133,13 @@ public class UIManager : MonoBehaviour
         EnableCanvasGroup("GameOver", false);
         EnableCanvasGroup("LevelUp", false);
         EnableCanvasGroup("Clear", false);
+        EnableCanvasGroup("Map", false);
     }
 
     private void Start()
     {
         GameManager.Instance.coin.Subscribe(UpdateCoinText).AddTo(this);
-        GameManager.Instance.stageManager.currentStage.Subscribe(UpdateStageText).AddTo(this);
+        GameManager.Instance.stageManager.currentStageCount.Subscribe(UpdateStageText).AddTo(this);
         GameManager.Instance.player.exp.Subscribe((v) =>
         {
             UpdateExpText(v, GameManager.Instance.player.maxExp);

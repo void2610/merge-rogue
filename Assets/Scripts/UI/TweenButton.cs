@@ -25,7 +25,7 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [SerializeField]
     private EventSystem eventSystem;
 
-    private float defaultScale = 1.0f;
+    private Vector3 defaultScale = Vector3.one;
     private List<Tween> tweens = new();
 
     private void OnClick()
@@ -45,7 +45,7 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        if (tweenByPointer)
+        if (tweenByPointer && this.GetComponent<Button>()?.interactable == true)
         {
             var t = this.transform.DOScale(defaultScale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
             tweens.Add(t);
@@ -88,7 +88,7 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void Awake()
     {
-        defaultScale = this.transform.localScale.x;
+        defaultScale = this.transform.localScale;
         if (!tweenByClick) return;
         
         if (this.GetComponent<Button>() != null)
@@ -99,7 +99,7 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     private void Start()
     {
-        defaultScale = this.transform.localScale.x;
+        defaultScale = this.transform.localScale;
     }
 
     private void OnDestroy()
