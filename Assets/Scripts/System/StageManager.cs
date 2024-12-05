@@ -67,8 +67,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private int pathCount;
     public readonly ReactiveProperty<int> currentStageCount = new(-1);
     private readonly List<List<StageNode>> mapNodes = new();
-    private readonly ReactiveProperty<StageNode> currentStage = new();
-
+    [SerializeField] private StageNode currentStage = null;
     
     private static readonly int mainTex = Shader.PropertyToID("_MainTex");
     private int enemyStageCount;
@@ -138,15 +137,15 @@ public class StageManager : MonoBehaviour
                 int nextY = Mathf.Clamp(currentY + randomYOffset, 0, mapSize.y - 1);
                 
                 if( i == 1) nextY = GameManager.Instance.RandomRange(0, mapSize.y);
+                else if (i == mapSize.x - 1) nextY = 0;
+                
                 var nextNode = mapNodes[i][nextY];
-                currentNode.connections.Add(nextNode);
+                if (!currentNode.connections.Contains(nextNode))
+                    currentNode.connections.Add(nextNode);
                 currentNode = nextNode;
             }
         }
-
-        // ゴールノードと接続
-        // currentNode.connections.Add(bossNode);
-
+        
         // Undefined以外のステージタイプを割り当てる
         foreach (var column in mapNodes)
         {
@@ -179,10 +178,12 @@ public class StageManager : MonoBehaviour
             foreach (var node in column)
             {
                 if (node.type == StageType.Undefined) continue;
-                var button = node.obj.GetComponent<Button>();
                 foreach (var c in node.connections)
                 {
                     if (c.type == StageType.Undefined) continue;
+                    var button = c.obj.GetComponent<Button>();
+                    
+                    button.onClick.RemoveAllListeners();
                     button.onClick.AddListener(() =>
                     {
                         NextStage(c);
@@ -214,12 +215,6 @@ public class StageManager : MonoBehaviour
             }
         }
         
-        foreach (var c in mapNodes[^2])
-        {
-            if (c.type == StageType.Undefined) continue;
-            DrawLine(c, mapNodes[^1][0]);
-        }
-        
         // ノードを描画
         var s = Instantiate(mapNodePrefab, mapNodes[0][0].position , Quaternion.identity, mapBackground.transform);
         s.name = $"{mapNodes[0][0].type}";
@@ -237,16 +232,11 @@ public class StageManager : MonoBehaviour
                 mapNodes[i][j].obj = g;
             }
         }
-        
-        var e = Instantiate(mapNodePrefab, mapNodes[^1][0].position, Quaternion.identity, mapBackground.transform);
-        e.name = $"{mapNodes[^1][0].type}";
-        e.GetComponent<Image>().sprite = mapNodes[^1][0].GetIcon(stageData);
-        mapNodes[^1][0].obj = e;
     }
 
-    public void SetNextNodeActive()
+    private void SetNextNodeActive()
     {
-        var nextNodes = currentStage.Value.connections;
+        var nextNodes = currentStage != null ? currentStage.connections : new List<StageNode>{mapNodes[0][0]};
         
         foreach (var column in mapNodes)
         {
@@ -260,7 +250,7 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    public void NextStage(StageNode next)
+    private void NextStage(StageNode next)
     {
         // 演出
         GameManager.Instance.uiManager.EnableCanvasGroup("Map", false);
@@ -298,9 +288,9 @@ public class StageManager : MonoBehaviour
             else
                 currentStageCount.Value = 0;
             
-            currentStage.Value = next;
+            currentStage = next;
 
-            switch (currentStage.Value.type)
+            switch (currentStage.type)
             {
                 case StageType.Enemy:
                     enemyStageCount = GameManager.Instance.RandomRange(1, 4) + (int)(currentStageCount.Value / 3);
@@ -323,16 +313,20 @@ public class StageManager : MonoBehaviour
                     GameManager.Instance.ChangeState(GameManager.GameState.Shop);
                     break;
             }
+            SetNextNodeActive();
         });
+        
     }
 
     public void Awake()
     {
         GenerateMap();
         mapNodes[0][0].type = StageType.Enemy;
-        currentStage.Value = mapNodes[0][0];
+        currentStage = mapNodes[0][0];
+        
         DrawMap();
         SetButtonEvent();
+        SetNextNodeActive();
         
         m.SetTextureOffset(mainTex, new Vector2(0, 0)); 
     }

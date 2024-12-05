@@ -134,7 +134,6 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.MapSelect:
                 uiManager.EnableCanvasGroup("Map", true);
-                stageManager.SetNextNodeActive();
                 break;
             case GameState.Shop:
                 Shop.Instance.OpenShop();

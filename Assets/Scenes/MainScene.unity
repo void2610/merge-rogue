@@ -2723,7 +2723,7 @@ MonoBehaviour:
     icon: {fileID: 0}
   stageTypes: 
   mapSize: {x: 7, y: 7}
-  pathCount: 5
+  pathCount: 9
 --- !u!1 &581884005 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3559292517470076089, guid: f5b253d8f0f3e46d3bd8b4ad4c4520e6, type: 3}
