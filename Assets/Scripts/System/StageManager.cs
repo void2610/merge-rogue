@@ -173,6 +173,13 @@ public class StageManager : MonoBehaviour
     
     private void SetButtonEvent()
     {
+        var b = mapNodes[0][0].obj.GetComponent<Button>();
+        b.onClick.RemoveAllListeners();
+        b.onClick.AddListener(() =>
+        {
+            NextStage(mapNodes[0][0]);
+        });
+        
         foreach (var column in mapNodes)
         {
             foreach (var node in column)
@@ -322,7 +329,7 @@ public class StageManager : MonoBehaviour
     {
         GenerateMap();
         mapNodes[0][0].type = StageType.Enemy;
-        currentStage = mapNodes[0][0];
+        currentStage = null;
         
         DrawMap();
         SetButtonEvent();
