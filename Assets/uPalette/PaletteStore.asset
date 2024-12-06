@@ -1,0 +1,123 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0edd4d6dec9974f11ba4b078ca3a0e1e, type: 3}
+  m_Name: PaletteStore
+  m_EditorClassIdentifier: 
+  _colorPalette:
+    _entries:
+      _keys:
+      - af515ef3-f896-4abf-80b8-0ab3bc46b877
+      - 08bdf8f5-274e-41e3-9fb0-10254636975e
+      - b64c48df-8757-4910-a698-0f474f0b13e1
+      - c2f11f32-6b76-49f4-a9cf-916e11b26cc6
+      _values:
+      - _id: af515ef3-f896-4abf-80b8-0ab3bc46b877
+        _name:
+          _value: NormalText
+        _values:
+          _keys:
+          - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
+          _values:
+          - _value: {r: 1, g: 1, b: 1, a: 1}
+      - _id: 08bdf8f5-274e-41e3-9fb0-10254636975e
+        _name:
+          _value: BackGround
+        _values:
+          _keys:
+          - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
+          _values:
+          - _value: {r: 1, g: 1, b: 1, a: 1}
+      - _id: b64c48df-8757-4910-a698-0f474f0b13e1
+        _name:
+          _value: SubBackGround
+        _values:
+          _keys:
+          - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
+          _values:
+          - _value: {r: 1, g: 1, b: 1, a: 1}
+      - _id: c2f11f32-6b76-49f4-a9cf-916e11b26cc6
+        _name:
+          _value: Accent
+        _values:
+          _keys:
+          - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
+          _values:
+          - _value: {r: 0.34100214, g: 0.6942113, b: 0.9150943, a: 1}
+    _themes:
+      _keys:
+      - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
+      _values:
+      - _id: 4cdfc659-724c-45a6-8a1a-6cef44e9252c
+        _name:
+          _value: Default
+    _entryOrders:
+      _ids:
+      - af515ef3-f896-4abf-80b8-0ab3bc46b877
+      - 08bdf8f5-274e-41e3-9fb0-10254636975e
+      - b64c48df-8757-4910-a698-0f474f0b13e1
+      - c2f11f32-6b76-49f4-a9cf-916e11b26cc6
+    _themeOrders:
+      _ids:
+      - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
+    _activeThemeId: 4cdfc659-724c-45a6-8a1a-6cef44e9252c
+  _gradientPalette:
+    _entries:
+      _keys: []
+      _values: []
+    _themes:
+      _keys:
+      - 69268790-5155-414d-889f-c4a30dbfa7f5
+      _values:
+      - _id: 69268790-5155-414d-889f-c4a30dbfa7f5
+        _name:
+          _value: Default
+    _entryOrders:
+      _ids: []
+    _themeOrders:
+      _ids:
+      - 69268790-5155-414d-889f-c4a30dbfa7f5
+    _activeThemeId: 69268790-5155-414d-889f-c4a30dbfa7f5
+  _characterStylePalette:
+    _entries:
+      _keys: []
+      _values: []
+    _themes:
+      _keys:
+      - 73deca3f-7928-4ef8-bf95-2f008dd1fc17
+      _values:
+      - _id: 73deca3f-7928-4ef8-bf95-2f008dd1fc17
+        _name:
+          _value: Default
+    _entryOrders:
+      _ids: []
+    _themeOrders:
+      _ids:
+      - 73deca3f-7928-4ef8-bf95-2f008dd1fc17
+    _activeThemeId: 73deca3f-7928-4ef8-bf95-2f008dd1fc17
+  _characterStyleTMPPalette:
+    _entries:
+      _keys: []
+      _values: []
+    _themes:
+      _keys:
+      - 84d248ad-8382-4024-b81b-b2029ecc42b6
+      _values:
+      - _id: 84d248ad-8382-4024-b81b-b2029ecc42b6
+        _name:
+          _value: Default
+    _entryOrders:
+      _ids: []
+    _themeOrders:
+      _ids:
+      - 84d248ad-8382-4024-b81b-b2029ecc42b6
+    _activeThemeId: 84d248ad-8382-4024-b81b-b2029ecc42b6
+  _missingEntryErrorLevel: 1
