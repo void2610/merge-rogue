@@ -7,7 +7,6 @@ jobs:
     name: Run the WebGL build
     runs-on: ubuntu-latest
     steps:
-      # リポジトリのチェックアウト
       - name: Check out my unity project.
         uses: actions/checkout@v4
       - name: Create LFS file list
