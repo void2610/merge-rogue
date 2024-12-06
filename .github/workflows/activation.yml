@@ -13,7 +13,7 @@ jobs:
         with:
           # Unity プロジェクトのバージョンを指定する
           # ProjectSettings/ProjectVersion.txt に記載されているバージョンを入力すれば OK
-          unityVersion: 6000.0.1f1
+          unityVersion: '6000.0.1f1'
       # Upload artifact (Unity_v6000.0.1f1.alf)
       - name: Expose as artifact
         uses: actions/upload-artifact@v4
