@@ -9,14 +9,14 @@ jobs:
       # GameCI の Activation を利用して alf ファイルを発行する
       - name: Request manual activation file
         id: getManualLicenseFile
-        uses: game-ci/unity-request-activation-file@v4
+        uses: game-ci/unity-request-activation-file@v2
         with:
           # Unity プロジェクトのバージョンを指定する
           # ProjectSettings/ProjectVersion.txt に記載されているバージョンを入力すれば OK
           unityVersion: 6000.0.1f1
-      # Upload artifact (Unity_v20XX.X.XXXX.alf)
+      # Upload artifact (Unity_v6000.0.1f1.alf)
       - name: Expose as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.getManualLicenseFile.outputs.filePath }}
           path: ${{ steps.getManualLicenseFile.outputs.filePath }}
