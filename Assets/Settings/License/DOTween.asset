@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b76f0aa177eb41caa56a14d710e0d751, type: 3}
+  m_Name: DOTween
+  m_EditorClassIdentifier: 
+  _libraryName: DOTween
+  _memo1: 
+  _libversion: None
+  _webURL1: 
+  _webURL2: 
+  _useLicenseList: []
+  _createdTimeText: 2024/12/06_10:12:08
+  _licenseType: 999
+  _chargeType: 2
+  _isNeedToPurchaseForEachMember: 0
+  _isNeedAboutThisLibForEachMember: 0
+  _isMustShowLicense: 1
+  showLicenseOrder: 500
+  _licenseShowText: 'Copyright (c) 2015 Daniele Giardini, Demigiant
+
+
+    To check
+    out DOTween license, visit this page: http://dotween.demigiant.com/license.php
+
+
+    In
+    short:
+
+    - You can freely use DOTween in both commercial and non-commercial
+    projects
+
+    - You can redistribute verbatim copies of the code, along with
+    any readme files and attributions
+
+    - You can modify the code only for your
+    own use and you cannot redistribute modified versions (but you can send pull
+    requests to me)'
+  _customText1: 
+  _customText2: 

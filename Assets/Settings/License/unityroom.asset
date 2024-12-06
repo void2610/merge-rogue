@@ -10,25 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b76f0aa177eb41caa56a14d710e0d751, type: 3}
-  m_Name: LicenseMasterLicenseConfig
+  m_Name: unityroom
   m_EditorClassIdentifier: 
-  _libraryName: LicenseMaster
+  _libraryName: unityroom-client-library
   _memo1: 
-  _libversion: 1.8.0
-  _webURL1: https://github.com/syskentokyo/unitylicensemaster
+  _libversion: None
+  _webURL1: 
   _webURL2: 
   _useLicenseList: []
-  _createdTimeText: 2023/04/14_01:32:26
+  _createdTimeText: 2024/12/06_10:05:44
   _licenseType: 10
   _chargeType: 1
   _isNeedToPurchaseForEachMember: 0
   _isNeedAboutThisLibForEachMember: 0
   _isMustShowLicense: 1
-  showLicenseOrder: 878
+  showLicenseOrder: 500
   _licenseShowText: 'MIT License
 
 
-    Copyright (c) 2024 SyskenTokyo
+    Copyright (c) 2023 naichilab
 
 
     Permission
@@ -75,8 +75,6 @@ MonoBehaviour:
     OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE
 
-    SOFTWARE.
-
-'
+    SOFTWARE.'
   _customText1: 
   _customText2: 

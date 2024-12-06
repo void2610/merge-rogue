@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b76f0aa177eb41caa56a14d710e0d751, type: 3}
-  m_Name: licenseconfig20241206100544
+  m_Name: R3
   m_EditorClassIdentifier: 
-  _libraryName: unityroom-client-library
+  _libraryName: R3
   _memo1: 
   _libversion: None
   _webURL1: 
@@ -23,12 +23,12 @@ MonoBehaviour:
   _chargeType: 1
   _isNeedToPurchaseForEachMember: 0
   _isNeedAboutThisLibForEachMember: 0
-  _isMustShowLicense: 0
+  _isMustShowLicense: 1
   showLicenseOrder: 500
   _licenseShowText: 'MIT License
 
 
-    Copyright (c) 2023 naichilab
+    Copyright (c) 2024 Cysharp, Inc.
 
 
     Permission
