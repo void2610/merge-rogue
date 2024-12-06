@@ -1,54 +1,48 @@
-name: Deploy to GitHub Pages
+name: Actions 😎
 
-on:
-  push:
-    branches:
-      - main
-
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-  # 先行ジョブがあればキャンセル
+on: [push, pull_request]
 
 jobs:
   build:
+    name: Build my project ✨
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-
     steps:
-      - uses: actions/checkout@v4
-
-      - name: Set CompressionFormat to Disabled
-        run: |
-          sed -i -e 's/webGLCompressionFormat: ./webGLCompressionFormat: 2/' ProjectSettings/ProjectSettings.asset
-        # Compression Formatを`Disabled`に書き換え
-
-      - uses: game-ci/unity-builder@v3
+      # Checkout
+      - name: Checkout repository
+        uses: actions/checkout@v4
         with:
-          targetPlatform: WebGL
-          unityVersion: 2022.3.5f1
-          allowDirtyBuild: true # 上でProjectSettings.assetを変更しているため指定
+          lfs: true
+
+      # Cache
+      - uses: actions/cache@v3
+        with:
+          path: Library
+          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
+          restore-keys: |
+            Library-
+
+      # Test
+      - name: Run tests
+        uses: game-ci/unity-test-runner@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-
-      - uses: actions/upload-pages-artifact@v2
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
-          path: build/WebGL/WebGL
-        # WebGLビルド出力をアーティファクトにアップロード
+          githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-  deploy:
-    runs-on: ubuntu-latest
-    needs: build
-    permissions:
-      id-token: write
-      pages: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      # Build
+      - name: Build project
+        uses: game-ci/unity-builder@v4
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+          targetPlatform: WebGL
 
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
-        # GitHub Pagesに公開
+      # Output
+      - uses: actions/upload-artifact@v3
+        with:
+          name: Build
+          path: build
