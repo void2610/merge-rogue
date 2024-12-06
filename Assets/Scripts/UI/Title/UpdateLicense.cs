@@ -11,7 +11,7 @@ public class UpdateLicense : MonoBehaviour
     private void Start()
     {
         var licenses = licenseManager.GetLicenseConfigsTxt();
-        licenses = "\n\n\n" + licenses;
+        licenses = "\n\n\n\n" + licenses;
         text.text = licenses;
         
         // テキストのPreferred Valuesを取得
