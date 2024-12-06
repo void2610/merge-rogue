@@ -27,7 +27,7 @@ jobs:
       - uses: game-ci/unity-builder@v3
         with:
           targetPlatform: WebGL
-#          unityVersion: 6000.0.30f1
+          unityVersion: 2022.3.5f1
           allowDirtyBuild: true # 上でProjectSettings.assetを変更しているため指定
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
