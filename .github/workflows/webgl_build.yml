@@ -1,7 +1,7 @@
 # 名前を付ける。これがGithubActions上に表示される
-name: Run the  build
+name: Run the WebGL build
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
 jobs:
   build:
     name: Run the WebGL build
