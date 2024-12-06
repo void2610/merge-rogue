@@ -51,7 +51,7 @@ jobs:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
         with:
           targetPlatform: StandaloneWindows64
-          unityVersion: 2022.3.0f1  #ここに使うUnityのバージョンを入れる
+          unityVersion: 6000.0.1f1  #ここに使うUnityのバージョンを入れる
 
       # 成果物をZIPにしてアップロードする
       - name: Upload the Windows Build
