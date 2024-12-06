@@ -67,7 +67,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private int pathCount;
     public readonly ReactiveProperty<int> currentStageCount = new(-1);
     private readonly List<List<StageNode>> mapNodes = new();
-    [SerializeField] private StageNode currentStage = null;
+    private StageNode currentStage = null;
     
     private static readonly int mainTex = Shader.PropertyToID("_MainTex");
     private int enemyStageCount;
@@ -290,7 +290,7 @@ public class StageManager : MonoBehaviour
         // ステージ進行
         Utils.Instance.WaitAndInvoke(2.0f, () =>
         {
-            if (currentStageCount.Value + 1 < stageTypes.Count)
+            if (currentStageCount.Value + 1 < mapSize.x)
                 currentStageCount.Value++;
             else
                 currentStageCount.Value = 0;
