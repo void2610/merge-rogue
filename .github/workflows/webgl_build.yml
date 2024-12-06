@@ -1,77 +1,53 @@
-# 名前を付ける。これがGithubActions上に表示される
-name: Run the WebGL build
+name: Deploy to GitHub Pages
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  # 先行ジョブがあればキャンセル
 
 jobs:
   build:
-    name: Run the WebGL build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
     steps:
-      - name: Check out my unity project
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Create LFS file list
-        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
-
-      # LFSファイルのキャッシュを取得する
-      - name: Restore LFS cache
-        uses: actions/cache@v3
-        id: lfs-cache
-        with:
-          path: .git/lfs
-          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}
-
-      # LFSファイルをPullする
-      - name: Git LFS Pull
+      - name: Set CompressionFormat to Disabled
         run: |
-          git lfs pull
-          git add .
-          git reset --hard
+          sed -i -e 's/webGLCompressionFormat: ./webGLCompressionFormat: 2/' ProjectSettings/ProjectSettings.asset
+        # Compression Formatを`Disabled`に書き換え
 
-      # ファイル名にgitのハッシュを含めたいので$GITHUB_OUTPUTに保存しておく
-      - name: Set outputs
-        id: vars
-        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-
-      # Cache
-      - name: Cache Library
-        uses: actions/cache@v3
-        with:
-          path: Library
-          key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
-          restore-keys: |
-            Library-
-
-      # Unityプロジェクトのビルド
-      - name: Run the WebGL build
-        uses: game-ci/unity-builder@v4
-        env:
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+      - uses: game-ci/unity-builder@v3
         with:
           targetPlatform: WebGL
-          unityVersion: 6000.0.1f1 # ここに使うUnityのバージョンを入れる
+          allowDirtyBuild: true # 上でProjectSettings.assetを変更しているため指定
+        env:
+          UNITY_LICENSE: ${{ secrets[UNITY_LICENSE_2022] }}
 
-      # 成果物をZIPにしてアップロードする
-      - name: Upload the WebGL Build
-        uses: actions/upload-artifact@v3
+      - uses: actions/upload-pages-artifact@v2
         with:
-          name: Build-${{ steps.vars.outputs.sha_short }}
-          path: build
+          path: build/WebGL/WebGL
+        # WebGLビルド出力をアーティファクトにアップロード
 
-      # Builder で出力した WebGL ビルドを GitHub Pages にデプロイする
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    permissions:
+      id-token: write
+      pages: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@4.1.3
-        with:
-          branch: gh-pages # GitHub Pages デプロイ用の Orphan ブランチ名を指定する
-          folder: build    # デプロイ用ビルドフォルダパスを指定する
-
-      # Builder で出力した WebGL ビルドをアーティファクトでダウンロード可能にする
-      - name: Upload the WebGL Build
-        uses: actions/upload-artifact@v3
-        with:
-          name: Build
-          path: build
+        id: deployment
+        uses: actions/deploy-pages@v2
+        # GitHub Pagesに公開
