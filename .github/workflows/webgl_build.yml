@@ -29,7 +29,7 @@ jobs:
           targetPlatform: WebGL
           allowDirtyBuild: true # 上でProjectSettings.assetを変更しているため指定
         env:
-          UNITY_LICENSE: ${{ secrets[UNITY_LICENSE_2022] }}
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
 
       - uses: actions/upload-pages-artifact@v2
         with:
