@@ -24,8 +24,8 @@ jobs:
         with:
           lfs: true
 
-      - uses: actions/cache@v3
-        name: Cache Unity Library 📦
+      - name: Cache Unity Library 📦
+        uses: actions/cache@v3
         with:
           path: Library
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
@@ -51,14 +51,14 @@ jobs:
           targetPlatform: WebGL
           unityVersion: 6000.0.30f1
           allowDirtyBuild: true
-          buildsPath: WebGLBuilds
+          buildsPath: Builds
           buildName: merge-rogue
 
       - name: Upload Build Artifact 🚀
         uses: actions/upload-pages-artifact@v1
         with:
-          name: WebGLBuilds
-          path: WebGLBuilds/WebGL/merge-rogue
+          name: CIBuilds
+          path: CIBuilds/WebGL/merge-rogue
 
   deploy:
     name: Deploy to GitHub Pages ✨
@@ -77,10 +77,10 @@ jobs:
       - name: Download the build artifact 📦
         uses: actions/download-artifact@v3
         with:
-          name: WebGLBuilds
-          path: WebGLBuilds
+          name: CIBuilds
+          path: CIBuilds
 
       - name: Deploy to GitHub Pages 🌐
         uses: actions/deploy-pages@v2
         with:
-          artifact_name: WebGLBuilds
+          artifact_name: CIBuilds
