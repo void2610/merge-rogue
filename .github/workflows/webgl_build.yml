@@ -56,6 +56,28 @@ jobs:
           allowDirtyBuild: true
           outputPath: build
 
+      # ビルド成果物のリンクの有無をチェック
+      - name: Check for symbolic or hard links
+        run: |
+          echo "Checking for symbolic or hard links in the 'build' folder..."
+          if find build -type l | read; then
+            echo "Error: Symbolic or hard links found in the build folder:"
+            find build -type l
+            exit 1
+          else
+            echo "No symbolic or hard links found."
+          fi
+
+      # ビルドフォルダのサイズを表示
+      - name: Display build folder size
+        run: |
+          echo "Calculating the size of the 'build' folder..."
+          du -sh build || echo "Build folder not found."
+
+      # 不要なファイルの削除（オプション）
+      - name: Remove unnecessary files
+        run: |
+          echo "Removing unnecessary files from the 'build' folder..."
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
@@ -85,4 +107,4 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
         with:
-          artifact_name: Build  # アップロード時に指定した成果物名
+          artifact_name: Build
