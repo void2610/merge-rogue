@@ -7,17 +7,17 @@ jobs:
     name: Build my project ✨
     runs-on: ubuntu-latest
     steps:
-#      - name: Free up disk space 🧹
-#        run: |
-#          sudo rm -rf /usr/share/dotnet
-#          sudo rm -rf /usr/local/lib/android
-#          sudo apt-get clean
-#          df -h
-#
-#      - name: Clean up Docker system 🐳🧹
-#        run: |
-#          docker system prune --all --force
-#          df -h
+      - name: Free up disk space 🧹
+        run: |
+          sudo rm -rf /usr/share/dotnet
+          sudo rm -rf /usr/local/lib/android
+          sudo apt-get clean
+          df -h
+
+      - name: Clean up Docker system 🐳🧹
+        run: |
+          docker system prune --all --force
+          df -h
 
       - name: Checkout repository 📥
         uses: actions/checkout@v4
