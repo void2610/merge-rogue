@@ -54,7 +54,7 @@ jobs:
           targetPlatform: WebGL
           unityVersion: 6000.0.30f1
           allowDirtyBuild: true
-          outputPath: build/webgl
+          buildsPath: build/webgl
 
       # ビルド成果物のリンクの有無をチェック
       - name: Check for symbolic or hard links
