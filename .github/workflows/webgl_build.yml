@@ -58,7 +58,7 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           name: merge-rogue
-          path: build
+          path: WebGLBuilds/merge-rogue
 
   deploy:
     name: Deploy to GitHub Pages ✨
