@@ -51,13 +51,14 @@ jobs:
           targetPlatform: WebGL
           unityVersion: 6000.0.30f1
           allowDirtyBuild: true
-          buildsPath: merge-rogue
+          buildsPath: WebGLBuilds
+          buildName: merge-rogue
 
       - name: Upload Build Artifact 🚀
         uses: actions/upload-pages-artifact@v1
         with:
-          name: merge-rogue
-          path: merge-rogue
+          name: WebGLBuilds
+          path: WebGLBuilds/merge-rogue/WebGL
 
   deploy:
     name: Deploy to GitHub Pages ✨
@@ -82,11 +83,12 @@ jobs:
       - name: Deploy to GitHub Pages 🌐
         uses: actions/deploy-pages@v2
         with:
-          artifact_name: merge-rogue
+          artifact_name: WebGLBuilds
+          
 
       - name: Ensure index.html exists 🔥
         run: |
-          if [ ! -f "merge-rogue/index.html" ]; then
+          if [ ! -f "WebGLBuilds/index.html" ]; then
             echo "Error: index.html not found in build/"
             exit 1
           fi
