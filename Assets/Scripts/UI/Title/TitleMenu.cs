@@ -117,6 +117,8 @@ public class TitleMenu : MonoBehaviour
             SeManager.Instance.PlaySe("button");
         }));
         trigger.triggers.Add(entry);
+        
+        Time.timeScale = 1.0f;
 
         fadeImage.color = new Color(0, 0, 0, 1);
         fadeImage.DOFade(0.0f, 1.0f);
