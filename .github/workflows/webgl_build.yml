@@ -24,10 +24,6 @@ jobs:
         with:
           lfs: true
 
-#      - name: Set CompressionFormat to Disabled 🛠️
-#        run: |
-#          sed -i -e 's/webGLCompressionFormat: ./webGLCompressionFormat: 2/' ProjectSettings/ProjectSettings.asset
-
       - uses: actions/cache@v3
         name: Cache Unity Library 📦
         with:
@@ -56,6 +52,7 @@ jobs:
           unityVersion: 6000.0.30f1
           allowDirtyBuild: true
           buildsPath: build/webgl
+          buildName: merge-rogue
           
       - name: Set write permissions 🛠️
         run: sudo chmod -R 777 build/webgl
@@ -73,16 +70,15 @@ jobs:
           cp temp_build/index.html build/webgl/index.html
           cp -r temp_build/TemplateData build/webgl/TemplateData
 
+      - name: Rename build folder to match project name 🛠️
+        run: mv build/webgl build/merge-rogue
+
       - name: Ensure index.html exists 🔥
         run: |
           if [ ! -f "build/webgl/index.html" ]; then
             echo "Error: index.html not found in build/webgl/"
             exit 1
           fi
-
-      - name: Create .nojekyll file 🚫
-        run: |
-          touch build/webgl/.nojekyll
 
       - name: Upload Build Artifact 🚀
         uses: actions/upload-pages-artifact@v1
