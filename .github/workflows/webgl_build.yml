@@ -85,4 +85,4 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
         with:
-          path: build
+          artifact_name: Build  # アップロード時に指定した成果物名
