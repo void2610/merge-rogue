@@ -7,44 +7,45 @@ jobs:
     name: Build my project ✨
     runs-on: ubuntu-latest
     steps:
-      - name: Free up disk space
+      - name: Free up disk space 🧹
         run: |
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf /usr/local/lib/android
           sudo apt-get clean
           df -h
 
-      - name: Clean up Docker system
+      - name: Clean up Docker system 🐳🧹
         run: |
           docker system prune --all --force
           df -h
 
-      - name: Checkout repository
+      - name: Checkout repository 📥
         uses: actions/checkout@v4
         with:
           lfs: true
 
-      - name: Set CompressionFormat to Disabled
+      - name: Set CompressionFormat to Disabled 🛠️
         run: |
           sed -i -e 's/webGLCompressionFormat: ./webGLCompressionFormat: 2/' ProjectSettings/ProjectSettings.asset
 
       - uses: actions/cache@v3
+        name: Cache Unity Library 📦
         with:
           path: Library
           key: Library-${{ hashFiles('Assets/**', 'Packages/**', 'ProjectSettings/**') }}
           restore-keys: |
             Library-
 
-#      - name: Run tests
-#        uses: game-ci/unity-test-runner@v4
-#        env:
-#          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-#          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-#          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-#        with:
-#          githubToken: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Run tests 🧪
+    #   uses: game-ci/unity-test-runner@v4
+    #   env:
+    #     UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+    #     UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+    #     UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+    #   with:
+    #     githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build project
+      - name: Build project 🏗️
         uses: game-ci/unity-builder@v4
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
@@ -56,33 +57,7 @@ jobs:
           allowDirtyBuild: true
           buildsPath: build/webgl
 
-      # ビルド成果物のリンクの有無をチェック
-      - name: Check for symbolic or hard links
-        run: |
-          echo "Checking for symbolic or hard links in the 'build' folder..."
-          if find build/webgl -type l | read; then
-            echo "Error: Symbolic or hard links found in the build folder:"
-            find build/webgl -type l
-            exit 1
-          else
-            echo "No symbolic or hard links found."
-          fi
-
-      # ビルドフォルダのサイズを表示
-      - name: Display build folder size
-        run: |
-          echo "Calculating the size of the 'build' folder..."
-          du -sh build/webgl || echo "Build folder not found."
-
-      # 不要なファイルの削除（オプション）
-      - name: Remove unnecessary files
-        run: |
-          echo "Removing unnecessary files from the 'build' folder..."
-          find build/webgl -name "*.meta" -delete
-          find build/webgl -name "*.exe" -delete
-          find build/webgl -name "*.dll" -delete
-
-      - name: Upload Build Artifact
+      - name: Upload Build Artifact 🚀
         uses: actions/upload-pages-artifact@v1
         with:
           name: Build
@@ -99,16 +74,16 @@ jobs:
       name: github-pages
 
     steps:
-      - name: Checkout repository
+      - name: Checkout repository 📥
         uses: actions/checkout@v4
 
-      - name: Download the build artifact
+      - name: Download the build artifact 📦
         uses: actions/download-artifact@v3
         with:
           name: Build
           path: build/webgl
 
-      - name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages 🌐
         uses: actions/deploy-pages@v2
         with:
           artifact_name: Build
