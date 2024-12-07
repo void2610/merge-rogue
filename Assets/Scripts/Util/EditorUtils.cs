@@ -21,15 +21,15 @@ public class EditorUtils : MonoBehaviour
 #endif
     }
 
+# if UNITY_EDITOR
     private void OnPlayModeStateChanged(PlayModeStateChange state)
     {
-        # if UNITY_EDITOR
         if (state == PlayModeStateChange.ExitingPlayMode)
         {
             ResetMaterialParameters();
         }
-        # endif
     }
+# endif
 
     private void ResetMaterialParameters()
     {
