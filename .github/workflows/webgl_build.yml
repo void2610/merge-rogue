@@ -51,14 +51,13 @@ jobs:
           targetPlatform: WebGL
           unityVersion: 6000.0.30f1
           allowDirtyBuild: true
-          buildsPath: WebGLBuilds
           buildName: merge-rogue
 
       - name: Upload Build Artifact 🚀
         uses: actions/upload-pages-artifact@v1
         with:
           name: merge-rogue
-          path: WebGLBuilds/merge-rogue
+          path: merge-rogue
 
   deploy:
     name: Deploy to GitHub Pages ✨
