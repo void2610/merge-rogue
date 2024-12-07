@@ -51,7 +51,7 @@ jobs:
           targetPlatform: WebGL
           unityVersion: 6000.0.30f1
           allowDirtyBuild: true
-          buildsPath: Builds
+          buildsPath: CIBuilds
           buildName: merge-rogue
 
       - name: Upload Build Artifact 🚀
