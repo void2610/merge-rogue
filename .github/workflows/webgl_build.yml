@@ -1,4 +1,4 @@
-name: Actions 😎
+name: WebGL Build 😎
 
 on: [push, pull_request]
 
@@ -24,9 +24,9 @@ jobs:
         with:
           lfs: true
 
-      - name: Set CompressionFormat to Disabled 🛠️
-        run: |
-          sed -i -e 's/webGLCompressionFormat: ./webGLCompressionFormat: 2/' ProjectSettings/ProjectSettings.asset
+#      - name: Set CompressionFormat to Disabled 🛠️
+#        run: |
+#          sed -i -e 's/webGLCompressionFormat: ./webGLCompressionFormat: 2/' ProjectSettings/ProjectSettings.asset
 
       - uses: actions/cache@v3
         name: Cache Unity Library 📦
@@ -56,6 +56,8 @@ jobs:
           unityVersion: 6000.0.30f1
           allowDirtyBuild: true
           buildsPath: build/webgl
+
+          touch build/webgl/.nojekyll
 
       - name: Upload Build Artifact 🚀
         uses: actions/upload-pages-artifact@v1
