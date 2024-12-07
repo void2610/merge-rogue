@@ -7,26 +7,26 @@ jobs:
     name: Build my project ✨
     runs-on: ubuntu-latest
     steps:
-      - name: Free up disk space 🧹
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/lib/android
-          sudo apt-get clean
-          df -h
-
-      - name: Clean up Docker system 🐳🧹
-        run: |
-          docker system prune --all --force
-          df -h
-
-      - name: Checkout repository 📥
-        uses: actions/checkout@v4
-        with:
-          lfs: true
-
-      - name: Set CompressionFormat to Disabled 🛠️
-        run: |
-          sed -i -e 's/webGLCompressionFormat: ./webGLCompressionFormat: 2/' ProjectSettings/ProjectSettings.asset
+#      - name: Free up disk space 🧹
+#        run: |
+#          sudo rm -rf /usr/share/dotnet
+#          sudo rm -rf /usr/local/lib/android
+#          sudo apt-get clean
+#          df -h
+#
+#      - name: Clean up Docker system 🐳🧹
+#        run: |
+#          docker system prune --all --force
+#          df -h
+#
+#      - name: Checkout repository 📥
+#        uses: actions/checkout@v4
+#        with:
+#          lfs: true
+#
+#      - name: Set CompressionFormat to Disabled 🛠️
+#        run: |
+#          sed -i -e 's/webGLCompressionFormat: ./webGLCompressionFormat: 2/' ProjectSettings/ProjectSettings.asset
 
       - uses: actions/cache@v3
         name: Cache Unity Library 📦
