@@ -51,36 +51,25 @@ jobs:
           targetPlatform: WebGL
           unityVersion: 6000.0.30f1
           allowDirtyBuild: true
-          buildsPath: build/webgl
+          buildsPath: build/merge-rogue
           buildName: merge-rogue
           
       - name: Ensure temporary directory exists 📂
         run: |
-          sudo mkdir -p temp_build
-          sudo mkdir -p build/webgl
           sudo mkdir -p build/merge-rogue
           
       - name: Set write permissions 🛠️
         run: |
-          sudo chmod -R 777 build/webgl
           sudo chmod -R 777 build/merge-rogue
 
       - name: Copy pre-existing index.html 📄
         run: |
-          cp WebGLTemplates/index.html temp_build/index.html
-          cp -r WebGLTemplates/TemplateData temp_build/TemplateData
-
-      - name: Merge index.html into build directory 🔄
-        run:  |
-          cp temp_build/index.html build/webgl/index.html
-          cp -r temp_build/TemplateData build/webgl/TemplateData
-
-      - name: Rename build folder to match project name 🛠️
-        run: mv build/webgl build/merge-rogue
+          cp WebGLTemplates/index.html build/merge-rogue/index.html
+          cp -r WebGLTemplates/TemplateData build/merge-rogue/TemplateData
 
       - name: Ensure index.html exists 🔥
         run: |
-          if [ ! -f "merge-rogue/webgl/index.html" ]; then
+          if [ ! -f "build/merge-rogue/index.html" ]; then
             echo "Error: index.html not found in build/"
             exit 1
           fi
