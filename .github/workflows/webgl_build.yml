@@ -59,12 +59,15 @@ jobs:
           
       - name: Set write permissions 🛠️
         run: chmod -R 777 build/webgl
+        
+      - name: Ensure build directory exists 📂
+        run: mkdir -p build/webgl
 
       - name: Copy pre-existing index.html 📄
         run: |
           cp templates/index.html build/webgl/index.html
 
-      - name: Ensure index.html exists 📄
+      - name: Ensure index.html exists 🔥
         run: |
           if [ ! -f "build/webgl/index.html" ]; then
             echo "Error: index.html not found in build/webgl/"
