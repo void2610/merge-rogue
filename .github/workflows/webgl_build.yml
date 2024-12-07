@@ -64,10 +64,14 @@ jobs:
         run: mkdir -p temp_build
 
       - name: Copy pre-existing index.html 📄
-        run: cp templates/index.html temp_build/index.html
+        run: |
+          cp WebGLTemplates/index.html temp_build/index.html
+          cp -r WebGLTemplates/TemplateData temp_build/TemplateData
 
       - name: Merge index.html into build directory 🔄
-        run: cp temp_build/index.html build/webgl/index.html
+        run:  |
+          cp temp_build/index.html build/webgl/index.html
+          cp -r temp_build/TemplateData build/webgl/TemplateData
 
       - name: Ensure index.html exists 🔥
         run: |
