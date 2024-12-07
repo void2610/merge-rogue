@@ -7,7 +7,6 @@ jobs:
     name: Build my project ✨
     runs-on: ubuntu-latest
     steps:
-      # Free up disk space
       - name: Free up disk space
         run: |
           sudo rm -rf /usr/share/dotnet
@@ -15,24 +14,20 @@ jobs:
           sudo apt-get clean
           df -h
 
-      # Clean up Docker system
       - name: Clean up Docker system
         run: |
           docker system prune --all --force
           df -h
 
-      # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           lfs: true
 
-      # Disable WebGL Compression
       - name: Set CompressionFormat to Disabled
         run: |
           sed -i -e 's/webGLCompressionFormat: ./webGLCompressionFormat: 2/' ProjectSettings/ProjectSettings.asset
 
-      # Cache
       - uses: actions/cache@v3
         with:
           path: Library
@@ -40,7 +35,6 @@ jobs:
           restore-keys: |
             Library-
 
-      # Test
       - name: Run tests
         uses: game-ci/unity-test-runner@v4
         env:
@@ -50,7 +44,6 @@ jobs:
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
 
-      # Build
       - name: Build project
         uses: game-ci/unity-builder@v4
         env:
@@ -59,7 +52,7 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: WebGL
-          unityVersion: 6000.0.30f1 # 使用するUnityのバージョンを明示
+          unityVersion: 6000.0.30f1
           allowDirtyBuild: true
 
       # Save Unity Editor Log (in case of failure)
@@ -67,18 +60,16 @@ jobs:
         if: failure()
         run: |
           mkdir -p artifacts
-          cp ~/.config/unity3d/Editor.log artifacts/
+          if [ -f ~/.config/unity3d/Editor.log ]; then
+            cp ~/.config/unity3d/Editor.log artifacts/
+          else
+            echo "Editor.log not found!"
+          fi
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: UnityBuildLog
           path: artifacts/Editor.log
-
-      # Output
-      - uses: actions/upload-artifact@v3
-        with:
-          name: Build
-          path: build
 
   deploy:
     name: Deploy to GitHub Pages ✨
@@ -91,18 +82,15 @@ jobs:
       name: github-pages
 
     steps:
-      # Checkout the repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Download the build artifact
       - name: Download the build artifact
         uses: actions/download-artifact@v3
         with:
           name: Build
           path: build
 
-      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
         with:
