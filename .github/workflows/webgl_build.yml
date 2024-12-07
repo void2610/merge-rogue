@@ -61,7 +61,7 @@ jobs:
         uses: actions/upload-pages-artifact@v1
         with:
           name: WebGLBuilds
-          path: WebGLBuilds/merge-rogue
+          path: WebGLBuilds/WebGL/merge-rogue
 
   deploy:
     name: Deploy to GitHub Pages ✨
@@ -80,8 +80,8 @@ jobs:
       - name: Download the build artifact 📦
         uses: actions/download-artifact@v3
         with:
-          name: merge-rogue
-          path: merge-rogue
+          name: WebGLBuilds
+          path: WebGLBuilds
 
       - name: Deploy to GitHub Pages 🌐
         uses: actions/deploy-pages@v2
