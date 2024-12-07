@@ -7,17 +7,17 @@ jobs:
     name: Build my project ✨
     runs-on: ubuntu-latest
     steps:
-      - name: Free up disk space 🧹
-        run: |
-          sudo rm -rf /usr/share/dotnet
-          sudo rm -rf /usr/local/lib/android
-          sudo apt-get clean
-          df -h
-
-      - name: Clean up Docker system 🐳🧹
-        run: |
-          docker system prune --all --force
-          df -h
+#      - name: Free up disk space 🧹
+#        run: |
+#          sudo rm -rf /usr/share/dotnet
+#          sudo rm -rf /usr/local/lib/android
+#          sudo apt-get clean
+#          df -h
+#
+#      - name: Clean up Docker system 🐳🧹
+#        run: |
+#          docker system prune --all --force
+#          df -h
 
       - name: Checkout repository 📥
         uses: actions/checkout@v4
@@ -51,14 +51,14 @@ jobs:
           targetPlatform: WebGL
           unityVersion: 6000.0.30f1
           allowDirtyBuild: true
-          buildsPath: build/merge-rogue
+          buildsPath: WebGLBuilds
           buildName: merge-rogue
 
       - name: Upload Build Artifact 🚀
         uses: actions/upload-pages-artifact@v1
         with:
           name: merge-rogue
-          path: build/merge-rogue
+          path: build
 
   deploy:
     name: Deploy to GitHub Pages ✨
@@ -78,16 +78,16 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: merge-rogue
-          path: build/merge-rogue
-          
+          path: build
+
+      - name: Deploy to GitHub Pages 🌐
+        uses: actions/deploy-pages@v2
+        with:
+          artifact_name: merge-rogue
+
       - name: Ensure index.html exists 🔥
         run: |
           if [ ! -f "build/merge-rogue/index.html" ]; then
             echo "Error: index.html not found in build/"
             exit 1
           fi
-
-      - name: Deploy to GitHub Pages 🌐
-        uses: actions/deploy-pages@v2
-        with:
-          artifact_name: merge-rogue
