@@ -99,14 +99,14 @@ jobs:
       name: github-pages
 
     steps:
-#      - name: Checkout repository
-#        uses: actions/checkout@v4
-#
-#      - name: Download the build artifact
-#        uses: actions/download-artifact@v3
-#        with:
-#          name: Build
-#          path: build
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download the build artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: Build
+          path: build/webgl
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
