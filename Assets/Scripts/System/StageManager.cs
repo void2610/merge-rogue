@@ -322,7 +322,6 @@ public class StageManager : MonoBehaviour
             }
             SetNextNodeActive();
         });
-        
     }
 
     public void Awake()

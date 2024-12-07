@@ -4763,17 +4763,7 @@ MonoBehaviour:
   relicGridPosition: {x: -440, y: 42.5, z: 0}
   relicGridSize: {x: 3, y: 7}
   relicOffset: {x: 50, y: 47}
-  testRelics:
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
-  - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  testRelics: []
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
