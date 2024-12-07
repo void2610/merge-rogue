@@ -53,9 +53,6 @@ jobs:
           allowDirtyBuild: true
           buildsPath: WebGLBuilds
           buildName: merge-rogue
-          
-      - name: Debug Build Directory
-        run: ls -R .
 
       - name: Upload Build Artifact 🚀
         uses: actions/upload-pages-artifact@v1
@@ -87,11 +84,3 @@ jobs:
         uses: actions/deploy-pages@v2
         with:
           artifact_name: WebGLBuilds
-          
-
-      - name: Ensure index.html exists 🔥
-        run: |
-          if [ ! -f "WebGLBuilds/index.html" ]; then
-            echo "Error: index.html not found in build/"
-            exit 1
-          fi
