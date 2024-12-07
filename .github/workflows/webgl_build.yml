@@ -58,14 +58,16 @@ jobs:
           buildsPath: build/webgl
           
       - name: Set write permissions 🛠️
-        run: chmod -R 777 build/webgl
+        run: sudo chmod -R 777 build/webgl
         
-      - name: Ensure build directory exists 📂
-        run: mkdir -p build/webgl
+      - name: Ensure temporary directory exists 📂
+        run: mkdir -p temp_build
 
       - name: Copy pre-existing index.html 📄
-        run: |
-          cp templates/index.html build/webgl/index.html
+        run: cp templates/index.html temp_build/index.html
+
+      - name: Merge index.html into build directory 🔄
+        run: cp temp_build/index.html build/webgl/index.html
 
       - name: Ensure index.html exists 🔥
         run: |
