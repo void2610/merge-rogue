@@ -56,6 +56,9 @@ jobs:
           unityVersion: 6000.0.30f1
           allowDirtyBuild: true
           buildsPath: build/webgl
+          
+      - name: Set write permissions 🛠️
+        run: chmod -R 777 build/webgl
 
       - name: Copy pre-existing index.html 📄
         run: |
