@@ -54,14 +54,15 @@ jobs:
           targetPlatform: WebGL
           unityVersion: 6000.0.30f1
           allowDirtyBuild: true
+          outputPath: build/webgl
 
       # ビルド成果物のリンクの有無をチェック
       - name: Check for symbolic or hard links
         run: |
           echo "Checking for symbolic or hard links in the 'build' folder..."
-          if find build -type l | read; then
+          if find build/webgl -type l | read; then
             echo "Error: Symbolic or hard links found in the build folder:"
-            find build -type l
+            find build/webgl -type l
             exit 1
           else
             echo "No symbolic or hard links found."
@@ -71,41 +72,41 @@ jobs:
       - name: Display build folder size
         run: |
           echo "Calculating the size of the 'build' folder..."
-          du -sh build || echo "Build folder not found."
+          du -sh build/webgl || echo "Build folder not found."
 
       # 不要なファイルの削除（オプション）
       - name: Remove unnecessary files
         run: |
           echo "Removing unnecessary files from the 'build' folder..."
-          find build -name "*.meta" -delete
-          find build -name "*.exe" -delete
-          find build -name "*.dll" -delete
+          find build/webgl -name "*.meta" -delete
+          find build/webgl -name "*.exe" -delete
+          find build/webgl -name "*.dll" -delete
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
           name: Build
-          path: build
+          path: build/webgl
 
   deploy:
     name: Deploy to GitHub Pages ✨
     runs-on: ubuntu-latest
     needs: build
     permissions:
-      id-token: write
       pages: write
+      id-token: write
     environment:
       name: github-pages
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Download the build artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: Build
-          path: build
+#      - name: Checkout repository
+#        uses: actions/checkout@v4
+#
+#      - name: Download the build artifact
+#        uses: actions/download-artifact@v3
+#        with:
+#          name: Build
+#          path: build
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
