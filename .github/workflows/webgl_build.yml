@@ -7,21 +7,30 @@ jobs:
     name: Build my project ✨
     runs-on: ubuntu-latest
     steps:
+      # Free up disk space
       - name: Free up disk space
         run: |
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf /usr/local/lib/android
           sudo apt-get clean
           df -h
+
+      # Clean up Docker system
       - name: Clean up Docker system
         run: |
           docker system prune --all --force
           df -h
+
       # Checkout
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           lfs: true
+
+      # Disable WebGL Compression
+      - name: Set CompressionFormat to Disabled
+        run: |
+          sed -i -e 's/webGLCompressionFormat: ./webGLCompressionFormat: 2/' ProjectSettings/ProjectSettings.asset
 
       # Cache
       - uses: actions/cache@v3
@@ -50,7 +59,20 @@ jobs:
           UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
         with:
           targetPlatform: WebGL
+          unityVersion: 6000.0.30f1 # 使用するUnityのバージョンを明示
           allowDirtyBuild: true
+
+      # Save Unity Editor Log (in case of failure)
+      - name: Save Unity Editor Log
+        if: failure()
+        run: |
+          mkdir -p artifacts
+          cp ~/.config/unity3d/Editor.log artifacts/
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: UnityBuildLog
+          path: artifacts/Editor.log
 
       # Output
       - uses: actions/upload-artifact@v3
