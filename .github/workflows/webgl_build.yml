@@ -54,7 +54,6 @@ jobs:
           targetPlatform: WebGL
           unityVersion: 6000.0.30f1
           allowDirtyBuild: true
-          outputPath: build
 
       # ビルド成果物のリンクの有無をチェック
       - name: Check for symbolic or hard links
@@ -78,6 +77,10 @@ jobs:
       - name: Remove unnecessary files
         run: |
           echo "Removing unnecessary files from the 'build' folder..."
+          find build -name "*.meta" -delete
+          find build -name "*.exe" -delete
+          find build -name "*.dll" -delete
+
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v3
         with:
