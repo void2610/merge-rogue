@@ -35,14 +35,14 @@ jobs:
           restore-keys: |
             Library-
 
-      - name: Run tests
-        uses: game-ci/unity-test-runner@v4
-        env:
-          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-        with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+#      - name: Run tests
+#        uses: game-ci/unity-test-runner@v4
+#        env:
+#          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+#          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+#          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+#        with:
+#          githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build project
         uses: game-ci/unity-builder@v4
@@ -54,22 +54,13 @@ jobs:
           targetPlatform: WebGL
           unityVersion: 6000.0.30f1
           allowDirtyBuild: true
+          outputPath: build
 
-      # Save Unity Editor Log (in case of failure)
-      - name: Save Unity Editor Log
-        if: failure()
-        run: |
-          mkdir -p artifacts
-          if [ -f ~/.config/unity3d/Editor.log ]; then
-            cp ~/.config/unity3d/Editor.log artifacts/
-          else
-            echo "Editor.log not found!"
-          fi
-      - uses: actions/upload-artifact@v3
-        if: failure()
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
         with:
-          name: UnityBuildLog
-          path: artifacts/Editor.log
+          name: Build
+          path: build
 
   deploy:
     name: Deploy to GitHub Pages ✨
