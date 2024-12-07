@@ -83,7 +83,7 @@ jobs:
           find build/webgl -name "*.dll" -delete
 
       - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-pages-artifact@v1
         with:
           name: Build
           path: build/webgl
