@@ -54,11 +54,16 @@ jobs:
           buildsPath: build/webgl
           buildName: merge-rogue
           
-      - name: Set write permissions 🛠️
-        run: sudo chmod -R 777 build/webgl
-        
       - name: Ensure temporary directory exists 📂
-        run: mkdir -p temp_build
+        run: |
+          mkdir -p temp_build
+          mkdir -p build/webgl
+          mkdir -p build/merge-rogue
+          
+      - name: Set write permissions 🛠️
+        run: |
+          sudo chmod -R 777 build/webgl
+          sudo chmod -R 777 build/merge-rogue
 
       - name: Copy pre-existing index.html 📄
         run: |
@@ -75,8 +80,8 @@ jobs:
 
       - name: Ensure index.html exists 🔥
         run: |
-          if [ ! -f "build/webgl/index.html" ]; then
-            echo "Error: index.html not found in build/webgl/"
+          if [ ! -f "merge-rogue/webgl/index.html" ]; then
+            echo "Error: index.html not found in build/"
             exit 1
           fi
 
