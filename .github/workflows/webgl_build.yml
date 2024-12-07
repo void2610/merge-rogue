@@ -57,6 +57,15 @@ jobs:
           allowDirtyBuild: true
           buildsPath: build/webgl
 
+      - name: Ensure index.html exists 📄
+        run: |
+          if [ ! -f "build/webgl/index.html" ]; then
+            echo "Error: index.html not found in build/webgl/"
+            exit 1
+          fi
+
+      - name: Create .nojekyll file 🚫
+        run: |
           touch build/webgl/.nojekyll
 
       - name: Upload Build Artifact 🚀
