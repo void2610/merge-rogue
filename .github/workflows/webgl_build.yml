@@ -56,9 +56,9 @@ jobs:
           
       - name: Ensure temporary directory exists 📂
         run: |
-          mkdir -p temp_build
-          mkdir -p build/webgl
-          mkdir -p build/merge-rogue
+          sudo mkdir -p temp_build
+          sudo mkdir -p build/webgl
+          sudo mkdir -p build/merge-rogue
           
       - name: Set write permissions 🛠️
         run: |
