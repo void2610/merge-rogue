@@ -60,7 +60,7 @@ public class EnemyContainer : MonoBehaviour
         }
     }
 
-    public void SpawnEnemy(int count = 1)
+    public void SpawnEnemy(int count = 1, int stage = 0)
     {
         for (int i = 0; i < count; i++)
         {
@@ -74,7 +74,7 @@ public class EnemyContainer : MonoBehaviour
                 {
                     var e = Instantiate(enemyData.prefab, this.transform);
                     // 敵の強さパラメータを設定
-                    float m = 1 + ((GameManager.Instance.stageManager.currentStageCount.Value + 1) * 0.2f);
+                    float m = ((stage + 1) * 0.8f);
                     e.transform.GetComponentsInChildren<EnemyBase>()[0].Init(m);
                     currentEnemies.Add(e);
                     e.transform.position = positions[currentEnemies.Count - 1];

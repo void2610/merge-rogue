@@ -27,7 +27,7 @@ public class StageManager : MonoBehaviour
         Undefined
     }
     
-    [Serializable]
+    // [Serializable]
     public class StageNode
     {
         public StageType type;             // ステージの種類
@@ -70,7 +70,6 @@ public class StageManager : MonoBehaviour
     private StageNode currentStage = null;
     
     private static readonly int mainTex = Shader.PropertyToID("_MainTex");
-    private int enemyStageCount;
     private Tween torchTween;
 
     public StageType GetCurrentStageType()
@@ -165,6 +164,7 @@ public class StageManager : MonoBehaviour
         var g = Instantiate(mapConnectionPrefab,a.position, Quaternion.identity, mapBackground.transform);
         g.name = $"{a.type} -> {b.type}";
         var line = g.GetComponent<UILineRenderer>();
+        if (Camera.main == null) return;
         var p1 = Camera.main.WorldToScreenPoint(a.position);
         var p2 = Camera.main.WorldToScreenPoint(b.position);
         var pos = new Vector2(p2.x - p1.x, p2.y - p1.y);
@@ -300,9 +300,8 @@ public class StageManager : MonoBehaviour
             switch (currentStage.type)
             {
                 case StageType.Enemy:
-                    enemyStageCount = GameManager.Instance.RandomRange(1, 4) + (int)(currentStageCount.Value / 3);
-                    // 敵の出現量を指定
-                    GameManager.Instance.enemyContainer.SpawnEnemy(enemyStageCount);
+                    // 敵の出現量と強さを設定
+                    GameManager.Instance.enemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value);
                     GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
                     break;
                 case StageType.Boss:
