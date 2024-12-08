@@ -32,14 +32,14 @@ jobs:
           restore-keys: |
             Library-
 
-    # - name: Run tests 🧪
-    #   uses: game-ci/unity-test-runner@v4
-    #   env:
-    #     UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
-    #     UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
-    #     UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
-    #   with:
-    #     githubToken: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run tests 🧪
+        uses: game-ci/unity-test-runner@v4
+        env:
+         UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+         UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+         UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+        with:
+         githubToken: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build project 🏗️
         uses: game-ci/unity-builder@v4
@@ -52,13 +52,13 @@ jobs:
           unityVersion: 6000.0.30f1
           allowDirtyBuild: true
           buildsPath: CIBuilds
-          buildName: merge-rogue
+          buildName: build
 
       - name: Upload Build Artifact 🚀
         uses: actions/upload-pages-artifact@v1
         with:
           name: CIBuilds
-          path: CIBuilds/WebGL/merge-rogue
+          path: CIBuilds/WebGL/build
 
   deploy:
     name: Deploy to GitHub Pages 🚀
