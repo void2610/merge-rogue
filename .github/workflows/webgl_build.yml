@@ -23,6 +23,11 @@ jobs:
         uses: actions/checkout@v4
         with:
           lfs: true
+          
+      - name: Enable Decompression Fallback in ProjectSettings.asset 🔧
+        run: |
+          sed -i 's/WebGLLinkerTarget: 0/WebGLLinkerTarget: 1/' ProjectSettings/ProjectSettings.asset
+          sed -i 's/DecompressionFallback: 0/DecompressionFallback: 1/' ProjectSettings/ProjectSettings.asset
 
       - name: Cache Unity Library 📦
         uses: actions/cache@v3
