@@ -12,6 +12,8 @@ using UnityEngine.Rendering.Universal;
 
 public class UIManager : MonoBehaviour
 {
+    [SerializeField] private RawImage renderTexture;
+        
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider seSlider;
     [SerializeField] private Image fadeImage;
@@ -179,5 +181,12 @@ public class UIManager : MonoBehaviour
 
         fadeImage.color = new Color(0, 0, 0, 1);
         fadeImage.DOFade(0, 2f).SetUpdate(true);
+    }
+
+    private void Update()
+    {
+        // 解像度に合わせてレンダーテクスチャのサイズを変更
+        var rt = renderTexture.GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(Screen.width, Screen.height);
     }
 }
