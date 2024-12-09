@@ -18,4 +18,4 @@ MonoBehaviour:
   description: "\u5C0F\u3055\u3044\u4EE3\u308F\u308A\u306B\u653B\u6483\u529B\u304C\u4F4E\u3044"
   sprite: {fileID: 21300000, guid: 401e19353088e4a0fbb969995fe66b3c, type: 3}
   rarity: 0
-  price: 20
+  price: 5

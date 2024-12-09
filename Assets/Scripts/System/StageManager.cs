@@ -305,7 +305,7 @@ public class StageManager : MonoBehaviour
                     GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
                     break;
                 case StageType.Boss:
-                    GameManager.Instance.enemyContainer.SpawnBoss();
+                    GameManager.Instance.enemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value);
                     GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
                     break;
                 case StageType.Shop:
@@ -313,10 +313,12 @@ public class StageManager : MonoBehaviour
                     EventManager.OnShopEnter.Trigger(0);
                     break;
                 case StageType.Events:
-                    GameManager.Instance.ChangeState(GameManager.GameState.Other);
+                    GameManager.Instance.enemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value);
+                    GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
                     break;
                 case StageType.Treasure:
                     GameManager.Instance.ChangeState(GameManager.GameState.Shop);
+                    EventManager.OnShopEnter.Trigger(0);
                     break;
             }
             SetNextNodeActive();

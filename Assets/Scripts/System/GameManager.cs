@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         ChangeState(GameState.StageMoving);
-        AddCoin(1000);
+        AddCoin(10);
     }
 
     private void Update()
