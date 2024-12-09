@@ -10,7 +10,7 @@ public class DoubleAttackWhenLowHealth : MonoBehaviour, IRelicBehavior
     public void ApplyEffect(RelicUI relicUI)
     {
         ui = relicUI;
-        disposable = EventManager.OnPlayerAttack.Subscribe(Effect);
+        disposable = EventManager.OnPlayerAttack.Subscribe(Effect).AddTo(this);
     }
 
     public void RemoveEffect()

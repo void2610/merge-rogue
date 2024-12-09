@@ -10,7 +10,7 @@ public class HealWhenMergeLastBall : MonoBehaviour, IRelicBehavior
     public void ApplyEffect(RelicUI relicUI)
     {
         ui = relicUI;
-        disposable = EventManager.OnBallMerged.Subscribe(Effect);
+        disposable = EventManager.OnBallMerged.Subscribe(Effect).AddTo(this);
     }
 
     public void RemoveEffect()

@@ -9,7 +9,7 @@ public class DoubleCoinsWhenNearFullHealth : MonoBehaviour, IRelicBehavior
     private RelicUI ui;
     public void ApplyEffect(RelicUI relicUI)
     {
-        disposable = EventManager.OnCoinGain.Subscribe(Effect);
+        disposable = EventManager.OnCoinGain.Subscribe(Effect).AddTo(this);
         ui = relicUI;
     }
 

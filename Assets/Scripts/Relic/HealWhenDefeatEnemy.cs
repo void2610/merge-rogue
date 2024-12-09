@@ -10,7 +10,7 @@ public class HealWhenDefeatEnemy : MonoBehaviour, IRelicBehavior
     public void ApplyEffect(RelicUI relicUI)
     {
         ui = relicUI;
-        disposable = EventManager.OnEnemyDefeated.Subscribe(Effect);
+        disposable = EventManager.OnEnemyDefeated.Subscribe(Effect).AddTo(this);
     }
 
     public void RemoveEffect()

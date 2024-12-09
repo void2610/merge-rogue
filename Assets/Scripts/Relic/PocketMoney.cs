@@ -10,7 +10,7 @@ public class PocketMoney : MonoBehaviour, IRelicBehavior
     public void ApplyEffect(RelicUI relicUI)
     {
         ui = relicUI;
-        disposable = EventManager.OnShopEnter.Subscribe(Effect);
+        disposable = EventManager.OnShopEnter.Subscribe(Effect).AddTo(this);
     }
 
     public void RemoveEffect()

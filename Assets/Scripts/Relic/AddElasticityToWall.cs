@@ -26,4 +26,9 @@ public class AddElasticityToWall : MonoBehaviour, IRelicBehavior
         pm.bounciness = 0.8f;
         ui?.AlwaysActive();
     }
+    
+    private void OnDestroy()
+    {
+        RemoveEffect();
+    }
 }
