@@ -1,0 +1,9 @@
+using UnityEngine;
+
+public class #SCRIPT_NAME# : MonoBehaviour
+{
+    private void Start()
+    {
+
+    }
+}
