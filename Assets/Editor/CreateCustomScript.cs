@@ -65,7 +65,7 @@ public class CreateCustomScript
 
     private static void CreateScriptFile(string filePath, string scriptName, string namespaceName)
     {
-        var templateContent = File.ReadAllText("Assets/Editor/CustomScriptTemplates/CustomScriptTemplate.txt");
+        var templateContent = File.ReadAllText("Assets/Editor/Templates/CustomScriptTemplate.txt");
         // templateContent = templateContent.Replace("#NAMESPACE#", namespaceName);
         templateContent = templateContent.Replace("#SCRIPT_NAME#", scriptName);
 
