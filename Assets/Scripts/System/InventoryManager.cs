@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using System.Collections.Generic;
@@ -6,6 +7,8 @@ using System.Linq;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
+    
+    [SerializeField] private TMPro.TextMeshProUGUI testText;
     
     [SerializeField] private BallDataList allBallDataList;
     [SerializeField] private BallData normalBallData;
@@ -115,7 +118,6 @@ public class InventoryManager : MonoBehaviour
         Destroy(newBall.GetComponent<EventTrigger>());
         return newBall;
     }
-
     
     private Vector3 CalcInventoryPosition(int index)
     {
@@ -124,6 +126,7 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
+        String test = "";
         if (Instance == null)
         {
             Instance = this;
@@ -133,18 +136,24 @@ public class InventoryManager : MonoBehaviour
             Destroy(this);
         }
         
-        // allBallDataList.Register();
+        allBallDataList.Register();
+        test += "allBallDataList: " + allBallDataList.allBalls.Count + "\n";
+        test += "normalBallData: " + normalBallData + "\n";
 
         // 全てnormalBallで初期化
         for (var i = 0; i < INVENTORY_SIZE; i++)
         {
             var ball = CreateBallInstanceFromBallData(normalBallData, i + 1);
+            test += "ball: " + ball + "\n";
             ball.transform.position = CalcInventoryPosition(i);
             ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+            test += "ball.transform.position: " + ball.transform.position + "\n";
             inventoryUI.CreateBallUI(ball, i);
             inventory.Add(ball);
         }
         
         inventoryUI.SetCursor(0);
+        
+        testText.text = test;
     }
 }
