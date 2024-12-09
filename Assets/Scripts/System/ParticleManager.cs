@@ -20,7 +20,9 @@ public class ParticleManager : MonoBehaviour
     [SerializeField] private GameObject damageTextPrefab;
     [SerializeField] private GameObject mergeTextPrefab;
     
-    private Canvas canvas => GameManager.Instance.pixelCanvas;
+    private Canvas pixelCanvas => GameManager.Instance.pixelCanvas;
+    private Canvas uiCanvas => GameManager.Instance.uiCanvas;
+    
     
     public void HealParticle(Vector3 pos)
     {
@@ -47,14 +49,14 @@ public class ParticleManager : MonoBehaviour
     public void MergeText(int value, Vector3 pos, Color color = default)
     {
         var r = new Vector3(UnityEngine.Random.Range(-0.75f, 0.75f), UnityEngine.Random.Range(-0.75f, 0.75f), 0);
-        var mergeText = Instantiate(mergeTextPrefab, pos + r, Quaternion.identity, canvas.transform);
+        var mergeText = Instantiate(mergeTextPrefab, pos + r, Quaternion.identity, uiCanvas.transform);
         if (color == default) color = Color.white;
         mergeText.GetComponent<MergeText>().SetUp(value, color);
     }
     
     public void DamageText(int value, float xPos)
     {
-        var damageText = Instantiate(damageTextPrefab, canvas.transform);
+        var damageText = Instantiate(damageTextPrefab, uiCanvas.transform);
         damageText.GetComponent<DamageText>().SetUp(value, xPos);
     }
     
