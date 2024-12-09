@@ -8,6 +8,7 @@ public class InventoryManager : MonoBehaviour
     public static InventoryManager Instance { get; private set; }
     
     [SerializeField] private BallDataList allBallDataList;
+    [SerializeField] private BallData normalBallData;
     [SerializeField] private GameObject ballBasePrefab;
     [SerializeField] private Vector3 inventoryPosition = new(5.5f, -1.0f, 0);
 
@@ -132,13 +133,12 @@ public class InventoryManager : MonoBehaviour
             Destroy(this);
         }
         
-        allBallDataList.Register();
+        // allBallDataList.Register();
 
         // 全てnormalBallで初期化
-        var bd = allBallDataList.GetBallDataFromClassName("NormalBall");
         for (var i = 0; i < INVENTORY_SIZE; i++)
         {
-            var ball = CreateBallInstanceFromBallData(bd, i + 1);
+            var ball = CreateBallInstanceFromBallData(normalBallData, i + 1);
             ball.transform.position = CalcInventoryPosition(i);
             ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
             inventoryUI.CreateBallUI(ball, i);
