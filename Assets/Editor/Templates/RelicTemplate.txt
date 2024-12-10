@@ -9,7 +9,7 @@ public class #SCRIPT_NAME# : MonoBehaviour, IRelicBehavior
     private RelicUI ui;
     public void ApplyEffect(RelicUI relicUI)
     {
-        disposable = EventManager.OnPlayerAttack.Subscribe(Effect);
+        disposable = EventManager.OnPlayerAttack.Subscribe(Effect).AddTo(this);
         ui = relicUI;
 
         Effect(Unit.Default);
@@ -24,5 +24,10 @@ public class #SCRIPT_NAME# : MonoBehaviour, IRelicBehavior
     {
         var x = EventManager.OnPlayerAttack.GetValue();
         ui?.ActivateUI();
+    }
+    
+    private void OnDestroy()
+    {
+        RemoveEffect();
     }
 }

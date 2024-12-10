@@ -47,7 +47,10 @@ public class GameManager : MonoBehaviour
     }
     public GameState state = GameState.Merge;
     
+    [Header("デバッグ")]
+    [SerializeField] private int initialCoin = 10;
     
+    [Header("オブジェクト")]
     [SerializeField] private GameObject playerObj;
     [SerializeField] public EnemyContainer enemyContainer;
     [SerializeField] public Shop shop;
@@ -81,7 +84,7 @@ public class GameManager : MonoBehaviour
         coin.Value += c;
     }
     
-    public void SubstractCoin(int amount)
+    public void SubtractCoin(int amount)
     {
         coin.Value -= amount;
     }
@@ -148,7 +151,7 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         ChangeState(GameState.StageMoving);
-        AddCoin(10);
+        AddCoin(initialCoin);
     }
 
     private void Update()

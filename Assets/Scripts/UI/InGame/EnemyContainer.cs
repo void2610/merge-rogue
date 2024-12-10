@@ -23,7 +23,7 @@ public class EnemyContainer : MonoBehaviour
     private int gainedExp;
     private readonly List<Vector3> positions = new();
 
-    public int GetEnemyCount()
+    public int GetCurrentEnemyCount()
     {
         return currentEnemies.Count;
     }
@@ -152,7 +152,7 @@ public class EnemyContainer : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
-        if (GameManager.Instance.enemyContainer.GetEnemyCount() == 0) yield break;
+        if (GameManager.Instance.enemyContainer.GetCurrentEnemyCount() == 0) yield break;
 
         // 単体攻撃
         // 一番前の敵を攻撃、攻撃力が残っていたら次の敵を攻撃
@@ -172,7 +172,7 @@ public class EnemyContainer : MonoBehaviour
         
         
         // 敵が残っていたら敵の攻撃へ
-        if (GameManager.Instance.enemyContainer.GetEnemyCount() > 0)
+        if (GameManager.Instance.enemyContainer.GetCurrentEnemyCount() > 0)
         {
             Utils.Instance.WaitAndInvoke(0.75f,
                 () => GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack));

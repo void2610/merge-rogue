@@ -75,7 +75,7 @@ public class Shop : MonoBehaviour
             InventoryManager.Instance.inventoryUI.EnableCursor(false);
             InventoryManager.Instance.inventoryUI.SetCursor(0);
             
-            GameManager.Instance.SubstractCoin(itemPrice);
+            GameManager.Instance.SubtractCoin(itemPrice);
             SeManager.Instance.PlaySe("coin");
             state = ShopState.NotSelected;
             selectedItem = -1;
@@ -99,7 +99,7 @@ public class Shop : MonoBehaviour
             RelicManager.Instance.AddRelic(relic);
             itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.1f).SetUpdate(true);
             
-            GameManager.Instance.SubstractCoin(itemPrice);
+            GameManager.Instance.SubtractCoin(itemPrice);
             SeManager.Instance.PlaySe("coin");
             state = ShopState.NotSelected;
             selectedItem = -1;
