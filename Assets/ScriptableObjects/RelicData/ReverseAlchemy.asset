@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   className: ReverseAlchemy
-  sprite: {fileID: 0}
-  displayName: 
-  description: 
-  rarity: 0
-  price: 0
+  sprite: {fileID: 8814212362280375727, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  displayName: "\u9006\u884C\u932C\u91D1\u8853"
+  description: "\u30C0\u30E1\u30FC\u30B8\u30925\u53D7\u3051\u308B\u5EA6\u306B1\u30B3\u30A4\u30F3\u3092\u5F97\u308B"
+  rarity: 3
+  price: 50

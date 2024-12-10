@@ -13,8 +13,11 @@ public class Player : MonoBehaviour
     public int maxExp { get; private set; } = 100;
     public int level { get; private set; } = 1;
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int d)
     {
+        EventManager.OnPlayerDamage.Trigger(d);
+        var damage = EventManager.OnPlayerDamage.GetValue();
+        
         SeManager.Instance.PlaySe("enemyAttack");
         CameraMove.Instance.ShakeCamera(0.5f, 0.15f);
         ParticleManager.Instance.DamageText(damage, this.transform.position.x);
