@@ -15,7 +15,7 @@ public class HealWhenMergeLastBall : MonoBehaviour, IRelicBehavior
 
     public void RemoveEffect()
     {
-        disposable.Dispose();
+        disposable?.Dispose();
     }
     
     private void Effect(Unit _)
@@ -27,5 +27,10 @@ public class HealWhenMergeLastBall : MonoBehaviour, IRelicBehavior
             GameManager.Instance.player.Heal(heal);
             ui?.ActivateUI();
         }
+    }
+    
+    private void OnDestroy()
+    {
+        RemoveEffect();
     }
 }

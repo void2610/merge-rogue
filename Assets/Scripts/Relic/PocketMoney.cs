@@ -15,12 +15,17 @@ public class PocketMoney : MonoBehaviour, IRelicBehavior
 
     public void RemoveEffect()
     {
-        disposable.Dispose();
+        disposable?.Dispose();
     }
     
     private void Effect(Unit _)
     {
         GameManager.Instance.AddCoin(10);
         ui?.ActivateUI();
+    }
+    
+    private void OnDestroy()
+    {
+        RemoveEffect();
     }
 }

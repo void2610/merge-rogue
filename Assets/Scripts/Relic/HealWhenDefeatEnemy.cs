@@ -15,7 +15,7 @@ public class HealWhenDefeatEnemy : MonoBehaviour, IRelicBehavior
 
     public void RemoveEffect()
     {
-        disposable.Dispose();
+        disposable?.Dispose();
     }
     
     private void Effect(Unit _)
@@ -25,5 +25,10 @@ public class HealWhenDefeatEnemy : MonoBehaviour, IRelicBehavior
         
         var heal = enemy.maxHealth * 0.1f;
         GameManager.Instance.player.Heal(Mathf.CeilToInt(heal));
+    }
+    
+    private void OnDestroy()
+    {
+        RemoveEffect();
     }
 }

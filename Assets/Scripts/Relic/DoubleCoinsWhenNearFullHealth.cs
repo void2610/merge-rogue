@@ -15,7 +15,7 @@ public class DoubleCoinsWhenNearFullHealth : MonoBehaviour, IRelicBehavior
 
     public void RemoveEffect()
     {
-        disposable.Dispose();
+        disposable?.Dispose();
     }
     
     private void Effect(Unit _)
@@ -28,5 +28,10 @@ public class DoubleCoinsWhenNearFullHealth : MonoBehaviour, IRelicBehavior
             EventManager.OnCoinGain.SetValue(x * 2);
             ui?.ActivateUI();
         }
+    }
+    
+    private void OnDestroy()
+    {
+        RemoveEffect();
     }
 }

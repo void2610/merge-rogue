@@ -15,7 +15,7 @@ public class AllAttackWhenWeakAttack : MonoBehaviour, IRelicBehavior
 
     public void RemoveEffect()
     {
-        disposable.Dispose();
+        disposable?.Dispose();
     }
     
     private void Effect(Unit _)
@@ -27,5 +27,10 @@ public class AllAttackWhenWeakAttack : MonoBehaviour, IRelicBehavior
             EventManager.OnPlayerAttack.SetValue((0, x.Item1 + x.Item2));
             ui?.ActivateUI();
         }
+    }
+    
+    private void OnDestroy()
+    {
+        RemoveEffect();
     }
 }

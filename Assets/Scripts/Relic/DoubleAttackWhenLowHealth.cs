@@ -15,7 +15,7 @@ public class DoubleAttackWhenLowHealth : MonoBehaviour, IRelicBehavior
 
     public void RemoveEffect()
     {
-        disposable.Dispose();
+        disposable?.Dispose();
     }
     
     private void Effect(Unit _)
@@ -26,5 +26,10 @@ public class DoubleAttackWhenLowHealth : MonoBehaviour, IRelicBehavior
             EventManager.OnPlayerAttack.SetValue((atk.Item1 * 2, atk.Item2 * 2));
             ui?.ActivateUI();
         }
+    }
+    
+    private void OnDestroy()
+    {
+        RemoveEffect();
     }
 }

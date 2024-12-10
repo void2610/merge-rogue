@@ -15,7 +15,7 @@ public class AddOneToAllAttack : MonoBehaviour, IRelicBehavior
 
     public void RemoveEffect()
     {
-        disposable.Dispose();
+        disposable?.Dispose();
     }
     
     private void Effect(Unit _)
@@ -23,5 +23,10 @@ public class AddOneToAllAttack : MonoBehaviour, IRelicBehavior
         var x = EventManager.OnPlayerAttack.GetValue();
         EventManager.OnPlayerAttack.SetValue((x.Item1 + 1, x.Item2));
         ui?.ActivateUI();
+    }
+    
+    private void OnDestroy()
+    {
+        RemoveEffect();
     }
 }
