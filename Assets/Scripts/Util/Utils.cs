@@ -24,6 +24,7 @@ public class Utils : MonoBehaviour
         {
             trigger = obj.AddComponent<EventTrigger>();
         }
+        trigger.triggers.RemoveAll(x => x.eventID == type);
         
         var entry = new EventTrigger.Entry {eventID = type};
         entry.callback.AddListener((data) => action());

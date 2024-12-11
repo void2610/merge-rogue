@@ -77,13 +77,13 @@ public class Shop : MonoBehaviour
             
             GameManager.Instance.SubtractCoin(itemPrice);
             SeManager.Instance.PlaySe("coin");
-            state = ShopState.NotSelected;
             selectedItem = -1;
         }
         else
         {
             SeManager.Instance.PlaySe("error");
         }
+        state = ShopState.NotSelected;
     }
 
     private void BuyRelic(int shopItemIndex)
@@ -101,13 +101,13 @@ public class Shop : MonoBehaviour
             
             GameManager.Instance.SubtractCoin(itemPrice);
             SeManager.Instance.PlaySe("coin");
-            state = ShopState.NotSelected;
             selectedItem = -1;
         }
         else
         {
             SeManager.Instance.PlaySe("error");
         }
+        state = ShopState.NotSelected;
     }
 
     private void SetBallEvent(GameObject g, BallData ball, int index)
