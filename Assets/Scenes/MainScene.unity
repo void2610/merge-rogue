@@ -2728,7 +2728,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  initialCoin: 9999
+  debugCoin: 999
   playerObj: {fileID: 1993390309}
   enemyContainer: {fileID: 198190389}
   shop: {fileID: 0}

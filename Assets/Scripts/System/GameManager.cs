@@ -48,7 +48,7 @@ public class GameManager : MonoBehaviour
     public GameState state = GameState.Merge;
     
     [Header("デバッグ")]
-    [SerializeField] private int initialCoin = 10;
+    [SerializeField] private int debugCoin = 10;
     
     [Header("オブジェクト")]
     [SerializeField] private GameObject playerObj;
@@ -151,7 +151,8 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         ChangeState(GameState.StageMoving);
-        AddCoin(initialCoin);
+
+        AddCoin(Application.isEditor ? debugCoin : 10);
     }
 
     private void Update()
