@@ -319,8 +319,11 @@ public class StageManager : MonoBehaviour
                     break;
                 case StageType.Treasure:
                     GameManager.Instance.ChangeState(GameManager.GameState.Event);
-                    GameManager.Instance.uiManager.EnableCanvasGroup("Treasure", true);
-                    // 宝箱の中身を実装
+                    GameManager.Instance.uiManager.EnableCanvasGroup("Treasure", true); 
+                    
+                    var count = GameManager.Instance.RandomRange(1, 4);
+                    var rarity = GameManager.Instance.RandomRange(0, 4);
+                    Treasure.Instance.OpenTreasure(count, (Rarity)rarity);
                     break;
             }
             SetNextNodeActive();
