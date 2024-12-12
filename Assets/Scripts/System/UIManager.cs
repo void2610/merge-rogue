@@ -68,6 +68,7 @@ public class UIManager : MonoBehaviour
         SeManager.Instance.PlaySe("button");
         EnableCanvasGroup("Shop", false);
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+        Shop.Instance.CloseShop();
     }
 
     public void OnClickPause()

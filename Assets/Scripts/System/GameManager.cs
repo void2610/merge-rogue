@@ -40,7 +40,7 @@ public class GameManager : MonoBehaviour
         LevelUp,
         MapSelect,
         StageMoving,
-        Shop,
+        Event,
         GameOver,
         Clear,
         Other
@@ -97,12 +97,9 @@ public class GameManager : MonoBehaviour
 
     public void ChangeState(GameState newState)
     {
-        switch (state)
-        {
-            case GameState.Shop:
-                Shop.Instance.CloseShop();
-                break;
-        }
+        // switch (state)
+        // {
+        // }
         state = newState;
         // Debug.Log("State: " + state);
         switch (newState)
@@ -138,9 +135,7 @@ public class GameManager : MonoBehaviour
             case GameState.MapSelect:
                 uiManager.EnableCanvasGroup("Map", true);
                 break;
-            case GameState.Shop:
-                Shop.Instance.OpenShop();
-                uiManager.EnableCanvasGroup("Shop", true);
+            case GameState.Event:
                 break;
             case GameState.LevelUp:
                 uiManager.EnableCanvasGroup("LevelUp", true);

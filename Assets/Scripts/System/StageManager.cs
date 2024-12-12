@@ -309,16 +309,18 @@ public class StageManager : MonoBehaviour
                     GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
                     break;
                 case StageType.Shop:
-                    GameManager.Instance.ChangeState(GameManager.GameState.Shop);
+                    GameManager.Instance.ChangeState(GameManager.GameState.Event);
                     EventManager.OnShopEnter.Trigger(0);
+                    Shop.Instance.OpenShop();
+                    GameManager.Instance.uiManager.EnableCanvasGroup("Shop", true);
                     break;
                 case StageType.Events:
-                    GameManager.Instance.enemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value);
-                    GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
+                    // ランダムなステージに移動
                     break;
                 case StageType.Treasure:
-                    GameManager.Instance.ChangeState(GameManager.GameState.Shop);
-                    EventManager.OnShopEnter.Trigger(0);
+                    GameManager.Instance.ChangeState(GameManager.GameState.Event);
+                    GameManager.Instance.uiManager.EnableCanvasGroup("Treasure", true);
+                    // 宝箱の中身を実装
                     break;
             }
             SetNextNodeActive();
