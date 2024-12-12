@@ -34,8 +34,11 @@ public class Utils : MonoBehaviour
     public static void RemoveAllEventFromObject(GameObject obj)
     {
         var trigger = obj.GetComponent<EventTrigger>();
-        if (trigger == null) return;
-        trigger.triggers.Clear();
+        if (trigger)
+            trigger.triggers.Clear();
+        var button = obj.GetComponent<UnityEngine.UI.Button>();
+        if (button)
+            button.onClick.RemoveAllListeners();
     }
     
     public void WaitAndInvoke(float time, System.Action action)

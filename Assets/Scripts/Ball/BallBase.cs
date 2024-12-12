@@ -49,7 +49,7 @@ public class BallBase : MonoBehaviour
     {
         var t = transform.localScale.x;
         transform.localScale = Vector3.zero;
-        transform.DOScale(t, 0.2f).SetEase(Ease.OutBack).SetUpdate(true);
+        transform.DOScale(t, 0.2f).SetEase(Ease.OutBack).SetLink(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -83,7 +83,7 @@ public class BallBase : MonoBehaviour
         transform.DOScale(0, 0.2f).SetEase(Ease.InBack).OnComplete(() =>
         {
             Destroy(gameObject);
-        });
+        }).SetLink(gameObject);
     }
     
     protected void DefaultMergeParticle()

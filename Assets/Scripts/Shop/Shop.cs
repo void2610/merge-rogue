@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -14,36 +15,43 @@ public class Shop : MonoBehaviour
         Closed
     }
     public static Shop Instance;
-
-    [SerializeField] private BallDataList allBallDataList;
-    [SerializeField] private RelicDataList allRelicDataList;
-
-    private List<object> currentItems = new();
+    
+    [SerializeField] private GameObject itemContainer;
+    
+    private readonly List<object> currentItems = new();
     private const int ITEM_NUM = 6;
-    private Transform itemContainer => this.transform.Find("Items");
+    private List<GameObject> itemObjects;
     private ShopState state = ShopState.Closed;
     private int selectedItem = -1;
     private float defaultScale = 1.0f;
+    private List<Vector3> itemPositions = new();
+    private Vector3 disabledPosition = new Vector3(100, 100, 0);
 
     public void OpenShop(int count = 6)
     {
         if (count > ITEM_NUM) return;
         state = ShopState.NotSelected;
+        
+        for (var i = 0; i < ITEM_NUM; i++)
+        {
+            itemObjects[i].transform.position = itemPositions[i];
+        }
         currentItems.Clear();
         
         for(var i = 0; i < ITEM_NUM; i++)
         {
+            var balls = BallDataList.GetBallListExceptNormal();
             var isBall = GameManager.Instance.RandomRange(0.0f, 1.0f) > 0.5f;
-            var index = GameManager.Instance.RandomRange(0, isBall ? allBallDataList.ballsExceptNormal.Count : allRelicDataList.list.Count);
+            var index = GameManager.Instance.RandomRange(0, isBall ? balls.Count : RelicDataList.list.Count);
             if (isBall)
             {
-                currentItems.Add(allBallDataList.ballsExceptNormal[index]);
-                SetBallEvent(itemContainer.GetChild(i).gameObject, allBallDataList.ballsExceptNormal[index], i);
+                currentItems.Add(balls[index]);
+                SetBallEvent(itemObjects[i].transform.gameObject, balls[index], i);
             }
             else
             {
-                currentItems.Add(allRelicDataList.list[index]);
-                SetRelicEvent(itemContainer.GetChild(i).gameObject, allRelicDataList.list[index], i);
+                currentItems.Add(RelicDataList.list[index]);
+                SetRelicEvent(itemObjects[i].transform.gameObject, RelicDataList.list[index], i);
             }
         }
     }
@@ -52,10 +60,10 @@ public class Shop : MonoBehaviour
     {
         state = ShopState.Closed;
         selectedItem = -1;
-        for (int i = 0; i < ITEM_NUM; i++)
+        for (var i = 0; i < ITEM_NUM; i++)
         {
-            itemContainer.GetChild(i).GetComponent<Image>().color = new Color(1, 1, 1, 1);
-            itemContainer.GetChild(i).DOScale(1, 0.1f).SetUpdate(true);
+            itemObjects[i].GetComponent<Image>().color = new Color(1, 1, 1, 1);
+            itemObjects[i].transform.DOScale(1, 0.1f).SetUpdate(true);
         }
         InventoryManager.Instance.inventoryUI.EnableCursor(false);
     }
@@ -71,9 +79,10 @@ public class Shop : MonoBehaviour
         if (GameManager.Instance.coin.Value >= itemPrice)
         {
             InventoryManager.Instance.SetBall(ball, inventoryIndex + 1);
-            itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.1f).SetUpdate(true);
+            itemObjects[selectedItem].transform.DOScale(defaultScale, 0.1f).SetUpdate(true);
             InventoryManager.Instance.inventoryUI.EnableCursor(false);
             InventoryManager.Instance.inventoryUI.SetCursor(0);
+            itemObjects[selectedItem].transform.position = disabledPosition;
             
             GameManager.Instance.SubtractCoin(itemPrice);
             SeManager.Instance.PlaySe("coin");
@@ -97,7 +106,8 @@ public class Shop : MonoBehaviour
         if (GameManager.Instance.coin.Value >= itemPrice)
         {
             RelicManager.Instance.AddRelic(relic);
-            itemContainer.GetChild(selectedItem).DOScale(defaultScale, 0.1f).SetUpdate(true);
+            itemObjects[selectedItem].transform.DOScale(defaultScale, 0.1f).SetUpdate(true);
+            itemObjects[selectedItem].transform.position = disabledPosition;
             
             GameManager.Instance.SubtractCoin(itemPrice);
             SeManager.Instance.PlaySe("coin");
@@ -207,25 +217,26 @@ public class Shop : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+        
+        itemObjects = itemContainer.GetComponentInChildren<Transform>().Cast<Transform>().Select(x => x.gameObject).ToList();
+        itemObjects.ForEach(x => itemPositions.Add(x.transform.position));
     }
 
     private void Update()
     {
         if (state == ShopState.NotSelected) return;
 
-        for (int i = 0; i < ITEM_NUM; i++)
+        for (var i = 0; i < ITEM_NUM; i++)
         {
             if (i == selectedItem)
             {
-                itemContainer.GetChild(i).GetComponent<Image>().color = new Color(1, 1, 1, 1);
+                itemObjects[i].GetComponent<Image>().color = new Color(1, 1, 1, 1);
             }
             else
             {
-                itemContainer.GetChild(i).GetComponent<Image>().color = new Color(0.7f, 0.7f, 0.7f, 1);
-                if (itemContainer.GetChild(i).localScale.x > defaultScale)
-                {
-                    itemContainer.GetChild(i).DOScale(defaultScale, 0.1f).SetUpdate(true);
-                }
+                itemObjects[i].GetComponent<Image>().color = new Color(0.7f, 0.7f, 0.7f, 1);
+                if (itemObjects[i].transform.localScale.x > defaultScale)
+                    itemObjects[i].transform.DOScale(defaultScale, 0.1f).SetUpdate(true);
             }
         }
     }

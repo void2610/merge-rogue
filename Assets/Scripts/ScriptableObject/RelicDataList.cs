@@ -8,24 +8,17 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "RelicDataList", menuName = "Scriptable Objects/RelicDataList")]
 public class RelicDataList : ScriptableObject
 {
-    [SerializeField]
-    public List<RelicData> list = new List<RelicData>();
-
-    public void Reset()
-    {
-        list.Clear();
-    }
-
-  
+    public static readonly List<RelicData> list = new List<RelicData>();
+    
     public void Register()
     {
 #if UNITY_EDITOR
         // ScriptableObject (このスクリプト) と同じディレクトリパスを取得
-        string path = AssetDatabase.GetAssetPath(this);
+        var path = AssetDatabase.GetAssetPath(this);
         path = System.IO.Path.GetDirectoryName(path);
 
         // 指定ディレクトリ内の全てのRelicDataを検索
-        string[] guids = AssetDatabase.FindAssets("t:RelicData", new[] { path });
+        var guids = AssetDatabase.FindAssets("t:RelicData", new[] { path });
         
         // 検索結果をリストに追加
         list.Clear();
@@ -41,16 +34,8 @@ public class RelicDataList : ScriptableObject
 #endif
     }
         
-    public List<RelicData> GetRelicDataFromRarity(Rarity r)
+    public　static List<RelicData> GetRelicDataFromRarity(Rarity r)
     {
-        var result = new List<RelicData>();
-        foreach (var bd in list)
-        {
-            if (bd.rarity == r)
-            {
-                result.Add(bd);
-            }
-        }
-        return result;
+        return list.Where(bd => bd.rarity == r).ToList();
     }
 }

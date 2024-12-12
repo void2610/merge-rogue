@@ -39,7 +39,8 @@ public enum Rarity
     Uncommon,
     Rare,
     Epic,
-    Legendary
+    Legendary,
+    Boss
 }
 
 public static class MyColors

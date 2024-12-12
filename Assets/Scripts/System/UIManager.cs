@@ -70,6 +70,14 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
         Shop.Instance.CloseShop();
     }
+    
+    public void OnClickTreasureExit()
+    {
+        SeManager.Instance.PlaySe("button");
+        EnableCanvasGroup("Treasure", false);
+        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+        Treasure.Instance.CloseTreasure();
+    }
 
     public void OnClickPause()
     {
@@ -99,10 +107,9 @@ public class UIManager : MonoBehaviour
         fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("MainScene")).SetUpdate(true);
     }
     
-    public void SetVignette(float value)
+    private void SetVignette(float value)
     {
-        Vignette vignette;
-        if(!volume.profile.TryGet(out vignette)) return;
+        if(!volume.profile.TryGet(out Vignette vignette)) return;
         vignette.intensity.value = value;
     }
     
@@ -130,13 +137,8 @@ public class UIManager : MonoBehaviour
     {
         bgmSlider.value = PlayerPrefs.GetFloat("BgmVolume", 1.0f);
         seSlider.value = PlayerPrefs.GetFloat("SeVolume", 1.0f);
-
-        EnableCanvasGroup("Pause", false);
-        EnableCanvasGroup("Shop", false);
-        EnableCanvasGroup("GameOver", false);
-        EnableCanvasGroup("LevelUp", false);
-        EnableCanvasGroup("Clear", false);
-        EnableCanvasGroup("Map", false);
+        
+        canvasGroups.ForEach(c => EnableCanvasGroup(c.name, false));
     }
 
     private void Start()

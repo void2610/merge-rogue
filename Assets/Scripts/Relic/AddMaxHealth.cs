@@ -9,7 +9,6 @@ public class AddMaxHealth : MonoBehaviour, IRelicBehavior
     private RelicUI ui;
     public void ApplyEffect(RelicUI relicUI)
     {
-        disposable = EventManager.OnPlayerAttack.Subscribe(Effect).AddTo(this);
         ui = relicUI;
 
         Effect(Unit.Default);

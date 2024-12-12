@@ -8,16 +8,7 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "BallDataList", menuName = "Scriptable Objects/BallDataList")]
 public class BallDataList : ScriptableObject
 {
-    [SerializeField]
-    public List<BallData> allBalls = new List<BallData>();
-    public List<BallData> ballsExceptNormal = new List<BallData>();
-    [SerializeField]
-    public BallData normalBall;
-
-    public void Reset()
-    {
-        allBalls.Clear();
-    }
+    public static readonly List<BallData> list = new();
 
     public void Register()
     {
@@ -30,25 +21,23 @@ public class BallDataList : ScriptableObject
         var guids = AssetDatabase.FindAssets("t:BallData", new[] { path });
         
         // 検索結果をリストに追加
-        allBalls.Clear();
+        list.Clear();
         foreach (string guid in guids)
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);
             var ballData = AssetDatabase.LoadAssetAtPath<BallData>(assetPath);
             if (ballData != null)
             {
-                allBalls.Add(ballData);
+                list.Add(ballData);
             }
         }
-        
-        ballsExceptNormal = allBalls.Where(x => x.className != "NormalBall").ToList();
 #endif
     }
 
     public List<BallData> GetBallDataFromRarity(Rarity r)
     {
         var result = new List<BallData>();
-        foreach (var bd in allBalls)
+        foreach (var bd in list)
         {
             if (bd.rarity == r)
             {
@@ -60,6 +49,11 @@ public class BallDataList : ScriptableObject
     
     public BallData GetBallDataFromClassName(string className)
     {
-        return allBalls.FirstOrDefault(bd => bd.className == className);
+        return list.FirstOrDefault(bd => bd.className == className);
+    }
+    
+    public static List<BallData> GetBallListExceptNormal()
+    {
+        return list.Where(x => x.className != "NormalBall").ToList();
     }
 }
