@@ -7896,6 +7896,7 @@ GameObject:
   - component: {fileID: 1168070099}
   - component: {fileID: 1168070100}
   - component: {fileID: 1168070101}
+  - component: {fileID: 1168070102}
   m_Layer: 0
   m_Name: Utils
   m_TagString: Untagged
@@ -7944,6 +7945,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backgroundMaterial: {fileID: 2100000, guid: 6aad917c3f80a415a968f0360490f297, type: 2}
   arrowMaterial: {fileID: 2100000, guid: 7158305c99d774c409c2d3ec56e60442, type: 2}
+--- !u!114 &1168070102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168070097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ccf73d461f5241baa67416d537c6fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1179934151
 GameObject:
   m_ObjectHideFlags: 0
@@ -10647,7 +10660,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1607858722}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -10663,6 +10676,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9360990f6eb284c3fb6733eef04fc874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allRelicDataList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
   items:
   - {fileID: 723649439}
   - {fileID: 411028758}
@@ -12017,8 +12031,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc883b9a0ddcd42afa7a2efdb0d908b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allBallDataList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
   allRelicDataList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
+  allBallDataList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
+  itemContainer: {fileID: 156243461}
 --- !u!1 &1951852457
 GameObject:
   m_ObjectHideFlags: 0

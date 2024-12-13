@@ -7,6 +7,7 @@ public class Treasure : MonoBehaviour
 {
     public static Treasure Instance;
     
+    [SerializeField] private RelicDataList allRelicDataList;
     [SerializeField] private List<GameObject> items;
     [SerializeField] private Vector3 itemPosition;
     [SerializeField] private float itemOffset;
@@ -20,7 +21,6 @@ public class Treasure : MonoBehaviour
             Debug.LogError("Count is bigger than items count");
             return;
         }
-
         for (var i = 0; i < items.Count; i++)
         {
             if (i < count)
@@ -29,7 +29,7 @@ public class Treasure : MonoBehaviour
                 items[i].transform.position = disablePosition;
         }
         
-        var relics = RelicDataList.GetRelicDataFromRarity(rarity);
+        var relics = allRelicDataList.GetRelicDataFromRarity(rarity);
         
         for (var i = 0; i < count; i++)
         {

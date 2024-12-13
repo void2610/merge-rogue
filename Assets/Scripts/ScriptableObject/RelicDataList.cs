@@ -1,41 +1,43 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using System.Linq;
-using UnityEditor;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "RelicDataList", menuName = "Scriptable Objects/RelicDataList")]
 public class RelicDataList : ScriptableObject
 {
-    public static readonly List<RelicData> list = new List<RelicData>();
-    
+    [FormerlySerializedAs("relicDataList")] [SerializeField] 
+    public List<RelicData> list = new ();
+
+    // リストを取得する
+    public List<RelicData> GetRelicDataFromRarity(Rarity r)
+    {
+        return list.Where(bd => bd.rarity == r).ToList();
+    }
+
     public void Register()
     {
 #if UNITY_EDITOR
         // ScriptableObject (このスクリプト) と同じディレクトリパスを取得
-        var path = AssetDatabase.GetAssetPath(this);
+        var path = UnityEditor.AssetDatabase.GetAssetPath(this);
         path = System.IO.Path.GetDirectoryName(path);
 
         // 指定ディレクトリ内の全てのRelicDataを検索
-        var guids = AssetDatabase.FindAssets("t:RelicData", new[] { path });
-        
+        var guids = UnityEditor.AssetDatabase.FindAssets("t:RelicData", new[] { path });
+
         // 検索結果をリストに追加
         list.Clear();
-        foreach (string guid in guids)
+        foreach (var guid in guids)
         {
-            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            var relicData = AssetDatabase.LoadAssetAtPath<RelicData>(assetPath);
+            var assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+            var relicData = UnityEditor.AssetDatabase.LoadAssetAtPath<RelicData>(assetPath);
             if (relicData != null)
             {
                 list.Add(relicData);
             }
         }
+
+        UnityEditor.EditorUtility.SetDirty(this); // ScriptableObjectを更新
 #endif
-    }
-        
-    public　static List<RelicData> GetRelicDataFromRarity(Rarity r)
-    {
-        return list.Where(bd => bd.rarity == r).ToList();
     }
 }

@@ -16,6 +16,8 @@ public class Shop : MonoBehaviour
     }
     public static Shop Instance;
     
+    [SerializeField] private RelicDataList allRelicDataList;
+    [SerializeField] private BallDataList allBallDataList;
     [SerializeField] private GameObject itemContainer;
     
     private readonly List<object> currentItems = new();
@@ -40,9 +42,9 @@ public class Shop : MonoBehaviour
         
         for(var i = 0; i < ITEM_NUM; i++)
         {
-            var balls = BallDataList.GetBallListExceptNormal();
+            var balls = allBallDataList.GetBallListExceptNormal();
             var isBall = GameManager.Instance.RandomRange(0.0f, 1.0f) > 0.5f;
-            var index = GameManager.Instance.RandomRange(0, isBall ? balls.Count : RelicDataList.list.Count);
+            var index = GameManager.Instance.RandomRange(0, isBall ? balls.Count : allRelicDataList.list.Count);
             if (isBall)
             {
                 currentItems.Add(balls[index]);
@@ -50,8 +52,8 @@ public class Shop : MonoBehaviour
             }
             else
             {
-                currentItems.Add(RelicDataList.list[index]);
-                SetRelicEvent(itemObjects[i].transform.gameObject, RelicDataList.list[index], i);
+                currentItems.Add(allRelicDataList.list[index]);
+                SetRelicEvent(itemObjects[i].transform.gameObject, allRelicDataList.list[index], i);
             }
         }
     }

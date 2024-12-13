@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a9a7ebbc610c43a39a973445741b8a5, type: 3}
   m_Name: AllBallDataList
   m_EditorClassIdentifier: 
-  allBalls: []
-  ballsExceptNormal: []
-  normalBall: {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
+  list:
+  - {fileID: 11400000, guid: eff743f99c8f749c6909f768bd2c58ef, type: 2}
+  - {fileID: 11400000, guid: b337591ee82694160a0ff43036df9c64, type: 2}
+  - {fileID: 11400000, guid: 6b0bdba0e405c4bada01c2eac312f2b6, type: 2}
+  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
+  - {fileID: 11400000, guid: c66a44fc9652d42e2a83ac3376f3991b, type: 2}
+  - {fileID: 11400000, guid: 5772b32e00e0a45548bb53564b1218bf, type: 2}

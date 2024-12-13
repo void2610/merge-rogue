@@ -4,11 +4,13 @@ using UnityEngine;
 using System;
 using System.Linq;
 using UnityEditor;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "BallDataList", menuName = "Scriptable Objects/BallDataList")]
 public class BallDataList : ScriptableObject
 {
-    public static readonly List<BallData> list = new();
+    [FormerlySerializedAs("ballDataList")] [SerializeField] 
+    public List<BallData> list = new ();
 
     public void Register()
     {
@@ -19,10 +21,10 @@ public class BallDataList : ScriptableObject
 
         // 指定ディレクトリ内の全てのRelicDataを検索
         var guids = AssetDatabase.FindAssets("t:BallData", new[] { path });
-        
+
         // 検索結果をリストに追加
         list.Clear();
-        foreach (string guid in guids)
+        foreach (var guid in guids)
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);
             var ballData = AssetDatabase.LoadAssetAtPath<BallData>(assetPath);
@@ -31,6 +33,8 @@ public class BallDataList : ScriptableObject
                 list.Add(ballData);
             }
         }
+
+        UnityEditor.EditorUtility.SetDirty(this); // ScriptableObjectを更新
 #endif
     }
 
@@ -52,7 +56,7 @@ public class BallDataList : ScriptableObject
         return list.FirstOrDefault(bd => bd.className == className);
     }
     
-    public static List<BallData> GetBallListExceptNormal()
+    public List<BallData> GetBallListExceptNormal()
     {
         return list.Where(x => x.className != "NormalBall").ToList();
     }
