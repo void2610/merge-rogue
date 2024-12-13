@@ -26,7 +26,7 @@ private void Effect(Unit _)
     var x = EventManager.OnPlayerDamage.GetValue();
     damageCount += x;
 
-    bool isActivated = false;
+    var isActivated = false;
     while (damageCount >= 5)
     {
         damageCount -= 5;

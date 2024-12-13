@@ -8,7 +8,7 @@ public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager Instance { get; private set; }
     
-    [SerializeField] private BallDataList allBallDataList;
+    [SerializeField] public BallDataList allBallDataList;
     [SerializeField] private BallData normalBallData;
     [SerializeField] private GameObject ballBasePrefab;
     [SerializeField] private Vector3 inventoryPosition = new(5.5f, -1.0f, 0);
@@ -35,6 +35,14 @@ public class InventoryManager : MonoBehaviour
     public List<GameObject> GetInventory()
     {
         return inventory;
+    }
+    
+    public GameObject GetBombBall()
+    {
+        var bd = allBallDataList.GetBallDataFromClassName("BombBall");
+        var ball = CreateBallInstanceFromBallData(bd, 3);
+        ball.GetComponent<BallBase>().Unfreeze();
+        return ball;
     }
 
     // マージ時に次のボールを生成
@@ -81,7 +89,7 @@ public class InventoryManager : MonoBehaviour
         BallBase ballBase;
         if (!string.IsNullOrEmpty(data.className))
         {
-            System.Type type = System.Type.GetType(data.className);
+            Type type = Type.GetType(data.className);
             if (type != null && typeof(MonoBehaviour).IsAssignableFrom(type))
             {
                 ball.AddComponent(type);
@@ -98,7 +106,7 @@ public class InventoryManager : MonoBehaviour
             Debug.LogError("behaviourClassNameが指定されていません。");
             return null;
         }
-        ball.transform.localScale = Vector3.one * sizes[level - 1] * ballBase.size;
+        ball.transform.localScale = Vector3.one * (sizes[level - 1] * ballBase.size);
         // HDRカラーに変換
         var color = MyColors.GetBallColor(level - 1) * 1.05f;
         ball.GetComponent<SpriteRenderer>().color = color;

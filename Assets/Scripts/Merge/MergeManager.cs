@@ -102,8 +102,9 @@ public class MergeManager : MonoBehaviour
         fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = true;
         DOTween.To(() => arrowMaterial.GetFloat(alpha), x => arrowMaterial.SetFloat(alpha, x), 1, 0.5f);
     }
+    
 
-    public void SpawnBall(int level, Vector3 p, Quaternion q)
+    public void SpawnBallFromLevel(int level, Vector3 p, Quaternion q)
     {
         var ball = InventoryManager.Instance.GetBallByLevel(level);
         if (ball == null) return;
@@ -112,6 +113,14 @@ public class MergeManager : MonoBehaviour
         ball.transform.rotation = q;
         ball.transform.SetParent(ballContainer.transform);
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+    }
+    
+    public void CreateBomb(Vector3 p)
+    {
+        var bomb = InventoryManager.Instance.GetBombBall();
+        bomb.transform.position = p;
+        bomb.transform.SetParent(ballContainer.transform);
+        bomb.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
     }
 
     public void Attack()
