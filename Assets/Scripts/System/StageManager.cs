@@ -21,8 +21,8 @@ public class StageManager : MonoBehaviour
     {
         Enemy,
         Shop,
-        Events,
         Treasure,
+        Events,
         Boss,
         Undefined
     }
@@ -297,38 +297,51 @@ public class StageManager : MonoBehaviour
             
             currentStage = next;
             Debug.Log($"move stage: {currentStage.type}");
-
-            switch (currentStage.type)
+            
+            if(currentStage.type == StageType.Events)
             {
-                case StageType.Enemy:
-                    // 敵の出現量と強さを設定
-                    GameManager.Instance.enemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value);
-                    GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
-                    break;
-                case StageType.Boss:
-                    GameManager.Instance.enemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value);
-                    GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
-                    break;
-                case StageType.Shop:
-                    GameManager.Instance.ChangeState(GameManager.GameState.Event);
-                    EventManager.OnShopEnter.Trigger(0);
-                    Shop.Instance.OpenShop();
-                    GameManager.Instance.uiManager.EnableCanvasGroup("Shop", true);
-                    break;
-                case StageType.Events:
-                    // ランダムなステージに移動
-                    break;
-                case StageType.Treasure:
-                    GameManager.Instance.ChangeState(GameManager.GameState.Event);
-                    GameManager.Instance.uiManager.EnableCanvasGroup("Treasure", true); 
-                    
-                    var count = GameManager.Instance.RandomRange(1, 4);
-                    var rarity = GameManager.Instance.RandomRange(0, 4);
-                    Treasure.Instance.OpenTreasure(count, (Rarity)rarity);
-                    break;
+                // ランダムなステージに移動
+                var r = GameManager.Instance.RandomRange(0, 3);
+                Debug.Log($"random stage: {r}");
+                ProcessStage((StageType)r);
             }
+            else
+            {
+                ProcessStage(currentStage.type);
+            }
+            
             SetNextNodeActive();
         });
+    }
+
+    private void ProcessStage(StageType s)
+    {
+        switch (s)
+        {
+            case StageType.Enemy:
+                // 敵の出現量と強さを設定
+                GameManager.Instance.enemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value);
+                GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
+                break;
+            case StageType.Boss:
+                GameManager.Instance.enemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value);
+                GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
+                break;
+            case StageType.Shop:
+                GameManager.Instance.ChangeState(GameManager.GameState.Event);
+                EventManager.OnShopEnter.Trigger(0);
+                Shop.Instance.OpenShop();
+                GameManager.Instance.uiManager.EnableCanvasGroup("Shop", true);
+                break;
+            case StageType.Treasure:
+                GameManager.Instance.ChangeState(GameManager.GameState.Event);
+                GameManager.Instance.uiManager.EnableCanvasGroup("Treasure", true); 
+                    
+                var count = GameManager.Instance.RandomRange(1, 4);
+                var rarity = GameManager.Instance.RandomRange(0, 4);
+                Treasure.Instance.OpenTreasure(count, (Rarity)rarity);
+                break;
+        }
     }
 
     public void Awake()

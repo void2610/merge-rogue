@@ -3297,10 +3297,10 @@ MonoBehaviour:
   - stageType: 1
     probability: 0.5
     icon: {fileID: 21300000, guid: df392ad408bd540d9b35a57c3c10db9f, type: 3}
-  - stageType: 2
+  - stageType: 3
     probability: 1
     icon: {fileID: 21300000, guid: 141dcd1439a644dbc95eaf535c21d822, type: 3}
-  - stageType: 3
+  - stageType: 2
     probability: 0.5
     icon: {fileID: 21300000, guid: f45c0d430ef3a4701aed76dfd762e809, type: 3}
   - stageType: 4

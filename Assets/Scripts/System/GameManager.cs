@@ -101,7 +101,6 @@ public class GameManager : MonoBehaviour
         // {
         // }
         state = newState;
-        Debug.Log("State: " + state);
         switch (newState)
         {
             case GameState.StageMoving:
