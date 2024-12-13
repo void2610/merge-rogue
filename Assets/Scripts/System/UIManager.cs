@@ -103,6 +103,12 @@ public class UIManager : MonoBehaviour
         EnableCanvasGroup("Pause", true);
     }
 
+    public void OnClickSpeed()
+    {
+        SeManager.Instance.PlaySe("button");
+        GameManager.Instance.ChangeTimeScale();
+    }
+
     public void OnClickResume()
     {
         SeManager.Instance.PlaySe("button");

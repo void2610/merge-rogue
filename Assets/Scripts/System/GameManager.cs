@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] public Canvas uiCanvas;
 
     private System.Random random { get; set; }
+    public float timeScale { get; private set; } = 1.0f;
     public readonly ReactiveProperty<int> coin = new(0);
     private int seed = 42;
     private bool isPaused;
@@ -87,6 +88,19 @@ public class GameManager : MonoBehaviour
     public void SubtractCoin(int amount)
     {
         coin.Value -= amount;
+    }
+
+    public void ChangeTimeScale()
+    {
+        if (Mathf.Approximately(timeScale, 1.0f))
+        {
+            timeScale = 3.0f;
+        }
+        else
+        {
+            timeScale = 1.0f;
+        }
+        Time.timeScale = timeScale;
     }
 
     public void GameOver()
