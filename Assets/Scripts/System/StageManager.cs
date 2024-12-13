@@ -296,6 +296,7 @@ public class StageManager : MonoBehaviour
                 currentStageCount.Value = 0;
             
             currentStage = next;
+            Debug.Log($"move stage: {currentStage.type}");
 
             switch (currentStage.type)
             {

@@ -6,13 +6,12 @@ public class DebugLogDisplay : MonoBehaviour
     private string logText = "";
     private readonly GUIStyle guiStyle = new();
 
-    private void Start()
+    private void Awake()
     {
         // ログのテキストをスタイルに設定
         guiStyle.fontSize = 20;
         guiStyle.normal.textColor = Color.white;
 
-        // エディタで実行していない場合のみ、ゲーム画面内のログを表示
         Debug.Log("Start DebugLogDisplay");
     }
 

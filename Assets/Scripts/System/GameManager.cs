@@ -14,12 +14,12 @@ public class GameManager : MonoBehaviour
             if (PlayerPrefs.GetString("SeedText", "") == "")
             {
                 seed = (int)DateTime.Now.Ticks;
-                // Debug.Log("Random");
+                Debug.Log("random seed: " + seed);
             }
             else
             {
                 seed = PlayerPrefs.GetInt("Seed", seed);
-                // Debug.Log("Seed: " + seed);
+                Debug.Log("fixed seed: " + seed);
             }
             random = new System.Random(seed);
             DOTween.SetTweensCapacity(tweenersCapacity: 800, sequencesCapacity: 800);
@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
         // {
         // }
         state = newState;
-        // Debug.Log("State: " + state);
+        Debug.Log("State: " + state);
         switch (newState)
         {
             case GameState.StageMoving:
@@ -154,6 +154,7 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
+            Debug.Log("pause");
             if (isPaused)
             {
                 isPaused = false;
