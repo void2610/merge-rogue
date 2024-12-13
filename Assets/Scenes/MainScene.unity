@@ -5500,7 +5500,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e538cbced0c940a7a1e6c965b76504a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allRelics: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
+  allRelicDataList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
   relicPrefab: {fileID: 6729976926087826395, guid: 4d7ea21157c3e4729809c5978c721e5b, type: 3}
   relicContainer: {fileID: 1029647713}
   relicGridPosition: {x: -455, y: 50, z: 0}
@@ -5521,6 +5521,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
   - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
   - {fileID: 11400000, guid: c7554e59ec4394530904d2872e63d7ee, type: 2}
+  - {fileID: 11400000, guid: aedabe59208194dd186916574479922d, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -11369,7 +11370,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9360990f6eb284c3fb6733eef04fc874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allRelicDataList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
   items:
   - {fileID: 723649439}
   - {fileID: 411028758}
@@ -12724,7 +12724,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc883b9a0ddcd42afa7a2efdb0d908b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allRelicDataList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
   allBallDataList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
   itemContainer: {fileID: 156243461}
 --- !u!1 &1942857386

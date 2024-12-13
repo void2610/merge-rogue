@@ -7,12 +7,12 @@ public class Treasure : MonoBehaviour
 {
     public static Treasure Instance;
     
-    [SerializeField] private RelicDataList allRelicDataList;
     [SerializeField] private List<GameObject> items;
     [SerializeField] private Vector3 itemPosition;
     [SerializeField] private float itemOffset;
     private const int MAX_ITEMS = 3;
     private readonly Vector3 disablePosition = new Vector3(100, 100, 0);
+    private static RelicDataList allRelics => RelicManager.Instance.allRelicDataList;
 
     public void OpenTreasure(int count, Rarity rarity = Rarity.Common)
     {
@@ -29,7 +29,7 @@ public class Treasure : MonoBehaviour
                 items[i].transform.position = disablePosition;
         }
         
-        var relics = allRelicDataList.GetRelicDataFromRarity(rarity);
+        var relics = allRelics.GetRelicDataFromRarity(rarity);
         
         for (var i = 0; i < count; i++)
         {

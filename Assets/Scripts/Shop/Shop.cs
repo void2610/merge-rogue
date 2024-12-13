@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.EventSystems;
+using UnityEngine.Serialization;
 
 public class Shop : MonoBehaviour
 {
@@ -16,7 +17,6 @@ public class Shop : MonoBehaviour
     }
     public static Shop Instance;
     
-    [SerializeField] private RelicDataList allRelicDataList;
     [SerializeField] private BallDataList allBallDataList;
     [SerializeField] private GameObject itemContainer;
     
@@ -26,8 +26,9 @@ public class Shop : MonoBehaviour
     private ShopState state = ShopState.Closed;
     private int selectedItem = -1;
     private float defaultScale = 1.0f;
-    private List<Vector3> itemPositions = new();
-    private Vector3 disabledPosition = new Vector3(100, 100, 0);
+    private readonly List<Vector3> itemPositions = new();
+    private readonly Vector3 disabledPosition = new (100, 100, 0);
+    private static RelicDataList allRelics => RelicManager.Instance.allRelicDataList;
 
     public void OpenShop(int count = 6)
     {
@@ -44,7 +45,7 @@ public class Shop : MonoBehaviour
         {
             var balls = allBallDataList.GetBallListExceptNormal();
             var isBall = GameManager.Instance.RandomRange(0.0f, 1.0f) > 0.5f;
-            var index = GameManager.Instance.RandomRange(0, isBall ? balls.Count : allRelicDataList.list.Count);
+            var index = GameManager.Instance.RandomRange(0, isBall ? balls.Count : allRelics.list.Count);
             if (isBall)
             {
                 currentItems.Add(balls[index]);
@@ -52,8 +53,8 @@ public class Shop : MonoBehaviour
             }
             else
             {
-                currentItems.Add(allRelicDataList.list[index]);
-                SetRelicEvent(itemObjects[i].transform.gameObject, allRelicDataList.list[index], i);
+                currentItems.Add(allRelics.list[index]);
+                SetRelicEvent(itemObjects[i].transform.gameObject, allRelics.list[index], i);
             }
         }
     }

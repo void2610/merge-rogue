@@ -1,12 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 using R3;
+using UnityEngine.Serialization;
 
 public class RelicManager : MonoBehaviour
 {
     public static RelicManager Instance;
     
-    [SerializeField] private RelicDataList allRelics;
+    [SerializeField] public RelicDataList allRelicDataList;
     [SerializeField] private GameObject relicPrefab;
     [SerializeField] private Transform relicContainer;
     [SerializeField] private Vector3 relicGridPosition;
@@ -76,7 +77,7 @@ public class RelicManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(this);
         
-        allRelics.Register();
+        allRelicDataList.Register();
     }
 
     private void Start()
