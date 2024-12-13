@@ -977,7 +977,7 @@ MonoBehaviour:
   - prefab: {fileID: 5901398579228155482, guid: 48862e4bf4a2840eaae7664f1fe8025a, type: 3}
     probability: 1
   - prefab: {fileID: 5901398579228155482, guid: 2804a6531370042f293b3369b843b3c3, type: 3}
-    probability: 1
+    probability: 0.6
   bosses: []
   alignment: 3
 --- !u!1 &207604137

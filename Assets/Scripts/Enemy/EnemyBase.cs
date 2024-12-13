@@ -75,10 +75,9 @@ public class EnemyBase : MonoBehaviour
         attackCountText.text = (actionInterval - turnCount).ToString();
     }
 
-    // 返り値で、攻撃モーションを再生するかどうかを返す
     private void Attack()
     {
-        GameManager.Instance.player.TakeDamage(attack);
+        GameManager.Instance.player.TakeDamage(Mathf.Max(1, attack));
         this.transform.DOMoveX(-0.75f, 0.02f).SetRelative(true).OnComplete(() =>
                 {
                     this.transform.DOMoveX(0.75f, 0.2f).SetRelative(true).SetEase(Ease.OutExpo).SetLink(gameObject);
@@ -87,7 +86,7 @@ public class EnemyBase : MonoBehaviour
 
     private void OnAppear()
     {
-        CanvasGroup cg = canvas.GetComponent<CanvasGroup>();
+        var cg = canvas.GetComponent<CanvasGroup>();
         cg.DOFade(1, 0.5f).SetLink(gameObject);
         this.GetComponent<SpriteRenderer>().DOFade(1, 0.5f).SetLink(gameObject);
     }
@@ -101,7 +100,7 @@ public class EnemyBase : MonoBehaviour
             var c = Instantiate(coinPrefab).GetComponent<Coin>();
             c?.SetUp(this.transform.position.x);
         }
-        CanvasGroup cg = canvas.GetComponent<CanvasGroup>();
+        var cg = canvas.GetComponent<CanvasGroup>();
         cg.DOFade(0, 0.5f).SetLink(gameObject);
 
         this.GetComponent<SpriteRenderer>().DOFade(0, 0.5f).OnComplete(() =>
@@ -121,7 +120,7 @@ public class EnemyBase : MonoBehaviour
     {
         maxHealth = (int)(GameManager.Instance.RandomRange(hMin, hMax) * magnification);
         health = maxHealth;
-        attack = (int)(attack * magnification);
+        attack = (int)(attack * (magnification * 0.5f));
 
         GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         canvas.GetComponent<CanvasGroup>().alpha = 0;
