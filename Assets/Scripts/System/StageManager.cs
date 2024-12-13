@@ -268,14 +268,13 @@ public class StageManager : MonoBehaviour
                 torches.Add(tmp);
                 torchTween.Kill();
                 tmp.transform.position = defaultTorchPosition + new Vector3(torchInterval * (torches.Count-1), 0, 0);
-            }).SetUpdate(true); 
+            }); 
         
         for(var i = 0; i < torches.Count; i++)
         {
             var t = torches[i];
             var tween = t.transform.DOMove(t.transform.position - new Vector3(torchInterval, 0, 0), 2.0f)
-                .SetEase(Ease.InOutSine)
-                .SetUpdate(true);
+                .SetEase(Ease.InOutSine);
             if (i == 0) torchTween = tween;
         }
         torches[^1].SetActive(Random.Range(0.0f, 1.0f) < 0.5f);

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEditor.Build;
 using UnityEngine.EventSystems;
 
 public class Utils : MonoBehaviour
@@ -41,9 +42,11 @@ public class Utils : MonoBehaviour
             button.onClick.RemoveAllListeners();
     }
     
-    public void WaitAndInvoke(float time, System.Action action)
+    public void WaitAndInvoke(float time, System.Action action,  bool isRealTime = false)
     {
-        StartCoroutine(_WaitAndInvoke(time, action));
+        if (action == null) return;
+        var actonTime = isRealTime ? time: time / Time.timeScale;
+        StartCoroutine(_WaitAndInvoke(actonTime, action));
     }
     private IEnumerator _WaitAndInvoke(float time, System.Action action)
     {

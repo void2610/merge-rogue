@@ -14,7 +14,7 @@ public class MergeText : MonoBehaviour
         t.text = damage.ToString();
         t.color = color;
 
-        float s = 2 * (1 + ((damage - 15) / 75f));
+        var s = 2 * (1 + ((damage - 15) / 75f));
         transform.DOScale(s, 0);
         
         transform.DOMoveY(0.75f, 2f).SetRelative(true).SetEase(Ease.OutCubic).SetLink(gameObject);
