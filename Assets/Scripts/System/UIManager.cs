@@ -62,6 +62,23 @@ public class UIManager : MonoBehaviour
         int s = Mathf.Max(1, stage + 1);
         stageText.text = "stage: " + s;
     }
+    
+    public void OnClickRestButton()
+    {
+        EventManager.OnRest.Trigger(20);
+        var v = EventManager.OnRest.GetAndResetValue();
+        GameManager.Instance.player.Heal(v);
+        
+        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+        EnableCanvasGroup("Rest", false);
+    }
+    
+    public void OnClickSkippRestButton()
+    {
+        SeManager.Instance.PlaySe("button");
+        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+        EnableCanvasGroup("Rest", false);
+    }
 
     public void OnClickShopExit()
     {

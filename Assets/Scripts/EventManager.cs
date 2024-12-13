@@ -34,6 +34,12 @@ public static class EventManager
     public static readonly GameEvent<int> OnBallDropped = new (0);
     // ボールをマージした時: マージしたボールのレベル
     public static readonly GameEvent<int> OnBallMerged = new (0);
+    // 休憩に入った時: なし
+    public static readonly GameEvent<int> OnRestEnter = new (0);
+    // 休憩した時: HP回復量
+    public static readonly GameEvent<int> OnRest = new (0);
+    // 休憩から出た時: なし
+    public static readonly GameEvent<int> OnRestExit = new (0);
     // ショップに入った時: なし
     public static readonly GameEvent<int> OnShopEnter = new (0);
     // ショップから出た時: なし

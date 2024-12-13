@@ -22,6 +22,7 @@ public class StageManager : MonoBehaviour
         Enemy,
         Shop,
         Treasure,
+        Rest,
         Events,
         Boss,
         Undefined
@@ -131,9 +132,9 @@ public class StageManager : MonoBehaviour
             StageNode currentNode = mapNodes[0][0];
             for (var i = 1; i < mapSize.x; i++)
             {
-                int currentY = mapNodes[i-1].FindIndex(node => node == currentNode);
-                int randomYOffset = GameManager.Instance.RandomRange(-1, 2); // -1から1までの値
-                int nextY = Mathf.Clamp(currentY + randomYOffset, 0, mapSize.y - 1);
+                var currentY = mapNodes[i-1].FindIndex(node => node == currentNode);
+                var randomYOffset = GameManager.Instance.RandomRange(-1, 2); // -1から1までの値
+                var nextY = Mathf.Clamp(currentY + randomYOffset, 0, mapSize.y - 1);
                 
                 if( i == 1) nextY = GameManager.Instance.RandomRange(0, mapSize.y);
                 else if (i == mapSize.x - 1) nextY = 0;
@@ -146,15 +147,9 @@ public class StageManager : MonoBehaviour
         }
         
         // Undefined以外のステージタイプを割り当てる
-        foreach (var column in mapNodes)
+        foreach (var node in mapNodes.SelectMany(column => column.Where(node => node.connections.Count > 0)))
         {
-            foreach (var node in column)
-            {
-                if (node.connections.Count > 0)
-                {
-                    node.type = ChoseStage().stageType; // ランダムにステージタイプを割り当てる
-                }
-            }
+            node.type = ChoseStage().stageType; // ランダムにステージタイプを割り当てる
         }
     }
 
@@ -203,9 +198,8 @@ public class StageManager : MonoBehaviour
     private void DrawMap()
     {
         // 先にノード間の線を描画
-        foreach (var c in mapNodes[0][0].connections)
+        foreach (var c in mapNodes[0][0].connections.Where(c => c.type != StageType.Undefined))
         {
-            if (c.type == StageType.Undefined) continue;
             DrawLine(mapNodes[0][0], c);
         }
         
@@ -214,9 +208,8 @@ public class StageManager : MonoBehaviour
             for (var j = 0; j < mapSize.y; j++)
             {
                 if (mapNodes[i][j].type == StageType.Undefined) continue;
-                foreach (var c in mapNodes[i][j].connections)
+                foreach (var c in mapNodes[i][j].connections.Where(c => c.type != StageType.Undefined))
                 {
-                    if (c.type == StageType.Undefined) continue;
                     DrawLine(mapNodes[i][j], c);
                 }
             }
@@ -301,7 +294,7 @@ public class StageManager : MonoBehaviour
             if(currentStage.type == StageType.Events)
             {
                 // ランダムなステージに移動
-                var r = GameManager.Instance.RandomRange(0, 3);
+                var r = GameManager.Instance.RandomRange(0, 4);
                 Debug.Log($"random stage: {r}");
                 ProcessStage((StageType)r);
             }
@@ -332,6 +325,11 @@ public class StageManager : MonoBehaviour
                 EventManager.OnShopEnter.Trigger(0);
                 Shop.Instance.OpenShop();
                 GameManager.Instance.uiManager.EnableCanvasGroup("Shop", true);
+                break;
+            case StageType.Rest:
+                GameManager.Instance.ChangeState(GameManager.GameState.Event);
+                EventManager.OnRestEnter.Trigger(0);
+                GameManager.Instance.uiManager.EnableCanvasGroup("Rest", true);
                 break;
             case StageType.Treasure:
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
