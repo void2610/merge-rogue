@@ -74,7 +74,7 @@ public class EnemyContainer : MonoBehaviour
                 {
                     var e = Instantiate(enemyData.prefab, this.transform);
                     // 敵の強さパラメータを設定
-                    float m = ((stage + 1) * 0.8f);
+                    float m = ((stage + 1) * 0.7f);
                     e.transform.GetComponentsInChildren<EnemyBase>()[0].Init(m);
                     currentEnemies.Add(e);
                     e.transform.position = positions[currentEnemies.Count - 1];

@@ -289,13 +289,11 @@ public class StageManager : MonoBehaviour
                 currentStageCount.Value = 0;
             
             currentStage = next;
-            Debug.Log($"move stage: {currentStage.type}");
             
             if(currentStage.type == StageType.Events)
             {
                 // ランダムなステージに移動
                 var r = GameManager.Instance.RandomRange(0, 4);
-                Debug.Log($"random stage: {r}");
                 ProcessStage((StageType)r);
             }
             else

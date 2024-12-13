@@ -11,8 +11,6 @@ public class DebugLogDisplay : MonoBehaviour
         // ログのテキストをスタイルに設定
         guiStyle.fontSize = 20;
         guiStyle.normal.textColor = Color.white;
-
-        Debug.Log("Start DebugLogDisplay");
     }
 
     private void OnGUI()
