@@ -25,7 +25,7 @@ public class SometimeCopyDropBall : MonoBehaviour, IRelicBehavior
         {
             var level = MergeManager.Instance.currentBall.GetComponent<BallBase>().level;
             var p = new Vector3(GameManager.Instance.RandomRange(-1f, 1f), 0.8f, 0);
-            MergeManager.Instance.SpawnBall(level, p, Quaternion.identity);
+            MergeManager.Instance.SpawnBallFromLevel(level, p, Quaternion.identity);
             ui?.ActivateUI();
         }
     }

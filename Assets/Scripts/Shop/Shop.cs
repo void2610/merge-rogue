@@ -17,7 +17,6 @@ public class Shop : MonoBehaviour
     }
     public static Shop Instance;
     
-    [SerializeField] private BallDataList allBallDataList;
     [SerializeField] private GameObject itemContainer;
     
     private readonly List<object> currentItems = new();
@@ -29,6 +28,8 @@ public class Shop : MonoBehaviour
     private readonly List<Vector3> itemPositions = new();
     private readonly Vector3 disabledPosition = new (100, 100, 0);
     private static RelicDataList allRelics => RelicManager.Instance.allRelicDataList;
+    private static BallDataList allBalls => InventoryManager.Instance.allBallDataList;
+
 
     public void OpenShop(int count = 6)
     {
@@ -43,7 +44,7 @@ public class Shop : MonoBehaviour
         
         for(var i = 0; i < ITEM_NUM; i++)
         {
-            var balls = allBallDataList.GetBallListExceptNormal();
+            var balls = allBalls.GetBallListExceptNormal();
             var isBall = GameManager.Instance.RandomRange(0.0f, 1.0f) > 0.5f;
             var index = GameManager.Instance.RandomRange(0, isBall ? balls.Count : allRelics.list.Count);
             if (isBall)
