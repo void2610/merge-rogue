@@ -47,9 +47,6 @@ public class GameManager : MonoBehaviour
     }
     public GameState state = GameState.Merge;
     
-    [Header("デバッグ")]
-    [SerializeField] private int debugCoin = 10;
-    
     [Header("オブジェクト")]
     [SerializeField] private GameObject playerObj;
     [SerializeField] public EnemyContainer enemyContainer;
@@ -92,13 +89,15 @@ public class GameManager : MonoBehaviour
 
     public void ChangeTimeScale()
     {
-        if (Mathf.Approximately(timeScale, 1.0f))
+        if (PlayerPrefs.GetInt("IsDoubleSpeed", 0) == 0)
         {
             timeScale = 3.0f;
+            PlayerPrefs.SetInt("IsDoubleSpeed", 1);
         }
         else
         {
             timeScale = 1.0f;
+            PlayerPrefs.SetInt("IsDoubleSpeed", 0);
         }
         Time.timeScale = timeScale;
     }
@@ -159,9 +158,15 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
+        if (PlayerPrefs.GetInt("IsDoubleSpeed", 0) == 1)
+        {
+            timeScale = 3.0f;
+            Time.timeScale = timeScale;
+        }
+        
         ChangeState(GameState.StageMoving);
 
-        AddCoin(Application.isEditor ? debugCoin : 10);
+        AddCoin(Application.isEditor ? 9999 : 10);
     }
 
     private void Update()

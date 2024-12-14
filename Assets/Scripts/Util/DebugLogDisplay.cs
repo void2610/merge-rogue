@@ -9,7 +9,7 @@ public class DebugLogDisplay : MonoBehaviour
     private void Awake()
     {
         // ログのテキストをスタイルに設定
-        guiStyle.fontSize = 10;
+        guiStyle.fontSize = 15;
         guiStyle.normal.textColor = Color.white;
     }
 

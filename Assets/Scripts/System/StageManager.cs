@@ -73,11 +73,6 @@ public class StageManager : MonoBehaviour
     private static readonly int mainTex = Shader.PropertyToID("_MainTex");
     private Tween torchTween;
 
-    public StageType GetCurrentStageType()
-    {
-        return stageTypes[currentStageCount.Value];
-    }
-
     private StageData ChoseStage()
     {
         float sum = 0;
@@ -103,6 +98,12 @@ public class StageManager : MonoBehaviour
     
     private void GenerateMap()
     {
+        mapNodes.Clear();
+        currentStage = null;
+        var icons = mapBackground.GetComponentsInChildren<Transform>().ToList();
+        icons.Where(i => i != mapBackground.transform).ToList().ForEach(i => Destroy(i.gameObject));
+        
+        
         // マップの初期化
         for (var i = 0; i < mapSize.x; i++)
         {
@@ -129,7 +130,7 @@ public class StageManager : MonoBehaviour
         // スタートからゴールに向かってランダムに接続
         for (var _ = 0; _ < pathCount; _++)
         {
-            StageNode currentNode = mapNodes[0][0];
+            var currentNode = mapNodes[0][0];
             for (var i = 1; i < mapSize.x; i++)
             {
                 var currentY = mapNodes[i-1].FindIndex(node => node == currentNode);
@@ -236,6 +237,14 @@ public class StageManager : MonoBehaviour
 
     public void SetNextNodeActive()
     {
+        // ボスを倒したらマップを再生成して次のステージを設定
+        if (currentStage?.type == StageType.Boss)
+        {
+            GenerateMap();
+            DrawMap();
+            SetButtonEvent();
+        }
+        
         var nextNodes = currentStage != null ? currentStage.connections : new List<StageNode>{mapNodes[0][0]};
         
         foreach (var column in mapNodes)
@@ -290,11 +299,7 @@ public class StageManager : MonoBehaviour
         // ステージ進行
         Utils.Instance.WaitAndInvoke(2.0f, () =>
         {
-            if (currentStageCount.Value + 1 < mapSize.x)
-                currentStageCount.Value++;
-            else
-                currentStageCount.Value = 0;
-            
+            currentStageCount.Value++;
             currentStage = next;
             
             if(currentStage.type == StageType.Events)

@@ -26,7 +26,8 @@ public class CameraMove : MonoBehaviour
 
     public void ShakeCamera(float duration, float strength)
     {
-        this.transform.DOShakePosition(duration, strength, 10, 0, false).OnComplete(() =>
+        var s = Mathf.Min(7.5f, strength);
+        this.transform.DOShakePosition(duration, s, 10, 0, false).OnComplete(() =>
         {
             this.transform.position = initPosition;
         });
