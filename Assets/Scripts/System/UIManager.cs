@@ -129,6 +129,18 @@ public class UIManager : MonoBehaviour
         fadeImage.color = new Color(0, 0, 0, 0);
         fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("MainScene")).SetUpdate(true);
     }
+
+    public void OpenMap()
+    {
+        SeManager.Instance.PlaySe("button");
+        EnableCanvasGroup("Map", true);
+    }
+    
+    public void CloseMap()
+    {
+        SeManager.Instance.PlaySe("button");
+        EnableCanvasGroup("Map", false);
+    }
     
     private void SetVignette(float value)
     {

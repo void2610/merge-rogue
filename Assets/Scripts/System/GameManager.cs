@@ -146,6 +146,7 @@ public class GameManager : MonoBehaviour
                 enemyContainer.Action();
                 break;
             case GameState.MapSelect:
+                stageManager.SetNextNodeActive();
                 uiManager.EnableCanvasGroup("Map", true);
                 break;
             case GameState.Event:

@@ -234,7 +234,7 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    private void SetNextNodeActive()
+    public void SetNextNodeActive()
     {
         var nextNodes = currentStage != null ? currentStage.connections : new List<StageNode>{mapNodes[0][0]};
         
@@ -247,6 +247,14 @@ public class StageManager : MonoBehaviour
                 var button = node.obj.GetComponent<Button>();
                 button.interactable = nextNodes.Contains(node);
             }
+        }
+    }
+    
+    private void SetAllNodeInactive()
+    {
+        foreach (var button in mapNodes.SelectMany(column => from node in column where node.type != StageType.Undefined select node.obj.GetComponent<Button>()))
+        {
+            button.interactable = false;
         }
     }
 
@@ -300,7 +308,7 @@ public class StageManager : MonoBehaviour
                 ProcessStage(currentStage.type);
             }
             
-            SetNextNodeActive();
+            SetAllNodeInactive();
         });
     }
 
@@ -347,7 +355,7 @@ public class StageManager : MonoBehaviour
         
         DrawMap();
         SetButtonEvent();
-        SetNextNodeActive();
+        SetAllNodeInactive();
         
         m.SetTextureOffset(mainTex, new Vector2(0, 0)); 
     }
