@@ -36,9 +36,19 @@ public class UIManager : MonoBehaviour
         var canvasGroup = canvasGroups.Find(c => c.name == canvasName);
         if (!canvasGroup) return;
         
-        canvasGroup.alpha = e ? 1 : 0;
         canvasGroup.interactable = e;
         canvasGroup.blocksRaycasts = e;
+        
+        if (e)
+        {
+            canvasGroup.transform.DOMoveY(-0.45f, 0).SetRelative(true).SetUpdate(true);
+            canvasGroup.transform.DOMoveY(0.45f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack);
+            canvasGroup.DOFade(1, 0.2f).SetUpdate(true);
+        }
+        else
+        {
+            canvasGroup.DOFade(0, 0.2f).SetUpdate(true);
+        }
     }
     
     private void UpdateCoinText(int amount)

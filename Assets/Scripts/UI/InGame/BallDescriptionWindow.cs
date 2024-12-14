@@ -1,13 +1,16 @@
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 public class BallDescriptionWindow : MonoBehaviour
 {
-    [SerializeField] private CanvasGroup cg;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private Vector2 minPos; // RectTransform上の座標で指定
     [SerializeField] private Vector2 maxPos; // RectTransform上の座標で指定
+    private CanvasGroup cg;
+    private Tween moveTween;
+    private Tween fadeTween;
 
     public void ShowWindow(BallData b, Vector3 pos)
     {
@@ -22,23 +25,33 @@ public class BallDescriptionWindow : MonoBehaviour
             this.gameObject.transform.parent as RectTransform,
             RectTransformUtility.WorldToScreenPoint(Camera.main, pos),
             Camera.main,
-            out Vector2 localPos
+            out var localPos
         );
 
         // ローカル座標で位置をクランプ
-        float clampedX = Mathf.Clamp(localPos.x, minPos.x, maxPos.x);
-        float clampedY = Mathf.Clamp(localPos.y, minPos.y, maxPos.y);
+        var clampedX = Mathf.Clamp(localPos.x, minPos.x, maxPos.x);
+        var clampedY = Mathf.Clamp(localPos.y, minPos.y, maxPos.y);
+        
+        moveTween?.Kill();
+        fadeTween?.Kill();
 
-        this.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(clampedX, clampedY, 0);
+        this.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(clampedX, clampedY, 0) + new Vector3(0, 0.3f, 0);
+        moveTween = this.gameObject.transform.DOMoveY(0.3f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack);
+        cg.alpha = 0;
+        fadeTween = cg.DOFade(1, 0.15f).SetUpdate(true);
     }
 
     public void HideWindow()
     {
-        this.gameObject.SetActive(false);
+        moveTween?.Kill();
+        fadeTween?.Kill();
+        
+        fadeTween = cg.DOFade(0, 0.15f).SetUpdate(true).OnComplete(() => this.gameObject.SetActive(false));
     }
 
     private void Awake()
     {
+        cg = this.gameObject.GetComponent<CanvasGroup>();
         this.gameObject.SetActive(false);
     }
 }
