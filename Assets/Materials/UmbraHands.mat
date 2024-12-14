@@ -59,7 +59,7 @@ Material:
     m_Floats:
     - _EnableExternalAlpha: 0
     m_Colors:
-    - _BloomColor: {r: 0, g: 1.2985896, b: 11.984315, a: 1}
+    - _BloomColor: {r: 0, g: 0.6492948, b: 5.9921575, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
