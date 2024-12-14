@@ -11,8 +11,6 @@ public class Santa : MonoBehaviour, IRelicBehavior
     {
         disposable = EventManager.OnRest.Subscribe(Effect).AddTo(this);
         ui = relicUI;
-
-        Effect(Unit.Default);
     }
 
     public void RemoveEffect()

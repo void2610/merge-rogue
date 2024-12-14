@@ -170,12 +170,12 @@ public class GameManager : MonoBehaviour
             if (isPaused)
             {
                 isPaused = false;
-                uiManager.EnableCanvasGroup("Pause", false);
+                uiManager.OnClickResume();
             }
             else
             {
                 isPaused = true;
-                uiManager.EnableCanvasGroup("Pause", true);
+                uiManager.OnClickPause();
             }
         }
     }

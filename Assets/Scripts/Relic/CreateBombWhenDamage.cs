@@ -27,9 +27,9 @@ public class CreateBombWhenDamage : MonoBehaviour, IRelicBehavior
         damageCount += x;
 
         var isActivated = false;
-        while (damageCount >= 10)
+        while (damageCount >= 20)
         {
-            damageCount -= 10;
+            damageCount -= 20;
             var p = new Vector3(GameManager.Instance.RandomRange(-1f, 1f), 0.8f, 0);
             MergeManager.Instance.CreateBomb(p);
             isActivated = true;
