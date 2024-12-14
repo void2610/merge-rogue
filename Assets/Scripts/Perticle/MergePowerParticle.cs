@@ -36,7 +36,7 @@ public class MergePowerParticle : MonoBehaviour
             .SetEase(Ease.InOutSine) // 移動のスムーズさ
             .OnComplete(() =>
             {
-                StartCoroutine(WaitAndDestroy(5f));
+                StartCoroutine(WaitAndDestroy(3f));
             });
         
         // 少し早めにVFXを停止
@@ -72,7 +72,7 @@ public class MergePowerParticle : MonoBehaviour
     
     private IEnumerator WaitAndDestroy(float time)
     {
-        yield return new WaitForSeconds(time);
+        yield return new WaitForSeconds(time / GameManager.Instance.timeScale);
         Destroy(this.gameObject);
     }
 }
