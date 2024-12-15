@@ -23,6 +23,8 @@ public class GameManager : MonoBehaviour
             }
             random = new System.Random(seed);
             DOTween.SetTweensCapacity(tweenersCapacity: 800, sequencesCapacity: 800);
+
+            player = playerObj.GetComponent<Player>();
         }
         else
         {
@@ -59,7 +61,7 @@ public class GameManager : MonoBehaviour
     public readonly ReactiveProperty<int> coin = new(0);
     private int seed = 42;
     private bool isPaused;
-    public Player player => playerObj.GetComponent<Player>();
+    public Player player;
     public UIManager uiManager => this.GetComponent<UIManager>();
     public StageManager stageManager => GetComponent<StageManager>();
 

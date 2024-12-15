@@ -16,7 +16,7 @@ public class AddMaxHealth : MonoBehaviour, IRelicBehavior
 
     public void RemoveEffect()
     {
-        if (!GameManager.Instance.player) return;
+        if (GameManager.Instance.player == null) return;
         GameManager.Instance.player.maxHealth.Value -= 10;
     }
     

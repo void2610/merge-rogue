@@ -13,12 +13,14 @@ public class RelicUI : MonoBehaviour
     [SerializeField] private Text relicName;
     [SerializeField] private Text relicDescription;
     [SerializeField] private Image bloomImage;
-    
-    private readonly Color defaultColor = new (0.3960784f, 0.3960784f, 0.3960784f, 1);
-    private readonly Color bloomColor = Color.white;
+    private Color defaultColor = Color.white;
+    private Color bloomColor = Color.white;
     
     public void SetRelicData(RelicData r)
     {
+        defaultColor = this.transform.Find("defaultColor").GetComponent<Image>().color;
+        bloomColor = this.transform.Find("bloomColor").GetComponent<Image>().color;
+        
         this.relicData = r;
         relicImage.sprite = relicData.sprite;
         
@@ -37,8 +39,8 @@ public class RelicUI : MonoBehaviour
     public void ActivateUI()
     {
         if(!bloomImage) return;
-        
-        bloomImage.DOColor(bloomColor, 0.1f).OnComplete(() =>
+        var color = bloomColor * 1.3f;
+        bloomImage.DOColor(color, 0.1f).OnComplete(() =>
         {
             bloomImage.DOColor(defaultColor, 0.5f).SetDelay(0.75f).SetLink(gameObject);
         }).SetLink(gameObject);
