@@ -45,6 +45,7 @@ public class EnemyBase : MonoBehaviour
         if(!this) return;
         
         ParticleManager.Instance.DamageText(damage, this.transform.position.x);
+        ParticleManager.Instance.HitParticle(this.transform.position + new Vector3(-0.3f, 0.2f, 0));
         health -= damage;
         healthSlider.value = health;
         healthText.text = health + "/" + maxHealth;

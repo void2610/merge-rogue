@@ -15,13 +15,14 @@ public class ParticleManager : MonoBehaviour
     public static ParticleManager Instance;
     
     [SerializeField] private GameObject healParticlePrefab;
+    [SerializeField] private GameObject hitParticle;
     [SerializeField] private GameObject mergeParticle;
     [SerializeField] private GameObject mergePowerParticle;
     [SerializeField] private GameObject damageTextPrefab;
     [SerializeField] private GameObject mergeTextPrefab;
     
     private Canvas pixelCanvas => GameManager.Instance.pixelCanvas;
-    private Canvas uiCanvas => GameManager.Instance.uiCanvas;
+    private static Canvas uiCanvas => GameManager.Instance.uiCanvas;
     
     
     public void HealParticle(Vector3 pos)
@@ -33,6 +34,11 @@ public class ParticleManager : MonoBehaviour
     {
         var pos = new Vector3(-5.7f, 3.1f, 0);
         Instantiate(healParticlePrefab, pos, Quaternion.identity);
+    }
+    
+    public void HitParticle(Vector3 pos)
+    {
+        Instantiate(hitParticle, pos, Quaternion.identity);
     }
     
     public void MergeParticle(Vector3 pos)

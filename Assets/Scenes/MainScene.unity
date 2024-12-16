@@ -1274,6 +1274,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healParticlePrefab: {fileID: 443494868773313826, guid: bd5fe67f0758d480088c2d39d5537b5d, type: 3}
+  hitParticle: {fileID: 8180145297232623733, guid: 1744b5e0172fa4eebba127b50c9faa68, type: 3}
   mergeParticle: {fileID: 1620409693136122509, guid: adb71434fa9c04035a16947c624e5be2, type: 3}
   mergePowerParticle: {fileID: 7949084058323581054, guid: 02d4b18e706584da2a8222cfa6113a02, type: 3}
   damageTextPrefab: {fileID: 7173658914585924005, guid: 4fa946622e4bd4de3858712a3e083b3c, type: 3}
