@@ -27,7 +27,7 @@ public class CreateNewRelic : EditorWindow
         relicDataPath = EditorGUILayout.TextField("Relic Data Path", relicDataPath);
         relicScriptPath = EditorGUILayout.TextField("Relic Script Path", relicScriptPath);
 
-        if (GUILayout.Button("Create Relic"))
+        if (GUILayout.Button("Create Relic !"))
         {
             CreateRelicAssets(relicName);
         }
