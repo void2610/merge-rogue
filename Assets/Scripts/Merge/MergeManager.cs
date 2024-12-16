@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
@@ -151,13 +152,13 @@ public class MergeManager : MonoBehaviour
 
     public void AddSingleAttackCount(float atk, Vector3 p)
     {  
-        singleAttackCount += (int)atk;
+        singleAttackCount += Mathf.CeilToInt(atk);
         ParticleManager.Instance.MergeText(singleAttackCount, p);
     }
     
     public void AddAllAttackCount(float atk, Vector3 p)
     {
-        allAttackCount += (int)atk;
+        allAttackCount += Mathf.CeilToInt(atk);
         ParticleManager.Instance.MergeText(allAttackCount, p, Color.red);
     }
 

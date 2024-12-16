@@ -12,6 +12,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private BallData normalBallData;
     [SerializeField] private GameObject ballBasePrefab;
     [SerializeField] private Vector3 inventoryPosition = new(5.5f, -1.0f, 0);
+    [SerializeField] private List<BallData> testBalls;
 
     public const int INVENTORY_SIZE = 7;
     public InventoryUI inventoryUI => this.GetComponent<InventoryUI>();
@@ -151,6 +152,15 @@ public class InventoryManager : MonoBehaviour
             ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
             inventoryUI.CreateBallUI(ball, i);
             inventory.Add(ball);
+        }
+        
+        // テスト用
+        if(Application.isEditor)
+        {
+            for(var i = 0; i < INVENTORY_SIZE; i++)
+            {
+                SetBall(testBalls[i], i + 1);
+            }
         }
         
         inventoryUI.SetCursor(0);
