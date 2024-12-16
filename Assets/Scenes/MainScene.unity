@@ -13390,6 +13390,14 @@ MonoBehaviour:
   normalBallData: {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   ballBasePrefab: {fileID: 5528515049713681562, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
   inventoryPosition: {x: 0, y: -7, z: 0}
+  testBalls:
+  - {fileID: 11400000, guid: 282f2e804c8cc447982a8e7498d5cdb4, type: 2}
+  - {fileID: 11400000, guid: 86bc461c8b90f4542a5fa7b38419b676, type: 2}
+  - {fileID: 11400000, guid: 282f2e804c8cc447982a8e7498d5cdb4, type: 2}
+  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
+  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
+  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
+  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
 --- !u!4 &1883030246
 Transform:
   m_ObjectHideFlags: 0
