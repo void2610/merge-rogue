@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     public readonly ReactiveProperty<int> maxHealth = new(100);
     public int maxExp { get; private set; } = 25;
     public int level { get; private set; } = 1;
-    private readonly List<int> levelUpExp = new() { 25, 50, 100, 200, 4000, 800, 1000, 1200, 1400 };
+    private readonly List<int> levelUpExp = new() { 20, 40, 80, 100, 150, 200, 250, 300, 350, 400, 500 };
 
     public void TakeDamage(int d)
     {
@@ -31,6 +31,8 @@ public class Player : MonoBehaviour
 
     public void Heal(int amount)
     {
+        if(health.Value <= 0) return;
+        
         ParticleManager.Instance.HealParticleToPlayer();
         SeManager.Instance.PlaySe("heal");
 
@@ -43,15 +45,6 @@ public class Player : MonoBehaviour
         if (health.Value > maxHealth.Value)
         {
             health.Value = maxHealth.Value;
-        }
-    }
-
-    public void HealFromItem(int amount)
-    {
-        health.Value += amount;
-        if (health.Value > maxHealth.Value + 5)
-        {
-            health.Value = maxHealth.Value + 5;
         }
     }
 
