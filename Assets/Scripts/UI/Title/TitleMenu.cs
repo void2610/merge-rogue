@@ -7,18 +7,17 @@ using TMPro;
 
 public class TitleMenu : MonoBehaviour
 {
-    [SerializeField]
-    private Image fadeImage;
-    [SerializeField]
-    private Slider bgmSlider;
-    [SerializeField]
-    private Slider seSlider;
-    [SerializeField]
-    private TMP_InputField seedInputField;
-    [SerializeField]
-    private CanvasGroup credit;
-    [SerializeField]
-    private CanvasGroup license;
+    public static TitleMenu Instance { get; private set; }
+    
+    [SerializeField] private Image fadeImage;
+    [SerializeField] private Slider bgmSlider;
+    [SerializeField] private Slider seSlider;
+    [SerializeField] private TMP_InputField seedInputField;
+    [SerializeField] private CanvasGroup credit;
+    [SerializeField] private CanvasGroup license;
+    [SerializeField] private CanvasGroup encyclopedia;
+    [SerializeField] private RelicDescriptionWindow relicDescriptionWindow;
+    [SerializeField] private BallDescriptionWindow ballDescriptionWindow;
 
     public void StartGame()
     {
@@ -28,6 +27,22 @@ public class TitleMenu : MonoBehaviour
         {
             SceneManager.LoadScene("MainScene");
         });
+    }
+    
+    public void ShowEncyclopedia()
+    {
+        PlayButtonSe();
+        encyclopedia.alpha = 1.0f;
+        encyclopedia.interactable = true;
+        encyclopedia.blocksRaycasts = true;
+    }
+    
+    public void HideEncyclopedia()
+    {
+        PlayButtonSe();
+        encyclopedia.alpha = 0.0f;
+        encyclopedia.interactable = false;
+        encyclopedia.blocksRaycasts = false;
     }
 
     public void ShowCredit()
@@ -61,14 +76,34 @@ public class TitleMenu : MonoBehaviour
         license.interactable = false;
         license.blocksRaycasts = false;
     }
+    
+    public void ShowRelicDescriptionWindow(RelicData r, Vector3 pos)
+    {
+        relicDescriptionWindow.ShowWindow(r, pos);
+    }
+    
+    public void ShowBallDescriptionWindow(BallData b, Vector3 pos)
+    {
+        ballDescriptionWindow.ShowWindow(b, pos);
+    }
+    
+    public void HideRelicDescriptionWindow()
+    {
+        relicDescriptionWindow.HideWindow();
+    }
+    
+    public void HideBallDescriptionWindow()
+    {
+        ballDescriptionWindow.HideWindow();
+    }
 
-    public void PlayButtonSe()
+    public static void PlayButtonSe()
     {
         if (Time.time > 0.5f)
             SeManager.Instance.PlaySe("button");
     }
 
-    private void InitPlayerPrefs()
+    private static void InitPlayerPrefs()
     {
         PlayerPrefs.SetFloat("BgmVolume", 1.0f);
         PlayerPrefs.SetFloat("SeVolume", 1.0f);
@@ -85,14 +120,23 @@ public class TitleMenu : MonoBehaviour
         seSlider.value = 1.0f;
     }
 
-    void Awake()
+    private void Awake()
     {
+        if (Instance == null) Instance = this;
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+        
+        
         HideCredit();
         HideLicense();
+        HideEncyclopedia();
         if (!PlayerPrefs.HasKey("BgmVolume")) InitPlayerPrefs();
     }
 
-    void Start()
+    private void Start()
     {
         bgmSlider.value = PlayerPrefs.GetFloat("BgmVolume", 1.0f);
         seSlider.value = PlayerPrefs.GetFloat("SeVolume", 1.0f);
@@ -124,9 +168,9 @@ public class TitleMenu : MonoBehaviour
         fadeImage.DOFade(0.0f, 1.0f);
     }
 
-    void Update()
+    private void Update()
     {
-        int seed = seedInputField.text.GetHashCode();
+        var seed = seedInputField.text.GetHashCode();
         PlayerPrefs.SetInt("Seed", seed);
         PlayerPrefs.SetString("SeedText", seedInputField.text);
     }

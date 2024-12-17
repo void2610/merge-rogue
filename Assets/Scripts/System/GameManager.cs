@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
 
     private System.Random random { get; set; }
     public float timeScale { get; private set; } = 1.0f;
+    public bool isGameOver { get; private set; } = false;
     public readonly ReactiveProperty<int> coin = new(0);
     private int seed = 42;
     private bool isPaused;
@@ -106,6 +107,7 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        isGameOver = true;
         ChangeState(GameState.GameOver);
         uiManager.EnableCanvasGroup("GameOver", true);
     }

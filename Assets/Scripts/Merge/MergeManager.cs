@@ -247,6 +247,8 @@ public class MergeManager : MonoBehaviour
         ballGauge.transform.localScale = currentBall.transform.localScale * 1.01f;
         ballGauge.transform.position = currentBall.transform.position;
         
+        if (GameManager.Instance.isGameOver) return;
+        
         if (Input.GetKey(KeyCode.A) && currentBallPosition.x - size / 2 > -limit)
         {
             currentBallPosition += Vector3.left * (MOVE_SPEED * Time.deltaTime);

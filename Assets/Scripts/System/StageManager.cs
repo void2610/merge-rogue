@@ -268,6 +268,8 @@ public class StageManager : MonoBehaviour
 
     private void NextStage(StageNode next)
     {
+        if (GameManager.Instance.isGameOver) return;
+        
         // 演出
         GameManager.Instance.uiManager.EnableCanvasGroup("Map", false);
         Utils.Instance.WaitAndInvoke(0.2f, () =>
