@@ -248,18 +248,29 @@ public class MergeManager : MonoBehaviour
         ballGauge.transform.position = currentBall.transform.position;
         
         if (GameManager.Instance.isGameOver) return;
-        
-        if (Input.GetKey(KeyCode.A) && currentBallPosition.x - size / 2 > -limit)
+
+        var mousePosX = GameManager.Instance.uiCamera.ScreenToWorldPoint(Input.mousePosition).x;
+        var isMouseOvered = mousePosX > -limit + size / 2 && mousePosX < limit - size / 2;
+        if (isMouseOvered)
         {
-            currentBallPosition += Vector3.left * (MOVE_SPEED * Time.deltaTime);
+            mousePosX = Mathf.Clamp(mousePosX, -limit + size / 2, limit - size / 2);
+            currentBallPosition = new Vector3(mousePosX, currentBallPosition.y, currentBallPosition.z);
+        }
+        else
+        {
+            if (Input.GetKey(KeyCode.A) && currentBallPosition.x - size / 2 > -limit)
+            {
+                currentBallPosition += Vector3.left * (MOVE_SPEED * Time.deltaTime);
+            }
+
+            if (Input.GetKey(KeyCode.D) && currentBallPosition.x + size / 2 < limit)
+            {
+                currentBallPosition += Vector3.right * (MOVE_SPEED * Time.deltaTime);
+            }
         }
 
-        if (Input.GetKey(KeyCode.D) && currentBallPosition.x + size / 2 < limit)
-        {
-            currentBallPosition += Vector3.right * (MOVE_SPEED * Time.deltaTime);
-        }
-        
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time - lastFallTime > COOL_TIME && remainingBalls > 0)
+        var isDragging = Input.GetMouseButton(0) || Input.GetKeyDown(KeyCode.Space);
+        if (isDragging && Time.time - lastFallTime > COOL_TIME && remainingBalls > 0)
         {
             SeManager.Instance.PlaySe("fall");
             lastFallTime = Time.time;

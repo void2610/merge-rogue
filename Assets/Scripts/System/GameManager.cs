@@ -52,7 +52,8 @@ public class GameManager : MonoBehaviour
     [Header("オブジェクト")]
     [SerializeField] private GameObject playerObj;
     [SerializeField] public EnemyContainer enemyContainer;
-    [SerializeField] public Shop shop;
+    [SerializeField] public Camera renderTextureCamera;
+    [SerializeField] public Camera uiCamera;
     [SerializeField] public Canvas pixelCanvas;
     [SerializeField] public Canvas uiCanvas;
 
