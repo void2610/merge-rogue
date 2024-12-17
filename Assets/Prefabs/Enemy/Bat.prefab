@@ -151,6 +151,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: bat
       objectReference: {fileID: 0}
+    - target: {fileID: 3626916397498700004, guid: 29264d750d1e944559ff7ec07e4ef17f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: -876546973899608171, guid: b7f56fbcfdecd4ab1af11c43a08e37ea, type: 3}
     - target: {fileID: 7878350319992209165, guid: 29264d750d1e944559ff7ec07e4ef17f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

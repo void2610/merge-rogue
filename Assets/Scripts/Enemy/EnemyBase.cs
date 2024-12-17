@@ -44,10 +44,17 @@ public class EnemyBase : MonoBehaviour
     {
         if(!this) return;
         
+        // 演出
         ParticleManager.Instance.DamageText(damage, this.transform.position.x);
+        var m = this.GetComponent<SpriteRenderer>().material;
+        m.DOColor(Color.red, 0).OnComplete(() =>
+        {
+            m.DOColor(new Color(0.7f,0.7f,0.7f), 0.3f);
+        });
         if(isEmitEffect)
             ParticleManager.Instance.HitParticle(this.transform.position + new Vector3(-0.3f, 0.2f, 0));
         
+        // ダメージ処理
         health -= damage;
         healthSlider.value = health;
         healthText.text = health + "/" + maxHealth;
