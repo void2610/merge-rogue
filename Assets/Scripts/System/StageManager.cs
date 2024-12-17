@@ -68,8 +68,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private int pathCount;
     public readonly ReactiveProperty<int> currentStageCount = new(-1);
     private readonly List<List<StageNode>> mapNodes = new();
-    private StageNode currentStage = null;
-    
+    public StageNode currentStage { get; private set; } = null;
     private static readonly int mainTex = Shader.PropertyToID("_MainTex");
     private Tween torchTween;
 
@@ -349,6 +348,10 @@ public class StageManager : MonoBehaviour
                 var rarity = GameManager.Instance.RandomRange(0, 4);
                 Treasure.Instance.OpenTreasure(count, (Rarity)rarity);
                 break;
+            case StageType.Events:
+            case StageType.Undefined:
+            default:
+                throw new ArgumentOutOfRangeException(nameof(s), s, null);
         }
     }
 

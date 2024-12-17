@@ -119,6 +119,12 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.StageMoving:
+                // ボス戦をクリアしたら回復
+                if (stageManager.currentStage?.type == StageManager.StageType.Boss)
+                {
+                    player.HealToFull();
+                }
+                
                 // レベルアップが残っている場合はレベルアップ画面を表示
                 if (uiManager.remainingLevelUps > 0)
                     ChangeState(GameState.LevelUp);

@@ -57,6 +57,16 @@ public class Player : MonoBehaviour
             health.Value = maxHealth.Value;
         }
     }
+    
+    public void HealToFull()
+    {
+        if(health.Value <= 0) return;
+        
+        ParticleManager.Instance.HealParticleToPlayer();
+        SeManager.Instance.PlaySe("heal");
+
+        health.Value = maxHealth.Value;
+    }
 
     public void AddExp(int amount)
     {
