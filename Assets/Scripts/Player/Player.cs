@@ -15,6 +15,8 @@ public class Player : MonoBehaviour
 
     public void TakeDamage(int d)
     {
+        if(health.Value <= 0) return;
+        
         EventManager.OnPlayerDamage.Trigger(d);
         var damage = EventManager.OnPlayerDamage.GetValue();
         
