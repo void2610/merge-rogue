@@ -62,8 +62,8 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     m_Colors:
-    - _BloomColor: {r: 0.8907395, g: 0.04973394, b: 0, a: 1}
-    - _Color: {r: 2, g: 2, b: 2, a: 1}
+    - _BloomColor: {r: 1.0592737, g: 0.059143953, b: 0, a: 1}
+    - _Color: {r: 0.7, g: 0.7, b: 0.7, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
