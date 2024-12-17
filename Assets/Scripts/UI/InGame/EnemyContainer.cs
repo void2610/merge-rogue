@@ -143,11 +143,12 @@ public class EnemyContainer : MonoBehaviour
         // 全体攻撃
         if (allDamage > 0)
         {
+            ParticleManager.Instance.AllHitParticle(new Vector3(-4, 3.3f, 0));
             SeManager.Instance.PlaySe("playerAttack");
             CameraMove.Instance.ShakeCamera(0.5f, allDamage * 0.03f);
             foreach (var e in es)
             {
-                e.TakeDamage(allDamage);
+                e.TakeDamage(allDamage, false);
             }
             yield return new WaitForSeconds(0.5f);
         }
@@ -161,7 +162,7 @@ public class EnemyContainer : MonoBehaviour
             if (singleDamage <= 0) break;
             var actualDamage = singleDamage > e.health ? e.health : singleDamage;
             if (es.IndexOf(e) == es.Count - 1) actualDamage = singleDamage;
-            e.TakeDamage(actualDamage);
+            e.TakeDamage(actualDamage, true);
             singleDamage -= actualDamage;
             
             SeManager.Instance.PlaySe("playerAttack");

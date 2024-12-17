@@ -40,12 +40,14 @@ public class EnemyBase : MonoBehaviour
     private Slider healthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
     private TextMeshProUGUI attackCountText => canvas.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, bool isEmitEffect = true)
     {
         if(!this) return;
         
         ParticleManager.Instance.DamageText(damage, this.transform.position.x);
-        ParticleManager.Instance.HitParticle(this.transform.position + new Vector3(-0.3f, 0.2f, 0));
+        if(isEmitEffect)
+            ParticleManager.Instance.HitParticle(this.transform.position + new Vector3(-0.3f, 0.2f, 0));
+        
         health -= damage;
         healthSlider.value = health;
         healthText.text = health + "/" + maxHealth;

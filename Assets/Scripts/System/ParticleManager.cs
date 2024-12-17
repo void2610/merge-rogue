@@ -16,6 +16,7 @@ public class ParticleManager : MonoBehaviour
     
     [SerializeField] private GameObject healParticlePrefab;
     [SerializeField] private GameObject hitParticle;
+    [SerializeField] private GameObject allHitParticle;
     [SerializeField] private GameObject mergeParticle;
     [SerializeField] private GameObject mergePowerParticle;
     [SerializeField] private GameObject damageTextPrefab;
@@ -39,6 +40,11 @@ public class ParticleManager : MonoBehaviour
     public void HitParticle(Vector3 pos)
     {
         Instantiate(hitParticle, pos, Quaternion.identity);
+    }
+    
+    public void AllHitParticle(Vector3 pos)
+    {
+        Instantiate(allHitParticle, pos, Quaternion.identity);
     }
     
     public void MergeParticle(Vector3 pos)
