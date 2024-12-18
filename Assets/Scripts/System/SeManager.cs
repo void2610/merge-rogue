@@ -1,6 +1,4 @@
 using System.Linq;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -85,12 +83,12 @@ public class SeManager : MonoBehaviour
         var audioSource = GetUnusedAudioSource();
         if (soundData == null)
         {
-            Debug.LogWarning("AudioClip could not be found: " + seName);
+            Debug.LogError("AudioClip could not be found: " + seName);
             return;
         }
         if (!audioSource)
         {
-            Debug.LogWarning("There is no available AudioSource");
+            // Debug.LogWarning("There is no available AudioSource");
             return;
         }
 

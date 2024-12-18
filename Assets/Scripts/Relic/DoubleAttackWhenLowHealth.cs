@@ -20,7 +20,7 @@ public class DoubleAttackWhenLowHealth : MonoBehaviour, IRelicBehavior
     
     private void Effect(Unit _)
     {
-        if (GameManager.Instance.player.health.Value <= 20)
+        if (GameManager.Instance.player.health.Value <= GameManager.Instance.player.maxHealth.Value * 0.8f)
         {
             var atk = EventManager.OnPlayerAttack.GetValue();
             EventManager.OnPlayerAttack.SetValue((atk.Item1 * 2, atk.Item2 * 2));
