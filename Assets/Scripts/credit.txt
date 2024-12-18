@@ -1,26 +1,26 @@
-プログラム/原案
+制作
 void2610
 
-イラスト/ストーリー
-あんり
 
 
 
-SE/ボタン素材
+
+SE
 Kenney
 https://www.kenney.nl/assets
 
-SE
 効果音ラボ
 https://soundeffect-lab.info
-
-レーザービーム音
-https://commons.nicovideo.jp/works/nc148568
 
 BGM
 seadenden 8bit free BGM
 https://seadenden-8bit.com
+フリーBGM MOMIZizm MUSiC
+https://music.storyinvention.com/
 
 フォント
-美咲ゴシック1
-https://littlelimit.net/misaki.htm#license
+x8y12pxTheStrongGamer
+https://hicchicc.github.io/00ff/
+PixelMplus
+https://github.com/itouhiro/PixelMplus?tab=readme-ov-file
+

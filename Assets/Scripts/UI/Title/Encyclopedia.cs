@@ -58,9 +58,9 @@ public class Encyclopedia : MonoBehaviour
     private void Start()
     {
         if(allBallDataList.list.Count == 0) return;
-        
-        var adjustedAlignX = align.x * (Screen.width / 1920f);
-        var adjustedAlignY = align.y * (Screen.height / 1080f);
+
+        var adjustedAlignX = align.x;
+        var adjustedAlignY = align.y;
 
         var nowColumn = 0;
 

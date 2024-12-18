@@ -166,6 +166,7 @@ public class TitleMenu : MonoBehaviour
 
         fadeImage.color = new Color(0, 0, 0, 1);
         fadeImage.DOFade(0.0f, 1.0f);
+        Debug.Log("TitleMenu Start");
     }
 
     private void Update()
