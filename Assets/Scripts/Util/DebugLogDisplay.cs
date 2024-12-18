@@ -1,3 +1,5 @@
+using System;
+using R3;
 using UnityEngine;
 
 public class DebugLogDisplay : MonoBehaviour
@@ -11,6 +13,11 @@ public class DebugLogDisplay : MonoBehaviour
         // ログのテキストをスタイルに設定
         guiStyle.fontSize = 15;
         guiStyle.normal.textColor = Color.white;
+        
+        // 一定間隔で最初の行を削除
+        Observable.Interval(System.TimeSpan.FromSeconds(5))
+            .Subscribe(_ => DeleteFirstLine())
+            .AddTo(this);
     }
 
     private void OnGUI()
@@ -45,6 +52,15 @@ public class DebugLogDisplay : MonoBehaviour
         if (logLines.Length > MAX_LOG_LINES)
         {
             logText = string.Join("\n", logLines, logLines.Length - MAX_LOG_LINES, MAX_LOG_LINES);
+        }
+    }
+
+    private void DeleteFirstLine()
+    {
+        var logLines = logText.Split('\n');
+        if (logLines.Length > 1)
+        {
+            logText = string.Join("\n", logLines, 1, logLines.Length - 1);
         }
     }
 }

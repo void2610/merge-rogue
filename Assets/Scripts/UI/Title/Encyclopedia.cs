@@ -17,7 +17,6 @@ public class Encyclopedia : MonoBehaviour
     [SerializeField] private Vector2 offset;
     [SerializeField] private Vector2 align;
     [SerializeField] private int column = 3;
-    [SerializeField] private float containerSize = 1;
     
     private void SetBallData(GameObject g, BallData b)
     {
@@ -54,34 +53,48 @@ public class Encyclopedia : MonoBehaviour
             TitleMenu.Instance.HideRelicDescriptionWindow();
         }, EventTriggerType.PointerExit);
     }
+    
+    private void AdjustContentSize()
+    {
+        var contentRect = itemContainer.GetComponent<RectTransform>();
+        var count = allBallDataList.list.Count + allRelicDataList.list.Count;
+        var rows = Mathf.CeilToInt((float)count / column);
+        var totalHeight = rows * (align.y + 300) + offset.y;
+
+        // Contentの高さを設定
+        contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, totalHeight);
+        contentRect.anchoredPosition = new Vector2(contentRect.anchoredPosition.x, 0);
+    }
 
     private void Start()
     {
         if(allBallDataList.list.Count == 0) return;
-
-        var adjustedAlignX = align.x;
-        var adjustedAlignY = align.y;
-
-        var nowColumn = 0;
-
+        
+        //WebGLの場合、offsetを調整
+        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        {
+            offset = new Vector2(-7, offset.y - 7);
+        }
+        
+        var tempColumn = 0;
         for (var i = allBallDataList.list.Count - 1; i >= 0; i--)
         {
-            var pos = new Vector3((i % column) * adjustedAlignX, -(i / column) * adjustedAlignY, 0) + new Vector3(offset.x, offset.y, 0);
-            Debug.Log(pos);
-            var container = Instantiate(ballContainerPrefab, this.transform.position + pos, Quaternion.identity, itemContainer);
-            container.transform.localScale = new Vector3(containerSize, containerSize, containerSize);
+            var pos = new Vector3((i % column) * align.x, -(i / column) * align.y, 0) + new Vector3(offset.x, offset.y, 0);
+            var container = Instantiate(ballContainerPrefab, pos, Quaternion.identity, itemContainer);
             SetBallData(container, allBallDataList.list[i]);
-            nowColumn = i / column;
+            tempColumn = i / column;
         }
 
-        nowColumn += 2;
+        tempColumn += 2;
         
         for (var i = allRelicDataList.list.Count - 1; i >= 0; i--)
         {
-            var pos = new Vector3((i % column) * adjustedAlignX, -((i / column) + nowColumn) * adjustedAlignY, 0) + new Vector3(offset.x, offset.y, 0);
-            var container = Instantiate(relicContainerPrefab, this.transform.position + pos, Quaternion.identity, itemContainer);
-            container.transform.localScale = new Vector3(containerSize, containerSize, containerSize);
+            var pos = new Vector3((i % column) * align.x, -((i / column) + tempColumn) * align.y, 0) + new Vector3(offset.x, offset.y, 0);
+            var container = Instantiate(relicContainerPrefab, pos, Quaternion.identity, itemContainer);
             SetRelicData(container, allRelicDataList.list[i]);
         }
+        
+        AdjustContentSize();
+        Canvas.ForceUpdateCanvases();
     }
 }
