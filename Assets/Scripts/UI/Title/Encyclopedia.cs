@@ -67,6 +67,7 @@ public class Encyclopedia : MonoBehaviour
         for (var i = allBallDataList.list.Count - 1; i >= 0; i--)
         {
             var pos = new Vector3((i % column) * adjustedAlignX, -(i / column) * adjustedAlignY, 0) + new Vector3(offset.x, offset.y, 0);
+            Debug.Log(pos);
             var container = Instantiate(ballContainerPrefab, this.transform.position + pos, Quaternion.identity, itemContainer);
             container.transform.localScale = new Vector3(containerSize, containerSize, containerSize);
             SetBallData(container, allBallDataList.list[i]);
