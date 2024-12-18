@@ -66,6 +66,7 @@ public class GameManager : MonoBehaviour
     public Player player;
     public UIManager uiManager => this.GetComponent<UIManager>();
     public StageManager stageManager => GetComponent<StageManager>();
+    public ScoreManager scoreManager => GetComponent<ScoreManager>();
 
     public float RandomRange(float min, float max)
     {
@@ -110,7 +111,7 @@ public class GameManager : MonoBehaviour
     {
         isGameOver = true;
         ChangeState(GameState.GameOver);
-        uiManager.EnableCanvasGroup("GameOver", true);
+        scoreManager.ShowScore(stageManager.currentStageCount.Value, enemyContainer.defeatedEnemyCount.Value, coin.Value);
     }
 
     public void ChangeState(GameState newState)
@@ -176,7 +177,6 @@ public class GameManager : MonoBehaviour
         }
         
         ChangeState(GameState.StageMoving);
-
         AddCoin(Application.isEditor ? 9999 : 10);
     }
 

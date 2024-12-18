@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using R3;
 using UnityEngine;
 
 public class EnemyContainer : MonoBehaviour
@@ -12,12 +13,10 @@ public class EnemyContainer : MonoBehaviour
         public float probability;
     }
 
-    [SerializeField]
-    private List<EnemyData> enemies;
-    [SerializeField]
-    private List<EnemyData> bosses = new();
-    [SerializeField]
-    private float alignment = 4;
+    [SerializeField] private List<EnemyData> enemies;
+    [SerializeField] private List<EnemyData> bosses = new();
+    [SerializeField] private float alignment = 4;
+    public ReactiveProperty<int> defeatedEnemyCount = new(0);
     private readonly List<GameObject> currentEnemies = new();
     private const int ENEMY_NUM = 4;
     private int gainedExp;
@@ -112,12 +111,8 @@ public class EnemyContainer : MonoBehaviour
 
     public void RemoveEnemy(GameObject enemy)
     {
+        defeatedEnemyCount.Value++;
         gainedExp += enemy.GetComponent<EnemyBase>().exp;
-        // 0.5秒待つ
-        // DOVirtual.DelayedCall(0.5f, () =>
-        // {
-        //     GameManager.Instance.AddCoin(enemy.GetComponent<EnemyBase>().coin);
-        // });        
         var g = enemy.transform.parent.gameObject;
         currentEnemies.Remove(g);
         enemy.GetComponent<EnemyBase>().OnDisappear();
