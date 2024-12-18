@@ -64,12 +64,12 @@ public class SeManager : MonoBehaviour
         var audioSource = GetUnusedAudioSource();
         if (clip == null)
         {
-            Debug.LogWarning("AudioClip could not be found.");
+            Debug.LogError("AudioClip could not be found.");
             return;
         }
         if (audioSource == null)
         {
-            Debug.LogWarning("There is no available AudioSource.");
+            // Debug.LogWarning("There is no available AudioSource.");
             return;
         }
 
