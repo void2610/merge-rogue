@@ -269,7 +269,7 @@ public class MergeManager : MonoBehaviour
             }
         }
 
-        var isDragging = Input.GetMouseButton(0) || Input.GetKeyDown(KeyCode.Space);
+        var isDragging = Input.GetKeyDown(KeyCode.Space) || (Input.GetMouseButton(0) && isMouseOvered);
         if (isDragging && Time.time - lastFallTime > COOL_TIME && remainingBalls > 0)
         {
             SeManager.Instance.PlaySe("fall");
