@@ -6,6 +6,7 @@ public class RelicDescriptionWindow : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI descriptionText;
+    [SerializeField] private TextMeshProUGUI flavorText;
     [SerializeField] private Vector2 minPos; // RectTransform上の座標で指定
     [SerializeField] private Vector2 maxPos; // RectTransform上の座標で指定
     private CanvasGroup cg;
@@ -19,6 +20,7 @@ public class RelicDescriptionWindow : MonoBehaviour
         nameText.text = r.displayName;
         nameText.color = MyColors.GetRarityColor(r.rarity);
         descriptionText.text = r.description;
+        flavorText.text = r.flavorText;
 
         // ワールド座標をRectTransformのローカル座標に変換
         RectTransformUtility.ScreenPointToLocalPointInRectangle(

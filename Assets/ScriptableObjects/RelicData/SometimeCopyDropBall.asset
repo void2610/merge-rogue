@@ -17,5 +17,6 @@ MonoBehaviour:
   sprite: {fileID: -7343220986905845580, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
   displayName: "\u4E0D\u601D\u8B70\u306A\u304A\u5B88\u308A"
   description: "\u305F\u307E\u306B\u843D\u3068\u3057\u305F\u30DC\u30FC\u30EB\u3092\u30B3\u30D4\u30FC\u3059\u308B"
+  flavorText: "\u30CD\u30BF\u5207\u308C"
   rarity: 2
   price: 15

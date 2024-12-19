@@ -15,7 +15,11 @@ MonoBehaviour:
   id: 0
   className: HealBall
   displayName: "\u30D2\u30FC\u30EB\u30DC\u30FC\u30EB"
-  description: "\u30DC\u30FC\u30EB\u3092\u6D88\u3059\u3068\u56DE\u5FA9\u3059\u308B"
+  mainDescription: "HP\u3092\u30DC\u30FC\u30EB\u30EC\u30D9\u30EB*1\u56DE\u5FA9\u3059\u308B"
+  altDescription: "HP\u30921\u56DE\u5FA9\u3059\u308B"
+  flavorText: "\u30B2\u30FC\u30E0\u3067\u3082\u8D64\u5341\u5B57\u306F\u4F7F\u3063\u3061\u3083\u30C0\u30E1\u3060\u305E"
   sprite: {fileID: -3512041906677508852, guid: c1467e78e28cc4f4499c266b13c1fcc2, type: 3}
   rarity: 2
+  atk: 1
+  size: 1
   price: 20

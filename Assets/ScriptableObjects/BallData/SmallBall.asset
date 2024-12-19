@@ -15,7 +15,11 @@ MonoBehaviour:
   id: 0
   className: SmallBall
   displayName: "\u5C0F\u3055\u3044\u30DC\u30FC\u30EB"
-  description: "\u5C0F\u3055\u3044\u4EE3\u308F\u308A\u306B\u653B\u6483\u529B\u304C\u4F4E\u3044"
+  mainDescription: "\u901A\u5E38\u653B\u6483"
+  altDescription: "\u4E00\u756A\u5F8C\u308D\u306E\u6575\u306B\u30C0\u30E1\u30FC\u30B8"
+  flavorText: "\u5C0F\u3055\u306A\u4F53\u306B\u5927\u304D\u306A\u529B"
   sprite: {fileID: 21300000, guid: 401e19353088e4a0fbb969995fe66b3c, type: 3}
   rarity: 0
+  atk: 0.75
+  size: 0.5
   price: 5

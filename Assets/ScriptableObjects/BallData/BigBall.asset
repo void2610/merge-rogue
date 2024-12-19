@@ -15,7 +15,11 @@ MonoBehaviour:
   id: 0
   className: BigBall
   displayName: "\u30C7\u30AB\u3044\u30DC\u30FC\u30EB"
-  description: "\u5927\u304D\u3044\u4EE3\u308F\u308A\u306B\u653B\u6483\u529B\u304C\u9AD8\u3044"
+  mainDescription: "\u901A\u5E38\u653B\u6483"
+  altDescription: "\u4E00\u756A\u524D\u306E\u6575\u306B\u30C0\u30E1\u30FC\u30B8"
+  flavorText: "\u3067\u3063\u304B\u3044"
   sprite: {fileID: -5920518178886362482, guid: 7d25eb6cc8df34beeb45ced10b075ad8, type: 3}
   rarity: 0
+  atk: 2
+  size: 1.5
   price: 10

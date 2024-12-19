@@ -15,7 +15,11 @@ MonoBehaviour:
   id: 0
   className: NormalBall
   displayName: "\u666E\u901A\u306E\u30DC\u30FC\u30EB"
-  description: "\u30DC\u30FC\u30EB\u3060\u3088"
+  mainDescription: "\u901A\u5E38\u653B\u6483"
+  altDescription: "\u4E00\u756A\u524D\u306E\u6575\u306B\u30C0\u30E1\u30FC\u30B8"
+  flavorText: "\u30DC\u30FC\u30EB\u3060\u3088\uFF01"
   sprite: {fileID: 0}
   rarity: 0
+  atk: 1
+  size: 1
   price: 1

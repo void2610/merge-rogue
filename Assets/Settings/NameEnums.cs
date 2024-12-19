@@ -29,6 +29,7 @@ namespace uPalette.Generated
         Accent,
         Button,
         WindowBackGround,
+        SubText,
     }
 
     public static class ColorEntryExtensions
@@ -49,6 +50,8 @@ namespace uPalette.Generated
                     return "a4a97bfe-89a3-46d8-86dd-bd692b94adb3";
                 case ColorEntry.WindowBackGround:
                     return "8ab899da-40ec-48f6-acd4-8f66a0079bc6";
+                case ColorEntry.SubText:
+                    return "2e8f84c6-5cff-4f73-8793-b449a0124623";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(entry), entry, null);
             }
