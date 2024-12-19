@@ -29,7 +29,7 @@ public class InventoryManager : MonoBehaviour
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         ball.transform.position = CalcInventoryPosition(level - 1);
         inventory[level - 1] = ball;
-        inventoryUI.CreateBallUI(ball, level - 1);
+        inventoryUI.CreateBallUI(ball, level - 1, data);
         if(old) Destroy(old);
     }
 
@@ -150,7 +150,7 @@ public class InventoryManager : MonoBehaviour
             var ball = CreateBallInstanceFromBallData(normalBallData, i + 1);
             ball.transform.position = CalcInventoryPosition(i);
             ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-            inventoryUI.CreateBallUI(ball, i);
+            inventoryUI.CreateBallUI(ball, i, normalBallData);
             inventory.Add(ball);
         }
         

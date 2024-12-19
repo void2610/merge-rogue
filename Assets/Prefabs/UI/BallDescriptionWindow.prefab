@@ -449,7 +449,7 @@ MonoBehaviour:
   atkText: {fileID: 9146311346860671986}
   sizeText: {fileID: 6121599417307764060}
   minPos: {x: -290, y: -125}
-  maxPos: {x: 350, y: 100}
+  maxPos: {x: 350, y: 85}
 --- !u!1 &2995321837929227927
 GameObject:
   m_ObjectHideFlags: 0

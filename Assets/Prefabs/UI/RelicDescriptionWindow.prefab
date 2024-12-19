@@ -708,4 +708,4 @@ MonoBehaviour:
   descriptionText: {fileID: 4701696993773371280}
   flavorText: {fileID: 8779522243495380326}
   minPos: {x: -290, y: -125}
-  maxPos: {x: 350, y: 100}
+  maxPos: {x: 350, y: 85}

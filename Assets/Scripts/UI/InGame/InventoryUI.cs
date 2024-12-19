@@ -14,7 +14,7 @@ public class InventoryUI : MonoBehaviour
     private const float SIZE_COEFFICIENT = 8f;
     private static List<float> ballSizes => InventoryManager.Instance.sizes;
 
-    public void CreateBallUI(GameObject ball, int level)
+    public void CreateBallUI(GameObject ball, int level, BallData data)
     {
         var g = Instantiate(ballUIPrefab, inventoryUIContainer.transform);
         
@@ -28,7 +28,8 @@ public class InventoryUI : MonoBehaviour
         if (sprite != null) g.transform.Find("Icon").GetComponent<Image>().sprite = sprite;
         else g.transform.Find("Icon").GetComponent<Image>().color = new Color(0, 0, 0, 0);
         
-        SetEvent(g, level);
+        SetCursorEvent(g, level);
+        SetDescriptionWindowEvent(g, data);
         if (items.Count <= level)
         {
             items.Add(g);
@@ -53,23 +54,16 @@ public class InventoryUI : MonoBehaviour
         cursor.GetComponent<SpriteRenderer>().enabled = b;
     }
     
-    private void SetEvent(GameObject ball, int index)
+    private void SetCursorEvent(GameObject ball, int index)
     {
-        ball.AddComponent<EventTrigger>().triggers = new List<EventTrigger.Entry>();
-        var entry = new EventTrigger.Entry
-        {
-            eventID = EventTriggerType.PointerEnter
-        };
+        Utils.AddEventToObject(ball, () => { SetCursor(index); }, EventTriggerType.PointerEnter);
+        Utils.AddEventToObject(ball, () => { Shop.Instance.BuyBall(index); }, EventTriggerType.PointerClick);
+    }
 
-        entry.callback.AddListener(_ => { SetCursor(index); });
-        ball.GetComponent<EventTrigger>().triggers.Add(entry);
-        entry = new EventTrigger.Entry
-        {
-            eventID = EventTriggerType.PointerClick
-        };
-        entry.callback.AddListener(_ => { Shop.Instance.BuyBall(index); });
-        ball.GetComponent<EventTrigger>().triggers.Add(entry);
-        // inventory.Add(ball);
+    private void SetDescriptionWindowEvent(GameObject g, BallData data)
+    {
+        Utils.AddEventToObject(g, () => { GameManager.Instance.uiManager.ShowBallDescriptionWindow(data, g.transform.position + new Vector3(2.5f, 0, 0)); }, EventTriggerType.PointerEnter);
+        Utils.AddEventToObject(g, () => { GameManager.Instance.uiManager.HideBallDescriptionWindow(); }, EventTriggerType.PointerExit);
     }
     
     private Vector3 CalcInventoryPosition(int index)

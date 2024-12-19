@@ -138,7 +138,7 @@ public class EnemyContainer : MonoBehaviour
         // 全体攻撃
         if (allDamage > 0)
         {
-            ParticleManager.Instance.AllHitParticle(new Vector3(-4, 3.3f, 0));
+            ParticleManager.Instance.AllHitParticle(new Vector3(-3.7f, 3.3f, 0));
             SeManager.Instance.PlaySe("playerAttack");
             CameraMove.Instance.ShakeCamera(0.5f, allDamage * 0.03f);
             foreach (var e in es)
