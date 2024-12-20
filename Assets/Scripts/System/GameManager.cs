@@ -114,17 +114,8 @@ public class GameManager : MonoBehaviour
         scoreManager.ShowScore(stageManager.currentStageCount.Value + 1, enemyContainer.defeatedEnemyCount.Value, coin.Value);
     }
     
-    public void CheckEnemyAndLevelUp()
-    {
-        if (enemyContainer.GetCurrentEnemyCount() > 0 && MergeManager.Instance.remainingBalls <= 0)
-            ChangeState(GameState.EnemyAttack);
-    }
-
     public void ChangeState(GameState newState)
     {
-        // switch (state)
-        // {
-        // }
         state = newState;
         switch (newState)
         {

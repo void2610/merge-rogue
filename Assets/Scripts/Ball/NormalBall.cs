@@ -24,7 +24,7 @@ public class NormalBall : BallBase
         var isAttacks = new List<bool>(new bool[enemyCount]);
         if (enemyCount > 0)
             isAttacks[0] = true;
-        GameManager.Instance.enemyContainer.AttackEnemyBySkill((int)(attack * playerAttack), isAttacks);
+        GameManager.Instance.enemyContainer.AttackEnemyBySkill((int)(attack * this.level * playerAttack), isAttacks);
         
         base.AltFire(enemyCount, playerAttack);
     }

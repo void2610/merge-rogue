@@ -86,9 +86,28 @@ public class MergeManager : MonoBehaviour
         return wallMaterial;
     }
     
+    public void DestroyRemainingBalls()
+    {
+        if (nextBall)
+        {
+            Destroy(nextBall);
+            nextBall = null;
+        }
+        if (currentBall)
+        {
+            Destroy(currentBall);
+            currentBall = null;
+        }
+        
+        ballCountText.text = "0/" + ballPerOneTurn;
+        DOTween.To(() => arrowMaterial.GetFloat(alpha), x => arrowMaterial.SetFloat(alpha, x), 0, 0.5f);
+    }
+    
     public void ResetRemainingBalls()
     {
         remainingBalls = ballPerOneTurn;
+        
+        DestroyRemainingBalls();
 
         if (ballPerOneTurn > 1)
         {
@@ -125,6 +144,7 @@ public class MergeManager : MonoBehaviour
 
     public void Attack()
     {
+        // 攻撃がない場合は敵の攻撃に移行
         if (singleAttackCount <= 0 && allAttackCount <= 0)
         {
             GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
@@ -174,7 +194,6 @@ public class MergeManager : MonoBehaviour
         var enemyCount = GameManager.Instance.enemyContainer.GetCurrentEnemyCount();
         currentBall.GetComponent<BallBase>().AltFire(enemyCount, attackMagnification);
         currentBall = null;
-        // alt発動してボールも落ちてくる
     }
 
     private void DecideNextBall()
