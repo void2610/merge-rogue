@@ -136,7 +136,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Merge:
                 Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
-                MergeManager.Instance.ResetRemainingBalls();
+                MergeManager.Instance.StartMerge();
                 break;
             case GameState.PlayerAttack:
                 Physics2D.simulationMode = SimulationMode2D.Script;

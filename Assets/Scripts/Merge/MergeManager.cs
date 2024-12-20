@@ -8,13 +8,6 @@ using Unity.VisualScripting;
 
 public class MergeManager : MonoBehaviour
 {
-    [System.Serializable]
-    public struct BallData
-    {
-        public GameObject prefab;
-        public float probability;
-    }
-
     public static MergeManager Instance;
     private static readonly int ratio = Shader.PropertyToID("_Ratio");
     private static readonly int alpha = Shader.PropertyToID("_Alpha");
@@ -29,24 +22,25 @@ public class MergeManager : MonoBehaviour
     
     public float attackMagnification = 1.0f;
     public int remainingBalls { get; private set; } = 0;
-    public GameObject currentBall;
-    public GameObject nextBall;
+    public GameObject currentBall { get; private set; } = null;
+    public GameObject nextBall { get; private set; } = null;
     
+    private const float MOVE_SPEED = 1.0f;
+    private const float COOL_TIME = 0.5f;
+    private readonly List<float> attacks = new() { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 3.75f, 4.0f, 4.25f, 4.5f, 4.75f, 5.0f, 5.25f, 5.5f, 5.75f, 6.0f };
+    private readonly List<float> wallWidths = new() { 2.0f, 2.75f, 3.5f, 4.25f, 5.0f, 5.75f, 6.0f};
+    private int wallWidthLevel = 0;
+    private int attackLevel = 0;
     private GameObject ballContainer;
     private float lastFallTime;
     private float limit = -2.5f;
-    private readonly List<float> wallWidths = new() { 2.0f, 2.75f, 3.5f, 4.25f, 5.0f, 5.75f, 6.0f};
-    private int wallWidthLevel;
-    private readonly List<float> attacks = new() { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 3.75f, 4.0f, 4.25f, 4.5f, 4.75f, 5.0f, 5.25f, 5.5f, 5.75f, 6.0f };
-    private int attackLevel;
     private Vector3 currentBallPosition = new(0, 1f, 0);
-    private const float MOVE_SPEED = 1.0f;
-    private const float COOL_TIME = 0.5f;
     private int ballPerOneTurn = 2;
     private int singleAttackCount;
     private int allAttackCount;
     private Dictionary<Rigidbody2D, float> stopTimers;
     private int timerCount;
+    private bool isMovable = false;
     
     public void LevelUpWallWidth()
     {
@@ -86,29 +80,39 @@ public class MergeManager : MonoBehaviour
         return wallMaterial;
     }
     
-    public void DestroyRemainingBalls()
+    public void StartMerge()
     {
+        isMovable = true;
+        ResetRemainingBalls();
+    }
+    
+    public void EndMerge()
+    {
+        if(!isMovable) return;
+        
         if (nextBall)
         {
+            Debug.Log(nextBall.name);
             Destroy(nextBall);
             nextBall = null;
         }
+
         if (currentBall)
         {
+            Debug.Log(currentBall.name);
             Destroy(currentBall);
             currentBall = null;
         }
         
         ballCountText.text = "0/" + ballPerOneTurn;
         DOTween.To(() => arrowMaterial.GetFloat(alpha), x => arrowMaterial.SetFloat(alpha, x), 0, 0.5f);
+        isMovable = false;
     }
     
-    public void ResetRemainingBalls()
+    // 次のボールを生成
+    private void ResetRemainingBalls()
     {
         remainingBalls = ballPerOneTurn;
-        
-        DestroyRemainingBalls();
-
         if (ballPerOneTurn > 1)
         {
             nextBall = InventoryManager.Instance.GetRandomBall(nextBallPosition);
@@ -193,18 +197,18 @@ public class MergeManager : MonoBehaviour
         EventManager.OnBallAlt.Trigger(0);
         var enemyCount = GameManager.Instance.enemyContainer.GetCurrentEnemyCount();
         currentBall.GetComponent<BallBase>().AltFire(enemyCount, attackMagnification);
-        currentBall = null;
     }
 
     private void DecideNextBall()
     {
+        if(!isMovable) return;
+        
         fallAnchor.GetComponent<HingeJoint2D>().connectedBody = null;
 
         // リロードするかどうか
         if (--remainingBalls > 0)
         {
             currentBall = nextBall;
-            if(!currentBall) currentBall = InventoryManager.Instance.GetRandomBall();
             currentBall.transform.position = fallAnchor.transform.position;
             currentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
             fallAnchor.GetComponent<HingeJoint2D>().connectedBody = currentBall.GetComponent<Rigidbody2D>();
@@ -272,11 +276,14 @@ public class MergeManager : MonoBehaviour
     {
         if (IsAllBallsStopped())
         {
+            EndMerge();
             GameManager.Instance.ChangeState(GameManager.GameState.PlayerAttack);
         }
         
         if(!currentBall) return;
         if (GameManager.Instance.isGameOver) return;
+        if (GameManager.Instance.state != GameManager.GameState.Merge) return;
+        if (!isMovable) return;
 
         
         limit = wall.WallWidth / 2 + 0.05f;
@@ -321,7 +328,7 @@ public class MergeManager : MonoBehaviour
         }
         else if (isAlt)
         {
-            SeManager.Instance.PlaySe("fall");
+            SeManager.Instance.PlaySe("alt");
             lastFallTime = Time.time;
             Alt();
             DecideNextBall();

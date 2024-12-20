@@ -12748,8 +12748,6 @@ MonoBehaviour:
   ballCountText: {fileID: 595156495}
   nextBallPosition: {x: -1.87, y: 1.75, z: 0}
   attackMagnification: 1
-  currentBall: {fileID: 0}
-  nextBall: {fileID: 0}
 --- !u!1 &1852640721
 GameObject:
   m_ObjectHideFlags: 0
@@ -15824,18 +15822,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
-      propertyPath: soundDatas.Array.data[0].volume
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
-      propertyPath: soundDatas.Array.data[1].volume
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
-      propertyPath: soundDatas.Array.data[14].volume
-      value: 0.1
-      objectReference: {fileID: 0}
     - target: {fileID: 7521127176204447298, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: m_LocalPosition.x
       value: 434.22272

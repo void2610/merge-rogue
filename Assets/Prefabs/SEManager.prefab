@@ -90,4 +90,7 @@ MonoBehaviour:
     volume: 1
   - name: heal
     audioClip: {fileID: 8300000, guid: 71a849ee2bc83430d86bbf5c8f9039a6, type: 3}
-    volume: 0.5
+    volume: 0.1
+  - name: alt
+    audioClip: {fileID: 8300000, guid: 0bd254bf6869044f1956508e3975a305, type: 3}
+    volume: 0.2

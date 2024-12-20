@@ -130,7 +130,7 @@ public class EnemyBase : MonoBehaviour
     {
         maxHealth = (int)(GameManager.Instance.RandomRange(hMin, hMax) * magnification);
         health = maxHealth;
-        attack = (int)(attack * (magnification * 0.5f));
+        attack = (int)(attack * (magnification * 0.3f));
 
         GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         canvas.GetComponent<CanvasGroup>().alpha = 0;

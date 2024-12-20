@@ -120,9 +120,9 @@ public class EnemyContainer : MonoBehaviour
         // 全ての敵を倒したらステージ進行
         if (currentEnemies.Count == 0)
         {
+            MergeManager.Instance.EndMerge();
             Utils.Instance.WaitAndInvoke(2.0f, () =>
             {
-                MergeManager.Instance.DestroyRemainingBalls();
                 GameManager.Instance.player.AddExp(gainedExp);
                 gainedExp = 0;
             });
@@ -215,7 +215,8 @@ public class EnemyContainer : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
-        GameManager.Instance.ChangeState(GameManager.GameState.Merge);
+        if(currentEnemies.Count > 0)
+            GameManager.Instance.ChangeState(GameManager.GameState.Merge);
     }
 
     public void Awake()
