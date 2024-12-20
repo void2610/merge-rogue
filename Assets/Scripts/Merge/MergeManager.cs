@@ -162,13 +162,27 @@ public class MergeManager : MonoBehaviour
         ParticleManager.Instance.MergeText(allAttackCount, p, Color.red);
     }
 
-    private void FallAndDecideNextBall()
+    private void Main()
     {
-        EventManager.OnBallDropped.Trigger(0);
+        EventManager.OnBallMain.Trigger(0);
         currentBall.GetComponent<BallBase>().Unfreeze();
         currentBall.transform.SetParent(ballContainer.transform);
+    }
+
+    private void Alt()
+    {
+        EventManager.OnBallAlt.Trigger(0);
+        var enemyCount = GameManager.Instance.enemyContainer.GetCurrentEnemyCount();
+        currentBall.GetComponent<BallBase>().AltFire(enemyCount, attackMagnification);
+        Debug.Log(currentBall.name);
+        // alt発動してボールも落ちてくる
+    }
+
+    private void DecideNextBall()
+    {
         fallAnchor.GetComponent<HingeJoint2D>().connectedBody = null;
-        
+
+        // リロードするかどうか
         if (--remainingBalls > 0)
         {
             currentBall = nextBall;
@@ -241,8 +255,8 @@ public class MergeManager : MonoBehaviour
         if(remainingBalls < 1) return;
         
         limit = wall.WallWidth / 2 + 0.05f;
-        float size = currentBall.transform.localScale.x + 0.5f;
-        float r = Mathf.Min(1, (Time.time - lastFallTime) / COOL_TIME);
+        var size = currentBall.transform.localScale.x + 0.5f;
+        var r = Mathf.Min(1, (Time.time - lastFallTime) / COOL_TIME);
         ballGauge.GetComponent<SpriteRenderer>().material.SetFloat(ratio, r + 0.1f);
         ballGauge.transform.localScale = currentBall.transform.localScale * 1.01f;
         ballGauge.transform.position = currentBall.transform.position;
@@ -269,12 +283,24 @@ public class MergeManager : MonoBehaviour
             }
         }
 
-        var isDragging = Input.GetKeyDown(KeyCode.Space) || (Input.GetMouseButton(0) && isMouseOvered);
-        if (isDragging && Time.time - lastFallTime > COOL_TIME && remainingBalls > 0)
+        if (Time.time - lastFallTime <= COOL_TIME || remainingBalls <= 0) return;
+
+        var isMain = Input.GetKeyDown(KeyCode.Space) || (Input.GetMouseButton(0) && isMouseOvered);
+        var isAlt = Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) || (Input.GetMouseButton(1) && isMouseOvered);
+        
+        if (isMain)
         {
             SeManager.Instance.PlaySe("fall");
             lastFallTime = Time.time;
-            FallAndDecideNextBall();
+            Main();
+            DecideNextBall();
+        }
+        else if (isAlt)
+        {
+            SeManager.Instance.PlaySe("fall");
+            lastFallTime = Time.time;
+            Alt();
+            DecideNextBall();
         }
         
         fallAnchor.transform.position = currentBallPosition + new Vector3(0, 0, 0);

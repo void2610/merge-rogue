@@ -130,6 +130,31 @@ public class EnemyContainer : MonoBehaviour
     {
         StartCoroutine(AttackEnemyCoroutine(singleDamage, allDamage));
     }
+
+    public void AttackEnemyBySkill(int damage, List<bool> isAttacks)
+    {
+        // listで指定したindexの敵に攻撃
+        StartCoroutine(AttackEnemyBySkillCoroutine(damage, isAttacks));
+    }
+    
+    private IEnumerator AttackEnemyBySkillCoroutine(int damage, List<bool> isAttacks)
+    {
+        if(isAttacks.Count != currentEnemies.Count) Debug.LogError("The number of bool list does not match the number of enemies");
+        
+        var es = GetAllEnemies();
+        for (var i = 0; i < isAttacks.Count; i++)
+        {
+            if (!isAttacks[i]) continue;
+            
+            es[i].TakeDamage(damage, true);
+            SeManager.Instance.PlaySe("playerAttack");
+            CameraMove.Instance.ShakeCamera(0.5f, damage * 0.01f);
+        }
+        yield return new WaitForSeconds(0.5f);
+        
+        // 次のstateに遷移
+        GameManager.Instance.CheckEnemyAndLevelUp();
+    }
     
     private IEnumerator AttackEnemyCoroutine(int singleDamage, int allDamage)
     {
@@ -148,7 +173,12 @@ public class EnemyContainer : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
-        if (GameManager.Instance.enemyContainer.GetCurrentEnemyCount() == 0) yield break;
+        if (GameManager.Instance.enemyContainer.GetCurrentEnemyCount() == 0)
+        {
+            // 次のstateに遷移
+            GameManager.Instance.CheckEnemyAndLevelUp();
+            yield break;
+        }
 
         // 単体攻撃
         // 一番前の敵を攻撃、攻撃力が残っていたら次の敵を攻撃
@@ -166,13 +196,8 @@ public class EnemyContainer : MonoBehaviour
             yield return new WaitForSeconds(0.3f);
         }
         
-        
-        // 敵が残っていたら敵の攻撃へ
-        if (GameManager.Instance.enemyContainer.GetCurrentEnemyCount() > 0)
-        {
-            Utils.Instance.WaitAndInvoke(0.75f,
-                () => GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack));
-        }
+        // 次のstateに遷移
+        GameManager.Instance.CheckEnemyAndLevelUp();
     }
     
     public void Action()

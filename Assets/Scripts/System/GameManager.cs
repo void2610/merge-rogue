@@ -113,6 +113,12 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.GameOver);
         scoreManager.ShowScore(stageManager.currentStageCount.Value + 1, enemyContainer.defeatedEnemyCount.Value, coin.Value);
     }
+    
+    public void CheckEnemyAndLevelUp()
+    {
+        if (enemyContainer.GetCurrentEnemyCount() > 0)
+            ChangeState(GameState.EnemyAttack);
+    }
 
     public void ChangeState(GameState newState)
     {
