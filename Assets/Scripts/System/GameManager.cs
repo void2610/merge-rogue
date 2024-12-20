@@ -62,7 +62,8 @@ public class GameManager : MonoBehaviour
     public bool isGameOver { get; private set; } = false;
     public readonly ReactiveProperty<int> coin = new(0);
     private int seed = 42;
-    private bool isPaused;
+    private bool isPaused = false;
+    private bool isMapOpened = false;
     public Player player;
     public UIManager uiManager => this.GetComponent<UIManager>();
     public StageManager stageManager => GetComponent<StageManager>();
@@ -185,6 +186,25 @@ public class GameManager : MonoBehaviour
                 isPaused = true;
                 uiManager.OnClickPause();
             }
+        }
+        
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            if (isMapOpened)
+            {
+                isMapOpened = false;
+                uiManager.CloseMap();
+            }
+            else
+            {
+                isMapOpened = true;
+                uiManager.OpenMap();
+            }
+        }
+        
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            uiManager.OnClickSpeed();
         }
     }
 }
