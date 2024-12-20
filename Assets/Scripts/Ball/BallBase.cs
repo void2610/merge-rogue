@@ -32,10 +32,16 @@ public class BallBase : MonoBehaviour
         isFrozen = false;
     }
 
-
     protected virtual void Effect(BallBase other)
     {
-        // Effect
+        // Main Effect
+    }
+    
+    public virtual void AltFire()
+    {
+        // Alt Effect
+        ParticleManager.Instance.MergeParticle(this.transform.position);
+        Destroy(this.gameObject);
     }
 
     protected virtual void Awake()

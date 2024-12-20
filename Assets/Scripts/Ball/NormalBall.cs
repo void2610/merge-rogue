@@ -16,4 +16,10 @@ public class NormalBall : BallBase
         DefaultMergeParticle();
         MergeManager.Instance.AddSingleAttackCount(attack * level, this.transform.position);
     }
+    
+    public override void AltFire()
+    {
+        base.AltFire();
+        DefaultMergeParticle();
+    }
 }

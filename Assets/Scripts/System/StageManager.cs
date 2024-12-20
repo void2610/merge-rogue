@@ -239,6 +239,8 @@ public class StageManager : MonoBehaviour
         // ボスを倒したらマップを再生成して次のステージを設定
         if (currentStage?.type == StageType.Boss)
         {
+            // ボスを倒したら回復
+            GameManager.Instance.player.HealToFull();
             GenerateMap();
             DrawMap();
             SetButtonEvent();
