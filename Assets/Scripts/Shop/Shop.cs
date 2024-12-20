@@ -228,6 +228,7 @@ public class Shop : MonoBehaviour
 
     private void Update()
     {
+        if(GameManager.Instance.state != GameManager.GameState.Event) return;
         if (state == ShopState.NotSelected) return;
 
         for (var i = 0; i < ITEM_NUM; i++)

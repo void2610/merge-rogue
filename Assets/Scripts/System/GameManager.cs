@@ -116,7 +116,7 @@ public class GameManager : MonoBehaviour
     
     public void CheckEnemyAndLevelUp()
     {
-        if (enemyContainer.GetCurrentEnemyCount() > 0)
+        if (enemyContainer.GetCurrentEnemyCount() > 0 && MergeManager.Instance.remainingBalls <= 0)
             ChangeState(GameState.EnemyAttack);
     }
 

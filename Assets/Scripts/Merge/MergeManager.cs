@@ -28,13 +28,13 @@ public class MergeManager : MonoBehaviour
     [SerializeField] private Vector3 nextBallPosition;
     
     public float attackMagnification = 1.0f;
-    private float limit = -2.5f;
-
+    public int remainingBalls { get; private set; } = 0;
     public GameObject currentBall;
     public GameObject nextBall;
+    
     private GameObject ballContainer;
     private float lastFallTime;
-    
+    private float limit = -2.5f;
     private readonly List<float> wallWidths = new() { 2.0f, 2.75f, 3.5f, 4.25f, 5.0f, 5.75f, 6.0f};
     private int wallWidthLevel;
     private readonly List<float> attacks = new() { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 3.75f, 4.0f, 4.25f, 4.5f, 4.75f, 5.0f, 5.25f, 5.5f, 5.75f, 6.0f };
@@ -43,7 +43,6 @@ public class MergeManager : MonoBehaviour
     private const float MOVE_SPEED = 1.0f;
     private const float COOL_TIME = 0.5f;
     private int ballPerOneTurn = 2;
-    private int remainingBalls;
     private int singleAttackCount;
     private int allAttackCount;
     private Dictionary<Rigidbody2D, float> stopTimers;
@@ -174,7 +173,7 @@ public class MergeManager : MonoBehaviour
         EventManager.OnBallAlt.Trigger(0);
         var enemyCount = GameManager.Instance.enemyContainer.GetCurrentEnemyCount();
         currentBall.GetComponent<BallBase>().AltFire(enemyCount, attackMagnification);
-        Debug.Log(currentBall.name);
+        currentBall = null;
         // alt発動してボールも落ちてくる
     }
 
@@ -194,6 +193,10 @@ public class MergeManager : MonoBehaviour
             {
                 nextBall = InventoryManager.Instance.GetRandomBall();
                 nextBall.transform.position = nextBallPosition;
+            }
+            else
+            {
+                nextBall = null;
             }
         }
         else
@@ -235,6 +238,7 @@ public class MergeManager : MonoBehaviour
         wallMaterial.bounciness = 0.0f;
         fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = false;
         arrowMaterial.SetFloat(alpha, 0);
+        remainingBalls = 0;
         ballCountText.text = remainingBalls + "/" + ballPerOneTurn;
     }
 
@@ -243,7 +247,6 @@ public class MergeManager : MonoBehaviour
         // if (Application.isEditor) coolTime = 0.1f;
         ballGauge.GetComponent<SpriteRenderer>().material.SetFloat(ratio, 1);
         fallAnchor.transform.position = currentBallPosition;
-        // FIXME: currentBallと落としたballが反応して消える
     }
 
     private void Update()
@@ -252,7 +255,10 @@ public class MergeManager : MonoBehaviour
         {
             GameManager.Instance.ChangeState(GameManager.GameState.PlayerAttack);
         }
-        if(remainingBalls < 1) return;
+        
+        if(!currentBall) return;
+        if (GameManager.Instance.isGameOver) return;
+
         
         limit = wall.WallWidth / 2 + 0.05f;
         var size = currentBall.transform.localScale.x + 0.5f;
@@ -261,7 +267,6 @@ public class MergeManager : MonoBehaviour
         ballGauge.transform.localScale = currentBall.transform.localScale * 1.01f;
         ballGauge.transform.position = currentBall.transform.position;
         
-        if (GameManager.Instance.isGameOver) return;
 
         var mousePosX = GameManager.Instance.uiCamera.ScreenToWorldPoint(Input.mousePosition).x;
         var isMouseOvered = mousePosX > -limit + size / 2 && mousePosX < limit - size / 2;
@@ -283,7 +288,7 @@ public class MergeManager : MonoBehaviour
             }
         }
 
-        if (Time.time - lastFallTime <= COOL_TIME || remainingBalls <= 0) return;
+        if (Time.time - lastFallTime <= COOL_TIME || remainingBalls < 0) return;
 
         var isMain = Input.GetKeyDown(KeyCode.Space) || (Input.GetMouseButton(0) && isMouseOvered);
         var isAlt = Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) || (Input.GetMouseButton(1) && isMouseOvered);
