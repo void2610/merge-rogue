@@ -37,7 +37,7 @@ public class BallBase : MonoBehaviour
         // Main Effect
     }
     
-    public virtual void AltFire()
+    public virtual void AltFire(int enemyCount,  float playerAttack)
     {
         // Alt Effect
         ParticleManager.Instance.MergeParticle(this.transform.position);
