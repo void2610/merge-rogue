@@ -3508,16 +3508,16 @@ MonoBehaviour:
     probability: 1
     icon: {fileID: 21300000, guid: 09d30acee4111476c8de2ee937656084, type: 3}
   - stageType: 1
-    probability: 0.4
+    probability: 0.3
     icon: {fileID: 21300000, guid: df392ad408bd540d9b35a57c3c10db9f, type: 3}
   - stageType: 3
-    probability: 0.7
+    probability: 0.6
     icon: {fileID: 21300000, guid: 82ebb9d8a1fb64509990b942b9e86bb8, type: 3}
   - stageType: 2
-    probability: 0.3
+    probability: 0.2
     icon: {fileID: 21300000, guid: f45c0d430ef3a4701aed76dfd762e809, type: 3}
   - stageType: 4
-    probability: 1
+    probability: 0.8
     icon: {fileID: 21300000, guid: 141dcd1439a644dbc95eaf535c21d822, type: 3}
   - stageType: 5
     probability: 0
