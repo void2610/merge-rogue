@@ -55,11 +55,13 @@ public class StageManager : MonoBehaviour
     [SerializeField] private float torchInterval = 5;
     
     [Header("マップ描画")]
+    [SerializeField] private GameObject playerIconPrefab;
     [SerializeField] private GameObject mapBackground;
     [SerializeField] private GameObject mapNodePrefab;
     [SerializeField] private GameObject mapConnectionPrefab;
     [SerializeField] private Vector2 mapOffset;
     [SerializeField] private Vector2 mapMargin;
+    private GameObject playerIconObj;
 
     [Header("ステージ")]
     [SerializeField] private List<StageData> stageData　= new();
@@ -304,6 +306,11 @@ public class StageManager : MonoBehaviour
         }
         torches[^1].SetActive(Random.Range(0.0f, 1.0f) < 0.5f);
         
+        var pos = next.obj.GetComponent<RectTransform>().localPosition;
+        Debug.Log(playerIconObj.GetComponent<RectTransform>().localPosition);
+        Debug.Log(pos);
+        playerIconObj.GetComponent<FloatMove>().MoveTo(pos + new Vector3(0, 2, 0), 0.5f);
+        
         // ステージ進行
         Utils.Instance.WaitAndInvoke(2.0f, () =>
         {
@@ -373,6 +380,8 @@ public class StageManager : MonoBehaviour
         DrawMap();
         SetButtonEvent();
         SetAllNodeInactive();
+        
+        playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
         
         m.SetTextureOffset(mainTex, new Vector2(0, 0)); 
     }

@@ -10,12 +10,48 @@ public class FloatMove : MonoBehaviour
     [SerializeField]
     private float delay = 0f;
 
-    private void StartMove()
+    private Tween floatTween;
+
+    public void MoveTo(Vector3 target, float duration)
     {
-        transform.DOLocalMoveY(moveDistance, moveDuration).SetEase(Ease.InOutSine).SetLoops(-1, LoopType.Yoyo).SetRelative(true);
+        floatTween?.Kill(); // 既存のTweenを停止
+
+        if (TryGetComponent(out RectTransform rectTransform))
+        {
+            rectTransform.DOLocalMove(target, duration).OnComplete(() => StartMove(rectTransform));
+        }
+        else
+        {
+            transform.DOLocalMove(target, duration).OnComplete(() => StartMove(transform));
+        }
     }
+
+    private void StartMove(Transform targetTransform)
+    {
+        floatTween?.Kill(); // 過去のTweenを停止
+
+        float currentY = targetTransform.localPosition.y; // 現在のY座標を取得
+
+        floatTween = DOTween.To(
+                () => targetTransform.localPosition.y,
+                y => targetTransform.localPosition = new Vector3(
+                    targetTransform.localPosition.x,
+                    y,
+                    targetTransform.localPosition.z),
+                currentY + moveDistance,
+                moveDuration
+            )
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo);
+    }
+
     private void Awake()
     {
-        Invoke("StartMove", delay);
+        Invoke(nameof(DelayedStartMove), delay);
+    }
+
+    private void DelayedStartMove()
+    {
+        StartMove(transform);
     }
 }
