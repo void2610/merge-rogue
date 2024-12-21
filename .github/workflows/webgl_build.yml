@@ -102,4 +102,5 @@ jobs:
           COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
         run: |
           curl -X POST -H "Content-Type: application/json" -d '{
-            "content": "ゲームがアップデートされました!:partying_face: \n https://void2610.github.io/merge-rogue/ \n コミット作成者: '${{ env.GITHUB_ACTOR }}' \n コミットメッセージ: '${{ env.COMMIT_MESSAGE }}'"}' $DISCORD_WEBHOOK_URL
+                      "content": "ゲームがアップデートされました!:partying_face: \n https://void2610.github.io/merge-rogue/ \n コミット作成者: '${{ env.GITHUB_ACTOR }}' \n コミットメッセージ: '${{ env.COMMIT_MESSAGE }}'"
+                    }' $DISCORD_WEBHOOK_URL
