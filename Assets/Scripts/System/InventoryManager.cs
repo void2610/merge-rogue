@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -63,9 +62,9 @@ public class InventoryManager : MonoBehaviour
     public GameObject GetRandomBall(Vector3 position = default)
     {
         GameObject ball;
-        float total = probabilities.Sum();
-        float r = GameManager.Instance.RandomRange(0.0f, total);
-        for (int i = 0; i < INVENTORY_SIZE; i++)
+        var total = probabilities.Sum();
+        var r = GameManager.Instance.RandomRange(0.0f, total);
+        for (var i = 0; i < INVENTORY_SIZE; i++)
         {
             if (r < probabilities[i])
             {
@@ -107,12 +106,14 @@ public class InventoryManager : MonoBehaviour
             Debug.LogError("behaviourClassNameが指定されていません。");
             return null;
         }
+
+        ballBase.InitBall(data, level);
+        
         ball.transform.localScale = Vector3.one * (sizes[level - 1] * ballBase.size);
         // HDRカラーに変換
         var color = MyColors.GetBallColor(level - 1) * 1.05f;
         ball.GetComponent<SpriteRenderer>().color = color;
         ball.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = data.sprite;
-        ball.GetComponent<BallBase>().level = level;
         ball.GetComponent<BallBase>().Freeze();
         return ball;
     }
@@ -120,9 +121,11 @@ public class InventoryManager : MonoBehaviour
     private GameObject CopyBall(GameObject ball, Vector3 position = default)
     {
         var newBall = Instantiate(ball, position, Quaternion.identity);
+        var level = ball.GetComponent<BallBase>().level;
+        var data = ball.GetComponent<BallBase>().data;
+        newBall.GetComponent<BallBase>().InitBall(data, level);
         newBall.transform.localScale = ball.transform.localScale;
         newBall.GetComponent<SpriteRenderer>().color = ball.GetComponent<SpriteRenderer>().color;
-        Destroy(newBall.GetComponent<EventTrigger>());
         return newBall;
     }
     

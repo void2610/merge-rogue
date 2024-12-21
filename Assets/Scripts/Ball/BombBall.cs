@@ -3,13 +3,6 @@ using UnityEngine;
 public class BombBall : BallBase
 {
     private CircleCollider2D circleCollider2D;
-    protected override void Awake()
-    {
-        base.Awake();
-        
-        size = 1.25f;
-        attack = 2;
-    }
 
     protected override void Effect(BallBase other)
     {

@@ -2,14 +2,6 @@ using UnityEngine;
 
 public class CriticalBall : BallBase
 {
-    protected override void Awake()
-    {
-        base.Awake();
-
-        size = 1.0f;
-        attack = 1;
-    }
-
     protected override void Effect(BallBase other)
     {
         base.Effect(other);

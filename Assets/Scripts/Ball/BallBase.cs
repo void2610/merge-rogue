@@ -3,22 +3,13 @@ using DG.Tweening;
 
 public class BallBase : MonoBehaviour
 {
-    public enum BallRarity
-    {
-        Common,
-        Uncommon,
-        Rare,
-        Epic,
-        Legendary
-    }
-
     private static int ballSerial;
 
-    public int level = 1;
-    public float size = 1;
-    public float attack = 1;
-    public Color color = Color.white;
-    public int serial { get; private set; }
+    public int level { get; private set; } = -1;
+    public float size { get; private set; } = 0;
+    public float attack { get; private set; } = 0;
+    public int serial { get; private set; } = 0;
+    public BallData data { get; private set; }
     public bool isFrozen { get; private set; } = false;
     public bool isDestroyed;
     
@@ -44,18 +35,28 @@ public class BallBase : MonoBehaviour
         Destroy(this.gameObject);
     }
 
-    protected virtual void Awake()
+    public void InitBall(BallData d, int l)
     {
         serial = ballSerial++;
-        GetComponent<SpriteRenderer>().color = color;
+        this.data = d;
+        this.level = l;
+        this.size = d.size;
+        this.attack = d.atk;
         transform.localScale = new Vector3(size, size, size);
     }
 
     private void Start()
     {
-        var t = transform.localScale.x;
+        if(level == -1)
+        {
+            Debug.LogError("Ball is not initialized");
+            return;
+        }
+        
+        // アニメーション
+        var tmp = transform.localScale.x;
         transform.localScale = Vector3.zero;
-        transform.DOScale(t, 0.2f).SetEase(Ease.OutBack).SetLink(gameObject);
+        transform.DOScale(tmp, 0.2f).SetEase(Ease.OutBack).SetLink(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D other)
