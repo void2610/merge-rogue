@@ -28,7 +28,6 @@ public class StageManager : MonoBehaviour
         Undefined
     }
     
-    // [Serializable]
     public class StageNode
     {
         public StageType type;             // ステージの種類
@@ -103,7 +102,6 @@ public class StageManager : MonoBehaviour
         currentStage = null;
         var icons = mapBackground.GetComponentsInChildren<Transform>().ToList();
         icons.Where(i => i != mapBackground.transform).ToList().ForEach(i => Destroy(i.gameObject));
-        
         
         // マップの初期化
         for (var i = 0; i < mapSize.x; i++)
@@ -251,6 +249,10 @@ public class StageManager : MonoBehaviour
             GenerateMap();
             DrawMap();
             SetButtonEvent();
+            
+            playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
+            var pos = mapNodes[^1][0].obj.GetComponent<RectTransform>().localPosition;
+            playerIconObj.GetComponent<FloatMove>().MoveTo(pos + new Vector3(0, 2, 0), 0.5f);
         }
         
         var nextNodes = currentStage != null ? currentStage.connections : new List<StageNode>{mapNodes[0][0]};

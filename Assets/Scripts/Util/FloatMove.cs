@@ -54,4 +54,9 @@ public class FloatMove : MonoBehaviour
     {
         StartMove(transform);
     }
+    
+    private void OnDestroy()
+    {
+        floatTween?.Kill();
+    }
 }
