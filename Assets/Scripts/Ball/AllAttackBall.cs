@@ -16,7 +16,7 @@ public class AllAttackBall : BallBase
         var isAttacks = new List<bool>(new bool[enemyCount]);
         for (var i = 0; i < enemyCount; i++)
             isAttacks[i] = true;
-        GameManager.Instance.enemyContainer.AttackEnemyBySkill((int)(1 * playerAttack), isAttacks);
+        GameManager.Instance.enemyContainer.AttackEnemyBySkill((int)(level * playerAttack), isAttacks);
         
         base.AltFire(enemyCount, playerAttack);
     }

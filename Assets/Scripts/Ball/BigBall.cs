@@ -18,7 +18,7 @@ public class BigBall : BallBase
             isAttacks[0] = true;
         if (enemyCount > 1)
             isAttacks[1] = true;
-        GameManager.Instance.enemyContainer.AttackEnemyBySkill((int)(1 * playerAttack), isAttacks);
+        GameManager.Instance.enemyContainer.AttackEnemyBySkill((int)(level * playerAttack), isAttacks);
         
         base.AltFire(enemyCount, playerAttack);
     }

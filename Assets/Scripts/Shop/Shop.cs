@@ -233,15 +233,9 @@ public class Shop : MonoBehaviour
 
         for (var i = 0; i < ITEM_NUM; i++)
         {
-            if (i == selectedItem)
+            if (i != selectedItem)
             {
-                itemObjects[i].GetComponent<Image>().color = new Color(1, 1, 1, 1);
-            }
-            else
-            {
-                itemObjects[i].GetComponent<Image>().color = new Color(0.7f, 0.7f, 0.7f, 1);
-                if (itemObjects[i].transform.localScale.x > defaultScale)
-                    itemObjects[i].transform.DOScale(defaultScale, 0.1f).SetUpdate(true);
+                itemObjects[i].transform.DOScale(defaultScale, 0.1f).SetUpdate(true);
             }
         }
     }

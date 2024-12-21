@@ -307,8 +307,6 @@ public class StageManager : MonoBehaviour
         torches[^1].SetActive(Random.Range(0.0f, 1.0f) < 0.5f);
         
         var pos = next.obj.GetComponent<RectTransform>().localPosition;
-        Debug.Log(playerIconObj.GetComponent<RectTransform>().localPosition);
-        Debug.Log(pos);
         playerIconObj.GetComponent<FloatMove>().MoveTo(pos + new Vector3(0, 2, 0), 0.5f);
         
         // ステージ進行

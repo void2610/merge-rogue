@@ -92,14 +92,12 @@ public class MergeManager : MonoBehaviour
         
         if (nextBall)
         {
-            Debug.Log(nextBall.name);
             Destroy(nextBall);
             nextBall = null;
         }
 
         if (currentBall)
         {
-            Debug.Log(currentBall.name);
             Destroy(currentBall);
             currentBall = null;
         }

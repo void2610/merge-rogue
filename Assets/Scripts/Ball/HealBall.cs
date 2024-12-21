@@ -13,7 +13,7 @@ public class HealBall : BallBase
     public override void AltFire(int enemyCount, float playerAttack)
     {
         // 回復
-        GameManager.Instance.player.Heal((int)(1 * playerAttack));
+        GameManager.Instance.player.Heal((int)(level * playerAttack));
         
         base.AltFire(enemyCount, playerAttack);
     }

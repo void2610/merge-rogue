@@ -32,7 +32,7 @@ public class CriticalBall : BallBase
             critical = 3.0f;
             SeManager.Instance.PlaySe("levelUp");
         }
-        GameManager.Instance.enemyContainer.AttackEnemyBySkill((int)(critical * playerAttack), isAttacks);
+        GameManager.Instance.enemyContainer.AttackEnemyBySkill((int)(critical * level * playerAttack), isAttacks);
         
         base.AltFire(enemyCount, playerAttack);
     }
