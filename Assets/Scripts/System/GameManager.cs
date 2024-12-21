@@ -168,7 +168,6 @@ public class GameManager : MonoBehaviour
             Time.timeScale = timeScale;
         }
         
-        ChangeState(GameState.StageMoving);
         AddCoin(Application.isEditor ? 9999 : 10);
     }
 

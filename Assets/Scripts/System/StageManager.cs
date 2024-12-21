@@ -152,7 +152,6 @@ public class StageManager : MonoBehaviour
             node.type = ChoseStage().stageType; // ランダムにステージタイプを割り当てる
         }
     }
-
     
     private void DrawLine(StageNode a, StageNode b)
     {
@@ -370,5 +369,10 @@ public class StageManager : MonoBehaviour
         SetAllNodeInactive();
         
         m.SetTextureOffset(mainTex, new Vector2(0, 0)); 
+    }
+
+    public void Start()
+    {
+        NextStage(mapNodes[0][0]);
     }
 }
