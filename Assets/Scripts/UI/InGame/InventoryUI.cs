@@ -28,8 +28,7 @@ public class InventoryUI : MonoBehaviour
         if (sprite != null) g.transform.Find("Icon").GetComponent<Image>().sprite = sprite;
         else g.transform.Find("Icon").GetComponent<Image>().color = new Color(0, 0, 0, 0);
         
-        SetCursorEvent(g, level);
-        SetDescriptionWindowEvent(g, data);
+        SetEvent(g, level, data);
         if (items.Count <= level)
         {
             items.Add(g);
@@ -54,16 +53,15 @@ public class InventoryUI : MonoBehaviour
         cursor.GetComponent<SpriteRenderer>().enabled = b;
     }
     
-    private void SetCursorEvent(GameObject ball, int index)
+    private void SetEvent(GameObject ball, int index, BallData data)
     {
-        Utils.AddEventToObject(ball, () => { SetCursor(index); }, EventTriggerType.PointerEnter);
-        Utils.AddEventToObject(ball, () => { Shop.Instance.BuyBall(index); }, EventTriggerType.PointerClick);
-    }
+        Utils.AddEventToObject(ball, () => { 
+            SetCursor(index);
+            GameManager.Instance.uiManager.ShowBallDescriptionWindow(data, ball.transform.position + new Vector3(2.5f, 0, 0)); 
+        }, EventTriggerType.PointerEnter);
 
-    private void SetDescriptionWindowEvent(GameObject g, BallData data)
-    {
-        Utils.AddEventToObject(g, () => { GameManager.Instance.uiManager.ShowBallDescriptionWindow(data, g.transform.position + new Vector3(2.5f, 0, 0)); }, EventTriggerType.PointerEnter);
-        Utils.AddEventToObject(g, () => { GameManager.Instance.uiManager.HideBallDescriptionWindow(); }, EventTriggerType.PointerExit);
+        Utils.AddEventToObject(ball, () => { Shop.Instance.BuyBall(index); }, EventTriggerType.PointerClick);
+        Utils.AddEventToObject(ball, () => { GameManager.Instance.uiManager.HideBallDescriptionWindow(); }, EventTriggerType.PointerExit);
     }
     
     private Vector3 CalcInventoryPosition(int index)
