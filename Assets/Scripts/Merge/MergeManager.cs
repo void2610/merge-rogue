@@ -112,6 +112,8 @@ public class MergeManager : MonoBehaviour
     // 次のボールを生成
     private void ResetRemainingBalls()
     {
+        allAttackCount = 0;
+        singleAttackCount = 0;
         remainingBalls = ballPerOneTurn;
         if (ballPerOneTurn > 1)
         {

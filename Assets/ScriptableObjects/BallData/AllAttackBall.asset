@@ -16,7 +16,7 @@ MonoBehaviour:
   className: AllAttackBall
   displayName: "\u5168\u4F53\u30DC\u30FC\u30EB"
   mainDescription: "\u5168\u4F53\u653B\u6483"
-  altDescription: "\u5168\u4F53\u306B1\u30C0\u30E1\u30FC\u30B8"
+  altDescription: "\u5168\u4F53\u306B\u30C0\u30E1\u30FC\u30B8"
   flavorText: "\u30CD\u30BF\u5207\u308C"
   sprite: {fileID: 1461871564780703198, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
   rarity: 2

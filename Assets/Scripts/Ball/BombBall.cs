@@ -34,4 +34,10 @@ public class BombBall : BallBase
         // TODO: 爆発エフェクトを追加
         DefaultMergeParticle();
     }
+    
+    public override void AltFire(int enemyCount, float playerAttack)
+    {
+        // 何もしない
+        base.AltFire(enemyCount, playerAttack);
+    }
 }

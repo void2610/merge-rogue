@@ -226,8 +226,14 @@ public class StageManager : MonoBehaviour
             {
                 if (mapNodes[i][j].type == StageType.Undefined) continue;
                 var g = Instantiate(mapNodePrefab, mapNodes[i][j].position, Quaternion.identity, mapBackground.transform);
+                
                 g.name = $"{mapNodes[i][j].type}";
                 g.GetComponent<Image>().sprite = mapNodes[i][j].GetIcon(stageData);
+                if (mapNodes[i][j].type == StageType.Enemy)
+                    g.GetComponent<Image>().color = Color.red;
+                else if (mapNodes[i][j].type == StageType.Boss)
+                    g.GetComponent<Image>().color = Color.black;
+                
                 mapNodes[i][j].obj = g;
             }
         }
