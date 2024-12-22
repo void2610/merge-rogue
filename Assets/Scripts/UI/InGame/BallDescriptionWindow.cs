@@ -6,11 +6,11 @@ using DG.Tweening;
 public class BallDescriptionWindow : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI mainDescriptionText;
-    [SerializeField] private TextMeshProUGUI altDescriptionText;
+    [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TextMeshProUGUI flavorText;
     [SerializeField] private TextMeshProUGUI atkText;
     [SerializeField] private TextMeshProUGUI sizeText;
+    [SerializeField] private TextMeshProUGUI priceText;
 
     [SerializeField] private Vector2 minPos; // RectTransform上の座標で指定
     [SerializeField] private Vector2 maxPos; // RectTransform上の座標で指定
@@ -24,11 +24,11 @@ public class BallDescriptionWindow : MonoBehaviour
 
         nameText.text = b.displayName;
         nameText.color = MyColors.GetRarityColor(b.rarity);
-        mainDescriptionText.text = b.mainDescription;
-        altDescriptionText.text = b.altDescription;
+        descriptionText.text = b.mainDescription;
         flavorText.text = b.flavorText;
         atkText.text = b.atk.ToString(CultureInfo.InvariantCulture);
         sizeText.text = b.size.ToString(CultureInfo.InvariantCulture);
+        priceText.text = b.price.ToString(CultureInfo.InvariantCulture);
 
         // ワールド座標をRectTransformのローカル座標に変換
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
