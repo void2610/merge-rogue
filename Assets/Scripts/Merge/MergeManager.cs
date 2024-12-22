@@ -185,18 +185,17 @@ public class MergeManager : MonoBehaviour
         ParticleManager.Instance.MergeText(allAttackCount, p, Color.red);
     }
 
-    private void Main()
+    private void DropBall()
     {
-        EventManager.OnBallMain.Trigger(0);
+        EventManager.OnBallDrop.Trigger(0);
         currentBall.GetComponent<BallBase>().Unfreeze();
         currentBall.transform.SetParent(ballContainer.transform);
     }
 
-    private void Alt()
+    private void SkipBall()
     {
-        EventManager.OnBallAlt.Trigger(0);
-        var enemyCount = GameManager.Instance.enemyContainer.GetCurrentEnemyCount();
-        currentBall.GetComponent<BallBase>().AltFire(enemyCount, attackMagnification);
+        EventManager.OnBallSkip.Trigger(0);
+        Destroy(currentBall);
     }
 
     private void DecideNextBall()
@@ -323,14 +322,14 @@ public class MergeManager : MonoBehaviour
         {
             SeManager.Instance.PlaySe("fall");
             lastFallTime = Time.time;
-            Main();
+            DropBall();
             DecideNextBall();
         }
         else if (isAlt)
         {
             SeManager.Instance.PlaySe("alt");
             lastFallTime = Time.time;
-            Alt();
+            SkipBall();
             DecideNextBall();
         }
         

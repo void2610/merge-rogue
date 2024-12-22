@@ -31,9 +31,9 @@ public static class EventManager
     // プレイヤー死亡時: 復活するかどうか
     public static readonly GameEvent<bool> OnPlayerDeath = new (false);
     // ボールを落とした時: なし
-    public static readonly GameEvent<int> OnBallMain = new (0);
+    public static readonly GameEvent<int> OnBallDrop = new (0);
     // ボールを消費した時: なし
-    public static readonly GameEvent<int> OnBallAlt = new (0);
+    public static readonly GameEvent<int> OnBallSkip = new (0);
     // ボールをマージした時: マージしたボールのレベル
     public static readonly GameEvent<int> OnBallMerged = new (0);
     // 休憩に入った時: なし

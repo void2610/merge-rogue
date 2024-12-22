@@ -10,7 +10,7 @@ public class SometimeCopyDropBall : MonoBehaviour, IRelicBehavior
     public void ApplyEffect(RelicUI relicUI)
     {
         ui = relicUI;
-        disposable = EventManager.OnBallMain.Subscribe(Effect).AddTo(this);
+        disposable = EventManager.OnBallDrop.Subscribe(Effect).AddTo(this);
     }
 
     public void RemoveEffect()
