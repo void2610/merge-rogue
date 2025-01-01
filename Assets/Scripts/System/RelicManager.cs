@@ -17,43 +17,43 @@ public class RelicManager : MonoBehaviour
     [SerializeField] private List<RelicData> testRelics;
     
     
-    private List<RelicData> relics = new();
-    private List<IRelicBehavior> behaviors = new();
-    private List<RelicUI> relicUIs = new();
+    private readonly List<RelicData> _relics = new();
+    private readonly List<IRelicBehavior> _behaviors = new();
+    private readonly List<RelicUI> _relicUIs = new();
     
-    private EffectTiming currentTiming;
+    private EffectTiming _currentTiming;
     
     public void AddRelic(RelicData relic)
     {
-        relics.Add(relic);
+        _relics.Add(relic);
         var rui = CreateRelicUI(relic);
         ApplyEffect(relic, rui);
     }
     
     public void RemoveRelic(RelicData relic)
     {
-        var index = relics.FindIndex(r => r.id == relic.id);
+        var index = _relics.FindIndex(r => r.id == relic.id);
         if(index == -1)
         {
             Debug.LogError("指定されたレリックが存在しません: " + relic.id);
             return;
         }
 
-        var behavior = behaviors[index];
+        var behavior = _behaviors[index];
         behavior.RemoveEffect();
-        behaviors.Remove(behavior);
-        relics.Remove(relic);
-        Destroy(relicUIs[index].gameObject);
-        relicUIs.RemoveAt(index);
+        _behaviors.Remove(behavior);
+        _relics.Remove(relic);
+        Destroy(_relicUIs[index].gameObject);
+        _relicUIs.RemoveAt(index);
     }
     
     private RelicUI CreateRelicUI(RelicData r)
     {
         var go = Instantiate(relicPrefab, relicContainer);
-        go.transform.localPosition = relicGridPosition + new Vector3(relicOffset.x * ((relics.Count - 1) / relicGridSize.y), -relicOffset.y * ((relics.Count - 1) % relicGridSize.y));
+        go.transform.localPosition = relicGridPosition + new Vector3(relicOffset.x * ((_relics.Count - 1) / relicGridSize.y), -relicOffset.y * ((_relics.Count - 1) % relicGridSize.y));
         var relicUI = go.GetComponent<RelicUI>();
         relicUI.SetRelicData(r);
-        relicUIs.Add(relicUI);
+        _relicUIs.Add(relicUI);
         return relicUI;
     }
     
@@ -69,7 +69,7 @@ public class RelicManager : MonoBehaviour
         }
         
         behaviour.ApplyEffect(rui);
-        behaviors.Add(behaviour);
+        _behaviors.Add(behaviour);
     }
     
     private void Awake()

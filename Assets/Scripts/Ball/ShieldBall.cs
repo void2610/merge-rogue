@@ -9,6 +9,6 @@ public class ShieldBall : BallBase
         //TODO: シールドを実装する
         
         DefaultMergeParticle();
-        MergeManager.Instance.AddSingleAttackCount(attack * level, this.transform.position);
+        MergeManager.Instance.AddSingleAttackCount(Attack * Level, this.transform.position);
     }
 }

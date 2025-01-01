@@ -11,8 +11,8 @@ public class Treasure : MonoBehaviour
     [SerializeField] private Vector3 itemPosition;
     [SerializeField] private float itemOffset;
     private const int MAX_ITEMS = 3;
-    private readonly Vector3 disablePosition = new Vector3(100, 100, 0);
-    private static RelicDataList allRelics => RelicManager.Instance.allRelicDataList;
+    private readonly Vector3 _disablePosition = new Vector3(100, 100, 0);
+    private static RelicDataList AllRelics => RelicManager.Instance.allRelicDataList;
 
     public void OpenTreasure(int count, Rarity rarity = Rarity.Common)
     {
@@ -26,10 +26,10 @@ public class Treasure : MonoBehaviour
             if (i < count)
                 items[i].transform.position = itemPosition + Vector3.right * (itemOffset * (i - (count - 1) / 2f));
             else
-                items[i].transform.position = disablePosition;
+                items[i].transform.position = _disablePosition;
         }
         
-        var relics = allRelics.GetRelicDataFromRarity(rarity);
+        var relics = AllRelics.GetRelicDataFromRarity(rarity);
         
         for (var i = 0; i < count; i++)
         {
@@ -41,7 +41,7 @@ public class Treasure : MonoBehaviour
     
     public void CloseTreasure()
     {
-        items.ForEach(item => item.transform.position = disablePosition);
+        items.ForEach(item => item.transform.position = _disablePosition);
     }
     
     private void SetEvent(GameObject g, RelicData relic)
@@ -58,17 +58,17 @@ public class Treasure : MonoBehaviour
                 
                 RelicManager.Instance.AddRelic(relic);
                 SeManager.Instance.PlaySe("coin");
-                g.transform.position = disablePosition;
-                GameManager.Instance.uiManager.OnClickTreasureExit();
+                g.transform.position = _disablePosition;
+                GameManager.Instance.UIManager.OnClickTreasureExit();
             });
         }
 
         Utils.AddEventToObject(g, () => { 
-            GameManager.Instance.uiManager.ShowRelicDescriptionWindow(relic,
+            GameManager.Instance.UIManager.ShowRelicDescriptionWindow(relic,
                 g.transform.position + new Vector3(3f, 0, 0));
         }, EventTriggerType.PointerEnter);
         Utils.AddEventToObject(g, () => { 
-            GameManager.Instance.uiManager.HideRelicDescriptionWindow();
+            GameManager.Instance.UIManager.HideRelicDescriptionWindow();
         }, EventTriggerType.PointerExit);
     }
     
@@ -85,7 +85,7 @@ public class Treasure : MonoBehaviour
         
         foreach (var item in items)
         {
-            item.transform.position = disablePosition;
+            item.transform.position = _disablePosition;
         }
     }
 }

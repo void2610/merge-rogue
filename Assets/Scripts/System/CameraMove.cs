@@ -4,7 +4,7 @@ using DG.Tweening;
 public class CameraMove : MonoBehaviour
 {
     public static CameraMove Instance { get; private set; }
-    private Vector3 initPosition;
+    private Vector3 _initPosition;
     
     private void Awake()
     {
@@ -21,7 +21,7 @@ public class CameraMove : MonoBehaviour
     private void Start()
     {
         // 初期位置を保存
-        initPosition = this.transform.position;
+        _initPosition = this.transform.position;
     }
 
     public void ShakeCamera(float duration, float strength)
@@ -29,7 +29,7 @@ public class CameraMove : MonoBehaviour
         var s = Mathf.Min(7.5f, strength);
         this.transform.DOShakePosition(duration, s, 10, 0, false).OnComplete(() =>
         {
-            this.transform.position = initPosition;
+            this.transform.position = _initPosition;
         });
     }
 }

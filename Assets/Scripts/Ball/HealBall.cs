@@ -7,14 +7,6 @@ public class HealBall : BallBase
         base.Effect(other);
         
         DefaultMergeParticle();
-        GameManager.Instance.player.Heal(this.level);
-    }
-    
-    public override void AltFire(int enemyCount, float playerAttack)
-    {
-        // 回復
-        GameManager.Instance.player.Heal((int)(level * playerAttack));
-        
-        base.AltFire(enemyCount, playerAttack);
+        GameManager.Instance.player.Heal(this.Level);
     }
 }

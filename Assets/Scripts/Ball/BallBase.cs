@@ -5,49 +5,42 @@ public class BallBase : MonoBehaviour
 {
     private static int ballSerial;
 
-    public int level { get; private set; } = -1;
-    public float size { get; private set; } = 0;
-    public float attack { get; private set; } = 0;
-    public int serial { get; private set; } = 0;
-    public BallData data { get; private set; }
-    public bool isFrozen { get; private set; } = false;
+    public int Level { get; private set; } = -1;
+    public float Size { get; private set; } = 0;
+    public float Attack { get; private set; } = 0;
+    public int Serial { get; private set; } = 0;
+    public BallData Data { get; private set; }
+    public bool IsFrozen { get; private set; } = false;
     public bool isDestroyed;
     
     public void Freeze()
     {
-        isFrozen = true;
+        IsFrozen = true;
     }
 
     public void Unfreeze()
     {
-        isFrozen = false;
+        IsFrozen = false;
     }
 
     protected virtual void Effect(BallBase other)
     {
         // Main Effect
     }
-    
-    public virtual void AltFire(int enemyCount,  float playerAttack)
-    {
-        // Alt Effect
-        ParticleManager.Instance.MergeParticle(this.transform.position);
-        Destroy(this.gameObject);
-    }
 
     public void InitBall(BallData d, int l)
     {
-        serial = ballSerial++;
-        this.data = d;
-        this.level = l;
-        this.size = d.size;
-        this.attack = d.atk;
-        transform.localScale = new Vector3(size, size, size);
+        Serial = ballSerial++;
+        this.Data = d;
+        this.Level = l;
+        this.Size = d.size;
+        this.Attack = d.atk;
+        transform.localScale = new Vector3(Size, Size, Size);
     }
 
     private void Start()
     {
-        if(level == -1)
+        if(Level == -1)
         {
             Debug.LogError("Ball is not initialized");
             return;
@@ -61,19 +54,19 @@ public class BallBase : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (isDestroyed || isFrozen) return;
+        if (isDestroyed || IsFrozen) return;
 
         if (other.gameObject.TryGetComponent(out BallBase b))
         {
-            if (b.level == this.level && !b.isFrozen && !b.isDestroyed)
+            if (b.Level == this.Level && !b.IsFrozen && !b.isDestroyed)
             {
-                if (this.serial < b.serial)
+                if (this.Serial < b.Serial)
                 {
-                    EventManager.OnBallMerged.Trigger(this.level);
+                    EventManager.OnBallMerged.Trigger(this.Level);
                     
                     var center = (this.transform.position + other.transform.position) / 2;
                     var rotation = Quaternion.Lerp(this.transform.rotation, other.transform.rotation, 0.5f);
-                    MergeManager.Instance.SpawnBallFromLevel(level + 1, center, rotation);
+                    MergeManager.Instance.SpawnBallFromLevel(Level + 1, center, rotation);
 
                     EffectAndDestroy(b);
                     b.EffectAndDestroy(this);
@@ -96,7 +89,7 @@ public class BallBase : MonoBehaviour
     protected void DefaultMergeParticle()
     {
         ParticleManager.Instance.MergeParticle(this.transform.position);
-        ParticleManager.Instance.MergePowerParticle(this.transform.position, MyColors.GetBallColor(level-1));
+        ParticleManager.Instance.MergePowerParticle(this.transform.position, MyColors.GetBallColor(Level-1));
         
         var i = Random.Range(0, 5);
         SeManager.Instance.PlaySe("ball" + i);

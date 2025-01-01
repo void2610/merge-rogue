@@ -181,7 +181,7 @@ public class EnemyContainer : MonoBehaviour
         foreach (var e in es)
         {
             if (singleDamage <= 0) break;
-            var actualDamage = singleDamage > e.health ? e.health : singleDamage;
+            var actualDamage = singleDamage > e.Health ? e.Health : singleDamage;
             if (es.IndexOf(e) == es.Count - 1) actualDamage = singleDamage;
             e.TakeDamage(actualDamage, true);
             singleDamage -= actualDamage;

@@ -23,7 +23,7 @@ public class HealWhenDefeatEnemy : MonoBehaviour, IRelicBehavior
         var enemy = EventManager.OnEnemyDefeated.GetValue();
         if(!enemy) return;
         
-        var heal = enemy.maxHealth * 0.1f;
+        var heal = enemy.MaxHealth * 0.1f;
         GameManager.Instance.player.Heal(Mathf.CeilToInt(heal));
     }
     

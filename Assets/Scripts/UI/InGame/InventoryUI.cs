@@ -12,7 +12,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private GameObject cursor;
     private List<GameObject> items = new List<GameObject>();
     private const float SIZE_COEFFICIENT = 8f;
-    private static List<float> ballSizes => InventoryManager.Instance.sizes;
+    private static List<float> ballSizes => InventoryManager.Instance.Sizes;
 
     public void CreateBallUI(GameObject ball, int level, BallData data)
     {
@@ -57,11 +57,11 @@ public class InventoryUI : MonoBehaviour
     {
         Utils.AddEventToObject(ball, () => { 
             SetCursor(index);
-            GameManager.Instance.uiManager.ShowBallDescriptionWindow(data, ball.transform.position + new Vector3(2.5f, 0, 0)); 
+            GameManager.Instance.UIManager.ShowBallDescriptionWindow(data, ball.transform.position + new Vector3(2.5f, 0, 0)); 
         }, EventTriggerType.PointerEnter);
 
         Utils.AddEventToObject(ball, () => { Shop.Instance.BuyBall(index); }, EventTriggerType.PointerClick);
-        Utils.AddEventToObject(ball, () => { GameManager.Instance.uiManager.HideBallDescriptionWindow(); }, EventTriggerType.PointerExit);
+        Utils.AddEventToObject(ball, () => { GameManager.Instance.UIManager.HideBallDescriptionWindow(); }, EventTriggerType.PointerExit);
     }
     
     private Vector3 CalcInventoryPosition(int index)

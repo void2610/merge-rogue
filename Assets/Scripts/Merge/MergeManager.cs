@@ -68,10 +68,10 @@ public class MergeManager : MonoBehaviour
     
     private static void EndLevelUp()
     {
-        GameManager.Instance.uiManager.remainingLevelUps--;
-        if (GameManager.Instance.uiManager.remainingLevelUps > 0) return;
+        GameManager.Instance.UIManager.remainingLevelUps--;
+        if (GameManager.Instance.UIManager.remainingLevelUps > 0) return;
         
-        GameManager.Instance.uiManager.EnableCanvasGroup("LevelUp", false);
+        GameManager.Instance.UIManager.EnableCanvasGroup("LevelUp", false);
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
     }
     
@@ -280,7 +280,7 @@ public class MergeManager : MonoBehaviour
         }
         
         if(!currentBall) return;
-        if (GameManager.Instance.isGameOver) return;
+        if (GameManager.Instance.IsGameOver) return;
         if (GameManager.Instance.state != GameManager.GameState.Merge) return;
         if (!isMovable) return;
 

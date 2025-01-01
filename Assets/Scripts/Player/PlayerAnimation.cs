@@ -11,23 +11,23 @@ public class PlayerAnimation : MonoBehaviour
     [SerializeField]
     private RuntimeAnimatorController move;
 
-    private Animator animator => GetComponent<Animator>();
+    private Animator Animator => GetComponent<Animator>();
 
     public void ChangeAnimation(string animationName)
     {
         switch (animationName)
         {
             case "stand":
-                animator.runtimeAnimatorController = stand;
+                Animator.runtimeAnimatorController = stand;
                 break;
             case "sword":
-                animator.runtimeAnimatorController = sword;
+                Animator.runtimeAnimatorController = sword;
                 break;
             case "gun":
-                animator.runtimeAnimatorController = gun;
+                Animator.runtimeAnimatorController = gun;
                 break;
             case "move":
-                animator.runtimeAnimatorController = move;
+                Animator.runtimeAnimatorController = move;
                 break;
         }
     }

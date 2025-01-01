@@ -120,7 +120,7 @@ public class UIManager : MonoBehaviour
     public void OnClickResume()
     {
         SeManager.Instance.PlaySe("button");
-        Time.timeScale = GameManager.Instance.timeScale;
+        Time.timeScale = GameManager.Instance.TimeScale;
         EnableCanvasGroup("Pause", false);
     }
 
@@ -187,25 +187,25 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.coin.Subscribe(UpdateCoinText).AddTo(this);
-        GameManager.Instance.stageManager.currentStageCount.Subscribe(UpdateStageText).AddTo(this);
-        GameManager.Instance.player.exp.Subscribe((v) =>
+        GameManager.Instance.StageManager.currentStageCount.Subscribe(UpdateStageText).AddTo(this);
+        GameManager.Instance.player.Exp.Subscribe((v) =>
         {
-            UpdateExpText(v, GameManager.Instance.player.maxExp);
-            UpdateLevelText(GameManager.Instance.player.level);
+            UpdateExpText(v, GameManager.Instance.player.MaxExp);
+            UpdateLevelText(GameManager.Instance.player.Level);
         }).AddTo(this);
-        GameManager.Instance.player.health.Subscribe((v) =>
+        GameManager.Instance.player.Health.Subscribe((v) =>
         {
             hpSlider.value = v;
-            hpText.text = v + "/" + GameManager.Instance.player.maxHealth;
+            hpText.text = v + "/" + GameManager.Instance.player.MaxHealth;
             if (v < 30)
             {
                 SetVignette(((30.0f-v)/30.0f)*0.3f);
             }
         }).AddTo(this);
-        GameManager.Instance.player.maxHealth.Subscribe((v) =>
+        GameManager.Instance.player.MaxHealth.Subscribe((v) =>
         {
             hpSlider.maxValue = v;
-            hpText.text = GameManager.Instance.player.health.Value + "/" + v;
+            hpText.text = GameManager.Instance.player.Health.Value + "/" + v;
         }).AddTo(this);
         
         bgmSlider.onValueChanged.AddListener((value) =>
@@ -214,7 +214,7 @@ public class UIManager : MonoBehaviour
         });
         seSlider.onValueChanged.AddListener((value) =>
         {
-            SeManager.Instance.seVolume = value;
+            SeManager.Instance.SeVolume = value;
         });
 
         var trigger = seSlider.gameObject.AddComponent<EventTrigger>();

@@ -20,8 +20,8 @@ public class DoubleCoinsWhenNearFullHealth : MonoBehaviour, IRelicBehavior
     
     private void Effect(Unit _)
     {
-        var health = GameManager.Instance.player.health.Value;
-        var maxHealth = GameManager.Instance.player.maxHealth.Value;
+        var health = GameManager.Instance.player.Health.Value;
+        var maxHealth = GameManager.Instance.player.MaxHealth.Value;
         if(health > maxHealth * 0.8f)
         {
             var x = EventManager.OnCoinGain.GetValue();

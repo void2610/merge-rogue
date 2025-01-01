@@ -7,20 +7,11 @@ using DG.Tweening;
 
 public class EnemyBase : MonoBehaviour
 {
-    protected class AttackData
-    {
-        public string name;
-        public Func<Player, bool> action;
-        public float probability;
-        public Color color = Color.white;
-        public string description;
-    }
     public string enemyName = "Enemy";
     public int actionInterval = 1;
     public int hMax = 100;
     public int hMin = 1;
     public int attack = 2;
-    public int defense = 1;
     public int coin;
     public int exp;
 
@@ -29,16 +20,14 @@ public class EnemyBase : MonoBehaviour
     [SerializeField]
     private GameObject coinPrefab;
 
-    public int health { get; protected set; }
-    public int maxHealth { get; protected set; }
+    public int Health { get; protected set; }
+    public int MaxHealth { get; protected set; }
 
-    protected int turnCount = 0;
-    protected List<AttackData> enemyActions = new List<AttackData>();
-    protected AttackData nextAction;
+    protected int TurnCount = 0;
 
-    private TextMeshProUGUI healthText => canvas.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
-    private Slider healthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
-    private TextMeshProUGUI attackCountText => canvas.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
+    private TextMeshProUGUI HealthText => canvas.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
+    private Slider HealthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
+    private TextMeshProUGUI AttackCountText => canvas.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
 
     public void TakeDamage(int damage, bool isEmitEffect = true)
     {
@@ -55,23 +44,23 @@ public class EnemyBase : MonoBehaviour
             ParticleManager.Instance.HitParticle(this.transform.position + new Vector3(-0.3f, 0.2f, 0));
         
         // ダメージ処理
-        health -= damage;
-        healthSlider.value = health;
-        healthText.text = health + "/" + maxHealth;
-        if (health <= 0)
+        Health -= damage;
+        HealthSlider.value = Health;
+        HealthText.text = Health + "/" + MaxHealth;
+        if (Health <= 0)
         {
-            health = 0;
-            healthText.text = health + "/" + maxHealth;
+            Health = 0;
+            HealthText.text = Health + "/" + MaxHealth;
             Death();
         }
     }
 
     public void Action()
     {
-        turnCount++;
-        if(turnCount == actionInterval)
+        TurnCount++;
+        if(TurnCount == actionInterval)
         {
-            turnCount = 0;
+            TurnCount = 0;
             Attack();
         }
         else
@@ -82,7 +71,7 @@ public class EnemyBase : MonoBehaviour
             }).SetLink(gameObject);
         }
 
-        attackCountText.text = (actionInterval - turnCount).ToString();
+        AttackCountText.text = (actionInterval - TurnCount).ToString();
     }
 
     private void Attack()
@@ -128,17 +117,17 @@ public class EnemyBase : MonoBehaviour
 
     public virtual void Init(float magnification)
     {
-        maxHealth = (int)(GameManager.Instance.RandomRange(hMin, hMax) * magnification);
-        health = maxHealth;
+        MaxHealth = (int)(GameManager.Instance.RandomRange(hMin, hMax) * magnification);
+        Health = MaxHealth;
         attack = (int)(attack * (magnification * 0.3f));
 
         GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         canvas.GetComponent<CanvasGroup>().alpha = 0;
 
-        healthSlider.maxValue = maxHealth;
-        healthSlider.value = health;
-        healthText.text = health + "/" + maxHealth;
-        attackCountText.text = (actionInterval - turnCount).ToString();
+        HealthSlider.maxValue = MaxHealth;
+        HealthSlider.value = Health;
+        HealthText.text = Health + "/" + MaxHealth;
+        AttackCountText.text = (actionInterval - TurnCount).ToString();
         
         OnAppear();
     }

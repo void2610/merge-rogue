@@ -23,7 +23,7 @@ public class HealWhenMergeLastBall : MonoBehaviour, IRelicBehavior
         var maxLevel = InventoryManager.INVENTORY_SIZE;
         if (EventManager.OnBallMerged.GetValue() == maxLevel)
         {
-            int heal = GameManager.Instance.player.maxHealth.Value / 4;
+            int heal = GameManager.Instance.player.MaxHealth.Value / 4;
             GameManager.Instance.player.Heal(heal);
             ui?.ActivateUI();
         }

@@ -150,7 +150,7 @@ public class TitleMenu : MonoBehaviour
 
         seSlider.onValueChanged.AddListener((value) =>
         {
-            SeManager.Instance.seVolume = value;
+            SeManager.Instance.SeVolume = value;
         });
 
         var trigger = seSlider.gameObject.AddComponent<EventTrigger>();

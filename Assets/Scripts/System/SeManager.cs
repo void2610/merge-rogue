@@ -12,15 +12,11 @@ public class SeManager : MonoBehaviour
         public float volume = 1.0f;
     }
 
-    [SerializeField]
-    private AudioMixerGroup seMixerGroup;
-    [SerializeField]
-    private SoundData[] soundDatas;
-
-
+    [SerializeField] private AudioMixerGroup seMixerGroup;
+    [SerializeField] private SoundData[] soundDatas;
 
     public static SeManager Instance;
-    private readonly AudioSource[] seAudioSourceList = new AudioSource[20];
+    private readonly AudioSource[] _seAudioSourceList = new AudioSource[20];
     private float _seVolume = 0.5f;
 
     private void Awake()
@@ -35,14 +31,14 @@ public class SeManager : MonoBehaviour
             Destroy(this.gameObject);
         }
 
-        for (var i = 0; i < seAudioSourceList.Length; ++i)
+        for (var i = 0; i < _seAudioSourceList.Length; ++i)
         {
-            seAudioSourceList[i] = gameObject.AddComponent<AudioSource>();
-            seAudioSourceList[i].outputAudioMixerGroup = seMixerGroup;
+            _seAudioSourceList[i] = gameObject.AddComponent<AudioSource>();
+            _seAudioSourceList[i].outputAudioMixerGroup = seMixerGroup;
         }
     }
 
-    public float seVolume
+    public float SeVolume
     {
         get => _seVolume;
         set
@@ -98,11 +94,11 @@ public class SeManager : MonoBehaviour
         audioSource.Play();
     }
 
-    private AudioSource GetUnusedAudioSource() => seAudioSourceList.FirstOrDefault(t => t.isPlaying == false);
+    private AudioSource GetUnusedAudioSource() => _seAudioSourceList.FirstOrDefault(t => t.isPlaying == false);
 
     private void Start()
     {
-        seVolume = PlayerPrefs.GetFloat("SeVolume", 1.0f);
+        SeVolume = PlayerPrefs.GetFloat("SeVolume", 1.0f);
         seMixerGroup.audioMixer.SetFloat("SeVolume", Mathf.Log10(_seVolume) * 20);
     }
 }

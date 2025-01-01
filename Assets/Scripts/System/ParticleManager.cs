@@ -24,8 +24,8 @@ public class ParticleManager : MonoBehaviour
     [SerializeField] private GameObject damageTextPrefab;
     [SerializeField] private GameObject mergeTextPrefab;
     
-    private Canvas pixelCanvas => GameManager.Instance.pixelCanvas;
-    private static Canvas uiCanvas => GameManager.Instance.uiCanvas;
+    // private Canvas pixelCanvas => GameManager.Instance.pixelCanvas;
+    // private static Canvas uiCanvas => GameManager.Instance.uiCanvas;
     
     public void HealParticle(Vector3 pos)
     {

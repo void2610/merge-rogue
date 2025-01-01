@@ -279,10 +279,10 @@ public class StageManager : MonoBehaviour
 
     private void NextStage(StageNode next)
     {
-        if (GameManager.Instance.isGameOver) return;
+        if (GameManager.Instance.IsGameOver) return;
         
         // 演出
-        GameManager.Instance.uiManager.EnableCanvasGroup("Map", false);
+        GameManager.Instance.UIManager.EnableCanvasGroup("Map", false);
         Utils.Instance.WaitAndInvoke(0.2f, () =>
         {
             SeManager.Instance.PlaySe("footsteps");
@@ -349,16 +349,16 @@ public class StageManager : MonoBehaviour
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
                 EventManager.OnShopEnter.Trigger(0);
                 Shop.Instance.OpenShop();
-                GameManager.Instance.uiManager.EnableCanvasGroup("Shop", true);
+                GameManager.Instance.UIManager.EnableCanvasGroup("Shop", true);
                 break;
             case StageType.Rest:
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
                 EventManager.OnRestEnter.Trigger(0);
-                GameManager.Instance.uiManager.EnableCanvasGroup("Rest", true);
+                GameManager.Instance.UIManager.EnableCanvasGroup("Rest", true);
                 break;
             case StageType.Treasure:
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
-                GameManager.Instance.uiManager.EnableCanvasGroup("Treasure", true); 
+                GameManager.Instance.UIManager.EnableCanvasGroup("Treasure", true); 
                     
                 var count = GameManager.Instance.RandomRange(1, 4);
                 var rarity = GameManager.Instance.RandomRange(0, 4);

@@ -7,15 +7,15 @@ public class RenderTextureAspectManager : MonoBehaviour
     [SerializeField] private float defaultScale　= 1.065f;
 
     
-    private RawImage renderTexture;
-    private RectTransform renderTextureRectTransform;
+    private RawImage _renderTexture;
+    private RectTransform _renderTextureRectTransform;
 
     private void Start()
     {
-        renderTexture = GetComponent<RawImage>();
-        renderTextureRectTransform = renderTexture.GetComponent<RectTransform>();
-        renderTextureRectTransform.offsetMin = Vector2.zero;
-        renderTextureRectTransform.offsetMax = Vector2.zero;
+        _renderTexture = GetComponent<RawImage>();
+        _renderTextureRectTransform = _renderTexture.GetComponent<RectTransform>();
+        _renderTextureRectTransform.offsetMin = Vector2.zero;
+        _renderTextureRectTransform.offsetMax = Vector2.zero;
         
         AdjustRenderTextureSize();
     }
@@ -36,21 +36,21 @@ public class RenderTextureAspectManager : MonoBehaviour
         {
             // スクリーンが目標アスペクトより横長の場合
             var width = targetAspect / screenAspect;
-            renderTextureRectTransform.anchorMin = new Vector2(((1 - width) / 2), 0);
-            renderTextureRectTransform.anchorMax = new Vector2((1 + width) / 2, 1);
+            _renderTextureRectTransform.anchorMin = new Vector2(((1 - width) / 2), 0);
+            _renderTextureRectTransform.anchorMax = new Vector2((1 + width) / 2, 1);
             var scaleFactor = screenWidth / (screenHeight * targetAspect);
             
-            renderTextureRectTransform.localScale = new Vector3(scaleFactor * defaultScale, defaultScale, 1.055f);
+            _renderTextureRectTransform.localScale = new Vector3(scaleFactor * defaultScale, defaultScale, 1.055f);
         }
         else
         {
             // スクリーンが目標アスペクトより縦長の場合
             var height = screenAspect / targetAspect;
-            renderTextureRectTransform.anchorMin = new Vector2(0, (1 - height) / 2);
-            renderTextureRectTransform.anchorMax = new Vector2(1, (1 + height) / 2);
+            _renderTextureRectTransform.anchorMin = new Vector2(0, (1 - height) / 2);
+            _renderTextureRectTransform.anchorMax = new Vector2(1, (1 + height) / 2);
             
             var scaleFactor = screenHeight / (screenWidth / targetAspect);
-            renderTextureRectTransform.localScale = new Vector3(defaultScale, scaleFactor * defaultScale, 1.055f);
+            _renderTextureRectTransform.localScale = new Vector3(defaultScale, scaleFactor * defaultScale, 1.055f);
         }
     }
 }

@@ -7,17 +7,6 @@ public class AllAttackBall : BallBase
     {
         base.Effect(other);
         DefaultMergeParticle();
-        MergeManager.Instance.AddAllAttackCount(attack * level, this.transform.position);
-    }
-    
-    public override void AltFire(int enemyCount, float playerAttack)
-    {
-        // 全ての敵を攻撃
-        var isAttacks = new List<bool>(new bool[enemyCount]);
-        for (var i = 0; i < enemyCount; i++)
-            isAttacks[i] = true;
-        GameManager.Instance.enemyContainer.AttackEnemyBySkill((int)(level * playerAttack), isAttacks);
-        
-        base.AltFire(enemyCount, playerAttack);
+        MergeManager.Instance.AddAllAttackCount(Attack * Level, this.transform.position);
     }
 }

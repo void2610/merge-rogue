@@ -9,12 +9,11 @@ public class BombBall : BallBase
         // 全体攻撃しつつ、周りのボールを消す
         base.Effect(other);
         
-        MergeManager.Instance.AddAllAttackCount(attack * level, this.transform.position);
+        MergeManager.Instance.AddAllAttackCount(Attack * Level, this.transform.position);
 
-        var hitColliders = Physics2D.OverlapCircleAll(this.transform.position, size);
+        var hitColliders = Physics2D.OverlapCircleAll(this.transform.position, Size);
 
         // 取得したコライダーをリストに変換
-        // TODO: たまにフリーズする
         for(var i = 0; i < hitColliders.Length; i++)
         {
             var col = hitColliders[i];
@@ -25,7 +24,7 @@ public class BombBall : BallBase
             
             var ball = col.gameObject.GetComponent<BallBase>();
             if (ball == null) continue;
-            if (ball.isFrozen || ball.isDestroyed) continue;
+            if (ball.IsFrozen || ball.isDestroyed) continue;
             
             ball.isDestroyed = true;
             ball.EffectAndDestroy(this);
@@ -33,11 +32,5 @@ public class BombBall : BallBase
         
         // TODO: 爆発エフェクトを追加
         DefaultMergeParticle();
-    }
-    
-    public override void AltFire(int enemyCount, float playerAttack)
-    {
-        // 何もしない
-        base.AltFire(enemyCount, playerAttack);
     }
 }

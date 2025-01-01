@@ -20,7 +20,7 @@ public class Utils : MonoBehaviour
     public static void AddEventToObject(GameObject obj, System.Action action, EventTriggerType type)
     {
         var trigger = obj.GetComponent<EventTrigger>();
-        if (trigger == null)
+        if (!trigger)
         {
             trigger = obj.AddComponent<EventTrigger>();
         }

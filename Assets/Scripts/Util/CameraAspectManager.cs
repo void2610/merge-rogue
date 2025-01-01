@@ -4,57 +4,57 @@ public class CameraAspectRatioHandler : MonoBehaviour
 {
     public float aspectWidth = 16.0f;
     public float aspectHeight = 9.0f;
-    private float targetAspect;
-    private float lastScreenWidth;
-    private float lastScreenHeight;
+    private float _targetAspect;
+    private float _lastScreenWidth;
+    private float _lastScreenHeight;
 
-    void Start()
+    private void Start()
     {
-        targetAspect = aspectWidth / aspectHeight;
+        _targetAspect = aspectWidth / aspectHeight;
         AdjustCameraSize();
-        lastScreenWidth = Screen.width;
-        lastScreenHeight = Screen.height;
+        _lastScreenWidth = Screen.width;
+        _lastScreenHeight = Screen.height;
     }
 
-    void Update()
+    private void Update()
     {
-        if (Screen.width != lastScreenWidth || Screen.height != lastScreenHeight)
+        if (Screen.width != _lastScreenWidth || Screen.height != _lastScreenHeight)
         {
             AdjustCameraSize();
-            lastScreenWidth = Screen.width;
-            lastScreenHeight = Screen.height;
+            _lastScreenWidth = Screen.width;
+            _lastScreenHeight = Screen.height;
         }
     }
 
-    void AdjustCameraSize()
+    private void AdjustCameraSize()
     {
-        float windowAspect = (float)Screen.width / (float)Screen.height;
-        float scaleHeight = windowAspect / targetAspect;
+        var windowAspect = (float)Screen.width / (float)Screen.height;
+        var scaleHeight = windowAspect / _targetAspect;
 
-        Camera camera = GetComponent<Camera>();
+        var c = GetComponent<Camera>();
 
         if (scaleHeight < 1.0f)
         {
-            Rect rect = camera.rect;
+            var rect = c.rect;
             rect.width = 1.0f;
             rect.height = scaleHeight;
             rect.x = 0;
             rect.y = (1.0f - scaleHeight) / 2.0f;
-            camera.rect = rect;
+            c.rect = rect;
         }
         else
         {
-            float scaleWidth = 1.0f / scaleHeight;
-            Rect rect = camera.rect;
+            var scaleWidth = 1.0f / scaleHeight;
+            var rect = c.rect;
             rect.width = scaleWidth;
             rect.height = 1.0f;
             rect.x = (1.0f - scaleWidth) / 2.0f;
             rect.y = 0;
-            camera.rect = rect;
+            c.rect = rect;
         }
     }
 
-    void OnPreCull()
+    private void OnPreCull()
     {
         GL.Clear(true, true, Color.black);
     }

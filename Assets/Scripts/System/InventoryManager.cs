@@ -14,27 +14,27 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private List<BallData> testBalls;
 
     public const int INVENTORY_SIZE = 7;
-    public InventoryUI inventoryUI => this.GetComponent<InventoryUI>();
-    private readonly List<GameObject> inventory = new();
-    public readonly List<float> sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
-    private readonly List<float> probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f };
+    public InventoryUI InventoryUI => this.GetComponent<InventoryUI>();
+    private readonly List<GameObject> _inventory = new();
+    public readonly List<float> Sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
+    private readonly List<float> _probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f };
 
     // ボールを入れ替える
     public void SetBall(BallData data, int level)
     {
         if (level is <= 0 or > INVENTORY_SIZE) return;
-        var old = inventory[level - 1];
+        var old = _inventory[level - 1];
         var ball = CreateBallInstanceFromBallData(data, level);
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         ball.transform.position = CalcInventoryPosition(level - 1);
-        inventory[level - 1] = ball;
-        inventoryUI.CreateBallUI(ball, level - 1, data);
+        _inventory[level - 1] = ball;
+        InventoryUI.CreateBallUI(ball, level - 1, data);
         if(old) Destroy(old);
     }
 
     public List<GameObject> GetInventory()
     {
-        return inventory;
+        return _inventory;
     }
     
     public GameObject GetBombBall()
@@ -53,7 +53,7 @@ public class InventoryManager : MonoBehaviour
             // Debug.LogError("指定されたレベルのボールは存在しません。");
             return null;
         }
-        var ball = CopyBall(inventory[level - 1]);
+        var ball = CopyBall(_inventory[level - 1]);
         ball.GetComponent<BallBase>().Unfreeze();
         return ball;
     }
@@ -62,21 +62,21 @@ public class InventoryManager : MonoBehaviour
     public GameObject GetRandomBall(Vector3 position = default)
     {
         GameObject ball;
-        var total = probabilities.Sum();
+        var total = _probabilities.Sum();
         var r = GameManager.Instance.RandomRange(0.0f, total);
         for (var i = 0; i < INVENTORY_SIZE; i++)
         {
-            if (r < probabilities[i])
+            if (r < _probabilities[i])
             {
-                ball = CopyBall(inventory[i], position);
+                ball = CopyBall(_inventory[i], position);
                 ball.GetComponent<BallBase>().Freeze();
                 return ball;
             }
-            r -= probabilities[i];
+            r -= _probabilities[i];
         }
         
         // みつからなかった場合は一番最初のボールを返す
-        ball = CopyBall(inventory[0], position);
+        ball = CopyBall(_inventory[0], position);
         ball.GetComponent<BallBase>().Freeze();
         return ball;
     }
@@ -109,7 +109,7 @@ public class InventoryManager : MonoBehaviour
 
         ballBase.InitBall(data, level);
         
-        ball.transform.localScale = Vector3.one * (sizes[level - 1] * ballBase.size);
+        ball.transform.localScale = Vector3.one * (Sizes[level - 1] * ballBase.Size);
         // HDRカラーに変換
         var color = MyColors.GetBallColor(level - 1) * 1.05f;
         ball.GetComponent<SpriteRenderer>().color = color;
@@ -121,8 +121,8 @@ public class InventoryManager : MonoBehaviour
     private GameObject CopyBall(GameObject ball, Vector3 position = default)
     {
         var newBall = Instantiate(ball, position, Quaternion.identity);
-        var level = ball.GetComponent<BallBase>().level;
-        var data = ball.GetComponent<BallBase>().data;
+        var level = ball.GetComponent<BallBase>().Level;
+        var data = ball.GetComponent<BallBase>().Data;
         newBall.GetComponent<BallBase>().InitBall(data, level);
         newBall.transform.localScale = ball.transform.localScale;
         newBall.GetComponent<SpriteRenderer>().color = ball.GetComponent<SpriteRenderer>().color;
@@ -131,7 +131,7 @@ public class InventoryManager : MonoBehaviour
     
     private Vector3 CalcInventoryPosition(int index)
     {
-        return inventoryPosition + new Vector3(index * (0.6f + sizes[index] * 0.5f), 0, 0);
+        return inventoryPosition + new Vector3(index * (0.6f + Sizes[index] * 0.5f), 0, 0);
     }
 
     private void Awake()
@@ -153,8 +153,8 @@ public class InventoryManager : MonoBehaviour
             var ball = CreateBallInstanceFromBallData(normalBallData, i + 1);
             ball.transform.position = CalcInventoryPosition(i);
             ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-            inventoryUI.CreateBallUI(ball, i, normalBallData);
-            inventory.Add(ball);
+            InventoryUI.CreateBallUI(ball, i, normalBallData);
+            _inventory.Add(ball);
         }
         
         // テスト用
@@ -166,6 +166,6 @@ public class InventoryManager : MonoBehaviour
             }
         }
         
-        inventoryUI.SetCursor(0);
+        InventoryUI.SetCursor(0);
     }
 }

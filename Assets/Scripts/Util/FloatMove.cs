@@ -10,11 +10,11 @@ public class FloatMove : MonoBehaviour
     [SerializeField]
     private float delay = 0f;
 
-    private Tween floatTween;
+    private Tween _floatTween;
 
     public void MoveTo(Vector3 target, float duration)
     {
-        floatTween?.Kill(); // 既存のTweenを停止
+        _floatTween?.Kill(); // 既存のTweenを停止
 
         if (TryGetComponent(out RectTransform rectTransform))
         {
@@ -28,11 +28,11 @@ public class FloatMove : MonoBehaviour
 
     private void StartMove(Transform targetTransform)
     {
-        floatTween?.Kill(); // 過去のTweenを停止
+        _floatTween?.Kill(); // 過去のTweenを停止
 
-        float currentY = targetTransform.localPosition.y; // 現在のY座標を取得
+        var currentY = targetTransform.localPosition.y; // 現在のY座標を取得
 
-        floatTween = DOTween.To(
+        _floatTween = DOTween.To(
                 () => targetTransform.localPosition.y,
                 y => targetTransform.localPosition = new Vector3(
                     targetTransform.localPosition.x,
@@ -57,6 +57,6 @@ public class FloatMove : MonoBehaviour
     
     private void OnDestroy()
     {
-        floatTween?.Kill();
+        _floatTween?.Kill();
     }
 }

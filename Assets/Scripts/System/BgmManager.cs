@@ -22,44 +22,41 @@ public class BgmManager : MonoBehaviour
     private List<SoundData> bgmList = new List<SoundData>();
 
     private AudioSource AudioSource => this.GetComponent<AudioSource>();
-    private bool isPlaying = false;
-    private SoundData currentBGM;
-    private float volume = 1.0f;
-    private const float FadeTime = 1.5f;
-    private bool isFading = false;
+    private bool _isPlaying = false;
+    private SoundData _currentBGM;
+    private float _volume = 1.0f;
+    private const float FADE_TIME = 1.5f;
+    private bool _isFading = false;
 
     public float BgmVolume
     {
-        get
-        {
-            return volume;
-        }
+        get => _volume;
         set
         {
             if (value <= 0.0f)
             {
                 value = 0.0001f;
             }
-            volume = value;
+            _volume = value;
             PlayerPrefs.SetFloat("BgmVolume", value);
             bmgMixerGroup.audioMixer.SetFloat("BgmVolume", Mathf.Log10(value) * 20);
-            AudioSource.volume = currentBGM != null ? currentBGM.volume : 1;
+            AudioSource.volume = _currentBGM?.volume ?? 1;
         }
     }
 
     public void Play()
     {
-        if (currentBGM == null) return;
+        if (_currentBGM == null) return;
 
-        isPlaying = true;
+        _isPlaying = true;
         AudioSource.Play();
-        AudioSource.DOFade(currentBGM.volume, FadeTime).SetUpdate(true).SetEase(Ease.InQuad);
+        AudioSource.DOFade(_currentBGM.volume, FADE_TIME).SetUpdate(true).SetEase(Ease.InQuad);
     }
 
     public void Stop()
     {
-        isPlaying = false;
-        AudioSource.DOFade(0, FadeTime).SetUpdate(true).SetEase(Ease.InQuad).OnComplete(() => AudioSource.Stop());
+        _isPlaying = false;
+        AudioSource.DOFade(0, FADE_TIME).SetUpdate(true).SetEase(Ease.InQuad).OnComplete(() => AudioSource.Stop());
     }
 
     private void PlayRandomBGM()
@@ -69,12 +66,12 @@ public class BgmManager : MonoBehaviour
         AudioSource.Stop();
 
         var bgm = bgmList[Random.Range(0, bgmList.Count)];
-        currentBGM = bgm;
-        AudioSource.clip = currentBGM.audioClip;
+        _currentBGM = bgm;
+        AudioSource.clip = _currentBGM.audioClip;
         AudioSource.volume = 0;
 
         AudioSource.Play();
-        AudioSource.DOFade(currentBGM.volume, FadeTime).SetUpdate(true).SetEase(Ease.InQuad).OnComplete(() => isFading = false);
+        AudioSource.DOFade(_currentBGM.volume, FADE_TIME).SetUpdate(true).SetEase(Ease.InQuad).OnComplete(() => _isFading = false);
     }
 
     private void Awake()
@@ -91,25 +88,25 @@ public class BgmManager : MonoBehaviour
 
     private void Start()
     {
-        volume = PlayerPrefs.GetFloat("BgmVolume", 1.0f);
-        bmgMixerGroup.audioMixer.SetFloat("BgmVolume", Mathf.Log10(volume) * 20);
+        _volume = PlayerPrefs.GetFloat("BgmVolume", 1.0f);
+        bmgMixerGroup.audioMixer.SetFloat("BgmVolume", Mathf.Log10(_volume) * 20);
         AudioSource.volume = 0;
         AudioSource.outputAudioMixerGroup = bmgMixerGroup;
         if (playOnStart)
         {
-            isPlaying = true;
+            _isPlaying = true;
             PlayRandomBGM();
         }
     }
 
     private void Update()
     {
-        if (isPlaying && AudioSource.clip)
+        if (_isPlaying && AudioSource.clip)
         {
             var remainingTime = AudioSource.clip.length - AudioSource.time;
-            if (!(remainingTime <= FadeTime) || isFading) return;
+            if (!(remainingTime <= FADE_TIME) || _isFading) return;
             
-            isFading = true;
+            _isFading = true;
             AudioSource.DOFade(0, remainingTime).SetUpdate(true).SetEase(Ease.InQuad).OnComplete(() => PlayRandomBGM());
         }
     }
