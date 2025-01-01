@@ -29,8 +29,7 @@ public class InventoryManager : MonoBehaviour
         
         var old = _inventory[level - 1];
         var newBall = CreateBallInstanceFromBallData(data, level);
-        newBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-        newBall.transform.position = CalcInventoryPosition(level - 1);
+        
         _inventory[level - 1] = newBall;
         InventoryUI.CreateBallUI(newBall, level - 1, data);
         if(old) Destroy(old);
@@ -41,8 +40,6 @@ public class InventoryManager : MonoBehaviour
     {
         if (InventorySize >= MAX_INVENTORY_SIZE) return;
         var ball = CreateBallInstanceFromBallData(data, InventorySize + 1);
-        ball.transform.position = CalcInventoryPosition(InventorySize);
-        ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         _inventory[InventorySize] = ball;
         InventorySize++;
         InventoryUI.CreateBallUI(ball, InventorySize - 1, data);
@@ -52,9 +49,18 @@ public class InventoryManager : MonoBehaviour
     public void SwapBall(int index1, int index2)
     {
         if (index1 < 0 || index1 >= InventorySize || index2 < 0 || index2 >= InventorySize) return;
-        (_inventory[index1], _inventory[index2]) = (_inventory[index2], _inventory[index1]);
-        InventoryUI.CreateBallUI(_inventory[index1], index1, _inventory[index1].GetComponent<BallBase>().Data);
-        InventoryUI.CreateBallUI(_inventory[index2], index2, _inventory[index2].GetComponent<BallBase>().Data);
+       
+        var data1 = _inventory[index1].GetComponent<BallBase>().Data;
+        var data2 = _inventory[index2].GetComponent<BallBase>().Data;
+        
+        Destroy(_inventory[index1]);
+        Destroy(_inventory[index2]);
+        
+        _inventory[index1] = CreateBallInstanceFromBallData(data2, index1 + 1);
+        _inventory[index2] = CreateBallInstanceFromBallData(data1, index2 + 1);
+        
+        InventoryUI.CreateBallUI(_inventory[index1], index1, data2);
+        InventoryUI.CreateBallUI(_inventory[index2], index2, data1);
     }
     
     public GameObject GetBombBall()
@@ -62,6 +68,7 @@ public class InventoryManager : MonoBehaviour
         var bd = allBallDataList.GetBallDataFromClassName("BombBall");
         var ball = CreateBallInstanceFromBallData(bd, 3);
         ball.GetComponent<BallBase>().Unfreeze();
+        ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         return ball;
     }
 
@@ -134,6 +141,8 @@ public class InventoryManager : MonoBehaviour
         ball.GetComponent<SpriteRenderer>().color = color;
         ball.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = data.sprite;
         ball.GetComponent<BallBase>().Freeze();
+        ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+        ball.transform.position = CalcInventoryPosition(level - 1);
         return ball;
     }
 
@@ -172,8 +181,6 @@ public class InventoryManager : MonoBehaviour
         for (var i = 0; i < FIRST_INVENTORY_SIZE; i++)
         {
             var ball = CreateBallInstanceFromBallData(normalBallData, i + 1);
-            ball.transform.position = CalcInventoryPosition(i);
-            ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
             InventoryUI.CreateBallUI(ball, i, normalBallData);
             _inventory[i] = ball;
         }
