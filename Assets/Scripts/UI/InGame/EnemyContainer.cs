@@ -123,7 +123,7 @@ public class EnemyContainer : MonoBehaviour
             MergeManager.Instance.EndMerge();
             Utils.Instance.WaitAndInvoke(2.0f, () =>
             {
-                GameManager.Instance.player.AddExp(gainedExp);
+                GameManager.Instance.Player.AddExp(gainedExp);
                 gainedExp = 0;
             });
         }
@@ -174,7 +174,7 @@ public class EnemyContainer : MonoBehaviour
             yield return new WaitForSeconds(0.5f);
         }
 
-        if (GameManager.Instance.enemyContainer.GetCurrentEnemyCount() == 0) yield break;
+        if (GameManager.Instance.EnemyContainer.GetCurrentEnemyCount() == 0) yield break;
 
         // 単体攻撃
         // 一番前の敵を攻撃、攻撃力が残っていたら次の敵を攻撃
@@ -193,7 +193,7 @@ public class EnemyContainer : MonoBehaviour
         }
         
         // 敵が残っていたら敵の攻撃へ
-        if (GameManager.Instance.enemyContainer.GetCurrentEnemyCount() > 0)
+        if (GameManager.Instance.EnemyContainer.GetCurrentEnemyCount() > 0)
         {
             Utils.Instance.WaitAndInvoke(0.75f,
                 () => GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack));

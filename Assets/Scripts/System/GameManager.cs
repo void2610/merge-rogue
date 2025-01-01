@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using R3;
 using DG.Tweening;
+using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
 {
@@ -24,7 +25,7 @@ public class GameManager : MonoBehaviour
             _random = new System.Random(_seed);
             DOTween.SetTweensCapacity(tweenersCapacity: 800, sequencesCapacity: 800);
 
-            player = playerObj.GetComponent<Player>();
+            Player = playerObj.GetComponent<Player>();
         }
         else
         {
@@ -51,23 +52,26 @@ public class GameManager : MonoBehaviour
     
     [Header("オブジェクト")]
     [SerializeField] private GameObject playerObj;
-    [SerializeField] public EnemyContainer enemyContainer;
-    [SerializeField] public Camera renderTextureCamera;
-    [SerializeField] public Camera uiCamera;
-    [SerializeField] public Canvas pixelCanvas;
-    [SerializeField] public Canvas uiCanvas;
+    [SerializeField] private EnemyContainer enemyContainer;
+    [SerializeField] private Camera renderTextureCamera;
+    [SerializeField] private Camera uiCamera;
+    [SerializeField] private Canvas pixelCanvas;
+    [SerializeField] private Canvas uiCanvas;
 
-    private System.Random _random;
     public float TimeScale { get; private set; } = 1.0f;
     public bool IsGameOver { get; private set; } = false;
+    public Player Player { get; private set; }
+    public UIManager UIManager => this.GetComponent<UIManager>();
+    public StageManager StageManager => GetComponent<StageManager>();
+    public ScoreManager ScoreManager => GetComponent<ScoreManager>();
+    public EnemyContainer EnemyContainer => enemyContainer;
+    public Camera UICamera => uiCamera;
+    
     public readonly ReactiveProperty<int> coin = new(0);
     private int _seed = 42;
     private bool _isPaused = false;
     private bool _isMapOpened = false;
-    public Player player;
-    public UIManager UIManager => this.GetComponent<UIManager>();
-    public StageManager StageManager => GetComponent<StageManager>();
-    public ScoreManager ScoreManager => GetComponent<ScoreManager>();
+    private System.Random _random;
 
     public float RandomRange(float min, float max)
     {
@@ -112,7 +116,7 @@ public class GameManager : MonoBehaviour
     {
         IsGameOver = true;
         ChangeState(GameState.GameOver);
-        ScoreManager.ShowScore(StageManager.currentStageCount.Value + 1, enemyContainer.defeatedEnemyCount.Value, coin.Value);
+        ScoreManager.ShowScore(StageManager.currentStageCount.Value + 1, EnemyContainer.defeatedEnemyCount.Value, coin.Value);
     }
     
     public void ChangeState(GameState newState)
@@ -146,7 +150,7 @@ public class GameManager : MonoBehaviour
                 });
                 break;
             case GameState.EnemyAttack:
-                enemyContainer.Action();
+                EnemyContainer.Action();
                 break;
             case GameState.MapSelect:
                 StageManager.SetNextNodeActive();

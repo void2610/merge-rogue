@@ -75,7 +75,7 @@ public class UIManager : MonoBehaviour
     {
         EventManager.OnRest.Trigger(20);
         var v = EventManager.OnRest.GetAndResetValue();
-        GameManager.Instance.player.Heal(v);
+        GameManager.Instance.Player.Heal(v);
         
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
         EnableCanvasGroup("Rest", false);
@@ -188,24 +188,24 @@ public class UIManager : MonoBehaviour
     {
         GameManager.Instance.coin.Subscribe(UpdateCoinText).AddTo(this);
         GameManager.Instance.StageManager.currentStageCount.Subscribe(UpdateStageText).AddTo(this);
-        GameManager.Instance.player.Exp.Subscribe((v) =>
+        GameManager.Instance.Player.Exp.Subscribe((v) =>
         {
-            UpdateExpText(v, GameManager.Instance.player.MaxExp);
-            UpdateLevelText(GameManager.Instance.player.Level);
+            UpdateExpText(v, GameManager.Instance.Player.MaxExp);
+            UpdateLevelText(GameManager.Instance.Player.Level);
         }).AddTo(this);
-        GameManager.Instance.player.Health.Subscribe((v) =>
+        GameManager.Instance.Player.Health.Subscribe((v) =>
         {
             hpSlider.value = v;
-            hpText.text = v + "/" + GameManager.Instance.player.MaxHealth;
+            hpText.text = v + "/" + GameManager.Instance.Player.MaxHealth;
             if (v < 30)
             {
                 SetVignette(((30.0f-v)/30.0f)*0.3f);
             }
         }).AddTo(this);
-        GameManager.Instance.player.MaxHealth.Subscribe((v) =>
+        GameManager.Instance.Player.MaxHealth.Subscribe((v) =>
         {
             hpSlider.maxValue = v;
-            hpText.text = GameManager.Instance.player.Health.Value + "/" + v;
+            hpText.text = GameManager.Instance.Player.Health.Value + "/" + v;
         }).AddTo(this);
         
         bgmSlider.onValueChanged.AddListener((value) =>

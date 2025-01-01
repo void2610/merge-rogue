@@ -16,13 +16,13 @@ public class AddMaxHealth : MonoBehaviour, IRelicBehavior
 
     public void RemoveEffect()
     {
-        if (GameManager.Instance.player == null) return;
-        GameManager.Instance.player.MaxHealth.Value -= 10;
+        if (GameManager.Instance.Player == null) return;
+        GameManager.Instance.Player.MaxHealth.Value -= 10;
     }
     
     private void Effect(Unit _)
     {
-        GameManager.Instance.player.MaxHealth.Value += 10;
+        GameManager.Instance.Player.MaxHealth.Value += 10;
         ui?.AlwaysActive();
     }
     

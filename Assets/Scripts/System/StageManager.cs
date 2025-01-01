@@ -245,7 +245,7 @@ public class StageManager : MonoBehaviour
         if (currentStage?.type == StageType.Boss)
         {
             // ボスを倒したら回復
-            GameManager.Instance.player.HealToFull();
+            GameManager.Instance.Player.HealToFull();
             GenerateMap();
             DrawMap();
             SetButtonEvent();
@@ -338,11 +338,11 @@ public class StageManager : MonoBehaviour
         {
             case StageType.Enemy:
                 // 敵の出現量と強さを設定
-                GameManager.Instance.enemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value);
+                GameManager.Instance.EnemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value);
                 GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
                 break;
             case StageType.Boss:
-                GameManager.Instance.enemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value + 5);
+                GameManager.Instance.EnemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value + 5);
                 GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
                 break;
             case StageType.Shop:

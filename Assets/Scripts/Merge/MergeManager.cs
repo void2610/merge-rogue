@@ -5,6 +5,7 @@ using System.Linq;
 using DG.Tweening;
 using TMPro;
 using Unity.VisualScripting;
+using unityroom.Api;
 
 public class MergeManager : MonoBehaviour
 {
@@ -160,12 +161,16 @@ public class MergeManager : MonoBehaviour
         EventManager.OnPlayerAttack.Trigger(p);
         var atk = EventManager.OnPlayerAttack.GetAndResetValue();
         
+        var totalAttack = atk.Item1 + atk.Item2 * GameManager.Instance.EnemyContainer.GetCurrentEnemyCount();
+        if(UnityroomApiClient.Instance != null)
+            UnityroomApiClient.Instance.SendScore(2, totalAttack, ScoreboardWriteMode.HighScoreAsc);
+        
         // 攻撃処理
-        GameManager.Instance.enemyContainer.AttackEnemy(atk.Item1, atk.Item2);
+        GameManager.Instance.EnemyContainer.AttackEnemy(atk.Item1, atk.Item2);
         // 攻撃アニメーション
-        GameManager.Instance.player.gameObject.transform.DOMoveX(0.75f, 0.02f).SetRelative(true).OnComplete(() =>
+        GameManager.Instance.Player.gameObject.transform.DOMoveX(0.75f, 0.02f).SetRelative(true).OnComplete(() =>
         {
-            GameManager.Instance.player.gameObject.transform.DOMoveX(-0.75f, 0.2f).SetRelative(true)
+            GameManager.Instance.Player.gameObject.transform.DOMoveX(-0.75f, 0.2f).SetRelative(true)
                 .SetEase(Ease.OutExpo);
         });
         // SeManager.Instance.PlaySe("playerAttack");
@@ -293,7 +298,7 @@ public class MergeManager : MonoBehaviour
         ballGauge.transform.position = currentBall.transform.position;
         
 
-        var mousePosX = GameManager.Instance.uiCamera.ScreenToWorldPoint(Input.mousePosition).x;
+        var mousePosX = GameManager.Instance.UICamera.ScreenToWorldPoint(Input.mousePosition).x;
         var isMouseOvered = mousePosX > -limit + size / 2 && mousePosX < limit - size / 2;
         if (isMouseOvered)
         {
