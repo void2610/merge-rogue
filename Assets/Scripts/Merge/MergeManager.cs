@@ -322,7 +322,7 @@ public class MergeManager : MonoBehaviour
 
         if (Time.time - _lastFallTime <= COOL_TIME || RemainingBalls < 0) return;
 
-        var isMain = Input.GetKeyDown(KeyCode.Space) || (Input.GetMouseButton(0) && isMouseOvered);
+        var isMain = Input.GetKey(KeyCode.Space) || (Input.GetMouseButton(0) && isMouseOvered);
         var isAlt = Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) || (Input.GetMouseButton(1) && isMouseOvered);
         
         if (isMain)
