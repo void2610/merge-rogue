@@ -162,9 +162,12 @@ public class MergeManager : MonoBehaviour
         var atk = EventManager.OnPlayerAttack.GetAndResetValue();
         
         var totalAttack = atk.Item1 + atk.Item2 * GameManager.Instance.EnemyContainer.GetCurrentEnemyCount();
-        if(UnityroomApiClient.Instance != null)
+        if (PlayerPrefs.GetInt("maxAttack", 0) < totalAttack)
+        {
+            PlayerPrefs.SetInt("maxAttack", totalAttack);
             UnityroomApiClient.Instance.SendScore(2, totalAttack, ScoreboardWriteMode.HighScoreAsc);
-        
+        }
+
         // 攻撃処理
         GameManager.Instance.EnemyContainer.AttackEnemy(atk.Item1, atk.Item2);
         // 攻撃アニメーション
