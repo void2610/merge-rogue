@@ -15,7 +15,7 @@ public class InventoryManager : MonoBehaviour
 
     private const int MAX_INVENTORY_SIZE = 8;
     private const int MIN_INVENTORY_SIZE = 1;
-    private const int FIRST_INVENTORY_SIZE = 3;
+    private const int FIRST_INVENTORY_SIZE = 4;
     public int InventorySize { get; private set; } = FIRST_INVENTORY_SIZE;
     public InventoryUI InventoryUI => this.GetComponent<InventoryUI>();
     private readonly List<GameObject> _inventory = new();

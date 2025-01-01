@@ -31,7 +31,7 @@ public class ScoreManager : MonoBehaviour
         var total = (int)(stageScore + enemyScore + coinScore);
         
         if(UnityroomApiClient.Instance != null)
-            UnityroomApiClient.Instance.SendScore(1, total, ScoreboardWriteMode.HighScoreAsc);
+            UnityroomApiClient.Instance.SendScore(1, total, ScoreboardWriteMode.HighScoreDesc);
 
         // アニメーションの順番
         var sequence = DOTween.Sequence();
