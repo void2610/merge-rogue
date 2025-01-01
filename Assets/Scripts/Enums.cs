@@ -68,7 +68,8 @@ public static class MyColors
         Color.magenta,
         Color.yellow,
         Color.red,
-        Color.cyan
+        Color.cyan,
+        Color.white
     };
 
 

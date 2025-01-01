@@ -9,12 +9,6 @@ using UnityEngine.Serialization;
 
 public class Shop : MonoBehaviour
 {
-    private enum ShopState
-    {
-        NotSelected,
-        Selected,
-        Closed
-    }
     public static Shop Instance;
     
     [SerializeField] private GameObject itemContainer;
@@ -22,9 +16,6 @@ public class Shop : MonoBehaviour
     private readonly List<object> _currentItems = new();
     private const int ITEM_NUM = 6;
     private List<GameObject> _itemObjects;
-    private ShopState _state = ShopState.Closed;
-    private int _selectedItem = -1;
-    private float _defaultScale = 1.0f;
     private readonly List<Vector3> _itemPositions = new();
     private readonly Vector3 _disabledPosition = new (100, 100, 0);
     private static RelicDataList AllRelics => RelicManager.Instance.allRelicDataList;
@@ -34,7 +25,6 @@ public class Shop : MonoBehaviour
     public void OpenShop(int count = 6)
     {
         if (count > ITEM_NUM) return;
-        _state = ShopState.NotSelected;
         
         for (var i = 0; i < ITEM_NUM; i++)
         {
@@ -62,8 +52,6 @@ public class Shop : MonoBehaviour
 
     public void CloseShop()
     {
-        _state = ShopState.Closed;
-        _selectedItem = -1;
         for (var i = 0; i < ITEM_NUM; i++)
         {
             _itemObjects[i].GetComponent<Image>().color = new Color(1, 1, 1, 1);
@@ -72,56 +60,28 @@ public class Shop : MonoBehaviour
         InventoryManager.Instance.InventoryUI.EnableCursor(false);
     }
 
-    public void BuyBall(int inventoryIndex)
+    private void BuyBall(int index)
     {
-        if(_selectedItem == -1) return;
-        
-        var ball = _currentItems[_selectedItem] as BallData;
+        var ball = _currentItems[index] as BallData;
         if (!ball) return;
         var itemPrice = ball.price;
         
-        if (GameManager.Instance.coin.Value >= itemPrice)
-        {
-            InventoryManager.Instance.SetBall(ball, inventoryIndex + 1);
-            _itemObjects[_selectedItem].transform.DOScale(_defaultScale, 0.1f).SetUpdate(true);
-            InventoryManager.Instance.InventoryUI.EnableCursor(false);
-            InventoryManager.Instance.InventoryUI.SetCursor(0);
-            _itemObjects[_selectedItem].transform.position = _disabledPosition;
-            
-            GameManager.Instance.SubtractCoin(itemPrice);
-            SeManager.Instance.PlaySe("coin");
-            _selectedItem = -1;
-        }
-        else
-        {
-            SeManager.Instance.PlaySe("error");
-        }
-        _state = ShopState.NotSelected;
+        InventoryManager.Instance.AddBall(ball);
+        _itemObjects[index].transform.position = _disabledPosition;
+        GameManager.Instance.SubtractCoin(itemPrice);
+        SeManager.Instance.PlaySe("coin");
     }
 
-    private void BuyRelic(int shopItemIndex)
+    private void BuyRelic(int index)
     {
-        if(_selectedItem == -1) return;
-
-        var relic = _currentItems[_selectedItem] as RelicData;
+        var relic = _currentItems[index] as RelicData;
         if (!relic) return;
         var itemPrice = relic.price;
-        
-        if (GameManager.Instance.coin.Value >= itemPrice)
-        {
-            RelicManager.Instance.AddRelic(relic);
-            _itemObjects[_selectedItem].transform.DOScale(_defaultScale, 0.1f).SetUpdate(true);
-            _itemObjects[_selectedItem].transform.position = _disabledPosition;
-            
-            GameManager.Instance.SubtractCoin(itemPrice);
-            SeManager.Instance.PlaySe("coin");
-            _selectedItem = -1;
-        }
-        else
-        {
-            SeManager.Instance.PlaySe("error");
-        }
-        _state = ShopState.NotSelected;
+    
+        RelicManager.Instance.AddRelic(relic);
+        _itemObjects[index].transform.position = _disabledPosition;
+        GameManager.Instance.SubtractCoin(itemPrice);
+        SeManager.Instance.PlaySe("coin");
     }
 
     private void SetBallEvent(GameObject g, BallData ball, int index)
@@ -133,24 +93,13 @@ public class Shop : MonoBehaviour
         var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
         ballImage.color = new Color(0.6f, 0.6f, 0.6f, 1);
         var button = g.GetComponent<Button>();
-        _defaultScale = g.transform.localScale.x;
         if (button)
         {
             button.onClick.AddListener(() =>
             {
                 if (!ball) return;
-                if (GameManager.Instance.coin.Value >= ball.price)
-                {
-                    _state = ShopState.Selected;
-                    _selectedItem = index;
-                    g.transform.DOScale(_defaultScale * 1.2f, 0.1f).SetUpdate(true);
-                    InventoryManager.Instance.InventoryUI.EnableCursor(true);
-                    SeManager.Instance.PlaySe("button");
-                }
-                else
-                {
-                    SeManager.Instance.PlaySe("error");
-                }
+                if (GameManager.Instance.coin.Value >= ball.price) BuyBall(index);
+                else SeManager.Instance.PlaySe("error");
             });
         }
         
@@ -173,32 +122,13 @@ public class Shop : MonoBehaviour
         var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
         ballImage.color = new Color(1, 1, 1, 0);
         var button = g.GetComponent<Button>();
-        _defaultScale = g.transform.localScale.x;
         if (button)
         {
             button.onClick.AddListener(() =>
             {
-                InventoryManager.Instance.InventoryUI.EnableCursor(false);
                 if (!relic) return;
-                
-                if (_selectedItem == index && _state == ShopState.Selected)
-                {
-                    BuyRelic(index);
-                }
-                else
-                {
-                    if (GameManager.Instance.coin.Value >= relic.price)
-                    {
-                        _state = ShopState.Selected;
-                        _selectedItem = index;
-                        g.transform.DOScale(_defaultScale * 1.2f, 0.1f).SetUpdate(true);
-                        SeManager.Instance.PlaySe("button");
-                    }
-                    else
-                    {
-                        SeManager.Instance.PlaySe("error");
-                    }
-                }
+                if (GameManager.Instance.coin.Value >= relic.price) BuyRelic(index);
+                else SeManager.Instance.PlaySe("error");
             });
         }
 
@@ -213,14 +143,8 @@ public class Shop : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+        if (Instance == null) Instance = this;
+        else Destroy(this.gameObject);
         
         _itemObjects = itemContainer.GetComponentInChildren<Transform>().Cast<Transform>().Select(x => x.gameObject).ToList();
         _itemObjects.ForEach(x => _itemPositions.Add(x.transform.position));
@@ -229,14 +153,5 @@ public class Shop : MonoBehaviour
     private void Update()
     {
         if(GameManager.Instance.state != GameManager.GameState.Event) return;
-        if (_state == ShopState.NotSelected) return;
-
-        for (var i = 0; i < ITEM_NUM; i++)
-        {
-            if (i != _selectedItem)
-            {
-                _itemObjects[i].transform.DOScale(_defaultScale, 0.1f).SetUpdate(true);
-            }
-        }
     }
 }

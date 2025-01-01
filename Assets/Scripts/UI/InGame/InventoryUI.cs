@@ -60,13 +60,14 @@ public class InventoryUI : MonoBehaviour
             GameManager.Instance.UIManager.ShowBallDescriptionWindow(data, ball.transform.position + new Vector3(2.5f, 0, 0)); 
         }, EventTriggerType.PointerEnter);
 
-        Utils.AddEventToObject(ball, () => { Shop.Instance.BuyBall(index); }, EventTriggerType.PointerClick);
-        Utils.AddEventToObject(ball, () => { GameManager.Instance.UIManager.HideBallDescriptionWindow(); }, EventTriggerType.PointerExit);
+        // TODO: ボール入れ替え処理
+        // Utils.AddEventToObject(ball, () => Shop.Instance.BuyBall(), EventTriggerType.PointerClick);
+        Utils.AddEventToObject(ball, () => GameManager.Instance.UIManager.HideBallDescriptionWindow(), EventTriggerType.PointerExit);
     }
     
     private Vector3 CalcInventoryPosition(int index)
     {
-        return inventoryPosition + new Vector3(index * (0.6f + ballSizes[index] * 0.5f), 0, 0);
+        return inventoryPosition + new Vector3(index * (0.6f + ballSizes[index] * 0.4f), 0, 0);
     }
 
     private void Awake()

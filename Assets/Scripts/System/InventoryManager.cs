@@ -13,28 +13,39 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private Vector3 inventoryPosition = new(5.5f, -1.0f, 0);
     [SerializeField] private List<BallData> testBalls;
 
-    public const int INVENTORY_SIZE = 7;
+    private const int MAX_INVENTORY_SIZE = 8;
+    private const int MIN_INVENTORY_SIZE = 1;
+    private const int FIRST_INVENTORY_SIZE = 3;
+    public int InventorySize { get; private set; } = FIRST_INVENTORY_SIZE;
     public InventoryUI InventoryUI => this.GetComponent<InventoryUI>();
     private readonly List<GameObject> _inventory = new();
-    public readonly List<float> Sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f };
-    private readonly List<float> _probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f };
+    public readonly List<float> Sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f , 1.1f};
+    private readonly List<float> _probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f };
 
     // ボールを入れ替える
     public void SetBall(BallData data, int level)
     {
-        if (level is <= 0 or > INVENTORY_SIZE) return;
+        if (level is <= 0 or > MAX_INVENTORY_SIZE) return;
+        
         var old = _inventory[level - 1];
-        var ball = CreateBallInstanceFromBallData(data, level);
-        ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
-        ball.transform.position = CalcInventoryPosition(level - 1);
-        _inventory[level - 1] = ball;
-        InventoryUI.CreateBallUI(ball, level - 1, data);
+        var newBall = CreateBallInstanceFromBallData(data, level);
+        newBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+        newBall.transform.position = CalcInventoryPosition(level - 1);
+        _inventory[level - 1] = newBall;
+        InventoryUI.CreateBallUI(newBall, level - 1, data);
         if(old) Destroy(old);
     }
-
-    public List<GameObject> GetInventory()
+    
+    // ボールを追加する
+    public void AddBall(BallData data)
     {
-        return _inventory;
+        if (InventorySize >= MAX_INVENTORY_SIZE) return;
+        var ball = CreateBallInstanceFromBallData(data, InventorySize + 1);
+        ball.transform.position = CalcInventoryPosition(InventorySize);
+        ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
+        _inventory[InventorySize] = ball;
+        InventorySize++;
+        InventoryUI.CreateBallUI(ball, InventorySize - 1, data);
     }
     
     public GameObject GetBombBall()
@@ -48,9 +59,8 @@ public class InventoryManager : MonoBehaviour
     // マージ時に次のボールを生成
     public GameObject GetBallByLevel(int level)
     {
-        if (level is <= 0 or > INVENTORY_SIZE)
+        if (level < MIN_INVENTORY_SIZE || level > InventorySize)  
         {
-            // Debug.LogError("指定されたレベルのボールは存在しません。");
             return null;
         }
         var ball = CopyBall(_inventory[level - 1]);
@@ -64,7 +74,7 @@ public class InventoryManager : MonoBehaviour
         GameObject ball;
         var total = _probabilities.Sum();
         var r = GameManager.Instance.RandomRange(0.0f, total);
-        for (var i = 0; i < INVENTORY_SIZE; i++)
+        for (var i = 0; i < InventorySize; i++)
         {
             if (r < _probabilities[i])
             {
@@ -147,22 +157,24 @@ public class InventoryManager : MonoBehaviour
         
         allBallDataList.Register();
 
+        for(var i = 0; i < MAX_INVENTORY_SIZE; i++) _inventory.Add(null);
+        
         // 全てnormalBallで初期化
-        for (var i = 0; i < INVENTORY_SIZE; i++)
+        for (var i = 0; i < FIRST_INVENTORY_SIZE; i++)
         {
             var ball = CreateBallInstanceFromBallData(normalBallData, i + 1);
             ball.transform.position = CalcInventoryPosition(i);
             ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
             InventoryUI.CreateBallUI(ball, i, normalBallData);
-            _inventory.Add(ball);
+            _inventory[i] = ball;
         }
         
         // テスト用
         if(Application.isEditor)
         {
-            for(var i = 0; i < INVENTORY_SIZE; i++)
+            for(var i = 0; i < MAX_INVENTORY_SIZE; i++)
             {
-                SetBall(testBalls[i], i + 1);
+                if(testBalls[i]) SetBall(testBalls[i], i + 1);
             }
         }
         
