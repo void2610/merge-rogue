@@ -23,6 +23,7 @@ public class MergeManager : MonoBehaviour
     public int RemainingBalls { get; private set; } = 0;
     public GameObject CurrentBall { get; private set; } = null;
     public GameObject NextBall { get; private set; } = null;
+    public MergeWall Wall => wall;
     
     private const float MOVE_SPEED = 1.0f;
     private const float COOL_TIME = 0.5f;
@@ -129,7 +130,7 @@ public class MergeManager : MonoBehaviour
     public void SpawnBallFromLevel(int level, Vector3 p, Quaternion q)
     {
         var ball = InventoryManager.Instance.GetBallByLevel(level);
-        if (ball == null) return;
+        if (!ball) return;
 
         ball.transform.position = p;
         ball.transform.rotation = q;

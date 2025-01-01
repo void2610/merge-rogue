@@ -4655,7 +4655,6 @@ MonoBehaviour:
   rightWall: {fileID: 1066192357}
   floor: {fileID: 1461756396}
   image: {fileID: 1880978490}
-  xOffset: 0
 --- !u!1 &794187495
 GameObject:
   m_ObjectHideFlags: 0
