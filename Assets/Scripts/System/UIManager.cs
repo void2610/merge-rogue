@@ -80,6 +80,13 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
         EnableCanvasGroup("Rest", false);
     }
+
+    public void OnClickOrganiseButton()
+    {
+        EventManager.OnOrganise.Trigger(0);
+        EnableCanvasGroup("Rest", false);
+        InventoryManager.Instance.InventoryUI.StartOrganise();
+    }
     
     public void OnClickSkippRestButton()
     {

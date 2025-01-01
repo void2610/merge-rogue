@@ -10,9 +10,11 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private Vector3 inventoryPosition;
     [SerializeField] private GameObject inventoryUIContainer;
     [SerializeField] private GameObject cursor;
-    private List<GameObject> items = new List<GameObject>();
+    [SerializeField] private GameObject subCursor;
     private const float SIZE_COEFFICIENT = 8f;
-    private static List<float> ballSizes => InventoryManager.Instance.Sizes;
+    private static List<float> BallSizes => InventoryManager.Instance.Sizes;
+    private readonly List<GameObject> _items = new();
+    private int _swapIndex = -1;
 
     public void CreateBallUI(GameObject ball, int level, BallData data)
     {
@@ -29,28 +31,42 @@ public class InventoryUI : MonoBehaviour
         else g.transform.Find("Icon").GetComponent<Image>().color = new Color(0, 0, 0, 0);
         
         SetEvent(g, level, data);
-        if (items.Count <= level)
+        if (_items.Count <= level)
         {
-            items.Add(g);
+            _items.Add(g);
         }
         else
         {
-            Destroy(items[level]);
-            items[level] = g;
+            Destroy(_items[level]);
+            _items[level] = g;
         }
     }
 
     public void SetCursor(int index)
     {
-        if (items.Count == 0 || index < 0 || index >= items.Count) return;
-        cursor.transform.DOMove(items[index].transform.position, 0.3f).SetUpdate(true).SetEase(Ease.OutQuint);
-        var size = items[index].transform.localScale.x * SIZE_COEFFICIENT;
+        if (_items.Count == 0 || index < 0 || index >= _items.Count) return;
+        cursor.transform.DOMove(_items[index].transform.position, 0.3f).SetUpdate(true).SetEase(Ease.OutQuint);
+        var size = _items[index].transform.localScale.x * SIZE_COEFFICIENT;
         cursor.transform.DOScale(new Vector3(size, size, 1), 0.3f).SetUpdate(true).SetEase(Ease.OutQuint);
+    }
+    
+    private void SetSubCursor(int index)
+    {
+        if (_items.Count == 0 || index < 0 || index >= _items.Count) return;
+        subCursor.transform.position = _items[index].transform.position;
+        var size = _items[index].transform.localScale.x * SIZE_COEFFICIENT;
+        subCursor.transform.localScale = new Vector3(size, size, 1);
     }
 
     public void EnableCursor(bool b)
     {
         cursor.GetComponent<SpriteRenderer>().enabled = b;
+    }
+    
+    public void StartOrganise()
+    {
+        EnableCursor(true);
+        SetCursor(0);
     }
     
     private void SetEvent(GameObject ball, int index, BallData data)
@@ -61,17 +77,39 @@ public class InventoryUI : MonoBehaviour
         }, EventTriggerType.PointerEnter);
 
         // TODO: ボール入れ替え処理
-        // Utils.AddEventToObject(ball, () => Shop.Instance.BuyBall(), EventTriggerType.PointerClick);
+        Utils.AddEventToObject(ball, () => SwapOrSelectBall(index), EventTriggerType.PointerClick);
         Utils.AddEventToObject(ball, () => GameManager.Instance.UIManager.HideBallDescriptionWindow(), EventTriggerType.PointerExit);
+    }
+
+    private void SwapOrSelectBall(int index)
+    {
+        if (_swapIndex == -1)
+        {
+            _swapIndex = index;
+            subCursor.GetComponent<SpriteRenderer>().enabled = true;
+            SetSubCursor(index);
+        }
+        else
+        {
+            InventoryManager.Instance.SwapBall(_swapIndex, index);
+            GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+            
+            GameManager.Instance.UIManager.HideBallDescriptionWindow();
+            EnableCursor(false);
+            subCursor.GetComponent<SpriteRenderer>().enabled = false;
+            _swapIndex = -1;
+        }
+
     }
     
     private Vector3 CalcInventoryPosition(int index)
     {
-        return inventoryPosition + new Vector3(index * (0.6f + ballSizes[index] * 0.4f), 0, 0);
+        return inventoryPosition + new Vector3(index * (0.6f + BallSizes[index] * 0.4f), 0, 0);
     }
 
     private void Awake()
     {
         EnableCursor(false);
+        subCursor.GetComponent<SpriteRenderer>().enabled = false;
     }
 }

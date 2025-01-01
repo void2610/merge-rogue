@@ -20,9 +20,9 @@ public class InventoryManager : MonoBehaviour
     public InventoryUI InventoryUI => this.GetComponent<InventoryUI>();
     private readonly List<GameObject> _inventory = new();
     public readonly List<float> Sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f , 1.1f};
-    private readonly List<float> _probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f };
+    public readonly List<float> Probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f };
 
-    // ボールを入れ替える
+    // ボールを最後尾に追加する
     public void SetBall(BallData data, int level)
     {
         if (level is <= 0 or > MAX_INVENTORY_SIZE) return;
@@ -36,7 +36,7 @@ public class InventoryManager : MonoBehaviour
         if(old) Destroy(old);
     }
     
-    // ボールを追加する
+    // ボールを任意の位置に追加する
     public void AddBall(BallData data)
     {
         if (InventorySize >= MAX_INVENTORY_SIZE) return;
@@ -46,6 +46,15 @@ public class InventoryManager : MonoBehaviour
         _inventory[InventorySize] = ball;
         InventorySize++;
         InventoryUI.CreateBallUI(ball, InventorySize - 1, data);
+    }
+    
+    // 2つのボールを入れ替える
+    public void SwapBall(int index1, int index2)
+    {
+        if (index1 < 0 || index1 >= InventorySize || index2 < 0 || index2 >= InventorySize) return;
+        (_inventory[index1], _inventory[index2]) = (_inventory[index2], _inventory[index1]);
+        InventoryUI.CreateBallUI(_inventory[index1], index1, _inventory[index1].GetComponent<BallBase>().Data);
+        InventoryUI.CreateBallUI(_inventory[index2], index2, _inventory[index2].GetComponent<BallBase>().Data);
     }
     
     public GameObject GetBombBall()
@@ -72,17 +81,17 @@ public class InventoryManager : MonoBehaviour
     public GameObject GetRandomBall(Vector3 position = default)
     {
         GameObject ball;
-        var total = _probabilities.Sum();
+        var total = Probabilities.Sum();
         var r = GameManager.Instance.RandomRange(0.0f, total);
         for (var i = 0; i < InventorySize; i++)
         {
-            if (r < _probabilities[i])
+            if (r < Probabilities[i])
             {
                 ball = CopyBall(_inventory[i], position);
                 ball.GetComponent<BallBase>().Freeze();
                 return ball;
             }
-            r -= _probabilities[i];
+            r -= Probabilities[i];
         }
         
         // みつからなかった場合は一番最初のボールを返す
