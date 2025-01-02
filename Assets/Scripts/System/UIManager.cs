@@ -206,10 +206,8 @@ public class UIManager : MonoBehaviour
         {
             hpSlider.value = v;
             hpText.text = v + "/" + GameManager.Instance.Player.MaxHealth;
-            if (v < 30)
-            {
-                SetVignette(((30.0f-v)/30.0f)*0.3f);
-            }
+            if (v < 30) SetVignette(((30.0f-v)/30.0f)*0.3f);
+            else SetVignette(0);
         }).AddTo(this);
         GameManager.Instance.Player.MaxHealth.Subscribe((v) =>
         {
