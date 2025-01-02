@@ -62,6 +62,21 @@ public class InventoryManager : MonoBehaviour
         InventoryUI.CreateBallUI(_inventory[index1], index1, data2);
         InventoryUI.CreateBallUI(_inventory[index2], index2, data1);
     }
+
+    // 任意の場所のボールを削除し、後ろのボールを前に詰める
+    public void RemoveAndShiftBall(int index)
+    {
+        Destroy(_inventory[index]);
+        InventoryUI.RemoveBallUI(index);
+        
+        for (var i = index; i < InventorySize - 1; i++)
+        {
+            var data = _inventory[i + 1].GetComponent<BallBase>().Data;
+            _inventory[i] = CreateBallInstanceFromBallData(data, i + 1);
+            InventoryUI.CreateBallUI(_inventory[i], i, data);
+        }
+        InventorySize--;
+    }
     
     public GameObject GetBombBall()
     {

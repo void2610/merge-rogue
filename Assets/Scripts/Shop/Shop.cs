@@ -12,6 +12,7 @@ public class Shop : MonoBehaviour
     public static Shop Instance;
     
     [SerializeField] private GameObject itemContainer;
+    [SerializeField] private GameObject removeButton;
     
     private readonly List<object> _currentItems = new();
     private const int ITEM_NUM = 6;
@@ -30,6 +31,8 @@ public class Shop : MonoBehaviour
         {
             _itemObjects[i].transform.position = _itemPositions[i];
         }
+        removeButton.transform.position = _itemPositions[ITEM_NUM];
+        
         _currentItems.Clear();
         
         for(var i = 0; i < ITEM_NUM; i++)
@@ -140,6 +143,16 @@ public class Shop : MonoBehaviour
             GameManager.Instance.UIManager.HideRelicDescriptionWindow();
         }, EventTriggerType.PointerExit);
     }
+    
+    private void OnClickRemoveButton()
+    {
+        if(GameManager.Instance.Coin.Value < 25) return;
+        
+        EventManager.OnBallRemove.Trigger(0);
+        removeButton.transform.position = _disabledPosition;
+        GameManager.Instance.SubtractCoin(25);
+        InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Remove);
+    }
 
     private void Awake()
     {
@@ -148,6 +161,9 @@ public class Shop : MonoBehaviour
         
         _itemObjects = itemContainer.GetComponentInChildren<Transform>().Cast<Transform>().Select(x => x.gameObject).ToList();
         _itemObjects.ForEach(x => _itemPositions.Add(x.transform.position));
+        _itemPositions.Add(removeButton.transform.position);
+        
+        removeButton.GetComponent<Button>().onClick.AddListener(OnClickRemoveButton);
     }
 
     private void Update()

@@ -87,7 +87,7 @@ public class UIManager : MonoBehaviour
     {
         EventManager.OnOrganise.Trigger(0);
         EnableCanvasGroup("Rest", false);
-        InventoryManager.Instance.InventoryUI.StartOrganise();
+        InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Swap);
     }
     
     public void OnClickSkippRestButton()

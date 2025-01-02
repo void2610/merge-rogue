@@ -46,6 +46,8 @@ public static class EventManager
     public static readonly GameEvent<int> OnRestExit = new (0);
     // ショップに入った時: なし
     public static readonly GameEvent<int> OnShopEnter = new (0);
+    // ボールを削除したとき: なし
+    public static readonly GameEvent<int> OnBallRemove = new (0);
     // ショップから出た時: なし
     public static readonly GameEvent<int> OnShopExit = new (0);
     // ショップでアイテムを購入した時: なし

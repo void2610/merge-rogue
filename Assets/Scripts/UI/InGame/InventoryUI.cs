@@ -6,6 +6,14 @@ using UnityEngine.UI;
 
 public class InventoryUI : MonoBehaviour
 {
+    public enum InventoryUIState
+    {
+        Normal,
+        Swap,
+        Remove
+    }
+    
+    
     [SerializeField] private GameObject ballUIPrefab;
     [SerializeField] private Vector3 inventoryPosition;
     [SerializeField] private GameObject inventoryUIContainer;
@@ -15,6 +23,7 @@ public class InventoryUI : MonoBehaviour
     private static List<float> BallSizes => InventoryManager.Instance.Sizes;
     private readonly List<GameObject> _items = new();
     private int _swapIndex = -1;
+    private InventoryUIState _state = InventoryUIState.Normal;
 
     public void CreateBallUI(GameObject ball, int level, BallData data)
     {
@@ -41,6 +50,13 @@ public class InventoryUI : MonoBehaviour
             _items[level] = g;
         }
     }
+    
+    public void RemoveBallUI(int level)
+    {
+        if (level < 0 || level >= _items.Count) return;
+        Destroy(_items[level]);
+        _items.RemoveAt(level);
+    }
 
     public void SetCursor(int index)
     {
@@ -63,43 +79,51 @@ public class InventoryUI : MonoBehaviour
         cursor.GetComponent<SpriteRenderer>().enabled = b;
     }
     
-    public void StartOrganise()
+    public void StartEdit(InventoryUIState s)
     {
         EnableCursor(true);
         SetCursor(0);
+        _state = s;
     }
     
     private void SetEvent(GameObject ball, int index, BallData data)
     {
+        // ボールの選択、入れ替え、削除
+        Utils.AddEventToObject(ball, () => OnClickBall(index), EventTriggerType.PointerClick);
+        
         Utils.AddEventToObject(ball, () => { 
             SetCursor(index);
             GameManager.Instance.UIManager.ShowBallDescriptionWindow(data, ball.transform.position + new Vector3(2.5f, 0, 0)); 
         }, EventTriggerType.PointerEnter);
-
-        // TODO: ボール入れ替え処理
-        Utils.AddEventToObject(ball, () => SwapOrSelectBall(index), EventTriggerType.PointerClick);
+        
         Utils.AddEventToObject(ball, () => GameManager.Instance.UIManager.HideBallDescriptionWindow(), EventTriggerType.PointerExit);
     }
 
-    private void SwapOrSelectBall(int index)
+    private void OnClickBall(int index)
     {
-        if (_swapIndex == -1)
+        switch (_state)
         {
-            _swapIndex = index;
-            subCursor.GetComponent<SpriteRenderer>().enabled = true;
-            SetSubCursor(index);
+            case InventoryUIState.Swap when _swapIndex == -1:
+                _swapIndex = index;
+                subCursor.GetComponent<SpriteRenderer>().enabled = true;
+                SetSubCursor(index);
+                break;
+            case InventoryUIState.Swap:
+                InventoryManager.Instance.SwapBall(_swapIndex, index);
+                
+                GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+                GameManager.Instance.UIManager.HideBallDescriptionWindow();
+                EnableCursor(false);
+                subCursor.GetComponent<SpriteRenderer>().enabled = false;
+                _swapIndex = -1;
+                break;
+            case InventoryUIState.Remove:
+                InventoryManager.Instance.RemoveAndShiftBall(index);
+                
+                GameManager.Instance.UIManager.HideBallDescriptionWindow();
+                EnableCursor(false);
+                break;
         }
-        else
-        {
-            InventoryManager.Instance.SwapBall(_swapIndex, index);
-            GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
-            
-            GameManager.Instance.UIManager.HideBallDescriptionWindow();
-            EnableCursor(false);
-            subCursor.GetComponent<SpriteRenderer>().enabled = false;
-            _swapIndex = -1;
-        }
-
     }
     
     private Vector3 CalcInventoryPosition(int index)
