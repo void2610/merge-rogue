@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -9,6 +10,7 @@ using DG.Tweening;
 using R3;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using Vector3 = UnityEngine.Vector3;
 
 public class UIManager : MonoBehaviour
 {
@@ -49,7 +51,7 @@ public class UIManager : MonoBehaviour
         }
     }
     
-    private void UpdateCoinText(int amount)
+    private void UpdateCoinText(BigInteger amount)
     {
         coinText.text = "coin: " + amount.ToString();
     }
@@ -193,7 +195,7 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        GameManager.Instance.coin.Subscribe(UpdateCoinText).AddTo(this);
+        GameManager.Instance.Coin.Subscribe(UpdateCoinText).AddTo(this);
         GameManager.Instance.StageManager.currentStageCount.Subscribe(UpdateStageText).AddTo(this);
         GameManager.Instance.Player.Exp.Subscribe((v) =>
         {

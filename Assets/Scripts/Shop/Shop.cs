@@ -98,7 +98,7 @@ public class Shop : MonoBehaviour
             button.onClick.AddListener(() =>
             {
                 if (!ball) return;
-                if (GameManager.Instance.coin.Value >= ball.price) BuyBall(index);
+                if (GameManager.Instance.Coin.Value >= ball.price) BuyBall(index);
                 else SeManager.Instance.PlaySe("error");
             });
         }
@@ -127,7 +127,7 @@ public class Shop : MonoBehaviour
             button.onClick.AddListener(() =>
             {
                 if (!relic) return;
-                if (GameManager.Instance.coin.Value >= relic.price) BuyRelic(index);
+                if (GameManager.Instance.Coin.Value >= relic.price) BuyRelic(index);
                 else SeManager.Instance.PlaySe("error");
             });
         }

@@ -1,7 +1,9 @@
+using System.Numerics;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
 using unityroom.Api;
+using Vector3 = UnityEngine.Vector3;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -12,9 +14,9 @@ public class ScoreManager : MonoBehaviour
 
     private const float STAGE_COEFFICIENT = 5f;
     private const float ENEMY_COEFFICIENT = 3f;
-    private const float COIN_COEFFICIENT = 1.5f;
+    private const int COIN_COEFFICIENT = 1;
 
-    public void ShowScore(int stageCount, int enemyCount, int coinCount)
+    public void ShowScore(int stageCount, int enemyCount, BigInteger coinCount)
     {
         GameManager.Instance.UIManager.EnableCanvasGroup("GameOver", true);
 
@@ -25,12 +27,13 @@ public class ScoreManager : MonoBehaviour
         ResetTransform(totalText);
 
         // スコア計算
-        float stageScore = (int)(stageCount * STAGE_COEFFICIENT);
-        float enemyScore = (int)(enemyCount * ENEMY_COEFFICIENT);
-        float coinScore = (int)(coinCount * COIN_COEFFICIENT);
-        var total = (int)(stageScore + enemyScore + coinScore);
+        var stageScore = (int)(stageCount * STAGE_COEFFICIENT);
+        var enemyScore = (int)(enemyCount * ENEMY_COEFFICIENT);
+        var coinScore = coinCount * COIN_COEFFICIENT;
+        var total = (ulong)(stageScore + enemyScore + coinScore);
         
         if(UnityroomApiClient.Instance != null)
+            
             UnityroomApiClient.Instance.SendScore(1, total, ScoreboardWriteMode.HighScoreDesc);
 
         // アニメーションの順番
@@ -40,7 +43,7 @@ public class ScoreManager : MonoBehaviour
         sequence.Append(stageText.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack))
                 .AppendCallback(() =>
                 {
-                    AnimateText(stageText, "Stage:", stageCount, STAGE_COEFFICIENT);
+                    AnimateText(stageText, "Stage:", (ulong)stageCount, STAGE_COEFFICIENT);
                 }).SetUpdate(true);
 
         // 敵スコア表示
@@ -48,7 +51,7 @@ public class ScoreManager : MonoBehaviour
                 .Append(enemyText.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack))
                 .AppendCallback(() =>
                 {
-                    AnimateText(enemyText, "Enemy:", enemyCount, ENEMY_COEFFICIENT);
+                    AnimateText(enemyText, "Enemy:", (ulong)enemyCount, ENEMY_COEFFICIENT);
                 }).SetUpdate(true);
 
         // コインスコア表示
@@ -56,7 +59,7 @@ public class ScoreManager : MonoBehaviour
                 .Append(coinText.transform.DOScale(Vector3.one, 0.2f).SetEase(Ease.OutBack))
                 .AppendCallback(() =>
                 {
-                    AnimateText(coinText, "Coin:", coinCount, COIN_COEFFICIENT);
+                    AnimateText(coinText, "Coin:", (ulong)coinCount, COIN_COEFFICIENT);
                 }).SetUpdate(true);
 
         // トータルスコア表示
@@ -68,18 +71,18 @@ public class ScoreManager : MonoBehaviour
                 }).SetUpdate(true);
     }
 
-    private static void AnimateText(TextMeshProUGUI text, string header, int count, float coefficient)
+    private static void AnimateText(TextMeshProUGUI text, string header, ulong count, float coefficient)
     {
-        var currentValue = 0;
+        ulong currentValue = 0;
         DOTween.To(() => currentValue, x => currentValue = x, count, 0.75f)
             .OnUpdate(() =>
             {
-                int result = (int)(currentValue * coefficient);
+                var result = (ulong)(currentValue * coefficient);
                 text.text = $"{header,-8} {currentValue,5} x {coefficient,3} = {result,5}";
             }).SetUpdate(true);
     }
 
-    private static void AnimateTotal(TextMeshProUGUI text, int total)
+    private static void AnimateTotal(TextMeshProUGUI text, ulong total)
     {
         float currentValue = 0;
         DOTween.To(() => currentValue, x => currentValue = x, total, 1.5f)

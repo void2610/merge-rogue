@@ -22,7 +22,7 @@ public class Alchemy : MonoBehaviour, IRelicBehavior
     
     private void Effect(Unit _)
     {
-        var coin = GameManager.Instance.coin.Value;
+        var coin = GameManager.Instance.Coin.Value;
         var e = GameManager.Instance.EnemyContainer.GetCurrentEnemyCount();
         var x = EventManager.OnPlayerAttack.GetValue();
 

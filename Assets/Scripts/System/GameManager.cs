@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using UnityEngine;
 using R3;
 using DG.Tweening;
@@ -67,7 +68,7 @@ public class GameManager : MonoBehaviour
     public EnemyContainer EnemyContainer => enemyContainer;
     public Camera UICamera => uiCamera;
     
-    public readonly ReactiveProperty<int> coin = new(0);
+    public readonly ReactiveProperty<BigInteger> Coin = new(0);
     private int _seed = 42;
     private bool _isPaused = false;
     private bool _isMapOpened = false;
@@ -89,12 +90,12 @@ public class GameManager : MonoBehaviour
     {
         EventManager.OnCoinGain.Trigger(amount);
         var c = EventManager.OnCoinGain.GetAndResetValue();
-        coin.Value += c;
+        Coin.Value += c;
     }
     
     public void SubtractCoin(int amount)
     {
-        coin.Value -= amount;
+        Coin.Value -= amount;
     }
 
     public void ChangeTimeScale()
@@ -116,7 +117,7 @@ public class GameManager : MonoBehaviour
     {
         IsGameOver = true;
         ChangeState(GameState.GameOver);
-        ScoreManager.ShowScore(StageManager.currentStageCount.Value + 1, EnemyContainer.defeatedEnemyCount.Value, coin.Value);
+        ScoreManager.ShowScore(StageManager.currentStageCount.Value + 1, EnemyContainer.defeatedEnemyCount.Value, Coin.Value);
     }
     
     public void ChangeState(GameState newState)

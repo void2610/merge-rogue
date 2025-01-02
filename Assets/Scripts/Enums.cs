@@ -69,7 +69,7 @@ public static class MyColors
         Color.yellow,
         Color.red,
         Color.cyan,
-        Color.white
+        Color.black
     };
 
 
