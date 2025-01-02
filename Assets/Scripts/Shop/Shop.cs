@@ -146,7 +146,11 @@ public class Shop : MonoBehaviour
     
     private void OnClickRemoveButton()
     {
-        if(GameManager.Instance.Coin.Value < 25) return;
+        if (GameManager.Instance.Coin.Value < 25)
+        {
+            SeManager.Instance.PlaySe("error");
+            return;
+        }
         
         EventManager.OnBallRemove.Trigger(0);
         removeButton.transform.position = _disabledPosition;
