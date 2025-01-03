@@ -1,4 +1,5 @@
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -92,6 +93,17 @@ public class SeManager : MonoBehaviour
         audioSource.volume = soundData.volume * volume;
         audioSource.pitch = pitch;
         audioSource.Play();
+    }
+    
+    public void WaitAndPlaySe(string seName, float time, float volume = 1.0f, float pitch = 1.0f)
+    {
+        WaitAndPlaySeAsync(seName, time, volume, pitch).Forget();
+    }
+    
+    private async UniTaskVoid WaitAndPlaySeAsync(string seName, float time, float volume = 1.0f, float pitch = 1.0f)
+    {
+        await UniTask.Delay((int)(time * 1000));
+        PlaySe(seName, volume, pitch);
     }
 
     private AudioSource GetUnusedAudioSource() => _seAudioSourceList.FirstOrDefault(t => t.isPlaying == false);

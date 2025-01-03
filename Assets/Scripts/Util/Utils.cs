@@ -40,16 +40,4 @@ public class Utils : MonoBehaviour
         if (button)
             button.onClick.RemoveAllListeners();
     }
-    
-    public void WaitAndInvoke(float time, System.Action action,  bool isRealTime = false)
-    {
-        if (action == null) return;
-        var actonTime = isRealTime ? time: time / Time.timeScale;
-        StartCoroutine(_WaitAndInvoke(actonTime, action));
-    }
-    private IEnumerator _WaitAndInvoke(float time, System.Action action)
-    {
-        yield return new WaitForSecondsRealtime(time);
-        action();
-    }
 }

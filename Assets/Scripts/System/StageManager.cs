@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using R3;
 using UnityEngine.UI;
@@ -171,7 +172,7 @@ public class StageManager : MonoBehaviour
         b.onClick.RemoveAllListeners();
         b.onClick.AddListener(() =>
         {
-            NextStage(mapNodes[0][0]);
+            NextStage(mapNodes[0][0]).Forget();
         });
         
         foreach (var column in mapNodes)
@@ -187,7 +188,7 @@ public class StageManager : MonoBehaviour
                     button.onClick.RemoveAllListeners();
                     button.onClick.AddListener(() =>
                     {
-                        NextStage(c);
+                        NextStage(c).Forget();
                     });
                 }
             }
@@ -277,16 +278,14 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    private void NextStage(StageNode next)
+    private async UniTaskVoid NextStage(StageNode next)
     {
         if (GameManager.Instance.IsGameOver) return;
         
         // 演出
+        SetAllNodeInactive();
         GameManager.Instance.UIManager.EnableCanvasGroup("Map", false);
-        Utils.Instance.WaitAndInvoke(0.2f, () =>
-        {
-            SeManager.Instance.PlaySe("footsteps");
-        });
+        SeManager.Instance.WaitAndPlaySe("footsteps", 0.2f);
         DOTween.To(() => m.GetTextureOffset(mainTex), x => m.SetTextureOffset(mainTex, x), new Vector2(1, 0), 2.0f)
             .SetEase(Ease.InOutSine).OnComplete(() =>
             {
@@ -311,25 +310,22 @@ public class StageManager : MonoBehaviour
         var pos = next.obj.GetComponent<RectTransform>().localPosition;
         playerIconObj.GetComponent<FloatMove>().MoveTo(pos + new Vector3(0, 2, 0), 0.5f);
         
+        await UniTask.Delay(2000);
+        
         // ステージ進行
-        Utils.Instance.WaitAndInvoke(2.0f, () =>
+        currentStageCount.Value++;
+        currentStage = next;
+        
+        if(currentStage.type == StageType.Events)
         {
-            currentStageCount.Value++;
-            currentStage = next;
-            
-            if(currentStage.type == StageType.Events)
-            {
-                // ランダムなステージに移動
-                var r = GameManager.Instance.RandomRange(0, 4);
-                ProcessStage((StageType)r);
-            }
-            else
-            {
-                ProcessStage(currentStage.type);
-            }
-            
-            SetAllNodeInactive();
-        });
+            // ランダムなステージに移動
+            var r = GameManager.Instance.RandomRange(0, 4);
+            ProcessStage((StageType)r);
+        }
+        else
+        {
+            ProcessStage(currentStage.type);
+        }
     }
 
     private void ProcessStage(StageType s)
@@ -339,11 +335,11 @@ public class StageManager : MonoBehaviour
             case StageType.Enemy:
                 // 敵の出現量と強さを設定
                 GameManager.Instance.EnemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value);
-                GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
+                GameManager.Instance.ChangeState(GameManager.GameState.Merge);
                 break;
             case StageType.Boss:
                 GameManager.Instance.EnemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value + 5);
-                GameManager.Instance.ChangeState(GameManager.GameState.BattlePreparation);
+                GameManager.Instance.ChangeState(GameManager.GameState.Merge);
                 break;
             case StageType.Shop:
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
@@ -388,6 +384,6 @@ public class StageManager : MonoBehaviour
 
     public void Start()
     {
-        NextStage(mapNodes[0][0]);
+        NextStage(mapNodes[0][0]).Forget();
     }
 }

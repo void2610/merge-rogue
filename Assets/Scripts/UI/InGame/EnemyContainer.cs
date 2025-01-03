@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using R3;
 using UnityEngine;
 
@@ -118,15 +120,15 @@ public class EnemyContainer : MonoBehaviour
         enemy.GetComponent<EnemyBase>().OnDisappear();
         
         // 全ての敵を倒したらステージ進行
-        if (currentEnemies.Count == 0)
-        {
-            MergeManager.Instance.EndMerge();
-            Utils.Instance.WaitAndInvoke(2.0f, () =>
-            {
-                GameManager.Instance.Player.AddExp(gainedExp);
-                gainedExp = 0;
-            });
-        }
+        if (currentEnemies.Count == 0) EndBattle().Forget();
+    }
+    
+    private async UniTaskVoid EndBattle()
+    {
+        MergeManager.Instance.EndMerge().Forget();
+        await UniTask.Delay(2000);
+        GameManager.Instance.Player.AddExp(gainedExp);
+        gainedExp = 0;
     }
 
     public void AttackEnemy(int singleDamage, int allDamage)
@@ -195,8 +197,8 @@ public class EnemyContainer : MonoBehaviour
         // 敵が残っていたら敵の攻撃へ
         if (GameManager.Instance.EnemyContainer.GetCurrentEnemyCount() > 0)
         {
-            Utils.Instance.WaitAndInvoke(0.75f,
-                () => GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack));
+            Observable.Timer(TimeSpan.FromSeconds(0.75f), destroyCancellationToken)
+                .Subscribe(_ => {GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);});
         }
     }
     

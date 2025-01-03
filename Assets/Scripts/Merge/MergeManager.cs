@@ -1,6 +1,8 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using unityroom.Api;
@@ -86,7 +88,7 @@ public class MergeManager : MonoBehaviour
         ResetRemainingBalls();
     }
     
-    public void EndMerge()
+    public async UniTaskVoid EndMerge()
     {
         if(!_isMovable) return;
         
@@ -105,6 +107,10 @@ public class MergeManager : MonoBehaviour
         ballCountText.text = "0/" + _ballPerOneTurn;
         DOTween.To(() => arrowMaterial.GetFloat(_alpha), x => arrowMaterial.SetFloat(_alpha, x), 0, 0.5f);
         _isMovable = false;
+        
+        await UniTask.Delay(1000);
+        
+        GameManager.Instance.ChangeState(GameManager.GameState.PlayerAttack);
     }
     
     // 次のボールを生成
@@ -283,8 +289,7 @@ public class MergeManager : MonoBehaviour
     {
         if (IsAllBallsStopped())
         {
-            EndMerge();
-            GameManager.Instance.ChangeState(GameManager.GameState.PlayerAttack);
+            EndMerge().Forget();
         }
         
         if(!CurrentBall) return;

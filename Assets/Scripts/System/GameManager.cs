@@ -36,18 +36,15 @@ public class GameManager : MonoBehaviour
 
     public enum GameState
     {
-        BattlePreparation,
         Merge,
         PlayerAttack,
         EnemyAttack,
-        BattleResult,
         LevelUp,
         MapSelect,
         StageMoving,
         Event,
         GameOver,
         Clear,
-        Other
     }
     public GameState state = GameState.Merge;
     
@@ -132,23 +129,13 @@ public class GameManager : MonoBehaviour
                 else
                     ChangeState(GameState.MapSelect);
                 break;
-            case GameState.BattlePreparation:
-                // バトル準備
-                Utils.Instance.WaitAndInvoke(1.0f, () =>
-                {
-                    ChangeState(GameState.Merge);
-                });
-                break;
             case GameState.Merge:
                 Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
                 MergeManager.Instance.StartMerge();
                 break;
             case GameState.PlayerAttack:
                 Physics2D.simulationMode = SimulationMode2D.Script;
-                Utils.Instance.WaitAndInvoke(1f, () =>
-                {
-                    MergeManager.Instance.Attack();
-                });
+                MergeManager.Instance.Attack();
                 break;
             case GameState.EnemyAttack:
                 EnemyContainer.Action();
