@@ -75,7 +75,8 @@ public class UIManager : MonoBehaviour
     
     public void OnClickRestButton()
     {
-        EventManager.OnRest.Trigger(20);
+        var restAmount = GameManager.Instance.Player.MaxHealth.Value  * 0.2f;
+        EventManager.OnRest.Trigger((int)restAmount);
         var v = EventManager.OnRest.GetAndResetValue();
         GameManager.Instance.Player.Heal(v);
         
