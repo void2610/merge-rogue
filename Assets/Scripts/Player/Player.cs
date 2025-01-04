@@ -9,9 +9,10 @@ public class Player : MonoBehaviour
     public readonly ReactiveProperty<int> Exp = new(0);
     public readonly ReactiveProperty<int> Health = new(100);
     public readonly ReactiveProperty<int> MaxHealth = new(100);
-    public int MaxExp { get; private set; } = 25;
+    public int MaxExp { get; private set; } = 20;
     public int Level { get; private set; } = 1;
     private readonly List<int> _levelUpExp = new() { 20, 40, 80, 100, 150, 200, 250, 300, 350, 400, 500 };
+
     private Material _material;
 
     public void TakeDamage(int d)

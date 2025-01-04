@@ -256,6 +256,8 @@ public class MergeManager : MonoBehaviour
         
         foreach (var b in _stopTimers.Keys)
         {
+            if(!b) continue;
+            
             if (b.velocity.magnitude > 0.05f) return false;
             if (Time.time - _stopTimers[b] < 0.5f) return false;
         }

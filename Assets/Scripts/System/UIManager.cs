@@ -30,11 +30,14 @@ public class UIManager : MonoBehaviour
     [SerializeField] public TextMeshProUGUI hpText;
 
     public int remainingLevelUps;
+    
+    private Dictionary<string, Tween> _canvasGroupTweens = new();
 
     public void EnableCanvasGroup(string canvasName, bool e)
     {
         var canvasGroup = canvasGroups.Find(c => c.name == canvasName);
         if (!canvasGroup) return;
+        if (_canvasGroupTweens[canvasName].IsActive()) return;
         
         canvasGroup.interactable = e;
         canvasGroup.blocksRaycasts = e;
@@ -42,7 +45,8 @@ public class UIManager : MonoBehaviour
         if (e)
         {
             canvasGroup.transform.DOMoveY(-0.45f, 0).SetRelative(true).SetUpdate(true);
-            canvasGroup.transform.DOMoveY(0.45f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack);
+            var t = canvasGroup.transform.DOMoveY(0.45f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack);
+            _canvasGroupTweens[canvasName] = t;
             canvasGroup.DOFade(1, 0.2f).SetUpdate(true);
         }
         else
@@ -190,8 +194,12 @@ public class UIManager : MonoBehaviour
     {
         bgmSlider.value = PlayerPrefs.GetFloat("BgmVolume", 1.0f);
         seSlider.value = PlayerPrefs.GetFloat("SeVolume", 1.0f);
-        
-        canvasGroups.ForEach(c => EnableCanvasGroup(c.name, false));
+
+        foreach (var canvasGroup in canvasGroups)
+        {
+            _canvasGroupTweens.Add(canvasGroup.name, null);
+            EnableCanvasGroup(canvasGroup.name, false);
+        }
     }
 
     private void Start()
