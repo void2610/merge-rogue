@@ -3,24 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class Alchemy : MonoBehaviour, IRelicBehavior
+public class Alchemy : RelicBase
 {
-    private IDisposable disposable;
-    private RelicUI ui;
-    public void ApplyEffect(RelicUI relicUI)
+    protected override void SubscribeEffect()
     {
-        disposable = EventManager.OnPlayerAttack.Subscribe(Effect).AddTo(this);
-        ui = relicUI;
+        var disposable = EventManager.OnPlayerAttack.Subscribe(EffectImpl).AddTo(this);
+        Disposables.Add(disposable);
 
-        Effect(Unit.Default);
-    }
-
-    public void RemoveEffect()
-    {
-        disposable?.Dispose();
+        EffectImpl(Unit.Default);
     }
     
-    private void Effect(Unit _)
+    protected override void EffectImpl(Unit _)
     {
         var coin = GameManager.Instance.Coin.Value;
         var e = GameManager.Instance.EnemyContainer.GetCurrentEnemyCount();
@@ -31,12 +24,7 @@ public class Alchemy : MonoBehaviour, IRelicBehavior
         {
             GameManager.Instance.SubtractCoin(10);
             EventManager.OnPlayerAttack.SetValue((0, x.Item1 + x.Item2));
-            ui?.ActivateUI();
+            UI?.ActivateUI();
         }
-    }
-    
-    private void OnDestroy()
-    {
-        RemoveEffect();
     }
 }

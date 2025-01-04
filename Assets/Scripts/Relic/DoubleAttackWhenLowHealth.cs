@@ -3,33 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class DoubleAttackWhenLowHealth : MonoBehaviour, IRelicBehavior
+public class DoubleAttackWhenLowHealth : RelicBase
 {
-    private IDisposable disposable;
-    private RelicUI ui;
-    public void ApplyEffect(RelicUI relicUI)
+    protected override void SubscribeEffect()
     {
-        ui = relicUI;
-        disposable = EventManager.OnPlayerAttack.Subscribe(Effect).AddTo(this);
-    }
-
-    public void RemoveEffect()
-    {
-        disposable?.Dispose();
+        var disposable = EventManager.OnPlayerAttack.Subscribe(EffectImpl).AddTo(this);
+        Disposables.Add(disposable);
     }
     
-    private void Effect(Unit _)
+    protected override void EffectImpl(Unit _)
     {
         if (GameManager.Instance.Player.Health.Value <= GameManager.Instance.Player.MaxHealth.Value * 0.2f)
         {
             var atk = EventManager.OnPlayerAttack.GetValue();
             EventManager.OnPlayerAttack.SetValue((atk.Item1 * 2, atk.Item2 * 2));
-            ui?.ActivateUI();
+            UI?.ActivateUI();
         }
-    }
-    
-    private void OnDestroy()
-    {
-        RemoveEffect();
     }
 }

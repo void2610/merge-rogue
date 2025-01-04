@@ -3,29 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class Fukiya : MonoBehaviour, IRelicBehavior
+public class Fukiya : RelicBase
 {
-    private IDisposable _disposable;
-    private RelicUI _ui;
-    public void ApplyEffect(RelicUI relicUI)
+    protected override void SubscribeEffect()
     {
-        _disposable = EventManager.OnOrganise.Subscribe(Effect).AddTo(this);
-        _ui = relicUI;
-    }
-
-    public void RemoveEffect()
-    {
-        _disposable?.Dispose();
+        var disposable = EventManager.OnOrganise.Subscribe(EffectImpl).AddTo(this);
+        Disposables.Add(disposable);
     }
     
-    private void Effect(Unit _)
+    protected override void EffectImpl(Unit _)
     {
         GameManager.Instance.Player.TakeDamage(10);
-        _ui?.ActivateUI();
-    }
-    
-    private void OnDestroy()
-    {
-        RemoveEffect();
+        UI?.ActivateUI();
     }
 }

@@ -3,31 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class AddMaxHealth : MonoBehaviour, IRelicBehavior
+public class AddMaxHealth : RelicBase
 {
-    private IDisposable disposable;
-    private RelicUI ui;
-    public void ApplyEffect(RelicUI relicUI)
+    public override void RemoveEffect()
     {
-        ui = relicUI;
-
-        Effect(Unit.Default);
-    }
-
-    public void RemoveEffect()
-    {
+        base.RemoveEffect();
         if (GameManager.Instance.Player == null) return;
         GameManager.Instance.Player.MaxHealth.Value -= 10;
     }
     
-    private void Effect(Unit _)
+    protected override void SubscribeEffect()
     {
         GameManager.Instance.Player.MaxHealth.Value += 10;
-        ui?.AlwaysActive();
+        UI?.AlwaysActive();
     }
     
-    private void OnDestroy()
-    {
-        RemoveEffect();
-    }
+    protected override void EffectImpl(Unit _) {}
 }

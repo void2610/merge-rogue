@@ -3,32 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class HealWhenDefeatEnemy : MonoBehaviour, IRelicBehavior
+public class HealWhenDefeatEnemy : RelicBase
 {
-    private IDisposable disposable;
-    private RelicUI ui;
-    public void ApplyEffect(RelicUI relicUI)
+    protected override void SubscribeEffect()
     {
-        ui = relicUI;
-        disposable = EventManager.OnEnemyDefeated.Subscribe(Effect).AddTo(this);
-    }
-
-    public void RemoveEffect()
-    {
-        disposable?.Dispose();
+        var disposable = EventManager.OnEnemyDefeated.Subscribe(EffectImpl).AddTo(this);
+        Disposables.Add(disposable);
     }
     
-    private void Effect(Unit _)
+    protected override void EffectImpl(Unit _)
     {
         var enemy = EventManager.OnEnemyDefeated.GetValue();
         if(!enemy) return;
         
         var heal = enemy.MaxHealth * 0.1f;
         GameManager.Instance.Player.Heal(Mathf.CeilToInt(heal));
-    }
-    
-    private void OnDestroy()
-    {
-        RemoveEffect();
     }
 }

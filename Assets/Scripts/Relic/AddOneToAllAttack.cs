@@ -3,30 +3,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class AddOneToAllAttack : MonoBehaviour, IRelicBehavior
+public class AddOneToAllAttack : RelicBase
 {
-    private IDisposable disposable;    
-    private RelicUI ui;
-    public void ApplyEffect(RelicUI relicUI)
+    protected override void SubscribeEffect()
     {
-        disposable = EventManager.OnPlayerAttack.Subscribe(Effect).AddTo(this);
-        ui = relicUI;
-    }
-
-    public void RemoveEffect()
-    {
-        disposable?.Dispose();
+        var disposable = EventManager.OnPlayerAttack.Subscribe(EffectImpl).AddTo(this);
+        Disposables.Add(disposable);
     }
     
-    private void Effect(Unit _)
+    protected override void EffectImpl(Unit _)
     {
         var x = EventManager.OnPlayerAttack.GetValue();
         EventManager.OnPlayerAttack.SetValue((x.Item1 + 1, x.Item2));
-        ui?.ActivateUI();
-    }
-    
-    private void OnDestroy()
-    {
-        RemoveEffect();
+        UI?.ActivateUI();
     }
 }

@@ -3,33 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class CreateBombWhenDamage : MonoBehaviour, IRelicBehavior
+public class CreateBombWhenDamage : RelicBase
 {
-    private IDisposable disposable;
-    private RelicUI ui;
-    private int damageCount = 0;
-    public void ApplyEffect(RelicUI relicUI)
+    private int _damageCount = 0;
+    protected override void SubscribeEffect()
     {
-        disposable = EventManager.OnPlayerDamage.Subscribe(Effect).AddTo(this);
-        ui = relicUI;
-
-        Effect(Unit.Default);
-    }
-
-    public void RemoveEffect()
-    {
-        disposable?.Dispose();
+        var disposable = EventManager.OnPlayerDamage.Subscribe(EffectImpl).AddTo(this);
+        Disposables.Add(disposable);
     }
     
-    private void Effect(Unit _)
+    protected override void EffectImpl(Unit _)
     {
         var x = EventManager.OnPlayerDamage.GetValue();
-        damageCount += x;
+        _damageCount += x;
 
         var isActivated = false;
-        while (damageCount >= 20)
+        while (_damageCount >= 20)
         {
-            damageCount -= 20;
+            _damageCount -= 20;
             var width = MergeManager.Instance.Wall.WallWidth;
             var r = GameManager.Instance.RandomRange(-width / 2 + 0.1f, width / 2 - 0.1f);
             var p = new Vector3(r, 0.8f, 0);
@@ -37,11 +28,6 @@ public class CreateBombWhenDamage : MonoBehaviour, IRelicBehavior
             isActivated = true;
         }
     
-        if (isActivated) ui?.ActivateUI();
-    }
-    
-    private void OnDestroy()
-    {
-        RemoveEffect();
+        if (isActivated) UI?.ActivateUI();
     }
 }

@@ -3,29 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class PocketMoney : MonoBehaviour, IRelicBehavior
+public class PocketMoney : RelicBase
 {
-    private IDisposable disposable;
-    private RelicUI ui;
-    public void ApplyEffect(RelicUI relicUI)
+    protected override void SubscribeEffect()
     {
-        ui = relicUI;
-        disposable = EventManager.OnShopEnter.Subscribe(Effect).AddTo(this);
-    }
-
-    public void RemoveEffect()
-    {
-        disposable?.Dispose();
+        var disposable = EventManager.OnShopEnter.Subscribe(EffectImpl).AddTo(this);
+        Disposables.Add(disposable);
     }
     
-    private void Effect(Unit _)
+    protected override void EffectImpl(Unit _)
     {
         GameManager.Instance.AddCoin(10);
-        ui?.ActivateUI();
-    }
-    
-    private void OnDestroy()
-    {
-        RemoveEffect();
+        UI?.ActivateUI();
     }
 }

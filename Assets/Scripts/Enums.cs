@@ -3,10 +3,10 @@ using UnityEngine;
 
 
 
-public enum EffectTiming
+public enum GameEventTypes
 {
     OnGameStart,           // ゲーム開始時
-    OnAcquisition,         // レリック獲得時
+    OnRelicGain,         // レリック獲得時
     AlwaysActive,          // 常に
     OnPlayerAttack,        // プレイヤーの攻撃時
     OnPlayerDamaged,       // プレイヤーがダメージを受けた時
@@ -30,7 +30,17 @@ public enum EffectTiming
     OnTurnEnd,             // ターン終了時
     OnShopEnter,           // ショップ開始時
     OnShopExit,            // ショップ終了時
-    OnItemPurchased        // ショップで購入時
+    OnItemPurchased,       // ショップで購入時
+    OnPlayerExpGain,
+    OnPlayerDamage,
+    OnEnemyDamage,
+    OnBallSkip,
+    OnBallDrop,
+    OnRestEnter,
+    OnRest,
+    OnOrganise,
+    OnRestExit,
+    OnBallRemove
 }
 
 public enum Rarity

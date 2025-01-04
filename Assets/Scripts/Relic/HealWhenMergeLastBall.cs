@@ -3,34 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class HealWhenMergeLastBall : MonoBehaviour, IRelicBehavior
+public class HealWhenMergeLastBall : RelicBase
 {
-    private IDisposable disposable;
-    private RelicUI ui;
-    public void ApplyEffect(RelicUI relicUI)
+    protected override void SubscribeEffect()
     {
-        ui = relicUI;
-        disposable = EventManager.OnBallMerged.Subscribe(Effect).AddTo(this);
-    }
-
-    public void RemoveEffect()
-    {
-        disposable?.Dispose();
+        var disposable = EventManager.OnBallMerged.Subscribe(EffectImpl).AddTo(this);
+        Disposables.Add(disposable);
     }
     
-    private void Effect(Unit _)
+    
+    protected override void EffectImpl(Unit _)
     {
         var maxLevel = InventoryManager.Instance.InventorySize;
         if (EventManager.OnBallMerged.GetValue() == maxLevel)
         {
             int heal = GameManager.Instance.Player.MaxHealth.Value / 4;
             GameManager.Instance.Player.Heal(heal);
-            ui?.ActivateUI();
+            UI?.ActivateUI();
         }
     }
     
-    private void OnDestroy()
-    {
-        RemoveEffect();
-    }
+   
 }

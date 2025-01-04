@@ -3,22 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class SometimeCopyDropBall : MonoBehaviour, IRelicBehavior
+public class SometimeCopyDropBall : RelicBase
 {
-    private IDisposable disposable;
-    private RelicUI ui;
-    public void ApplyEffect(RelicUI relicUI)
+    protected override void SubscribeEffect()
     {
-        ui = relicUI;
-        disposable = EventManager.OnBallDrop.Subscribe(Effect).AddTo(this);
-    }
-
-    public void RemoveEffect()
-    {
-        disposable?.Dispose();
+        var disposable = EventManager.OnBallDrop.Subscribe(EffectImpl).AddTo(this);
+        Disposables.Add(disposable);
     }
     
-    private void Effect(Unit _)
+    protected override void EffectImpl(Unit _)
     {
         var r = GameManager.Instance.RandomRange(0.0f, 1.0f);
         if (r < 0.5f)
@@ -26,12 +19,7 @@ public class SometimeCopyDropBall : MonoBehaviour, IRelicBehavior
             var level = MergeManager.Instance.CurrentBall.GetComponent<BallBase>().Level;
             var p = new Vector3(GameManager.Instance.RandomRange(-1f, 1f), 0.8f, 0);
             MergeManager.Instance.SpawnBallFromLevel(level, p, Quaternion.identity);
-            ui?.ActivateUI();
+            UI?.ActivateUI();
         }
-    }
-    
-    private void OnDestroy()
-    {
-        RemoveEffect();
     }
 }

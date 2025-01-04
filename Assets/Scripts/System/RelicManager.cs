@@ -18,10 +18,8 @@ public class RelicManager : MonoBehaviour
     
     
     private readonly List<RelicData> _relics = new();
-    private readonly List<IRelicBehavior> _behaviors = new();
+    private readonly List<RelicBase> _behaviors = new();
     private readonly List<RelicUI> _relicUIs = new();
-    
-    private EffectTiming _currentTiming;
     
     public void AddRelic(RelicData relic)
     {
@@ -59,16 +57,16 @@ public class RelicManager : MonoBehaviour
     
     private void ApplyEffect(RelicData r, RelicUI rui)
     {
-        IRelicBehavior behaviour = null;
+        RelicBase behaviour = null;
         var type = System.Type.GetType(r.className);
-        behaviour = this.gameObject.AddComponent(type) as IRelicBehavior;
-        if(behaviour == null)
+        behaviour = this.gameObject.AddComponent(type) as RelicBase;
+        if(!behaviour)
         {
-            Debug.LogError("指定されたクラスは存在しないか、IRelicBehaviorを実装していません: " + r.className);
+            Debug.LogError("指定されたクラスは存在しません: " + r.className);
             return;
         }
         
-        behaviour.ApplyEffect(rui);
+        behaviour.Init(rui);
         _behaviors.Add(behaviour);
     }
     

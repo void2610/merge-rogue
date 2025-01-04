@@ -3,29 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class AddElasticityToWall : MonoBehaviour, IRelicBehavior
+public class AddElasticityToWall : RelicBase
 {
-    private IDisposable disposable;
-    private RelicUI ui;
-    private PhysicsMaterial2D pm;
-    public void ApplyEffect(RelicUI relicUI)
+    private PhysicsMaterial2D _pm;
+    protected override void SubscribeEffect()
     {
-        ui = relicUI;
-        pm = MergeManager.Instance.GetWallMaterial();
+        _pm = MergeManager.Instance.GetWallMaterial();
 
-        Effect(Unit.Default);
+        _pm.bounciness = 0.8f;
+        UI?.AlwaysActive();
     }
 
-    public void RemoveEffect()
+    public override void RemoveEffect()
     {
-        pm.bounciness = 0;
+        base.RemoveEffect();
+        _pm.bounciness = 0;
     }
     
-    private void Effect(Unit _)
-    {
-        pm.bounciness = 0.8f;
-        ui?.AlwaysActive();
-    }
+    protected override void EffectImpl(Unit _) {}
     
     private void OnDestroy()
     {

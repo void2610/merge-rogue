@@ -3,22 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class DoubleCoinsWhenNearFullHealth : MonoBehaviour, IRelicBehavior
+public class DoubleCoinsWhenNearFullHealth : RelicBase
 {
-    private IDisposable disposable;
-    private RelicUI ui;
-    public void ApplyEffect(RelicUI relicUI)
+    protected override void SubscribeEffect()
     {
-        disposable = EventManager.OnCoinGain.Subscribe(Effect).AddTo(this);
-        ui = relicUI;
-    }
-
-    public void RemoveEffect()
-    {
-        disposable?.Dispose();
+        var disposable = EventManager.OnPlayerAttack.Subscribe(EffectImpl).AddTo(this);
+        Disposables.Add(disposable);
     }
     
-    private void Effect(Unit _)
+    protected override void EffectImpl(Unit _)
     {
         var health = GameManager.Instance.Player.Health.Value;
         var maxHealth = GameManager.Instance.Player.MaxHealth.Value;
@@ -26,12 +19,7 @@ public class DoubleCoinsWhenNearFullHealth : MonoBehaviour, IRelicBehavior
         {
             var x = EventManager.OnCoinGain.GetValue();
             EventManager.OnCoinGain.SetValue(x * 2);
-            ui?.ActivateUI();
+            UI?.ActivateUI();
         }
-    }
-    
-    private void OnDestroy()
-    {
-        RemoveEffect();
     }
 }
