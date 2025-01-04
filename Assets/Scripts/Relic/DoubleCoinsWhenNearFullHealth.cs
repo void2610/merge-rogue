@@ -7,7 +7,7 @@ public class DoubleCoinsWhenNearFullHealth : RelicBase
 {
     protected override void SubscribeEffect()
     {
-        var disposable = EventManager.OnPlayerAttack.Subscribe(EffectImpl).AddTo(this);
+        var disposable = EventManager.OnCoinGain.Subscribe(EffectImpl).AddTo(this);
         Disposables.Add(disposable);
     }
     
