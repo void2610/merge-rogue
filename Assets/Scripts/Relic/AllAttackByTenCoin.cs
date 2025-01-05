@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class Alchemy : RelicBase
+public class AllAttackByTenCoin : RelicBase
 {
     protected override void SubscribeEffect()
     {
