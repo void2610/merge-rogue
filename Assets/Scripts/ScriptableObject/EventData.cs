@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using  Alchemy.Inspector;
 
-public enum EventOptionType
+public enum EventBehaviourType
 {
     AddHealth,
     SubHealth,
@@ -15,10 +15,9 @@ public enum EventOptionType
 }
 
 [Serializable]
-public class EventOption
+public class EventBehaviour
 {
-    public string optionDescription;
-    public EventOptionType optionType;
+    public EventBehaviourType behaviourType;
     
     [ShowIf("IsIntValue")]
     public int intValue;
@@ -29,16 +28,23 @@ public class EventOption
     
     private bool IsIntValue()
     {
-        return optionType is EventOptionType.AddHealth or EventOptionType.SubHealth or EventOptionType.AddCoin or EventOptionType.SubCoin or EventOptionType.RemoveBall;
+        return behaviourType is EventBehaviourType.AddHealth or EventBehaviourType.SubHealth or EventBehaviourType.AddCoin or EventBehaviourType.SubCoin or EventBehaviourType.RemoveBall;
     }
     private bool IsRelicValue()
     {
-        return optionType is EventOptionType.GetRelic;
+        return behaviourType is EventBehaviourType.GetRelic;
     }
     private bool IsBallValue()
     {
-        return optionType is EventOptionType.GetBall;
+        return behaviourType is EventBehaviourType.GetBall;
     }
+}
+
+[Serializable]
+public class EventOption
+{
+    public string optionDescription;
+    public List<EventBehaviour> behaviours;
 }
 
 [CreateAssetMenu(fileName = "EventData", menuName = "Scriptable Objects/EventData")]

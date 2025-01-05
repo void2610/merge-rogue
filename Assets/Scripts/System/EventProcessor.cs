@@ -27,6 +27,7 @@ public class EventProcessor : MonoBehaviour
             options[i].GetComponentInChildren<TextMeshProUGUI>().text = _currentEvent.options[i].optionDescription;
             SetOptionBehaviour(options[i].GetComponent<Button>(), _currentEvent.options[i]);
         }
+        EventManager.OnEventEnter.Trigger(_currentEvent);
     }
 
     private static void SetOptionBehaviour(Button button, EventOption option)
@@ -34,33 +35,36 @@ public class EventProcessor : MonoBehaviour
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() =>
         {
-            switch (option.optionType)
+            foreach (var behaviour in option.behaviours)
             {
-                case EventOptionType.AddHealth:
-                    GameManager.Instance.Player.Heal(option.intValue);
-                    break;
-                case EventOptionType.SubHealth:
-                    GameManager.Instance.Player.Damage(option.intValue);
-                    break;
-                case EventOptionType.AddCoin:
-                    GameManager.Instance.AddCoin(option.intValue);
-                    break;
-                case EventOptionType.SubCoin:
-                    GameManager.Instance.SubCoin(option.intValue);
-                    break;
-                case EventOptionType.GetBall:
-                    InventoryManager.Instance.AddBall(option.ballValue); 
-                    break;
-                case EventOptionType.RemoveBall:
-                    InventoryManager.Instance.RemoveAndShiftBall(option.intValue);
-                    break;
-                case EventOptionType.GetRelic:
-                    RelicManager.Instance.AddRelic(option.relicValue);
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
+                switch (behaviour.behaviourType)
+                {
+                    case EventBehaviourType.AddHealth:
+                        GameManager.Instance.Player.Heal(behaviour.intValue);
+                        break;
+                    case EventBehaviourType.SubHealth:
+                        GameManager.Instance.Player.Damage(behaviour.intValue);
+                        break;
+                    case EventBehaviourType.AddCoin:
+                        GameManager.Instance.AddCoin(behaviour.intValue);
+                        break;
+                    case EventBehaviourType.SubCoin:
+                        GameManager.Instance.SubCoin(behaviour.intValue);
+                        break;
+                    case EventBehaviourType.GetBall:
+                        InventoryManager.Instance.AddBall(behaviour.ballValue);
+                        break;
+                    case EventBehaviourType.RemoveBall:
+                        InventoryManager.Instance.RemoveAndShiftBall(behaviour.intValue);
+                        break;
+                    case EventBehaviourType.GetRelic:
+                        RelicManager.Instance.AddRelic(behaviour.relicValue);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
             }
-            
+
             UIManager.Instance.EnableCanvasGroup("Event", false);
             GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
         });

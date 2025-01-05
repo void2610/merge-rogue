@@ -16,12 +16,14 @@ MonoBehaviour:
   eventDescription: "\u524D\u65B9\u304B\u3089\u5439\u77E2\u304C\u98DB\u3093\u3067\u304D\u305F\uFF01"
   options:
   - optionDescription: "\u30D0\u30C3\u30B0\u3067\u53D7\u3051\u6B62\u3081\u308B"
-    optionType: 6
-    intValue: 0
-    relicValue: {fileID: 11400000, guid: 3003d8a8bc7ba418da775b0f443d35c2, type: 2}
-    ballValue: {fileID: 0}
+    behaviours:
+    - behaviourType: 6
+      intValue: 0
+      relicValue: {fileID: 11400000, guid: 3003d8a8bc7ba418da775b0f443d35c2, type: 2}
+      ballValue: {fileID: 0}
   - optionDescription: "\u4F53\u3067\u53D7\u3051\u6B62\u3081\u308B"
-    optionType: 1
-    intValue: 20
-    relicValue: {fileID: 0}
-    ballValue: {fileID: 11400000, guid: 86bc461c8b90f4542a5fa7b38419b676, type: 2}
+    behaviours:
+    - behaviourType: 1
+      intValue: 20
+      relicValue: {fileID: 0}
+      ballValue: {fileID: 0}
