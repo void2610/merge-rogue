@@ -8,7 +8,6 @@ void2610
 SE
 Kenney
 https://www.kenney.nl/assets
-
 効果音ラボ
 https://soundeffect-lab.info
 
@@ -24,3 +23,5 @@ https://hicchicc.github.io/00ff/
 PixelMplus
 https://github.com/itouhiro/PixelMplus?tab=readme-ov-file
 
+テストプレイ
+kakenore
