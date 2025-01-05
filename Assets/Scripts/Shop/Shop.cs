@@ -71,7 +71,7 @@ public class Shop : MonoBehaviour
         
         InventoryManager.Instance.AddBall(ball);
         _itemObjects[index].transform.position = _disabledPosition;
-        GameManager.Instance.SubtractCoin(itemPrice);
+        GameManager.Instance.SubCoin(itemPrice);
         SeManager.Instance.PlaySe("coin");
     }
 
@@ -83,7 +83,7 @@ public class Shop : MonoBehaviour
     
         RelicManager.Instance.AddRelic(relic);
         _itemObjects[index].transform.position = _disabledPosition;
-        GameManager.Instance.SubtractCoin(itemPrice);
+        GameManager.Instance.SubCoin(itemPrice);
         SeManager.Instance.PlaySe("coin");
     }
 
@@ -107,11 +107,11 @@ public class Shop : MonoBehaviour
         }
         
         Utils.AddEventToObject(g, () => { 
-            GameManager.Instance.UIManager.ShowBallDescriptionWindow(ball,
+            UIManager.Instance.ShowBallDescriptionWindow(ball,
                 g.transform.position + new Vector3(3f, 0, 0));
         }, EventTriggerType.PointerEnter);
         Utils.AddEventToObject(g, () => { 
-            GameManager.Instance.UIManager.HideBallDescriptionWindow();
+            UIManager.Instance.HideBallDescriptionWindow();
         }, EventTriggerType.PointerExit);
     }
     
@@ -136,11 +136,11 @@ public class Shop : MonoBehaviour
         }
 
         Utils.AddEventToObject(g, () => { 
-            GameManager.Instance.UIManager.ShowRelicDescriptionWindow(relic,
+            UIManager.Instance.ShowRelicDescriptionWindow(relic,
             g.transform.position + new Vector3(3f, 0, 0));
         }, EventTriggerType.PointerEnter);
         Utils.AddEventToObject(g, () => { 
-            GameManager.Instance.UIManager.HideRelicDescriptionWindow();
+            UIManager.Instance.HideRelicDescriptionWindow();
         }, EventTriggerType.PointerExit);
     }
     
@@ -154,7 +154,7 @@ public class Shop : MonoBehaviour
         
         EventManager.OnBallRemove.Trigger(0);
         removeButton.transform.position = _disabledPosition;
-        GameManager.Instance.SubtractCoin(25);
+        GameManager.Instance.SubCoin(25);
         InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Remove);
     }
 

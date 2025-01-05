@@ -284,7 +284,7 @@ public class StageManager : MonoBehaviour
         
         // 演出
         SetAllNodeInactive();
-        GameManager.Instance.UIManager.EnableCanvasGroup("Map", false);
+        UIManager.Instance.EnableCanvasGroup("Map", false);
         SeManager.Instance.WaitAndPlaySe("footsteps", 0.2f);
         DOTween.To(() => m.GetTextureOffset(mainTex), x => m.SetTextureOffset(mainTex, x), new Vector2(1, 0), 2.0f)
             .SetEase(Ease.InOutSine).OnComplete(() =>
@@ -319,7 +319,7 @@ public class StageManager : MonoBehaviour
         if(currentStage.type == StageType.Events)
         {
             // ランダムなステージに移動
-            var r = GameManager.Instance.RandomRange(0, 4);
+            var r = GameManager.Instance.RandomRange(0, 5);
             ProcessStage((StageType)r);
         }
         else
@@ -345,22 +345,27 @@ public class StageManager : MonoBehaviour
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
                 EventManager.OnShopEnter.Trigger(0);
                 Shop.Instance.OpenShop();
-                GameManager.Instance.UIManager.EnableCanvasGroup("Shop", true);
+                UIManager.Instance.EnableCanvasGroup("Shop", true);
                 break;
             case StageType.Rest:
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
                 EventManager.OnRestEnter.Trigger(0);
-                GameManager.Instance.UIManager.EnableCanvasGroup("Rest", true);
+                UIManager.Instance.EnableCanvasGroup("Rest", true);
                 break;
             case StageType.Treasure:
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
-                GameManager.Instance.UIManager.EnableCanvasGroup("Treasure", true); 
+                UIManager.Instance.EnableCanvasGroup("Treasure", true); 
                     
                 var count = GameManager.Instance.RandomRange(1, 4);
                 var rarity = GameManager.Instance.RandomRange(0, 4);
                 Treasure.Instance.OpenTreasure(count, (Rarity)rarity);
                 break;
             case StageType.Events:
+                GameManager.Instance.ChangeState(GameManager.GameState.Event);
+                UIManager.Instance.EnableCanvasGroup("Event", true);
+                
+                EventProcessor.Instance.SetRandomEvent();
+                break;
             case StageType.Undefined:
             default:
                 throw new ArgumentOutOfRangeException(nameof(s), s, null);

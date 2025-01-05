@@ -7,8 +7,8 @@ public enum EventOptionType
 {
     AddHealth,
     SubHealth,
-    AddGold,
-    SubGold,
+    AddCoin,
+    SubCoin,
     GetBall,
     RemoveBall,
     GetRelic,
@@ -29,7 +29,7 @@ public class EventOption
     
     private bool IsIntValue()
     {
-        return optionType is EventOptionType.AddHealth or EventOptionType.SubHealth or EventOptionType.AddGold or EventOptionType.SubGold;
+        return optionType is EventOptionType.AddHealth or EventOptionType.SubHealth or EventOptionType.AddCoin or EventOptionType.SubCoin or EventOptionType.RemoveBall;
     }
     private bool IsRelicValue()
     {

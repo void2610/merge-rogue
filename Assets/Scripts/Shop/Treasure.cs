@@ -59,16 +59,16 @@ public class Treasure : MonoBehaviour
                 RelicManager.Instance.AddRelic(relic);
                 SeManager.Instance.PlaySe("coin");
                 g.transform.position = _disablePosition;
-                GameManager.Instance.UIManager.OnClickTreasureExit();
+                UIManager.Instance.OnClickTreasureExit();
             });
         }
 
         Utils.AddEventToObject(g, () => { 
-            GameManager.Instance.UIManager.ShowRelicDescriptionWindow(relic,
+            UIManager.Instance.ShowRelicDescriptionWindow(relic,
                 g.transform.position + new Vector3(3f, 0, 0));
         }, EventTriggerType.PointerEnter);
         Utils.AddEventToObject(g, () => { 
-            GameManager.Instance.UIManager.HideRelicDescriptionWindow();
+            UIManager.Instance.HideRelicDescriptionWindow();
         }, EventTriggerType.PointerExit);
     }
     

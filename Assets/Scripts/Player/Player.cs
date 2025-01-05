@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
 
     private Material _material;
 
-    public void TakeDamage(int d)
+    public void Damage(int d)
     {
         if(Health.Value <= 0) return;
         
@@ -86,8 +86,8 @@ public class Player : MonoBehaviour
         MaxExp = _levelUpExp[Level];
         Level++;
         SeManager.Instance.PlaySe("levelUp");
-        GameManager.Instance.UIManager.remainingLevelUps++;
-        GameManager.Instance.UIManager.EnableCanvasGroup("LevelUp", true);
+        UIManager.Instance.remainingLevelUps++;
+        UIManager.Instance.EnableCanvasGroup("LevelUp", true);
         GameManager.Instance.ChangeState(GameManager.GameState.LevelUp);
 
         if (Exp.Value >= _levelUpExp[Level - 1])

@@ -70,10 +70,10 @@ public class MergeManager : MonoBehaviour
     
     private static void EndLevelUp()
     {
-        GameManager.Instance.UIManager.remainingLevelUps--;
-        if (GameManager.Instance.UIManager.remainingLevelUps > 0) return;
+        UIManager.Instance.remainingLevelUps--;
+        if (UIManager.Instance.remainingLevelUps > 0) return;
         
-        GameManager.Instance.UIManager.EnableCanvasGroup("LevelUp", false);
+        UIManager.Instance.EnableCanvasGroup("LevelUp", false);
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
     }
     

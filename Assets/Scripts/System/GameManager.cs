@@ -59,7 +59,6 @@ public class GameManager : MonoBehaviour
     public float TimeScale { get; private set; } = 1.0f;
     public bool IsGameOver { get; private set; } = false;
     public Player Player { get; private set; }
-    public UIManager UIManager => this.GetComponent<UIManager>();
     public StageManager StageManager => GetComponent<StageManager>();
     public ScoreManager ScoreManager => GetComponent<ScoreManager>();
     public EnemyContainer EnemyContainer => enemyContainer;
@@ -90,7 +89,7 @@ public class GameManager : MonoBehaviour
         Coin.Value += c;
     }
     
-    public void SubtractCoin(int amount)
+    public void SubCoin(int amount)
     {
         Coin.Value -= amount;
     }
@@ -124,7 +123,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.StageMoving:
                 // レベルアップが残っている場合はレベルアップ画面を表示
-                if (UIManager.remainingLevelUps > 0)
+                if (UIManager.Instance.remainingLevelUps > 0)
                     ChangeState(GameState.LevelUp);
                 else
                     ChangeState(GameState.MapSelect);
@@ -142,12 +141,12 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.MapSelect:
                 StageManager.SetNextNodeActive();
-                UIManager.EnableCanvasGroup("Map", true);
+                UIManager.Instance.EnableCanvasGroup("Map", true);
                 break;
             case GameState.Event:
                 break;
             case GameState.LevelUp:
-                UIManager.EnableCanvasGroup("LevelUp", true);
+                UIManager.Instance.EnableCanvasGroup("LevelUp", true);
                 break;
         }
     }
@@ -170,12 +169,12 @@ public class GameManager : MonoBehaviour
             if (_isPaused)
             {
                 _isPaused = false;
-                UIManager.OnClickResume();
+                UIManager.Instance.OnClickResume();
             }
             else
             {
                 _isPaused = true;
-                UIManager.OnClickPause();
+                UIManager.Instance.OnClickPause();
             }
         }
         
@@ -184,18 +183,18 @@ public class GameManager : MonoBehaviour
             if (_isMapOpened)
             {
                 _isMapOpened = false;
-                UIManager.CloseMap();
+                UIManager.Instance.CloseMap();
             }
             else
             {
                 _isMapOpened = true;
-                UIManager.OpenMap();
+                UIManager.Instance.OpenMap();
             }
         }
         
         if (Input.GetKeyDown(KeyCode.T))
         {
-            UIManager.OnClickSpeed();
+            UIManager.Instance.OnClickSpeed();
         }
     }
 }

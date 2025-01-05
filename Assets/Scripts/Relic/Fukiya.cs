@@ -13,7 +13,7 @@ public class Fukiya : RelicBase
     
     protected override void EffectImpl(Unit _)
     {
-        GameManager.Instance.Player.TakeDamage(10);
+        GameManager.Instance.Player.Damage(10);
         UI?.ActivateUI();
     }
 }

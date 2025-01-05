@@ -76,7 +76,7 @@ public class EnemyBase : MonoBehaviour
 
     private void Attack()
     {
-        GameManager.Instance.Player.TakeDamage(Mathf.Max(1, attack));
+        GameManager.Instance.Player.Damage(Mathf.Max(1, attack));
         this.transform.DOMoveX(-0.75f, 0.02f).SetRelative(true).OnComplete(() =>
                 {
                     this.transform.DOMoveX(0.75f, 0.2f).SetRelative(true).SetEase(Ease.OutExpo).SetLink(gameObject);

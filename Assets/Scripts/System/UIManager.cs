@@ -14,6 +14,8 @@ using Vector3 = UnityEngine.Vector3;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance;
+    
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider seSlider;
     [SerializeField] private Image fadeImage;
@@ -31,13 +33,13 @@ public class UIManager : MonoBehaviour
 
     public int remainingLevelUps;
     
-    private Dictionary<string, Tween> _canvasGroupTweens = new();
+    private readonly Dictionary<string, Tween> _canvasGroupTween = new();
 
     public void EnableCanvasGroup(string canvasName, bool e)
     {
         var canvasGroup = canvasGroups.Find(c => c.name == canvasName);
         if (!canvasGroup) return;
-        if (_canvasGroupTweens[canvasName].IsActive()) return;
+        if (_canvasGroupTween[canvasName].IsActive()) return;
         
         canvasGroup.interactable = e;
         canvasGroup.blocksRaycasts = e;
@@ -46,7 +48,7 @@ public class UIManager : MonoBehaviour
         {
             canvasGroup.transform.DOMoveY(-0.45f, 0).SetRelative(true).SetUpdate(true);
             var t = canvasGroup.transform.DOMoveY(0.45f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack);
-            _canvasGroupTweens[canvasName] = t;
+            _canvasGroupTween[canvasName] = t;
             canvasGroup.DOFade(1, 0.2f).SetUpdate(true);
         }
         else
@@ -192,12 +194,15 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
+        if(Instance == null) Instance = this;
+        else Destroy(gameObject);
+        
         bgmSlider.value = PlayerPrefs.GetFloat("BgmVolume", 1.0f);
         seSlider.value = PlayerPrefs.GetFloat("SeVolume", 1.0f);
 
         foreach (var canvasGroup in canvasGroups)
         {
-            _canvasGroupTweens.Add(canvasGroup.name, null);
+            _canvasGroupTween.Add(canvasGroup.name, null);
             EnableCanvasGroup(canvasGroup.name, false);
         }
     }

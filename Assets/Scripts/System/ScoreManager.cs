@@ -18,7 +18,7 @@ public class ScoreManager : MonoBehaviour
 
     public void ShowScore(int stageCount, int enemyCount, BigInteger coinCount)
     {
-        GameManager.Instance.UIManager.EnableCanvasGroup("GameOver", true);
+        UIManager.Instance.EnableCanvasGroup("GameOver", true);
 
         // 初期状態を非表示かつスケール0に設定
         ResetTransform(stageText);
