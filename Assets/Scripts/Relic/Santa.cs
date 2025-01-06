@@ -8,6 +8,7 @@ public class Santa : RelicBase
     protected override void SubscribeEffect()
     {
         var disposable = EventManager.OnRest.Subscribe(EffectImpl).AddTo(this);
+        Disposables.Add(disposable);
     }
 
     protected override void EffectImpl(Unit _)

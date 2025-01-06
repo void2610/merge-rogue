@@ -3,31 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class #SCRIPT_NAME# : MonoBehaviour, IRelicBehavior
+public class #SCRIPT_NAME# : RelicBase
 {
-    private IDisposable disposable;
-    private RelicUI ui;
-    public void ApplyEffect(RelicUI relicUI)
+    protected override void SubscribeEffect()
     {
-        disposable = EventManager.OnPlayerAttack.Subscribe(Effect).AddTo(this);
-        ui = relicUI;
-
-        Effect(Unit.Default);
+        var disposable = EventManager.OnRest.Subscribe(EffectImpl).AddTo(this);
+        Disposables.Add(disposable);
     }
 
-    public void RemoveEffect()
+    protected override void EffectImpl(Unit _)
     {
-        disposable?.Dispose();
-    }
-    
-    private void Effect(Unit _)
-    {
-        var x = EventManager.OnPlayerAttack.GetValue();
-        ui?.ActivateUI();
-    }
-    
-    private void OnDestroy()
-    {
-        RemoveEffect();
+        var rarity = GameManager.Instance.RandomRange(0.0f, 1.0f) > 0.5f ? Rarity.Common : Rarity.Uncommon;
+        var relics = RelicManager.Instance.allRelicDataList.GetRelicDataFromRarity(rarity);
+        var r = GameManager.Instance.RandomRange(0, relics.Count);
+        
+        RelicManager.Instance.AddRelic(relics[r]);
+        UI?.ActivateUI();
     }
 }

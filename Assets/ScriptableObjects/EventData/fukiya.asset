@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bf176aeba95274a1e8cf42b3bc6cca66, type: 3}
-  m_Name: test
+  m_Name: fukiya
   m_EditorClassIdentifier: 
-  eventName: fukiya
+  eventName: "\u5439\u77E2\u3068\u306E\u906D\u9047"
   eventDescription: "\u524D\u65B9\u304B\u3089\u5439\u77E2\u304C\u98DB\u3093\u3067\u304D\u305F\uFF01"
   options:
   - optionDescription: "\u30D0\u30C3\u30B0\u3067\u53D7\u3051\u6B62\u3081\u308B"

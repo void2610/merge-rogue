@@ -24,8 +24,9 @@ public class EventProcessor : MonoBehaviour
         for (var i = 0; i < _currentEvent.options.Count; i++)
         {
             options[i].SetActive(true);
-            options[i].GetComponentInChildren<TextMeshProUGUI>().text = _currentEvent.options[i].optionDescription;
+            options[i].GetComponentInChildren<TextMeshProUGUI>().text = _currentEvent.options[i].optionDescription + GetBehaviourDescription(_currentEvent.options[i].behaviours);
             SetOptionBehaviour(options[i].GetComponent<Button>(), _currentEvent.options[i]);
+            options[i].GetComponent<Button>().interactable = CheckBehaviourCondition(_currentEvent.options[i].behaviours);
         }
         EventManager.OnEventEnter.Trigger(_currentEvent);
     }
@@ -55,7 +56,10 @@ public class EventProcessor : MonoBehaviour
                         InventoryManager.Instance.AddBall(behaviour.ballValue);
                         break;
                     case EventBehaviourType.RemoveBall:
-                        InventoryManager.Instance.RemoveAndShiftBall(behaviour.intValue);
+                        for(var i = 0; i < behaviour.intValue; i++){
+                            var index = InventoryManager.Instance.InventorySize - 1; // 一番後ろのボールを削除
+                            InventoryManager.Instance.RemoveAndShiftBall(index);
+                        }
                         break;
                     case EventBehaviourType.GetRelic:
                         RelicManager.Instance.AddRelic(behaviour.relicValue);
@@ -68,6 +72,64 @@ public class EventProcessor : MonoBehaviour
             UIManager.Instance.EnableCanvasGroup("Event", false);
             GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
         });
+    }
+    
+    private bool CheckBehaviourCondition(List<EventBehaviour> behaviours)
+    {
+        foreach (var behaviour in behaviours)
+        {
+            switch (behaviour.behaviourType)
+            {
+                case EventBehaviourType.SubHealth:
+                    if (GameManager.Instance.Player.Health.Value - behaviour.intValue <= 0) return false;
+                    break;
+                case EventBehaviourType.SubCoin:
+                    if (GameManager.Instance.Coin.Value - behaviour.intValue < 0) return false;
+                    break;
+                case EventBehaviourType.RemoveBall:
+                    if (InventoryManager.Instance.InventorySize <= behaviour.intValue) return false;
+                    break;
+                case EventBehaviourType.AddHealth:
+                case EventBehaviourType.AddCoin:
+                case EventBehaviourType.GetBall:
+                case EventBehaviourType.GetRelic:
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+        return true;
+    }
+    
+    private string GetBehaviourDescription(List<EventBehaviour> behaviours)
+    {
+        if(behaviours.Count == 0) return "";
+        
+        var description = "(";
+        foreach (var behaviour in behaviours)
+        {
+            description += CreateDescription(behaviour) + " ";
+        }
+        
+        // 最後のスペースを閉じ括弧に変更
+        description = description.Remove(description.Length - 1);
+        description += ")";
+        return description;
+    }
+    
+    private string CreateDescription(EventBehaviour behaviour)
+    {
+        return behaviour.behaviourType switch
+        {
+            EventBehaviourType.AddHealth => $"HPを{behaviour.intValue}回復",
+            EventBehaviourType.SubHealth => $"{behaviour.intValue}ダメージを受ける",
+            EventBehaviourType.AddCoin => $"{behaviour.intValue}コインを獲得",
+            EventBehaviourType.SubCoin => $"{behaviour.intValue}コインを消費",
+            EventBehaviourType.GetBall => $"{behaviour.ballValue.displayName}を獲得",
+            EventBehaviourType.RemoveBall => $"ボールを{behaviour.intValue}個削除",
+            EventBehaviourType.GetRelic => $"{behaviour.relicValue.displayName}を獲得",
+            _ => throw new ArgumentOutOfRangeException()
+        };
     }
     
     private void Awake()
