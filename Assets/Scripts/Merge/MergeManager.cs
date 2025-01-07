@@ -182,7 +182,6 @@ public class MergeManager : MonoBehaviour
             GameManager.Instance.Player.gameObject.transform.DOMoveX(-0.75f, 0.2f).SetRelative(true)
                 .SetEase(Ease.OutExpo);
         });
-        // SeManager.Instance.PlaySe("playerAttack");
         _singleAttackCount = 0;
         _allAttackCount = 0;
     }

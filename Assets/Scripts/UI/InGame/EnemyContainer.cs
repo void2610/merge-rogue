@@ -14,6 +14,8 @@ public class EnemyContainer : MonoBehaviour
         public GameObject prefab;
         public float probability;
     }
+    
+    public static EnemyContainer Instance { get; private set; }
 
     [SerializeField] private List<EnemyData> enemies;
     [SerializeField] private List<EnemyData> bosses = new();
@@ -150,9 +152,8 @@ public class EnemyContainer : MonoBehaviour
         for (var i = 0; i < isAttacks.Count; i++)
         {
             if (!isAttacks[i]) continue;
-            
-            es[i].DamageByPlayer(damage, true);
-            SeManager.Instance.PlaySe("playerAttack");
+
+            es[i].Damage(damage);
             CameraMove.Instance.ShakeCamera(0.5f, damage * 0.01f);
         }
         yield return new WaitForSeconds(0.5f);
@@ -167,11 +168,11 @@ public class EnemyContainer : MonoBehaviour
         if (allDamage > 0)
         {
             ParticleManager.Instance.AllHitParticle(new Vector3(-3.7f, 3.3f, 0));
-            SeManager.Instance.PlaySe("playerAttack");
             CameraMove.Instance.ShakeCamera(0.5f, allDamage * 0.03f);
+            SeManager.Instance.PlaySe("playerAttack");
             foreach (var e in es)
             {
-                e.DamageByPlayer(allDamage, false);
+                e.Damage(allDamage);
             }
             yield return new WaitForSeconds(0.5f);
         }
@@ -185,10 +186,12 @@ public class EnemyContainer : MonoBehaviour
             if (singleDamage <= 0) break;
             var actualDamage = singleDamage > e.Health ? e.Health : singleDamage;
             if (es.IndexOf(e) == es.Count - 1) actualDamage = singleDamage;
-            e.DamageByPlayer(actualDamage, true);
-            singleDamage -= actualDamage;
             
             SeManager.Instance.PlaySe("playerAttack");
+            ParticleManager.Instance.DamageText(actualDamage, e.transform.position.x);
+            e.Damage(actualDamage);
+            singleDamage -= actualDamage;
+            
             // TODO: もう少しなだらかな上昇幅がいいかも
             CameraMove.Instance.ShakeCamera(0.5f, actualDamage * 0.01f);
             yield return new WaitForSeconds(0.3f);
@@ -204,17 +207,24 @@ public class EnemyContainer : MonoBehaviour
     
     public void Action()
     {
-        StartCoroutine(AttackPlayerCoroutine());
+        AttackPlayerAsync().Forget();
     }
 
-    private IEnumerator AttackPlayerCoroutine()
+    private async UniTaskVoid AttackPlayerAsync()
     {
-        foreach (var enemy in currentEnemies)
+        foreach (var enemyBase in currentEnemies.Select(enemy => enemy.transform.GetChild(0).GetComponent<EnemyBase>()))
         {
-            var enemyBase = enemy.transform.GetChild(0).GetComponent<EnemyBase>();
             enemyBase.Action();
             // 0.5秒待つ
-            yield return new WaitForSeconds(0.5f);
+            await UniTask.Delay(500);
+        }
+        
+        await UniTask.Delay(100);
+        
+        // 状態異常を更新
+        foreach (var enemyBase in currentEnemies.Select(enemy => enemy.transform.GetChild(0).GetComponent<EnemyBase>()))
+        {
+            enemyBase.UpdateStatusEffects();
         }
 
         if(currentEnemies.Count > 0)
@@ -223,6 +233,16 @@ public class EnemyContainer : MonoBehaviour
 
     public void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(this);
+            return;
+        }
+        
         positions.Add(this.transform.position + new Vector3(-alignment * 2, 0, 0));
         positions.Add(this.transform.position + new Vector3(-alignment, 0, 0));
         positions.Add(this.transform.position);

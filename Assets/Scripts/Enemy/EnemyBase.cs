@@ -28,38 +28,51 @@ public class EnemyBase : MonoBehaviour, IEntity
     private TextMeshProUGUI HealthText => canvas.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
     private Slider HealthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
     private TextMeshProUGUI AttackCountText => canvas.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
-
-    public void DamageByPlayer(int damage, bool isEmitEffect = true)
+    private readonly List<IStatusEffect> _statusEffects = new();
+    
+    public void AddStatusEffect(IStatusEffect effect)
     {
-        if(!this) return;
-        
-        // 演出
-        ParticleManager.Instance.DamageText(damage, this.transform.position.x);
-        var m = this.GetComponent<SpriteRenderer>().material;
-        m.DOColor(Color.red, 0).OnComplete(() =>
+        var existingEffect = _statusEffects.Find(e => e.Name == effect.Name);
+        if (existingEffect != null)
         {
-            m.DOColor(new Color(0.7f,0.7f,0.7f), 0.3f);
-        });
-        if(isEmitEffect)
-            ParticleManager.Instance.HitParticle(this.transform.position + new Vector3(-0.3f, 0.2f, 0));
-        
-        // ダメージ処理
-        Damage(damage);
+            existingEffect.AddStack(effect.StackCount);
+        }
+        else
+        {
+            _statusEffects.Add(effect);
+        }
+    }
+    
+    public void UpdateStatusEffects()
+    {
+        for (var i = _statusEffects.Count - 1; i >= 0; i--)
+        {
+            _statusEffects[i].ApplyEffect(this);
+            if (_statusEffects[i].ReduceStack()) _statusEffects.RemoveAt(i);
+        }
     }
     
     public void Damage(int damage)
     {
         if(!this) return;
+                
+        // 演出
+        var m = this.GetComponent<SpriteRenderer>().material;
+        m.DOColor(Color.red, 0).OnComplete(() =>
+        {
+            m.DOColor(new Color(0.7f,0.7f,0.7f), 0.3f);
+        });
+        ParticleManager.Instance.HitParticle(this.transform.position + new Vector3(-0.3f, 0.2f, 0));
 
+        // ダメージ処理
         Health -= damage;
         HealthSlider.value = Health;
         HealthText.text = Health + "/" + MaxHealth;
-        if (Health <= 0)
-        {
-            Health = 0;
-            HealthText.text = Health + "/" + MaxHealth;
-            Death();
-        }
+        if (Health > 0) return;
+        
+        Health = 0;
+        HealthText.text = Health + "/" + MaxHealth;
+        Death();
     }
     
     public void Heal(int healAmount)

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87ffaf8ec3e9d4f489befd2ffee17c75, type: 3}
+  m_Name: FireBracelet
+  m_EditorClassIdentifier: 
+  id: 0
+  className: FireBracelet
+  sprite: {fileID: 4642325231336661812, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  displayName: "\u708E\u306E\u30D6\u30EC\u30B9\u30EC\u30C3\u30C8"
+  description: "\u653B\u6483\u6642\u3001\u5148\u982D\u306E\u65751\u4F53\u306B\u300C\u3084\u3051\u3069\u300D\u30921\u30B9\u30BF\u30C3\u30AF\u4ED8\u4E0E\u3059\u308B\u3002"
+  flavorText: "\u71C3\u3048\u76DB\u308B\u30D6\u30EC\u30B9\u30EC\u30C3\u30C8\u3002\u71B1\u304F\u306A\u3044\u306E\uFF1F"
+  rarity: 2
+  price: 20

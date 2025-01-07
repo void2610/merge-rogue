@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
-
 public enum GameEventTypes
 {
     OnGameStart,           // ゲーム開始時
@@ -51,6 +49,25 @@ public enum Rarity
     Epic,
     Legendary,
     Boss
+}
+
+public enum StatusEffectType
+{
+    Burn,
+    Regeneration,
+    Poison,
+    Stun,
+    Freeze,
+    Shield,
+    Barrier,
+    Invincible,
+    Weakness,
+    Strength,
+    Drain,  
+    Reflect,
+    Absorb,
+    Counter,
+    Dodge,
 }
 
 public static class MyColors
