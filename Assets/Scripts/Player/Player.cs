@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using R3;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IEntity
 {
     public readonly ReactiveProperty<int> Exp = new(0);
     public readonly ReactiveProperty<int> Health = new(100);

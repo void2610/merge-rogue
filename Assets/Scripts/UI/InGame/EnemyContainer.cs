@@ -151,7 +151,7 @@ public class EnemyContainer : MonoBehaviour
         {
             if (!isAttacks[i]) continue;
             
-            es[i].TakeDamage(damage, true);
+            es[i].DamageByPlayer(damage, true);
             SeManager.Instance.PlaySe("playerAttack");
             CameraMove.Instance.ShakeCamera(0.5f, damage * 0.01f);
         }
@@ -171,7 +171,7 @@ public class EnemyContainer : MonoBehaviour
             CameraMove.Instance.ShakeCamera(0.5f, allDamage * 0.03f);
             foreach (var e in es)
             {
-                e.TakeDamage(allDamage, false);
+                e.DamageByPlayer(allDamage, false);
             }
             yield return new WaitForSeconds(0.5f);
         }
@@ -185,7 +185,7 @@ public class EnemyContainer : MonoBehaviour
             if (singleDamage <= 0) break;
             var actualDamage = singleDamage > e.Health ? e.Health : singleDamage;
             if (es.IndexOf(e) == es.Count - 1) actualDamage = singleDamage;
-            e.TakeDamage(actualDamage, true);
+            e.DamageByPlayer(actualDamage, true);
             singleDamage -= actualDamage;
             
             SeManager.Instance.PlaySe("playerAttack");

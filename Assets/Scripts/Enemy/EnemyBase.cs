@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 
-public class EnemyBase : MonoBehaviour
+public class EnemyBase : MonoBehaviour, IEntity
 {
     public string enemyName = "Enemy";
     public int actionInterval = 1;
@@ -29,7 +29,7 @@ public class EnemyBase : MonoBehaviour
     private Slider HealthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
     private TextMeshProUGUI AttackCountText => canvas.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
 
-    public void TakeDamage(int damage, bool isEmitEffect = true)
+    public void DamageByPlayer(int damage, bool isEmitEffect = true)
     {
         if(!this) return;
         
@@ -44,6 +44,13 @@ public class EnemyBase : MonoBehaviour
             ParticleManager.Instance.HitParticle(this.transform.position + new Vector3(-0.3f, 0.2f, 0));
         
         // ダメージ処理
+        Damage(damage);
+    }
+    
+    public void Damage(int damage)
+    {
+        if(!this) return;
+
         Health -= damage;
         HealthSlider.value = Health;
         HealthText.text = Health + "/" + MaxHealth;
@@ -53,6 +60,14 @@ public class EnemyBase : MonoBehaviour
             HealthText.text = Health + "/" + MaxHealth;
             Death();
         }
+    }
+    
+    public void Heal(int healAmount)
+    {
+        Health += healAmount;
+        Health = Mathf.Min(Health, MaxHealth);
+        HealthSlider.value = Health;
+        HealthText.text = Health + "/" + MaxHealth;
     }
 
     public void Action()
