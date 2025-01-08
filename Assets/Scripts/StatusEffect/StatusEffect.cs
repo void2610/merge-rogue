@@ -56,11 +56,11 @@ public static class StatusEffectFactory
 
 public class BurnEffect : StatusEffectBase
 {
-    public BurnEffect(int initialStack) : base(StatusEffectType.Burn, initialStack, true) { }
+    public BurnEffect(int initialStack) : base(StatusEffectType.Burn, initialStack, false) { }
 
     public override void ApplyEffect(IEntity target)
     {
-        var damage = StackCount; // スタック数に応じたダメージ
+        var damage = StackCount;
         SeManager.Instance.PlaySe("playerAttack");
         target.Damage(damage);
     }
@@ -72,7 +72,7 @@ public class RegenerationEffect : StatusEffectBase
 
     public override void ApplyEffect(IEntity target)
     {
-        var heal = StackCount; // スタック数に応じた回復
+        var heal = StackCount;
         target.Heal(heal);
     }
 }

@@ -35,13 +35,11 @@ public class EnemyBase : MonoBehaviour, IEntity
     {
         var existingEffect = StatusEffects.Find(e => e.Type == effect.Type);
         if (existingEffect != null)
-        {
             existingEffect.AddStack(effect.StackCount);
-        }
         else
-        {
             StatusEffects.Add(effect);
-        }
+        
+        StatusEffectUI.UpdateUI(StatusEffects);
     }
     
     public void UpdateStatusEffects()
@@ -49,7 +47,8 @@ public class EnemyBase : MonoBehaviour, IEntity
         for (var i = StatusEffects.Count - 1; i >= 0; i--)
         {
             StatusEffects[i].ApplyEffect(this);
-            if (StatusEffects[i].ReduceStack()) StatusEffects.RemoveAt(i);
+            if (StatusEffects[i].ReduceStack())
+                StatusEffects.RemoveAt(i);
         }
         
         StatusEffectUI.UpdateUI(StatusEffects);
