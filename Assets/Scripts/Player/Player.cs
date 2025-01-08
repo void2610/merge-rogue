@@ -11,30 +11,30 @@ public class Player : MonoBehaviour, IEntity
     public readonly ReactiveProperty<int> MaxHealth = new(100);
     public int MaxExp { get; private set; } = 20;
     public int Level { get; private set; } = 1;
+    public List<StatusEffectBase> StatusEffects { get; } = new();
     
     private readonly List<int> _levelUpExp = new() { 20, 40, 80, 100, 150, 200, 250, 300, 350, 400, 500 };
-    private readonly List<IStatusEffect> _statusEffects = new();
     private Material _material;
     
-    public void AddStatusEffect(IStatusEffect effect)
+    public void AddStatusEffect(StatusEffectBase effect)
     {
-        var existingEffect = _statusEffects.Find(e => e.Name == effect.Name);
+        var existingEffect = StatusEffects.Find(e => e.Type == effect.Type);
         if (existingEffect != null)
         {
             existingEffect.AddStack(effect.StackCount);
         }
         else
         {
-            _statusEffects.Add(effect);
+            StatusEffects.Add(effect);
         }
     }
     
     public void UpdateStatusEffects()
     {
-        for (var i = _statusEffects.Count - 1; i >= 0; i--)
+        for (var i = StatusEffects.Count - 1; i >= 0; i--)
         {
-            _statusEffects[i].ApplyEffect(this);
-            if (_statusEffects[i].ReduceStack()) _statusEffects.RemoveAt(i);
+            StatusEffects[i].ApplyEffect(this);
+            if (StatusEffects[i].ReduceStack()) StatusEffects.RemoveAt(i);
         }
     }
 

@@ -222,9 +222,9 @@ public class EnemyContainer : MonoBehaviour
         await UniTask.Delay(100);
         
         // 状態異常を更新
-        foreach (var enemyBase in currentEnemies.Select(enemy => enemy.transform.GetChild(0).GetComponent<EnemyBase>()))
+        for(var i = 0; i < currentEnemies.Count; i++)
         {
-            enemyBase.UpdateStatusEffects();
+            currentEnemies[i].transform.GetChild(0).GetComponent<EnemyBase>().UpdateStatusEffects();
         }
 
         if(currentEnemies.Count > 0)

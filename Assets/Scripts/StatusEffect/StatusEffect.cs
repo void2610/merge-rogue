@@ -3,8 +3,9 @@ using UnityEngine;
 
 public interface IStatusEffect
 {
-    string Name { get; }
+    StatusEffectType Type { get; }
     int StackCount { get; }
+    bool isPermanent { get; }
     void ApplyEffect(IEntity target); // 毎ターンの効果適用
     void AddStack(int count);           // スタックを追加
     bool ReduceStack();                 // スタックを減らし、0になったらtrueを返す
@@ -12,13 +13,15 @@ public interface IStatusEffect
 
 public abstract class StatusEffectBase : IStatusEffect
 {
-    public string Name { get; protected set; }
+    public StatusEffectType Type { get; }
     public int StackCount { get; private set; }
+    public bool isPermanent { get; }
 
-    public StatusEffectBase(string name, int initialStack)
+    public StatusEffectBase(StatusEffectType type, int initialStack, bool isPermanent = false)
     {
-        Name = name;
+        this.Type = type;
         StackCount = initialStack;
+        this.isPermanent = isPermanent;
     }
 
     public void AddStack(int count)
@@ -28,6 +31,7 @@ public abstract class StatusEffectBase : IStatusEffect
 
     public bool ReduceStack()
     {
+        if (isPermanent) return false;
         StackCount--;
         return StackCount <= 0;
     }
@@ -39,7 +43,7 @@ public static class StatusEffectFactory
 {
     public static void AddStatusEffect(IEntity target, StatusEffectType type, int initialStack = 1)
     {
-        IStatusEffect newEffect = type switch
+        StatusEffectBase newEffect = type switch
         {
             StatusEffectType.Burn => new BurnEffect(initialStack),
             StatusEffectType.Regeneration => new RegenerationEffect(initialStack),
@@ -52,25 +56,23 @@ public static class StatusEffectFactory
 
 public class BurnEffect : StatusEffectBase
 {
-    public BurnEffect(int initialStack) : base("Burn", initialStack) { }
+    public BurnEffect(int initialStack) : base(StatusEffectType.Burn, initialStack, true) { }
 
     public override void ApplyEffect(IEntity target)
     {
         var damage = StackCount; // スタック数に応じたダメージ
         SeManager.Instance.PlaySe("playerAttack");
         target.Damage(damage);
-        Debug.Log($"{target} took {damage} damage from Burn.");
     }
 }
 
 public class RegenerationEffect : StatusEffectBase
 {
-    public RegenerationEffect(int initialStack) : base("Regeneration", initialStack) { }
+    public RegenerationEffect(int initialStack) : base(StatusEffectType.Regeneration, initialStack, false) { }
 
     public override void ApplyEffect(IEntity target)
     {
         var heal = StackCount; // スタック数に応じた回復
         target.Heal(heal);
-        Debug.Log($"{target} healed {heal} HP from Regeneration.");
     }
 }

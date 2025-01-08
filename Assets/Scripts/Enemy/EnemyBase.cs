@@ -22,34 +22,37 @@ public class EnemyBase : MonoBehaviour, IEntity
 
     public int Health { get; protected set; }
     public int MaxHealth { get; protected set; }
+    public List<StatusEffectBase> StatusEffects { get; } = new();
 
     protected int TurnCount = 0;
 
     private TextMeshProUGUI HealthText => canvas.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
     private Slider HealthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
     private TextMeshProUGUI AttackCountText => canvas.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
-    private readonly List<IStatusEffect> _statusEffects = new();
+    private StatusEffectUI StatusEffectUI => canvas.transform.Find("StatusEffectUI").GetComponent<StatusEffectUI>();
     
-    public void AddStatusEffect(IStatusEffect effect)
+    public void AddStatusEffect(StatusEffectBase effect)
     {
-        var existingEffect = _statusEffects.Find(e => e.Name == effect.Name);
+        var existingEffect = StatusEffects.Find(e => e.Type == effect.Type);
         if (existingEffect != null)
         {
             existingEffect.AddStack(effect.StackCount);
         }
         else
         {
-            _statusEffects.Add(effect);
+            StatusEffects.Add(effect);
         }
     }
     
     public void UpdateStatusEffects()
     {
-        for (var i = _statusEffects.Count - 1; i >= 0; i--)
+        for (var i = StatusEffects.Count - 1; i >= 0; i--)
         {
-            _statusEffects[i].ApplyEffect(this);
-            if (_statusEffects[i].ReduceStack()) _statusEffects.RemoveAt(i);
+            StatusEffects[i].ApplyEffect(this);
+            if (StatusEffects[i].ReduceStack()) StatusEffects.RemoveAt(i);
         }
+        
+        StatusEffectUI.UpdateUI(StatusEffects);
     }
     
     public void Damage(int damage)
