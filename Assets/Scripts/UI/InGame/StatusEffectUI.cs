@@ -16,11 +16,11 @@ public class StatusEffectUI : MonoBehaviour
     
     [SerializeField] private List<StatusEffectIcon> statusEffectSprites;
     [SerializeField] private GameObject statusEffectIconPrefab;
+    [SerializeField] private float iconSize = 0.0125f;
+    [SerializeField] private Vector2 offset = new(-0.68f, 0.23f);
+    [SerializeField] private float margin = 0.4f;
     
     private readonly Dictionary<StatusEffectType, GameObject> _statusEffectIcons = new();
-    private readonly Vector2 _offset = new(-0.68f, 0.23f);
-    private const float MARGIN = 0.4f;
-    private const float ICON_SIZE = 0.0125f;
 
     public void UpdateUI(List<StatusEffectBase> effects)
     {
@@ -34,7 +34,7 @@ public class StatusEffectUI : MonoBehaviour
             var effect = effects[i];
             var icon = _statusEffectIcons[effect.Type];
             icon.SetActive(true);
-            icon.transform.position = this.transform.position + new Vector3( _offset.x + i * MARGIN, _offset.y, 0);
+            icon.transform.position = this.transform.position + new Vector3( offset.x + i * margin, offset.y, 0);
             icon.transform.Find("Stack").GetComponent<TextMeshProUGUI>().text = effect.StackCount.ToString();
         }
     }
@@ -46,10 +46,11 @@ public class StatusEffectUI : MonoBehaviour
             var icon = statusEffectSprites.Find(s => s.type == type).sprite;
             if (icon == null) continue;
             var go = Instantiate(statusEffectIconPrefab, transform);
-            go.transform.localScale = new Vector3(ICON_SIZE, ICON_SIZE, 1);
+            go.transform.localScale = new Vector3(iconSize, iconSize, 1);
             go.transform.Find("Icon").GetComponent<Image>().sprite = icon;
             go.transform.Find("Stack").GetComponent<TextMeshProUGUI>().text = "";
             _statusEffectIcons[type] = go;
+            go.SetActive(false);
         }
     }
 }

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e20d261e1bba4e309354d2a524b6d0d, type: 3}
+  m_Name: ShieldBall
+  m_EditorClassIdentifier: 
+  id: 0
+  className: ShieldBall
+  displayName: "\u30B7\u30FC\u30EB\u30C9\u30DC\u30FC\u30EB"
+  mainDescription: "\u30B7\u30FC\u30EB\u30C9\u3092\u30DC\u30FC\u30EB\u30EC\u30D9\u30EB*1\u4ED8\u4E0E\u3059\u308B"
+  altDescription: 
+  flavorText: "\u3044\u308D\u3093\u306A\u30B2\u30FC\u30E0\u306B\u3042\u308B\u3088\u306D"
+  sprite: {fileID: -3261829134322765937, guid: 2fd919f8b78aa4df085e290575a2e038, type: 3}
+  rarity: 2
+  atk: 1
+  size: 1
+  price: 20

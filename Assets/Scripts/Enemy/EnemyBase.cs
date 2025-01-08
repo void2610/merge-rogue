@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -54,6 +55,11 @@ public class EnemyBase : MonoBehaviour, IEntity
         StatusEffectUI.UpdateUI(StatusEffects);
     }
     
+    public int ModifyIncomingDamage(int amount)
+    {
+        return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyDamage(current));
+    }
+    
     public void Damage(int damage)
     {
         if(!this) return;
@@ -65,8 +71,9 @@ public class EnemyBase : MonoBehaviour, IEntity
             m.DOColor(new Color(0.7f,0.7f,0.7f), 0.3f);
         });
         ParticleManager.Instance.HitParticle(this.transform.position + new Vector3(-0.3f, 0.2f, 0));
-
-        // ダメージ処理
+        
+        // 状態異常でダメージを更新
+        damage = ModifyIncomingDamage(damage);
         Health -= damage;
         HealthSlider.value = Health;
         HealthText.text = Health + "/" + MaxHealth;

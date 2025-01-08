@@ -6,5 +6,6 @@ public interface IEntity
     public void Damage(int damage); 
     public void Heal(int healAmount);
     public void AddStatusEffect(StatusEffectBase effect);
+    int ModifyIncomingDamage(int amount);
     public void UpdateStatusEffects();
 }

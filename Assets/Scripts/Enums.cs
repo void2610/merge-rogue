@@ -55,10 +55,10 @@ public enum StatusEffectType
 {
     Burn,
     Regeneration,
+    Shield,
     // Poison,
     // Stun,
     // Freeze,
-    // Shield,
     // Barrier,
     // Invincible,
     // Weakness,

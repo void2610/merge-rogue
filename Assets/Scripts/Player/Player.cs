@@ -1,11 +1,14 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
 using R3;
+using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour, IEntity
 {
+    [SerializeField] private StatusEffectUI statusEffectUI;
     public readonly ReactiveProperty<int> Exp = new(0);
     public readonly ReactiveProperty<int> Health = new(100);
     public readonly ReactiveProperty<int> MaxHealth = new(100);
@@ -20,13 +23,10 @@ public class Player : MonoBehaviour, IEntity
     {
         var existingEffect = StatusEffects.Find(e => e.Type == effect.Type);
         if (existingEffect != null)
-        {
             existingEffect.AddStack(effect.StackCount);
-        }
         else
-        {
             StatusEffects.Add(effect);
-        }
+        statusEffectUI.UpdateUI(StatusEffects);
     }
     
     public void UpdateStatusEffects()
@@ -36,14 +36,24 @@ public class Player : MonoBehaviour, IEntity
             StatusEffects[i].ApplyEffect(this);
             if (StatusEffects[i].ReduceStack()) StatusEffects.RemoveAt(i);
         }
+        statusEffectUI.UpdateUI(StatusEffects);
     }
-
+    
+    public int ModifyIncomingDamage(int amount)
+    {
+        return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyDamage(current));
+    }
+    
     public void Damage(int d)
     {
         if(Health.Value <= 0) return;
         
-        EventManager.OnPlayerDamage.Trigger(d);
-        var damage = EventManager.OnPlayerDamage.GetValue();
+        // 状態異常でダメージを更新
+        var damage = ModifyIncomingDamage(d);
+        
+        // イベントでダメージを更新
+        EventManager.OnPlayerDamage.Trigger(damage);
+        damage = EventManager.OnPlayerDamage.GetValue();
         
         if (Health.Value <= 0) return;
         
@@ -61,6 +71,8 @@ public class Player : MonoBehaviour, IEntity
             Health.Value = 0;
             GameManager.Instance.GameOver();
         }
+        
+        UpdateStatusEffects();
     }
 
     public void Heal(int amount)

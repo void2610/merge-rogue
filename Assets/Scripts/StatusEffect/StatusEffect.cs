@@ -1,27 +1,18 @@
 using System;
 using UnityEngine;
 
-public interface IStatusEffect
-{
-    StatusEffectType Type { get; }
-    int StackCount { get; }
-    bool isPermanent { get; }
-    void ApplyEffect(IEntity target); // 毎ターンの効果適用
-    void AddStack(int count);           // スタックを追加
-    bool ReduceStack();                 // スタックを減らし、0になったらtrueを返す
-}
 
-public abstract class StatusEffectBase : IStatusEffect
+public abstract class StatusEffectBase
 {
     public StatusEffectType Type { get; }
-    public int StackCount { get; private set; }
-    public bool isPermanent { get; }
+    public int StackCount { get; protected set; }
+    private readonly bool _isPermanent;
 
-    public StatusEffectBase(StatusEffectType type, int initialStack, bool isPermanent = false)
+    protected StatusEffectBase(StatusEffectType type, int initialStack, bool isPermanent = false)
     {
         this.Type = type;
         StackCount = initialStack;
-        this.isPermanent = isPermanent;
+        this._isPermanent = isPermanent;
     }
 
     public void AddStack(int count)
@@ -31,12 +22,17 @@ public abstract class StatusEffectBase : IStatusEffect
 
     public bool ReduceStack()
     {
-        if (isPermanent) return false;
+        if (_isPermanent && StackCount > 0) return false;
         StackCount--;
         return StackCount <= 0;
     }
-
+    
     public abstract void ApplyEffect(IEntity target);
+    
+    public virtual int ModifyDamage(int incomingDamage)
+    {
+        return incomingDamage;
+    }
 }
 
 public static class StatusEffectFactory
@@ -47,6 +43,7 @@ public static class StatusEffectFactory
         {
             StatusEffectType.Burn => new BurnEffect(initialStack),
             StatusEffectType.Regeneration => new RegenerationEffect(initialStack),
+            StatusEffectType.Shield => new ShieldEffect(initialStack),
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
         
@@ -74,5 +71,24 @@ public class RegenerationEffect : StatusEffectBase
     {
         var heal = StackCount;
         target.Heal(heal);
+    }
+}
+
+public class ShieldEffect : StatusEffectBase
+{
+    public ShieldEffect(int initialStack) : base(StatusEffectType.Shield, initialStack, true) { }
+
+    public override void ApplyEffect(IEntity target) { }
+    
+    public override int ModifyDamage(int incomingDamage)
+    {
+        if (StackCount <= 0) return incomingDamage;
+
+        // ダメージを吸収
+        var absorbed = Math.Min(StackCount, incomingDamage);
+        StackCount -= absorbed;
+
+        Debug.Log($"Shield absorbed {absorbed} damage. Remaining shield: {StackCount}.");
+        return incomingDamage - absorbed;
     }
 }
