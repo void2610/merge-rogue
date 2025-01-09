@@ -36,7 +36,7 @@ public class Player : MonoBehaviour, IEntity
     {
         for (var i = StatusEffects.Count - 1; i >= 0; i--)
         {
-            StatusEffects[i].ApplyEffect(this);
+            StatusEffects[i].OnTurnEnd(this);
             if (StatusEffects[i].ReduceStack()) StatusEffects.RemoveAt(i);
         }
         statusEffectUI.UpdateUI(StatusEffects);
@@ -49,9 +49,9 @@ public class Player : MonoBehaviour, IEntity
     
     public void OnBattleEnd()
     {
-        foreach (var effect in StatusEffects)
+        for (var i = StatusEffects.Count - 1; i >= 0; i--)
         {
-            effect.OnBattleEnd();
+            if (StatusEffects[i].OnBattleEnd()) StatusEffects.RemoveAt(i);
         }
         statusEffectUI.UpdateUI(StatusEffects);
     }

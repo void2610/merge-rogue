@@ -35,14 +35,16 @@ public abstract class StatusEffectBase
         return StackCount <= 0;
     }
     
-    public abstract void ApplyEffect(IEntity target);
+    // ターン経過時の処理、スタック数が0になったらtrueを返す
+    public abstract void OnTurnEnd(IEntity target);
     
     public virtual int ModifyDamage(int incomingDamage)
     {
         return incomingDamage;
     }
     
-    public virtual void OnBattleEnd() { }
+    // 戦闘終了時の処理、スタック数が0になったらtrueを返す
+    public virtual bool OnBattleEnd() { return false; }
 
     protected void ShowEffectText()
     {
@@ -88,7 +90,7 @@ public class BurnEffect : StatusEffectBase
 {
     public BurnEffect(int initialStack) : base(StatusEffectType.Burn, initialStack, false) { }
 
-    public override void ApplyEffect(IEntity target)
+    public override void OnTurnEnd(IEntity target)
     {
         var damage = StackCount;
         SeManager.Instance.PlaySe("playerAttack");
@@ -102,7 +104,7 @@ public class RegenerationEffect : StatusEffectBase
 {
     public RegenerationEffect(int initialStack) : base(StatusEffectType.Regeneration, initialStack, false) { }
 
-    public override void ApplyEffect(IEntity target)
+    public override void OnTurnEnd(IEntity target)
     {
         var heal = StackCount;
         target.Heal(heal);
@@ -115,7 +117,7 @@ public class ShieldEffect : StatusEffectBase
 {
     public ShieldEffect(int initialStack) : base(StatusEffectType.Shield, initialStack, true) { }
 
-    public override void ApplyEffect(IEntity target) { }
+    public override void OnTurnEnd(IEntity target) { }
     
     public override int ModifyDamage(int incomingDamage)
     {
@@ -128,8 +130,9 @@ public class ShieldEffect : StatusEffectBase
         return incomingDamage - absorbed;
     }
     
-    public override void OnBattleEnd()
+    public override bool OnBattleEnd()
     {
         StackCount = 0;
+        return true;
     }
 }

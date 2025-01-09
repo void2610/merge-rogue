@@ -49,7 +49,7 @@ public class EnemyBase : MonoBehaviour, IEntity
     {
         for (var i = StatusEffects.Count - 1; i >= 0; i--)
         {
-            StatusEffects[i].ApplyEffect(this);
+            StatusEffects[i].OnTurnEnd(this);
             if (StatusEffects[i].ReduceStack())
                 StatusEffects.RemoveAt(i);
         }
