@@ -6,9 +6,9 @@ public class ShieldBall : BallBase
     {
         base.Effect(other);
         
-        //TODO: シールドを実装する
-        
         DefaultMergeParticle();
         StatusEffectFactory.AddStatusEffect(GameManager.Instance.Player, StatusEffectType.Shield, this.Level);
+        
+        ParticleManager.Instance.WavyText("shield!", this.transform.position, Color.cyan, 12.5f);
     }
 }

@@ -23,6 +23,7 @@ public class ParticleManager : MonoBehaviour
     [SerializeField] private GameObject mergePowerParticle;
     [SerializeField] private GameObject damageTextPrefab;
     [SerializeField] private GameObject mergeTextPrefab;
+    [SerializeField] private GameObject wavyTextPrefab;
     
     // private Canvas pixelCanvas => GameManager.Instance.pixelCanvas;
     // private static Canvas uiCanvas => GameManager.Instance.uiCanvas;
@@ -71,6 +72,12 @@ public class ParticleManager : MonoBehaviour
     {
         var damageText = Instantiate(damageTextPrefab, textContainer);
         damageText.GetComponent<DamageText>().SetUp(value, xPos);
+    }
+    
+    public void WavyText(string text, Vector3 pos, Color color = default, float fontSize = 20f)
+    {
+        var wavyText = Instantiate(wavyTextPrefab, pos, Quaternion.identity, textContainer);
+        wavyText.GetComponent<WavyText>().SetUp(text, color, fontSize);
     }
     
     private void Awake()

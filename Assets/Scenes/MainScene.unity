@@ -1790,6 +1790,7 @@ MonoBehaviour:
   mergePowerParticle: {fileID: 7949084058323581054, guid: 02d4b18e706584da2a8222cfa6113a02, type: 3}
   damageTextPrefab: {fileID: 7173658914585924005, guid: 4fa946622e4bd4de3858712a3e083b3c, type: 3}
   mergeTextPrefab: {fileID: 7173658914585924005, guid: d15f3edae417a4c00a382e23f63f9989, type: 3}
+  wavyTextPrefab: {fileID: 7173658914585924005, guid: d0fbe7fe53dc740d088a1d4794d20347, type: 3}
 --- !u!4 &318840770
 Transform:
   m_ObjectHideFlags: 0
