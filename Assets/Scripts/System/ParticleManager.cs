@@ -74,7 +74,7 @@ public class ParticleManager : MonoBehaviour
         damageText.GetComponent<DamageText>().SetUp(value, xPos);
     }
     
-    public void WavyText(string text, Vector3 pos, Color color = default, float fontSize = 20f)
+    public void WavyText(string text, Vector3 pos, Color color = default, float fontSize = 15f)
     {
         var wavyText = Instantiate(wavyTextPrefab, pos, Quaternion.identity, textContainer);
         wavyText.GetComponent<WavyText>().SetUp(text, color, fontSize);

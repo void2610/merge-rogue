@@ -129,6 +129,7 @@ public class EnemyContainer : MonoBehaviour
     {
         MergeManager.Instance.EndMerge().Forget();
         await UniTask.Delay(2000);
+        GameManager.Instance.Player.OnBattleEnd();
         GameManager.Instance.Player.AddExp(gainedExp);
         gainedExp = 0;
     }

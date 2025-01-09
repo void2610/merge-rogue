@@ -25,7 +25,10 @@ public class Player : MonoBehaviour, IEntity
         if (existingEffect != null)
             existingEffect.AddStack(effect.StackCount);
         else
+        {
+            effect.SetEntityPosition(this.transform.position, true);
             StatusEffects.Add(effect);
+        }
         statusEffectUI.UpdateUI(StatusEffects);
     }
     
@@ -42,6 +45,15 @@ public class Player : MonoBehaviour, IEntity
     public int ModifyIncomingDamage(int amount)
     {
         return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyDamage(current));
+    }
+    
+    public void OnBattleEnd()
+    {
+        foreach (var effect in StatusEffects)
+        {
+            effect.OnBattleEnd();
+        }
+        statusEffectUI.UpdateUI(StatusEffects);
     }
     
     public void Damage(int d)

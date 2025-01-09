@@ -8,4 +8,5 @@ public interface IEntity
     public void AddStatusEffect(StatusEffectBase effect);
     int ModifyIncomingDamage(int amount);
     public void UpdateStatusEffects();
+    public void OnBattleEnd();
 }

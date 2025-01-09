@@ -7,12 +7,20 @@ public abstract class StatusEffectBase
     public StatusEffectType Type { get; }
     public int StackCount { get; protected set; }
     private readonly bool _isPermanent;
+    private bool _isPlayer = false;
+    private Vector3 _entityPosition;
 
     protected StatusEffectBase(StatusEffectType type, int initialStack, bool isPermanent = false)
     {
         this.Type = type;
         StackCount = initialStack;
         this._isPermanent = isPermanent;
+    }
+    
+    public void SetEntityPosition(Vector3 position, bool isPlayer = false)
+    {
+        _entityPosition = position;
+        _isPlayer = isPlayer;
     }
 
     public void AddStack(int count)
@@ -33,6 +41,30 @@ public abstract class StatusEffectBase
     {
         return incomingDamage;
     }
+    
+    public virtual void OnBattleEnd() { }
+
+    protected void ShowEffectText()
+    {
+        var effectText = Type switch
+        {
+            StatusEffectType.Burn => "Burn",
+            StatusEffectType.Regeneration => "Regeneration",
+            StatusEffectType.Shield => "Guard",
+            _ => throw new ArgumentException("Invalid StatusEffectType")
+        };
+        
+        var textColor = Type switch
+        {
+            StatusEffectType.Burn => new Color(1, 0.4f, 0),
+            StatusEffectType.Regeneration => new Color(0, 1, 0.3f),
+            StatusEffectType.Shield => new Color(0, 0.8f, 1f),
+            _ => throw new ArgumentException("Invalid StatusEffectType")
+        };
+        
+        var isP = _isPlayer ? 1 : -1;
+        ParticleManager.Instance.WavyText(effectText, _entityPosition + new Vector3(0.8f * isP, 0.5f, 0), textColor);
+    }
 }
 
 public static class StatusEffectFactory
@@ -51,6 +83,7 @@ public static class StatusEffectFactory
     }
 }
 
+// 毎ターン、スタック数に応じたダメージを受ける、スタック数はターン経過で減少
 public class BurnEffect : StatusEffectBase
 {
     public BurnEffect(int initialStack) : base(StatusEffectType.Burn, initialStack, false) { }
@@ -60,9 +93,11 @@ public class BurnEffect : StatusEffectBase
         var damage = StackCount;
         SeManager.Instance.PlaySe("playerAttack");
         target.Damage(damage);
+        ShowEffectText();
     }
 }
 
+// 毎ターン、スタック数に応じてHPを回復する、スタック数はターン経過で減少
 public class RegenerationEffect : StatusEffectBase
 {
     public RegenerationEffect(int initialStack) : base(StatusEffectType.Regeneration, initialStack, false) { }
@@ -71,9 +106,11 @@ public class RegenerationEffect : StatusEffectBase
     {
         var heal = StackCount;
         target.Heal(heal);
+        ShowEffectText();
     }
 }
 
+// ダメージを吸収する、スタック数はダメージを受けるたびに減少
 public class ShieldEffect : StatusEffectBase
 {
     public ShieldEffect(int initialStack) : base(StatusEffectType.Shield, initialStack, true) { }
@@ -84,11 +121,15 @@ public class ShieldEffect : StatusEffectBase
     {
         if (StackCount <= 0) return incomingDamage;
 
-        // ダメージを吸収
         var absorbed = Math.Min(StackCount, incomingDamage);
         StackCount -= absorbed;
 
-        Debug.Log($"Shield absorbed {absorbed} damage. Remaining shield: {StackCount}.");
+        ShowEffectText();
         return incomingDamage - absorbed;
+    }
+    
+    public override void OnBattleEnd()
+    {
+        StackCount = 0;
     }
 }

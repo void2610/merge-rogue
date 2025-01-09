@@ -38,8 +38,10 @@ public class EnemyBase : MonoBehaviour, IEntity
         if (existingEffect != null)
             existingEffect.AddStack(effect.StackCount);
         else
+        {
+            effect.SetEntityPosition(this.transform.position);
             StatusEffects.Add(effect);
-        
+        }
         StatusEffectUI.UpdateUI(StatusEffects);
     }
     
@@ -58,6 +60,15 @@ public class EnemyBase : MonoBehaviour, IEntity
     public int ModifyIncomingDamage(int amount)
     {
         return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyDamage(current));
+    }
+    
+    public void OnBattleEnd()
+    {
+        foreach (var effect in StatusEffects)
+        {
+            effect.OnBattleEnd();
+        }
+        StatusEffectUI.UpdateUI(StatusEffects);
     }
     
     public void Damage(int damage)
