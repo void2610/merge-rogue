@@ -4,6 +4,7 @@ using UnityEditor;
 [ExecuteAlways] // エディターでもスクリプトが動作するようにする
 public class EditorUtils : MonoBehaviour
 {
+    private static readonly int _alpha = Shader.PropertyToID("_Alpha");
     [SerializeField] private Material backgroundMaterial;
     [SerializeField] private Material arrowMaterial;
     
@@ -35,7 +36,7 @@ public class EditorUtils : MonoBehaviour
     {
         if (backgroundMaterial != null && arrowMaterial != null) {
             backgroundMaterial.mainTextureOffset = Vector2.zero;
-            arrowMaterial.SetFloat("_Alpha", 1.0f);
+            arrowMaterial.SetFloat(_alpha, 1.0f);
         
             Debug.Log("Material parameters reset to default.");
         }
