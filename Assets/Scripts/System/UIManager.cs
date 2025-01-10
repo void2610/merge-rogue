@@ -28,7 +28,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private TextMeshProUGUI stageText;
     [SerializeField] private TextMeshProUGUI expText;
-    [SerializeField] private TextMeshProUGUI levelText;
     [SerializeField] public Slider hpSlider;
     [SerializeField] public TextMeshProUGUI hpText;
 
@@ -36,12 +35,7 @@ public class UIManager : MonoBehaviour
     
     private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
 
-    public void EnableCanvasGroup(string canvasName, bool e)
-    {
-        EnableCanvasGroupAsync(canvasName, e).Forget();
-    }
-
-
+    public void EnableCanvasGroup(string canvasName, bool e) => EnableCanvasGroupAsync(canvasName, e).Forget();
     private async UniTaskVoid EnableCanvasGroupAsync(string canvasName, bool e)
     {
         var cg = canvasGroups.Find(c => c.name == canvasName);
@@ -72,34 +66,19 @@ public class UIManager : MonoBehaviour
         cg.blocksRaycasts = e;
     }
     
-    private void UpdateCoinText(BigInteger amount)
-    {
-        coinText.text = "coin: " + amount.ToString();
-    }
-
-    private void UpdateExpText(int now, int max)
-    {
-        expText.text = "exp: " + now + "/" + max;
-    }
-
-    private void UpdateLevelText(int level)
-    {
-        if (!levelText) return;
-        levelText.text = "level: " + level;
-    }
-
-    private void UpdateStageText(int stage)
-    {
-        int s = Mathf.Max(1, stage + 1);
-        stageText.text = "stage: " + s;
-    }
+    private void UpdateCoinText(BigInteger amount) => coinText.text = "coin: " + amount;
+    private void UpdateExpText(int now, int max) => expText.text = "exp: " + now + "/" + max;
+    private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
+    public void ShowRelicDescriptionWindow(RelicData r, Vector3 pos) => relicDescriptionWindow.ShowWindow(r, pos);
+    public void ShowBallDescriptionWindow(BallData b, Vector3 pos) => ballDescriptionWindow.ShowWindow(b, pos);
+    public void HideRelicDescriptionWindow() => relicDescriptionWindow.HideWindow();
+    public void HideBallDescriptionWindow() => ballDescriptionWindow.HideWindow();
     
     public void OnClickRestButton()
     {
         var restAmount = GameManager.Instance.Player.MaxHealth.Value  * 0.2f;
         EventManager.OnRest.Trigger((int)restAmount);
-        var v = EventManager.OnRest.GetAndResetValue();
-        GameManager.Instance.Player.Heal(v);
+        GameManager.Instance.Player.Heal(EventManager.OnRest.GetAndResetValue());
         
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
         EnableCanvasGroup("Rest", false);
@@ -107,6 +86,7 @@ public class UIManager : MonoBehaviour
 
     public void OnClickOrganiseButton()
     {
+        SeManager.Instance.PlaySe("button");
         EventManager.OnOrganise.Trigger(0);
         EnableCanvasGroup("Rest", false);
         InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Swap);
@@ -186,26 +166,6 @@ public class UIManager : MonoBehaviour
         if(!volume.profile.TryGet(out Vignette vignette)) return;
         vignette.intensity.value = value;
     }
-    
-    public void ShowRelicDescriptionWindow(RelicData r, Vector3 pos)
-    {
-        relicDescriptionWindow.ShowWindow(r, pos);
-    }
-    
-    public void ShowBallDescriptionWindow(BallData b, Vector3 pos)
-    {
-        ballDescriptionWindow.ShowWindow(b, pos);
-    }
-    
-    public void HideRelicDescriptionWindow()
-    {
-        relicDescriptionWindow.HideWindow();
-    }
-    
-    public void HideBallDescriptionWindow()
-    {
-        ballDescriptionWindow.HideWindow();
-    }
 
     private void Awake()
     {
@@ -226,11 +186,7 @@ public class UIManager : MonoBehaviour
     {
         GameManager.Instance.Coin.Subscribe(UpdateCoinText).AddTo(this);
         GameManager.Instance.StageManager.currentStageCount.Subscribe(UpdateStageText).AddTo(this);
-        GameManager.Instance.Player.Exp.Subscribe((v) =>
-        {
-            UpdateExpText(v, GameManager.Instance.Player.MaxExp);
-            UpdateLevelText(GameManager.Instance.Player.Level);
-        }).AddTo(this);
+        GameManager.Instance.Player.Exp.Subscribe((v) => UpdateExpText(v, GameManager.Instance.Player.MaxExp)).AddTo(this);
         GameManager.Instance.Player.Health.Subscribe((v) =>
         {
             hpSlider.value = v;
