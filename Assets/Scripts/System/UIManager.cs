@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -33,28 +34,42 @@ public class UIManager : MonoBehaviour
 
     public int remainingLevelUps;
     
-    private readonly Dictionary<string, Tween> _canvasGroupTween = new();
+    private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
 
     public void EnableCanvasGroup(string canvasName, bool e)
     {
-        var canvasGroup = canvasGroups.Find(c => c.name == canvasName);
-        if (!canvasGroup) return;
+        EnableCanvasGroupAsync(canvasName, e).Forget();
+    }
+
+
+    private async UniTaskVoid EnableCanvasGroupAsync(string canvasName, bool e)
+    {
+        var cg = canvasGroups.Find(c => c.name == canvasName);
+        if (!cg) return;
         if (_canvasGroupTween[canvasName].IsActive()) return;
+
+        // アニメーション中は操作をブロック
+        cg.interactable = false;
+        cg.blocksRaycasts = false;
         
-        canvasGroup.interactable = e;
-        canvasGroup.blocksRaycasts = e;
-        
+        var seq = DOTween.Sequence();
+        seq.SetUpdate(true);
         if (e)
         {
-            canvasGroup.transform.DOMoveY(-0.45f, 0).SetRelative(true).SetUpdate(true);
-            var t = canvasGroup.transform.DOMoveY(0.45f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack);
-            _canvasGroupTween[canvasName] = t;
-            canvasGroup.DOFade(1, 0.2f).SetUpdate(true);
+            seq.Join(cg.transform.DOMoveY(-0.45f, 0).SetRelative(true));
+            seq.Join(cg.transform.DOMoveY(0.45f, 0.2f).SetRelative(true).SetEase(Ease.OutBack));
+            seq.Join(cg.DOFade(1, 0.2f));
         }
         else
         {
-            canvasGroup.DOFade(0, 0.2f).SetUpdate(true);
+            seq.Join(cg.DOFade(0, 0.2f));
         }
+        
+        _canvasGroupTween[canvasName] = seq;
+        await seq.AsyncWaitForCompletion();
+        _canvasGroupTween[canvasName] = null;
+        cg.interactable = e;
+        cg.blocksRaycasts = e;
     }
     
     private void UpdateCoinText(BigInteger amount)
