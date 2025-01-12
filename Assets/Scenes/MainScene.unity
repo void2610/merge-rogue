@@ -3849,7 +3849,6 @@ MonoBehaviour:
   coinText: {fileID: 1007425568}
   stageText: {fileID: 400580596}
   expText: {fileID: 1932937372}
-  levelText: {fileID: 0}
   hpSlider: {fileID: 1951852459}
   hpText: {fileID: 1566874251}
   remainingLevelUps: 0
@@ -18125,6 +18124,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.size
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.data[16].name
+      value: shield
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.data[16].volume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.data[16].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 8a0a564b65d284861a1973d75b7c42a8, type: 3}
     - target: {fileID: 7521127176204447298, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: m_LocalPosition.x
       value: 434.22272

@@ -127,6 +127,7 @@ public class ShieldEffect : StatusEffectBase
         StackCount -= absorbed;
 
         ShowEffectText();
+        SeManager.Instance.PlaySe("shield");
         return incomingDamage - absorbed;
     }
     
