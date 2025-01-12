@@ -41,7 +41,6 @@ public class MergeManager : MonoBehaviour
     private int _singleAttackCount;
     private int _allAttackCount;
     private Dictionary<Rigidbody2D, float> _stopTimers;
-    private int _timerCount;
     private bool _isMovable = false;
     
     public void LevelUpWallWidth()
@@ -97,7 +96,6 @@ public class MergeManager : MonoBehaviour
             Destroy(NextBall);
             NextBall = null;
         }
-
         if (CurrentBall)
         {
             Destroy(CurrentBall);
@@ -248,17 +246,15 @@ public class MergeManager : MonoBehaviour
     {
         if (GameManager.Instance.state != GameManager.GameState.Merge || RemainingBalls != 0) return false;
         
-        if(_stopTimers == null || _timerCount != _ballContainer.GetComponentsInChildren<Rigidbody2D>().Length){
+        if(_stopTimers == null || _stopTimers.Count != _ballContainer.GetComponentsInChildren<Rigidbody2D>().Length){
             _stopTimers = _ballContainer.GetComponentsInChildren<Rigidbody2D>().ToDictionary(b => b, _ => Time.time);
-            _timerCount = _stopTimers.Count;
         }
         
         foreach (var b in _stopTimers.Keys)
         {
             if(!b) continue;
-            
             if (b.velocity.magnitude > 0.05f) return false;
-            if (Time.time - _stopTimers[b] < 0.5f) return false;
+            if (Time.time - _stopTimers[b] < 1f) return false;
         }
 
         _stopTimers = null;
