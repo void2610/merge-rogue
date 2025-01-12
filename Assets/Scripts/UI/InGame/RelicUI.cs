@@ -13,13 +13,13 @@ public class RelicUI : MonoBehaviour
     [SerializeField] private Text relicName;
     [SerializeField] private Text relicDescription;
     [SerializeField] private Image bloomImage;
-    private Color defaultColor = Color.white;
-    private Color bloomColor = Color.white;
+    private Color _defaultColor = Color.white;
+    private Color _bloomColor = Color.white;
     
     public void SetRelicData(RelicData r)
     {
-        defaultColor = this.transform.Find("defaultColor").GetComponent<Image>().color;
-        bloomColor = this.transform.Find("bloomColor").GetComponent<Image>().color;
+        _defaultColor = this.transform.Find("defaultColor").GetComponent<Image>().color;
+        _bloomColor = this.transform.Find("bloomColor").GetComponent<Image>().color;
         
         this.relicData = r;
         relicImage.sprite = relicData.sprite;
@@ -30,24 +30,24 @@ public class RelicUI : MonoBehaviour
             UIManager.Instance.ShowRelicDescriptionWindow(relicData,
                 transform.position + new Vector3(2.55f, 0, 0));
         }, EventTriggerType.PointerEnter);
-        Utils.AddEventToObject(this.gameObject,  () =>
-        {
-            UIManager.Instance.HideRelicDescriptionWindow();
-        }, EventTriggerType.PointerExit);
+        // Utils.AddEventToObject(this.gameObject,  () =>
+        // {
+        //     UIManager.Instance.HideRelicDescriptionWindow();
+        // }, EventTriggerType.PointerExit);
     }
     
     public void ActivateUI()
     {
         if(!bloomImage) return;
-        var color = bloomColor * 1.3f;
+        var color = _bloomColor * 1.3f;
         bloomImage.DOColor(color, 0.1f).OnComplete(() =>
         {
-            bloomImage.DOColor(defaultColor, 0.5f).SetDelay(0.75f).SetLink(gameObject);
+            bloomImage.DOColor(_defaultColor, 0.5f).SetDelay(0.75f).SetLink(gameObject);
         }).SetLink(gameObject);
     }
     
     public void AlwaysActive()
     {
-        bloomImage.DOColor(bloomColor, 0.1f).SetLink(gameObject);
+        bloomImage.DOColor(_bloomColor, 0.1f).SetLink(gameObject);
     }
 }

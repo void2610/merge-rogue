@@ -1,20 +1,29 @@
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.EventSystems;
 
 public class DescriptionWindow : MonoBehaviour
 {
+    [SerializeField] private WordDictionary wordDictionary;
+    [SerializeField] private GameObject subWindowPrefab;
+    [SerializeField] private GameObject windowCollider;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TextMeshProUGUI flavorText;
     [SerializeField] private List<TextMeshProUGUI> statusTexts;
     [SerializeField] private Vector2 minPos; // RectTransform上の座標で指定
     [SerializeField] private Vector2 maxPos; // RectTransform上の座標で指定
+    
+    private Camera _uiCamera;
     private CanvasGroup _cg;
     private Tween _moveTween;
     private Tween _fadeTween;
+    // (親オブジェクト, 単語) -> サブウィンドウオブジェクト
+    private readonly Dictionary<(GameObject, string), GameObject> _subWindows = new();
 
     public void ShowWindow(object obj, Vector3 pos)
     {
@@ -23,6 +32,8 @@ public class DescriptionWindow : MonoBehaviour
         if(obj is BallData b) SetBallTexts(b);
         else if(obj is RelicData r) SetRelicTexts(r);
         else throw new System.ArgumentException("obj is not BallData or RelicData");
+        
+        descriptionText.text = GetHighlightWords(descriptionText.text);
 
         // ワールド座標をRectTransformのローカル座標に変換
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -43,6 +54,35 @@ public class DescriptionWindow : MonoBehaviour
         _moveTween = this.gameObject.transform.DOMoveY(0.3f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack);
         _cg.alpha = 0;
         _fadeTween = _cg.DOFade(1, 0.15f).SetUpdate(true);
+    }
+    
+    private string GetHighlightWords(string description)
+    {
+        // 各単語をハイライト
+        foreach (var entry in wordDictionary.words)
+        {
+            description = description.Replace(entry.word, $"<link=\"{entry.word}\"><color=#{ColorUtility.ToHtmlStringRGB(entry.textColor)}>{entry.word}</color></link>");
+        }
+        return description;
+    }
+
+    private void ShowSubWindow(string word, GameObject parent)
+    {
+        if(_subWindows.TryGetValue((parent, word), out var window)) return;
+        
+        var description = wordDictionary.GetWordEntry(word).description;
+        var textColor = wordDictionary.GetWordEntry(word).textColor;
+        
+        var g = Instantiate(subWindowPrefab, this.transform);
+        g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = $"<color=#{ColorUtility.ToHtmlStringRGB(textColor)}>{word}</color>";
+        g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = GetHighlightWords(description);
+        
+        Utils.AddEventToObject(g.transform.Find("WindowCollider").gameObject, () => HideSubWindow(word, parent), EventTriggerType.PointerExit);
+        
+        g.GetComponent<RectTransform>().localPosition = parent.GetComponent<RectTransform>().localPosition + new Vector3(200, 25, 0);
+        g.transform.DOMoveY(0.3f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack);
+        g.GetComponent<CanvasGroup>().DOFade(1, 0.15f).SetUpdate(true);
+        _subWindows[(parent, word)] = g;
     }
     
     private void SetBallTexts(BallData b)
@@ -76,11 +116,51 @@ public class DescriptionWindow : MonoBehaviour
         _fadeTween?.Kill();
         
         _fadeTween = _cg.DOFade(0, 0.15f).SetUpdate(true).OnComplete(() => this.gameObject.SetActive(false));
+        foreach (var window in _subWindows.Values)
+        {
+            Destroy(window);
+        }
+        _subWindows.Clear();
+    }
+    
+    private void HideSubWindow(string word, GameObject parent)
+    {
+        if (_subWindows.TryGetValue((parent, word), out var window))
+        {
+            Destroy(window);
+            _subWindows.Remove((parent, word));
+        }
     }
 
     private void Awake()
     {
         this.gameObject.SetActive(false);
         _cg = this.gameObject.GetComponent<CanvasGroup>();
+        _uiCamera = GameManager.Instance.UICamera;
+        
+        // Utils.AddEventToObject(windowCollider, HideWindow, EventTriggerType.PointerExit);
+    }
+    
+    private void Update()
+    {
+        // マウスが特定のリンク上にある場合、ツールチップを表示
+        var linkIndices = new List<int>();
+        var windows = new List<GameObject>(_subWindows.Values) { this.gameObject };
+        foreach (var w in windows)
+        {
+            linkIndices.Add(TMP_TextUtilities.FindIntersectingLink(w.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>(), Input.mousePosition, _uiCamera));
+        }
+
+        var links = linkIndices.Where(i => i != -1);
+        var enumerable = links.ToList();
+        if (!enumerable.Any()) return;
+        var link = enumerable.First();
+        var index = linkIndices.IndexOf(link);
+        if (link != -1)
+        {
+            var linkInfo = windows[index].transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().textInfo.linkInfo[link];
+            var parent = windows[index] == this.gameObject ? descriptionText.gameObject : windows[index];
+            ShowSubWindow(linkInfo.GetLinkID(), parent);
+        }
     }
 }
