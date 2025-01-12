@@ -20,8 +20,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider seSlider;
     [SerializeField] private Image fadeImage;
-    [SerializeField] private RelicDescriptionWindow relicDescriptionWindow;
-    [SerializeField] private BallDescriptionWindow ballDescriptionWindow;
+    [SerializeField] private DescriptionWindow descriptionWindow;
     
     [SerializeField] private Volume volume;
     [SerializeField] private List<CanvasGroup> canvasGroups;
@@ -69,10 +68,10 @@ public class UIManager : MonoBehaviour
     private void UpdateCoinText(BigInteger amount) => coinText.text = "coin: " + amount;
     private void UpdateExpText(int now, int max) => expText.text = "exp: " + now + "/" + max;
     private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
-    public void ShowRelicDescriptionWindow(RelicData r, Vector3 pos) => relicDescriptionWindow.ShowWindow(r, pos);
-    public void ShowBallDescriptionWindow(BallData b, Vector3 pos) => ballDescriptionWindow.ShowWindow(b, pos);
-    public void HideRelicDescriptionWindow() => relicDescriptionWindow.HideWindow();
-    public void HideBallDescriptionWindow() => ballDescriptionWindow.HideWindow();
+    public void ShowRelicDescriptionWindow(RelicData r, Vector3 pos) => descriptionWindow.ShowWindow(r, pos);
+    public void ShowBallDescriptionWindow(BallData b, Vector3 pos) => descriptionWindow.ShowWindow(b, pos);
+    public void HideRelicDescriptionWindow() => descriptionWindow.HideWindow();
+    public void HideBallDescriptionWindow() => descriptionWindow.HideWindow();
     
     public void OnClickRestButton()
     {

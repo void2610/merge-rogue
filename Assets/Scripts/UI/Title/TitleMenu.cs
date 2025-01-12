@@ -16,8 +16,7 @@ public class TitleMenu : MonoBehaviour
     [SerializeField] private CanvasGroup credit;
     [SerializeField] private CanvasGroup license;
     [SerializeField] private CanvasGroup encyclopedia;
-    [SerializeField] private RelicDescriptionWindow relicDescriptionWindow;
-    [SerializeField] private BallDescriptionWindow ballDescriptionWindow;
+    [SerializeField] private DescriptionWindow descriptionWindow;
 
     public void StartGame()
     {
@@ -79,22 +78,22 @@ public class TitleMenu : MonoBehaviour
     
     public void ShowRelicDescriptionWindow(RelicData r, Vector3 pos)
     {
-        relicDescriptionWindow.ShowWindow(r, pos);
+        descriptionWindow.ShowWindow(r, pos);
     }
     
     public void ShowBallDescriptionWindow(BallData b, Vector3 pos)
     {
-        ballDescriptionWindow.ShowWindow(b, pos);
+        descriptionWindow.ShowWindow(b, pos);
     }
     
     public void HideRelicDescriptionWindow()
     {
-        relicDescriptionWindow.HideWindow();
+        descriptionWindow.HideWindow();
     }
     
     public void HideBallDescriptionWindow()
     {
-        ballDescriptionWindow.HideWindow();
+        descriptionWindow.HideWindow();
     }
 
     public static void PlayButtonSe()
