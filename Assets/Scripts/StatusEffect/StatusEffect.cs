@@ -96,6 +96,7 @@ public class BurnEffect : StatusEffectBase
         SeManager.Instance.PlaySe("playerAttack");
         target.Damage(damage);
         ShowEffectText();
+        SeManager.Instance.PlaySe("burn");
     }
 }
 
