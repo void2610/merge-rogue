@@ -7,7 +7,7 @@ using DG.Tweening;
 
 public class RelicUI : MonoBehaviour
 {
-    public RelicData relicData { get; private set; }
+    public RelicData RelicData { get; private set; }
     
     [SerializeField] private Image relicImage;
     [SerializeField] private Text relicName;
@@ -21,18 +21,14 @@ public class RelicUI : MonoBehaviour
         _defaultColor = this.transform.Find("defaultColor").GetComponent<Image>().color;
         _bloomColor = this.transform.Find("bloomColor").GetComponent<Image>().color;
         
-        this.relicData = r;
-        relicImage.sprite = relicData.sprite;
+        this.RelicData = r;
+        relicImage.sprite = RelicData.sprite;
         
         // イベントを登録
         Utils.AddEventToObject(this.gameObject,  () =>
         {
-            UIManager.Instance.ShowRelicDescriptionWindow(relicData, this.gameObject);
+            UIManager.Instance.ShowRelicDescriptionWindow(RelicData, this.gameObject);
         }, EventTriggerType.PointerEnter);
-        // Utils.AddEventToObject(this.gameObject,  () =>
-        // {
-        //     UIManager.Instance.HideRelicDescriptionWindow();
-        // }, EventTriggerType.PointerExit);
     }
     
     public void ActivateUI()

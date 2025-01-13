@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
@@ -11,7 +12,6 @@ public class DescriptionWindow : MonoBehaviour
 {
     [SerializeField] private WordDictionary wordDictionary;
     [SerializeField] private GameObject subWindowPrefab;
-    [SerializeField] private GameObject windowCollider;
     [SerializeField] private TextMeshProUGUI nameText;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TextMeshProUGUI flavorText;
@@ -29,6 +29,7 @@ public class DescriptionWindow : MonoBehaviour
     private readonly Dictionary<(GameObject, string), GameObject> _subWindows = new();
     // ルートウィンドウのトリガー元のオブジェクト
     private GameObject _rootTriggerObject;
+    private bool _isCheckingMouse = false;
 
     public void ShowWindow(object obj, GameObject rootTriggerObject)
     {
@@ -151,7 +152,7 @@ public class DescriptionWindow : MonoBehaviour
         statusTexts[2].alpha = 0;
     }
 
-    public void HideWindow()
+    private void HideWindow()
     {
         if(IsMouseOverWindowOrDescendants(descriptionText.gameObject)) return;
         if(_moveTween.active) return;
@@ -222,7 +223,7 @@ public class DescriptionWindow : MonoBehaviour
     private bool IsMouseOverAnyWindow()
     {
         // 全てのコライダーをチェック
-        var allWindows = new List<GameObject>(_subWindows.Values) { windowCollider, _rootTriggerObject };
+        var allWindows = new List<GameObject>(_subWindows.Values) { this.gameObject, _rootTriggerObject };
         foreach (var window in allWindows)
         {
             if (RectTransformUtility.RectangleContainsScreenPoint(
@@ -235,6 +236,41 @@ public class DescriptionWindow : MonoBehaviour
         }
         return false;
     }
+    
+    private async UniTaskVoid StartMouseCheck()
+    {
+        if (_isCheckingMouse) return;
+
+        _isCheckingMouse = true;
+
+        // マウスが1秒間連続してウィンドウ外にあるかチェック
+        while (true)
+        {
+            if (!await CheckMouseOutsideForSeconds(0.5f))
+            {
+                _isCheckingMouse = false;
+                return;
+            }
+
+            // ウィンドウを隠す処理を実行
+            HideWindow();
+        }
+    }
+
+    private async UniTask<bool> CheckMouseOutsideForSeconds(float duration)
+    {
+        var timer = 0f;
+        while (timer < duration)
+        {
+            // マウスがウィンドウ内に戻った場合は中断
+            if (IsMouseOverAnyWindow()) return false;
+            // 経過時間を加算
+            timer += Time.deltaTime / Time.timeScale;
+            // フレームの終了まで待機
+            await UniTask.Yield(PlayerLoopTiming.Update);
+        }
+        return true;
+    }
 
     private void Awake()
     {
@@ -242,22 +278,23 @@ public class DescriptionWindow : MonoBehaviour
         _cg = this.gameObject.GetComponent<CanvasGroup>();
         _uiCamera = GameManager.Instance.UICamera;
         
-        Utils.AddEventToObject(windowCollider, HideWindow, EventTriggerType.PointerExit);
+        // Utils.AddEventToObject(windowCollider, HideWindow, EventTriggerType.PointerExit);
     }
     
     private void Update()
     {
+        // マウスがウィンドウ外に出た場合にチェックを開始
+        if (!IsMouseOverAnyWindow() && !_isCheckingMouse)
+        {
+            StartMouseCheck().Forget();
+        }
+        
         var windows = new List<GameObject>(_subWindows.Values) { this.gameObject };
         var linkIndices = windows.Select(w => TMP_TextUtilities.FindIntersectingLink(w.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>(), Input.mousePosition, _uiCamera)).ToList();
 
         var links = linkIndices.Where(i => i != -1);
         var enumerable = links.ToList();
-        if (!enumerable.Any())
-        {
-            // すべてのウィンドウおよびリンク外の場合、非表示にする
-            if (!IsMouseOverAnyWindow()) HideWindow();
-            return;
-        }
+        if (!enumerable.Any()) return;
         
         var link = enumerable.First();
         var index = linkIndices.IndexOf(link);

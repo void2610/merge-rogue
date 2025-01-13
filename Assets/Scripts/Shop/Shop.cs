@@ -109,9 +109,6 @@ public class Shop : MonoBehaviour
         Utils.AddEventToObject(g, () => { 
             UIManager.Instance.ShowBallDescriptionWindow(ball, g);
         }, EventTriggerType.PointerEnter);
-        Utils.AddEventToObject(g, () => { 
-            UIManager.Instance.HideBallDescriptionWindow();
-        }, EventTriggerType.PointerExit);
     }
     
     private void SetRelicEvent(GameObject g, RelicData relic, int index)
@@ -137,9 +134,6 @@ public class Shop : MonoBehaviour
         Utils.AddEventToObject(g, () => { 
             UIManager.Instance.ShowRelicDescriptionWindow(relic, g);
         }, EventTriggerType.PointerEnter);
-        Utils.AddEventToObject(g, () => { 
-            UIManager.Instance.HideRelicDescriptionWindow();
-        }, EventTriggerType.PointerExit);
     }
     
     private void OnClickRemoveButton()

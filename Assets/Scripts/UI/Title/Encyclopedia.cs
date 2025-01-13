@@ -30,10 +30,6 @@ public class Encyclopedia : MonoBehaviour
         {
             TitleMenu.Instance.ShowBallDescriptionWindow(b, g);
         }, EventTriggerType.PointerEnter);
-        Utils.AddEventToObject(g,  () =>
-        {
-            TitleMenu.Instance.HideBallDescriptionWindow();
-        }, EventTriggerType.PointerExit);
     }
     
     private void SetRelicData(GameObject g, RelicData r)
@@ -46,10 +42,6 @@ public class Encyclopedia : MonoBehaviour
         {
             TitleMenu.Instance.ShowRelicDescriptionWindow(r, g);
         }, EventTriggerType.PointerEnter);
-        Utils.AddEventToObject(g,  () =>
-        {
-            TitleMenu.Instance.HideRelicDescriptionWindow();
-        }, EventTriggerType.PointerExit);
     }
     
     private void AdjustContentSize()

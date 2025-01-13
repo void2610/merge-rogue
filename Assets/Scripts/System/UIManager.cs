@@ -70,8 +70,6 @@ public class UIManager : MonoBehaviour
     private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
     public void ShowRelicDescriptionWindow(RelicData r, GameObject g) => descriptionWindow.ShowWindow(r, g);
     public void ShowBallDescriptionWindow(BallData b, GameObject g) => descriptionWindow.ShowWindow(b, g);
-    public void HideRelicDescriptionWindow() => descriptionWindow.HideWindow();
-    public void HideBallDescriptionWindow() => descriptionWindow.HideWindow();
     
     public void OnClickRestButton()
     {

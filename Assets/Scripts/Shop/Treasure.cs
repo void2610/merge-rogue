@@ -66,9 +66,6 @@ public class Treasure : MonoBehaviour
         Utils.AddEventToObject(g, () => { 
             UIManager.Instance.ShowRelicDescriptionWindow(relic, g);
         }, EventTriggerType.PointerEnter);
-        Utils.AddEventToObject(g, () => { 
-            UIManager.Instance.HideRelicDescriptionWindow();
-        }, EventTriggerType.PointerExit);
     }
     
     private void Awake()

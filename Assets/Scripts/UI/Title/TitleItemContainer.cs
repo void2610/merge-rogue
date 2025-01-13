@@ -21,10 +21,6 @@ public class TitleItemContainer : MonoBehaviour
         {
             TitleMenu.Instance.ShowBallDescriptionWindow(BallData, this.gameObject);
         }, EventTriggerType.PointerEnter);
-        Utils.AddEventToObject(this.gameObject,  () =>
-        {
-            TitleMenu.Instance.HideBallDescriptionWindow();
-        }, EventTriggerType.PointerExit);
     }
     
     public void SetRelicData(RelicData r)
@@ -37,9 +33,5 @@ public class TitleItemContainer : MonoBehaviour
         {
             TitleMenu.Instance.ShowRelicDescriptionWindow(RelicData, this.gameObject);
         }, EventTriggerType.PointerEnter);
-        Utils.AddEventToObject(this.gameObject,  () =>
-        {
-            TitleMenu.Instance.HideRelicDescriptionWindow();
-        }, EventTriggerType.PointerExit);
     }
 }

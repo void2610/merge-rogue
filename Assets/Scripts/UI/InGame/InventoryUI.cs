@@ -95,8 +95,6 @@ public class InventoryUI : MonoBehaviour
             SetCursor(index);
             UIManager.Instance.ShowBallDescriptionWindow(data, ball); 
         }, EventTriggerType.PointerEnter);
-        
-        Utils.AddEventToObject(ball, () => UIManager.Instance.HideBallDescriptionWindow(), EventTriggerType.PointerExit);
     }
 
     private void OnClickBall(int index)
@@ -112,15 +110,12 @@ public class InventoryUI : MonoBehaviour
                 InventoryManager.Instance.SwapBall(_swapIndex, index);
                 
                 GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
-                UIManager.Instance.HideBallDescriptionWindow();
                 EnableCursor(false);
                 subCursor.GetComponent<SpriteRenderer>().enabled = false;
                 _swapIndex = -1;
                 break;
             case InventoryUIState.Remove:
                 InventoryManager.Instance.RemoveAndShiftBall(index);
-                
-                UIManager.Instance.HideBallDescriptionWindow();
                 EnableCursor(false);
                 break;
         }

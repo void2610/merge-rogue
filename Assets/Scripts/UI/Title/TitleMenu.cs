@@ -85,16 +85,6 @@ public class TitleMenu : MonoBehaviour
     {
         descriptionWindow.ShowWindow(b, g);
     }
-    
-    public void HideRelicDescriptionWindow()
-    {
-        descriptionWindow.HideWindow();
-    }
-    
-    public void HideBallDescriptionWindow()
-    {
-        descriptionWindow.HideWindow();
-    }
 
     public static void PlayButtonSe()
     {
