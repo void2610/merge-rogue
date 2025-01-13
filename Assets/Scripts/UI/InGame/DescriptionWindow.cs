@@ -16,8 +16,10 @@ public class DescriptionWindow : MonoBehaviour
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private TextMeshProUGUI flavorText;
     [SerializeField] private List<TextMeshProUGUI> statusTexts;
-    [SerializeField] private Vector2 minPos; // RectTransform上の座標で指定
-    [SerializeField] private Vector2 maxPos; // RectTransform上の座標で指定
+    [SerializeField] private Vector2 rootMinPos;
+    [SerializeField] private Vector2 rootMaxPos;
+    [SerializeField] private Vector2 subMinPos;
+    [SerializeField] private Vector2 subMaxPos;
     
     private Camera _uiCamera;
     private CanvasGroup _cg;
@@ -49,8 +51,8 @@ public class DescriptionWindow : MonoBehaviour
         );
 
         // ローカル座標で位置をクランプ
-        var clampedX = Mathf.Clamp(localPos.x, minPos.x, maxPos.x);
-        var clampedY = Mathf.Clamp(localPos.y, minPos.y, maxPos.y);
+        var clampedX = Mathf.Clamp(localPos.x, rootMinPos.x, rootMaxPos.x);
+        var clampedY = Mathf.Clamp(localPos.y, rootMinPos.y, rootMaxPos.y);
         
         _moveTween?.Kill();
         _fadeTween?.Kill();
@@ -71,20 +73,22 @@ public class DescriptionWindow : MonoBehaviour
         var description = wordDictionary.GetWordEntry(word).description;
         var textColor = wordDictionary.GetWordEntry(word).textColor;
         
-        var g = Instantiate(subWindowPrefab, this.transform);
+        var g = Instantiate(subWindowPrefab, parent.transform);
         g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = $"<color=#{ColorUtility.ToHtmlStringRGB(textColor)}>{word}</color>";
         g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = GetHighlightWords(description);
         
         Utils.AddEventToObject(g, () => HideSubWindow(parent, word), EventTriggerType.PointerExit);
         
-        // ローカル座標で位置をクランプ
-        var localPosition = parent == descriptionText.gameObject ? parent.GetComponent<RectTransform>().position : parent.GetComponent<RectTransform>().localPosition;
-        var offset = new Vector3(200, 50, 0);
-        if (localPosition.x > 6) offset.x *= -1;
-        var clampedX = Mathf.Clamp(localPosition.x + offset.x, minPos.x, maxPos.x);
-        var clampedY = Mathf.Clamp(localPosition.y + offset.y, minPos.y, maxPos.y);
-        
-        g.GetComponent<RectTransform>().localPosition = new Vector3(clampedX, clampedY, 0);
+        var offset = new Vector2(25, 25);
+        var rectTransform = g.GetComponent<RectTransform>();
+
+        var localMin = rectTransform.parent.InverseTransformPoint(subMinPos);
+        var localMax = rectTransform.parent.InverseTransformPoint(subMaxPos);
+        var clampedX = Mathf.Clamp(offset.x, localMin.x, localMax.x);
+        var clampedY = Mathf.Clamp(offset.y, localMin.y, localMax.y);
+
+        rectTransform.localPosition = new Vector3(clampedX, clampedY, rectTransform.localPosition.z);
+
         g.transform.DOMoveY(0.3f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack);
         g.GetComponent<CanvasGroup>().DOFade(1, 0.15f).SetUpdate(true);
         _subWindows[(parent, word)] = g;
