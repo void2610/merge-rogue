@@ -78,10 +78,11 @@ public class DescriptionWindow : MonoBehaviour
         Utils.AddEventToObject(g, () => HideSubWindow(parent, word), EventTriggerType.PointerExit);
         
         // ローカル座標で位置をクランプ
-        var offset = new Vector3(50, 50, 0);
-        if (parent.GetComponent<RectTransform>().position.x > 6) offset.x = -50;
-        var clampedX = Mathf.Clamp(parent.GetComponent<RectTransform>().localPosition.x + offset.x, minPos.x, maxPos.x);
-        var clampedY = Mathf.Clamp(parent.GetComponent<RectTransform>().localPosition.y + offset.y, minPos.y, maxPos.y);
+        var localPosition = parent == descriptionText.gameObject ? parent.GetComponent<RectTransform>().position : parent.GetComponent<RectTransform>().localPosition;
+        var offset = new Vector3(200, 50, 0);
+        if (localPosition.x > 6) offset.x *= -1;
+        var clampedX = Mathf.Clamp(localPosition.x + offset.x, minPos.x, maxPos.x);
+        var clampedY = Mathf.Clamp(localPosition.y + offset.y, minPos.y, maxPos.y);
         
         g.GetComponent<RectTransform>().localPosition = new Vector3(clampedX, clampedY, 0);
         g.transform.DOMoveY(0.3f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack);
