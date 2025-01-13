@@ -27,8 +27,7 @@ public class RelicUI : MonoBehaviour
         // イベントを登録
         Utils.AddEventToObject(this.gameObject,  () =>
         {
-            UIManager.Instance.ShowRelicDescriptionWindow(relicData,
-                transform.position + new Vector3(2.55f, 0, 0));
+            UIManager.Instance.ShowRelicDescriptionWindow(relicData, this.gameObject);
         }, EventTriggerType.PointerEnter);
         // Utils.AddEventToObject(this.gameObject,  () =>
         // {

@@ -44,7 +44,11 @@ public abstract class StatusEffectBase
     }
     
     // 戦闘終了時の処理、スタック数が0になったらtrueを返す
-    public virtual bool OnBattleEnd() { return false; }
+    public virtual bool OnBattleEnd()
+    {
+        StackCount = 0;
+        return true; 
+    }
 
     protected void ShowEffectText()
     {
@@ -130,11 +134,5 @@ public class ShieldEffect : StatusEffectBase
         ShowEffectText();
         SeManager.Instance.PlaySe("shield");
         return incomingDamage - absorbed;
-    }
-    
-    public override bool OnBattleEnd()
-    {
-        StackCount = 0;
-        return true;
     }
 }

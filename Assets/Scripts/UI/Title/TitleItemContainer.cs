@@ -4,8 +4,8 @@ using UnityEngine.UI;
 
 public class TitleItemContainer : MonoBehaviour
 {
-    public BallData ballData { get; private set; }
-    public RelicData relicData { get; private set; }
+    public BallData BallData { get; private set; }
+    public RelicData RelicData { get; private set; }
     
     [SerializeField] private Image relicImage;
     [SerializeField] private Text relicName;
@@ -13,14 +13,13 @@ public class TitleItemContainer : MonoBehaviour
     
     public void SetBallData(BallData b)
     {
-        this.ballData = b;
-        relicImage.sprite = ballData.sprite;
+        this.BallData = b;
+        relicImage.sprite = BallData.sprite;
         
         // イベントを登録
         Utils.AddEventToObject(this.gameObject,  () =>
         {
-            TitleMenu.Instance.ShowBallDescriptionWindow(ballData,
-                transform.position + new Vector3(2.55f, 0, 0));
+            TitleMenu.Instance.ShowBallDescriptionWindow(BallData, this.gameObject);
         }, EventTriggerType.PointerEnter);
         Utils.AddEventToObject(this.gameObject,  () =>
         {
@@ -30,14 +29,13 @@ public class TitleItemContainer : MonoBehaviour
     
     public void SetRelicData(RelicData r)
     {
-        this.relicData = r;
-        relicImage.sprite = relicData.sprite;
+        this.RelicData = r;
+        relicImage.sprite = RelicData.sprite;
         
         // イベントを登録
         Utils.AddEventToObject(this.gameObject,  () =>
         {
-            TitleMenu.Instance.ShowRelicDescriptionWindow(relicData,
-                transform.position + new Vector3(2.55f, 0, 0));
+            TitleMenu.Instance.ShowRelicDescriptionWindow(RelicData, this.gameObject);
         }, EventTriggerType.PointerEnter);
         Utils.AddEventToObject(this.gameObject,  () =>
         {

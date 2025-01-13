@@ -68,8 +68,8 @@ public class UIManager : MonoBehaviour
     private void UpdateCoinText(BigInteger amount) => coinText.text = "coin: " + amount;
     private void UpdateExpText(int now, int max) => expText.text = "exp: " + now + "/" + max;
     private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
-    public void ShowRelicDescriptionWindow(RelicData r, Vector3 pos) => descriptionWindow.ShowWindow(r, pos);
-    public void ShowBallDescriptionWindow(BallData b, Vector3 pos) => descriptionWindow.ShowWindow(b, pos);
+    public void ShowRelicDescriptionWindow(RelicData r, GameObject g) => descriptionWindow.ShowWindow(r, g);
+    public void ShowBallDescriptionWindow(BallData b, GameObject g) => descriptionWindow.ShowWindow(b, g);
     public void HideRelicDescriptionWindow() => descriptionWindow.HideWindow();
     public void HideBallDescriptionWindow() => descriptionWindow.HideWindow();
     

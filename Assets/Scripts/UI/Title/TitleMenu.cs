@@ -76,14 +76,14 @@ public class TitleMenu : MonoBehaviour
         license.blocksRaycasts = false;
     }
     
-    public void ShowRelicDescriptionWindow(RelicData r, Vector3 pos)
+    public void ShowRelicDescriptionWindow(RelicData r, GameObject g)
     {
-        descriptionWindow.ShowWindow(r, pos);
+        descriptionWindow.ShowWindow(r, g);
     }
     
-    public void ShowBallDescriptionWindow(BallData b, Vector3 pos)
+    public void ShowBallDescriptionWindow(BallData b, GameObject g)
     {
-        descriptionWindow.ShowWindow(b, pos);
+        descriptionWindow.ShowWindow(b, g);
     }
     
     public void HideRelicDescriptionWindow()

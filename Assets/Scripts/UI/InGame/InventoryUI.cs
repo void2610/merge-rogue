@@ -93,7 +93,7 @@ public class InventoryUI : MonoBehaviour
         
         Utils.AddEventToObject(ball, () => { 
             SetCursor(index);
-            UIManager.Instance.ShowBallDescriptionWindow(data, ball.transform.position + new Vector3(2.5f, 0, 0)); 
+            UIManager.Instance.ShowBallDescriptionWindow(data, ball); 
         }, EventTriggerType.PointerEnter);
         
         Utils.AddEventToObject(ball, () => UIManager.Instance.HideBallDescriptionWindow(), EventTriggerType.PointerExit);

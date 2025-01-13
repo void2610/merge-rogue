@@ -28,8 +28,7 @@ public class Encyclopedia : MonoBehaviour
         // イベントを登録
         Utils.AddEventToObject(g,  () =>
         {
-            TitleMenu.Instance.ShowBallDescriptionWindow(b,
-                g.transform.position + new Vector3(2.7f, 0, 0));
+            TitleMenu.Instance.ShowBallDescriptionWindow(b, g);
         }, EventTriggerType.PointerEnter);
         Utils.AddEventToObject(g,  () =>
         {
@@ -45,8 +44,7 @@ public class Encyclopedia : MonoBehaviour
         // イベントを登録
         Utils.AddEventToObject(g,  () =>
         {
-            TitleMenu.Instance.ShowRelicDescriptionWindow(r,
-                g.transform.position + new Vector3(2.7f, 0, 0));
+            TitleMenu.Instance.ShowRelicDescriptionWindow(r, g);
         }, EventTriggerType.PointerEnter);
         Utils.AddEventToObject(g,  () =>
         {

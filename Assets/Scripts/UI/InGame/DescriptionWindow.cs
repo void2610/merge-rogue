@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
@@ -24,9 +25,13 @@ public class DescriptionWindow : MonoBehaviour
     private Tween _fadeTween;
     // (親オブジェクト, 単語) -> サブウィンドウオブジェクト
     private readonly Dictionary<(GameObject, string), GameObject> _subWindows = new();
+    // ルートウィンドウのトリガー元のオブジェクト
+    private GameObject _rootTriggerObject;
 
-    public void ShowWindow(object obj, Vector3 pos)
+    public void ShowWindow(object obj, GameObject rootTriggerObject)
     {
+        foreach (var window in _subWindows.Values) Destroy(window);
+        _subWindows.Clear();
         this.gameObject.SetActive(true);
 
         if(obj is BallData b) SetBallTexts(b);
@@ -38,8 +43,8 @@ public class DescriptionWindow : MonoBehaviour
         // ワールド座標をRectTransformのローカル座標に変換
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             this.gameObject.transform.parent as RectTransform,
-            RectTransformUtility.WorldToScreenPoint(Camera.main, pos),
-            Camera.main,
+            RectTransformUtility.WorldToScreenPoint(_uiCamera, rootTriggerObject.transform.position + new Vector3(2.5f, 0, 0)),
+            _uiCamera,
             out var localPos
         );
 
@@ -54,21 +59,14 @@ public class DescriptionWindow : MonoBehaviour
         _moveTween = this.gameObject.transform.DOMoveY(0.3f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack);
         _cg.alpha = 0;
         _fadeTween = _cg.DOFade(1, 0.15f).SetUpdate(true);
-    }
-    
-    private string GetHighlightWords(string description)
-    {
-        // 各単語をハイライト
-        foreach (var entry in wordDictionary.words)
-        {
-            description = description.Replace(entry.word, $"<link=\"{entry.word}\"><color=#{ColorUtility.ToHtmlStringRGB(entry.textColor)}>{entry.word}</color></link>");
-        }
-        return description;
+        _rootTriggerObject = rootTriggerObject;
     }
 
-    private void ShowSubWindow(string word, GameObject parent)
+    private void ShowSubWindow(GameObject parent, string word)
     {
-        if(_subWindows.TryGetValue((parent, word), out var window)) return;
+        // 同じ親オブジェクトに対して複数のサブウィンドウを表示しない
+        if(_subWindows.ContainsKey((parent, word))) return;
+        _subWindows.Where(pair => pair.Key.Item1 == parent).ToList().ForEach(pair => HideSubWindow(parent, pair.Key.Item2));
         
         var description = wordDictionary.GetWordEntry(word).description;
         var textColor = wordDictionary.GetWordEntry(word).textColor;
@@ -77,13 +75,51 @@ public class DescriptionWindow : MonoBehaviour
         g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = $"<color=#{ColorUtility.ToHtmlStringRGB(textColor)}>{word}</color>";
         g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = GetHighlightWords(description);
         
-        Utils.AddEventToObject(g.transform.Find("WindowCollider").gameObject, () => HideSubWindow(word, parent), EventTriggerType.PointerExit);
+        Utils.AddEventToObject(g, () => HideSubWindow(parent, word), EventTriggerType.PointerExit);
         
-        g.GetComponent<RectTransform>().localPosition = parent.GetComponent<RectTransform>().localPosition + new Vector3(200, 25, 0);
+        // ローカル座標で位置をクランプ
+        var offset = new Vector3(50, 50, 0);
+        if (parent.GetComponent<RectTransform>().position.x > 6) offset.x = -50;
+        var clampedX = Mathf.Clamp(parent.GetComponent<RectTransform>().localPosition.x + offset.x, minPos.x, maxPos.x);
+        var clampedY = Mathf.Clamp(parent.GetComponent<RectTransform>().localPosition.y + offset.y, minPos.y, maxPos.y);
+        
+        g.GetComponent<RectTransform>().localPosition = new Vector3(clampedX, clampedY, 0);
         g.transform.DOMoveY(0.3f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack);
         g.GetComponent<CanvasGroup>().DOFade(1, 0.15f).SetUpdate(true);
         _subWindows[(parent, word)] = g;
     }
+    
+    private string GetHighlightWords(string description)
+    {
+        // 短い単語から順に処理するためソート
+        var sortedWords = wordDictionary.words.OrderBy(entry => entry.word.Length).Where(entry => description.Contains(entry.word)).ToList();
+
+        foreach (var entry in sortedWords)
+        {
+            if (string.IsNullOrEmpty(entry.word)) continue;
+
+            // 既存のハイライトを解除
+            var containedWords = wordDictionary.words.Where(e => entry.word.Contains(e.word)).ToList();
+            containedWords.ForEach(e => description = RemoveExistingHighlights(description, e.word));
+
+            // ハイライトを適用
+            var replacement = $"<link=\"{entry.word}\"><color=#{ColorUtility.ToHtmlStringRGB(entry.textColor)}><nobr>{entry.word}</nobr></color></link>";
+            description = description.Replace(entry.word, replacement);
+        }
+
+        return description;
+    }
+
+    // 既存のハイライトを解除するメソッド
+    private string RemoveExistingHighlights(string description, string word)
+    {
+        // ハイライト形式の正規表現を作成
+        string pattern = $@"<link=""{word}""><color=#\w+><nobr>{word}</nobr></color></link>";
+
+        // ハイライト部分を元の文字列に戻す
+        return Regex.Replace(description, pattern, word);
+    }
+
     
     private void SetBallTexts(BallData b)
     {
@@ -112,6 +148,9 @@ public class DescriptionWindow : MonoBehaviour
 
     public void HideWindow()
     {
+        if(IsMouseOverWindowOrDescendants(descriptionText.gameObject)) return;
+        if(_moveTween.active) return;
+        
         _moveTween?.Kill();
         _fadeTween?.Kill();
         
@@ -123,13 +162,73 @@ public class DescriptionWindow : MonoBehaviour
         _subWindows.Clear();
     }
     
-    private void HideSubWindow(string word, GameObject parent)
+    private void HideSubWindow(GameObject parent, string word)
     {
+        // 対応するサブウィンドウを取得
         if (_subWindows.TryGetValue((parent, word), out var window))
         {
-            Destroy(window);
+            // マウスが現在のウィンドウまたはその子孫ウィンドウにいる場合は閉じない
+            if (IsMouseOverWindowOrDescendants(window))
+            {
+                return;
+            }
+
+            // 子ウィンドウを再帰的に閉じる
+            var children = _subWindows
+                .Where(entry => entry.Key.Item1 == window) // 現在のウィンドウを親としているものを取得
+                .Select(entry => (entry.Key.Item1, entry.Key.Item2))
+                .ToList();
+
+            foreach (var child in children)
+            {
+                HideSubWindow(child.Item1, child.Item2); // 再帰的に子ウィンドウを閉じる
+            }
+
+            // 現在のウィンドウを削除
+            window.GetComponent<CanvasGroup>().DOFade(0, 0.15f).SetUpdate(true).OnComplete(() => Destroy(window));
             _subWindows.Remove((parent, word));
         }
+    }
+    
+    private bool IsMouseOverWindowOrDescendants(GameObject window)
+    {
+        // マウスが現在のウィンドウ上にあるかチェック
+        if (RectTransformUtility.RectangleContainsScreenPoint(
+                window.GetComponent<RectTransform>(), Input.mousePosition, _uiCamera))
+        {
+            return true;
+        }
+
+        foreach (var entry in _subWindows)
+        {
+            // 自分の子孫ウィンドウにマウスがあるか確認
+            if (entry.Key.Item1 == window) // 現在のウィンドウの子孫ウィンドウの場合
+            {
+                if (IsMouseOverWindowOrDescendants(entry.Value))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false; // マウスが存在しない場合
+    }
+    
+    private bool IsMouseOverAnyWindow()
+    {
+        // 全てのコライダーをチェック
+        var allWindows = new List<GameObject>(_subWindows.Values) { windowCollider, _rootTriggerObject };
+        foreach (var window in allWindows)
+        {
+            if (RectTransformUtility.RectangleContainsScreenPoint(
+                    window.GetComponent<RectTransform>(),
+                    Input.mousePosition,
+                    _uiCamera))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     private void Awake()
@@ -138,29 +237,29 @@ public class DescriptionWindow : MonoBehaviour
         _cg = this.gameObject.GetComponent<CanvasGroup>();
         _uiCamera = GameManager.Instance.UICamera;
         
-        // Utils.AddEventToObject(windowCollider, HideWindow, EventTriggerType.PointerExit);
+        Utils.AddEventToObject(windowCollider, HideWindow, EventTriggerType.PointerExit);
     }
     
     private void Update()
     {
-        // マウスが特定のリンク上にある場合、ツールチップを表示
-        var linkIndices = new List<int>();
         var windows = new List<GameObject>(_subWindows.Values) { this.gameObject };
-        foreach (var w in windows)
-        {
-            linkIndices.Add(TMP_TextUtilities.FindIntersectingLink(w.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>(), Input.mousePosition, _uiCamera));
-        }
+        var linkIndices = windows.Select(w => TMP_TextUtilities.FindIntersectingLink(w.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>(), Input.mousePosition, _uiCamera)).ToList();
 
         var links = linkIndices.Where(i => i != -1);
         var enumerable = links.ToList();
-        if (!enumerable.Any()) return;
+        if (!enumerable.Any())
+        {
+            // すべてのウィンドウおよびリンク外の場合、非表示にする
+            if (!IsMouseOverAnyWindow()) HideWindow();
+            return;
+        }
+        
         var link = enumerable.First();
         var index = linkIndices.IndexOf(link);
-        if (link != -1)
-        {
-            var linkInfo = windows[index].transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().textInfo.linkInfo[link];
-            var parent = windows[index] == this.gameObject ? descriptionText.gameObject : windows[index];
-            ShowSubWindow(linkInfo.GetLinkID(), parent);
-        }
+        
+        if (link == -1) return;
+        var linkInfo = windows[index].transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().textInfo.linkInfo[link];
+        var parent = windows[index] == this.gameObject ? descriptionText.gameObject : windows[index];
+        ShowSubWindow(parent, linkInfo.GetLinkID());
     }
 }
