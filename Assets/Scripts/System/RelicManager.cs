@@ -13,6 +13,7 @@ public class RelicManager : MonoBehaviour
     [SerializeField] private Vector3 relicGridPosition;
     [SerializeField] private Vector2Int relicGridSize;
     [SerializeField] private Vector2 relicOffset;
+    [SerializeField] private float relicUISize;
     
     [SerializeField] private List<RelicData> testRelics;
     
@@ -49,6 +50,7 @@ public class RelicManager : MonoBehaviour
     {
         var go = Instantiate(relicPrefab, relicContainer);
         go.transform.localPosition = relicGridPosition + new Vector3(relicOffset.x * ((_relics.Count - 1) / relicGridSize.y), -relicOffset.y * ((_relics.Count - 1) % relicGridSize.y));
+        go.transform.localScale = new Vector3(relicUISize, relicUISize, 1);
         var relicUI = go.GetComponent<RelicUI>();
         relicUI.SetRelicData(r);
         _relicUIs.Add(relicUI);
