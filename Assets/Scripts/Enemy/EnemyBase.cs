@@ -8,6 +8,20 @@ using DG.Tweening;
 
 public class EnemyBase : MonoBehaviour, IEntity
 {
+    public enum ActionType
+    {
+        Attack,
+        Heal,
+        Buff,
+        Debuff,
+    }
+    [Serializable]
+    public class ActionData
+    {
+        public ActionType type;
+        public Action action;
+    }
+    
     public string enemyName = "Enemy";
     public int actionInterval = 1;
     public int hMax = 100;
@@ -26,6 +40,7 @@ public class EnemyBase : MonoBehaviour, IEntity
     public List<StatusEffectBase> StatusEffects { get; } = new();
 
     protected int TurnCount = 0;
+    protected readonly ActionData NormalAttack = new ();
 
     private TextMeshProUGUI HealthText => canvas.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
     private Slider HealthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
@@ -109,7 +124,8 @@ public class EnemyBase : MonoBehaviour, IEntity
         if(TurnCount == actionInterval)
         {
             TurnCount = 0;
-            Attack();
+            var action = GetNextAction();
+            action.action();
         }
         else
         {
@@ -120,6 +136,11 @@ public class EnemyBase : MonoBehaviour, IEntity
         }
 
         AttackCountText.text = (actionInterval - TurnCount).ToString();
+    }
+    
+    protected virtual ActionData GetNextAction()
+    {
+        return NormalAttack;
     }
 
     private void Attack()
@@ -176,6 +197,10 @@ public class EnemyBase : MonoBehaviour, IEntity
         HealthSlider.value = Health;
         HealthText.text = Health + "/" + MaxHealth;
         AttackCountText.text = (actionInterval - TurnCount).ToString();
+        
+        // 通常攻撃の設定
+        NormalAttack.type = ActionType.Attack;
+        NormalAttack.action = Attack;
         
         OnAppear();
     }
