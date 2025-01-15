@@ -28,7 +28,7 @@ public class Encyclopedia : MonoBehaviour
         // イベントを登録
         Utils.AddEventToObject(g,  () =>
         {
-            TitleMenu.Instance.ShowBallDescriptionWindow(b, g);
+            TitleMenu.Instance.ShowDescriptionWindow(b, g.transform.Find("BG").gameObject);
         }, EventTriggerType.PointerEnter);
     }
     
@@ -40,7 +40,7 @@ public class Encyclopedia : MonoBehaviour
         // イベントを登録
         Utils.AddEventToObject(g,  () =>
         {
-            TitleMenu.Instance.ShowRelicDescriptionWindow(r, g);
+            TitleMenu.Instance.ShowDescriptionWindow(r, g);
         }, EventTriggerType.PointerEnter);
     }
     

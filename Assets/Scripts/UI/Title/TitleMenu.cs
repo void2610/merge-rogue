@@ -76,14 +76,9 @@ public class TitleMenu : MonoBehaviour
         license.blocksRaycasts = false;
     }
     
-    public void ShowRelicDescriptionWindow(RelicData r, GameObject g)
+    public void ShowDescriptionWindow(object o, GameObject g)
     {
-        descriptionWindow.ShowWindow(r, g);
-    }
-    
-    public void ShowBallDescriptionWindow(BallData b, GameObject g)
-    {
-        descriptionWindow.ShowWindow(b, g);
+        descriptionWindow.ShowWindow(o, g);
     }
 
     public static void PlayButtonSe()

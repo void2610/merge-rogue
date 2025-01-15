@@ -7,6 +7,7 @@ using UnityEngine;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class DescriptionWindow : MonoBehaviour
 {
@@ -222,6 +223,8 @@ public class DescriptionWindow : MonoBehaviour
     
     private bool IsMouseOverAnyWindow()
     {
+        if (this == null) return false;
+
         // 全てのコライダーをチェック
         var allWindows = new List<GameObject>(_subWindows.Values) { this.gameObject, _rootTriggerObject };
         foreach (var window in allWindows)
@@ -276,7 +279,7 @@ public class DescriptionWindow : MonoBehaviour
     {
         this.gameObject.SetActive(false);
         _cg = this.gameObject.GetComponent<CanvasGroup>();
-        _uiCamera = GameManager.Instance.UICamera;
+        _uiCamera = SceneManager.GetActiveScene() == SceneManager.GetSceneByName("TitleScene") ? Camera.main : GameManager.Instance.UICamera;
         
         // Utils.AddEventToObject(windowCollider, HideWindow, EventTriggerType.PointerExit);
     }
