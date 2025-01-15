@@ -135,10 +135,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: Monk
-  actionInterval: 4
-  hMax: 20
-  hMin: 15
-  attack: 5
+  actionInterval: 3
+  hMax: 30
+  hMin: 25
+  attack: 20
   coin: 10
   exp: 30
   canvas: {fileID: 4633884191089636454}

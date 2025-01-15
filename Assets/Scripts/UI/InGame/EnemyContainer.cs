@@ -43,7 +43,8 @@ public class EnemyContainer : MonoBehaviour
     {
         var boss = BossSelector.Instance.GetBossEnemy(act);
         boss.transform.parent = this.transform;
-        boss.transform.position = _positions[_currentEnemies.Count - 1];
+        boss.transform.localScale = new Vector3(1, 1, 1);
+        boss.transform.position = _positions[_currentEnemies.Count];
         // 敵の強さパラメータを設定
         var m = ((stage + 1) * 0.6f);
         boss.transform.GetComponentsInChildren<EnemyBase>()[0].Init(m);
