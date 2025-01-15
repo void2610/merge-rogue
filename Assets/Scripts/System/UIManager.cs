@@ -182,7 +182,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.Coin.Subscribe(UpdateCoinText).AddTo(this);
-        GameManager.Instance.StageManager.currentStageCount.Subscribe(UpdateStageText).AddTo(this);
+        GameManager.Instance.StageManager.CurrentStageCount.Subscribe(UpdateStageText).AddTo(this);
         GameManager.Instance.Player.Exp.Subscribe((v) => UpdateExpText(v, GameManager.Instance.Player.MaxExp)).AddTo(this);
         GameManager.Instance.Player.Health.Subscribe((v) =>
         {

@@ -113,7 +113,7 @@ public class GameManager : MonoBehaviour
     {
         IsGameOver = true;
         ChangeState(GameState.GameOver);
-        ScoreManager.ShowScore(StageManager.currentStageCount.Value + 1, EnemyContainer.defeatedEnemyCount.Value, Coin.Value);
+        ScoreManager.ShowScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value, Coin.Value);
     }
     
     public void ChangeState(GameState newState)

@@ -17,112 +17,66 @@ public class EnemyContainer : MonoBehaviour
     
     public static EnemyContainer Instance { get; private set; }
 
-    [SerializeField] private List<EnemyData> enemies;
-    [SerializeField] private List<EnemyData> bosses = new();
     [SerializeField] private float alignment = 4;
-    public ReactiveProperty<int> defeatedEnemyCount = new(0);
-    private readonly List<GameObject> currentEnemies = new();
+    public readonly ReactiveProperty<int> DefeatedEnemyCount = new(0);
+    private readonly List<GameObject> _currentEnemies = new();
+    private readonly List<Vector3> _positions = new();
     private const int ENEMY_NUM = 4;
-    private int gainedExp;
-    private readonly List<Vector3> positions = new();
+    private int _gainedExp;
 
     public int GetCurrentEnemyCount()
     {
-        return currentEnemies.Count;
+        return _currentEnemies.Count;
     }
 
     public List<EnemyBase> GetAllEnemies()
     {
         var enemyBases = new List<EnemyBase>();
-        foreach (var enemy in currentEnemies)
+        foreach (var enemy in _currentEnemies)
         {
             enemyBases.Add(enemy.transform.GetChild(0).GetComponent<EnemyBase>());
         }
         return enemyBases;
     }
 
-    public void SpawnBoss()
+    public void SpawnBoss(int act, int stage)
     {
-        float total = 0;
-        foreach (var enemyData in bosses)
-        {
-            total += enemyData.probability;
-        }
-        var randomPoint = GameManager.Instance.RandomRange(0.0f, total);
-
-        foreach (var enemyData in bosses)
-        {
-            if (randomPoint < enemyData.probability)
-            {
-                var e = Instantiate(enemyData.prefab, this.transform);
-                currentEnemies.Add(e);
-                e.transform.position = positions[1];
-                break;
-            }
-            randomPoint -= enemyData.probability;
-        }
+        var boss = BossSelector.Instance.GetBossEnemy(act);
+        boss.transform.parent = this.transform;
+        boss.transform.position = _positions[_currentEnemies.Count - 1];
+        // 敵の強さパラメータを設定
+        var m = ((stage + 1) * 0.6f);
+        boss.transform.GetComponentsInChildren<EnemyBase>()[0].Init(m);
+        _currentEnemies.Add(boss);
     }
 
-    public void SpawnEnemy(int count = 1, int stage = 0)
+    public void SpawnEnemy(int count, int act, int stage)
     {
-        for (int i = 0; i < count; i++)
+        count = count > ENEMY_NUM ? ENEMY_NUM : count;
+        if (count <= 0) return;
+        var enemies = EnemySelector.Instance.GetEnemy(count, act);
+        foreach (var e in enemies)
         {
-            if (currentEnemies.Count >= ENEMY_NUM) return;
-            var total = enemies.Sum(enemyData => enemyData.probability);
-            var randomPoint = GameManager.Instance.RandomRange(0.0f, total);
-
-            foreach (var enemyData in enemies)
-            {
-                if (randomPoint < enemyData.probability)
-                {
-                    var e = Instantiate(enemyData.prefab, this.transform);
-                    // 敵の強さパラメータを設定
-                    var m = ((stage + 1) * 0.6f);
-                    e.transform.GetComponentsInChildren<EnemyBase>()[0].Init(m);
-                    currentEnemies.Add(e);
-                    e.transform.position = positions[currentEnemies.Count - 1];
-                    break;
-                }
-                randomPoint -= enemyData.probability;
-            }
-        }
-    }
-
-    public void SpawnEnemyByBoss(int count = 1)
-    {
-        for (int i = 0; i < count; i++)
-        {
-            if (currentEnemies.Count >= ENEMY_NUM) return;
-            var total = enemies.Sum(enemyData => enemyData.probability);
-            var randomPoint = GameManager.Instance.RandomRange(0.0f, total);
-
-            foreach (var enemyData in enemies)
-            {
-                if (randomPoint < enemyData.probability)
-                {
-                    var e = Instantiate(enemyData.prefab, this.transform);
-                    currentEnemies.Add(e);
-                    if (currentEnemies.Count == 2)
-                        e.transform.position = positions[0];
-                    else if (currentEnemies.Count == 3)
-                        e.transform.position = positions[2];
-                    break;
-                }
-                randomPoint -= enemyData.probability;
-            }
+            e.transform.parent = this.transform;
+            e.transform.position = _positions[_currentEnemies.Count];
+            e.transform.localScale = new Vector3(1, 1, 1);
+            // 敵の強さパラメータを設定
+            var m = ((stage + 1) * 0.6f);
+            e.transform.GetComponentsInChildren<EnemyBase>()[0].Init(m);
+            _currentEnemies.Add(e);
         }
     }
 
     public void RemoveEnemy(GameObject enemy)
     {
-        defeatedEnemyCount.Value++;
-        gainedExp += enemy.GetComponent<EnemyBase>().exp;
+        DefeatedEnemyCount.Value++;
+        _gainedExp += enemy.GetComponent<EnemyBase>().exp;
         var g = enemy.transform.parent.gameObject;
-        currentEnemies.Remove(g);
+        _currentEnemies.Remove(g);
         enemy.GetComponent<EnemyBase>().OnDisappear();
         
         // 全ての敵を倒したらステージ進行
-        if (currentEnemies.Count == 0) EndBattle().Forget();
+        if (_currentEnemies.Count == 0) EndBattle().Forget();
     }
     
     private async UniTaskVoid EndBattle()
@@ -130,8 +84,8 @@ public class EnemyContainer : MonoBehaviour
         MergeManager.Instance.EndMerge().Forget();
         await UniTask.Delay(2000);
         GameManager.Instance.Player.OnBattleEnd();
-        GameManager.Instance.Player.AddExp(gainedExp);
-        gainedExp = 0;
+        GameManager.Instance.Player.AddExp(_gainedExp);
+        _gainedExp = 0;
     }
 
     public void AttackEnemy(int singleDamage, int allDamage)
@@ -147,7 +101,7 @@ public class EnemyContainer : MonoBehaviour
     
     private IEnumerator AttackEnemyBySkillCoroutine(int damage, List<bool> isAttacks)
     {
-        if(isAttacks.Count != currentEnemies.Count) Debug.LogError("The number of bool list does not match the number of enemies");
+        if(isAttacks.Count != _currentEnemies.Count) Debug.LogError("The number of bool list does not match the number of enemies");
         
         var es = GetAllEnemies();
         for (var i = 0; i < isAttacks.Count; i++)
@@ -213,7 +167,7 @@ public class EnemyContainer : MonoBehaviour
 
     private async UniTaskVoid AttackPlayerAsync()
     {
-        foreach (var enemyBase in currentEnemies.Select(enemy => enemy.transform.GetChild(0).GetComponent<EnemyBase>()))
+        foreach (var enemyBase in _currentEnemies.Select(enemy => enemy.transform.GetChild(0).GetComponent<EnemyBase>()))
         {
             enemyBase.Action();
             // 0.5秒待つ
@@ -223,12 +177,12 @@ public class EnemyContainer : MonoBehaviour
         await UniTask.Delay(100);
         
         // 状態異常を更新
-        for(var i = 0; i < currentEnemies.Count; i++)
+        for(var i = 0; i < _currentEnemies.Count; i++)
         {
-            currentEnemies[i].transform.GetChild(0).GetComponent<EnemyBase>().UpdateStatusEffects();
+            _currentEnemies[i].transform.GetChild(0).GetComponent<EnemyBase>().UpdateStatusEffects();
         }
 
-        if(currentEnemies.Count > 0)
+        if(_currentEnemies.Count > 0)
             GameManager.Instance.ChangeState(GameManager.GameState.Merge);
     }
 
@@ -244,9 +198,9 @@ public class EnemyContainer : MonoBehaviour
             return;
         }
         
-        positions.Add(this.transform.position + new Vector3(-alignment * 2, 0, 0));
-        positions.Add(this.transform.position + new Vector3(-alignment, 0, 0));
-        positions.Add(this.transform.position);
-        positions.Add(this.transform.position + new Vector3(alignment, 0, 0));
+        _positions.Add(this.transform.position + new Vector3(-alignment * 2, 0, 0));
+        _positions.Add(this.transform.position + new Vector3(-alignment, 0, 0));
+        _positions.Add(this.transform.position);
+        _positions.Add(this.transform.position + new Vector3(alignment, 0, 0));
     }
 }

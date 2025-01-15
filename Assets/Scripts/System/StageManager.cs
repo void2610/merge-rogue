@@ -31,20 +31,20 @@ public class StageManager : MonoBehaviour
     
     public class StageNode
     {
-        public StageType type;             // ステージの種類
-        public Vector2 position;           // マップ上の位置
-        public List<StageNode> connections; // 次のステージへの接続
-        public GameObject obj;             // マップ上のオブジェクト
+        public StageType Type;             // ステージの種類
+        public Vector2 Position;           // マップ上の位置
+        public readonly List<StageNode> Connections; // 次のステージへの接続
+        public GameObject Obj;             // マップ上のオブジェクト
 
         public StageNode(StageType t)
         {
-            type = t;
-            connections = new List<StageNode>();
+            Type = t;
+            Connections = new List<StageNode>();
         }
         
         public Sprite GetIcon(List<StageData> list)
         {
-            return list.First(s => s.stageType == type).icon;
+            return list.First(s => s.stageType == Type).icon;
         }
     }
 
@@ -61,18 +61,19 @@ public class StageManager : MonoBehaviour
     [SerializeField] private GameObject mapConnectionPrefab;
     [SerializeField] private Vector2 mapOffset;
     [SerializeField] private Vector2 mapMargin;
-    private GameObject playerIconObj;
+    private GameObject _playerIconObj;
 
     [Header("ステージ")]
     [SerializeField] private List<StageData> stageData　= new();
     [SerializeField] private List<StageType> stageTypes = new();
     [SerializeField] private Vector2Int mapSize;
     [SerializeField] private int pathCount;
-    public readonly ReactiveProperty<int> currentStageCount = new(-1);
-    private readonly List<List<StageNode>> mapNodes = new();
-    public StageNode currentStage { get; private set; } = null;
-    private static readonly int mainTex = Shader.PropertyToID("_MainTex");
-    private Tween torchTween;
+    public readonly ReactiveProperty<int> CurrentStageCount = new(-1);
+    private readonly List<List<StageNode>> _mapNodes = new();
+    public StageNode CurrentStage { get; private set; } = null;
+    private static readonly int _mainTex = Shader.PropertyToID("_MainTex");
+    private Tween _torchTween;
+    private int _act = 0;
 
     private StageData ChoseStage()
     {
@@ -99,91 +100,91 @@ public class StageManager : MonoBehaviour
     
     private void GenerateMap()
     {
-        mapNodes.Clear();
-        currentStage = null;
+        _mapNodes.Clear();
+        CurrentStage = null;
         var icons = mapBackground.GetComponentsInChildren<Transform>().ToList();
         icons.Where(i => i != mapBackground.transform).ToList().ForEach(i => Destroy(i.gameObject));
         
         // マップの初期化
         for (var i = 0; i < mapSize.x; i++)
         {
-            mapNodes.Add(new List<StageNode>());
+            _mapNodes.Add(new List<StageNode>());
             var mid = mapSize.y / 2;
             for (var j = 0; j < mapSize.y; j++)
             {
-                mapNodes[i].Add(new StageNode(StageType.Undefined));
+                _mapNodes[i].Add(new StageNode(StageType.Undefined));
                 var my = (j - mid) * mapMargin.y;
-                mapNodes[i][j].position = new Vector2((i * mapMargin.x) + mapOffset.x, my + mapOffset.y);
+                _mapNodes[i][j].Position = new Vector2((i * mapMargin.x) + mapOffset.x, my + mapOffset.y);
             }
         }
 
         // スタートノードを作成
         var startNode = new StageNode(StageType.Enemy);
-        mapNodes[0][0] = startNode;
-        mapNodes[0][0].position = new Vector2(mapOffset.x, mapOffset.y);
+        _mapNodes[0][0] = startNode;
+        _mapNodes[0][0].Position = new Vector2(mapOffset.x, mapOffset.y);
 
         // ゴールノードを作成
         var bossNode = new StageNode(StageType.Boss);
-        mapNodes[^1][0] = bossNode;
-        mapNodes[^1][0].position = new Vector2((mapSize.x * mapMargin.x) + mapOffset.x, mapOffset.y);
+        _mapNodes[^1][0] = bossNode;
+        _mapNodes[^1][0].Position = new Vector2((mapSize.x * mapMargin.x) + mapOffset.x, mapOffset.y);
 
         // スタートからゴールに向かってランダムに接続
         for (var _ = 0; _ < pathCount; _++)
         {
-            var currentNode = mapNodes[0][0];
+            var currentNode = _mapNodes[0][0];
             for (var i = 1; i < mapSize.x; i++)
             {
-                var currentY = mapNodes[i-1].FindIndex(node => node == currentNode);
+                var currentY = _mapNodes[i-1].FindIndex(node => node == currentNode);
                 var randomYOffset = GameManager.Instance.RandomRange(-1, 2); // -1から1までの値
                 var nextY = Mathf.Clamp(currentY + randomYOffset, 0, mapSize.y - 1);
                 
                 if( i == 1) nextY = GameManager.Instance.RandomRange(0, mapSize.y);
                 else if (i == mapSize.x - 1) nextY = 0;
                 
-                var nextNode = mapNodes[i][nextY];
-                if (!currentNode.connections.Contains(nextNode))
-                    currentNode.connections.Add(nextNode);
+                var nextNode = _mapNodes[i][nextY];
+                if (!currentNode.Connections.Contains(nextNode))
+                    currentNode.Connections.Add(nextNode);
                 currentNode = nextNode;
             }
         }
         
         // Undefined以外のステージタイプを割り当てる
-        foreach (var node in mapNodes.SelectMany(column => column.Where(node => node.connections.Count > 0)))
+        foreach (var node in _mapNodes.SelectMany(column => column.Where(node => node.Connections.Count > 0)))
         {
-            node.type = ChoseStage().stageType; // ランダムにステージタイプを割り当てる
+            node.Type = ChoseStage().stageType; // ランダムにステージタイプを割り当てる
         }
     }
     
     private void DrawLine(StageNode a, StageNode b)
     {
-        var g = Instantiate(mapConnectionPrefab,a.position, Quaternion.identity, mapBackground.transform);
-        g.name = $"{a.type} -> {b.type}";
+        var g = Instantiate(mapConnectionPrefab,a.Position, Quaternion.identity, mapBackground.transform);
+        g.name = $"{a.Type} -> {b.Type}";
         var line = g.GetComponent<UILineRenderer>();
         if (Camera.main == null) return;
-        var p1 = Camera.main.WorldToScreenPoint(a.position);
-        var p2 = Camera.main.WorldToScreenPoint(b.position);
+        var p1 = Camera.main.WorldToScreenPoint(a.Position);
+        var p2 = Camera.main.WorldToScreenPoint(b.Position);
         var pos = new Vector2(p2.x - p1.x, p2.y - p1.y);
         line.points = new Vector2[2] {Vector2.zero, pos};
     }
     
     private void SetButtonEvent()
     {
-        var b = mapNodes[0][0].obj.GetComponent<Button>();
+        var b = _mapNodes[0][0].Obj.GetComponent<Button>();
         b.onClick.RemoveAllListeners();
         b.onClick.AddListener(() =>
         {
-            NextStage(mapNodes[0][0]).Forget();
+            NextStage(_mapNodes[0][0]).Forget();
         });
         
-        foreach (var column in mapNodes)
+        foreach (var column in _mapNodes)
         {
             foreach (var node in column)
             {
-                if (node.type == StageType.Undefined) continue;
-                foreach (var c in node.connections)
+                if (node.Type == StageType.Undefined) continue;
+                foreach (var c in node.Connections)
                 {
-                    if (c.type == StageType.Undefined) continue;
-                    var button = c.obj.GetComponent<Button>();
+                    if (c.Type == StageType.Undefined) continue;
+                    var button = c.Obj.GetComponent<Button>();
                     
                     button.onClick.RemoveAllListeners();
                     button.onClick.AddListener(() =>
@@ -198,44 +199,44 @@ public class StageManager : MonoBehaviour
     private void DrawMap()
     {
         // 先にノード間の線を描画
-        foreach (var c in mapNodes[0][0].connections.Where(c => c.type != StageType.Undefined))
+        foreach (var c in _mapNodes[0][0].Connections.Where(c => c.Type != StageType.Undefined))
         {
-            DrawLine(mapNodes[0][0], c);
+            DrawLine(_mapNodes[0][0], c);
         }
         
         for (var i = 1; i < mapSize.x; i++)
         {
             for (var j = 0; j < mapSize.y; j++)
             {
-                if (mapNodes[i][j].type == StageType.Undefined) continue;
-                foreach (var c in mapNodes[i][j].connections.Where(c => c.type != StageType.Undefined))
+                if (_mapNodes[i][j].Type == StageType.Undefined) continue;
+                foreach (var c in _mapNodes[i][j].Connections.Where(c => c.Type != StageType.Undefined))
                 {
-                    DrawLine(mapNodes[i][j], c);
+                    DrawLine(_mapNodes[i][j], c);
                 }
             }
         }
         
         // ノードを描画
-        var s = Instantiate(mapNodePrefab, mapNodes[0][0].position , Quaternion.identity, mapBackground.transform);
-        s.name = $"{mapNodes[0][0].type}";
-        s.GetComponent<Image>().sprite = mapNodes[0][0].GetIcon(stageData);
-        mapNodes[0][0].obj = s;
+        var s = Instantiate(mapNodePrefab, _mapNodes[0][0].Position , Quaternion.identity, mapBackground.transform);
+        s.name = $"{_mapNodes[0][0].Type}";
+        s.GetComponent<Image>().sprite = _mapNodes[0][0].GetIcon(stageData);
+        _mapNodes[0][0].Obj = s;
 
         for (var i = 1; i < mapSize.x; i++)
         {
             for (var j = 0; j < mapSize.y; j++)
             {
-                if (mapNodes[i][j].type == StageType.Undefined) continue;
-                var g = Instantiate(mapNodePrefab, mapNodes[i][j].position, Quaternion.identity, mapBackground.transform);
+                if (_mapNodes[i][j].Type == StageType.Undefined) continue;
+                var g = Instantiate(mapNodePrefab, _mapNodes[i][j].Position, Quaternion.identity, mapBackground.transform);
                 
-                g.name = $"{mapNodes[i][j].type}";
-                g.GetComponent<Image>().sprite = mapNodes[i][j].GetIcon(stageData);
-                if (mapNodes[i][j].type == StageType.Enemy)
+                g.name = $"{_mapNodes[i][j].Type}";
+                g.GetComponent<Image>().sprite = _mapNodes[i][j].GetIcon(stageData);
+                if (_mapNodes[i][j].Type == StageType.Enemy)
                     g.GetComponent<Image>().color = Color.red;
-                else if (mapNodes[i][j].type == StageType.Boss)
+                else if (_mapNodes[i][j].Type == StageType.Boss)
                     g.GetComponent<Image>().color = Color.black;
                 
-                mapNodes[i][j].obj = g;
+                _mapNodes[i][j].Obj = g;
             }
         }
     }
@@ -243,28 +244,29 @@ public class StageManager : MonoBehaviour
     public void SetNextNodeActive()
     {
         // ボスを倒したらマップを再生成して次のステージを設定
-        if (currentStage?.type == StageType.Boss)
+        if (CurrentStage?.Type == StageType.Boss)
         {
+            _act++;
             // ボスを倒したら回復
             GameManager.Instance.Player.HealToFull();
             GenerateMap();
             DrawMap();
             SetButtonEvent();
             
-            playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
-            var pos = mapNodes[^1][0].obj.GetComponent<RectTransform>().localPosition;
-            playerIconObj.GetComponent<FloatMove>().MoveTo(pos + new Vector3(0, 2, 0), 0.5f);
+            _playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
+            var pos = _mapNodes[^1][0].Obj.GetComponent<RectTransform>().localPosition;
+            _playerIconObj.GetComponent<FloatMove>().MoveTo(pos + new Vector3(0, 2, 0), 0.5f);
         }
         
-        var nextNodes = currentStage != null ? currentStage.connections : new List<StageNode>{mapNodes[0][0]};
+        var nextNodes = CurrentStage != null ? CurrentStage.Connections : new List<StageNode>{_mapNodes[0][0]};
         
-        foreach (var column in mapNodes)
+        foreach (var column in _mapNodes)
         {
             foreach (var node in column)
             {
-                if (node.type == StageType.Undefined) continue;
+                if (node.Type == StageType.Undefined) continue;
                 
-                var button = node.obj.GetComponent<Button>();
+                var button = node.Obj.GetComponent<Button>();
                 button.interactable = nextNodes.Contains(node);
             }
         }
@@ -272,7 +274,7 @@ public class StageManager : MonoBehaviour
     
     private void SetAllNodeInactive()
     {
-        foreach (var button in mapNodes.SelectMany(column => from node in column where node.type != StageType.Undefined select node.obj.GetComponent<Button>()))
+        foreach (var button in _mapNodes.SelectMany(column => from node in column where node.Type != StageType.Undefined select node.Obj.GetComponent<Button>()))
         {
             button.interactable = false;
         }
@@ -286,15 +288,15 @@ public class StageManager : MonoBehaviour
         SetAllNodeInactive();
         UIManager.Instance.EnableCanvasGroup("Map", false);
         SeManager.Instance.WaitAndPlaySe("footsteps", 0.2f);
-        DOTween.To(() => m.GetTextureOffset(mainTex), x => m.SetTextureOffset(mainTex, x), new Vector2(1, 0), 2.0f)
+        DOTween.To(() => m.GetTextureOffset(_mainTex), x => m.SetTextureOffset(_mainTex, x), new Vector2(1, 0), 2.0f)
             .SetEase(Ease.InOutSine).OnComplete(() =>
             {
-                m.SetTextureOffset(mainTex, new Vector2(0, 0));
+                m.SetTextureOffset(_mainTex, new Vector2(0, 0));
                 
                 var tmp = torches[0];
                 torches.RemoveAt(0);
                 torches.Add(tmp);
-                torchTween.Kill();
+                _torchTween.Kill();
                 tmp.transform.position = defaultTorchPosition + new Vector3(torchInterval * (torches.Count-1), 0, 0);
             }); 
         
@@ -303,20 +305,20 @@ public class StageManager : MonoBehaviour
             var t = torches[i];
             var tween = t.transform.DOMove(t.transform.position - new Vector3(torchInterval, 0, 0), 2.0f)
                 .SetEase(Ease.InOutSine);
-            if (i == 0) torchTween = tween;
+            if (i == 0) _torchTween = tween;
         }
         torches[^1].SetActive(Random.Range(0.0f, 1.0f) < 0.5f);
         
-        var pos = next.obj.GetComponent<RectTransform>().localPosition;
-        playerIconObj.GetComponent<FloatMove>().MoveTo(pos + new Vector3(0, 2, 0), 0.5f);
+        var pos = next.Obj.GetComponent<RectTransform>().localPosition;
+        _playerIconObj.GetComponent<FloatMove>().MoveTo(pos + new Vector3(0, 2, 0), 0.5f);
         
         await UniTask.Delay(2000);
         
         // ステージ進行
-        currentStageCount.Value++;
-        currentStage = next;
+        CurrentStageCount.Value++;
+        CurrentStage = next;
         
-        if(currentStage.type == StageType.Events)
+        if(CurrentStage.Type == StageType.Events)
         {
             // ランダムなステージに移動
             var r = GameManager.Instance.RandomRange(0, 5);
@@ -324,7 +326,7 @@ public class StageManager : MonoBehaviour
         }
         else
         {
-            ProcessStage(currentStage.type);
+            ProcessStage(CurrentStage.Type);
         }
     }
 
@@ -334,11 +336,11 @@ public class StageManager : MonoBehaviour
         {
             case StageType.Enemy:
                 // 敵の出現量と強さを設定
-                GameManager.Instance.EnemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value);
+                GameManager.Instance.EnemyContainer.SpawnEnemy(CurrentStageCount.Value + 1, _act, CurrentStageCount.Value);
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
                 break;
             case StageType.Boss:
-                GameManager.Instance.EnemyContainer.SpawnEnemy(currentStageCount.Value + 1, currentStageCount.Value + 5);
+                GameManager.Instance.EnemyContainer.SpawnBoss(_act, CurrentStageCount.Value + 5);
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
                 break;
             case StageType.Shop:
@@ -375,20 +377,20 @@ public class StageManager : MonoBehaviour
     public void Awake()
     {
         GenerateMap();
-        mapNodes[0][0].type = StageType.Enemy;
-        currentStage = null;
+        _mapNodes[0][0].Type = StageType.Enemy;
+        CurrentStage = null;
         
         DrawMap();
         SetButtonEvent();
         SetAllNodeInactive();
         
-        playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
+        _playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
         
-        m.SetTextureOffset(mainTex, new Vector2(0, 0)); 
+        m.SetTextureOffset(_mainTex, new Vector2(0, 0)); 
     }
 
     public void Start()
     {
-        NextStage(mapNodes[0][0]).Forget();
+        NextStage(_mapNodes[0][0]).Forget();
     }
 }
