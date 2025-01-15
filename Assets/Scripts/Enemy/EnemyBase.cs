@@ -101,6 +101,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         // 状態異常でダメージを更新
         damage = ModifyIncomingDamage(damage);
         Health -= damage;
+        StatusEffectUI.UpdateUI(StatusEffects);
         HealthSlider.value = Health;
         HealthText.text = Health + "/" + MaxHealth;
         if (Health > 0) return;
