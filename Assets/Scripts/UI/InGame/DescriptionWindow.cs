@@ -292,19 +292,21 @@ public class DescriptionWindow : MonoBehaviour
             StartMouseCheck().Forget();
         }
         
+        // マウスがホバーしているリンクを取得
         var windows = new List<GameObject>(_subWindows.Values) { this.gameObject };
         var linkIndices = windows.Select(w => TMP_TextUtilities.FindIntersectingLink(w.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>(), Input.mousePosition, _uiCamera)).ToList();
-
-        var links = linkIndices.Where(i => i != -1);
-        var enumerable = links.ToList();
+        var enumerable = linkIndices.Where(i => i != -1).ToList();
         if (!enumerable.Any()) return;
-        
         var link = enumerable.First();
         var index = linkIndices.IndexOf(link);
-        
         if (link == -1) return;
+        
+        // マウスがリンクにホバーしている場合はサブウィンドウを表示
         var linkInfo = windows[index].transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().textInfo.linkInfo[link];
         var parent = windows[index] == this.gameObject ? descriptionText.gameObject : windows[index];
+        // 最前面のウィンドウ以外のリンクは無視
+        var topWindow = _subWindows.Count == 0 ? this.transform.Find("DescriptionText").gameObject : _subWindows.Values.Last();
+        if (parent != topWindow) return;
         ShowSubWindow(parent, linkInfo.GetLinkID());
     }
 }
