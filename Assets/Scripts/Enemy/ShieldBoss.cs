@@ -20,13 +20,13 @@ public class ShieldBoss : EnemyBase
     
     public override void Init(float magnification)
     {
-        base.Init(magnification);
-        
         _shieldStack = (int) (magnification * SHIELD_STACK);
         _shieldAction = new ActionData
         {
             type = ActionType.Buff,
-            action = () => { StatusEffectFactory.AddStatusEffect(this, StatusEffectType.Shield, _shieldStack); }
+            Action = () => { StatusEffectFactory.AddStatusEffect(this, StatusEffectType.Shield, _shieldStack); }
         };
+        
+        base.Init(magnification);
     }
 }

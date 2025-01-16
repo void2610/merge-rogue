@@ -19,7 +19,7 @@ public class EnemyBase : MonoBehaviour, IEntity
     public class ActionData
     {
         public ActionType type;
-        public Action action;
+        public Action Action;
     }
     
     public string enemyName = "Enemy";
@@ -41,6 +41,7 @@ public class EnemyBase : MonoBehaviour, IEntity
 
     protected int TurnCount = 0;
     protected readonly ActionData NormalAttack = new ();
+    private ActionData _nextAction;
 
     private TextMeshProUGUI HealthText => canvas.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
     private Slider HealthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
@@ -125,8 +126,9 @@ public class EnemyBase : MonoBehaviour, IEntity
         if(TurnCount == actionInterval)
         {
             TurnCount = 0;
-            var action = GetNextAction();
-            action.action();
+            _nextAction.Action();
+            _nextAction = GetNextAction();
+            UpdateAttackIcon(_nextAction);
         }
         else
         {
@@ -181,8 +183,21 @@ public class EnemyBase : MonoBehaviour, IEntity
     private void Death()
     {
         EventManager.OnEnemyDefeated.Trigger(this);
-        
         this.transform.parent.parent.GetComponent<EnemyContainer>().RemoveEnemy(this.gameObject);
+    }
+
+    private void UpdateAttackIcon(ActionData a)
+    {
+        var i = canvas.transform.Find("AttackIcon").GetComponent<Image>();
+        var c = a.type switch
+        {
+            ActionType.Attack => Color.red,
+            ActionType.Heal => Color.green,
+            ActionType.Buff => Color.cyan,
+            ActionType.Debuff => Color.magenta,
+            _ => Color.white
+        };
+        i.color = c;
     }
 
     public virtual void Init(float magnification)
@@ -201,7 +216,9 @@ public class EnemyBase : MonoBehaviour, IEntity
         
         // 通常攻撃の設定
         NormalAttack.type = ActionType.Attack;
-        NormalAttack.action = Attack;
+        NormalAttack.Action = Attack;
+        _nextAction = GetNextAction();
+        UpdateAttackIcon(_nextAction);
         
         OnAppear();
     }
