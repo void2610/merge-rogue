@@ -34,11 +34,7 @@ public class DescriptionWindow : MonoBehaviour
 
     public void ShowWindow(object obj, GameObject rootTriggerObject)
     {
-        if (IsMouseOverWindowOrDescendants(this.gameObject))
-        {
-            Debug.Log("Mouse is over window or descendants");
-            return;
-        }
+        if (IsMouseOverWindowOrDescendants(this.gameObject)) return;
         
         foreach (var window in _subWindows.Values) Destroy(window);
         _subWindows.Clear();
@@ -66,9 +62,10 @@ public class DescriptionWindow : MonoBehaviour
         _fadeTween?.Kill();
         
         this.gameObject.GetComponent<RectTransform>().localPosition = new Vector3(clampedX, clampedY, 0) + new Vector3(0, 0.3f, 0);
-        _moveTween = this.gameObject.transform.DOMoveY(0.3f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack);
+        _moveTween = this.gameObject.transform.DOMoveY(0.3f, 0.2f).SetRelative(true).SetUpdate(true)
+            .SetEase(Ease.OutBack).SetLink(this.gameObject);
         _cg.alpha = 0;
-        _fadeTween = _cg.DOFade(1, 0.15f).SetUpdate(true);
+        _fadeTween = _cg.DOFade(1, 0.15f).SetUpdate(true).SetLink(this.gameObject);
         _rootTriggerObject = rootTriggerObject;
     }
 
@@ -97,8 +94,8 @@ public class DescriptionWindow : MonoBehaviour
 
         rectTransform.localPosition = new Vector3(clampedX, clampedY, rectTransform.localPosition.z);
 
-        g.transform.DOMoveY(0.3f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack);
-        g.GetComponent<CanvasGroup>().DOFade(1, 0.15f).SetUpdate(true);
+        g.transform.DOMoveY(0.3f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack).SetLink(g);
+        g.GetComponent<CanvasGroup>().DOFade(1, 0.15f).SetUpdate(true).SetLink(g);
         _subWindows[(parent, word)] = g;
     }
     
@@ -167,7 +164,7 @@ public class DescriptionWindow : MonoBehaviour
         _moveTween?.Kill();
         _fadeTween?.Kill();
         
-        _fadeTween = _cg.DOFade(0, 0.15f).SetUpdate(true).OnComplete(() => this.gameObject.SetActive(false));
+        _fadeTween = _cg.DOFade(0, 0.15f).SetUpdate(true).OnComplete(() => this.gameObject.SetActive(false)).SetLink(this.gameObject);
         foreach (var window in _subWindows.Values)
         {
             Destroy(window);
@@ -198,7 +195,7 @@ public class DescriptionWindow : MonoBehaviour
             }
 
             // 現在のウィンドウを削除
-            window.GetComponent<CanvasGroup>().DOFade(0, 0.15f).SetUpdate(true).OnComplete(() => Destroy(window));
+            window.GetComponent<CanvasGroup>().DOFade(0, 0.15f).SetUpdate(true).OnComplete(() => Destroy(window)).SetLink(window);
             _subWindows.Remove((parent, word));
         }
     }
