@@ -34,6 +34,12 @@ public class DescriptionWindow : MonoBehaviour
 
     public void ShowWindow(object obj, GameObject rootTriggerObject)
     {
+        if (IsMouseOverWindowOrDescendants(this.gameObject))
+        {
+            Debug.Log("Mouse is over window or descendants");
+            return;
+        }
+        
         foreach (var window in _subWindows.Values) Destroy(window);
         _subWindows.Clear();
         this.gameObject.SetActive(true);
@@ -211,6 +217,7 @@ public class DescriptionWindow : MonoBehaviour
             // 自分の子孫ウィンドウにマウスがあるか確認
             if (entry.Key.Item1 == window) // 現在のウィンドウの子孫ウィンドウの場合
             {
+                // 再帰的に子孫ウィンドウをチェック
                 if (IsMouseOverWindowOrDescendants(entry.Value))
                 {
                     return true;
@@ -218,7 +225,7 @@ public class DescriptionWindow : MonoBehaviour
             }
         }
 
-        return false; // マウスが存在しない場合
+        return false;
     }
     
     private bool IsMouseOverAnyWindow()
@@ -305,7 +312,7 @@ public class DescriptionWindow : MonoBehaviour
         var linkInfo = windows[index].transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().textInfo.linkInfo[link];
         var parent = windows[index] == this.gameObject ? descriptionText.gameObject : windows[index];
         // 最前面のウィンドウ以外のリンクは無視
-        var topWindow = _subWindows.Count == 0 ? this.transform.Find("DescriptionText").gameObject : _subWindows.Values.Last();
+        var topWindow = _subWindows.Count == 0 ? descriptionText.gameObject : _subWindows.Values.Last();
         if (parent != topWindow) return;
         ShowSubWindow(parent, linkInfo.GetLinkID());
     }
