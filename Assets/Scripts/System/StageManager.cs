@@ -340,7 +340,7 @@ public class StageManager : MonoBehaviour
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
                 break;
             case StageType.Boss:
-                GameManager.Instance.EnemyContainer.SpawnBoss(_act, CurrentStageCount.Value + 5);
+                GameManager.Instance.EnemyContainer.SpawnBoss(_act, CurrentStageCount.Value);
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
                 break;
             case StageType.Shop:

@@ -86,7 +86,7 @@ public class GameManager : MonoBehaviour
     {
         EventManager.OnCoinGain.Trigger(amount);
         var c = EventManager.OnCoinGain.GetAndResetValue();
-        Coin.Value += c;
+        Coin.Value += c; 
     }
     
     public void SubCoin(int amount)
@@ -159,7 +159,8 @@ public class GameManager : MonoBehaviour
             Time.timeScale = TimeScale;
         }
         
-        AddCoin(Application.isEditor ? 9999 : 10);
+        // AddCoin(Application.isEditor ? 9999 : 10);
+        AddCoin(10);
     }
 
     private void Update()

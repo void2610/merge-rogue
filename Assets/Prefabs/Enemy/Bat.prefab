@@ -225,8 +225,7 @@ MonoBehaviour:
   hMax: 6
   hMin: 3
   attack: 1
-  defense: 1
-  coin: 1
+  coin: 2
   exp: 5
   canvas: {fileID: 4633884191089636454}
   coinPrefab: {fileID: 1812483531616101450, guid: 2c13a74f3d7c84bd29db8479f7091bf5, type: 3}

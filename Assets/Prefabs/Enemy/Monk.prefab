@@ -138,7 +138,7 @@ MonoBehaviour:
   actionInterval: 3
   hMax: 30
   hMin: 25
-  attack: 20
+  attack: 12
   coin: 10
   exp: 30
   canvas: {fileID: 4633884191089636454}

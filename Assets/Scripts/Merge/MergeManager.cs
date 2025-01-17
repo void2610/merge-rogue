@@ -245,6 +245,7 @@ public class MergeManager : MonoBehaviour
     private bool IsAllBallsStopped()
     {
         if (GameManager.Instance.state != GameManager.GameState.Merge || RemainingBalls != 0) return false;
+        if(Time.time - _lastFallTime < COOL_TIME) return false;
         
         if(_stopTimers == null || _stopTimers.Count != _ballContainer.GetComponentsInChildren<Rigidbody2D>().Length){
             _stopTimers = _ballContainer.GetComponentsInChildren<Rigidbody2D>().ToDictionary(b => b, _ => Time.time);

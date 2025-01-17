@@ -3,7 +3,7 @@ using UnityEngine;
 public class ShieldBoss : EnemyBase
 {
     private bool _isUsedShield = false;
-    private const int SHIELD_STACK = 10;
+    private const int SHIELD_STACK = 3;
     private int _shieldStack;
     private ActionData _shieldAction;
     protected override ActionData GetNextAction()
