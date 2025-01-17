@@ -233,6 +233,7 @@ public class DescriptionWindow : MonoBehaviour
         var allWindows = new List<GameObject>(_subWindows.Values) { this.gameObject, _rootTriggerObject };
         foreach (var window in allWindows)
         {
+            if(window == null) continue;
             if (RectTransformUtility.RectangleContainsScreenPoint(
                     window.GetComponent<RectTransform>(),
                     Input.mousePosition,
