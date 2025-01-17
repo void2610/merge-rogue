@@ -164,7 +164,11 @@ public class DescriptionWindow : MonoBehaviour
         _moveTween?.Kill();
         _fadeTween?.Kill();
         
-        _fadeTween = _cg.DOFade(0, 0.15f).SetUpdate(true).OnComplete(() => this.gameObject.SetActive(false)).SetLink(this.gameObject);
+        _fadeTween = _cg.DOFade(0, 0.15f).SetUpdate(true).OnComplete(() =>
+        {
+            this.gameObject.SetActive(false);
+            this.transform.localPosition = new Vector3(999, 999, 0);
+        }).SetLink(this.gameObject);
         foreach (var window in _subWindows.Values)
         {
             Destroy(window);
@@ -227,13 +231,13 @@ public class DescriptionWindow : MonoBehaviour
     
     private bool IsMouseOverAnyWindow()
     {
-        if (this == null) return false;
+        if (!this) return false;
 
         // 全てのコライダーをチェック
         var allWindows = new List<GameObject>(_subWindows.Values) { this.gameObject, _rootTriggerObject };
         foreach (var window in allWindows)
         {
-            if(window == null) continue;
+            if(!window) continue;
             if (RectTransformUtility.RectangleContainsScreenPoint(
                     window.GetComponent<RectTransform>(),
                     Input.mousePosition,
@@ -254,7 +258,7 @@ public class DescriptionWindow : MonoBehaviour
         // マウスが1秒間連続してウィンドウ外にあるかチェック
         while (true)
         {
-            if (!await CheckMouseOutsideForSeconds(0.5f))
+            if (!await CheckMouseOutsideForSeconds(0.3f))
             {
                 _isCheckingMouse = false;
                 return;

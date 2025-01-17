@@ -1163,7 +1163,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wordDictionary: {fileID: 11400000, guid: ef9676c90c67f4de092cd50dd36e2b02, type: 2}
   subWindowPrefab: {fileID: 7481154211506993491, guid: ba938790f8cea4437927d5f316ff85cb, type: 3}
-  windowCollider: {fileID: 0}
   nameText: {fileID: 1722488597732844919}
   descriptionText: {fileID: 4701696993773371280}
   flavorText: {fileID: 8779522243495380326}
@@ -1172,7 +1171,7 @@ MonoBehaviour:
   - {fileID: 332849840086084253}
   - {fileID: 3374522014009312474}
   rootMinPos: {x: -300, y: -100}
-  rootMaxPos: {x: 300, y: 80}
+  rootMaxPos: {x: 345, y: 80}
   subMinPos: {x: -315, y: -125}
   subMaxPos: {x: 6.5, y: 3.1}
 --- !u!1 &8641179968069719563
