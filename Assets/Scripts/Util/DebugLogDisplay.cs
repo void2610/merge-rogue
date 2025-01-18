@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DebugLogDisplay : MonoBehaviour
 {
-    private const int MAX_LOG_LINES = 10; // 表示するログの最大行数
+    private const int MAX_LOG_LINES = 50; // 表示するログの最大行数
     private string _logText = "";
     private readonly GUIStyle _guiStyle = new();
 
@@ -44,10 +44,15 @@ public class DebugLogDisplay : MonoBehaviour
     
     private void HandleLog(string logString, string stackTrace, LogType type)
     {
-        // Debug.Log()のテキストをlogTextに追加
-        _logText += logString + "\n";
+        _logText += type switch
+        {
+            // エラーメッセージとスタックトレースをlogTextに追加
+            LogType.Error or LogType.Exception => $"[Error] {logString}\n{stackTrace}\n",
+            LogType.Warning => $"[Warning] {logString}\n{stackTrace}\n",
+            _ => $"{logString}\n"
+        };
 
-        // 表示するログの行数がMaxLogLinesを超えたら、古いログを削除
+        // 表示するログの行数がMAX_LOG_LINESを超えたら古いログを削除
         var logLines = _logText.Split('\n');
         if (logLines.Length > MAX_LOG_LINES)
         {
