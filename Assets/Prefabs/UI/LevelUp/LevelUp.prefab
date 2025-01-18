@@ -333,7 +333,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6017403822812798344}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 30, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
@@ -356,7 +356,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   gaugePrefab: {fileID: 405597955949884747, guid: eebe33f56477b4620a691ae7c9296ca7, type: 3}
-  levelUpParticle: {fileID: 3085857972478774853, guid: 10dc23588fcf749d88fd313145a4a892, type: 3}
+  levelUpParticle: {fileID: 8089863643466596350, guid: cf4170ef4d2a14dac80be355668f3992, type: 3}
   title: {fileID: 4410575661515670091}
   gaugeSprite: {fileID: 21300000, guid: 0d796c8e23ec949c8aece1559f2c7f12, type: 3}
   fillGaugeSprite: {fileID: 21300000, guid: 5cfb95bde908847a0b43bfdcf9d95544, type: 3}

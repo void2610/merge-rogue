@@ -16,7 +16,7 @@ public class Player : MonoBehaviour, IEntity
     public int Level { get; private set; } = 1;
     public List<StatusEffectBase> StatusEffects { get; } = new();
     
-    private readonly List<int> _levelUpExp = new() { 20, 40, 80, 100, 150, 200, 250, 300, 350, 400, 500 };
+    private readonly List<int> _levelUpExp = new() { 2, 40, 80, 100, 150, 200, 250, 300, 350, 400, 500 };
     private Material _material;
     
     public void AddStatusEffect(StatusEffectBase effect)

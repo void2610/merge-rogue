@@ -71,7 +71,7 @@ public class LevelUpUI : MonoBehaviour
         _level++;
         _gaugeList[_level - 1].sprite = fillGaugeSprite;
         _gaugeList[_level - 1].material = fillGaugeMaterial;
-        Instantiate(levelUpParticle, _gaugeList[_level - 1].transform.position, Quaternion.identity);
+        var p = Instantiate(levelUpParticle, _gaugeList[_level - 1].transform.position, Quaternion.identity);
         switch (type)
         {
             case LevelUpType.Attack:
@@ -99,6 +99,7 @@ public class LevelUpUI : MonoBehaviour
         CameraMove.Instance.ShakeCamera(0.5f, 0.3f);
         
         await UniTask.Delay(1500);
+        Destroy(p);
         
         UIManager.Instance.EnableCanvasGroup("LevelUp", false);
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);

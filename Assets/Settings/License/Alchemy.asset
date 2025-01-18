@@ -23,7 +23,7 @@ MonoBehaviour:
   _chargeType: 0
   _isNeedToPurchaseForEachMember: 0
   _isNeedAboutThisLibForEachMember: 0
-  _isMustShowLicense: 1
+  _isMustShowLicense: 0
   showLicenseOrder: 500
   _licenseShowText: 'MIT License
 
