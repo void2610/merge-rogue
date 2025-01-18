@@ -355,14 +355,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
-  gaugePrefab: {fileID: 842512843728864809, guid: b0970803f4c084a3ea76bcfeca29408f, type: 3}
+  gaugePrefab: {fileID: 405597955949884747, guid: eebe33f56477b4620a691ae7c9296ca7, type: 3}
+  levelUpParticle: {fileID: 3085857972478774853, guid: 10dc23588fcf749d88fd313145a4a892, type: 3}
   title: {fileID: 4410575661515670091}
   gaugeSprite: {fileID: 21300000, guid: 0d796c8e23ec949c8aece1559f2c7f12, type: 3}
   fillGaugeSprite: {fileID: 21300000, guid: 5cfb95bde908847a0b43bfdcf9d95544, type: 3}
+  defaultGaugeMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  fillGaugeMaterial: {fileID: 2100000, guid: 00c967f3292da4ab18ccbb8174311209, type: 2}
   button: {fileID: 6797017479824929483}
   offset: {x: -145, y: 3}
-  align: 60
-  maxLevel: 6
+  align: 55
+  maxLevel: 7
 --- !u!1 &8817480256734678457
 GameObject:
   m_ObjectHideFlags: 0

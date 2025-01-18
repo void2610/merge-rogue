@@ -283,6 +283,7 @@ public class StageManager : MonoBehaviour
     private async UniTaskVoid NextStage(StageNode next)
     {
         if (GameManager.Instance.IsGameOver) return;
+        var cancelationToken = this.GetCancellationTokenOnDestroy();
         
         // 演出
         SetAllNodeInactive();
@@ -312,7 +313,7 @@ public class StageManager : MonoBehaviour
         var pos = next.Obj.GetComponent<RectTransform>().localPosition;
         _playerIconObj.GetComponent<FloatMove>().MoveTo(pos + new Vector3(0, 2, 0), 0.5f);
         
-        await UniTask.Delay(2000);
+        await UniTask.Delay(2000, cancellationToken: cancelationToken);
         
         // ステージ進行
         CurrentStageCount.Value++;
