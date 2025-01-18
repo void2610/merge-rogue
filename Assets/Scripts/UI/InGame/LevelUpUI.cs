@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class LevelUpUI : MonoBehaviour
 {
+    [Serializable]
     private enum LevelUpType
     {
         Attack,
@@ -37,7 +38,6 @@ public class LevelUpUI : MonoBehaviour
         {
             var gauge = Instantiate(gaugePrefab, this.transform).GetComponent<SpriteRenderer>();
             gauge.sprite = gaugeSprite;
-            gauge.material = defaultGaugeMaterial;
             gauge.transform.localScale = Vector3.one * 70f;
             gauge.transform.SetParent(this.transform);
             gauge.transform.localPosition = new Vector2(align * i, 0) + offset;
@@ -70,8 +70,10 @@ public class LevelUpUI : MonoBehaviour
         if (_level >= maxLevel) return;
         _level++;
         _gaugeList[_level - 1].sprite = fillGaugeSprite;
-        _gaugeList[_level - 1].material = fillGaugeMaterial;
+        // _gaugeList[_level - 1].material = fillGaugeMaterial;
+        _gaugeList[_level - 1].color = new Color(1.5f, 1.5f, 1.5f, 1);
         var p = Instantiate(levelUpParticle, _gaugeList[_level - 1].transform.position, Quaternion.identity);
+
         switch (type)
         {
             case LevelUpType.Attack:
@@ -99,7 +101,7 @@ public class LevelUpUI : MonoBehaviour
         CameraMove.Instance.ShakeCamera(0.5f, 0.3f);
         
         await UniTask.Delay(1500);
-        Destroy(p);
+        Destroy(p, 1f);
         
         UIManager.Instance.EnableCanvasGroup("LevelUp", false);
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
