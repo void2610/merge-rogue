@@ -49,7 +49,6 @@ public class MergeManager : MonoBehaviour
         {
             wall.SetWallWidth(_wallWidths[++_wallWidthLevel]);
         }
-        EndLevelUp();
     }
     
     public void LevelUpAttack()
@@ -58,22 +57,11 @@ public class MergeManager : MonoBehaviour
         {
             attackMagnification = _attacks[++_attackLevel];
         }
-        EndLevelUp();
     }
     
     public void LevelUpBallAmount()
     {
         _ballPerOneTurn++;
-        EndLevelUp();
-    }
-    
-    private static void EndLevelUp()
-    {
-        UIManager.Instance.remainingLevelUps--;
-        if (UIManager.Instance.remainingLevelUps > 0) return;
-        
-        UIManager.Instance.EnableCanvasGroup("LevelUp", false);
-        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
     }
     
     public PhysicsMaterial2D GetWallMaterial()
