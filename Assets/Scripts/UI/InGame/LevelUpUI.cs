@@ -52,7 +52,7 @@ public class LevelUpUI : MonoBehaviour
             .Subscribe(alpha =>
             {
                 // スプライトの色を取得してアルファ値を変更
-                _gaugeList.ForEach(gauge => gauge.color = new Color(1.4f, 1.4f, 1.4f, alpha));
+                _gaugeList.ForEach(gauge => gauge.color = new Color(1.3f, 1.3f, 1.3f, alpha));
             })
             .AddTo(this);
         
@@ -68,7 +68,7 @@ public class LevelUpUI : MonoBehaviour
         if (_level >= maxLevel) return;
         _level++;
         _gaugeList[_level - 1].sprite = fillGaugeSprite;
-        _gaugeList[_level - 1].color = new Color(1.4f, 1.4f, 1.4f, 1);
+        _gaugeList[_level - 1].color = new Color(1.3f, 1.3f, 1.3f, 1);
         var p = Instantiate(levelUpParticle, _gaugeList[_level - 1].transform.position, Quaternion.identity);
 
         switch (type)

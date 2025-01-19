@@ -1111,6 +1111,14 @@ PrefabInstance:
       propertyPath: type
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 6446660940834462851, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
+      propertyPath: fillGaugeSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 6d7412369f46040098185f5937911bf5, type: 3}
+    - target: {fileID: 6446660940834462851, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
+      propertyPath: levelUpParticle
+      value: 
+      objectReference: {fileID: 8089863643466596350, guid: c40c32d85ea964da6a9d2d5dbca2ebaa, type: 3}
     - target: {fileID: 6954130584768704883, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -17853,6 +17861,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelUp
       objectReference: {fileID: 0}
+    - target: {fileID: 6446660940834462851, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
+      propertyPath: fillGaugeSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 8b3824928958c48eba478c105fbe866d, type: 3}
+    - target: {fileID: 6446660940834462851, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
+      propertyPath: levelUpParticle
+      value: 
+      objectReference: {fileID: 8089863643466596350, guid: 91f5a6cc8e7344d6d84e9e765c09f1b0, type: 3}
     - target: {fileID: 6954130584768704883, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
