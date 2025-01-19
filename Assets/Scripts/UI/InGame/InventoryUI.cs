@@ -113,10 +113,12 @@ public class InventoryUI : MonoBehaviour
                 EnableCursor(false);
                 subCursor.GetComponent<SpriteRenderer>().enabled = false;
                 _swapIndex = -1;
+                _state = InventoryUIState.Normal;
                 break;
             case InventoryUIState.Remove:
                 InventoryManager.Instance.RemoveAndShiftBall(index);
                 EnableCursor(false);
+                _state = InventoryUIState.Normal;
                 break;
         }
     }

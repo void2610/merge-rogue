@@ -22,8 +22,6 @@ public class LevelUpUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI title;
     [SerializeField] private Sprite gaugeSprite;
     [SerializeField] private Sprite fillGaugeSprite;
-    [SerializeField] private Material defaultGaugeMaterial;
-    [SerializeField] private Material fillGaugeMaterial;
     [SerializeField] private Button button;
     [SerializeField] private Vector2 offset;
     [SerializeField] private float align;
@@ -54,7 +52,7 @@ public class LevelUpUI : MonoBehaviour
             .Subscribe(alpha =>
             {
                 // スプライトの色を取得してアルファ値を変更
-                _gaugeList.ForEach(gauge => gauge.color = new Color(1, 1, 1, alpha));
+                _gaugeList.ForEach(gauge => gauge.color = new Color(1.4f, 1.4f, 1.4f, alpha));
             })
             .AddTo(this);
         
@@ -70,8 +68,7 @@ public class LevelUpUI : MonoBehaviour
         if (_level >= maxLevel) return;
         _level++;
         _gaugeList[_level - 1].sprite = fillGaugeSprite;
-        // _gaugeList[_level - 1].material = fillGaugeMaterial;
-        _gaugeList[_level - 1].color = new Color(1.5f, 1.5f, 1.5f, 1);
+        _gaugeList[_level - 1].color = new Color(1.4f, 1.4f, 1.4f, 1);
         var p = Instantiate(levelUpParticle, _gaugeList[_level - 1].transform.position, Quaternion.identity);
 
         switch (type)
