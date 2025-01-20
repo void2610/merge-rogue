@@ -11,7 +11,7 @@ public class AddElasticityToWall : RelicBase
         _pm = MergeManager.Instance.GetWallMaterial();
 
         _pm.bounciness = 0.8f;
-        UI?.AlwaysActive();
+        UI?.ActiveAlways();
     }
 
     public override void RemoveEffect()

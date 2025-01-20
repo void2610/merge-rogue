@@ -5,7 +5,12 @@ using R3;
 
 public class ReverseAlchemy : RelicBase
 {
-    private int _damageCount = 0;
+    public override void Init(RelicUI relicUI)
+    {
+        IsCountable = true;
+        base.Init(relicUI);
+    }
+    
     protected override void SubscribeEffect()
     {
         var disposable = EventManager.OnPlayerDamage.Subscribe(EffectImpl).AddTo(this);
@@ -15,12 +20,12 @@ public class ReverseAlchemy : RelicBase
     protected override void EffectImpl(Unit _)    
     {
         var x = EventManager.OnPlayerDamage.GetValue();
-        _damageCount += x;
+        Count.Value += x;
 
         var isActivated = false;
-        while (_damageCount >= 5)
+        while (Count.Value >= 5)
         {
-            _damageCount -= 5;
+            Count.Value -= 5;
             GameManager.Instance.AddCoin(1);
             isActivated = true;
         }

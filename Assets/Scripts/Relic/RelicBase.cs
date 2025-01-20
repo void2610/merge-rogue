@@ -7,10 +7,15 @@ public abstract class RelicBase : MonoBehaviour
 {
     protected readonly List<IDisposable> Disposables = new();
     protected RelicUI UI;
+    protected bool IsCountable = false;
+    protected readonly ReactiveProperty<int> Count = new(0);
 
-    public void Init(RelicUI relicUI)
+    public virtual void Init(RelicUI relicUI)
     {
         UI = relicUI;
+        UI.EnableCount(IsCountable);
+        UI.SubscribeCount(Count);
+        
         SubscribeEffect();
     }
     

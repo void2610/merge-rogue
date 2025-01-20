@@ -15,7 +15,7 @@ public class AddMaxHealth : RelicBase
     protected override void SubscribeEffect()
     {
         GameManager.Instance.Player.MaxHealth.Value += 10;
-        UI?.AlwaysActive();
+        UI?.ActiveAlways();
     }
     
     protected override void EffectImpl(Unit _) {}
