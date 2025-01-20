@@ -139,6 +139,7 @@ public class EnemyContainer : MonoBehaviour
         // 一番前の敵を攻撃、攻撃力が残っていたら次の敵を攻撃
         foreach (var e in es)
         {
+            if(!e) continue;
             if (singleDamage <= 0) break;
             var actualDamage = singleDamage > e.Health ? e.Health : singleDamage;
             if (es.IndexOf(e) == es.Count - 1) actualDamage = singleDamage;

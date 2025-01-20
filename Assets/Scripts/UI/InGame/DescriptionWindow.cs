@@ -158,6 +158,7 @@ public class DescriptionWindow : MonoBehaviour
 
     private void HideWindow()
     {
+        if(!descriptionText) return;
         if(IsMouseOverWindowOrDescendants(descriptionText.gameObject)) return;
         if(_moveTween.active) return;
         
@@ -206,6 +207,7 @@ public class DescriptionWindow : MonoBehaviour
     
     private bool IsMouseOverWindowOrDescendants(GameObject window)
     {
+        if(!window) return false;
         // マウスが現在のウィンドウ上にあるかチェック
         if (RectTransformUtility.RectangleContainsScreenPoint(
                 window.GetComponent<RectTransform>(), Input.mousePosition, _uiCamera))
@@ -271,6 +273,7 @@ public class DescriptionWindow : MonoBehaviour
 
     private async UniTask<bool> CheckMouseOutsideForSeconds(float duration)
     {
+        var cancelToken = this.GetCancellationTokenOnDestroy();
         var timer = 0f;
         while (timer < duration)
         {
@@ -279,7 +282,7 @@ public class DescriptionWindow : MonoBehaviour
             // 経過時間を加算
             timer += Time.deltaTime / Time.timeScale;
             // フレームの終了まで待機
-            await UniTask.Yield(PlayerLoopTiming.Update);
+            await UniTask.Yield(PlayerLoopTiming.Update, cancelToken);
         }
         return true;
     }
@@ -289,8 +292,6 @@ public class DescriptionWindow : MonoBehaviour
         this.gameObject.SetActive(false);
         _cg = this.gameObject.GetComponent<CanvasGroup>();
         _uiCamera = SceneManager.GetActiveScene() == SceneManager.GetSceneByName("TitleScene") ? Camera.main : GameManager.Instance.UICamera;
-        
-        // Utils.AddEventToObject(windowCollider, HideWindow, EventTriggerType.PointerExit);
     }
     
     private void Update()
