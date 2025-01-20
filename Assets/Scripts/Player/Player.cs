@@ -13,10 +13,11 @@ public class Player : MonoBehaviour, IEntity
     public readonly ReactiveProperty<int> Health = new(100);
     public readonly ReactiveProperty<int> MaxHealth = new(100);
     public int MaxExp { get; private set; } = 20;
-    public int Level { get; private set; } = 1;
+    public int Level { get; set; } = 1;
     public List<StatusEffectBase> StatusEffects { get; } = new();
-    
-    private readonly List<int> _levelUpExp = new() { 20, 40, 80, 100, 150, 200, 250, 300, 350, 400, 500 };
+    public const int MAX_LEVEL = 22;
+
+    private readonly List<int> _levelUpExp = new() { 20, 40, 80, 100, 150, 200, 250, 300, 350, 400, 500, 600, 700, 800, 900, 1000, 1200, 1400, 1600, 1800, 2000 };
     private Material _material;
     
     public void AddStatusEffect(StatusEffectBase effect)
@@ -119,29 +120,36 @@ public class Player : MonoBehaviour, IEntity
     public void AddExp(int amount)
     {
         Exp.Value += amount;
-        if(!CheckAndLevelUp()) GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+
+        if (CheckAndLevelUp())
+        {
+            SeManager.Instance.PlaySe("levelUp");
+            GameManager.Instance.ChangeState(GameManager.GameState.LevelUp);
+        }
+        else
+        {        
+            GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+        }
+        Exp.ForceNotify();
     }
+
+    public bool CanLevelUp() => Level <= MAX_LEVEL;
     
     private bool CheckAndLevelUp()
     {
-        if (Exp.Value < _levelUpExp[Level - 1])
-        {
-            return false;
-        }
+        if(Level >= MAX_LEVEL) return false;
+        if (Exp.Value < _levelUpExp[Level - 1]) return false;
 
         Exp.Value -= _levelUpExp[Level - 1];
-        MaxExp = _levelUpExp[Level];
+        MaxExp = _levelUpExp[Level - 1];
         Level++;
-        SeManager.Instance.PlaySe("levelUp");
         UIManager.Instance.remainingLevelUps++;
-        UIManager.Instance.EnableCanvasGroup("LevelUp", true);
-        GameManager.Instance.ChangeState(GameManager.GameState.LevelUp);
-
+        
+        //最大レベルを超えたらレベルアップしない
+        if (Level >= MAX_LEVEL) return true;
+        
         if (Exp.Value >= _levelUpExp[Level - 1])
-        {
             CheckAndLevelUp();
-        }
-        Exp.ForceNotify();
         return true;
     }
 

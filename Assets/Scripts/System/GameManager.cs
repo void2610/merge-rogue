@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Numerics;
 using UnityEngine;
 using R3;
@@ -123,7 +124,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.StageMoving:
                 // レベルアップが残っている場合はレベルアップ画面を表示
-                if (UIManager.Instance.remainingLevelUps > 0)
+                if (UIManager.Instance.remainingLevelUps > 0 && Player.CanLevelUp())
                     ChangeState(GameState.LevelUp);
                 else
                     ChangeState(GameState.MapSelect);
@@ -146,7 +147,15 @@ public class GameManager : MonoBehaviour
             case GameState.Event:
                 break;
             case GameState.LevelUp:
-                UIManager.Instance.EnableCanvasGroup("LevelUp", true);
+                if (Player.CanLevelUp())
+                {
+                    UIManager.Instance.EnableCanvasGroup("LevelUp", true);
+                }
+                else
+                {
+                    UIManager.Instance.remainingLevelUps = 0;
+                    ChangeState(GameState.MapSelect);
+                }
                 break;
         }
     }

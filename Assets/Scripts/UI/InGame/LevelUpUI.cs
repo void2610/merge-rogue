@@ -93,12 +93,15 @@ public class LevelUpUI : MonoBehaviour
         }
         
         UIManager.Instance.remainingLevelUps--;
-        if (UIManager.Instance.remainingLevelUps > 0) return;
         SeManager.Instance.PlaySe("levelUp");
         CameraMove.Instance.ShakeCamera(0.5f, 0.3f);
+        Destroy(p, 1f);
+        
+        if (UIManager.Instance.remainingLevelUps > 0) return;
+        
+        this.transform.parent.GetComponent<CanvasGroup>().interactable = false;
         
         await UniTask.Delay(1500);
-        Destroy(p, 1f);
         
         UIManager.Instance.EnableCanvasGroup("LevelUp", false);
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
