@@ -293,7 +293,7 @@ public class MergeManager : MonoBehaviour
         
 
         var mousePosX = GameManager.Instance.UICamera.ScreenToWorldPoint(Input.mousePosition).x;
-        var isMouseOvered = mousePosX > -_limit + size / 2 && mousePosX < _limit - size / 2;
+        var isMouseOvered = mousePosX > -_limit + size / 2 - 1 && mousePosX < _limit - size / 2 + 1;
         if (isMouseOvered)
         {
             mousePosX = Mathf.Clamp(mousePosX, -_limit + size / 2, _limit - size / 2);

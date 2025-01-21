@@ -67,11 +67,10 @@ public class Shop : MonoBehaviour
     {
         var ball = _currentItems[index] as BallData;
         if (!ball) return;
-        var itemPrice = ball.price;
         
         InventoryManager.Instance.AddBall(ball);
         _itemObjects[index].transform.position = _disabledPosition;
-        GameManager.Instance.SubCoin(itemPrice);
+        GameManager.Instance.SubCoin(ball.price);
         SeManager.Instance.PlaySe("coin");
     }
 
@@ -98,6 +97,7 @@ public class Shop : MonoBehaviour
         var button = g.GetComponent<Button>();
         if (button)
         {
+            Utils.RemoveAllEventFromObject(g);
             button.onClick.AddListener(() =>
             {
                 if (!ball) return;

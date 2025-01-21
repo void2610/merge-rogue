@@ -72,6 +72,7 @@ public class InventoryManager : MonoBehaviour
         for (var i = index; i < InventorySize - 1; i++)
         {
             var data = _inventory[i + 1].GetComponent<BallBase>().Data;
+            Destroy(_inventory[i + 1]);
             _inventory[i] = CreateBallInstanceFromBallData(data, i + 1);
             InventoryUI.CreateBallUI(_inventory[i], i, data);
         }
