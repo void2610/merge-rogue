@@ -9,31 +9,6 @@ using UnityEngine.Serialization;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            if (PlayerPrefs.GetString("SeedText", "") == "")
-            {
-                _seed = (int)DateTime.Now.Ticks;
-                // Debug.Log("random seed: " + seed);
-            }
-            else
-            {
-                _seed = PlayerPrefs.GetInt("Seed", _seed);
-                // Debug.Log("fixed seed: " + seed);
-            }
-            _random = new System.Random(_seed);
-            DOTween.SetTweensCapacity(tweenersCapacity: 800, sequencesCapacity: 800);
-
-            Player = playerObj.GetComponent<Player>();
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-    }
 
     public enum GameState
     {
@@ -56,6 +31,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Camera uiCamera;
     [SerializeField] private Canvas pixelCanvas;
     [SerializeField] private Canvas uiCanvas;
+    [SerializeField] private int debugCoin = 0;
 
     public float TimeScale { get; private set; } = 1.0f;
     public bool IsGameOver { get; private set; } = false;
@@ -66,6 +42,7 @@ public class GameManager : MonoBehaviour
     public Camera UICamera => uiCamera;
     
     public readonly ReactiveProperty<BigInteger> Coin = new(0);
+    private string _seedText;
     private int _seed = 42;
     private bool _isPaused = false;
     private bool _isMapOpened = false;
@@ -159,6 +136,35 @@ public class GameManager : MonoBehaviour
                 break;
         }
     }
+    
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            if (PlayerPrefs.GetString("SeedText", "") == "")
+            {
+                var g = Guid.NewGuid();
+                _seedText = g.ToString("N")[..8];
+                _seed = _seedText.GetHashCode();
+                Debug.Log("random seed: " + _seedText);
+            }
+            else
+            {
+                _seedText = PlayerPrefs.GetString("SeedText", "");
+                _seed = _seedText.GetHashCode();
+                Debug.Log("fixed seed: " + _seedText);
+            }
+            _random = new System.Random(_seed);
+            DOTween.SetTweensCapacity(tweenersCapacity: 800, sequencesCapacity: 800);
+
+            Player = playerObj.GetComponent<Player>();
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+    }
 
     public void Start()
     {
@@ -167,9 +173,9 @@ public class GameManager : MonoBehaviour
             TimeScale = 3.0f;
             Time.timeScale = TimeScale;
         }
+        UIManager.Instance.SetSeedText(_seedText);
         
-        // AddCoin(Application.isEditor ? 9999 : 10);
-        AddCoin(10);
+        AddCoin(Application.isEditor ? debugCoin : 10);
     }
 
     private void Update()

@@ -19,6 +19,7 @@ public class UIManager : MonoBehaviour
     
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider seSlider;
+    [SerializeField] private TextMeshProUGUI seedText;
     [SerializeField] private Image fadeImage;
     [SerializeField] private DescriptionWindow descriptionWindow;
     
@@ -80,6 +81,7 @@ public class UIManager : MonoBehaviour
     private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
     public void ShowRelicDescriptionWindow(RelicData r, GameObject g) => descriptionWindow.ShowWindow(r, g);
     public void ShowBallDescriptionWindow(BallData b, GameObject g) => descriptionWindow.ShowWindow(b, g);
+    public void SetSeedText(string seed) => seedText.text = "seed: " + seed;
     
     public void OnClickRestButton()
     {
