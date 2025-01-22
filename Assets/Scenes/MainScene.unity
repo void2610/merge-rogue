@@ -16445,29 +16445,13 @@ GameObject:
   m_Component:
   - component: {fileID: 1997023697}
   - component: {fileID: 1997023698}
-  - component: {fileID: 1997023696}
   m_Layer: 0
-  m_Name: EnemySelector
+  m_Name: ContentProvider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1997023696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1997023695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 90fe520d08c1045e2989a70f165d243b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bossList:
-  - bossList:
-    - {fileID: 5901398579228155482, guid: 2804a6531370042f293b3369b843b3c3, type: 3}
 --- !u!4 &1997023697
 Transform:
   m_ObjectHideFlags: 0
@@ -16492,15 +16476,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1997023695}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4f90e1d5eb1a4b84aa832ec071b20a7, type: 3}
+  m_Script: {fileID: 11500000, guid: 00cb786866a5d4374a7dc4a0ff1f4d2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   enemyList:
   - list:
-    - prefab: {fileID: 5901398579228155482, guid: 54009fcfd956249999622bfbac938605, type: 3}
+    - data: {fileID: 5901398579228155482, guid: 48862e4bf4a2840eaae7664f1fe8025a, type: 3}
+      probability: 0.5
+    - data: {fileID: 5901398579228155482, guid: 54009fcfd956249999622bfbac938605, type: 3}
+      probability: 0.5
+  bossList:
+  - list:
+    - data: {fileID: 5901398579228155482, guid: 2804a6531370042f293b3369b843b3c3, type: 3}
       probability: 1
-    - prefab: {fileID: 5901398579228155482, guid: 48862e4bf4a2840eaae7664f1fe8025a, type: 3}
-      probability: 1
+  relicList: []
+  eventList: []
+  ballList: []
 --- !u!1001 &2020573309
 PrefabInstance:
   m_ObjectHideFlags: 0

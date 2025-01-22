@@ -31,17 +31,12 @@ public class EnemyContainer : MonoBehaviour
 
     public List<EnemyBase> GetAllEnemies()
     {
-        var enemyBases = new List<EnemyBase>();
-        foreach (var enemy in _currentEnemies)
-        {
-            enemyBases.Add(enemy.transform.GetChild(0).GetComponent<EnemyBase>());
-        }
-        return enemyBases;
+        return _currentEnemies.Select(enemy => enemy.transform.GetChild(0).GetComponent<EnemyBase>()).ToList();
     }
 
-    public void SpawnBoss(int act, int stage)
+    public void SpawnBoss(int stage)
     {
-        var boss = BossSelector.Instance.GetBossEnemy(act);
+        var boss = ContentProvider.Instance.GetRandomBoss();
         boss.transform.parent = this.transform;
         boss.transform.localScale = new Vector3(1, 1, 1);
         boss.transform.position = _positions[_currentEnemies.Count];
@@ -51,13 +46,13 @@ public class EnemyContainer : MonoBehaviour
         _currentEnemies.Add(boss);
     }
 
-    public void SpawnEnemy(int count, int act, int stage)
+    public void SpawnEnemy(int count, int stage)
     {
         count = count > ENEMY_NUM ? ENEMY_NUM : count;
         if (count <= 0) return;
-        var enemies = EnemySelector.Instance.GetEnemy(count, act);
-        foreach (var e in enemies)
+        for(var i = 0; i < count; i++)
         {
+            var e = ContentProvider.Instance.GetRandomEnemy();
             e.transform.parent = this.transform;
             e.transform.position = _positions[_currentEnemies.Count];
             e.transform.localScale = new Vector3(1, 1, 1);
