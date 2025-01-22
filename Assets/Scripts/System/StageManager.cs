@@ -73,7 +73,6 @@ public class StageManager : MonoBehaviour
     public StageNode CurrentStage { get; private set; } = null;
     private static readonly int _mainTex = Shader.PropertyToID("_MainTex");
     private Tween _torchTween;
-    private int _act = 0;
 
     private StageData ChoseStage()
     {
@@ -246,7 +245,7 @@ public class StageManager : MonoBehaviour
         // ボスを倒したらマップを再生成して次のステージを設定
         if (CurrentStage?.Type == StageType.Boss)
         {
-            _act++;
+            ContentProvider.Instance.AddAct();
             // ボスを倒したら回復
             GameManager.Instance.Player.HealToFull();
             GenerateMap();
@@ -283,7 +282,7 @@ public class StageManager : MonoBehaviour
     private async UniTaskVoid NextStage(StageNode next)
     {
         if (GameManager.Instance.IsGameOver) return;
-        var cancelationToken = this.GetCancellationTokenOnDestroy();
+        var token = this.GetCancellationTokenOnDestroy();
         
         // 演出
         SetAllNodeInactive();
@@ -313,7 +312,7 @@ public class StageManager : MonoBehaviour
         var pos = next.Obj.GetComponent<RectTransform>().localPosition;
         _playerIconObj.GetComponent<FloatMove>().MoveTo(pos + new Vector3(0, 2, 0), 0.5f);
         
-        await UniTask.Delay(2000, cancellationToken: cancelationToken);
+        await UniTask.Delay(2000, cancellationToken: token);
         
         // ステージ進行
         CurrentStageCount.Value++;

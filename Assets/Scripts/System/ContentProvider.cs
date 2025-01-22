@@ -71,6 +71,8 @@ public class ContentProvider : MonoBehaviour
         return Instantiate(lastPrefab);
     }
     
+    public void AddAct() => _act++;
+    
     private void Awake()
     {
         if (Instance == null)
