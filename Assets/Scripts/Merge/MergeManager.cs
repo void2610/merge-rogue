@@ -99,6 +99,8 @@ public class MergeManager : MonoBehaviour
         GameManager.Instance.ChangeState(GameManager.GameState.PlayerAttack);
     }
     
+    public int GetBallCount() => _ballContainer.GetComponentsInChildren<Rigidbody2D>().Length;
+    
     // 次のボールを生成
     private void ResetRemainingBalls()
     {

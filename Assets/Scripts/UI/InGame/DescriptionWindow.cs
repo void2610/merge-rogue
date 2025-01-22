@@ -260,7 +260,7 @@ public class DescriptionWindow : MonoBehaviour
         // マウスが1秒間連続してウィンドウ外にあるかチェック
         while (true)
         {
-            if (!await CheckMouseOutsideForSeconds(0.3f))
+            if (!await CheckMouseOutsideForSeconds(0.15f))
             {
                 _isCheckingMouse = false;
                 return;
