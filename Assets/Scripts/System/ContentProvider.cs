@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -26,49 +28,30 @@ public class ContentProvider : MonoBehaviour
     [SerializeField] private List<ContentDataList> ballList;
     
     private int _act = 0;
+
+    public StageEventBase GetRandomEvent()
+    {
+        var obj = GetRandomObjectFromList(eventList) as StageEventData;
+        if (!obj) throw new Exception("Event is null");
+        StageEventBase e = null;
+        var type = System.Type.GetType(obj.className);
+        e = this.gameObject.AddComponent(type) as StageEventBase;
+        if(!e) throw new Exception("Event is not a subclass of StageEventBase");
+        
+        e.Init();
+        return e;
+    }
     
     public GameObject GetRandomEnemy()
     {
-        if(enemyList.Count <= _act) _act = enemyList.Count - 1;
-        
-        var total = enemyList[_act].list.Sum(d => d.probability);
-        var randomPoint = GameManager.Instance.RandomRange(0.0f, total);
-
-        foreach (var enemyData in enemyList[_act].list)
-        {
-            if (randomPoint < enemyData.probability)
-            {
-                var prefab = enemyData.data as GameObject;
-                return Instantiate(prefab);
-                break;
-            }
-            randomPoint -= enemyData.probability;
-        }
-        
-        var lastPrefab = enemyList[_act].list.Last().data as GameObject;
-        return Instantiate(lastPrefab);
+        var enemy = GetRandomObjectFromList(enemyList) as GameObject;
+        return Instantiate(enemy);
     }
     
     public GameObject GetRandomBoss()
     {
-        if(bossList.Count <= _act) _act = bossList.Count - 1;
-        
-        var total = bossList[_act].list.Sum(d => d.probability);
-        var randomPoint = GameManager.Instance.RandomRange(0.0f, total);
-
-        foreach (var bossData in bossList[_act].list)
-        {
-            if (randomPoint < bossData.probability)
-            {
-                var prefab = bossData.data as GameObject;
-                return Instantiate(prefab);
-                break;
-            }
-            randomPoint -= bossData.probability;
-        }
-        
-        var lastPrefab = bossList[_act].list.Last().data as GameObject;
-        return Instantiate(lastPrefab);
+        var boss = GetRandomObjectFromList(bossList) as GameObject;
+        return Instantiate(boss);
     }
     
     public void AddAct() => _act++;
@@ -79,5 +62,28 @@ public class ContentProvider : MonoBehaviour
             Instance = this;
         else
             Destroy(this);
+    }
+
+    private Object GetRandomObjectFromList(List<ContentDataList> contentLists)
+    {
+        // アクトに基づいてリストを選択
+        if (contentLists.Count <= _act) _act = contentLists.Count - 1;
+
+        var contentDataList = contentLists[_act].list;
+        var totalProbability = contentDataList.Sum(d => d.probability);
+        var randomPoint = GameManager.Instance.RandomRange(0.0f, totalProbability);
+
+        foreach (var contentData in contentDataList)
+        {
+            if (randomPoint < contentData.probability)
+            {
+                // データをそのまま返す
+                return contentData.data;
+            }
+            randomPoint -= contentData.probability;
+        }
+
+        // フォールバックとして最後の要素を返す
+        return contentDataList.Last().data;
     }
 }

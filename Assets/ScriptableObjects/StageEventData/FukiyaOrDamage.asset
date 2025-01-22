@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f07a17f0eab9c489ea1729807897b214, type: 3}
-  m_Name: AllEventDataList
+  m_Script: {fileID: 11500000, guid: bf176aeba95274a1e8cf42b3bc6cca66, type: 3}
+  m_Name: FukiyaOrDamage
   m_EditorClassIdentifier: 
-  list:
-  - {fileID: 11400000, guid: 04155a194a7e64e52b7007e19437c2be, type: 2}
-  - {fileID: 11400000, guid: d0c81f31214f44837bbf92c37d5a0b36, type: 2}
+  eventName: FukiyaOrDamage
+  className: FukiyaOrDamage

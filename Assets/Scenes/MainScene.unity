@@ -3922,7 +3922,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 929216959486641cda61f52961f6a39c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allEventData: {fileID: 11400000, guid: cb4589f18e7cf4906aa13007c2430da8, type: 2}
   descriptionText: {fileID: 611215501}
   options:
   - {fileID: 1466561433}
@@ -16490,7 +16489,10 @@ MonoBehaviour:
     - data: {fileID: 5901398579228155482, guid: 2804a6531370042f293b3369b843b3c3, type: 3}
       probability: 1
   relicList: []
-  eventList: []
+  eventList:
+  - list:
+    - data: {fileID: 11400000, guid: 04155a194a7e64e52b7007e19437c2be, type: 2}
+      probability: 1
   ballList: []
 --- !u!1001 &2020573309
 PrefabInstance:

@@ -41,7 +41,7 @@ public static class EventManager
     // 休憩した時: HP回復量
     public static readonly GameEvent<int> OnRest = new (0);
     // イベントに入った時: イベントデータ
-    public static readonly GameEvent<EventData> OnEventEnter = new (null);
+    public static readonly GameEvent<StageEventBase> OnEventEnter = new (null);
     // ボールを整理した時: なし
     public static readonly GameEvent<int> OnOrganise = new (0);
     // 休憩から出た時: なし

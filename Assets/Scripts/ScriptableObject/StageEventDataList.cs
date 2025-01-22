@@ -1,13 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 using UnityEngine.Serialization;
 
-[CreateAssetMenu(fileName = "EventDataList", menuName = "Scriptable Objects/EventDataList")]
-public class EventDataList : ScriptableObject
+[CreateAssetMenu(fileName = "StageEventDataList", menuName = "Scriptable Objects/StageEventDataList")]
+public class StageEventDataList : ScriptableObject
 {
-    [FormerlySerializedAs("eventDataList")] [SerializeField] 
-    public List<EventData> list = new ();
-    
+    [SerializeField] public List<StageEventData> list = new ();
+
     public void Register()
     {
 #if UNITY_EDITOR
@@ -15,18 +15,18 @@ public class EventDataList : ScriptableObject
         var path = UnityEditor.AssetDatabase.GetAssetPath(this);
         path = System.IO.Path.GetDirectoryName(path);
 
-        // 指定ディレクトリ内の全てのEventDataを検索
-        var guids = UnityEditor.AssetDatabase.FindAssets("t:EventData", new[] { path });
+        // 指定ディレクトリ内の全てのStageEventDataを検索
+        var guids = UnityEditor.AssetDatabase.FindAssets("t:StageEventData", new[] { path });
 
         // 検索結果をリストに追加
         list.Clear();
         foreach (var guid in guids)
         {
             var assetPath = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
-            var eventData = UnityEditor.AssetDatabase.LoadAssetAtPath<EventData>(assetPath);
-            if (eventData != null)
+            var stageEventData = UnityEditor.AssetDatabase.LoadAssetAtPath<StageEventData>(assetPath);
+            if (stageEventData != null)
             {
-                list.Add(eventData);
+                list.Add(stageEventData);
             }
         }
 
