@@ -16493,6 +16493,8 @@ MonoBehaviour:
   - list:
     - data: {fileID: 11400000, guid: 04155a194a7e64e52b7007e19437c2be, type: 2}
       probability: 1
+    - data: {fileID: 11400000, guid: d0c81f31214f44837bbf92c37d5a0b36, type: 2}
+      probability: 1
   ballList: []
 --- !u!1001 &2020573309
 PrefabInstance:
