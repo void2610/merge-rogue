@@ -12,7 +12,6 @@ public class Treasure : MonoBehaviour
     [SerializeField] private float itemOffset;
     private const int MAX_ITEMS = 3;
     private readonly Vector3 _disablePosition = new Vector3(100, 100, 0);
-    private static RelicDataList AllRelics => RelicManager.Instance.allRelicDataList;
 
     public void OpenTreasure(int count, Rarity rarity = Rarity.Common)
     {

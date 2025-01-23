@@ -88,6 +88,8 @@ public class ContentProvider : MonoBehaviour
             Instance = this;
         else
             Destroy(this);
+        
+        relicList.Register();
     }
 
     private Object GetRandomObjectFromList(List<ContentDataList> contentLists)

@@ -19,7 +19,6 @@ public class Shop : MonoBehaviour
     private List<GameObject> _itemObjects;
     private readonly List<Vector3> _itemPositions = new();
     private readonly Vector3 _disabledPosition = new (100, 100, 0);
-    private static RelicDataList AllRelics => RelicManager.Instance.allRelicDataList;
     private static BallDataList AllBalls => InventoryManager.Instance.allBallDataList;
 
 
@@ -39,16 +38,17 @@ public class Shop : MonoBehaviour
         {
             var balls = AllBalls.GetBallListExceptNormal();
             var isBall = GameManager.Instance.RandomRange(0.0f, 1.0f) > 0.5f;
-            var index = GameManager.Instance.RandomRange(0, isBall ? balls.Count : AllRelics.list.Count);
             if (isBall)
             {
+                var index = GameManager.Instance.RandomRange(0, balls.Count);
                 _currentItems.Add(balls[index]);
                 SetBallEvent(_itemObjects[i].transform.gameObject, balls[index], i);
             }
             else
             {
-                _currentItems.Add(AllRelics.list[index]);
-                SetRelicEvent(_itemObjects[i].transform.gameObject, AllRelics.list[index], i);
+                var r = ContentProvider.Instance.GetRandomRelic();
+                _currentItems.Add(r);
+                SetRelicEvent(_itemObjects[i].transform.gameObject, r, i);
             }
         }
     }

@@ -7,7 +7,6 @@ public class RelicManager : MonoBehaviour
 {
     public static RelicManager Instance;
     
-    [SerializeField] public RelicDataList allRelicDataList;
     [SerializeField] private GameObject relicPrefab;
     [SerializeField] private Transform relicContainer;
     [SerializeField] private Vector3 relicGridPosition;
@@ -59,9 +58,8 @@ public class RelicManager : MonoBehaviour
     
     private void ApplyEffect(RelicData r, RelicUI rui)
     {
-        RelicBase behaviour = null;
         var type = System.Type.GetType(r.className);
-        behaviour = this.gameObject.AddComponent(type) as RelicBase;
+        var behaviour = gameObject.AddComponent(type) as RelicBase;
         if(!behaviour)
         {
             Debug.LogError("指定されたクラスは存在しません: " + r.className);
@@ -76,18 +74,14 @@ public class RelicManager : MonoBehaviour
     {
         if (Instance == null) Instance = this;
         else Destroy(this);
-        
-        allRelicDataList.Register();
     }
 
     private void Start()
     {
-        if (UnityEngine.Application.isEditor)
+        if (!Application.isEditor) return;
+        foreach (var r in testRelics)
         {
-            foreach (var r in testRelics)
-            {
-                AddRelic(r);
-            }
+            AddRelic(r);
         }
     }
 }
