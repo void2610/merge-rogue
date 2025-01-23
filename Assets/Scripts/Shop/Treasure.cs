@@ -16,11 +16,7 @@ public class Treasure : MonoBehaviour
 
     public void OpenTreasure(int count, Rarity rarity = Rarity.Common)
     {
-        if (count is > MAX_ITEMS or <= 0)
-        {
-            Debug.LogError("Count is bigger than items count");
-            return;
-        }
+        if (count is > MAX_ITEMS or <= 0) throw new System.Exception("Invalid count");
         for (var i = 0; i < items.Count; i++)
         {
             if (i < count)
@@ -29,8 +25,7 @@ public class Treasure : MonoBehaviour
                 items[i].transform.position = _disablePosition;
         }
         
-        var relics = AllRelics.GetRelicDataFromRarity(rarity);
-        
+        var relics = ContentProvider.Instance.GetRelicDataByRarity(rarity);
         for (var i = 0; i < count; i++)
         {
             var r = GameManager.Instance.RandomRange(0, relics.Count);

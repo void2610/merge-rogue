@@ -16488,12 +16488,12 @@ MonoBehaviour:
   - list:
     - data: {fileID: 5901398579228155482, guid: 2804a6531370042f293b3369b843b3c3, type: 3}
       probability: 1
-  relicList: []
+  relicList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
   eventList:
   - list:
-    - data: {fileID: 11400000, guid: 04155a194a7e64e52b7007e19437c2be, type: 2}
-      probability: 1
     - data: {fileID: 11400000, guid: d0c81f31214f44837bbf92c37d5a0b36, type: 2}
+      probability: 1
+    - data: {fileID: 11400000, guid: 04155a194a7e64e52b7007e19437c2be, type: 2}
       probability: 1
   ballList: []
 --- !u!1001 &2020573309

@@ -14,9 +14,8 @@ public class FukiyaOrDamage : StageEventBase
                 description = "バッグで受け止める(レリック獲得)",
                 Action = () =>
                 {
-                    //TODO: fukiyaレリック取得処理
-                    RelicData relic = null;
-                    RelicManager.Instance.AddRelic(relic);
+                    var r = ContentProvider.Instance.GetRelicByName("Fukiya");
+                    RelicManager.Instance.AddRelic(r);
                 }
             },
             new OptionData

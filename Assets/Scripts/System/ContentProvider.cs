@@ -23,7 +23,7 @@ public class ContentProvider : MonoBehaviour
     
     [SerializeField] private List<ContentDataList> enemyList;
     [SerializeField] private List<ContentDataList> bossList;
-    [SerializeField] private List<ContentDataList> relicList;
+    [SerializeField] private RelicDataList relicList;
     [SerializeField] private List<ContentDataList> eventList;
     [SerializeField] private List<ContentDataList> ballList;
     
@@ -52,6 +52,32 @@ public class ContentProvider : MonoBehaviour
     {
         var boss = GetRandomObjectFromList(bossList) as GameObject;
         return Instantiate(boss);
+    }
+    
+    public RelicData GetRandomRelic()
+    {
+        // TODO: 取得しているレリックの出現確率を調整する
+        // 全てのレリックは同じ確率
+        var randomIndex = GameManager.Instance.RandomRange(0, relicList.list.Count);
+        return relicList.list[randomIndex];
+    }
+
+    public RelicData GetRelicByName(string n)
+    {
+        var r = relicList.list.Find(relic => relic.name == n);
+        if (!r) throw new Exception("Relic not found");
+        return r;
+    }
+    
+    public RelicData GetRandomRelicDataByRarity(Rarity r)
+    {
+        var relics = relicList.list.Where(bd => bd.rarity == r).ToList();
+        return relics[GameManager.Instance.RandomRange(0, relics.Count)];
+    }
+    
+    public List<RelicData> GetRelicDataByRarity(Rarity r)
+    {
+        return relicList.list.Where(bd => bd.rarity == r).ToList();
     }
     
     public void AddAct() => _act++;

@@ -14,10 +14,9 @@ public class Santa : RelicBase
     protected override void EffectImpl(Unit _)
     {
         var rarity = GameManager.Instance.RandomRange(0.0f, 1.0f) > 0.5f ? Rarity.Common : Rarity.Uncommon;
-        var relics = RelicManager.Instance.allRelicDataList.GetRelicDataFromRarity(rarity);
-        var r = GameManager.Instance.RandomRange(0, relics.Count);
+        var relics = ContentProvider.Instance.GetRelicDataByRarity(rarity);
         
-        RelicManager.Instance.AddRelic(relics[r]);
+        RelicManager.Instance.AddRelic(relics[GameManager.Instance.RandomRange(0, relics.Count)]);
         UI?.ActivateUI();
     }
 }

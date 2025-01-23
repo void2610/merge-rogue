@@ -9,12 +9,6 @@ public class RelicDataList : ScriptableObject
     [FormerlySerializedAs("relicDataList")] [SerializeField] 
     public List<RelicData> list = new ();
 
-    // リストを取得する
-    public List<RelicData> GetRelicDataFromRarity(Rarity r)
-    {
-        return list.Where(bd => bd.rarity == r).ToList();
-    }
-
     public void Register()
     {
 #if UNITY_EDITOR

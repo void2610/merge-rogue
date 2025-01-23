@@ -16,7 +16,6 @@ public class EventProcessor : MonoBehaviour
     public void SetRandomEvent()
     {
         _currentEvent = ContentProvider.Instance.GetRandomEvent();
-        Debug.Log(_currentEvent);
         _currentEvent.Init();
         descriptionText.text = _currentEvent.MainDescription;
         options.ForEach(option => option.SetActive(false));
