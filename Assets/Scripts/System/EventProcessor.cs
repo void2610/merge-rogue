@@ -27,7 +27,7 @@ public class EventProcessor : MonoBehaviour
             SetOptionBehaviour(options[i].GetComponent<Button>(), _currentEvent.Options[i]);
             options[i].GetComponent<Button>().interactable = _currentEvent.Options[i].IsAvailable();
         }
-        EventManager.OnEventEnter.Trigger(_currentEvent);
+        EventManager.OnStageEventEnter.Trigger(_currentEvent);
     }
 
     private static void SetOptionBehaviour(Button button, StageEventBase.OptionData option)

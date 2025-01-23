@@ -18,17 +18,6 @@ public class StageManager : MonoBehaviour
         public Sprite icon;
     }
     
-    public enum StageType
-    {
-        Enemy,
-        Shop,
-        Treasure,
-        Rest,
-        Events,
-        Boss,
-        Undefined
-    }
-    
     public class StageNode
     {
         public StageType Type;             // ステージの種類
@@ -322,7 +311,10 @@ public class StageManager : MonoBehaviour
         {
             // ランダムなステージに移動
             var r = GameManager.Instance.RandomRange(0, 5);
-            ProcessStage((StageType)r);
+            EventManager.OnEventStageEnter.Trigger((StageType)r);
+            // 更新されたステージを処理
+            var stage = EventManager.OnEventStageEnter.GetValue();
+            ProcessStage(stage);
         }
         else
         {

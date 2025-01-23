@@ -1,6 +1,7 @@
 using System;
 using R3;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public static class EventManager
 {
@@ -40,8 +41,10 @@ public static class EventManager
     public static readonly GameEvent<int> OnRestEnter = new (0);
     // 休憩した時: HP回復量
     public static readonly GameEvent<int> OnRest = new (0);
-    // イベントに入った時: イベントデータ
-    public static readonly GameEvent<StageEventBase> OnEventEnter = new (null);
+    // イベントステージに入った時: 実際に入るステージ
+    public static readonly GameEvent<StageType> OnEventStageEnter = new (StageType.Undefined);
+    // イベントに入った時: 再生するStageEventBase
+    public static readonly GameEvent<StageEventBase> OnStageEventEnter = new (null);
     // ボールを整理した時: なし
     public static readonly GameEvent<int> OnOrganise = new (0);
     // 休憩から出た時: なし
@@ -54,39 +57,6 @@ public static class EventManager
     public static readonly GameEvent<int> OnShopExit = new (0);
     // ショップでアイテムを購入した時: なし
     public static readonly GameEvent<int> OnItemPurchased = new (0);
-    
-    // EnumからGameEventを取得
-    public static object GetEventFromEnum(GameEventTypes type)
-    {
-        return type switch
-        {
-            GameEventTypes.OnGameStart => OnGameStart,
-            GameEventTypes.OnCoinGain => OnCoinGain,
-            GameEventTypes.OnPlayerExpGain => OnPlayerExpGain,
-            GameEventTypes.OnPlayerAttack => OnPlayerAttack,
-            GameEventTypes.OnPlayerDamage => OnPlayerDamage,
-            GameEventTypes.OnPlayerHeal => OnPlayerHeal,
-            GameEventTypes.OnEnemySpawn => OnEnemySpawn,
-            GameEventTypes.OnEnemyInit => OnEnemyInit,
-            GameEventTypes.OnEnemyAttack => OnEnemyAttack,
-            GameEventTypes.OnEnemyDamage => OnEnemyDamage,
-            GameEventTypes.OnEnemyHeal => OnEnemyHeal,
-            GameEventTypes.OnEnemyDefeated => OnEnemyDefeated,
-            GameEventTypes.OnPlayerDeath => OnPlayerDeath,
-            GameEventTypes.OnBallDrop => OnBallDrop,
-            GameEventTypes.OnBallSkip => OnBallSkip,
-            GameEventTypes.OnBallMerged => OnBallMerged,
-            GameEventTypes.OnRestEnter => OnRestEnter,
-            GameEventTypes.OnRest => OnRest,
-            GameEventTypes.OnOrganise => OnOrganise,
-            GameEventTypes.OnRestExit => OnRestExit,
-            GameEventTypes.OnShopEnter => OnShopEnter,
-            GameEventTypes.OnBallRemove => OnBallRemove,
-            GameEventTypes.OnShopExit => OnShopExit,
-            GameEventTypes.OnItemPurchased => OnItemPurchased,
-            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-        };
-    }
     
     // ゲーム開始時にイベントをリセット
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]

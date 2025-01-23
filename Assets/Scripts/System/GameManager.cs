@@ -4,6 +4,7 @@ using System.Numerics;
 using UnityEngine;
 using R3;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
 public class GameManager : MonoBehaviour
@@ -33,6 +34,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Canvas uiCanvas;
     [SerializeField] private int debugCoin = 0;
 
+    // Sceneのライフサイクルに合わせてDisposeするためのCompositeDisposable
+    public readonly CompositeDisposable SceneDisposables = new ();
     public float TimeScale { get; private set; } = 1.0f;
     public bool IsGameOver { get; private set; } = false;
     public Player Player { get; private set; }
@@ -139,31 +142,31 @@ public class GameManager : MonoBehaviour
     
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            if (PlayerPrefs.GetString("SeedText", "") == "")
-            {
-                var g = Guid.NewGuid();
-                _seedText = g.ToString("N")[..8];
-                _seed = _seedText.GetHashCode();
-                Debug.Log("random seed: " + _seedText);
-            }
-            else
-            {
-                _seedText = PlayerPrefs.GetString("SeedText", "");
-                _seed = _seedText.GetHashCode();
-                Debug.Log("fixed seed: " + _seedText);
-            }
-            _random = new System.Random(_seed);
-            DOTween.SetTweensCapacity(tweenersCapacity: 800, sequencesCapacity: 800);
+        if (Instance != null){
+            Destroy(this.gameObject);
+            return;
+        }
+        Instance = this;
 
-            Player = playerObj.GetComponent<Player>();
+        if (PlayerPrefs.GetString("SeedText", "") == "")
+        {
+            var g = Guid.NewGuid();
+            _seedText = g.ToString("N")[..8];
+            _seed = _seedText.GetHashCode();
+            Debug.Log("random seed: " + _seedText);
         }
         else
         {
-            Destroy(this.gameObject);
+            _seedText = PlayerPrefs.GetString("SeedText", "");
+            _seed = _seedText.GetHashCode();
+            Debug.Log("fixed seed: " + _seedText);
         }
+        _random = new System.Random(_seed);
+        DOTween.SetTweensCapacity(tweenersCapacity: 800, sequencesCapacity: 800);
+
+        Player = playerObj.GetComponent<Player>();
+        
+        SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
 
     public void Start()
@@ -212,5 +215,12 @@ public class GameManager : MonoBehaviour
         {
             UIManager.Instance.OnClickSpeed();
         }
+    }
+    
+    private void OnSceneUnloaded(Scene scene)
+    {
+        // シーンがアンロードされるときに購読を解除
+        SceneDisposables.Clear();
+        Debug.Log($"Scene {scene.name} unloaded. Subscriptions cleared.");
     }
 }

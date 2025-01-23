@@ -5947,7 +5947,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e538cbced0c940a7a1e6c965b76504a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allRelicDataList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
   relicPrefab: {fileID: 6729976926087826395, guid: 4d7ea21157c3e4729809c5978c721e5b, type: 3}
   relicContainer: {fileID: 1029647713}
   relicGridPosition: {x: -455, y: 50, z: 0}
@@ -16492,8 +16491,10 @@ MonoBehaviour:
   eventList:
   - list:
     - data: {fileID: 11400000, guid: d0c81f31214f44837bbf92c37d5a0b36, type: 2}
-      probability: 1
+      probability: 0
     - data: {fileID: 11400000, guid: 04155a194a7e64e52b7007e19437c2be, type: 2}
+      probability: 0
+    - data: {fileID: 11400000, guid: 45945d14f65e04817b44a822ab523503, type: 2}
       probability: 1
   ballList: []
 --- !u!1001 &2020573309
