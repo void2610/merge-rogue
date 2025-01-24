@@ -12,7 +12,7 @@ public class LifeMoneyTrade : StageEventBase
             new OptionData
             {
                 description = "取引する。",
-                nextDescription = "(50ゴールドを差し出し、HPを999回復した)",
+                resultDescription = "(50ゴールドを差し出し、HPを999回復した)",
                 Action = () =>
                 {
                     GameManager.Instance.SubCoin(50);
@@ -23,7 +23,7 @@ public class LifeMoneyTrade : StageEventBase
             new OptionData
             {
                 description = "立ち去る",
-                nextDescription = "...",
+                resultDescription = "...",
                 Action = () => { }
             }
         };

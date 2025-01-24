@@ -358,7 +358,7 @@ public class StageManager : MonoBehaviour
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
                 UIManager.Instance.EnableCanvasGroup("Event", true);
                 
-                EventProcessor.Instance.SetRandomEvent();
+                EventProcessor.Instance.StartEvent();
                 break;
             case StageType.Undefined:
             default:
@@ -369,7 +369,7 @@ public class StageManager : MonoBehaviour
     public void Awake()
     {
         GenerateMap();
-        _mapNodes[0][0].Type = StageType.Enemy;
+        _mapNodes[0][0].Type = StageType.Events;
         CurrentStage = null;
         
         DrawMap();

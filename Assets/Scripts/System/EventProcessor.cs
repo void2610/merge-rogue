@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,18 +15,22 @@ public class EventProcessor : MonoBehaviour
     
     private StageEventBase _currentEvent;
     
-    public void SetRandomEvent()
+    public void StartEvent() => SetRandomEventAsync().Forget();
+    
+    private async UniTaskVoid SetRandomEventAsync()
     {
         _currentEvent = ContentProvider.Instance.GetRandomEvent();
         _currentEvent.Init();
-        descriptionText.text = _currentEvent.MainDescription;
         HideOptions();
+        await ShowTextAsync(descriptionText, _currentEvent.MainDescription, 0.05f);
+        await UniTask.Delay(TimeSpan.FromSeconds(0.5f));
         
         for (var i = 0; i < _currentEvent.Options.Count; i++)
         {
             options[i].SetActive(true);
-            options[i].GetComponentInChildren<TextMeshProUGUI>().text = _currentEvent.Options[i].description;
             SetOptionBehaviour(options[i].GetComponent<Button>(), _currentEvent.Options[i]);
+            await ShowTextAsync(options[i].GetComponentInChildren<TextMeshProUGUI>(), _currentEvent.Options[i].description, 0.05f);
+            await UniTask.Delay(TimeSpan.FromSeconds(0.2f));
             options[i].GetComponent<Button>().interactable = _currentEvent.Options[i].IsAvailable();
         }
         EventManager.OnStageEventEnter.Trigger(_currentEvent);
@@ -43,14 +48,30 @@ public class EventProcessor : MonoBehaviour
     private async UniTaskVoid ProcessActionAsync(StageEventBase.OptionData option)
     {
         option.Action();
-        descriptionText.text = option.nextDescription;
+        HideOptions();
+        await ShowTextAsync(descriptionText, option.resultDescription, 0.05f);
         if (option.isEndless) return;
         
-        HideOptions();
-        await UniTask.Delay(TimeSpan.FromSeconds(3));
+        await UniTask.Delay(TimeSpan.FromSeconds(2.5f));
         UIManager.Instance.EnableCanvasGroup("Event", false);
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
     }
+    
+    private async UniTask ShowTextAsync(TextMeshProUGUI text, string description, float duration)
+    {
+        text.text = description;
+        text.alpha = 0;
+        var animator = new DOTweenTMPAnimator(text);
+
+        for (var i = 0; i < animator.textInfo.characterCount; i++)
+        {
+            // 改行文字かどうかを確認
+            if (description[i] == '\n')
+                await UniTask.Delay(TimeSpan.FromSeconds(duration * 5));
+            await animator.DOFadeChar(i, 1, duration);
+        }
+    }
+
     
     private void HideOptions() => options.ForEach(option => option.SetActive(false));
     

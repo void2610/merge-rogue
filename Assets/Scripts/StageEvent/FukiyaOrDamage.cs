@@ -12,7 +12,7 @@ public class FukiyaOrDamage : StageEventBase
             new OptionData
             {
                 description = "バッグで受け止める",
-                nextDescription = "吹矢を受け止めた！\n(レリックを獲得した)",
+                resultDescription = "吹矢を受け止めた！\n(レリックを獲得した)",
                 Action = () =>
                 {
                     var r = ContentProvider.Instance.GetRelicByName("Fukiya");
@@ -22,7 +22,7 @@ public class FukiyaOrDamage : StageEventBase
             new OptionData
             {
                 description = "体で受け止める",
-                nextDescription = "膝に矢を受けてしまった...!\n(20ダメージ!)",
+                resultDescription = "膝に矢を受けてしまった...!\n(20ダメージ!)",
                 Action = () =>
                 {
                     GameManager.Instance.Player.Damage(20);
