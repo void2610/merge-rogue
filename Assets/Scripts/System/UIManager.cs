@@ -34,6 +34,13 @@ public class UIManager : MonoBehaviour
     public int remainingLevelUps;
     
     private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
+    
+    public void ShowRelicDescriptionWindow(RelicData r, GameObject g) => descriptionWindow.ShowWindow(r, g);
+    public void ShowBallDescriptionWindow(BallData b, GameObject g) => descriptionWindow.ShowWindow(b, g);
+    public void SetSeedText(string seed) => seedText.text = "seed: " + seed;
+    public void EnableCanvasGroup(string canvasName, bool e) => EnableCanvasGroupAsync(canvasName, e).Forget();
+    private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
+    private void UpdateCoinText(BigInteger amount) => coinText.text = "coin: " + amount;
 
     private async UniTaskVoid EnableCanvasGroupAsync(string canvasName, bool e)
     {
@@ -64,7 +71,6 @@ public class UIManager : MonoBehaviour
         cg.interactable = e;
         cg.blocksRaycasts = e;
     }
-    
 
     private void UpdateExpText(int now, int max)
     {
@@ -75,13 +81,6 @@ public class UIManager : MonoBehaviour
         }
         expText.text = "exp: " + now + "/" + max;
     }
-    
-    public void ShowRelicDescriptionWindow(RelicData r, GameObject g) => descriptionWindow.ShowWindow(r, g);
-    public void ShowBallDescriptionWindow(BallData b, GameObject g) => descriptionWindow.ShowWindow(b, g);
-    public void SetSeedText(string seed) => seedText.text = "seed: " + seed;
-    public void EnableCanvasGroup(string canvasName, bool e) => EnableCanvasGroupAsync(canvasName, e).Forget();
-    private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
-    private void UpdateCoinText(BigInteger amount) => coinText.text = "coin: " + amount;
     
     public void OnClickRestButton()
     {
