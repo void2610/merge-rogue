@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,7 +19,7 @@ public class EventProcessor : MonoBehaviour
         _currentEvent = ContentProvider.Instance.GetRandomEvent();
         _currentEvent.Init();
         descriptionText.text = _currentEvent.MainDescription;
-        options.ForEach(option => option.SetActive(false));
+        HideOptions();
         
         for (var i = 0; i < _currentEvent.Options.Count; i++)
         {
@@ -30,18 +31,28 @@ public class EventProcessor : MonoBehaviour
         EventManager.OnStageEventEnter.Trigger(_currentEvent);
     }
 
-    private static void SetOptionBehaviour(Button button, StageEventBase.OptionData option)
+    private void SetOptionBehaviour(Button button, StageEventBase.OptionData option)
     {
         button.onClick.RemoveAllListeners();
         button.onClick.AddListener(() =>
         {
-            option.Action();
-            if(option.isEndless) return;
-            
-            UIManager.Instance.EnableCanvasGroup("Event", false);
-            GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+            ProcessActionAsync(option).Forget();
         });
     }
+    
+    private async UniTaskVoid ProcessActionAsync(StageEventBase.OptionData option)
+    {
+        option.Action();
+        descriptionText.text = option.nextDescription;
+        if (option.isEndless) return;
+        
+        HideOptions();
+        await UniTask.Delay(TimeSpan.FromSeconds(3));
+        UIManager.Instance.EnableCanvasGroup("Event", false);
+        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+    }
+    
+    private void HideOptions() => options.ForEach(option => option.SetActive(false));
     
     private void Awake()
     {

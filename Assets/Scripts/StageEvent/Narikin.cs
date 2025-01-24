@@ -14,7 +14,8 @@ public class Narikin : StageEventBase
         {
             new OptionData
             {
-                description = "暗くてよく見えない。(次のイベントマスでは戦闘が発生しない)",
+                description = "暗くてよく見えない。",
+                nextDescription = "おじさんは懐から取り出した100コインに火をつけた\n「「どうだ明るくなったろう」」\n(次のイベントマスで戦闘が発生しなくなった!)",
                 Action = () =>
                 {
                     _disposable = EventManager.OnEventStageEnter.Subscribe(RewriteBattleStageToRestStage);
@@ -24,7 +25,8 @@ public class Narikin : StageEventBase
             },
             new OptionData
             {
-                description = "お金が欲しい。(100コインを獲得)",
+                description = "お金が欲しい。",
+                nextDescription = "おじさんは懐から取り出した100コインを渡してくれた\n\u3000\u3000「すこしだけだが受け取りたまえ」\n(100コインを獲得した)",
                 Action = () =>
                 {
                     GameManager.Instance.AddCoin(100);

@@ -10,6 +10,7 @@ public abstract class StageEventBase : MonoBehaviour
     public class OptionData
     {
         public string description;
+        public string nextDescription;
         public Action Action;
         public Func<bool> IsAvailable = () => true;
         public bool isEndless = false;
