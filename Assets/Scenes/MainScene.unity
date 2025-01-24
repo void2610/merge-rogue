@@ -3630,7 +3630,7 @@ MonoBehaviour:
   uiCamera: {fileID: 519420031}
   pixelCanvas: {fileID: 1786606952}
   uiCanvas: {fileID: 380910488}
-  debugCoin: 1000
+  debugCoin: 1
 --- !u!114 &567445624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17572,9 +17572,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   windowPrefab: {fileID: 5588317158245040475, guid: 5f9bdb29c12164c2c9f4ffb24ee7b3fb, type: 3}
-  showDuration: 0.4
-  waitDuration: 3
-  closeDuration: 1
+  showDuration: 0.2
+  waitDuration: 1.5
+  closeDuration: 0.5
   rightMoveDistance: 5
   upMoveDistance: 0.5
   iconSprites:

@@ -102,7 +102,11 @@ public class Shop : MonoBehaviour
             {
                 if (!ball) return;
                 if (GameManager.Instance.Coin.Value >= ball.price) BuyBall(index);
-                else SeManager.Instance.PlaySe("error");
+                else
+                {
+                    NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
+                    SeManager.Instance.PlaySe("error");
+                }
             });
         }
         
@@ -127,7 +131,11 @@ public class Shop : MonoBehaviour
             {
                 if (!relic) return;
                 if (GameManager.Instance.Coin.Value >= relic.price) BuyRelic(index);
-                else SeManager.Instance.PlaySe("error");
+                else
+                {
+                    NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
+                    SeManager.Instance.PlaySe("error");
+                }
             });
         }
 
@@ -140,6 +148,7 @@ public class Shop : MonoBehaviour
     {
         if (GameManager.Instance.Coin.Value < 25)
         {
+            NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
             SeManager.Instance.PlaySe("error");
             return;
         }
