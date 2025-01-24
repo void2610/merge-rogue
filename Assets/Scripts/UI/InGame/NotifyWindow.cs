@@ -16,7 +16,7 @@ public class NotifyWindow : MonoBehaviour
     }
     
     public static NotifyWindow Instance;
-    
+
     [SerializeField] private GameObject windowPrefab;
     [SerializeField] private float showDuration = 0.5f;
     [SerializeField] private float waitDuration = 3f;
@@ -25,35 +25,51 @@ public class NotifyWindow : MonoBehaviour
     [SerializeField] private float upMoveDistance = 100f;
     [SerializeField] private SerializableDictionary<NotifyIconType, Sprite> iconSprites;
 
-    private UniTaskCompletionSource _currentTask;
-    
-    public async UniTaskVoid Notice(string message, NotifyIconType iconType = NotifyIconType.Other)
-    {
-        // 現在の動作が完了するまで待機
-        if (_currentTask != null) await _currentTask.Task;
-        
-        var window = Instantiate(windowPrefab, this.transform, false);
-        window.transform.localPosition = Vector3.zero;
-        window.transform.Find("Icon").GetComponent<Image>().sprite = iconSprites[iconType];
-        window.transform.Find("Message").GetComponent<TextMeshProUGUI>().text = message;
-        window.transform.Find("Gauge").GetComponent<Image>().fillAmount = 0;
+    private Queue<(string message, NotifyIconType iconType)> _notificationQueue = new();
+    private bool _isProcessing = false;
 
-        // 新しいタスクの開始
-        _currentTask = new UniTaskCompletionSource();
-        await NoticeAsync(window);
-        _currentTask.TrySetResult();
+    public void Notify(string message, NotifyIconType iconType = NotifyIconType.Other)
+    {
+        // 通知をキューに追加
+        _notificationQueue.Enqueue((message, iconType));
+
+        // 通知処理が未実行なら開始
+        if (!_isProcessing)
+        {
+            _isProcessing = true;
+            ProcessQueue().Forget();
+        }
     }
-    
-    private async UniTask NoticeAsync(GameObject window)
+
+    private async UniTaskVoid ProcessQueue()
+    {
+        while (_notificationQueue.Count > 0)
+        {
+            var (message, iconType) = _notificationQueue.Dequeue();
+
+            var window = Instantiate(windowPrefab, this.transform, false);
+            window.transform.localPosition = Vector3.zero;
+            window.transform.Find("Icon").GetComponent<Image>().sprite = iconSprites[iconType];
+            window.transform.Find("Message").GetComponent<TextMeshProUGUI>().text = message;
+            window.transform.Find("Gauge").GetComponent<Image>().fillAmount = 0;
+
+            await ShowNotificationAsync(window);
+        }
+
+        // 処理終了フラグをリセット
+        _isProcessing = false;
+    }
+
+    private async UniTask ShowNotificationAsync(GameObject window)
     {
         var rectTransform = window.GetComponent<RectTransform>();
         var canvasGroup = window.GetComponent<CanvasGroup>();
         var gauge = window.transform.Find("Gauge").GetComponent<Image>();
-        
+
         await rectTransform.DOMoveX(rightMoveDistance, showDuration).SetEase(Ease.OutSine).SetRelative().ToUniTask();
         gauge.DOFillAmount(1, waitDuration).SetEase(Ease.Linear).ToUniTask().Forget();
         await UniTask.Delay((int)(waitDuration * 1000));
-        
+
         rectTransform.DOMoveY(upMoveDistance, closeDuration).SetEase(Ease.InSine).SetRelative().ToUniTask().Forget();
         await canvasGroup.DOFade(0, closeDuration).SetEase(Ease.InSine).ToUniTask();
 
