@@ -25,7 +25,7 @@ public class NotifyWindow : MonoBehaviour
     [SerializeField] private float upMoveDistance = 100f;
     [SerializeField] private SerializableDictionary<NotifyIconType, Sprite> iconSprites;
 
-    private Queue<(string message, NotifyIconType iconType)> _notificationQueue = new();
+    private readonly Queue<(string message, NotifyIconType iconType)> _notificationQueue = new();
     private bool _isProcessing = false;
 
     public void Notify(string message, NotifyIconType iconType = NotifyIconType.Other)
@@ -66,16 +66,16 @@ public class NotifyWindow : MonoBehaviour
         var canvasGroup = window.GetComponent<CanvasGroup>();
         var gauge = window.transform.Find("Gauge").GetComponent<Image>();
 
-        await rectTransform.DOMoveX(rightMoveDistance, showDuration).SetEase(Ease.OutSine).SetRelative().ToUniTask();
-        gauge.DOFillAmount(1, waitDuration).SetEase(Ease.Linear).ToUniTask().Forget();
-        await UniTask.Delay((int)(waitDuration * 1000));
+        await rectTransform.DOMoveX(rightMoveDistance, showDuration).SetEase(Ease.OutSine).SetRelative().SetUpdate(true).ToUniTask();
+        gauge.DOFillAmount(1, waitDuration).SetEase(Ease.Linear).SetUpdate(true);
+        await UniTask.Delay((int)waitDuration * 1000, ignoreTimeScale: true);
 
-        rectTransform.DOMoveY(upMoveDistance, closeDuration).SetEase(Ease.InSine).SetRelative().ToUniTask().Forget();
-        await canvasGroup.DOFade(0, closeDuration).SetEase(Ease.InSine).ToUniTask();
+        rectTransform.DOMoveY(upMoveDistance, closeDuration).SetEase(Ease.InSine).SetRelative().SetUpdate(true);
+        await canvasGroup.DOFade(0, closeDuration).SetEase(Ease.InSine).SetUpdate(true).ToUniTask();
 
         // Reset
-        await rectTransform.DOMoveX(-rightMoveDistance, 0).SetRelative();
-        await rectTransform.DOMoveY(-upMoveDistance, 0).SetRelative();
+        await rectTransform.DOMoveX(-rightMoveDistance, 0).SetRelative().SetUpdate(true);
+        await rectTransform.DOMoveY(-upMoveDistance, 0).SetRelative().SetUpdate(true);
         Destroy(window);
     }
 
