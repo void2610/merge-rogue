@@ -32,17 +32,14 @@ public class ContentProvider : MonoBehaviour
     public StageEventBase GetRandomEvent()
     {
         var eventScript = GetRandomObjectFromList(eventList);
-        if (eventScript is MonoScript script)
+        var type = Type.GetType(eventScript.name);
+        if (type != null && type.IsSubclassOf(typeof(StageEventBase)))
         {
-            var type = script.GetClass();
-            if (type.IsSubclassOf(typeof(StageEventBase)))
+            var eventInstance = this.gameObject.AddComponent(type) as StageEventBase;
+            if (eventInstance)
             {
-                var eventInstance = this.gameObject.AddComponent(type) as StageEventBase;
-                if (eventInstance)
-                {
-                    eventInstance.Init();
-                    return eventInstance;
-                }
+                eventInstance.Init();
+                return eventInstance;
             }
         }
 
