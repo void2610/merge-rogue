@@ -31,15 +31,22 @@ public class ContentProvider : MonoBehaviour
 
     public StageEventBase GetRandomEvent()
     {
-        var obj = GetRandomObjectFromList(eventList) as StageEventData;
-        if (!obj) throw new Exception("Event is null");
-        StageEventBase e = null;
-        var type = System.Type.GetType(obj.className);
-        e = this.gameObject.AddComponent(type) as StageEventBase;
-        if(!e) throw new Exception("Event is not a subclass of StageEventBase");
-        
-        e.Init();
-        return e;
+        var eventScript = GetRandomObjectFromList(eventList);
+        if (eventScript is MonoScript script)
+        {
+            var type = script.GetClass();
+            if (type.IsSubclassOf(typeof(StageEventBase)))
+            {
+                var eventInstance = this.gameObject.AddComponent(type) as StageEventBase;
+                if (eventInstance)
+                {
+                    eventInstance.Init();
+                    return eventInstance;
+                }
+            }
+        }
+
+        throw new Exception("Event not found");
     }
     
     public GameObject GetRandomEnemy()

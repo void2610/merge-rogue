@@ -16491,11 +16491,11 @@ MonoBehaviour:
   relicList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
   eventList:
   - list:
-    - data: {fileID: 11400000, guid: d0c81f31214f44837bbf92c37d5a0b36, type: 2}
-      probability: 0
-    - data: {fileID: 11400000, guid: 04155a194a7e64e52b7007e19437c2be, type: 2}
-      probability: 0
-    - data: {fileID: 11400000, guid: 45945d14f65e04817b44a822ab523503, type: 2}
+    - data: {fileID: 11500000, guid: 5b32f3e64ebd74bb78b8e03d97106fbb, type: 3}
+      probability: 1
+    - data: {fileID: 11500000, guid: 9c69f80c7606542d2ba15c5a4ef34780, type: 3}
+      probability: 1
+    - data: {fileID: 11500000, guid: 8822c9bb9900a4512ae2a33846d2abd7, type: 3}
       probability: 1
   ballList: []
 --- !u!1001 &2020573309
