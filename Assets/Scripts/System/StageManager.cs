@@ -369,7 +369,7 @@ public class StageManager : MonoBehaviour
     public void Awake()
     {
         GenerateMap();
-        _mapNodes[0][0].Type = StageType.Events;
+        _mapNodes[0][0].Type = StageType.Enemy;
         CurrentStage = null;
         
         DrawMap();

@@ -3630,7 +3630,7 @@ MonoBehaviour:
   uiCamera: {fileID: 519420031}
   pixelCanvas: {fileID: 1786606952}
   uiCanvas: {fileID: 380910488}
-  debugCoin: 1
+  debugCoin: 10
 --- !u!114 &567445624
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16496,6 +16496,8 @@ MonoBehaviour:
     - data: {fileID: 11500000, guid: 9c69f80c7606542d2ba15c5a4ef34780, type: 3}
       probability: 1
     - data: {fileID: 11500000, guid: 8822c9bb9900a4512ae2a33846d2abd7, type: 3}
+      probability: 1
+    - data: {fileID: 11500000, guid: c41486fb5d56e4063a772ae99ce184b3, type: 3}
       probability: 1
   ballList: []
 --- !u!1001 &2020573309

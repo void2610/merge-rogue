@@ -100,6 +100,7 @@ public class MergeManager : MonoBehaviour
     }
     
     public int GetBallCount() => _ballContainer.GetComponentsInChildren<Rigidbody2D>().Length;
+    public void RemoveAllBalls() => _ballContainer.GetComponentsInChildren<Rigidbody2D>().ToList().ForEach(b => Destroy(b.gameObject));
     
     // 次のボールを生成
     private void ResetRemainingBalls()
@@ -139,6 +140,7 @@ public class MergeManager : MonoBehaviour
         bomb.transform.SetParent(_ballContainer.transform);
         bomb.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
     }
+    
 
     public void Attack()
     {
