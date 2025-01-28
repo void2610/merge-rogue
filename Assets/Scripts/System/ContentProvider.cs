@@ -29,6 +29,11 @@ public class ContentProvider : MonoBehaviour
     
     private int _act = 0;
 
+    /// <summary>
+    /// StageEventをランダムで取得する
+    /// </summary>
+    /// <returns></returns>
+    /// <exception cref="Exception"></exception>
     public StageEventBase GetRandomEvent()
     {
         var eventScript = GetRandomObjectFromList(eventList);
@@ -46,26 +51,51 @@ public class ContentProvider : MonoBehaviour
         throw new Exception("Event not found");
     }
     
+    
+    /// <summary>
+    /// 敵のPrefabをランダムで取得する
+    /// </summary>
+    /// <returns></returns>
     public GameObject GetRandomEnemy()
     {
         var enemy = GetRandomObjectFromList(enemyList) as GameObject;
         return Instantiate(enemy);
     }
     
+    /// <summary>
+    /// ボスのPrefabをランダムで取得する
+    /// </summary>
+    /// <returns></returns>
     public GameObject GetRandomBoss()
     {
         var boss = GetRandomObjectFromList(bossList) as GameObject;
         return Instantiate(boss);
     }
     
+    /// <summary>
+    /// RelicDataをランダムで取得する
+    /// </summary>
+    /// <returns></returns>
     public RelicData GetRandomRelic()
     {
-        // TODO: 取得しているレリックの出現確率を調整する
-        // 全てのレリックは同じ確率
+        // 既に取得済みのレリックは低確率にする
+        var current = RelicManager.Instance.GetCurrentRelics();
         var randomIndex = GameManager.Instance.RandomRange(0, relicList.list.Count);
-        return relicList.list[randomIndex];
+        var relic = relicList.list[randomIndex];
+        // 3回だけ再試行する
+        for (var i = 0; i < 3; i++)
+        {
+            if (current.Contains(relic)) relic = relicList.list[GameManager.Instance.RandomRange(0, relicList.list.Count)];
+            else break;
+        }
+        return relic;
     }
 
+    /// <summary>
+    /// 指定された名前のRelicDataを取得する
+    /// </summary>
+    /// <param name="n">レリックの名前</param>
+    /// <returns></returns>
     public RelicData GetRelicByName(string n)
     {
         var r = relicList.list.Find(relic => relic.name == n);
@@ -73,12 +103,22 @@ public class ContentProvider : MonoBehaviour
         return r;
     }
     
+    /// <summary>
+    /// 指定されたレアリティのRelicDataをランダムで取得する
+    /// </summary>
+    /// <param name="r">レアリティ</param>
+    /// <returns></returns>
     public RelicData GetRandomRelicDataByRarity(Rarity r)
     {
         var relics = relicList.list.Where(bd => bd.rarity == r).ToList();
         return relics[GameManager.Instance.RandomRange(0, relics.Count)];
     }
     
+    /// <summary>
+    /// 指定されたレアリティのRelicDataを全て取得する
+    /// </summary>
+    /// <param name="r">レアリティ</param>
+    /// <returns></returns>
     public List<RelicData> GetRelicDataByRarity(Rarity r)
     {
         return relicList.list.Where(bd => bd.rarity == r).ToList();
@@ -124,7 +164,11 @@ public class ContentProvider : MonoBehaviour
         
         relicList.Register();
     }
-
+    
+    // private RelicData GetRandomRelicDependRarity()
+    // {
+    // }
+    
     private Object GetRandomObjectFromList(List<ContentDataList> contentLists)
     {
         // アクトに基づいてリストを選択
