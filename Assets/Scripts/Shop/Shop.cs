@@ -9,12 +9,20 @@ using UnityEngine.Serialization;
 
 public class Shop : MonoBehaviour
 {
+    public enum ShopItemType
+    {
+        Ball,
+        Relic,
+        Remove
+    }
+    
     public static Shop Instance;
     
     [SerializeField] private GameObject itemContainer;
     [SerializeField] private GameObject removeButton;
     
     private readonly List<object> _currentItems = new();
+    private readonly List<int> _currentItemPrices = new();
     private const int ITEM_NUM = 6;
     private List<GameObject> _itemObjects;
     private readonly List<Vector3> _itemPositions = new();
@@ -31,8 +39,11 @@ public class Shop : MonoBehaviour
             _itemObjects[i].transform.position = _itemPositions[i];
         }
         removeButton.transform.position = _itemPositions[ITEM_NUM];
+        removeButton.transform.Find("Price").GetComponent<TextMeshProUGUI>().text = ContentProvider.GetBallRemovePrice().ToString();
         
         _currentItems.Clear();
+        _currentItemPrices.Clear();
+        _currentItemPrices.AddRange(Enumerable.Repeat(0, ITEM_NUM));
         
         for(var i = 0; i < ITEM_NUM; i++)
         {
@@ -51,6 +62,7 @@ public class Shop : MonoBehaviour
                 SetRelicEvent(_itemObjects[i].transform.gameObject, r, i);
             }
         }
+        _currentItemPrices.ForEach(x => Debug.Log(x));
     }
 
     public void CloseShop()
@@ -70,7 +82,7 @@ public class Shop : MonoBehaviour
         
         InventoryManager.Instance.AddBall(ball);
         _itemObjects[index].transform.position = _disabledPosition;
-        GameManager.Instance.SubCoin(ball.price);
+        GameManager.Instance.SubCoin(_currentItemPrices[index]);
         SeManager.Instance.PlaySe("coin");
     }
 
@@ -78,18 +90,19 @@ public class Shop : MonoBehaviour
     {
         var relic = _currentItems[index] as RelicData;
         if (!relic) return;
-        var itemPrice = relic.price;
     
         RelicManager.Instance.AddRelic(relic);
         _itemObjects[index].transform.position = _disabledPosition;
-        GameManager.Instance.SubCoin(itemPrice);
+        GameManager.Instance.SubCoin(_currentItemPrices[index]);
         SeManager.Instance.PlaySe("coin");
     }
 
     private void SetBallEvent(GameObject g, BallData ball, int index)
     {
-        var price = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
-        price.text = ball.price.ToString();
+        var price = ContentProvider.GetSHopPrice(ShopItemType.Ball, ball.rarity);
+        _currentItemPrices[index] = price;
+        var priceText = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
+        priceText.text = price.ToString();
         var image = g.transform.Find("Icon").GetComponent<Image>();
         image.sprite = ball.sprite;
         var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
@@ -101,7 +114,7 @@ public class Shop : MonoBehaviour
             button.onClick.AddListener(() =>
             {
                 if (!ball) return;
-                if (GameManager.Instance.Coin.Value >= ball.price) BuyBall(index);
+                if (GameManager.Instance.Coin.Value >= price) BuyBall(index);
                 else
                 {
                     NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
@@ -118,10 +131,15 @@ public class Shop : MonoBehaviour
     private void SetRelicEvent(GameObject g, RelicData relic, int index)
     {
         Utils.RemoveAllEventFromObject(g);
-        var price = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
-        price.text = relic.price.ToString();
+        
+        var price = ContentProvider.GetSHopPrice(ShopItemType.Relic, relic.rarity);
+        _currentItemPrices[index] = price;
+        var priceText = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
+        priceText.text = price.ToString();
+        
         var image = g.transform.Find("Icon").GetComponent<Image>();
         image.sprite = relic.sprite;
+        // ボールの画像を透明にする
         var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
         ballImage.color = new Color(1, 1, 1, 0);
         var button = g.GetComponent<Button>();
@@ -130,7 +148,7 @@ public class Shop : MonoBehaviour
             button.onClick.AddListener(() =>
             {
                 if (!relic) return;
-                if (GameManager.Instance.Coin.Value >= relic.price) BuyRelic(index);
+                if (GameManager.Instance.Coin.Value >= price) BuyRelic(index);
                 else
                 {
                     NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
@@ -146,7 +164,8 @@ public class Shop : MonoBehaviour
     
     private void OnClickRemoveButton()
     {
-        if (GameManager.Instance.Coin.Value < 25)
+        var price = ContentProvider.GetBallRemovePrice();
+        if (GameManager.Instance.Coin.Value < price)
         {
             NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
             SeManager.Instance.PlaySe("error");
@@ -155,7 +174,7 @@ public class Shop : MonoBehaviour
         
         EventManager.OnBallRemove.Trigger(0);
         removeButton.transform.position = _disabledPosition;
-        GameManager.Instance.SubCoin(25);
+        GameManager.Instance.SubCoin(price);
         InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Remove);
     }
 
@@ -169,10 +188,5 @@ public class Shop : MonoBehaviour
         _itemPositions.Add(removeButton.transform.position);
         
         removeButton.GetComponent<Button>().onClick.AddListener(OnClickRemoveButton);
-    }
-
-    private void Update()
-    {
-        if(GameManager.Instance.state != GameManager.GameState.Event) return;
     }
 }

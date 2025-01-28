@@ -84,6 +84,35 @@ public class ContentProvider : MonoBehaviour
         return relicList.list.Where(bd => bd.rarity == r).ToList();
     }
     
+    /// <summary>
+    /// ショップの売値を返す
+    /// </summary>
+    /// <param name="type">アイテムの種類</param>
+    /// <param name="rarity">アイテムのレアリティ</param>
+    public static int GetSHopPrice(Shop.ShopItemType type, Rarity rarity)
+    {
+        if(type == Shop.ShopItemType.Remove) return 50;
+        var price = rarity switch
+        {
+            Rarity.Common => 10,
+            Rarity.Uncommon => 20,
+            Rarity.Rare => 50,
+            Rarity.Epic => 100,
+            Rarity.Legendary => 500,
+            _ => 100000
+        };
+        if (type == Shop.ShopItemType.Ball) price = (int)(price * 1.5f);
+        return price;
+    }
+    
+    /// <summary>
+    /// ボール除去の価格を返す
+    /// </summary>
+    public static int GetBallRemovePrice()
+    {
+        return 75;
+    }
+    
     public void AddAct() => _act++;
     
     private void Awake()
