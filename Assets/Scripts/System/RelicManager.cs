@@ -16,10 +16,11 @@ public class RelicManager : MonoBehaviour
     
     [SerializeField] private List<RelicData> testRelics;
     
-    
     private readonly List<RelicData> _relics = new();
     private readonly List<RelicBase> _behaviors = new();
     private readonly List<RelicUI> _relicUIs = new();
+    
+    public List<RelicData> GetCurrentRelics () => _relics;
     
     public void AddRelic(RelicData relic)
     {
