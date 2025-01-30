@@ -16,6 +16,7 @@ public class StageManager : MonoBehaviour
         public StageType stageType;
         public float probability;
         public Sprite icon;
+        public Color color;
     }
     
     public class StageNode
@@ -31,10 +32,8 @@ public class StageManager : MonoBehaviour
             Connections = new List<StageNode>();
         }
         
-        public Sprite GetIcon(List<StageData> list)
-        {
-            return list.First(s => s.stageType == Type).icon;
-        }
+        public Sprite GetIcon(List<StageData> list) => list.First(s => s.stageType == Type).icon;
+        public Color GetColor(List<StageData> list) => list.First(s => s.stageType == Type).color;
     }
 
     [Header("背景")]
@@ -210,6 +209,7 @@ public class StageManager : MonoBehaviour
         var s = Instantiate(mapNodePrefab, _mapNodes[0][0].Position , Quaternion.identity, mapBackground.transform);
         s.name = $"{_mapNodes[0][0].Type}";
         s.GetComponent<Image>().sprite = _mapNodes[0][0].GetIcon(stageData);
+        s.GetComponent<Image>().color = _mapNodes[0][0].GetColor(stageData);
         _mapNodes[0][0].Obj = s;
 
         for (var i = 1; i < mapSize.x; i++)
@@ -221,10 +221,7 @@ public class StageManager : MonoBehaviour
                 
                 g.name = $"{_mapNodes[i][j].Type}";
                 g.GetComponent<Image>().sprite = _mapNodes[i][j].GetIcon(stageData);
-                if (_mapNodes[i][j].Type == StageType.Enemy)
-                    g.GetComponent<Image>().color = Color.red;
-                else if (_mapNodes[i][j].Type == StageType.Boss)
-                    g.GetComponent<Image>().color = Color.black;
+                g.GetComponent<Image>().color = _mapNodes[i][j].GetColor(stageData);
                 
                 _mapNodes[i][j].Obj = g;
             }

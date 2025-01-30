@@ -3514,24 +3514,31 @@ MonoBehaviour:
   - stageType: 0
     probability: 1
     icon: {fileID: 21300000, guid: 09d30acee4111476c8de2ee937656084, type: 3}
+    color: {r: 0.8584906, g: 0.14173192, b: 0.14173192, a: 1}
   - stageType: 1
     probability: 0.3
-    icon: {fileID: 21300000, guid: df392ad408bd540d9b35a57c3c10db9f, type: 3}
+    icon: {fileID: 21300000, guid: 881ab4d8b30e3434bb1ef4684e326371, type: 3}
+    color: {r: 0.5803922, g: 0.8328212, b: 1, a: 1}
   - stageType: 3
     probability: 0.3
-    icon: {fileID: 21300000, guid: 82ebb9d8a1fb64509990b942b9e86bb8, type: 3}
+    icon: {fileID: 21300000, guid: db174ffa42e864b9887481afa05624d5, type: 3}
+    color: {r: 1, g: 0.45781258, b: 0.1745283, a: 1}
   - stageType: 2
     probability: 0.2
     icon: {fileID: 21300000, guid: f45c0d430ef3a4701aed76dfd762e809, type: 3}
+    color: {r: 0.8867924, g: 0.7707858, b: 0.18823427, a: 1}
   - stageType: 4
     probability: 0.8
     icon: {fileID: 21300000, guid: 141dcd1439a644dbc95eaf535c21d822, type: 3}
+    color: {r: 1, g: 1, b: 1, a: 1}
   - stageType: 5
     probability: 0
     icon: {fileID: 21300000, guid: 1dd6475f82f984568846c15a1033794f, type: 3}
+    color: {r: 0.23584908, g: 0.23584908, b: 0.23584908, a: 1}
   - stageType: 6
     probability: 0
     icon: {fileID: 0}
+    color: {r: 0, g: 0, b: 0, a: 0}
   stageTypes: 
   mapSize: {x: 12, y: 7}
   pathCount: 9
@@ -15041,7 +15048,7 @@ MonoBehaviour:
     bottomLeft: {r: 1, g: 1, b: 1, a: 1}
     bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
+  m_spriteAsset: {fileID: 11400000, guid: 16bd202e43ac84336b783a15d0dfc9a1, type: 2}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
   m_TextStyleHashCode: -1183493901
