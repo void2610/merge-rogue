@@ -3482,8 +3482,6 @@ MonoBehaviour:
   playerObj: {fileID: 1993390309}
   enemyContainer: {fileID: 198190389}
   renderTextureCamera: {fileID: 371541724}
-  uiCamera: {fileID: 0}
-  pixelCanvas: {fileID: 0}
   uiCanvas: {fileID: 380910488}
   debugCoin: 10
 --- !u!114 &567445624

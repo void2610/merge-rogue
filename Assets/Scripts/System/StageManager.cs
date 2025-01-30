@@ -148,10 +148,12 @@ public class StageManager : MonoBehaviour
         var g = Instantiate(mapConnectionPrefab,a.Position, Quaternion.identity, mapBackground.transform);
         g.name = $"{a.Type} -> {b.Type}";
         var line = g.GetComponent<UILineRenderer>();
-        if (Camera.main == null) return;
-        var p1 = Camera.main.WorldToScreenPoint(a.Position);
-        var p2 = Camera.main.WorldToScreenPoint(b.Position);
-        var pos = new Vector2(p2.x - p1.x, p2.y - p1.y);
+        var c = Camera.main;
+        if (!c) return;
+        
+        var p1 = c.WorldToScreenPoint(a.Position);
+        var p2 = c.WorldToScreenPoint(b.Position);
+        var pos = new Vector2(p2.x - p1.x, p2.y - p1.y) / 4;
         line.points = new Vector2[2] {Vector2.zero, pos};
     }
     
