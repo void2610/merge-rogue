@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   className: HealWhenDefeatEnemy
-  sprite: {fileID: -5049782452158657568, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  sprite: {fileID: 21300000, guid: 09de849605d474a4384048988b761617, type: 3}
   displayName: "\u5438\u8840\u9B3C\u306E\u30AD\u30D0"
   description: "\u6575\u3092\u5012\u3057\u305F\u6642\u306BHP\u3092\u5C11\u3057\u56DE\u5FA9\u3059\u308B"
   flavorText: "\u30CD\u30BF\u5207\u308C"
   rarity: 1
-  price: 10
