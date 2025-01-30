@@ -29,8 +29,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject playerObj;
     [SerializeField] private EnemyContainer enemyContainer;
     [SerializeField] private Camera renderTextureCamera;
-    [SerializeField] private Camera uiCamera;
-    [SerializeField] private Canvas pixelCanvas;
     [SerializeField] private Canvas uiCanvas;
     [SerializeField] private int debugCoin = 0;
 
@@ -42,7 +40,6 @@ public class GameManager : MonoBehaviour
     public StageManager StageManager => GetComponent<StageManager>();
     public ScoreManager ScoreManager => GetComponent<ScoreManager>();
     public EnemyContainer EnemyContainer => enemyContainer;
-    public Camera UICamera => uiCamera;
     
     public readonly ReactiveProperty<BigInteger> Coin = new(0);
     private string _seedText;

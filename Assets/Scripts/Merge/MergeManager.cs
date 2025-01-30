@@ -296,7 +296,7 @@ public class MergeManager : MonoBehaviour
         ballGauge.transform.position = CurrentBall.transform.position;
         
 
-        var mousePosX = GameManager.Instance.UICamera.ScreenToWorldPoint(Input.mousePosition).x;
+        var mousePosX = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
         var isMouseOvered = mousePosX > -_limit + size / 2 - 1 && mousePosX < _limit - size / 2 + 1;
         if (isMouseOvered)
         {

@@ -291,7 +291,7 @@ public class DescriptionWindow : MonoBehaviour
     {
         this.gameObject.SetActive(false);
         _cg = this.gameObject.GetComponent<CanvasGroup>();
-        _uiCamera = SceneManager.GetActiveScene() == SceneManager.GetSceneByName("TitleScene") ? Camera.main : GameManager.Instance.UICamera;
+        _uiCamera = Camera.main;
     }
     
     private void Update()
