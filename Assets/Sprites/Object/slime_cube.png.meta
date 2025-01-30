@@ -1,10 +1,7 @@
 fileFormatVersion: 2
 guid: 686e86f7c01a442c78022be705a30d87
 TextureImporter:
-  internalIDToNameTable:
-  - first:
-      213: -5731436181159932807
-    second: slime_cube_0
+  internalIDToNameTable: []
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
