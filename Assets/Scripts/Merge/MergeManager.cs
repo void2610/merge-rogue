@@ -91,7 +91,7 @@ public class MergeManager : MonoBehaviour
         }
         
         ballCountText.text = "0/" + _ballPerOneTurn;
-        DOTween.To(() => arrowMaterial.GetFloat(_alpha), x => arrowMaterial.SetFloat(_alpha, x), 0, 0.5f);
+        DOTween.To(() => arrowMaterial.GetFloat(_alpha), x => arrowMaterial.SetFloat(_alpha, x), 0, 0.5f).Forget();
         _isMovable = false;
         
         await UniTask.Delay(1000);

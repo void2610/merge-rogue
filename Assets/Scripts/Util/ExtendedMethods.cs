@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 
 public static class ExtendedMethods
@@ -11,5 +12,13 @@ public static class ExtendedMethods
         {
             Debug.Log(s);
         }
+    }
+    
+    /// <summary>
+    /// DOTweenの警告を無視する拡張メソッド
+    /// </summary>
+    public static void Forget(this Tween tween)
+    {
+        // 何もせず警告を無視
     }
 }

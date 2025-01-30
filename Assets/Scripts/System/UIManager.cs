@@ -55,16 +55,16 @@ public class UIManager : MonoBehaviour
         cg.blocksRaycasts = false;
         
         var seq = DOTween.Sequence();
-        seq.SetUpdate(true);
+        seq.SetUpdate(true).Forget();
         if (e)
         {
-            seq.Join(cg.transform.DOMoveY(-0.45f, 0).SetRelative(true));
-            seq.Join(cg.transform.DOMoveY(0.45f, 0.2f).SetRelative(true).SetEase(Ease.OutBack));
-            seq.Join(cg.DOFade(1, 0.2f));
+            seq.Join(cg.transform.DOMoveY(-0.45f, 0).SetRelative(true)).Forget();
+            seq.Join(cg.transform.DOMoveY(0.45f, 0.2f).SetRelative(true).SetEase(Ease.OutBack)).Forget();
+            seq.Join(cg.DOFade(1, 0.2f)).Forget();
         }
         else
         {
-            seq.Join(cg.DOFade(0, 0.2f));
+            seq.Join(cg.DOFade(0, 0.2f)).Forget();
         }
         
         _canvasGroupTween[canvasName] = seq;
