@@ -15,8 +15,7 @@ MonoBehaviour:
   id: 0
   className: AllAttackByTenCoin
   sprite: {fileID: -7043394559850540028, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
-  displayName: "\u932C\u91D1\u8853"
+  displayName: "\u932C\u91D1\u8853\u6307\u5357\u66F8"
   description: "\u30B3\u30A4\u30F3\u309210\u6D88\u8CBB\u3057\u3001\u5358\u4F53\u653B\u6483\u3092\u5168\u4F53\u653B\u6483\u306B\u3059\u308B"
-  flavorText: "\u30CD\u30BF\u5207\u308C"
+  flavorText: "\u932C\u91D1\u8853\u306E\u57FA\u790E\u304C\u8A18\u3057\u3066\u3042\u308B\u672C\u3002\u8457\u8005\u306F\u4E0D\u660E\u3002"
   rarity: 3
-  price: 25

@@ -8,8 +8,9 @@ public class RelicData : ScriptableObject
     public string className;
     public Sprite sprite;
     public string displayName;
+    [TextArea(1, 5)]
     public string description;
+    [TextArea(1, 5)]
     public string flavorText;
     public Rarity rarity;
-    public int price;
 }

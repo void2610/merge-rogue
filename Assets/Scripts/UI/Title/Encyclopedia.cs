@@ -13,10 +13,11 @@ public class Encyclopedia : MonoBehaviour
     [SerializeField] private Transform itemContainer;
     [SerializeField] private GameObject ballContainerPrefab;
     [SerializeField] private GameObject relicContainerPrefab;
-
     [SerializeField] private Vector2 offset;
     [SerializeField] private Vector2 align;
     [SerializeField] private int column = 3;
+    
+    private List<GameObject> _items = new ();
     
     private void SetBallData(GameObject g, BallData b)
     {
@@ -60,12 +61,6 @@ public class Encyclopedia : MonoBehaviour
     {
         if(allBallDataList.list.Count == 0) return;
         
-        //WebGLの場合、offsetを調整
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
-        {
-            offset = new Vector2(-7, offset.y - 7);
-        }
-        
         var tempColumn = 0;
         for (var i = allBallDataList.list.Count - 1; i >= 0; i--)
         {
@@ -73,6 +68,7 @@ public class Encyclopedia : MonoBehaviour
             var container = Instantiate(ballContainerPrefab, pos, Quaternion.identity, itemContainer);
             SetBallData(container, allBallDataList.list[i]);
             tempColumn = i / column;
+            _items.Add(container);
         }
 
         tempColumn += 2;
@@ -82,9 +78,15 @@ public class Encyclopedia : MonoBehaviour
             var pos = new Vector3((i % column) * align.x, -((i / column) + tempColumn) * align.y, 0) + new Vector3(offset.x, offset.y, 0);
             var container = Instantiate(relicContainerPrefab, pos, Quaternion.identity, itemContainer);
             SetRelicData(container, allRelicDataList.list[i]);
+            _items.Add(container);
         }
         
         AdjustContentSize();
+        // 謎に縦の位置がズレるので修正
+        if (_items[0].GetComponent<RectTransform>().anchoredPosition.y > 300)
+        {
+            _items.ForEach(i =>  i.transform.Translate(new Vector3(0, -7, 0)));
+        }
         Canvas.ForceUpdateCanvases();
     }
 }

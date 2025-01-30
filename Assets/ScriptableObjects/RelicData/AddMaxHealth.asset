@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   className: AddMaxHealth
-  sprite: {fileID: -5159087384432534610, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
-  displayName: "\u547D\u306E\u6C34"
+  sprite: {fileID: 21300000, guid: 686e86f7c01a442c78022be705a30d87, type: 3}
+  displayName: "\u30B9\u30E9\u30A4\u30E0\u306E\u304B\u3051\u3089"
   description: "\u6700\u5927HP\u309210\u5897\u3084\u3059"
-  flavorText: "\u30CD\u30BF\u5207\u308C"
+  flavorText: "\u30B9\u30E9\u30A4\u30E0\u3092\u53E9\u3044\u305F\u969B\u306B\u843D\u3061\u305F\u304B\u3051\u3089\u3002\u85AC\u306E\u6750\u6599\u306B\u306A\u308B\u3089\u3057\u3044\u3002"
   rarity: 0
-  price: 5

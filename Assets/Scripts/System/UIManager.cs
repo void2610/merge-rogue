@@ -228,6 +228,6 @@ public class UIManager : MonoBehaviour
         trigger.triggers.Add(entry);
 
         fadeImage.color = new Color(0, 0, 0, 1);
-        fadeImage.DOFade(0, 2f).SetUpdate(true);
+        fadeImage.DOFade(0, 2f).SetUpdate(true).SetLink(gameObject);
     }
 }

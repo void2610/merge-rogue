@@ -151,7 +151,7 @@ public class DescriptionWindow : MonoBehaviour
         nameText.color = MyColors.GetRarityColor(r.rarity);
         descriptionText.text = r.description;
         flavorText.text = r.flavorText;
-        statusTexts[0].text = "price: " + r.price.ToString(CultureInfo.InvariantCulture);
+        statusTexts[0].text = "price: " + ContentProvider.GetSHopPrice(Shop.ShopItemType.Ball, r.rarity).ToString(CultureInfo.InvariantCulture);
         statusTexts[1].alpha = 0;
         statusTexts[2].alpha = 0;
     }
