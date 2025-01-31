@@ -92,10 +92,9 @@ jobs:
 
       - name: Deploy to GitHub Pages 🌐
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v1
         with:
           artifact_name: 'webgl-build'
-          path: CIBuilds/WebGL
 
   discord:
     name: Notify Discord 🤖
