@@ -84,6 +84,11 @@ jobs:
         with:
           name: webgl-build
           path: CIBuilds/WebGL/build
+          
+      - name: List downloaded files 📂
+        run: |
+            echo "Downloaded files:"
+            ls -R CIBuilds/WebGL
 
       - name: Deploy to GitHub Pages 🌐
         uses: actions/deploy-pages@v2
