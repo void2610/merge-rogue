@@ -58,12 +58,16 @@ jobs:
           allowDirtyBuild: true
           buildsPath: CIBuilds
           buildName: build
+          
+      - name: Prepare artifact for deployment 🎯
+        run: |
+          mkdir -p ./public
+          mv CIBuilds/WebGL/build/* ./public/
 
       - name: Upload Build Artifact 🚀
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: github-pages
-          path: CIBuilds/WebGL/
+          path: public
 
   deploy:
     name: Deploy to GitHub Pages 🚀
@@ -76,23 +80,6 @@ jobs:
       name: github-pages
 
     steps:
-      - name: Checkout repository 📥
-        uses: actions/checkout@v4
-        
-      - name: Setup Pages 📄
-        uses: actions/configure-pages@v4
-
-      - name: Download the build artifact 📦
-        uses: actions/download-artifact@v4
-        with:
-          name: github-pages
-          path: .
-          
-      - name: List downloaded files 📂
-        run: |
-            echo "Downloaded files:"
-            ls -R .
-
       - name: Deploy to GitHub Pages 🌐
         id: deployment
         uses: actions/deploy-pages@v4
