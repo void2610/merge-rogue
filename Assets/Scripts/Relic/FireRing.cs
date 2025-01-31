@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
-public class FireBracelet : RelicBase
+public class FireRing : RelicBase
 {
     protected override void SubscribeEffect()
     {

@@ -10,13 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 87ffaf8ec3e9d4f489befd2ffee17c75, type: 3}
-  m_Name: FireBracelet
+  m_Name: FireRing
   m_EditorClassIdentifier: 
   id: 0
-  className: FireBracelet
-  sprite: {fileID: 4642325231336661812, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
-  displayName: "\u708E\u306E\u30D6\u30EC\u30B9\u30EC\u30C3\u30C8"
+  className: FireRing
+  sprite: {fileID: 21300000, guid: ba5195e0d8d4146f9a7fd7f21861e6ce, type: 3}
+  displayName: "\u708E\u306E\u6307\u8F2A"
   description: "\u653B\u6483\u6642\u3001\u5148\u982D\u306E\u65751\u4F53\u306B\u3084\u3051\u3069\u30921\u30B9\u30BF\u30C3\u30AF\u4ED8\u4E0E\u3059\u308B\u3002"
-  flavorText: "\u71C3\u3048\u76DB\u308B\u30D6\u30EC\u30B9\u30EC\u30C3\u30C8\u3002\u71B1\u304F\u306A\u3044\u306E\uFF1F"
+  flavorText: "\u71C3\u3048\u76DB\u308B\u529B\u3092\u5BBF\u3057\u305F\u5B9D\u77F3\u3092\u8A82\u3048\u305F\u6307\u8F2A\u3002\u305A\u3063\u3068\u4ED8\u3051\u3066\u3044\u308B\u3068\u3061\u3087\u3063\u3068\u71B1\u3044\u3002"
   rarity: 2
-  price: 20
