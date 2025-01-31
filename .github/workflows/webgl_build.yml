@@ -91,7 +91,7 @@ jobs:
       - name: List downloaded files 📂
         run: |
             echo "Downloaded files:"
-            ls -R CIBuilds/WebGL
+            ls -R .
 
       - name: Deploy to GitHub Pages 🌐
         id: deployment
