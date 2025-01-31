@@ -61,7 +61,6 @@ public class Shop : MonoBehaviour
                 SetRelicEvent(_itemObjects[i].transform.gameObject, r, i);
             }
         }
-        _currentItemPrices.ForEach(x => Debug.Log(x));
     }
 
     public void CloseShop()
