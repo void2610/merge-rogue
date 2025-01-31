@@ -95,6 +95,7 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           artifact_name: 'webgl-build'
+          path: CIBuilds/WebGL
 
   discord:
     name: Notify Discord 🤖
