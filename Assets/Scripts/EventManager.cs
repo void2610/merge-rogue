@@ -57,6 +57,12 @@ public static class EventManager
     public static readonly GameEvent<int> OnShopExit = new (0);
     // ショップでアイテムを購入した時: なし
     public static readonly GameEvent<int> OnItemPurchased = new (0);
+    // 宝箱を開いた時: なし
+    public static readonly GameEvent<int> OnTreasureOpened = new (0);
+    // 宝箱でレリックを取得した時: RelicData
+    public static readonly GameEvent<RelicData> OnRelicObtainedTreasure = new (null);
+    // 宝箱をスキップした時: なし
+    public static readonly GameEvent<int> OnTreasureSkipped = new (0);
     
     // ゲーム開始時にイベントをリセット
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]

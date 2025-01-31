@@ -78,17 +78,17 @@ public class ContentProvider : MonoBehaviour
     /// <returns></returns>
     public RelicData GetRandomRelic()
     {
-        // 既に取得済みのレリックは低確率にする
-        var current = RelicManager.Instance.GetCurrentRelics();
-        var randomIndex = GameManager.Instance.RandomRange(0, relicList.list.Count);
-        var relic = relicList.list[randomIndex];
-        // 3回だけ再試行する
-        for (var i = 0; i < 3; i++)
+        // ランダムにレアリティを選択
+        var r = GameManager.Instance.RandomRange(0.0f, 1.0f);
+        var rarity = r switch
         {
-            if (current.Contains(relic)) relic = relicList.list[GameManager.Instance.RandomRange(0, relicList.list.Count)];
-            else break;
-        }
-        return relic;
+            < 0.40f => Rarity.Common,   // 40%
+            < 0.70f => Rarity.Uncommon, // 30%
+            < 0.85f => Rarity.Rare,     // 15%
+            < 0.95f => Rarity.Epic,     // 10%
+            _ => Rarity.Legendary       //  5%
+        };
+        return GetRandomRelicDataByRarity(rarity);
     }
 
     /// <summary>
@@ -110,8 +110,19 @@ public class ContentProvider : MonoBehaviour
     /// <returns></returns>
     public RelicData GetRandomRelicDataByRarity(Rarity r)
     {
-        var relics = relicList.list.Where(bd => bd.rarity == r).ToList();
-        return relics[GameManager.Instance.RandomRange(0, relics.Count)];
+        // 既に取得済みのレリックは低確率にする
+        var current = RelicManager.Instance.GetCurrentRelics();
+        // 指定されたレアリティのリストを取得
+        var targets = relicList.list.Where(bd => bd.rarity == r).ToList();
+        var randomIndex = GameManager.Instance.RandomRange(0, targets.Count);
+        var relic = targets[randomIndex];
+        // 3回だけ再試行する
+        for (var i = 0; i < 3; i++)
+        {
+            if (current.Contains(relic)) relic = targets[GameManager.Instance.RandomRange(0, targets.Count)];
+            else break;
+        }
+        return relic;
     }
     
     /// <summary>
@@ -164,10 +175,6 @@ public class ContentProvider : MonoBehaviour
         
         relicList.Register();
     }
-    
-    // private RelicData GetRandomRelicDependRarity()
-    // {
-    // }
     
     private Object GetRandomObjectFromList(List<ContentDataList> contentLists)
     {

@@ -120,8 +120,7 @@ public class UIManager : MonoBehaviour
     public void OnClickTreasureExit()
     {
         SeManager.Instance.PlaySe("button");
-        EnableCanvasGroup("Treasure", false);
-        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+        EventManager.OnTreasureSkipped.Trigger(0);
         Treasure.Instance.CloseTreasure();
     }
 

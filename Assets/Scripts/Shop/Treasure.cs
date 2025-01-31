@@ -36,6 +36,8 @@ public class Treasure : MonoBehaviour
     public void CloseTreasure()
     {
         items.ForEach(item => item.transform.position = _disablePosition);
+        UIManager.Instance.EnableCanvasGroup("Treasure", false);
+        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
     }
     
     private void SetEvent(GameObject g, RelicData relic)
@@ -53,7 +55,8 @@ public class Treasure : MonoBehaviour
                 RelicManager.Instance.AddRelic(relic);
                 SeManager.Instance.PlaySe("coin");
                 g.transform.position = _disablePosition;
-                UIManager.Instance.OnClickTreasureExit();
+                EventManager.OnRelicObtainedTreasure.Trigger(relic);
+                CloseTreasure();
             });
         }
 

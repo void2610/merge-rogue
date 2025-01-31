@@ -3534,7 +3534,7 @@ MonoBehaviour:
   - stageType: 5
     probability: 0
     icon: {fileID: 21300000, guid: 1dd6475f82f984568846c15a1033794f, type: 3}
-    color: {r: 0.23584908, g: 0.23584908, b: 0.23584908, a: 1}
+    color: {r: 0, g: 0, b: 0, a: 1}
   - stageType: 6
     probability: 0
     icon: {fileID: 0}
