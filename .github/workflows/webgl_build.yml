@@ -61,10 +61,11 @@ jobs:
           
       - name: Prepare artifact for deployment 🎯
         run: |
-          mkdir -p ./public
-          mv CIBuilds/WebGL/build/* ./public/
+          sudo mkdir -p ./public
+          sudo mv CIBuilds/WebGL/build/* ./public/
+          sudo chown -R $USER:$USER ./public
 
-      - name: Upload Build Artifact 🚀
+      - name: Upload GitHub Pages artifact 🚀
         uses: actions/upload-pages-artifact@v3
         with:
           path: public
