@@ -14,9 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   className: DoubleAttackWhenLowHealth
-  sprite: {fileID: 21300000, guid: 82ebb9d8a1fb64509990b942b9e86bb8, type: 3}
+  sprite: {fileID: 21300000, guid: 1b6c6b026e8c5445d9ad56d27486435a, type: 3}
   displayName: "\u98A8\u524D\u306E\u71C8"
   description: "HP\u304C20%\u4EE5\u4E0B\u306E\u6642\u3001\u653B\u6483\u529B\u304C2\u500D\u306B\u306A\u308B"
-  flavorText: "\u30CD\u30BF\u5207\u308C"
-  rarity: 1
-  price: 10
+  flavorText: "\u4ECA\u306B\u3082\u6D88\u3048\u3066\u3057\u307E\u3044\u305D\u3046\u306A\u5C0F\u3055\u306A\u708E\u3002\u3060\u304C\u6C7A\u3057\u3066\u6D88\u3048\u308B\u3053\u3068\u306F\u306A\u3044\u3002"
+  rarity: 2

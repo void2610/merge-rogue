@@ -62,22 +62,28 @@ public class Encyclopedia : MonoBehaviour
         if(allBallDataList.list.Count == 0) return;
         
         var tempColumn = 0;
-        for (var i = allBallDataList.list.Count - 1; i >= 0; i--)
+        
+        var balls = allBallDataList.list;
+        balls.Sort((a, b) => a.rarity.CompareTo(b.rarity));
+        for (var i = balls.Count - 1; i >= 0; i--)
         {
             var pos = new Vector3((i % column) * align.x, -(i / column) * align.y, 0) + new Vector3(offset.x, offset.y, 0);
             var container = Instantiate(ballContainerPrefab, pos, Quaternion.identity, itemContainer);
-            SetBallData(container, allBallDataList.list[i]);
+            SetBallData(container, balls[i]);
             tempColumn = i / column;
             _items.Add(container);
         }
 
         tempColumn += 2;
-        
-        for (var i = allRelicDataList.list.Count - 1; i >= 0; i--)
+
+        // レアリティでソート
+        var relics = allRelicDataList.list;
+        relics.Sort((a, b) => a.rarity.CompareTo(b.rarity));
+        for (var i =　relics.Count - 1; i >= 0; i--)
         {
             var pos = new Vector3((i % column) * align.x, -((i / column) + tempColumn) * align.y, 0) + new Vector3(offset.x, offset.y, 0);
             var container = Instantiate(relicContainerPrefab, pos, Quaternion.identity, itemContainer);
-            SetRelicData(container, allRelicDataList.list[i]);
+            SetRelicData(container, relics[i]);
             _items.Add(container);
         }
         
