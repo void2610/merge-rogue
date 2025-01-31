@@ -62,8 +62,8 @@ jobs:
       - name: Upload Build Artifact 🚀
         uses: actions/upload-artifact@v4
         with:
-          name: webgl-build
-          path: CIBuilds/WebGL/build
+          name: github-pages
+          path: CIBuilds/WebGL/
 
   deploy:
     name: Deploy to GitHub Pages 🚀
@@ -78,12 +78,15 @@ jobs:
     steps:
       - name: Checkout repository 📥
         uses: actions/checkout@v4
+        
+      - name: Setup Pages 📄
+        uses: actions/configure-pages@v4
 
       - name: Download the build artifact 📦
         uses: actions/download-artifact@v4
         with:
-          name: 'webgl-build'
-          path: CIBuilds/WebGL
+          name: github-pages
+          path: .
           
       - name: List downloaded files 📂
         run: |
@@ -93,8 +96,6 @@ jobs:
       - name: Deploy to GitHub Pages 🌐
         id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          artifact_name: 'webgl-build'
 
   discord:
     name: Notify Discord 🤖
