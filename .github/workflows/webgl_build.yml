@@ -60,7 +60,7 @@ jobs:
           buildName: build
 
       - name: Upload Build Artifact 🚀
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v3
         with:
           name: CIBuilds
           path: CIBuilds/WebGL/build
