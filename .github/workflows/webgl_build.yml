@@ -83,7 +83,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: webgl-build
-          path: CIBuilds/WebGL/build
+          path: CIBuilds/WebGL
           
       - name: List downloaded files 📂
         run: |
