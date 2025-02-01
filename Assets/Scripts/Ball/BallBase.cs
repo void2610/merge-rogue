@@ -41,7 +41,6 @@ public class BallBase : MonoBehaviour
             Rank++;
             Attack = _attacks[Rank];
             Size = _sizes[Rank];
-            transform.DOScale(Size, 0.2f).SetEase(Ease.OutBack).SetLink(gameObject);
         }
     }
 
@@ -55,7 +54,6 @@ public class BallBase : MonoBehaviour
         this.Rank = ballRank;
         this.Attack = _attacks[ballRank];
         this.Size = _sizes[ballRank];
-        transform.localScale = new Vector3(Size, Size, Size);
     }
 
     private void Start()

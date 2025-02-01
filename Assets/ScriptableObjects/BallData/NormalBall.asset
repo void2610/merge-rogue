@@ -23,9 +23,9 @@ MonoBehaviour:
   rarity: 0
   attacks:
   - 1
-  - 1
-  - 1
+  - 2
+  - 3
   sizes:
   - 1
-  - 1
-  - 1
+  - 0.9
+  - 0.8

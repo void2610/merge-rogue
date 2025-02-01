@@ -8,7 +8,8 @@ public class InventoryUI : MonoBehaviour
 {
     public enum InventoryUIState
     {
-        Normal,
+        Disabled,
+        Upgrade,
         Swap,
         Remove
     }
@@ -22,7 +23,7 @@ public class InventoryUI : MonoBehaviour
     private static List<float> BallSizes => InventoryManager.Instance.Sizes;
     private readonly List<GameObject> _items = new();
     private int _swapIndex = -1;
-    private InventoryUIState _state = InventoryUIState.Normal;
+    private InventoryUIState _state = InventoryUIState.Disabled;
 
     public void CreateBallUI(GameObject ball, int level, BallBase ballBase)
     {
@@ -101,6 +102,13 @@ public class InventoryUI : MonoBehaviour
     {
         switch (_state)
         {
+            case InventoryUIState.Disabled:
+                break;
+            case InventoryUIState.Upgrade:
+                InventoryManager.Instance.UpgradeBall(index);
+                EnableCursor(false);
+                _state = InventoryUIState.Disabled;
+                break;
             case InventoryUIState.Swap when _swapIndex == -1:
                 _swapIndex = index;
                 subCursor.GetComponent<SpriteRenderer>().enabled = true;
@@ -113,12 +121,12 @@ public class InventoryUI : MonoBehaviour
                 EnableCursor(false);
                 subCursor.GetComponent<SpriteRenderer>().enabled = false;
                 _swapIndex = -1;
-                _state = InventoryUIState.Normal;
+                _state = InventoryUIState.Disabled;
                 break;
             case InventoryUIState.Remove:
                 InventoryManager.Instance.RemoveAndShiftBall(index);
                 EnableCursor(false);
-                _state = InventoryUIState.Normal;
+                _state = InventoryUIState.Disabled;
                 break;
         }
     }

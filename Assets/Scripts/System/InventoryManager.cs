@@ -21,6 +21,17 @@ public class InventoryManager : MonoBehaviour
     private readonly List<GameObject> _inventory = new();
     public readonly List<float> Sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f , 1.1f};
     public readonly List<float> Probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f };
+    
+    public void UpgradeBall(int index)
+    {
+        if (index < 0 || index >= InventorySize) return;
+        var ballBase = _inventory[index].GetComponent<BallBase>();
+        ballBase.Upgrade();
+        var tmp = _inventory[index];
+        _inventory[index] = CreateBallInstanceFromBallData(ballBase.Data, ballBase.Level, ballBase.Rank);
+        InventoryUI.CreateBallUI(_inventory[index], index, ballBase);
+        Destroy(tmp);
+    }
 
     // ボールを任意の位置に追加する
     public void SetBall(BallData data, int level)
@@ -124,10 +135,10 @@ public class InventoryManager : MonoBehaviour
     }
 
     // ボールのコピー元となるオブジェクトを生成、ステータス変化はこのオブジェクトに対して行う
-    private GameObject CreateBallInstanceFromBallData(BallData data, int level)
+    private GameObject CreateBallInstanceFromBallData(BallData data, int level, int rank = 0)
     {
         var ball = Instantiate(ballBasePrefab, this.transform);
-        ball.name = $"{data.name} (Level {level})";
+        ball.name = $"{data.name} (Level{level}, Rank{rank+1})";
         BallBase ballBase;
         if (!string.IsNullOrEmpty(data.className))
         {
@@ -149,7 +160,7 @@ public class InventoryManager : MonoBehaviour
             return null;
         }
 
-        ballBase.InitBall(data, level);
+        ballBase.InitBall(data, level, rank);
         
         ball.transform.localScale = Vector3.one * (Sizes[level - 1] * ballBase.Size);
         // HDRカラーに変換
@@ -167,7 +178,8 @@ public class InventoryManager : MonoBehaviour
         var newBall = Instantiate(ball, position, Quaternion.identity);
         var level = ball.GetComponent<BallBase>().Level;
         var data = ball.GetComponent<BallBase>().Data;
-        newBall.GetComponent<BallBase>().InitBall(data, level);
+        var rank = ball.GetComponent<BallBase>().Rank;
+        newBall.GetComponent<BallBase>().InitBall(data, level, rank);
         newBall.transform.localScale = ball.transform.localScale;
         newBall.GetComponent<SpriteRenderer>().color = ball.GetComponent<SpriteRenderer>().color;
         return newBall;
