@@ -24,7 +24,7 @@ public class InventoryUI : MonoBehaviour
     private int _swapIndex = -1;
     private InventoryUIState _state = InventoryUIState.Normal;
 
-    public void CreateBallUI(GameObject ball, int level, BallData data)
+    public void CreateBallUI(GameObject ball, int level, BallBase ballBase)
     {
         var g = Instantiate(ballUIPrefab, inventoryUIContainer.transform);
         
@@ -38,7 +38,7 @@ public class InventoryUI : MonoBehaviour
         if (sprite != null) g.transform.Find("Icon").GetComponent<Image>().sprite = sprite;
         else g.transform.Find("Icon").GetComponent<Image>().color = new Color(0, 0, 0, 0);
         
-        SetEvent(g, level, data);
+        SetEvent(g, level, ballBase);
         if (_items.Count <= level)
         {
             _items.Add(g);
@@ -85,14 +85,15 @@ public class InventoryUI : MonoBehaviour
         _state = s;
     }
     
-    private void SetEvent(GameObject ball, int index, BallData data)
+    private void SetEvent(GameObject ballObj, int index, BallBase ballBase)
     {
-        // ボールの選択、入れ替え、削除
-        Utils.AddEventToObject(ball, () => OnClickBall(index), EventTriggerType.PointerClick);
+        // クリックでボールの選択、入れ替え、削除
+        Utils.AddEventToObject(ballObj, () => OnClickBall(index), EventTriggerType.PointerClick);
         
-        Utils.AddEventToObject(ball, () => { 
+        // マウスオーバーでカーソル移動とウィンドウ表示
+        Utils.AddEventToObject(ballObj, () => { 
             SetCursor(index);
-            UIManager.Instance.ShowBallDescriptionWindow(data, ball); 
+            UIManager.Instance.ShowBallDescriptionWindow(ballBase.Data, ballObj, ballBase.Rank); 
         }, EventTriggerType.PointerEnter);
     }
 

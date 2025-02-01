@@ -7,6 +7,7 @@ public class BallBase : MonoBehaviour
     private static int _ballSerial;
     public const int MAX_LEVEL = 3;
 
+    public int Rank { get; private set; } = 0;
     public int Level { get; private set; } = -1;
     public float Size { get; private set; } = 0;
     public float Attack { get; private set; } = 0;
@@ -17,7 +18,6 @@ public class BallBase : MonoBehaviour
 
     private List<float> _attacks = new();
     private List<float> _sizes = new();
-    private int _rank = 0;
     
     public void Freeze()
     {
@@ -36,25 +36,25 @@ public class BallBase : MonoBehaviour
     
     public void Upgrade()
     {
-        if (_rank < MAX_LEVEL - 1)
+        if (Rank < MAX_LEVEL - 1)
         {
-            _rank++;
-            Attack = _attacks[_rank];
-            Size = _sizes[_rank];
+            Rank++;
+            Attack = _attacks[Rank];
+            Size = _sizes[Rank];
             transform.DOScale(Size, 0.2f).SetEase(Ease.OutBack).SetLink(gameObject);
         }
     }
 
-    public void InitBall(BallData d, int level, int rank = 0)
+    public void InitBall(BallData d, int level, int ballRank = 0)
     {
         Serial = _ballSerial++;
         this.Data = d;
         this.Level = level;
         this._sizes = d.sizes;
         this._attacks = d.attacks;
-        this._rank = rank;
-        this.Attack = _attacks[rank];
-        this.Size = _sizes[rank];
+        this.Rank = ballRank;
+        this.Attack = _attacks[ballRank];
+        this.Size = _sizes[ballRank];
         transform.localScale = new Vector3(Size, Size, Size);
     }
 

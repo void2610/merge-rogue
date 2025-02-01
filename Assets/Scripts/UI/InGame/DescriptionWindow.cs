@@ -32,7 +32,7 @@ public class DescriptionWindow : MonoBehaviour
     private GameObject _rootTriggerObject;
     private bool _isCheckingMouse = false;
 
-    public void ShowWindow(object obj, GameObject rootTriggerObject)
+    public void ShowWindow(object obj, GameObject rootTriggerObject, int ballRank = -1)
     {
         if (IsMouseOverWindowOrDescendants(this.gameObject)) return;
         
@@ -40,7 +40,7 @@ public class DescriptionWindow : MonoBehaviour
         _subWindows.Clear();
         this.gameObject.SetActive(true);
 
-        if(obj is BallData b) SetBallTexts(b);
+        if(obj is BallData b) SetBallTexts(b, ballRank);
         else if(obj is RelicData r) SetRelicTexts(r);
         else throw new System.ArgumentException("obj is not BallData or RelicData");
         
@@ -131,17 +131,17 @@ public class DescriptionWindow : MonoBehaviour
     }
 
     
-    private void SetBallTexts(BallData b, int rank = 0)
+    private void SetBallTexts(BallData b, int rank)
     {
         nameText.text = b.displayName;
         nameText.color = MyColors.GetRarityColor(b.rarity);
-        descriptionText.text = b.descriptions[rank];;
+        descriptionText.text = b.descriptions[rank];
         flavorText.text = b.flavorText;
-        statusTexts[0].text = "attack: " + b.attacks[rank].ToString(CultureInfo.InvariantCulture);
+        statusTexts[0].text = "attack: " + b.attacks[rank];
         statusTexts[0].alpha = 1;
-        statusTexts[1].text = "size: " + b.sizes[rank].ToString(CultureInfo.InvariantCulture);
+        statusTexts[1].text = "size: " + b.sizes[rank];
         statusTexts[1].alpha = 1;
-        statusTexts[2].text = "price: " + ContentProvider.GetSHopPrice(Shop.ShopItemType.Ball, b.rarity).ToString(CultureInfo.InvariantCulture);
+        statusTexts[2].text = "rank: " + (rank + 1);
         statusTexts[2].alpha = 1;
     }
 
@@ -151,7 +151,7 @@ public class DescriptionWindow : MonoBehaviour
         nameText.color = MyColors.GetRarityColor(r.rarity);
         descriptionText.text = r.description;
         flavorText.text = r.flavorText;
-        statusTexts[0].text = "price: " + ContentProvider.GetSHopPrice(Shop.ShopItemType.Ball, r.rarity).ToString(CultureInfo.InvariantCulture);
+        statusTexts[0].text = "price: " + ContentProvider.GetSHopPrice(Shop.ShopItemType.Ball, r.rarity);
         statusTexts[1].alpha = 0;
         statusTexts[2].alpha = 0;
     }

@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour
     private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
     
     public void ShowRelicDescriptionWindow(RelicData r, GameObject g) => descriptionWindow.ShowWindow(r, g);
-    public void ShowBallDescriptionWindow(BallData b, GameObject g) => descriptionWindow.ShowWindow(b, g);
+    public void ShowBallDescriptionWindow(BallData b, GameObject g, int rank) => descriptionWindow.ShowWindow(b, g, rank);
 
     public void SetSeedText(string seed) => seedText.SetText(seed);
 

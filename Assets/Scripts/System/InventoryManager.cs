@@ -22,7 +22,7 @@ public class InventoryManager : MonoBehaviour
     public readonly List<float> Sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f , 1.1f};
     public readonly List<float> Probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f };
 
-    // ボールを最後尾に追加する
+    // ボールを任意の位置に追加する
     public void SetBall(BallData data, int level)
     {
         if (level is <= 0 or > MAX_INVENTORY_SIZE) return;
@@ -31,18 +31,18 @@ public class InventoryManager : MonoBehaviour
         var newBall = CreateBallInstanceFromBallData(data, level);
         
         _inventory[level - 1] = newBall;
-        InventoryUI.CreateBallUI(newBall, level - 1, data);
+        InventoryUI.CreateBallUI(newBall, level - 1, newBall.GetComponent<BallBase>());
         if(old) Destroy(old);
     }
     
-    // ボールを任意の位置に追加する
+    // ボールを最後尾に追加する
     public void AddBall(BallData data)
     {
         if (InventorySize >= MAX_INVENTORY_SIZE) return;
         var ball = CreateBallInstanceFromBallData(data, InventorySize + 1);
         _inventory[InventorySize] = ball;
         InventorySize++;
-        InventoryUI.CreateBallUI(ball, InventorySize - 1, data);
+        InventoryUI.CreateBallUI(ball, InventorySize - 1, ball.GetComponent<BallBase>());
     }
     
     // 2つのボールを入れ替える
@@ -59,8 +59,8 @@ public class InventoryManager : MonoBehaviour
         _inventory[index1] = CreateBallInstanceFromBallData(data2, index1 + 1);
         _inventory[index2] = CreateBallInstanceFromBallData(data1, index2 + 1);
         
-        InventoryUI.CreateBallUI(_inventory[index1], index1, data2);
-        InventoryUI.CreateBallUI(_inventory[index2], index2, data1);
+        InventoryUI.CreateBallUI(_inventory[index1], index1, _inventory[index1].GetComponent<BallBase>());
+        InventoryUI.CreateBallUI(_inventory[index2], index2, _inventory[index2].GetComponent<BallBase>());
     }
 
     // 任意の場所のボールを削除し、後ろのボールを前に詰める
@@ -74,7 +74,7 @@ public class InventoryManager : MonoBehaviour
             var data = _inventory[i + 1].GetComponent<BallBase>().Data;
             Destroy(_inventory[i + 1]);
             _inventory[i] = CreateBallInstanceFromBallData(data, i + 1);
-            InventoryUI.CreateBallUI(_inventory[i], i, data);
+            InventoryUI.CreateBallUI(_inventory[i], i, _inventory[i].GetComponent<BallBase>());
         }
         InventorySize--;
     }
@@ -197,7 +197,7 @@ public class InventoryManager : MonoBehaviour
         for (var i = 0; i < FIRST_INVENTORY_SIZE; i++)
         {
             var ball = CreateBallInstanceFromBallData(normalBallData, i + 1);
-            InventoryUI.CreateBallUI(ball, i, normalBallData);
+            InventoryUI.CreateBallUI(ball, i, ball.GetComponent<BallBase>());
             _inventory[i] = ball;
         }
         
