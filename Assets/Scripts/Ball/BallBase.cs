@@ -1,9 +1,11 @@
+using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
 public class BallBase : MonoBehaviour
 {
-    private static int ballSerial;
+    private static int _ballSerial;
+    public const int MAX_LEVEL = 3;
 
     public int Level { get; private set; } = -1;
     public float Size { get; private set; } = 0;
@@ -12,6 +14,10 @@ public class BallBase : MonoBehaviour
     public BallData Data { get; private set; }
     public bool IsFrozen { get; private set; } = false;
     public bool isDestroyed;
+
+    private List<float> _attacks = new();
+    private List<float> _sizes = new();
+    private int _rank = 0;
     
     public void Freeze()
     {
@@ -27,14 +33,28 @@ public class BallBase : MonoBehaviour
     {
         // Main Effect
     }
+    
+    public void Upgrade()
+    {
+        if (_rank < MAX_LEVEL - 1)
+        {
+            _rank++;
+            Attack = _attacks[_rank];
+            Size = _sizes[_rank];
+            transform.DOScale(Size, 0.2f).SetEase(Ease.OutBack).SetLink(gameObject);
+        }
+    }
 
     public void InitBall(BallData d, int level, int rank = 0)
     {
-        Serial = ballSerial++;
+        Serial = _ballSerial++;
         this.Data = d;
         this.Level = level;
-        this.Size = d.sizes[rank];
-        this.Attack = d.attacks[rank];
+        this._sizes = d.sizes;
+        this._attacks = d.attacks;
+        this._rank = rank;
+        this.Attack = _attacks[rank];
+        this.Size = _sizes[rank];
         transform.localScale = new Vector3(Size, Size, Size);
     }
 
