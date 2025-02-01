@@ -8,6 +8,7 @@ public class WordDictionary : ScriptableObject
     public class WordEntry
     {
         public string word;       // 単語
+        [TextArea(1, 10)]
         public string description; // 説明文
         public Color textColor;   // 表示色
     }
