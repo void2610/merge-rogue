@@ -28,13 +28,13 @@ public class BallBase : MonoBehaviour
         // Main Effect
     }
 
-    public void InitBall(BallData d, int l)
+    public void InitBall(BallData d, int level, int rank = 0)
     {
         Serial = ballSerial++;
         this.Data = d;
-        this.Level = l;
-        this.Size = d.size;
-        this.Attack = d.atk;
+        this.Level = level;
+        this.Size = d.sizes[rank];
+        this.Attack = d.attacks[rank];
         transform.localScale = new Vector3(Size, Size, Size);
     }
 

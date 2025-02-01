@@ -6551,7 +6551,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Score: 0000'
+  m_text: 'Score: '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 51b066cd8e0b7476c94d04d3a90a0709, type: 2}
   m_sharedMaterial: {fileID: 322069558015029290, guid: 51b066cd8e0b7476c94d04d3a90a0709, type: 2}
@@ -8883,7 +8883,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundMaterial: {fileID: 2100000, guid: 6aad917c3f80a415a968f0360490f297, type: 2}
-  arrowMaterial: {fileID: 2100000, guid: 7158305c99d774c409c2d3ec56e60442, type: 2}
 --- !u!114 &1168070102
 MonoBehaviour:
   m_ObjectHideFlags: 0

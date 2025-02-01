@@ -12,14 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e20d261e1bba4e309354d2a524b6d0d, type: 3}
   m_Name: CriticalBall
   m_EditorClassIdentifier: 
-  id: 0
   className: CriticalBall
   displayName: "\u30AF\u30EA\u30C6\u30A3\u30AB\u30EB\u30DC\u30FC\u30EB"
-  mainDescription: "\u305F\u307E\u306B\u653B\u6483\u529B\u304C3\u500D\u306B\u306A\u308B"
-  altDescription: "\u4E00\u756A\u5F8C\u308D\u306E\u6575\u306B\u30C0\u30E1\u30FC\u30B8\u3002\u305F\u307E\u306B3\u500D\u306E\u653B\u6483\u529B\u306B\u306A\u308B"
+  descriptions:
+  - "\u305F\u307E\u306B\u653B\u6483\u529B\u304C2\u500D\u306B\u306A\u308B"
+  - "\u305F\u307E\u306B\u653B\u6483\u529B\u304C3\u500D\u306B\u306A\u308B"
+  - "\u305F\u307E\u306B\u653B\u6483\u529B\u304C5\u500D\u306B\u306A\u308B"
   flavorText: "\u30AE\u30E3\u30F3\u30D6\u30E9\u30FC"
   sprite: {fileID: 21300000, guid: 09d30acee4111476c8de2ee937656084, type: 3}
-  rarity: 1
-  atk: 1
-  size: 1
-  price: 20
+  rarity: 2
+  attacks:
+  - 1
+  - 1
+  - 1
+  sizes:
+  - 1.5
+  - 1.25
+  - 1

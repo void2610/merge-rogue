@@ -12,14 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e20d261e1bba4e309354d2a524b6d0d, type: 3}
   m_Name: AllAttackBall
   m_EditorClassIdentifier: 
-  id: 0
   className: AllAttackBall
   displayName: "\u5168\u4F53\u30DC\u30FC\u30EB"
-  mainDescription: "\u5168\u4F53\u653B\u6483"
-  altDescription: "\u5168\u4F53\u306B\u30C0\u30E1\u30FC\u30B8"
+  descriptions:
+  - "\u5168\u4F53\u653B\u6483"
+  - "\u5168\u4F53\u653B\u6483"
+  - "\u5168\u4F53\u653B\u6483"
   flavorText: "\u30CD\u30BF\u5207\u308C"
   sprite: {fileID: 1461871564780703198, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
   rarity: 2
-  atk: 0.5
-  size: 1.5
-  price: 25
+  attacks:
+  - 0.5
+  - 1
+  - 1.5
+  sizes:
+  - 1.5
+  - 1.25
+  - 1

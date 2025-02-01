@@ -131,17 +131,17 @@ public class DescriptionWindow : MonoBehaviour
     }
 
     
-    private void SetBallTexts(BallData b)
+    private void SetBallTexts(BallData b, int rank = 0)
     {
         nameText.text = b.displayName;
         nameText.color = MyColors.GetRarityColor(b.rarity);
-        descriptionText.text = b.mainDescription;
+        descriptionText.text = b.descriptions[rank];;
         flavorText.text = b.flavorText;
-        statusTexts[0].text = "attack: " + b.atk.ToString(CultureInfo.InvariantCulture);
+        statusTexts[0].text = "attack: " + b.attacks[rank].ToString(CultureInfo.InvariantCulture);
         statusTexts[0].alpha = 1;
-        statusTexts[1].text = "size: " + b.size.ToString(CultureInfo.InvariantCulture);
+        statusTexts[1].text = "size: " + b.sizes[rank].ToString(CultureInfo.InvariantCulture);
         statusTexts[1].alpha = 1;
-        statusTexts[2].text = "price: " + b.price.ToString(CultureInfo.InvariantCulture);
+        statusTexts[2].text = "price: " + ContentProvider.GetSHopPrice(Shop.ShopItemType.Ball, b.rarity).ToString(CultureInfo.InvariantCulture);
         statusTexts[2].alpha = 1;
     }
 
