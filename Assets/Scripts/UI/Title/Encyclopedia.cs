@@ -64,7 +64,6 @@ public class Encyclopedia : MonoBehaviour
         var tempColumn = 0;
         
         var balls = allBallDataList.list;
-        balls.Sort((a, b) => a.rarity.CompareTo(b.rarity));
         for (var i = balls.Count - 1; i >= 0; i--)
         {
             var pos = new Vector3((i % column) * align.x, -(i / column) * align.y, 0) + new Vector3(offset.x, offset.y, 0);
@@ -76,9 +75,7 @@ public class Encyclopedia : MonoBehaviour
 
         tempColumn += 2;
 
-        // レアリティでソート
         var relics = allRelicDataList.list;
-        relics.Sort((a, b) => a.rarity.CompareTo(b.rarity));
         for (var i =　relics.Count - 1; i >= 0; i--)
         {
             var pos = new Vector3((i % column) * align.x, -((i / column) + tempColumn) * align.y, 0) + new Vector3(offset.x, offset.y, 0);

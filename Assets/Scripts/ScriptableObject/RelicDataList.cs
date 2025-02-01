@@ -30,6 +30,8 @@ public class RelicDataList : ScriptableObject
                 list.Add(relicData);
             }
         }
+        // レアリティでソート
+        list = list.OrderBy(x => x.rarity).ToList();
 
         UnityEditor.EditorUtility.SetDirty(this); // ScriptableObjectを更新
 #endif

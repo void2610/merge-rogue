@@ -33,6 +33,8 @@ public class BallDataList : ScriptableObject
                 list.Add(ballData);
             }
         }
+        // レアリティでソート
+        list = list.OrderBy(x => x.rarity).ToList();
 
         UnityEditor.EditorUtility.SetDirty(this); // ScriptableObjectを更新
 #endif
