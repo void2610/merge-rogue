@@ -13,7 +13,6 @@ public class InventoryUI : MonoBehaviour
         Remove
     }
     
-    
     [SerializeField] private GameObject ballUIPrefab;
     [SerializeField] private Vector3 inventoryPosition;
     [SerializeField] private GameObject inventoryUIContainer;
@@ -30,7 +29,7 @@ public class InventoryUI : MonoBehaviour
         var g = Instantiate(ballUIPrefab, inventoryUIContainer.transform);
         
         g.transform.position = CalcInventoryPosition(level);
-        g.transform.localScale = ball.transform.localScale * 1;
+        g.transform.localScale = new Vector3(BallSizes[level], BallSizes[level], 1);
         
         var color = ball.GetComponent<SpriteRenderer>().color;
         g.GetComponent<Image>().color = color;
