@@ -2173,8 +2173,8 @@ RectTransform:
   - {fileID: 425950019}
   - {fileID: 605675522}
   - {fileID: 225990488}
-  - {fileID: 1955426628}
   - {fileID: 1978004777}
+  - {fileID: 1955426628}
   - {fileID: 403790022}
   - {fileID: 1477400321}
   - {fileID: 499408601}
@@ -17314,6 +17314,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.data[14].volume
+      value: 0.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.data[16].volume
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.data[17].volume
+      value: 0.75
+      objectReference: {fileID: 0}
     - target: {fileID: 7521127176204447298, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
