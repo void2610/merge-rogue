@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Arrow
-  m_Shader: {fileID: -6465566751694194690, guid: 06384825d7bd3457ba3f739efe55a493, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: fbaf675543a424f01a58b072c6655b3c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -38,6 +38,10 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _AlphaTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _BloomTex:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -67,13 +71,27 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Alpha: 0
+    - _Alpha: 1
+    - _BlurDistance: 8
+    - _BlurPower: 0.1
+    - _ColorMask: 15
+    - _CullMode: 0
     - _EnableExternalAlpha: 0
+    - _Luminance: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Speed: 1
+    - _Stencil: 0
+    - _StencilComp: 8
+    - _StencilOp: 0
+    - _StencilReadMask: 255
+    - _StencilWriteMask: 255
+    - _UseUIAlphaClip: 0
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _BloomColor: {r: 0, g: 0, b: 0, a: 1}
+    - _BlurColor: {r: 1, g: 1, b: 1, a: 1}
+    - _ClipRect: {r: -32767, g: -32767, b: 32767, a: 32767}
+    - _Color: {r: 0.83, g: 0.83, b: 0.83, a: 1}
     - _Color1: {r: 1.2311444, g: 1.2311444, b: 1.2311444, a: 0}
     - _Color2: {r: 0, g: 0, b: 0, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}

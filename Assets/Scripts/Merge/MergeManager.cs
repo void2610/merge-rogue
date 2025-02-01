@@ -16,7 +16,7 @@ public class MergeManager : MonoBehaviour
     [SerializeField] private MergeWall wall;
     [SerializeField] public PhysicsMaterial2D wallMaterial;
     [SerializeField] private GameObject fallAnchor;
-    [SerializeField] private Material arrowMaterial;
+    [SerializeField] private SpriteRenderer arrow;
     [SerializeField] private GameObject ballGauge;
     [SerializeField] private TextMeshProUGUI ballCountText;
     [SerializeField] private Vector3 nextBallPosition;
@@ -42,6 +42,7 @@ public class MergeManager : MonoBehaviour
     private int _allAttackCount;
     private Dictionary<Rigidbody2D, float> _stopTimers;
     private bool _isMovable = false;
+    private Camera _mainCamera;
     
     public void LevelUpWallWidth()
     {
@@ -91,7 +92,7 @@ public class MergeManager : MonoBehaviour
         }
         
         ballCountText.text = "0/" + _ballPerOneTurn;
-        DOTween.To(() => arrowMaterial.GetFloat(_alpha), x => arrowMaterial.SetFloat(_alpha, x), 0, 0.5f).Forget();
+        arrow.DOFade(0, 0.5f).Forget();
         _isMovable = false;
         
         await UniTask.Delay(1000);
@@ -118,7 +119,7 @@ public class MergeManager : MonoBehaviour
         
         ballCountText.text = RemainingBalls + "/" + _ballPerOneTurn;
         fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = true;
-        DOTween.To(() => arrowMaterial.GetFloat(_alpha), x => arrowMaterial.SetFloat(_alpha, x), 1, 0.5f);
+        arrow.DOFade(1, 0.5f).Forget();
     }
     
 
@@ -229,7 +230,7 @@ public class MergeManager : MonoBehaviour
             CurrentBall = null;
             NextBall = null;
             fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = false;
-            DOTween.To(() => arrowMaterial.GetFloat(_alpha), x => arrowMaterial.SetFloat(_alpha, x), 0, 0.5f);
+            arrow.DOFade(0, 0.5f).Forget();
         }
         ballCountText.text = RemainingBalls + "/" + _ballPerOneTurn;
     }
@@ -263,7 +264,7 @@ public class MergeManager : MonoBehaviour
         wall.SetWallWidth(_wallWidths[0]);
         wallMaterial.bounciness = 0.0f;
         fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = false;
-        arrowMaterial.SetFloat(_alpha, 0);
+        arrow.DOFade(0, 0).Forget();
         RemainingBalls = 0;
         ballCountText.text = RemainingBalls + "/" + _ballPerOneTurn;
     }
@@ -273,6 +274,7 @@ public class MergeManager : MonoBehaviour
         // if (Application.isEditor) coolTime = 0.1f;
         ballGauge.GetComponent<SpriteRenderer>().material.SetFloat(_ratio, 1);
         fallAnchor.transform.position = _currentBallPosition;
+        _mainCamera = Camera.main;
     }
 
     private void Update()
@@ -295,8 +297,7 @@ public class MergeManager : MonoBehaviour
         ballGauge.transform.localScale = CurrentBall.transform.localScale * 1.01f;
         ballGauge.transform.position = CurrentBall.transform.position;
         
-
-        var mousePosX = Camera.main.ScreenToWorldPoint(Input.mousePosition).x;
+        var mousePosX = _mainCamera.ScreenToWorldPoint(Input.mousePosition).x;
         var isMouseOvered = mousePosX > -_limit + size / 2 - 1 && mousePosX < _limit - size / 2 + 1;
         if (isMouseOvered)
         {
