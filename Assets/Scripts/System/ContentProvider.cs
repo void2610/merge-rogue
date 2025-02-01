@@ -51,7 +51,6 @@ public class ContentProvider : MonoBehaviour
         throw new Exception("Event not found");
     }
     
-    
     /// <summary>
     /// 敵のPrefabをランダムで取得する
     /// </summary>
@@ -72,6 +71,9 @@ public class ContentProvider : MonoBehaviour
         return Instantiate(boss);
     }
     
+    /// <summary>
+    /// ランダムなレアリティを取得する
+    /// </summary>
     public Rarity GetRandomRarity()
     {
         var r = GameManager.Instance.RandomRange(0.0f, 1.0f);
@@ -104,36 +106,11 @@ public class ContentProvider : MonoBehaviour
     }
     
     /// <summary>
-    /// 指定されたレアリティのRelicDataをランダムで取得する
-    /// </summary>
-    /// <param name="r">レアリティ</param>
-    /// <returns></returns>
-    public RelicData GetRandomRelicDataByRarity(Rarity r)
-    {
-        // 既に取得済みのレリックは低確率にする
-        var current = RelicManager.Instance.GetCurrentRelics();
-        // 指定されたレアリティのリストを取得
-        var targets = relicList.list.Where(bd => bd.rarity == r).ToList();
-        var randomIndex = GameManager.Instance.RandomRange(0, targets.Count);
-        var relic = targets[randomIndex];
-        // 3回だけ再試行する
-        for (var i = 0; i < 3; i++)
-        {
-            if (current.Contains(relic)) relic = targets[GameManager.Instance.RandomRange(0, targets.Count)];
-            else break;
-        }
-        return relic;
-    }
-    
-    /// <summary>
     /// 指定されたレアリティのRelicDataを全て取得する
     /// </summary>
     /// <param name="r">レアリティ</param>
     /// <returns></returns>
-    public List<RelicData> GetRelicDataByRarity(Rarity r)
-    {
-        return relicList.list.Where(bd => bd.rarity == r).ToList();
-    }
+    public List<RelicData> GetRelicDataByRarity(Rarity r) => relicList.list.Where(bd => bd.rarity == r).ToList();
     
     /// <summary>
     /// ショップの売値を返す
@@ -159,21 +136,33 @@ public class ContentProvider : MonoBehaviour
     /// <summary>
     /// ボール除去の価格を返す
     /// </summary>
-    public static int GetBallRemovePrice()
-    {
-        return 75;
-    }
+    public static int GetBallRemovePrice() => 75;
     
+    /// <summary>
+    /// ボール強化の価格を返す
+    /// </summary>
+    public static int GetBallUpgradePrice() => 50;
+    
+    /// <summary>
+    /// アクトを進める
+    /// </summary>
     public void AddAct() => _act++;
     
-    private void Awake()
+    private RelicData GetRandomRelicDataByRarity(Rarity r)
     {
-        if (Instance == null)
-            Instance = this;
-        else
-            Destroy(this);
-        
-        relicList.Register();
+        // 既に取得済みのレリックは低確率にする
+        var current = RelicManager.Instance.GetCurrentRelics();
+        // 指定されたレアリティのリストを取得
+        var targets = relicList.list.Where(bd => bd.rarity == r).ToList();
+        var randomIndex = GameManager.Instance.RandomRange(0, targets.Count);
+        var relic = targets[randomIndex];
+        // 3回だけ再試行する
+        for (var i = 0; i < 3; i++)
+        {
+            if (current.Contains(relic)) relic = targets[GameManager.Instance.RandomRange(0, targets.Count)];
+            else break;
+        }
+        return relic;
     }
     
     private Object GetRandomObjectFromList(List<ContentDataList> contentLists)
@@ -197,5 +186,15 @@ public class ContentProvider : MonoBehaviour
 
         // フォールバックとして最後の要素を返す
         return contentDataList.Last().data;
+    }
+    
+    private void Awake()
+    {
+        if (Instance == null)
+            Instance = this;
+        else
+            Destroy(this);
+        
+        relicList.Register();
     }
 }
