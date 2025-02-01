@@ -307,10 +307,15 @@ public class StageManager : MonoBehaviour
         CurrentStageCount.Value++;
         CurrentStage = next;
         
+        var r = 0;
         if(CurrentStage.Type == StageType.Events)
         {
             // ランダムなステージに移動
-            var r = GameManager.Instance.RandomRange(0, 5);
+            if (GameManager.Instance.RandomRange(0.0f, 1.0f) < 0.75f)
+                r = 4;
+            else
+                r = GameManager.Instance.RandomRange(0, 4);
+
             EventManager.OnEventStageEnter.Trigger((StageType)r);
             // 更新されたステージを処理
             var stage = EventManager.OnEventStageEnter.GetValue();

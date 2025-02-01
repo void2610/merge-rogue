@@ -28,11 +28,9 @@ public class Treasure : MonoBehaviour
         // 同じレアリティのレリックを被りなしでランダムに選ぶ
         var rarity = ContentProvider.Instance.GetRandomRarity();
         var relics = ContentProvider.Instance.GetRelicDataByRarity(rarity);
-        Debug.Log(relics.Count);
         for (var i = 0; i < count; i++)
         {
             var index = GameManager.Instance.RandomRange(0, relics.Count);
-            Debug.Log(index);
             SetEvent(items[i], relics[index]);
             relics.RemoveAt(index);
         }

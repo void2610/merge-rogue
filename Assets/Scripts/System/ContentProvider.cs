@@ -82,8 +82,8 @@ public class ContentProvider : MonoBehaviour
             < 0.40f => Rarity.Common,   // 40%
             < 0.70f => Rarity.Uncommon, // 30%
             < 0.85f => Rarity.Rare,     // 15%
-            < 0.95f => Rarity.Epic,     // 10%
-            _ => Rarity.Legendary       //  5%
+            _ => Rarity.Epic,     // 15%
+            // _ => Rarity.Legendary       //  5%
         };
     }
     
