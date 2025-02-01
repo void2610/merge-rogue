@@ -72,15 +72,10 @@ public class ContentProvider : MonoBehaviour
         return Instantiate(boss);
     }
     
-    /// <summary>
-    /// RelicDataをランダムで取得する
-    /// </summary>
-    /// <returns></returns>
-    public RelicData GetRandomRelic()
+    public Rarity GetRandomRarity()
     {
-        // ランダムにレアリティを選択
         var r = GameManager.Instance.RandomRange(0.0f, 1.0f);
-        var rarity = r switch
+        return r switch
         {
             < 0.40f => Rarity.Common,   // 40%
             < 0.70f => Rarity.Uncommon, // 30%
@@ -88,8 +83,13 @@ public class ContentProvider : MonoBehaviour
             < 0.95f => Rarity.Epic,     // 10%
             _ => Rarity.Legendary       //  5%
         };
-        return GetRandomRelicDataByRarity(rarity);
     }
+    
+    /// <summary>
+    /// RelicDataをランダムで取得する
+    /// </summary>
+    /// <returns></returns>
+    public RelicData GetRandomRelic() => GetRandomRelicDataByRarity(GetRandomRarity());
 
     /// <summary>
     /// 指定された名前のRelicDataを取得する

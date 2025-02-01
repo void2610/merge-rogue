@@ -56,6 +56,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private List<StageType> stageTypes = new();
     [SerializeField] private Vector2Int mapSize;
     [SerializeField] private int pathCount;
+    [SerializeField] private StageType startStage;
     public readonly ReactiveProperty<int> CurrentStageCount = new(-1);
     private readonly List<List<StageNode>> _mapNodes = new();
     public StageNode CurrentStage { get; private set; } = null;
@@ -348,10 +349,8 @@ public class StageManager : MonoBehaviour
             case StageType.Treasure:
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
                 UIManager.Instance.EnableCanvasGroup("Treasure", true); 
-                    
-                var count = GameManager.Instance.RandomRange(1, 4);
-                var rarity = GameManager.Instance.RandomRange(0, 4);
-                Treasure.Instance.OpenTreasure(count, (Rarity)rarity);
+                
+                Treasure.Instance.OpenTreasure();
                 break;
             case StageType.Events:
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
@@ -368,7 +367,7 @@ public class StageManager : MonoBehaviour
     public void Awake()
     {
         GenerateMap();
-        _mapNodes[0][0].Type = StageType.Enemy;
+        _mapNodes[0][0].Type = startStage;
         CurrentStage = null;
         
         DrawMap();

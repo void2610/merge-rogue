@@ -13,8 +13,9 @@ public class Treasure : MonoBehaviour
     private const int MAX_ITEMS = 3;
     private readonly Vector3 _disablePosition = new Vector3(100, 100, 0);
 
-    public void OpenTreasure(int count, Rarity rarity = Rarity.Common)
+    public void OpenTreasure()
     {
+        var count = GameManager.Instance.RandomRange(1, 4);
         if (count is > MAX_ITEMS or <= 0) throw new System.Exception("Invalid count");
         for (var i = 0; i < items.Count; i++)
         {
@@ -24,12 +25,16 @@ public class Treasure : MonoBehaviour
                 items[i].transform.position = _disablePosition;
         }
         
+        // 同じレアリティのレリックを被りなしでランダムに選ぶ
+        var rarity = ContentProvider.Instance.GetRandomRarity();
         var relics = ContentProvider.Instance.GetRelicDataByRarity(rarity);
+        Debug.Log(relics.Count);
         for (var i = 0; i < count; i++)
         {
-            var r = GameManager.Instance.RandomRange(0, relics.Count);
-            SetEvent(items[i], relics[r]);
-            relics.RemoveAt(r);
+            var index = GameManager.Instance.RandomRange(0, relics.Count);
+            Debug.Log(index);
+            SetEvent(items[i], relics[index]);
+            relics.RemoveAt(index);
         }
     }
     
