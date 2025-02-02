@@ -11,7 +11,6 @@ using DG.Tweening;
 using R3;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
-using Vector3 = UnityEngine.Vector3;
 
 public class UIManager : MonoBehaviour
 {

@@ -81,6 +81,7 @@ public class InventoryUI : MonoBehaviour
     
     public void StartEdit(InventoryUIState s)
     {
+        if (s == InventoryUIState.Disabled) return;
         EnableCursor(true);
         SetCursor(0);
         _state = s;
@@ -106,6 +107,7 @@ public class InventoryUI : MonoBehaviour
                 break;
             case InventoryUIState.Upgrade:
                 InventoryManager.Instance.UpgradeBall(index);
+                SeManager.Instance.PlaySe("levelUp");
                 EnableCursor(false);
                 _state = InventoryUIState.Disabled;
                 break;

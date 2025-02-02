@@ -128,7 +128,7 @@ public class Player : MonoBehaviour, IEntity
         }
         else
         {        
-            GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+            GameManager.Instance.ChangeState(GameManager.GameState.AfterBattle);
         }
         Exp.ForceNotify();
     }

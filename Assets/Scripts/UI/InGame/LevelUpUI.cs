@@ -104,6 +104,6 @@ public class LevelUpUI : MonoBehaviour
         await UniTask.Delay(1500);
         
         UIManager.Instance.EnableCanvasGroup("LevelUp", false);
-        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+        GameManager.Instance.ChangeState(GameManager.GameState.AfterBattle);
     }
 }

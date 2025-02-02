@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
         Merge,
         PlayerAttack,
         EnemyAttack,
+        AfterBattle,
         LevelUp,
         MapSelect,
         StageMoving,
@@ -28,8 +29,9 @@ public class GameManager : MonoBehaviour
     [Header("オブジェクト")]
     [SerializeField] private GameObject playerObj;
     [SerializeField] private EnemyContainer enemyContainer;
-    [SerializeField] private Camera renderTextureCamera;
-    [SerializeField] private Canvas uiCanvas;
+    [SerializeField] private AfterBattleUI afterBattleUI;
+    
+    [Header("デバッグ")]
     [SerializeField] private int debugCoin = 0;
 
     // Sceneのライフサイクルに合わせてDisposeするためのCompositeDisposable
@@ -123,6 +125,10 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Event:
                 break;
+            case GameState.AfterBattle:
+                afterBattleUI.UpdateBallUpgradeButton();
+                UIManager.Instance.EnableCanvasGroup("AfterBattle", true);
+                break;
             case GameState.LevelUp:
                 if (Player.CanLevelUp())
                 {
@@ -131,7 +137,7 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     UIManager.Instance.remainingLevelUps = 0;
-                    ChangeState(GameState.MapSelect);
+                    ChangeState(GameState.AfterBattle);
                 }
                 break;
         }
