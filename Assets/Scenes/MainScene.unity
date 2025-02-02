@@ -3699,8 +3699,7 @@ MonoBehaviour:
   state: 0
   playerObj: {fileID: 1993390309}
   enemyContainer: {fileID: 198190389}
-  renderTextureCamera: {fileID: 371541724}
-  uiCanvas: {fileID: 380910488}
+  afterBattleUI: {fileID: 109174368}
   debugCoin: 100
 --- !u!114 &567445624
 MonoBehaviour:
