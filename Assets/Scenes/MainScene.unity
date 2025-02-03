@@ -3721,6 +3721,7 @@ MonoBehaviour:
   - {fileID: 581884005}
   defaultTorchPosition: {x: -5, y: 2.85, z: 0}
   torchInterval: 5
+  canvas: {fileID: 380910488}
   playerIconPrefab: {fileID: 2436687720200888964, guid: ee488a72f4e904211a020c9d28cfe6e6, type: 3}
   mapBackground: {fileID: 2066958733}
   mapNodePrefab: {fileID: 3540213210033325969, guid: 4386ef4bca5d44721b4062aaebf2be73, type: 3}
