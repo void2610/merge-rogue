@@ -92,8 +92,11 @@ public class InventoryUI : MonoBehaviour
         // クリックでボールの選択、入れ替え、削除
         Utils.AddEventToObject(ballObj, () => OnClickBall(index), EventTriggerType.PointerClick);
         
-        // マウスオーバーでカーソル移動とウィンドウ表示
+        // マウスオーバーでカーソル移動とウィンドウ表示 (とアニメーション)
         Utils.AddEventToObject(ballObj, () => { 
+            var rt = ballObj.GetComponent<RectTransform>();
+            rt.DORotate(new Vector3(0, 0, 15), 0.75f).SetEase(Ease.Flash, 10, 0.9f).OnComplete(() => rt.DORotate(Vector3.zero, 0.1f));
+            
             SetCursor(index);
             UIManager.Instance.ShowBallDescriptionWindow(ballBase.Data, ballObj, ballBase.Rank); 
         }, EventTriggerType.PointerEnter);
