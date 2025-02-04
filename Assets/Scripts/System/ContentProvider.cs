@@ -136,12 +136,12 @@ public class ContentProvider : MonoBehaviour
     /// <summary>
     /// ボール除去の価格を返す
     /// </summary>
-    public static int GetBallRemovePrice() => 75;
+    public static int GetBallRemovePrice() => 50;
     
     /// <summary>
     /// ボール強化の価格を返す
     /// </summary>
-    public static int GetBallUpgradePrice() => 50;
+    public static int GetBallUpgradePrice() => 25;
     
     /// <summary>
     /// アクトを進める
