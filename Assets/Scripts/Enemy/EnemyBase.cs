@@ -43,7 +43,7 @@ public class EnemyBase : MonoBehaviour, IEntity
     protected readonly ActionData NormalAttack = new ();
     private ActionData _nextAction;
 
-    private TextMeshProUGUI HealthText => canvas.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
+    private TextMeshProUGUI HealthText => canvas.transform.Find("HPSlider").transform.Find("HPText").GetComponent<TextMeshProUGUI>();
     private Slider HealthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
     private TextMeshProUGUI AttackCountText => canvas.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
     private StatusEffectUI StatusEffectUI => canvas.transform.Find("StatusEffectUI").GetComponent<StatusEffectUI>();
