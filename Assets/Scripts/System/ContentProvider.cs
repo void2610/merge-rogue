@@ -148,6 +148,10 @@ public class ContentProvider : MonoBehaviour
     /// </summary>
     public void AddAct() => _act++;
     
+    // =============================================================================================================
+    // PRIVATE METHODS
+    // =============================================================================================================
+    
     private RelicData GetRandomRelicDataByRarity(Rarity r)
     {
         // 既に取得済みのレリックは低確率にする

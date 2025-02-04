@@ -135,6 +135,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: Monk
+  enemyType: 3
   actionInterval: 3
   hMax: 30
   hMin: 25

@@ -238,8 +238,6 @@ public class StageManager : MonoBehaviour
         if (CurrentStage?.Type == StageType.Boss)
         {
             ContentProvider.Instance.AddAct();
-            // ボスを倒したら回復
-            GameManager.Instance.Player.HealToFull();
             GenerateMap();
             DrawMap();
             SetButtonEvent();

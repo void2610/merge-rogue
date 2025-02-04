@@ -65,14 +65,19 @@ public class EnemyContainer : MonoBehaviour
 
     public void RemoveEnemy(GameObject enemy)
     {
+        var enemyBase = enemy.GetComponent<EnemyBase>();
         DefeatedEnemyCount.Value++;
-        _gainedExp += enemy.GetComponent<EnemyBase>().exp;
+        _gainedExp += enemyBase.exp;
         var g = enemy.transform.parent.gameObject;
         _currentEnemies.Remove(g);
-        enemy.GetComponent<EnemyBase>().OnDisappear();
+        enemyBase.OnDisappear();
         
+        // ボスを倒したら全回復
+        if(enemyBase.enemyType == EnemyBase.EnemyType.Boss)
+            GameManager.Instance.Player.HealToFull();
         // 全ての敵を倒したらステージ進行
-        if (_currentEnemies.Count == 0) EndBattle().Forget();
+        if (_currentEnemies.Count == 0)
+            EndBattle().Forget();
     }
     
     private async UniTaskVoid EndBattle()

@@ -8,6 +8,14 @@ using DG.Tweening;
 
 public class EnemyBase : MonoBehaviour, IEntity
 {
+    public enum EnemyType
+    {
+        Normal,
+        Minion,
+        MiniBoss,
+        Boss,
+    }
+    
     public enum ActionType
     {
         Attack,
@@ -23,6 +31,7 @@ public class EnemyBase : MonoBehaviour, IEntity
     }
     
     public string enemyName = "Enemy";
+    public EnemyType enemyType;
     public int actionInterval = 1;
     public int hMax = 100;
     public int hMin = 1;
