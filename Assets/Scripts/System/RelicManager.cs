@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using System.Collections.Generic;
 using R3;
@@ -45,6 +46,14 @@ public class RelicManager : MonoBehaviour
         Destroy(_relicUIs[index].gameObject);
         _relicUIs.RemoveAt(index);
     }
+    
+    public bool HasRelic(Type t)
+    {
+        // RelicBaseを継承していなかったらエラー
+        if(!typeof(RelicBase).IsAssignableFrom(t)) throw new ArgumentException("指定されたクラスはRelicBaseを継承していません: " + t);
+        return _behaviors.Exists(b => b.GetType() == t);
+    }
+    
     
     private RelicUI CreateRelicUI(RelicData r)
     {

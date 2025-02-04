@@ -32,7 +32,7 @@ public class DescriptionWindow : MonoBehaviour
     private GameObject _rootTriggerObject;
     private bool _isCheckingMouse = false;
 
-    public void ShowWindow(object obj, GameObject rootTriggerObject, int ballRank = -1)
+    public void ShowWindow(object obj, GameObject rootTriggerObject, int ballRank = 0)
     {
         if (IsMouseOverWindowOrDescendants(this.gameObject)) return;
         

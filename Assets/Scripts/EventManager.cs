@@ -9,6 +9,8 @@ public static class EventManager
     public static readonly GameEvent<int> OnGameStart = new (0);
     // コイン獲得時: コイン獲得量
     public static readonly GameEvent<int> OnCoinGain = new (0);
+    // コイン消費時: コイン消費量
+    public static readonly GameEvent<int> OnCoinConsume = new (0);
     // 経験値獲得時: 経験値獲得量
     public static readonly GameEvent<int> OnPlayerExpGain = new (0);
     // プレイヤーの攻撃時: (単体攻撃の攻撃力, 全体攻撃の攻撃力)

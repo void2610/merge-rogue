@@ -20,7 +20,8 @@ public class AllAttackByTenCoin : RelicBase
         var x = EventManager.OnPlayerAttack.GetValue();
 
         // 消費するコインが存在し、単体攻撃力が1以上、敵が2体以上いる場合
-        if (coin >= 10 && x.Item1 > 0 && e >= 2)
+        // TODO: 賢者の石に依存している部分を修正する
+        if ((coin >= 10 && x.Item1 > 0 && e >= 2) || RelicManager.Instance.HasRelic(typeof(NoConsumeCoinDuringBattle)))
         {
             GameManager.Instance.SubCoin(10);
             EventManager.OnPlayerAttack.SetValue((0, x.Item1 + x.Item2));

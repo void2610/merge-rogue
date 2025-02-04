@@ -71,7 +71,9 @@ public class GameManager : MonoBehaviour
     
     public void SubCoin(int amount)
     {
-        Coin.Value -= amount;
+        EventManager.OnCoinConsume.Trigger(amount);
+        var c = EventManager.OnCoinConsume.GetAndResetValue();
+        Coin.Value -= c;
     }
 
     public void ChangeTimeScale()
