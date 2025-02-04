@@ -87,7 +87,9 @@ public class UIManager : MonoBehaviour
     {
         var restAmount = GameManager.Instance.Player.MaxHealth.Value  * 0.2f;
         EventManager.OnRest.Trigger((int)restAmount);
-        GameManager.Instance.Player.Heal(EventManager.OnRest.GetAndResetValue());
+        var v = EventManager.OnRest.GetAndResetValue();
+        Debug.Log("rest: " + v);
+        if(v > 0) GameManager.Instance.Player.Heal(v);
         
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
         EnableCanvasGroup("Rest", false);

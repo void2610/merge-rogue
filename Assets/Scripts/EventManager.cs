@@ -43,9 +43,9 @@ public static class EventManager
     public static readonly GameEvent<int> OnRestEnter = new (0);
     // 休憩した時: HP回復量
     public static readonly GameEvent<int> OnRest = new (0);
-    // イベントステージに入った時: 実際に入るステージ
+    // マップでイベントステージに入った時: 実際に入るステージ
     public static readonly GameEvent<StageType> OnEventStageEnter = new (StageType.Undefined);
-    // イベントに入った時: 再生するStageEventBase
+    // ステージイベントに入った時: 再生するStageEventBase
     public static readonly GameEvent<StageEventBase> OnStageEventEnter = new (null);
     // ボールを整理した時: なし
     public static readonly GameEvent<int> OnOrganise = new (0);
