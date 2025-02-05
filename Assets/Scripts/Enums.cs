@@ -1,6 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum CursorType
+{
+    Default,
+    Select,
+    Help,
+}
+
 public enum Rarity
 {
     Common,

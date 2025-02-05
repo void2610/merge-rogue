@@ -298,11 +298,13 @@ public class MergeManager : MonoBehaviour
         ballGauge.transform.position = CurrentBall.transform.position;
         
         var mousePosX = _mainCamera.ScreenToWorldPoint(Input.mousePosition).x;
-        var isMouseOvered = mousePosX > -_limit + size / 2 - 1 && mousePosX < _limit - size / 2 + 1;
+        var mousePosY = _mainCamera.ScreenToWorldPoint(Input.mousePosition).y;
+        var isMouseOvered = (mousePosX > -_limit + size / 2 - 1) && (mousePosX < _limit - size / 2 + 1) && (mousePosY is > -4.5f and < 1f);
         if (isMouseOvered)
         {
             mousePosX = Mathf.Clamp(mousePosX, -_limit + size / 2, _limit - size / 2);
             _currentBallPosition = new Vector3(mousePosX, _currentBallPosition.y, _currentBallPosition.z);
+            MouseCursorManager.Instance.SetCursor(CursorType.Select);
         }
         else
         {
@@ -315,6 +317,8 @@ public class MergeManager : MonoBehaviour
             {
                 _currentBallPosition += Vector3.right * (MOVE_SPEED * Time.deltaTime);
             }
+            // TODO: マウスカーソルがDefaultで固定されちゃう
+            MouseCursorManager.Instance.SetCursor(CursorType.Default);
         }
 
         if (Time.time - _lastFallTime <= COOL_TIME || RemainingBalls < 0) return;
