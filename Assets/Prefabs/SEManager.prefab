@@ -102,4 +102,4 @@ MonoBehaviour:
     volume: 0.5
   - name: bomb
     audioClip: {fileID: 8300000, guid: 25940b6ffd6344966af3f7f25ffaeef3, type: 3}
-    volume: 0.3
+    volume: 0.2

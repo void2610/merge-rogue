@@ -204,7 +204,10 @@ public class InventoryManager : MonoBehaviour
         allBallDataList.Register();
 
         for(var i = 0; i < MAX_INVENTORY_SIZE; i++) _inventory.Add(null);
-        
+    }
+
+    private void Start()
+    {
         // 全てnormalBallで初期化
         for (var i = 0; i < FIRST_INVENTORY_SIZE; i++)
         {

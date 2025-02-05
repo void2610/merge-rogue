@@ -8,7 +8,7 @@ public class CameraAspectRatioHandler : MonoBehaviour
     private float _lastScreenWidth;
     private float _lastScreenHeight;
 
-    private void Start()
+    private void Awake()
     {
         _targetAspect = aspectWidth / aspectHeight;
         AdjustCameraSize();
