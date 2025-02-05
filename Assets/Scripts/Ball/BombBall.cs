@@ -2,8 +2,14 @@ using UnityEngine;
 
 public class BombBall : BallBase
 {
-    private CircleCollider2D circleCollider2D;
-
+    public override void InitBall(BallData d, int level, int ballRank = 0)
+    {
+        base.InitBall(d, level, ballRank);
+        // ボールの輪郭を消して爆弾っぽく見せる
+        var icon = this.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite;
+        this.GetComponent<SpriteRenderer>().sprite = icon;
+    }
+    
     protected override void Effect(BallBase other)
     {
         // 全体攻撃しつつ、周りのボールを消す
@@ -14,12 +20,11 @@ public class BombBall : BallBase
         var hitColliders = Physics2D.OverlapCircleAll(this.transform.position, Size);
 
         // 取得したコライダーをリストに変換
-        for(var i = 0; i < hitColliders.Length; i++)
+        foreach (var col in hitColliders)
         {
-            var col = hitColliders[i];
-            // 自身を無視する処理を追加
+            // 自身を無視
             if (col.gameObject == this.gameObject) continue;
-            // merge相手を無視する処理を追加
+            // merge相手を無視
             if (col.gameObject == other.gameObject) continue;
             
             var ball = col.gameObject.GetComponent<BallBase>();

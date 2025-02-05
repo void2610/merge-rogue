@@ -44,7 +44,7 @@ public class BallBase : MonoBehaviour
         }
     }
 
-    public void InitBall(BallData d, int level, int ballRank = 0)
+    public virtual void InitBall(BallData d, int level, int ballRank = 0)
     {
         Serial = _ballSerial++;
         this.Data = d;
