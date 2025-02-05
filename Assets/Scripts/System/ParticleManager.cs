@@ -14,13 +14,16 @@ public class ParticleManager : MonoBehaviour
 {
     public static ParticleManager Instance;
     
+    [Header("依存オブジェクト")]
     [SerializeField] private Transform textContainer;
-    
+    [Header("パーティクル")]
     [SerializeField] private GameObject healParticlePrefab;
     [SerializeField] private GameObject hitParticle;
     [SerializeField] private GameObject allHitParticle;
     [SerializeField] private GameObject mergeParticle;
     [SerializeField] private GameObject mergePowerParticle;
+    [SerializeField] private GameObject bombFireParticle;
+    [Header("テキスト")]
     [SerializeField] private GameObject damageTextPrefab;
     [SerializeField] private GameObject mergeTextPrefab;
     [SerializeField] private GameObject wavyTextPrefab;
@@ -59,6 +62,8 @@ public class ParticleManager : MonoBehaviour
         var mpp = Instantiate(mergePowerParticle, pos, Quaternion.identity).GetComponent<MergePowerParticle>();
         mpp.MoveTo(color);
     }
+    
+    public GameObject GetBombFireParticle() => Instantiate(bombFireParticle);
     
     public void MergeText(int value, Vector3 pos, Color color = default)
     {

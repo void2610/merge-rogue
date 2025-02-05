@@ -2,12 +2,16 @@ using UnityEngine;
 
 public class BombBall : BallBase
 {
+    private GameObject _fireParticle;
     public override void InitBall(BallData d, int level, int ballRank = 0)
     {
         base.InitBall(d, level, ballRank);
         // ボールの輪郭を消して爆弾っぽく見せる
         var icon = this.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite;
         this.GetComponent<SpriteRenderer>().sprite = icon;
+        _fireParticle = ParticleManager.Instance.GetBombFireParticle();
+        _fireParticle.transform.SetParent(this.transform);
+        _fireParticle.transform.localPosition = new Vector3(0.2f, 0.8f, 0);
     }
     
     protected override void Effect(BallBase other)

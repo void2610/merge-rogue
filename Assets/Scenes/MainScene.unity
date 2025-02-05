@@ -1694,6 +1694,7 @@ MonoBehaviour:
   allHitParticle: {fileID: 8180145297232623733, guid: 579dc14fa06b74178bd371f0ba0a6c66, type: 3}
   mergeParticle: {fileID: 1620409693136122509, guid: adb71434fa9c04035a16947c624e5be2, type: 3}
   mergePowerParticle: {fileID: 7949084058323581054, guid: 02d4b18e706584da2a8222cfa6113a02, type: 3}
+  bombFireParticle: {fileID: 4107425085986898179, guid: 4bab0c5a3087640c2b60f3445b7e893f, type: 3}
   damageTextPrefab: {fileID: 7173658914585924005, guid: 4fa946622e4bd4de3858712a3e083b3c, type: 3}
   mergeTextPrefab: {fileID: 7173658914585924005, guid: d15f3edae417a4c00a382e23f63f9989, type: 3}
   wavyTextPrefab: {fileID: 7173658914585924005, guid: d0fbe7fe53dc740d088a1d4794d20347, type: 3}
