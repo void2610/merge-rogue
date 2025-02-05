@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8779522243495380326}
   - component: {fileID: 101710650639113301}
   m_Layer: 5
-  m_Name: flavorText
+  m_Name: FlavorText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

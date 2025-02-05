@@ -19,6 +19,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private GameObject inventoryUIContainer;
     [SerializeField] private GameObject cursor;
     [SerializeField] private GameObject subCursor;
+    [SerializeField] private UpgradeConfirmPanel upgradeConfirmPanel;
     private const float SIZE_COEFFICIENT = 8f;
     private static List<float> BallSizes => InventoryManager.Instance.Sizes;
     private readonly List<GameObject> _items = new();
@@ -109,8 +110,7 @@ public class InventoryUI : MonoBehaviour
             case InventoryUIState.Disabled:
                 break;
             case InventoryUIState.Upgrade:
-                InventoryManager.Instance.UpgradeBall(index);
-                SeManager.Instance.PlaySe("levelUp");
+                upgradeConfirmPanel.OpenUpgradeConfirmPanel(index);
                 EnableCursor(false);
                 _state = InventoryUIState.Disabled;
                 break;

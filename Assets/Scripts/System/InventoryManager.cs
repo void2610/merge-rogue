@@ -133,6 +133,9 @@ public class InventoryManager : MonoBehaviour
         ball.GetComponent<BallBase>().Freeze();
         return ball;
     }
+    
+    public BallData GetBallData(int index) => _inventory[index].GetComponent<BallBase>().Data;
+    public int GetBallRank(int index) => _inventory[index].GetComponent<BallBase>().Rank;
 
     // ボールのコピー元となるオブジェクトを生成、ステータス変化はこのオブジェクトに対して行う
     private GameObject CreateBallInstanceFromBallData(BallData data, int level, int rank = 0)
