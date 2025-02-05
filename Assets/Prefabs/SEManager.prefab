@@ -90,13 +90,16 @@ MonoBehaviour:
     volume: 1
   - name: heal
     audioClip: {fileID: 8300000, guid: 71a849ee2bc83430d86bbf5c8f9039a6, type: 3}
-    volume: 0.1
+    volume: 0.3
   - name: alt
     audioClip: {fileID: 8300000, guid: 0bd254bf6869044f1956508e3975a305, type: 3}
     volume: 0.2
   - name: shield
     audioClip: {fileID: 8300000, guid: 8a0a564b65d284861a1973d75b7c42a8, type: 3}
-    volume: 0.5
+    volume: 0.75
   - name: burn
     audioClip: {fileID: 8300000, guid: 877bae014116847f2a8ccc0d7438598a, type: 3}
     volume: 0.5
+  - name: bomb
+    audioClip: {fileID: 8300000, guid: 25940b6ffd6344966af3f7f25ffaeef3, type: 3}
+    volume: 0.3
