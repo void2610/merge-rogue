@@ -40,6 +40,6 @@ public class BombBall : BallBase
         }
         
         // TODO: 爆発エフェクトを追加
-        DefaultMergeParticle();
+        SeManager.Instance.PlaySe("bomb");
     }
 }
