@@ -46,8 +46,6 @@ public class GameManager : MonoBehaviour
     public readonly ReactiveProperty<BigInteger> Coin = new(0);
     private string _seedText;
     private int _seed = 42;
-    private bool _isPaused = false;
-    private bool _isMapOpened = false;
     private System.Random _random;
 
     public float RandomRange(float min, float max)
@@ -190,28 +188,24 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (_isPaused)
+            if (UIManager.Instance.IsPaused)
             {
-                _isPaused = false;
                 UIManager.Instance.OnClickResume();
             }
             else
             {
-                _isPaused = true;
                 UIManager.Instance.OnClickPause();
             }
         }
         
         if (Input.GetKeyDown(KeyCode.M))
         {
-            if (_isMapOpened)
+            if (UIManager.Instance.IsMapOpened)
             {
-                _isMapOpened = false;
                 UIManager.Instance.CloseMap();
             }
             else
             {
-                _isMapOpened = true;
                 UIManager.Instance.OpenMap();
             }
         }

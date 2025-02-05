@@ -30,6 +30,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] public Slider hpSlider;
     [SerializeField] public TextMeshProUGUI hpText;
 
+    public bool IsPaused { get; private set; } = false;
+    public bool IsMapOpened { get; private set; } = false;
     public int remainingLevelUps;
     
     private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
@@ -127,6 +129,7 @@ public class UIManager : MonoBehaviour
 
     public void OnClickPause()
     {
+        IsPaused = true;
         SeManager.Instance.PlaySe("button");
         Time.timeScale = 0;
         EnableCanvasGroup("Pause", true);
@@ -140,6 +143,7 @@ public class UIManager : MonoBehaviour
 
     public void OnClickResume()
     {
+        IsPaused = false;
         SeManager.Instance.PlaySe("button");
         Time.timeScale = GameManager.Instance.TimeScale;
         EnableCanvasGroup("Pause", false);
@@ -161,12 +165,14 @@ public class UIManager : MonoBehaviour
 
     public void OpenMap()
     {
+        IsMapOpened = true;
         SeManager.Instance.PlaySe("button");
         EnableCanvasGroup("Map", true);
     }
     
     public void CloseMap()
     {
+        IsMapOpened = false;
         SeManager.Instance.PlaySe("button");
         EnableCanvasGroup("Map", false);
     }

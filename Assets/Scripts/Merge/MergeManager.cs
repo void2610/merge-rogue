@@ -318,10 +318,13 @@ public class MergeManager : MonoBehaviour
         }
 
         if (Time.time - _lastFallTime <= COOL_TIME || RemainingBalls < 0) return;
+        fallAnchor.transform.position = _currentBallPosition + new Vector3(0, 0, 0);
 
+        
+        // プレイヤー操作        
+        if(UIManager.Instance.IsPaused || UIManager.Instance.IsMapOpened) return;
         var isMain = Input.GetKey(KeyCode.Space) || (Input.GetMouseButton(0) && isMouseOvered);
         var isAlt = Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) || (Input.GetMouseButton(1) && isMouseOvered);
-        
         if (isMain)
         {
             SeManager.Instance.PlaySe("fall");
@@ -337,6 +340,5 @@ public class MergeManager : MonoBehaviour
             DecideNextBall();
         }
         
-        fallAnchor.transform.position = _currentBallPosition + new Vector3(0, 0, 0);
     }
 }
