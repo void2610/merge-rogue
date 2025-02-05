@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class UpgradeConfirmPanel : MonoBehaviour
 {
+    [SerializeField] private AfterBattleUI afterBattleUI;
     [SerializeField] private GameObject leftWindow;
     [SerializeField] private GameObject rightWindow;
     [SerializeField] private Image ballImage;
@@ -42,7 +43,10 @@ public class UpgradeConfirmPanel : MonoBehaviour
     private void Upgrade()
     {
         InventoryManager.Instance.UpgradeBall(_currentBallIndex);
+        GameManager.Instance.SubCoin(ContentProvider.GetBallUpgradePrice());
+        afterBattleUI.SetInteractable(false);
         SeManager.Instance.PlaySe("levelUp");
+        
         UIManager.Instance.EnableCanvasGroup("Upgrade", false);
     }
     

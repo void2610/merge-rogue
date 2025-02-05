@@ -8,11 +8,11 @@ public class AfterBattleUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI ballUpgradePriceText;
     [SerializeField] private Button skipButton;
     
+    public void SetInteractable(bool b) => ballUpgradeButton.interactable = b;
+    
     private void OnClickBallUpgradeButton()
     {
         SeManager.Instance.PlaySe("button");
-        GameManager.Instance.SubCoin(ContentProvider.GetBallUpgradePrice());
-        ballUpgradeButton.interactable = false;
         InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Upgrade);
     }
     
