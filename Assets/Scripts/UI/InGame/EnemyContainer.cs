@@ -62,6 +62,14 @@ public class EnemyContainer : MonoBehaviour
             _currentEnemies.Add(e);
         }
     }
+    
+    public void DamageAllEnemies(int damage)
+    {
+        foreach (var e in _currentEnemies)
+        {
+            e.transform.GetChild(0).GetComponent<EnemyBase>().Damage(damage);
+        }
+    }
 
     public void RemoveEnemy(GameObject enemy)
     {

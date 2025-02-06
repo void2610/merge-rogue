@@ -89,7 +89,7 @@ public static class StatusEffectFactory
     }
 }
 
-// 毎ターン、スタック数に応じたダメージを受ける、スタック数はターン経過で減少
+// 毎ターン、スタック数に応じたダメージを受ける
 public class BurnEffect : StatusEffectBase
 {
     public BurnEffect(int initialStack) : base(StatusEffectType.Burn, initialStack, false) { }
@@ -104,7 +104,7 @@ public class BurnEffect : StatusEffectBase
     }
 }
 
-// 毎ターン、スタック数に応じてHPを回復する、スタック数はターン経過で減少
+// 毎ターン、スタック数に応じてHPを回復する
 public class RegenerationEffect : StatusEffectBase
 {
     public RegenerationEffect(int initialStack) : base(StatusEffectType.Regeneration, initialStack, false) { }
@@ -134,5 +134,43 @@ public class ShieldEffect : StatusEffectBase
         ShowEffectText();
         SeManager.Instance.PlaySe("shield");
         return incomingDamage - absorbed;
+    }
+}
+
+// (敵専用)スタックがある限り行動できない
+public class FreezeEffect : StatusEffectBase
+{
+    public FreezeEffect(int initialStack) : base(StatusEffectType.Freeze, initialStack, false) { }
+
+    public override void OnTurnEnd(IEntity target) { }
+}
+
+// スタックがある限り無敵
+public class InvincibleEffect : StatusEffectBase
+{
+    public InvincibleEffect(int initialStack) : base(StatusEffectType.Invincible, initialStack, false) { }
+
+    public override void OnTurnEnd(IEntity target) { }
+    
+    public override int ModifyDamage(int incomingDamage)
+    {
+        // TODO: シールドよりも優先度が高いので、シールドの効果を無視する
+        ShowEffectText();
+        SeManager.Instance.PlaySe("shield");
+        return 0;
+    }
+}
+
+// (敵専用)毎ターン、スタック数に応じたダメージを敵全体に受ける
+public class ShockEffect : StatusEffectBase
+{
+    public ShockEffect(int initialStack) : base(StatusEffectType.Shock, initialStack, false) { }
+
+    public override void OnTurnEnd(IEntity target)
+    {
+        var damage = StackCount;
+        EnemyContainer.Instance.DamageAllEnemies(damage);
+        SeManager.Instance.PlaySe("enemyAttack");
+        ShowEffectText();
     }
 }

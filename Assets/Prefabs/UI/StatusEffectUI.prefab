@@ -51,6 +51,12 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 13c742ee58bcf429faf7cc6de7a5e584, type: 3}
   - type: 2
     sprite: {fileID: 21300000, guid: c83253d08f1ad4138b20d6ec1f7f6e7c, type: 3}
+  - type: 3
+    sprite: {fileID: 3495086814825567685, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  - type: 4
+    sprite: {fileID: 21300000, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  - type: 5
+    sprite: {fileID: 8158563787144471110, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
   statusEffectIconPrefab: {fileID: 3708291531335187832, guid: b3256b1f024ce47e79c60c9628eac4e6, type: 3}
   iconSize: 0.0125
   offset: {x: -0.68, y: 0.23}
