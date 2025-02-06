@@ -304,7 +304,6 @@ public class MergeManager : MonoBehaviour
         {
             mousePosX = Mathf.Clamp(mousePosX, -_limit + size / 2, _limit - size / 2);
             _currentBallPosition = new Vector3(mousePosX, _currentBallPosition.y, _currentBallPosition.z);
-            MouseCursorManager.Instance.SetCursor(CursorType.Select);
         }
         else
         {
@@ -317,8 +316,6 @@ public class MergeManager : MonoBehaviour
             {
                 _currentBallPosition += Vector3.right * (MOVE_SPEED * Time.deltaTime);
             }
-            // TODO: マウスカーソルがDefaultで固定されちゃう
-            MouseCursorManager.Instance.SetCursor(CursorType.Default);
         }
 
         if (Time.time - _lastFallTime <= COOL_TIME || RemainingBalls < 0) return;

@@ -67,7 +67,8 @@ public class Encyclopedia : MonoBehaviour
         for (var i = balls.Count - 1; i >= 0; i--)
         {
             var pos = new Vector3((i % column) * align.x, -(i / column) * align.y, 0) + new Vector3(offset.x, offset.y, 0);
-            var container = Instantiate(ballContainerPrefab, pos, Quaternion.identity, itemContainer);
+            var container = Instantiate(ballContainerPrefab, itemContainer);
+            container.GetComponent<RectTransform>().anchoredPosition = pos;
             SetBallData(container, balls[i]);
             tempColumn = i / column;
             _items.Add(container);
@@ -79,17 +80,13 @@ public class Encyclopedia : MonoBehaviour
         for (var i =　relics.Count - 1; i >= 0; i--)
         {
             var pos = new Vector3((i % column) * align.x, -((i / column) + tempColumn) * align.y, 0) + new Vector3(offset.x, offset.y, 0);
-            var container = Instantiate(relicContainerPrefab, pos, Quaternion.identity, itemContainer);
+            var container = Instantiate(relicContainerPrefab, itemContainer);
+            container.GetComponent<RectTransform>().anchoredPosition = pos;
             SetRelicData(container, relics[i]);
             _items.Add(container);
         }
         
         AdjustContentSize();
-        // 謎に縦の位置がズレるので修正
-        if (_items[0].GetComponent<RectTransform>().anchoredPosition.y > 300)
-        {
-            _items.ForEach(i =>  i.transform.Translate(new Vector3(0, -7, 0)));
-        }
         Canvas.ForceUpdateCanvases();
     }
 }
