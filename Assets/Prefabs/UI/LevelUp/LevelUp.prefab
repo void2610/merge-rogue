@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6797017479824929483}
   - component: {fileID: 5508673987662954360}
   - component: {fileID: 6112314233452486349}
+  - component: {fileID: 2108850533847012679}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -156,6 +157,19 @@ MonoBehaviour:
   duration: 0.5
   raycaster: {fileID: 0}
   eventSystem: {fileID: 0}
+--- !u!114 &2108850533847012679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2773822972235576722}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8cfd2797a89f44139de4718491154f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorType: 1
 --- !u!1 &3848178262029945995
 GameObject:
   m_ObjectHideFlags: 0
@@ -360,8 +374,6 @@ MonoBehaviour:
   title: {fileID: 4410575661515670091}
   gaugeSprite: {fileID: 21300000, guid: 0d796c8e23ec949c8aece1559f2c7f12, type: 3}
   fillGaugeSprite: {fileID: 21300000, guid: 5cfb95bde908847a0b43bfdcf9d95544, type: 3}
-  defaultGaugeMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  fillGaugeMaterial: {fileID: 2100000, guid: 00c967f3292da4ab18ccbb8174311209, type: 2}
   button: {fileID: 6797017479824929483}
   offset: {x: -145, y: 3}
   align: 55

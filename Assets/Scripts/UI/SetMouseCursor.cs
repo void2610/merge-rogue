@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
 
 public class SetMouseCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -7,6 +8,9 @@ public class SetMouseCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        if(this.TryGetComponent(out Button button))
+            if(!button.interactable) return;
+        
         MouseCursorManager.Instance.SetCursor(cursorType);
     }
 

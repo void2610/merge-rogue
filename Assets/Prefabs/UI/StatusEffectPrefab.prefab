@@ -222,6 +222,7 @@ GameObject:
   - component: {fileID: 80957574082434479}
   - component: {fileID: 1514725637320946772}
   - component: {fileID: 7323034690756802230}
+  - component: {fileID: 8503497468316597297}
   m_Layer: 0
   m_Name: StatusEffectPrefab
   m_TagString: Untagged
@@ -288,3 +289,16 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8503497468316597297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3708291531335187832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8cfd2797a89f44139de4718491154f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cursorType: 2
