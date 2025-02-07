@@ -24,7 +24,7 @@ public class AllAttackByTenCoin : RelicBase
         if ((coin >= 10 && x.Item1 > 0 && e >= 2) || RelicManager.Instance.HasRelic(typeof(NoConsumeCoinDuringBattle)))
         {
             GameManager.Instance.SubCoin(10);
-            EventManager.OnPlayerAttack.SetValue((0, x.Item1 + x.Item2));
+            EventManager.OnPlayerAttack.SetValue((0, (int)((x.Item1 + x.Item2) * 1.5f)));
             UI?.ActivateUI();
         }
     }

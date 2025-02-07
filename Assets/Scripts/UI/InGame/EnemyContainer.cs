@@ -65,9 +65,9 @@ public class EnemyContainer : MonoBehaviour
     
     public void DamageAllEnemies(int damage)
     {
-        foreach (var e in _currentEnemies)
+        for(var i = 0; i < _currentEnemies.Count; i++)
         {
-            e.transform.GetChild(0).GetComponent<EnemyBase>().Damage(damage);
+            _currentEnemies[i].transform.GetChild(0).GetComponent<EnemyBase>().Damage(damage);
         }
     }
 
