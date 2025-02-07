@@ -30,8 +30,8 @@ public class WavyText : MonoBehaviour
     private static Sequence CreateWavyTween(DOTweenTMPAnimator animator, int i)
     {
         const float height = 15f;
-        const float delay = 0.05f;
-        const float duration = 0.1f;
+        const float delay = 0.1f;
+        const float duration = 0.2f;
         
         // フェードインを別のSequenceで管理
         var fadeSequence = DOTween.Sequence()
