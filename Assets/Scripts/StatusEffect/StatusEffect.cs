@@ -82,6 +82,9 @@ public static class StatusEffectFactory
             StatusEffectType.Burn => new BurnEffect(initialStack),
             StatusEffectType.Regeneration => new RegenerationEffect(initialStack),
             StatusEffectType.Shield => new ShieldEffect(initialStack),
+            StatusEffectType.Freeze => new FreezeEffect(initialStack),
+            StatusEffectType.Invincible => new InvincibleEffect(initialStack),
+            StatusEffectType.Shock => new ShockEffect(initialStack),
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
         
