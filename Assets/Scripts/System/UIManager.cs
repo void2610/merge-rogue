@@ -27,8 +27,10 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private TextMeshProUGUI stageText;
     [SerializeField] private TextMeshProUGUI expText;
-    [SerializeField] public Slider hpSlider;
-    [SerializeField] public TextMeshProUGUI hpText;
+    [SerializeField] private Slider hpSlider;
+    [SerializeField] private TextMeshProUGUI hpText;
+    [SerializeField] private Shop shop;
+    [SerializeField] private Treasure treasure;
 
     public bool IsPaused { get; private set; } = false;
     public bool IsMapOpened { get; private set; } = false;
@@ -117,14 +119,14 @@ public class UIManager : MonoBehaviour
         SeManager.Instance.PlaySe("button");
         EnableCanvasGroup("Shop", false);
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
-        Shop.Instance.CloseShop();
+        shop.CloseShop();
     }
     
     public void OnClickTreasureExit()
     {
         SeManager.Instance.PlaySe("button");
         EventManager.OnTreasureSkipped.Trigger(0);
-        Treasure.Instance.CloseTreasure();
+        treasure.CloseTreasure();
     }
 
     public void OnClickPause()

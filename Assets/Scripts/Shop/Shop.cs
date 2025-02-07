@@ -15,8 +15,6 @@ public class Shop : MonoBehaviour
         Remove
     }
     
-    public static Shop Instance;
-    
     [SerializeField] private GameObject itemContainer;
     [SerializeField] private GameObject removeButton;
     
@@ -178,9 +176,6 @@ public class Shop : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(this.gameObject);
-        
         _itemObjects = itemContainer.GetComponentInChildren<Transform>().Cast<Transform>().Select(x => x.gameObject).ToList();
         _itemObjects.ForEach(x => _itemPositions.Add(x.transform.position));
         _itemPositions.Add(removeButton.transform.position);

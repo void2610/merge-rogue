@@ -4436,6 +4436,8 @@ MonoBehaviour:
   expText: {fileID: 1932937372}
   hpSlider: {fileID: 1951852459}
   hpText: {fileID: 1566874251}
+  shop: {fileID: 1941433902}
+  treasure: {fileID: 1607858726}
   remainingLevelUps: 0
 --- !u!114 &567445623
 MonoBehaviour:
@@ -4481,6 +4483,9 @@ MonoBehaviour:
   mapConnectionPrefab: {fileID: 2000249465076816775, guid: 0fe2ec4d5ae3943b6b451329d71a9a0f, type: 3}
   mapOffset: {x: -6.9, y: -0.75}
   mapMargin: {x: 1.15, y: 0.9}
+  shop: {fileID: 1941433902}
+  treasure: {fileID: 1607858726}
+  eventProcessor: {fileID: 605675524}
   stageData:
   - stageType: 0
     probability: 1

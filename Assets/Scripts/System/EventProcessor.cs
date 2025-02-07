@@ -8,8 +8,6 @@ using UnityEngine.UI;
 
 public class EventProcessor : MonoBehaviour
 {
-    public static EventProcessor Instance;
-    
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private List<GameObject> options;
     
@@ -71,13 +69,6 @@ public class EventProcessor : MonoBehaviour
             await animator.DOFadeChar(i, 1, duration);
         }
     }
-
     
     private void HideOptions() => options.ForEach(option => option.SetActive(false));
-    
-    private void Awake()
-    {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
-    }
 }

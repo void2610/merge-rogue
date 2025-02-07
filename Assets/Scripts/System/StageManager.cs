@@ -53,6 +53,9 @@ public class StageManager : MonoBehaviour
     private GameObject _playerIconObj;
 
     [Header("ステージ")]
+    [SerializeField] private Shop shop;
+    [SerializeField] private Treasure treasure;
+    [SerializeField] private EventProcessor eventProcessor;
     [SerializeField] private List<StageData> stageData　= new();
     [SerializeField] private List<StageType> stageTypes = new();
     [SerializeField] private Vector2Int mapSize;
@@ -344,7 +347,7 @@ public class StageManager : MonoBehaviour
             case StageType.Shop:
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
                 EventManager.OnShopEnter.Trigger(0);
-                Shop.Instance.OpenShop();
+                shop.OpenShop();
                 UIManager.Instance.EnableCanvasGroup("Shop", true);
                 break;
             case StageType.Rest:
@@ -355,14 +358,12 @@ public class StageManager : MonoBehaviour
             case StageType.Treasure:
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
                 UIManager.Instance.EnableCanvasGroup("Treasure", true); 
-                
-                Treasure.Instance.OpenTreasure();
+                treasure.OpenTreasure();
                 break;
             case StageType.Events:
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
                 UIManager.Instance.EnableCanvasGroup("Event", true);
-                
-                EventProcessor.Instance.StartEvent();
+                eventProcessor.StartEvent();
                 break;
             case StageType.Undefined:
             default:

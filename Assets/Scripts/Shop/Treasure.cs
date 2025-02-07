@@ -5,8 +5,6 @@ using UnityEngine.EventSystems;
 
 public class Treasure : MonoBehaviour
 {
-    public static Treasure Instance;
-    
     [SerializeField] private List<GameObject> items;
     [SerializeField] private Vector3 itemPosition;
     [SerializeField] private float itemOffset;
@@ -70,15 +68,6 @@ public class Treasure : MonoBehaviour
     
     private void Awake()
     {
-        if(Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-        
         foreach (var item in items)
         {
             item.transform.position = _disablePosition;

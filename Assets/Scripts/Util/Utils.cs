@@ -5,19 +5,6 @@ using UnityEngine.EventSystems;
 
 public class Utils : MonoBehaviour
 {
-    public static Utils Instance;
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-    }
-    
     public static void AddEventToObject(GameObject obj, System.Action action, EventTriggerType type)
     {
         var trigger = obj.GetComponent<EventTrigger>();
