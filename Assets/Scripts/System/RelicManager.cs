@@ -17,6 +17,7 @@ public class RelicManager : MonoBehaviour
     
     [SerializeField] private List<RelicData> testRelics;
     
+    private const int MAX_RELICS = 27;
     private readonly List<RelicData> _relics = new();
     private readonly List<RelicBase> _behaviors = new();
     private readonly List<RelicUI> _relicUIs = new();
@@ -25,6 +26,12 @@ public class RelicManager : MonoBehaviour
     
     public void AddRelic(RelicData relic)
     {
+        if(_relics.Count >= MAX_RELICS)
+        {
+            NotifyWindow.Instance.Notify("これ以上レリックを持てません", NotifyWindow.NotifyIconType.Error);
+            return;
+        }
+        
         _relics.Add(relic);
         var rui = CreateRelicUI(relic);
         ApplyEffect(relic, rui);
@@ -53,7 +60,6 @@ public class RelicManager : MonoBehaviour
         if(!typeof(RelicBase).IsAssignableFrom(t)) throw new ArgumentException("指定されたクラスはRelicBaseを継承していません: " + t);
         return _behaviors.Exists(b => b.GetType() == t);
     }
-    
     
     private RelicUI CreateRelicUI(RelicData r)
     {
