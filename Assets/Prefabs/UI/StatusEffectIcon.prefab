@@ -224,7 +224,7 @@ GameObject:
   - component: {fileID: 7323034690756802230}
   - component: {fileID: 8503497468316597297}
   m_Layer: 0
-  m_Name: StatusEffectPrefab
+  m_Name: StatusEffectIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
