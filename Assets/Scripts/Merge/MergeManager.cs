@@ -28,7 +28,7 @@ public class MergeManager : MonoBehaviour
     public MergeWall Wall => wall;
     
     private const float MOVE_SPEED = 1.0f;
-    private const float COOL_TIME = 0.75f;
+    private const float COOL_TIME = 1.0f;
     private readonly List<float> _attacks = new() { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 3.75f, 4.0f};
     private readonly List<float> _wallWidths = new() { 2.0f, 2.75f, 3.5f, 4.25f, 5.0f, 5.75f, 6.0f, 6.25f};
     private int _wallWidthLevel = 0;
@@ -202,7 +202,7 @@ public class MergeManager : MonoBehaviour
         Destroy(CurrentBall);
     }
 
-    private void DecideNextBall()
+    private async UniTaskVoid DecideNextBall()
     {
         if(!_isMovable) return;
         
@@ -211,6 +211,7 @@ public class MergeManager : MonoBehaviour
         // リロードするかどうか
         if (--RemainingBalls > 0)
         {
+            await UniTask.Delay((int)(COOL_TIME * 500));
             CurrentBall = NextBall;
             CurrentBall.transform.position = fallAnchor.transform.position;
             CurrentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
@@ -288,7 +289,6 @@ public class MergeManager : MonoBehaviour
         if (GameManager.Instance.IsGameOver) return;
         if (GameManager.Instance.state != GameManager.GameState.Merge) return;
         if (!_isMovable) return;
-
         
         _limit = wall.WallWidth / 2 + 0.05f;
         var size = CurrentBall.transform.localScale.x + 0.5f;
@@ -318,8 +318,8 @@ public class MergeManager : MonoBehaviour
             }
         }
 
-        if (Time.time - _lastFallTime <= COOL_TIME || RemainingBalls < 0) return;
         fallAnchor.transform.position = _currentBallPosition + new Vector3(0, 0, 0);
+        if (Time.time - _lastFallTime <= COOL_TIME || RemainingBalls < 0) return;
 
         
         // プレイヤー操作        
@@ -331,14 +331,14 @@ public class MergeManager : MonoBehaviour
             SeManager.Instance.PlaySe("fall");
             _lastFallTime = Time.time;
             DropBall();
-            DecideNextBall();
+            DecideNextBall().Forget();
         }
         else if (isAlt)
         {
             SeManager.Instance.PlaySe("alt");
             _lastFallTime = Time.time;
             SkipBall();
-            DecideNextBall();
+            DecideNextBall().Forget();
         }
         
     }

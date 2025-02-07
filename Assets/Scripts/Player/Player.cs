@@ -139,8 +139,8 @@ public class Player : MonoBehaviour, IEntity
         if (Exp.Value < _levelUpExp[Level - 1]) return false;
 
         Exp.Value -= _levelUpExp[Level - 1];
-        MaxExp = _levelUpExp[Level - 1];
         Level++;
+        MaxExp = _levelUpExp[Level - 1];
         UIManager.Instance.remainingLevelUps++;
         
         //最大レベルを超えたらレベルアップしない
