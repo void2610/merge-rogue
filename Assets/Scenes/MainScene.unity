@@ -6813,7 +6813,7 @@ MonoBehaviour:
   relicOffset: {x: 40, y: 37}
   relicUISize: 0.75
   testRelics:
-  - {fileID: 11400000, guid: 0837f85fc711344c1a3b79c8cee80e85, type: 2}
+  - {fileID: 11400000, guid: 64fe3870994dc4a6f8c7c24742c0f02b, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0

@@ -52,3 +52,6 @@ MonoBehaviour:
   - word: "\u51CD\u7D50"
     description: "\u30B9\u30BF\u30C3\u30AF\u304C\u3042\u308B\u9650\u308A\u884C\u52D5\u3067\u304D\u306A\u3044\u3002"
     textColor: {r: 0, g: 0.2251563, b: 1, a: 0}
+  - word: "\u7121\u6575"
+    description: "\u30B9\u30BF\u30C3\u30AF\u304C\u3042\u308B\u9650\u308A\u30C0\u30E1\u30FC\u30B8\u3092\u53D7\u3051\u306A\u3044\u3002"
+    textColor: {r: 1, g: 0.77521867, b: 0, a: 0}

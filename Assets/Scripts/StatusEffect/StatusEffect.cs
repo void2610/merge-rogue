@@ -57,6 +57,9 @@ public abstract class StatusEffectBase
             StatusEffectType.Burn => "Burn",
             StatusEffectType.Regeneration => "Regeneration",
             StatusEffectType.Shield => "Guard",
+            StatusEffectType.Freeze => "Freeze",
+            StatusEffectType.Invincible => "Invincible",
+            StatusEffectType.Shock => "Shock",
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
         
@@ -65,6 +68,9 @@ public abstract class StatusEffectBase
             StatusEffectType.Burn => new Color(1, 0.4f, 0),
             StatusEffectType.Regeneration => new Color(0, 1, 0.3f),
             StatusEffectType.Shield => new Color(0, 0.8f, 1f),
+            StatusEffectType.Freeze => new Color(0, 0.5f, 1),
+            StatusEffectType.Invincible => new Color(1, 1, 0),
+            StatusEffectType.Shock => new Color(0.7f, 0, 0.7f),
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
         
@@ -157,7 +163,7 @@ public class InvincibleEffect : StatusEffectBase
     
     public override int ModifyDamage(int incomingDamage)
     {
-        // TODO: シールドよりも優先度が高いので、シールドの効果を無視する
+        // TODO: シールドよりも優先度を高くする
         ShowEffectText();
         SeManager.Instance.PlaySe("shield");
         return 0;

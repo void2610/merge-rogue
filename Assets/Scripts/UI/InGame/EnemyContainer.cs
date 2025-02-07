@@ -177,6 +177,7 @@ public class EnemyContainer : MonoBehaviour
 
     private async UniTaskVoid AttackPlayerAsync()
     {
+        // 行動
         foreach (var enemyBase in _currentEnemies.Select(enemy => enemy.transform.GetChild(0).GetComponent<EnemyBase>()))
         {
             enemyBase.Action();
@@ -187,6 +188,7 @@ public class EnemyContainer : MonoBehaviour
         await UniTask.Delay(100);
         
         // 状態異常を更新
+        GameManager.Instance.Player.UpdateStatusEffects();
         for(var i = 0; i < _currentEnemies.Count; i++)
         {
             _currentEnemies[i].transform.GetChild(0).GetComponent<EnemyBase>().UpdateStatusEffects();

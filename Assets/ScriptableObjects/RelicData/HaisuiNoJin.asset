@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87ffaf8ec3e9d4f489befd2ffee17c75, type: 3}
+  m_Name: HaisuiNoJin
+  m_EditorClassIdentifier: 
+  id: 0
+  className: HaisuiNoJin
+  sprite: {fileID: -4834095905783300709, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  displayName: "\u80CC\u6C34\u306E\u9663"
+  description: "\u30EC\u30EA\u30C3\u30AF\u7372\u5F97\u6642\u3001\u30D7\u30EC\u30A4\u30E4\u30FC\u306E\u6700\u5927HP\u30921/4\u306B\u3059\u308B\u3002\n\u6575\u3092\u5012\u3059\u3068\u7121\u6575\u30921\u30B9\u30BF\u30C3\u30AF\u5F97\u308B\u3002"
+  flavorText: 
+  rarity: 5

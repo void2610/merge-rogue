@@ -84,8 +84,6 @@ public class Player : MonoBehaviour, IEntity
             Health.Value = 0;
             GameManager.Instance.GameOver();
         }
-        
-        UpdateStatusEffects();
     }
 
     public void Heal(int amount)

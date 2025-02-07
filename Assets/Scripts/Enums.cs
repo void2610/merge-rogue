@@ -56,11 +56,12 @@ public static class MyColors
     /// </summary>
     private static readonly Dictionary<Rarity, Color> rarityToColorMap = new ()
     {
-        { Rarity.Common, new Color(0.8f, 0.8f, 0.8f) },       // グレー
+        { Rarity.Common, new Color(0.8f, 0.8f, 0.8f) },      // グレー
         { Rarity.Uncommon, new Color(0.3f, 1f, 0.3f) },      // 緑
         { Rarity.Rare, new Color(0.2f, 0.4f, 1f) },          // 青
         { Rarity.Epic, new Color(0.7f, 0.3f, 0.9f) },        // 紫
-        { Rarity.Legendary, new Color(1f, 0.8f, 0f) }        // 金
+        { Rarity.Legendary, new Color(1f, 0.8f, 0f) },       // 金
+        { Rarity.Boss, new Color(1f, 0.1f, 0.1f) }           // 赤
     };
     
     /// <summary>
