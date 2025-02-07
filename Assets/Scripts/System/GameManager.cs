@@ -188,31 +188,17 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            if (UIManager.Instance.IsPaused)
-            {
-                UIManager.Instance.OnClickResume();
-            }
-            else
-            {
-                UIManager.Instance.OnClickPause();
-            }
+            UIManager.Instance.OnClickPauseButton();
         }
         
         if (Input.GetKeyDown(KeyCode.M))
         {
-            if (UIManager.Instance.IsMapOpened)
-            {
-                UIManager.Instance.CloseMap();
-            }
-            else
-            {
-                UIManager.Instance.OpenMap();
-            }
+            UIManager.Instance.OnClickMapButton();
         }
         
         if (Input.GetKeyDown(KeyCode.T))
         {
-            UIManager.Instance.OnClickSpeed();
+            UIManager.Instance.OnClickSpeedButton();
         }
     }
     

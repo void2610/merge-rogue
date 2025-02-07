@@ -34,6 +34,7 @@ public class UIManager : MonoBehaviour
 
     public bool IsPaused { get; private set; } = false;
     public bool IsMapOpened { get; private set; } = false;
+    public bool IsTutorialOpened { get; set; } = false;
     public int remainingLevelUps;
     
     private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
@@ -129,26 +130,32 @@ public class UIManager : MonoBehaviour
         treasure.CloseTreasure();
     }
 
-    public void OnClickPause()
+    public void OnClickPauseButton()
     {
-        IsPaused = true;
         SeManager.Instance.PlaySe("button");
-        Time.timeScale = 0;
-        EnableCanvasGroup("Pause", true);
+        IsPaused = !IsPaused;
+        Time.timeScale = IsPaused ? 0 : GameManager.Instance.TimeScale;
+        EnableCanvasGroup("Pause", IsPaused);
     }
 
-    public void OnClickSpeed()
+    public void OnClickSpeedButton()
     {
         SeManager.Instance.PlaySe("button");
         GameManager.Instance.ChangeTimeScale();
     }
-
-    public void OnClickResume()
+    
+    public void OnClickMapButton()
     {
-        IsPaused = false;
         SeManager.Instance.PlaySe("button");
-        Time.timeScale = GameManager.Instance.TimeScale;
-        EnableCanvasGroup("Pause", false);
+        IsMapOpened = !IsMapOpened;
+        EnableCanvasGroup("Map", IsMapOpened);
+    }
+    
+    public void OnClickTutorialButton()
+    {
+        SeManager.Instance.PlaySe("button");
+        IsTutorialOpened = !IsTutorialOpened;
+        EnableCanvasGroup("Tutorial", IsTutorialOpened);
     }
 
     public void OnClickTitle()
@@ -163,20 +170,6 @@ public class UIManager : MonoBehaviour
         SeManager.Instance.PlaySe("button");
         fadeImage.color = new Color(0, 0, 0, 0);
         fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("MainScene")).SetUpdate(true);
-    }
-
-    public void OpenMap()
-    {
-        IsMapOpened = true;
-        SeManager.Instance.PlaySe("button");
-        EnableCanvasGroup("Map", true);
-    }
-    
-    public void CloseMap()
-    {
-        IsMapOpened = false;
-        SeManager.Instance.PlaySe("button");
-        EnableCanvasGroup("Map", false);
     }
     
     private void SetVignette(float value)
