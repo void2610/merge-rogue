@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5524336703029142163}
   - component: {fileID: 2587359770142852842}
   - component: {fileID: 4225007015207002179}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: SmokeParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4826,7 +4826,7 @@ ParticleSystemRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 782837077
-  m_SortingLayer: 1
+  m_SortingLayer: 0
   m_SortingOrder: 0
   m_RenderMode: 0
   m_MeshDistribution: 0

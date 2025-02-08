@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5966421440664315295}
   - component: {fileID: 519568172110953486}
   - component: {fileID: 5796793875450407974}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MergePowerParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}

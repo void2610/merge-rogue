@@ -8,9 +8,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - aaa
+  - BackEffect
   - Water
   - UI
+  - Effect
   - WindowUI
   - 
   - 
@@ -36,9 +37,8 @@ TagManager:
   - 
   - 
   - 
-  - 
   m_SortingLayers:
-  - name: RenderTexture
+  - name: BackRenderTexture
     uniqueID: 2146775217
     locked: 0
   - name: BackUI
@@ -47,8 +47,8 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Effect
-    uniqueID: 782837077
+  - name: FrontRenderTexture
+    uniqueID: 3989523109
     locked: 0
   - name: UI
     uniqueID: 994931343
