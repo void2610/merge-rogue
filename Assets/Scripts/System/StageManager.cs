@@ -157,9 +157,7 @@ public class StageManager : MonoBehaviour
         
         var p1 = c.WorldToScreenPoint(a.Position);
         var p2 = c.WorldToScreenPoint(b.Position);
-        // 解像度によって線の長さを調整
-        var factor =　Screen.width / canvas.GetComponent<CanvasScaler>().referenceResolution.x;
-        var pos = new Vector2(p2.x - p1.x, p2.y - p1.y) / factor / 2;
+        var pos = new Vector2(p2.x - p1.x, p2.y - p1.y);
         line.points = new Vector2[2] {Vector2.zero, pos};
     }
     
