@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1648853502855603735}
   - component: {fileID: 7055652527472802992}
   - component: {fileID: 5142685482307569296}
-  m_Layer: 6
+  m_Layer: 0
   m_Name: BombFireParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -116,8 +116,8 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 0.6
-      minScalar: 0.3
+      scalar: 1
+      minScalar: 0.5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -287,7 +287,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.01
+      scalar: 0.007
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -340,7 +340,7 @@ ParticleSystem:
     startSizeY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.02
+      scalar: 0.03
       minScalar: 1
       maxCurve:
         serializedVersion: 2
