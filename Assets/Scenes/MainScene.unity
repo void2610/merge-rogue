@@ -4349,6 +4349,7 @@ GameObject:
   - component: {fileID: 502658205}
   - component: {fileID: 502658204}
   - component: {fileID: 502658203}
+  - component: {fileID: 502658206}
   m_Layer: 0
   m_Name: MergeAreaCursorEvent
   m_TagString: Untagged
@@ -4373,7 +4374,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -100}
-  m_SizeDelta: {x: 150, y: 320}
+  m_SizeDelta: {x: 330, y: 330}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &502658203
 MonoBehaviour:
@@ -4426,6 +4427,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 502658201}
   m_CullTransparentMesh: 1
+--- !u!114 &502658206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 502658201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c5a1c167998645a781f85d43242992c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &512993931
 GameObject:
   m_ObjectHideFlags: 0
@@ -7233,7 +7246,36 @@ MonoBehaviour:
   relicGridSize: {x: 3, y: 9}
   relicOffset: {x: 40, y: 37}
   relicUISize: 0.75
-  testRelics: []
+  testRelics:
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
+  - {fileID: 11400000, guid: 02b3673c49e5c4727afa7aef7f94a7c0, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -16680,6 +16722,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d435ca6135a944864acac918de64a25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cursorSetter: {fileID: 502658206}
   wall: {fileID: 774851889}
   wallMaterial: {fileID: 6200000, guid: bd5a1f84996314084a6287bd54bb2089, type: 2}
   fallAnchor: {fileID: 632287031}

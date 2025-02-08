@@ -13,6 +13,7 @@ public class MergeManager : MonoBehaviour
     private static readonly int _ratio = Shader.PropertyToID("_Ratio");
     private static readonly int _alpha = Shader.PropertyToID("_Alpha");
 
+    [SerializeField] private MergeAreaCursorSetter cursorSetter;
     [SerializeField] private MergeWall wall;
     [SerializeField] public PhysicsMaterial2D wallMaterial;
     [SerializeField] private GameObject fallAnchor;
@@ -297,9 +298,8 @@ public class MergeManager : MonoBehaviour
         ballGauge.transform.localScale = CurrentBall.transform.localScale * 1.01f;
         ballGauge.transform.position = CurrentBall.transform.position;
         
-        var mousePosX = _mainCamera.ScreenToWorldPoint(Input.mousePosition).x;
-        var mousePosY = _mainCamera.ScreenToWorldPoint(Input.mousePosition).y;
-        var isMouseOvered = (mousePosX > -_limit + size / 2 - 1) && (mousePosX < _limit - size / 2 + 1) && (mousePosY is > -4.5f and < 1f);
+        var mousePosX = (Input.mousePosition.x - Screen.width / 2) / Screen.width * 20;
+        var isMouseOvered = cursorSetter.IsMergeArea;
         if (isMouseOvered)
         {
             mousePosX = Mathf.Clamp(mousePosX, -_limit + size / 2, _limit - size / 2);
@@ -340,6 +340,5 @@ public class MergeManager : MonoBehaviour
             SkipBall();
             DecideNextBall().Forget();
         }
-        
     }
 }

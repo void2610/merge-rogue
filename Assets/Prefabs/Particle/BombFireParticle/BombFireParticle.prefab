@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1648853502855603735}
   - component: {fileID: 7055652527472802992}
   - component: {fileID: 5142685482307569296}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: BombFireParticle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
