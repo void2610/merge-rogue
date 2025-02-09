@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -50,6 +51,8 @@ public class StatusEffectUI : MonoBehaviour
             go.transform.Find("Icon").GetComponent<Image>().sprite = icon;
             go.transform.Find("Stack").GetComponent<TextMeshProUGUI>().text = "";
             _statusEffectIcons[type] = go;
+            
+            Utils.AddEventToObject(go, () => DescriptionWindow.Instance.ShowSubWindow(go, type.GetStatusEffectWord()), EventTriggerType.PointerEnter);
             go.SetActive(false);
         }
     }

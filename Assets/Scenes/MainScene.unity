@@ -2526,6 +2526,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7247047407357346821, guid: 34c59e3fd9b634f9e8f66c815d5d0861, type: 3}
+      propertyPath: subWindowContainer
+      value: 
+      objectReference: {fileID: 1234074736}
     - target: {fileID: 7481154211506993491, guid: 34c59e3fd9b634f9e8f66c815d5d0861, type: 3}
       propertyPath: m_Name
       value: DescriptionWindow
@@ -3018,8 +3022,8 @@ RectTransform:
   - {fileID: 668045571}
   - {fileID: 246165870}
   - {fileID: 1463867338}
-  - {fileID: 1888057322}
   - {fileID: 1951852458}
+  - {fileID: 1888057322}
   - {fileID: 1932937371}
   - {fileID: 400580595}
   - {fileID: 1007425567}
@@ -3033,6 +3037,7 @@ RectTransform:
   - {fileID: 605675522}
   - {fileID: 225990488}
   - {fileID: 1978004777}
+  - {fileID: 1234074736}
   - {fileID: 1955426628}
   - {fileID: 2057808263}
   - {fileID: 1868987099}
@@ -11179,6 +11184,37 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8883364435546100084, guid: 3fe5237b4f23740c7b070957eac1f3ba, type: 3}
   m_PrefabInstance: {fileID: 1185293098}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1234074735
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1234074736}
+  m_Layer: 0
+  m_Name: SubWindowContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1234074736
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1234074735}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 380910489}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1245083787
 GameObject:
   m_ObjectHideFlags: 0
@@ -17199,9 +17235,9 @@ MonoBehaviour:
   ballBasePrefab: {fileID: 5528515049713681562, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
   inventoryPosition: {x: 0, y: -7, z: 0}
   testBalls:
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
+  - {fileID: 11400000, guid: 988658c93269b4a7aa2905750b6622a2, type: 2}
+  - {fileID: 11400000, guid: 988658c93269b4a7aa2905750b6622a2, type: 2}
+  - {fileID: 11400000, guid: 988658c93269b4a7aa2905750b6622a2, type: 2}
   - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   - {fileID: 0}
   - {fileID: 0}

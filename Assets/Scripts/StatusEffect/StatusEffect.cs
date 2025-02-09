@@ -63,16 +63,7 @@ public abstract class StatusEffectBase
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
         
-        var textColor = Type switch
-        {
-            StatusEffectType.Burn => new Color(1, 0.4f, 0),
-            StatusEffectType.Regeneration => new Color(0, 1, 0.3f),
-            StatusEffectType.Shield => new Color(0, 0.8f, 1f),
-            StatusEffectType.Freeze => new Color(0, 0.5f, 1),
-            StatusEffectType.Invincible => new Color(1, 1, 0),
-            StatusEffectType.Shock => new Color(0.7f, 0, 0.7f),
-            _ => throw new ArgumentException("Invalid StatusEffectType")
-        };
+        var textColor = Type.GetStatusEffectColor();
         
         var isP = _isPlayer ? 1 : -1;
         ParticleManager.Instance.WavyText(effectText, _entityPosition + new Vector3(0.8f * isP, 0.5f, 0), textColor);
@@ -95,6 +86,36 @@ public static class StatusEffectFactory
         };
         
         target.AddStatusEffect(newEffect);
+    }
+    
+    // 状態異常の色を取得する拡張メソッド
+    public static Color GetStatusEffectColor(this StatusEffectType type)
+    {
+        return type switch
+        {
+            StatusEffectType.Burn => new Color(1, 0.4f, 0),
+            StatusEffectType.Regeneration => new Color(0, 1, 0.3f),
+            StatusEffectType.Shield => new Color(0, 0.8f, 1f),
+            StatusEffectType.Freeze => new Color(0, 0.5f, 1),
+            StatusEffectType.Invincible => new Color(1, 1, 0),
+            StatusEffectType.Shock => new Color(0.7f, 0, 0.7f),
+            _ => throw new ArgumentException("Invalid StatusEffectType")
+        };
+    }
+    
+    // 状態異常の名前を取得する拡張メソッド
+    public static string GetStatusEffectWord(this StatusEffectType type)
+    {
+        return type switch
+        {
+            StatusEffectType.Burn => "火傷",
+            StatusEffectType.Regeneration => "再生",
+            StatusEffectType.Shield => "シールド",
+            StatusEffectType.Freeze => "凍結",
+            StatusEffectType.Invincible => "無敵",
+            StatusEffectType.Shock => "感電",
+            _ => throw new ArgumentException("Invalid StatusEffectType")
+        };
     }
 }
 

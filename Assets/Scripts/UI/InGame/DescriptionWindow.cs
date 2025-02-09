@@ -11,6 +11,8 @@ using UnityEngine.SceneManagement;
 
 public class DescriptionWindow : MonoBehaviour
 {
+    public static DescriptionWindow Instance { get; private set; }
+    
     [SerializeField] private WordDictionary wordDictionary;
     [SerializeField] private GameObject subWindowPrefab;
     [SerializeField] private TextMeshProUGUI nameText;
@@ -68,8 +70,17 @@ public class DescriptionWindow : MonoBehaviour
         _fadeTween = _cg.DOFade(1, 0.15f).SetUpdate(true).SetLink(this.gameObject);
         _rootTriggerObject = rootTriggerObject;
     }
+    
+    public void ShowSubWindow(GameObject parent, string word)
+    {
+        // 最前面のウィンドウ以外のリンクは無視
+        if (_subWindows.Count >= 1)
+            if (parent != _subWindows.Values.Last()) return;
 
-    private void ShowSubWindow(GameObject parent, string word)
+        ShowSubWindowImpl(parent, word);
+    }
+
+    private void ShowSubWindowImpl(GameObject parent, string word)
     {
         // 同じ親オブジェクトに対して複数のサブウィンドウを表示しない
         if(_subWindows.ContainsKey((parent, word))) return;
@@ -79,12 +90,14 @@ public class DescriptionWindow : MonoBehaviour
         var textColor = wordDictionary.GetWordEntry(word).textColor;
         
         var g = Instantiate(subWindowPrefab, parent.transform);
+        g.transform.localScale = Vector3.one / parent.transform.localScale.x;
         g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = $"<color=#{ColorUtility.ToHtmlStringRGB(textColor)}>{word}</color>";
         g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = Utils.GetHighlightWords(description);
         
         Utils.AddEventToObject(g, () => HideSubWindow(parent, word), EventTriggerType.PointerExit);
         
-        var offset = new Vector2(25, 25);
+        var offset = Vector2.one;
+        offset *= parent == this.gameObject ? 25 : 190;
         var rectTransform = g.GetComponent<RectTransform>();
 
         var localMin = rectTransform.parent.InverseTransformPoint(subMinPos);
@@ -257,6 +270,9 @@ public class DescriptionWindow : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+        
         this.gameObject.SetActive(false);
         _cg = this.gameObject.GetComponent<CanvasGroup>();
         _uiCamera = Camera.main;
@@ -285,6 +301,6 @@ public class DescriptionWindow : MonoBehaviour
         // 最前面のウィンドウ以外のリンクは無視
         var topWindow = _subWindows.Count == 0 ? descriptionText.gameObject : _subWindows.Values.Last();
         if (parent != topWindow) return;
-        ShowSubWindow(parent, linkInfo.GetLinkID());
+        ShowSubWindowImpl(parent, linkInfo.GetLinkID());
     }
 }
