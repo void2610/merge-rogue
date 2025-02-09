@@ -121,7 +121,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.MapSelect:
                 StageManager.SetNextNodeActive();
-                UIManager.Instance.EnableCanvasGroup("Map", true);
+                UIManager.Instance.OnClickMapButtonForce(true);
                 break;
             case GameState.Event:
                 break;

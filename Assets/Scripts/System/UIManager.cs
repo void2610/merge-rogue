@@ -150,6 +150,13 @@ public class UIManager : MonoBehaviour
         EnableCanvasGroup("Map", IsMapOpened);
     }
     
+    public void OnClickMapButtonForce(bool e)
+    {
+        if (IsMapOpened == e) return;
+        IsMapOpened = e;
+        EnableCanvasGroup("Map", e);
+    }
+    
     public void OnClickTutorialButton()
     {
         SeManager.Instance.PlaySe("button");
