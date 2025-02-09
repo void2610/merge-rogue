@@ -99,7 +99,7 @@ public class InventoryUI : MonoBehaviour
             rt.DORotate(new Vector3(0, 0, 15), 0.75f).SetEase(Ease.Flash, 10, 0.9f).OnComplete(() => rt.DORotate(Vector3.zero, 0.1f));
             
             SetCursor(index);
-            UIManager.Instance.ShowBallDescriptionWindow(ballBase.Data, ballObj, ballBase.Rank); 
+            UIManager.Instance.ShowBallDescriptionWindow(ballBase.Data, ballObj, ballBase.Level); 
         }, EventTriggerType.PointerEnter);
     }
 

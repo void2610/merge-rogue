@@ -126,7 +126,7 @@ public class MergeManager : MonoBehaviour
 
     public void SpawnBallFromLevel(int level, Vector3 p, Quaternion q)
     {
-        var ball = InventoryManager.Instance.GetBallByLevel(level);
+        var ball = InventoryManager.Instance.GetBallByRank(level);
         if (!ball) return;
 
         ball.transform.position = p;

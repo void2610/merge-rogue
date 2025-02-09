@@ -7,8 +7,8 @@ public class BallBase : MonoBehaviour
     private static int _ballSerial;
     public const int MAX_LEVEL = 3;
 
-    public int Rank { get; private set; } = 0;
-    public int Level { get; private set; } = -1;
+    public int Rank { get; private set; } = -1;
+    public int Level { get; private set; } = 0;
     public float Size { get; private set; } = 0;
     public float Attack { get; private set; } = 0;
     public int Serial { get; private set; } = 0;
@@ -36,29 +36,29 @@ public class BallBase : MonoBehaviour
     
     public void Upgrade()
     {
-        if (Rank < MAX_LEVEL - 1)
+        if (Level < MAX_LEVEL - 1)
         {
-            Rank++;
-            Attack = _attacks[Rank];
-            Size = _sizes[Rank];
+            Level++;
+            Attack = _attacks[Level];
+            Size = _sizes[Level];
         }
     }
 
-    public virtual void InitBall(BallData d, int level, int ballRank = 0)
+    public virtual void InitBall(BallData d, int rank, int level = 0)
     {
         Serial = _ballSerial++;
         this.Data = d;
-        this.Level = level;
+        this.Rank = rank;
         this._sizes = d.sizes;
         this._attacks = d.attacks;
-        this.Rank = ballRank;
-        this.Attack = _attacks[ballRank];
-        this.Size = _sizes[ballRank];
+        this.Level = level;
+        this.Attack = _attacks[level];
+        this.Size = _sizes[level];
     }
 
     private void Start()
     {
-        if(Level == -1)
+        if(Rank == -1)
         {
             Debug.LogError("Ball is not initialized");
             return;
@@ -76,15 +76,15 @@ public class BallBase : MonoBehaviour
 
         if (other.gameObject.TryGetComponent(out BallBase b))
         {
-            if (b.Level == this.Level && !b.IsFrozen && !b.isDestroyed)
+            if (b.Rank == this.Rank && !b.IsFrozen && !b.isDestroyed)
             {
                 if (this.Serial < b.Serial)
                 {
-                    EventManager.OnBallMerged.Trigger(this.Level);
+                    EventManager.OnBallMerged.Trigger(this.Rank);
                     
                     var center = (this.transform.position + other.transform.position) / 2;
                     var rotation = Quaternion.Lerp(this.transform.rotation, other.transform.rotation, 0.5f);
-                    MergeManager.Instance.SpawnBallFromLevel(Level + 1, center, rotation);
+                    MergeManager.Instance.SpawnBallFromLevel(Rank + 1, center, rotation);
 
                     EffectAndDestroy(b);
                     b.EffectAndDestroy(this);
@@ -107,7 +107,7 @@ public class BallBase : MonoBehaviour
     protected void DefaultMergeParticle()
     {
         ParticleManager.Instance.MergeParticle(this.transform.position);
-        ParticleManager.Instance.MergePowerParticle(this.transform.position, MyColors.GetBallColor(Level-1));
+        ParticleManager.Instance.MergePowerParticle(this.transform.position, MyColors.GetBallColor(Rank-1));
         
         var i = Random.Range(0, 5);
         SeManager.Instance.PlaySe("ball" + i);

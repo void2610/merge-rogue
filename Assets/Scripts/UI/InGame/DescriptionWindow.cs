@@ -131,17 +131,17 @@ public class DescriptionWindow : MonoBehaviour
     }
 
     
-    private void SetBallTexts(BallData b, int rank)
+    private void SetBallTexts(BallData b, int level)
     {
         nameText.text = b.displayName;
         nameText.color = MyColors.GetRarityColor(b.rarity);
-        descriptionText.text = b.descriptions[rank];
+        descriptionText.text = b.descriptions[level];
         flavorText.text = b.flavorText;
-        statusTexts[0].text = "attack: " + b.attacks[rank];
+        statusTexts[0].text = "level: " + (level + 1);
         statusTexts[0].alpha = 1;
-        statusTexts[1].text = "size: " + b.sizes[rank];
+        statusTexts[1].text = "attack: " + b.attacks[level];
         statusTexts[1].alpha = 1;
-        statusTexts[2].text = "rank: " + (rank + 1);
+        statusTexts[2].text = "size: " + b.sizes[level];
         statusTexts[2].alpha = 1;
     }
 

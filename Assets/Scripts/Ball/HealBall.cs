@@ -7,6 +7,6 @@ public class HealBall : BallBase
         base.Effect(other);
         
         DefaultMergeParticle();
-        GameManager.Instance.Player.Heal(this.Level);
+        GameManager.Instance.Player.Heal(this.Rank);
     }
 }

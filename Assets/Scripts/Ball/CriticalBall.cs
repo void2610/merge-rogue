@@ -17,6 +17,6 @@ public class CriticalBall : BallBase
         {
             DefaultMergeParticle();
         }
-        MergeManager.Instance.AddSingleAttackCount(Attack * Level * critical, this.transform.position);
+        MergeManager.Instance.AddSingleAttackCount(Attack * Rank * critical, this.transform.position);
     }
 }

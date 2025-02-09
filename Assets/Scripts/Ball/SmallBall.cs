@@ -7,6 +7,6 @@ public class SmallBall : BallBase
     {
         base.Effect(other);
         DefaultMergeParticle();
-        MergeManager.Instance.AddSingleAttackCount(Attack * Level, this.transform.position);
+        MergeManager.Instance.AddSingleAttackCount(Attack * Rank, this.transform.position);
     }
 }

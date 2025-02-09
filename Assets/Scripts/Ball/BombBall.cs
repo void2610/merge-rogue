@@ -3,9 +3,9 @@ using UnityEngine;
 public class BombBall : BallBase
 {
     private GameObject _fireParticle;
-    public override void InitBall(BallData d, int level, int ballRank = 0)
+    public override void InitBall(BallData d, int rank, int level = 0)
     {
-        base.InitBall(d, level, ballRank);
+        base.InitBall(d, rank, level);
         // ボールの輪郭を消して爆弾っぽく見せる
         var icon = this.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite;
         this.GetComponent<SpriteRenderer>().sprite = icon;
@@ -19,7 +19,7 @@ public class BombBall : BallBase
         // 全体攻撃しつつ、周りのボールを消す
         base.Effect(other);
         
-        MergeManager.Instance.AddAllAttackCount(Attack * Level, this.transform.position);
+        MergeManager.Instance.AddAllAttackCount(Attack * Rank, this.transform.position);
 
         var hitColliders = Physics2D.OverlapCircleAll(this.transform.position, Size);
 

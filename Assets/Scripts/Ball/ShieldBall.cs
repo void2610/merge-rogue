@@ -7,6 +7,6 @@ public class ShieldBall : BallBase
         base.Effect(other);
         
         DefaultMergeParticle();
-        StatusEffectFactory.AddStatusEffect(GameManager.Instance.Player, StatusEffectType.Shield, this.Level);
+        StatusEffectFactory.AddStatusEffect(GameManager.Instance.Player, StatusEffectType.Shield, this.Rank);
     }
 }

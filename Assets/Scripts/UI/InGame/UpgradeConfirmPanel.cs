@@ -17,7 +17,7 @@ public class UpgradeConfirmPanel : MonoBehaviour
     {
         _currentBallIndex = index;
         var ball = InventoryManager.Instance.GetBallData(index);
-        var rank = InventoryManager.Instance.GetBallRank(index);
+        var rank = InventoryManager.Instance.GetBallLevel(index);
         
         SetBallTexts(leftWindow, ball, rank);
         SetBallTexts(rightWindow, ball, rank + 1);
@@ -26,17 +26,17 @@ public class UpgradeConfirmPanel : MonoBehaviour
         UIManager.Instance.EnableCanvasGroup("Upgrade", true);
     }
     
-    private void SetBallTexts(GameObject g, BallData b, int rank)
+    private void SetBallTexts(GameObject g, BallData b, int level)
     {
         g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = b.displayName;
         g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().color = MyColors.GetRarityColor(b.rarity);
-        g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = b.descriptions[rank];
+        g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = b.descriptions[level];
         g.transform.Find("FlavorText").GetComponent<TextMeshProUGUI>().text = b.flavorText;
-        g.transform.Find("Status").Find("Status1").GetComponent<TextMeshProUGUI>().text = "attack: " + b.attacks[rank];
+        g.transform.Find("Status").Find("Status1").GetComponent<TextMeshProUGUI>().text = "level: " + (level + 1);
         g.transform.Find("Status").Find("Status1").GetComponent<TextMeshProUGUI>().alpha = 1;
-        g.transform.Find("Status").Find("Status2").GetComponent<TextMeshProUGUI>().text = "size: " + b.sizes[rank];
+        g.transform.Find("Status").Find("Status2").GetComponent<TextMeshProUGUI>().text = "attack: " + b.attacks[level];
         g.transform.Find("Status").Find("Status2").GetComponent<TextMeshProUGUI>().alpha = 1;
-        g.transform.Find("Status").Find("Status3").GetComponent<TextMeshProUGUI>().text = "rank: " + (rank + 1);
+        g.transform.Find("Status").Find("Status3").GetComponent<TextMeshProUGUI>().text = "size: " + b.sizes[level];
         g.transform.Find("Status").Find("Status3").GetComponent<TextMeshProUGUI>().alpha = 1;
     }
     
