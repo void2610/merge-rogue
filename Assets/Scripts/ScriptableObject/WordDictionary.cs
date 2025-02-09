@@ -12,8 +12,12 @@ public class WordDictionary : ScriptableObject
         public string description; // 説明文
         public Color textColor;   // 表示色
     }
+    
+    public static WordDictionary Instance; // シングルトンインスタンス
 
     public List<WordEntry> words; // 辞書データ
+    
+    public void SetInstance() => Instance = this;
     
     public WordEntry GetWordEntry(string word)
     {

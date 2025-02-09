@@ -44,7 +44,7 @@ public class DescriptionWindow : MonoBehaviour
         else if(obj is RelicData r) SetRelicTexts(r);
         else throw new System.ArgumentException("obj is not BallData or RelicData");
         
-        descriptionText.text = GetHighlightWords(descriptionText.text);
+        descriptionText.text = Utils.GetHighlightWords(descriptionText.text);
 
         // ワールド座標をRectTransformのローカル座標に変換
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -80,7 +80,7 @@ public class DescriptionWindow : MonoBehaviour
         
         var g = Instantiate(subWindowPrefab, parent.transform);
         g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = $"<color=#{ColorUtility.ToHtmlStringRGB(textColor)}>{word}</color>";
-        g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = GetHighlightWords(description);
+        g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = Utils.GetHighlightWords(description);
         
         Utils.AddEventToObject(g, () => HideSubWindow(parent, word), EventTriggerType.PointerExit);
         
@@ -98,38 +98,6 @@ public class DescriptionWindow : MonoBehaviour
         g.GetComponent<CanvasGroup>().DOFade(1, 0.15f).SetUpdate(true).SetLink(g);
         _subWindows[(parent, word)] = g;
     }
-    
-    private string GetHighlightWords(string description)
-    {
-        // 短い単語から順に処理するためソート
-        var sortedWords = wordDictionary.words.OrderBy(entry => entry.word.Length).Where(entry => description.Contains(entry.word)).ToList();
-
-        foreach (var entry in sortedWords)
-        {
-            if (string.IsNullOrEmpty(entry.word)) continue;
-
-            // 既存のハイライトを解除
-            var containedWords = wordDictionary.words.Where(e => entry.word.Contains(e.word)).ToList();
-            containedWords.ForEach(e => description = RemoveExistingHighlights(description, e.word));
-
-            // ハイライトを適用
-            var replacement = $"<link=\"{entry.word}\"><color=#{ColorUtility.ToHtmlStringRGB(entry.textColor)}><nobr>{entry.word}</nobr></color></link>";
-            description = description.Replace(entry.word, replacement);
-        }
-
-        return description;
-    }
-
-    // 既存のハイライトを解除するメソッド
-    private string RemoveExistingHighlights(string description, string word)
-    {
-        // ハイライト形式の正規表現を作成
-        string pattern = $@"<link=""{word}""><color=#\w+><nobr>{word}</nobr></color></link>";
-
-        // ハイライト部分を元の文字列に戻す
-        return Regex.Replace(description, pattern, word);
-    }
-
     
     private void SetBallTexts(BallData b, int level)
     {

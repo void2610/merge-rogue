@@ -1389,6 +1389,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c9b15fc4789e42bbb9273ab02d8e5e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wordDictionary: {fileID: 11400000, guid: ef9676c90c67f4de092cd50dd36e2b02, type: 2}
 --- !u!114 &525522649
 MonoBehaviour:
   m_ObjectHideFlags: 0
