@@ -187,19 +187,13 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
-        {
             UIManager.Instance.OnClickPauseButton();
-        }
-        
         if (Input.GetKeyDown(KeyCode.M))
-        {
             UIManager.Instance.OnClickMapButton();
-        }
-        
         if (Input.GetKeyDown(KeyCode.T))
-        {
             UIManager.Instance.OnClickSpeedButton();
-        }
+        if (Input.GetKeyDown(KeyCode.Q))
+            UIManager.Instance.OnClickTutorialButton();
     }
     
     private void OnSceneUnloaded(Scene scene)

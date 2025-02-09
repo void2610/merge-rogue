@@ -30,6 +30,9 @@ public class TutorialPanel : MonoBehaviour
         if(_currentActivePage) Destroy(_currentActivePage);
         _currentActivePage = Instantiate(pages[page], this.transform);
         _currentPage = page;
+        
+        previousButton.interactable = _currentPage > 0;
+        nextButton.interactable = _currentPage < pages.Count - 1;
     }
 
     private void Awake()
