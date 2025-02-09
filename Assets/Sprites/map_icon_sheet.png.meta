@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 3e6e02f1b01944269be905ea06e87cf3
+guid: 36e40fd8a17d94f7e9ae5cfad0925f89
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -43,7 +43,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -136,133 +136,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: map_icon_battle
+      name: slime_cube_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 48
+        y: 0
         width: 16
-        height: 16
+        height: 15
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: c44be4ee253a641caa92136cd04d7e6a
-      internalID: -17237791
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: map_icon_treasure
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 48
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 730cbf33524c54419aae7991733bb734
-      internalID: -1450534524
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: map_icon_event
-      rect:
-        serializedVersion: 2
-        x: 32
-        y: 48
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: fa14134fa5da84902b094c5cb60fa88d
-      internalID: -15663616
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: map_icon_shop
-      rect:
-        serializedVersion: 2
-        x: 48
-        y: 48
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: a97d80effd9f94dc39747b780c77184d
-      internalID: 1381892274
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: map_icon_boss
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 086e282d347f6486aafafa1006f49933
-      internalID: 26452105
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: map_icon_rest
-      rect:
-        serializedVersion: 2
-        x: 16
-        y: 32
-        width: 16
-        height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ca4bd5b34d493487c849faa2971fadc2
-      internalID: -1359185011
+      spriteID: 97c0421e829d570b0800000000000000
+      internalID: -5731436181159932807
       vertices: []
       indices: 
       edges: []
@@ -279,12 +169,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      map_icon_battle: -17237791
-      map_icon_boss: 26452105
-      map_icon_event: -15663616
-      map_icon_rest: -1359185011
-      map_icon_shop: 1381892274
-      map_icon_treasure: -1450534524
+      slime_cube_0: -5731436181159932807
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
