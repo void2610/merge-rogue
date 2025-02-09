@@ -110,6 +110,12 @@ public class InventoryUI : MonoBehaviour
             case InventoryUIState.Disabled:
                 break;
             case InventoryUIState.Upgrade:
+                if (InventoryManager.Instance.GetBallLevel(index) >= 2)
+                {
+                    SeManager.Instance.PlaySe("error");
+                    NotifyWindow.Instance.Notify("これ以上ボールを強化できません", NotifyWindow.NotifyIconType.Error);
+                    return;
+                }
                 upgradeConfirmPanel.OpenUpgradeConfirmPanel(index);
                 EnableCursor(false);
                 _state = InventoryUIState.Disabled;
