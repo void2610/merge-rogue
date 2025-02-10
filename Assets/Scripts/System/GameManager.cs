@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     
     [Header("オブジェクト")]
     [SerializeField] private GameObject playerObj;
+    [SerializeField] private Treasure treasure;
     [SerializeField] private EnemyContainer enemyContainer;
     [SerializeField] private AfterBattleUI afterBattleUI;
     
@@ -182,6 +183,8 @@ public class GameManager : MonoBehaviour
         UIManager.Instance.SetSeedText(_seedText);
         
         AddCoin(Application.isEditor ? debugCoin : 10);
+        
+        treasure.OpenTreasure(Treasure.TreasureType.Initial);
     }
 
     private void Update()

@@ -18,6 +18,7 @@ public class EnemyContainer : MonoBehaviour
     public static EnemyContainer Instance { get; private set; }
 
     [SerializeField] private float alignment = 4;
+    [SerializeField] private Treasure treasure;
     public readonly ReactiveProperty<int> DefeatedEnemyCount = new(0);
     private readonly List<GameObject> _currentEnemies = new();
     private readonly List<Vector3> _positions = new();
@@ -79,13 +80,15 @@ public class EnemyContainer : MonoBehaviour
         var g = enemy.transform.parent.gameObject;
         _currentEnemies.Remove(g);
         enemyBase.OnDisappear();
-        
-        // ボスを倒したら全回復
-        if(enemyBase.enemyType == EnemyBase.EnemyType.Boss)
-            GameManager.Instance.Player.HealToFull();
+
+        // ボスを倒したら全回復してレリック獲得
+        if (enemyBase.enemyType == EnemyBase.EnemyType.Boss){
+            GameManager.Instance.Player.HealToFull(); 
+            treasure.OpenTreasure(Treasure.TreasureType.Boss);
+        }
         // 全ての敵を倒したらステージ進行
         if (_currentEnemies.Count == 0)
-            EndBattle().Forget();
+                EndBattle().Forget();
     }
     
     private async UniTaskVoid EndBattle()

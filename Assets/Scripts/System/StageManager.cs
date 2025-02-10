@@ -66,6 +66,8 @@ public class StageManager : MonoBehaviour
     public StageNode CurrentStage { get; private set; } = null;
     private static readonly int _mainTex = Shader.PropertyToID("_MainTex");
     private Tween _torchTween;
+    
+    public void StartFirstStage() => NextStage(_mapNodes[0][0]).Forget();
 
     private StageData ChoseStage()
     {
@@ -355,8 +357,7 @@ public class StageManager : MonoBehaviour
                 break;
             case StageType.Treasure:
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
-                UIManager.Instance.EnableCanvasGroup("Treasure", true); 
-                treasure.OpenTreasure();
+                treasure.OpenTreasure(Treasure.TreasureType.Normal);
                 break;
             case StageType.Events:
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
@@ -382,10 +383,5 @@ public class StageManager : MonoBehaviour
         _playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
         
         m.SetTextureOffset(_mainTex, new Vector2(0, 0)); 
-    }
-
-    public void Start()
-    {
-        NextStage(_mapNodes[0][0]).Forget();
     }
 }

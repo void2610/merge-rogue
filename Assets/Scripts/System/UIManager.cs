@@ -53,7 +53,7 @@ public class UIManager : MonoBehaviour
         var cg = canvasGroups.Find(c => c.name == canvasName);
         if (!cg) return;
         if (_canvasGroupTween[canvasName].IsActive()) return;
-
+        
         // アニメーション中は操作をブロック
         cg.interactable = false;
         cg.blocksRaycasts = false;
@@ -180,6 +180,12 @@ public class UIManager : MonoBehaviour
         fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("MainScene")).SetUpdate(true);
     }
     
+    private void Fade(bool e)
+    {
+        if (e) fadeImage.DOFade(1, 2f).SetUpdate(true);
+        else fadeImage.DOFade(0, 2f).SetUpdate(true);
+    }
+    
     private void SetVignette(float value)
     {
         if(!volume.profile.TryGet(out Vignette vignette)) return;
@@ -197,7 +203,8 @@ public class UIManager : MonoBehaviour
         foreach (var canvasGroup in canvasGroups)
         {
             _canvasGroupTween.Add(canvasGroup.name, null);
-            EnableCanvasGroup(canvasGroup.name, false);
+            if(canvasGroup.name != "Treasure")
+                EnableCanvasGroup(canvasGroup.name, false);
         }
     }
 
@@ -237,6 +244,6 @@ public class UIManager : MonoBehaviour
         trigger.triggers.Add(entry);
 
         fadeImage.color = new Color(0, 0, 0, 1);
-        fadeImage.DOFade(0, 2f).SetUpdate(true).SetLink(gameObject);
+        Fade(false);
     }
 }
