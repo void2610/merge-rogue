@@ -148,7 +148,6 @@ public class UIManager : MonoBehaviour
         SeManager.Instance.PlaySe("button");
         IsMapOpened = !IsMapOpened;
         EnableCanvasGroup("Map", IsMapOpened);
-        Debug.Log("Map opened: " + IsMapOpened);
     }
     
     public void OnClickMapButtonForce(bool e)
@@ -156,7 +155,6 @@ public class UIManager : MonoBehaviour
         if (IsMapOpened == e) return;
         IsMapOpened = e;
         EnableCanvasGroup("Map", e);
-        Debug.Log("Map opened: " + IsMapOpened);
     }
     
     public void OnClickTutorialButton()

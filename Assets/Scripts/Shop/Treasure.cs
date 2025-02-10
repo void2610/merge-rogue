@@ -85,6 +85,10 @@ public class Treasure : MonoBehaviour
             stageManager.StartFirstStage();
             fadeImage.DOFade(0, 2f);
         }
+        else if(_currentType == TreasureType.Boss)
+        {
+            EnemyContainer.Instance.EndBattle().Forget();
+        }
         else
         {
             GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);

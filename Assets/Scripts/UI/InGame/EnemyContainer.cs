@@ -86,12 +86,14 @@ public class EnemyContainer : MonoBehaviour
             GameManager.Instance.Player.HealToFull(); 
             treasure.OpenTreasure(Treasure.TreasureType.Boss);
         }
-        // 全ての敵を倒したらステージ進行
-        if (_currentEnemies.Count == 0)
-                EndBattle().Forget();
+        else
+        {
+            // 全ての敵を倒したらステージ進行
+            if (_currentEnemies.Count == 0) EndBattle().Forget();
+        }
     }
     
-    private async UniTaskVoid EndBattle()
+    public async UniTaskVoid EndBattle()
     {
         MergeManager.Instance.EndMerge().Forget();
         await UniTask.Delay(2000);
