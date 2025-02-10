@@ -34,7 +34,7 @@ public class DescriptionWindow : MonoBehaviour
     private GameObject _rootTriggerObject;
     private bool _isCheckingMouse = false;
 
-    public void ShowWindow(object obj, GameObject rootTriggerObject, int ballRank = 0)
+    public void ShowWindow(object obj, GameObject rootTriggerObject, int ballLevel = 0)
     {
         if (IsMouseOverWindowOrDescendants(this.gameObject)) return;
         
@@ -42,7 +42,7 @@ public class DescriptionWindow : MonoBehaviour
         _subWindows.Clear();
         this.gameObject.SetActive(true);
 
-        if(obj is BallData b) SetBallTexts(b, ballRank);
+        if(obj is BallData b) SetBallTexts(b, ballLevel);
         else if(obj is RelicData r) SetRelicTexts(r);
         else throw new System.ArgumentException("obj is not BallData or RelicData");
         
@@ -51,7 +51,7 @@ public class DescriptionWindow : MonoBehaviour
         // ワールド座標をRectTransformのローカル座標に変換
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             this.gameObject.transform.parent as RectTransform,
-            RectTransformUtility.WorldToScreenPoint(uiCamera, rootTriggerObject.transform.position + new Vector3(2.5f, 0, 0)),
+            RectTransformUtility.WorldToScreenPoint(uiCamera, rootTriggerObject.transform.position + new Vector3(2.25f, 0, 0)),
             uiCamera,
             out var localPos
         );
@@ -97,7 +97,7 @@ public class DescriptionWindow : MonoBehaviour
         Utils.AddEventToObject(g, () => HideSubWindow(parent, word), EventTriggerType.PointerExit);
         
         var offset = Vector2.one;
-        offset *= parent == this.gameObject ? 25 : 190;
+        offset *= IsParentWindowIsThis(parent) ? 25 : 190;
         var rectTransform = g.GetComponent<RectTransform>();
 
         var localMin = rectTransform.parent.InverseTransformPoint(subMinPos);
@@ -183,6 +183,18 @@ public class DescriptionWindow : MonoBehaviour
             // 現在のウィンドウを削除
             window.GetComponent<CanvasGroup>().DOFade(0, 0.15f).SetUpdate(true).OnComplete(() => Destroy(window)).SetLink(window);
             _subWindows.Remove((parent, word));
+        }
+    }
+    
+    private bool IsParentWindowIsThis(GameObject window)
+    {
+        if (window == this.gameObject) return true;
+        var g = window.transform.parent;
+        while (true)
+        {
+            if (g == this.gameObject.transform) return true;
+            if (g == null) return false;
+            g = g.parent;
         }
     }
     
