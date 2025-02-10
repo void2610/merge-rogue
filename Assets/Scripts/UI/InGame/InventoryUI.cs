@@ -77,7 +77,8 @@ public class InventoryUI : MonoBehaviour
 
     public void EnableCursor(bool b)
     {
-        cursor.GetComponent<SpriteRenderer>().enabled = b;
+        cursor.GetComponent<Image>().enabled = b;
+        _state = InventoryUIState.Disabled;
     }
     
     public void StartEdit(InventoryUIState s)
@@ -116,25 +117,26 @@ public class InventoryUI : MonoBehaviour
                     NotifyWindow.Instance.Notify("これ以上ボールを強化できません", NotifyWindow.NotifyIconType.Error);
                     return;
                 }
+                SeManager.Instance.PlaySe("button");
                 upgradeConfirmPanel.OpenUpgradeConfirmPanel(index);
-                EnableCursor(false);
-                _state = InventoryUIState.Disabled;
                 break;
             case InventoryUIState.Swap when _swapIndex == -1:
+                SeManager.Instance.PlaySe("button");
                 _swapIndex = index;
-                subCursor.GetComponent<SpriteRenderer>().enabled = true;
+                subCursor.GetComponent<Image>().enabled = true;
                 SetSubCursor(index);
                 break;
             case InventoryUIState.Swap:
                 InventoryManager.Instance.SwapBall(_swapIndex, index);
-                
+                SeManager.Instance.PlaySe("button");
                 GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
                 EnableCursor(false);
-                subCursor.GetComponent<SpriteRenderer>().enabled = false;
+                subCursor.GetComponent<Image>().enabled = false;
                 _swapIndex = -1;
                 _state = InventoryUIState.Disabled;
                 break;
             case InventoryUIState.Remove:
+                SeManager.Instance.PlaySe("button");
                 InventoryManager.Instance.RemoveAndShiftBall(index);
                 EnableCursor(false);
                 _state = InventoryUIState.Disabled;
@@ -150,6 +152,6 @@ public class InventoryUI : MonoBehaviour
     private void Awake()
     {
         EnableCursor(false);
-        subCursor.GetComponent<SpriteRenderer>().enabled = false;
+        subCursor.GetComponent<Image>().enabled = false;
     }
 }

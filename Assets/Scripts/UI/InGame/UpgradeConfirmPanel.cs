@@ -44,14 +44,17 @@ public class UpgradeConfirmPanel : MonoBehaviour
     {
         InventoryManager.Instance.UpgradeBall(_currentBallIndex);
         GameManager.Instance.SubCoin(ContentProvider.GetBallUpgradePrice());
-        afterBattleUI.SetInteractable(false);
         SeManager.Instance.PlaySe("levelUp");
-        
+        InventoryManager.Instance.InventoryUI.EnableCursor(false);
         UIManager.Instance.EnableCanvasGroup("Upgrade", false);
     }
     
-    private void Cancel() => UIManager.Instance.EnableCanvasGroup("Upgrade", false);
-    
+    private void Cancel()
+    {
+        SeManager.Instance.PlaySe("button");
+        UIManager.Instance.EnableCanvasGroup("Upgrade", false);
+    }
+
     private void Awake()
     {
         cancelButton.onClick.AddListener(Cancel);
