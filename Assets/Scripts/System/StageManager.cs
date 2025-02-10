@@ -277,7 +277,7 @@ public class StageManager : MonoBehaviour
         
         // 演出
         SetAllNodeInactive();
-        UIManager.Instance.EnableCanvasGroup("Map", false);
+        UIManager.Instance.OnClickMapButtonForce(false);
         SeManager.Instance.WaitAndPlaySe("footsteps", 0.2f);
         DOTween.To(() => m.GetTextureOffset(_mainTex), x => m.SetTextureOffset(_mainTex, x), new Vector2(1, 0), 2.0f)
             .SetEase(Ease.InOutSine).OnComplete(() =>

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2551544093344245813}
   - component: {fileID: 8397706770627611309}
   - component: {fileID: -3941906540827043490}
+  - component: {fileID: 289179466497742642}
   m_Layer: 0
   m_Name: BallUI
   m_TagString: Untagged
@@ -90,6 +91,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorType: 2
+--- !u!114 &289179466497742642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5315751102541514650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2.5, y: -5}
+  m_UseGraphicAlpha: 1
 --- !u!1 &5754675438085831740
 GameObject:
   m_ObjectHideFlags: 0
@@ -101,6 +117,7 @@ GameObject:
   - component: {fileID: 3294102887866901327}
   - component: {fileID: 1019356299737875011}
   - component: {fileID: 8414000125721321988}
+  - component: {fileID: 4587186471660767147}
   m_Layer: 0
   m_Name: Icon
   m_TagString: Untagged
@@ -165,3 +182,18 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &4587186471660767147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5754675438085831740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
