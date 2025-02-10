@@ -6412,6 +6412,7 @@ GameObject:
   - component: {fileID: 759820791}
   - component: {fileID: 759820793}
   - component: {fileID: 759820792}
+  - component: {fileID: 759820794}
   m_Layer: 5
   m_Name: BallIcon
   m_TagString: Untagged
@@ -6476,6 +6477,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 759820790}
   m_CullTransparentMesh: 1
+--- !u!114 &759820794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 759820790}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
+  m_EffectDistance: {x: 2, y: -2}
+  m_UseGraphicAlpha: 1
 --- !u!1 &774851887
 GameObject:
   m_ObjectHideFlags: 0
@@ -7241,7 +7257,9 @@ MonoBehaviour:
   relicGridSize: {x: 3, y: 9}
   relicOffset: {x: 40, y: 37}
   relicUISize: 0.75
-  testRelics: []
+  testRelics:
+  - {fileID: 11400000, guid: 0837f85fc711344c1a3b79c8cee80e85, type: 2}
+  - {fileID: 11400000, guid: 0837f85fc711344c1a3b79c8cee80e85, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -17235,9 +17253,9 @@ MonoBehaviour:
   ballBasePrefab: {fileID: 5528515049713681562, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
   inventoryPosition: {x: 0, y: -7, z: 0}
   testBalls:
-  - {fileID: 11400000, guid: 988658c93269b4a7aa2905750b6622a2, type: 2}
-  - {fileID: 11400000, guid: 988658c93269b4a7aa2905750b6622a2, type: 2}
-  - {fileID: 11400000, guid: 988658c93269b4a7aa2905750b6622a2, type: 2}
+  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
+  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
+  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   - {fileID: 0}
   - {fileID: 0}
