@@ -23,8 +23,8 @@ public class DescriptionWindow : MonoBehaviour
     [SerializeField] private Vector2 rootMaxPos;
     [SerializeField] private Vector2 subMinPos;
     [SerializeField] private Vector2 subMaxPos;
+    [SerializeField] private Camera uiCamera;
     
-    private Camera _uiCamera;
     private CanvasGroup _cg;
     private Tween _moveTween;
     private Tween _fadeTween;
@@ -51,8 +51,8 @@ public class DescriptionWindow : MonoBehaviour
         // ワールド座標をRectTransformのローカル座標に変換
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             this.gameObject.transform.parent as RectTransform,
-            RectTransformUtility.WorldToScreenPoint(_uiCamera, rootTriggerObject.transform.position + new Vector3(2.5f, 0, 0)),
-            _uiCamera,
+            RectTransformUtility.WorldToScreenPoint(uiCamera, rootTriggerObject.transform.position + new Vector3(2.5f, 0, 0)),
+            uiCamera,
             out var localPos
         );
 
@@ -191,7 +191,7 @@ public class DescriptionWindow : MonoBehaviour
         if(!window) return false;
         // マウスが現在のウィンドウ上にあるかチェック
         if (RectTransformUtility.RectangleContainsScreenPoint(
-                window.GetComponent<RectTransform>(), Input.mousePosition, _uiCamera))
+                window.GetComponent<RectTransform>(), Input.mousePosition, uiCamera))
         {
             return true;
         }
@@ -224,7 +224,7 @@ public class DescriptionWindow : MonoBehaviour
             if (RectTransformUtility.RectangleContainsScreenPoint(
                     window.GetComponent<RectTransform>(),
                     Input.mousePosition,
-                    _uiCamera))
+                    uiCamera))
             {
                 return true;
             }
@@ -275,7 +275,6 @@ public class DescriptionWindow : MonoBehaviour
         
         this.gameObject.SetActive(false);
         _cg = this.gameObject.GetComponent<CanvasGroup>();
-        _uiCamera = Camera.main;
     }
     
     private void Update()
@@ -288,7 +287,7 @@ public class DescriptionWindow : MonoBehaviour
         
         // マウスがホバーしているリンクを取得
         var windows = new List<GameObject>(_subWindows.Values) { this.gameObject };
-        var linkIndices = windows.Select(w => TMP_TextUtilities.FindIntersectingLink(w.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>(), Input.mousePosition, _uiCamera)).ToList();
+        var linkIndices = windows.Select(w => TMP_TextUtilities.FindIntersectingLink(w.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>(), Input.mousePosition, uiCamera)).ToList();
         var enumerable = linkIndices.Where(i => i != -1).ToList();
         if (!enumerable.Any()) return;
         var link = enumerable.First();

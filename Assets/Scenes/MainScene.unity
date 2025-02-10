@@ -2528,6 +2528,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7247047407357346821, guid: 34c59e3fd9b634f9e8f66c815d5d0861, type: 3}
+      propertyPath: uiCamera
+      value: 
+      objectReference: {fileID: 371541724}
+    - target: {fileID: 7247047407357346821, guid: 34c59e3fd9b634f9e8f66c815d5d0861, type: 3}
       propertyPath: subWindowContainer
       value: 
       objectReference: {fileID: 1234074736}
