@@ -37,7 +37,7 @@ public class Treasure : MonoBehaviour
         {
             TreasureType.Normal => "宝箱を見つけた！",
             TreasureType.Initial => "「力を与えよう...」",
-            TreasureType.Boss => "「ボスを撃破した！」",
+            TreasureType.Boss => "ボスを撃破した！",
             _ => "Treasure"
         };
         
