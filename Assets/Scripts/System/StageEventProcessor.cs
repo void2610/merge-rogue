@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class EventProcessor : MonoBehaviour
+public class StageEventProcessor : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private List<GameObject> options;

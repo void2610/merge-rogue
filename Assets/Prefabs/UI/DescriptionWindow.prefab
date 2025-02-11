@@ -516,7 +516,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1135,7 +1135,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 650, y: 0}
-  m_SizeDelta: {x: 240, y: 280}
+  m_SizeDelta: {x: 200, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &3062180538065107140
 CanvasGroup:
@@ -1174,6 +1174,7 @@ MonoBehaviour:
   rootMaxPos: {x: 345, y: 80}
   subMinPos: {x: -315, y: -125}
   subMaxPos: {x: 6.5, y: 3.1}
+  uiCamera: {fileID: 0}
 --- !u!1 &8641179968069719563
 GameObject:
   m_ObjectHideFlags: 0

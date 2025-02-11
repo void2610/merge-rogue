@@ -5,6 +5,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using R3;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
@@ -55,7 +56,7 @@ public class StageManager : MonoBehaviour
     [Header("ステージ")]
     [SerializeField] private Shop shop;
     [SerializeField] private Treasure treasure;
-    [SerializeField] private EventProcessor eventProcessor;
+    [SerializeField] private StageEventProcessor stageEventProcessor;
     [SerializeField] private List<StageData> stageData　= new();
     [SerializeField] private List<StageType> stageTypes = new();
     [SerializeField] private Vector2Int mapSize;
@@ -362,7 +363,7 @@ public class StageManager : MonoBehaviour
             case StageType.Events:
                 GameManager.Instance.ChangeState(GameManager.GameState.Event);
                 UIManager.Instance.EnableCanvasGroup("Event", true);
-                eventProcessor.StartEvent();
+                stageEventProcessor.StartEvent();
                 break;
             case StageType.Undefined:
             default:
