@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine.UI;
@@ -40,6 +41,7 @@ public class Treasure : MonoBehaviour
             TreasureType.Boss => "ボスを撃破した！",
             _ => "Treasure"
         };
+        descriptionText.ShowTextTween().Forget();
         
         var count = type switch
         {

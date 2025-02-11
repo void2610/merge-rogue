@@ -5118,7 +5118,7 @@ MonoBehaviour:
   mapMargin: {x: 1.15, y: 0.9}
   shop: {fileID: 1941433902}
   treasure: {fileID: 1607858726}
-  eventProcessor: {fileID: 605675524}
+  stageEventProcessor: {fileID: 605675524}
   stageData:
   - stageType: 0
     probability: 1

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using TMPro;
 using UnityEngine.EventSystems;
 
 public class Utils : MonoBehaviour
