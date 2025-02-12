@@ -28,6 +28,7 @@ public class DescriptionWindow : MonoBehaviour
     private CanvasGroup _cg;
     private Tween _moveTween;
     private Tween _fadeTween;
+    private Vector3 _disablePos = new Vector3(999, 999, 0);
     // (親オブジェクト, 単語) -> サブウィンドウオブジェクト
     private readonly Dictionary<(GameObject, string), GameObject> _subWindows = new();
     // ルートウィンドウのトリガー元のオブジェクト
@@ -97,14 +98,13 @@ public class DescriptionWindow : MonoBehaviour
         var textColor = wordDictionary.GetWordEntry(word).textColor;
         
         var g = Instantiate(subWindowPrefab, parent.transform);
-        g.transform.localScale = Vector3.one / parent.transform.localScale.x;
+        g.transform.localScale = Vector3.one;
         g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = $"<color=#{ColorUtility.ToHtmlStringRGB(textColor)}>{word}</color>";
         g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = Utils.GetHighlightWords(description);
         
         Utils.AddEventToObject(g, () => HideSubWindow(parent, word), EventTriggerType.PointerExit);
-        
-        var offset = Vector2.one;
-        offset *= IsParentWindowIsThis(parent) ? 25 : 190;
+
+        var offset = Vector2.one * 25;
         var rectTransform = g.GetComponent<RectTransform>();
 
         var localMin = rectTransform.parent.InverseTransformPoint(subMinPos);
@@ -148,15 +148,14 @@ public class DescriptionWindow : MonoBehaviour
     {
         if(!descriptionText) return;
         if(IsMouseOverWindowOrDescendants(descriptionText.gameObject)) return;
-        if(_moveTween.active) return;
+        if(_moveTween != null && _moveTween.active) return;
         
         _moveTween?.Kill();
         _fadeTween?.Kill();
         
         _fadeTween = _cg.DOFade(0, 0.15f).SetUpdate(true).OnComplete(() =>
         {
-            this.gameObject.SetActive(false);
-            this.transform.localPosition = new Vector3(999, 999, 0);
+            this.transform.position = _disablePos;
         }).SetLink(this.gameObject);
         foreach (var window in _subWindows.Values)
         {
@@ -296,7 +295,7 @@ public class DescriptionWindow : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
         
-        this.gameObject.SetActive(false);
+        this.transform.position = _disablePos;
         _cg = this.gameObject.GetComponent<CanvasGroup>();
     }
     
