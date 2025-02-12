@@ -16,6 +16,8 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
     
+    [SerializeField] private Canvas uiCanvas;
+    [SerializeField] private Camera uiCamera;
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider seSlider;
     [SerializeField] private SeedText seedText;
@@ -39,6 +41,8 @@ public class UIManager : MonoBehaviour
     
     private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
     
+    public Canvas GetUICanvas() => uiCanvas;
+    public Camera GetUICamera() => uiCamera;
     public void ShowRelicDescriptionWindow(RelicData r, GameObject g) => descriptionWindow.ShowWindow(r, g);
     public void ShowBallDescriptionWindow(BallData b, GameObject g, int level) => descriptionWindow.ShowWindow(b, g, level);
 

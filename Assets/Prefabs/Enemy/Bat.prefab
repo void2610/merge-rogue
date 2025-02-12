@@ -125,18 +125,13 @@ PrefabInstance:
     - {fileID: 3461035964698275856, guid: 0951d62e1178c43b68db7d78b6bec2fb, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4464284929046212910, guid: 0951d62e1178c43b68db7d78b6bec2fb, type: 3}
-      insertIndex: 0
+      insertIndex: -1
       addedObject: {fileID: 4429353557222584448}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0951d62e1178c43b68db7d78b6bec2fb, type: 3}
 --- !u!4 &177048368858300378 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4464284929046212910, guid: 0951d62e1178c43b68db7d78b6bec2fb, type: 3}
-  m_PrefabInstance: {fileID: 4576030990235963124}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4633884191089636454 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9209736915883113106, guid: 0951d62e1178c43b68db7d78b6bec2fb, type: 3}
   m_PrefabInstance: {fileID: 4576030990235963124}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5777480915985174413
@@ -221,13 +216,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyName: Bat
+  enemyType: 0
   actionInterval: 1
   hMax: 6
   hMin: 3
   attack: 1
   coin: 2
   exp: 5
-  canvas: {fileID: 4633884191089636454}
+  hpSliderPrefab: {fileID: 3765540371106708028, guid: 5870f6351589f4b099ad1836b848608d, type: 3}
   coinPrefab: {fileID: 1812483531616101450, guid: 2c13a74f3d7c84bd29db8479f7091bf5, type: 3}
 --- !u!4 &4429353557222584448 stripped
 Transform:

@@ -39,10 +39,8 @@ public class EnemyBase : MonoBehaviour, IEntity
     public int coin;
     public int exp;
 
-    [SerializeField]
-    private GameObject canvas;
-    [SerializeField]
-    private GameObject coinPrefab;
+    [SerializeField] private GameObject hpSliderPrefab;
+    [SerializeField] private GameObject coinPrefab;
 
     public int Health { get; protected set; }
     public int MaxHealth { get; protected set; }
@@ -52,10 +50,13 @@ public class EnemyBase : MonoBehaviour, IEntity
     protected readonly ActionData NormalAttack = new ();
     private ActionData _nextAction;
 
-    private TextMeshProUGUI HealthText => canvas.transform.Find("HPSlider").transform.Find("HPText").GetComponent<TextMeshProUGUI>();
-    private Slider HealthSlider => canvas.transform.Find("HPSlider").GetComponent<Slider>();
-    private TextMeshProUGUI AttackCountText => canvas.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
-    private StatusEffectUI StatusEffectUI => canvas.transform.Find("StatusEffectUI").GetComponent<StatusEffectUI>();
+    private Canvas _uiCanvas;
+    private CanvasGroup _canvasGroup;
+    private TextMeshProUGUI _healthText;
+    private Slider _healthSlider;
+    private TextMeshProUGUI _attackCountText;
+    private StatusEffectUI _statusEffectUI;
+    private Image _attackIcon;
     
     public void AddStatusEffect(StatusEffectBase effect)
     {
@@ -67,7 +68,7 @@ public class EnemyBase : MonoBehaviour, IEntity
             effect.SetEntityPosition(this.transform.position);
             StatusEffects.Add(effect);
         }
-        StatusEffectUI.UpdateUI(StatusEffects);
+        _statusEffectUI.UpdateUI(StatusEffects);
     }
     
     public void UpdateStatusEffects()
@@ -79,7 +80,7 @@ public class EnemyBase : MonoBehaviour, IEntity
                 StatusEffects.RemoveAt(i);
         }
         
-        StatusEffectUI.UpdateUI(StatusEffects);
+        _statusEffectUI.UpdateUI(StatusEffects);
     }
     
     public int ModifyIncomingDamage(int amount)
@@ -93,7 +94,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         {
             effect.OnBattleEnd();
         }
-        StatusEffectUI.UpdateUI(StatusEffects);
+        _statusEffectUI.UpdateUI(StatusEffects);
     }
     
     public void Damage(int damage)
@@ -111,13 +112,13 @@ public class EnemyBase : MonoBehaviour, IEntity
         // 状態異常でダメージを更新
         damage = ModifyIncomingDamage(damage);
         Health -= damage;
-        StatusEffectUI.UpdateUI(StatusEffects);
-        HealthSlider.value = Health;
-        HealthText.text = Health + "/" + MaxHealth;
+        _statusEffectUI.UpdateUI(StatusEffects);
+        _healthSlider.value = Health;
+        _healthText.text = Health + "/" + MaxHealth;
         if (Health > 0) return;
         
         Health = 0;
-        HealthText.text = Health + "/" + MaxHealth;
+        _healthText.text = Health + "/" + MaxHealth;
         Death();
     }
     
@@ -125,8 +126,8 @@ public class EnemyBase : MonoBehaviour, IEntity
     {
         Health += healAmount;
         Health = Mathf.Min(Health, MaxHealth);
-        HealthSlider.value = Health;
-        HealthText.text = Health + "/" + MaxHealth;
+        _healthSlider.value = Health;
+        _healthText.text = Health + "/" + MaxHealth;
     }
 
     public void Action()
@@ -150,7 +151,7 @@ public class EnemyBase : MonoBehaviour, IEntity
             }).SetLink(gameObject);
         }
 
-        AttackCountText.text = (actionInterval - TurnCount).ToString();
+        _attackCountText.text = (actionInterval - TurnCount).ToString();
     }
     
     protected virtual ActionData GetNextAction()
@@ -169,8 +170,7 @@ public class EnemyBase : MonoBehaviour, IEntity
 
     private void OnAppear()
     {
-        var cg = canvas.GetComponent<CanvasGroup>();
-        cg.DOFade(1, 0.5f).SetLink(gameObject);
+        _canvasGroup.DOFade(1, 0.5f).SetLink(gameObject);
         this.GetComponent<SpriteRenderer>().DOFade(1, 0.5f).SetLink(gameObject);
     }
 
@@ -183,8 +183,7 @@ public class EnemyBase : MonoBehaviour, IEntity
             var c = Instantiate(coinPrefab).GetComponent<Coin>();
             c?.SetUp(this.transform.position.x);
         }
-        var cg = canvas.GetComponent<CanvasGroup>();
-        cg.DOFade(0, 0.5f).SetLink(gameObject);
+        _canvasGroup.DOFade(0, 0.5f).SetLink(gameObject);
 
         this.GetComponent<SpriteRenderer>().DOFade(0, 0.5f).OnComplete(() =>
         {
@@ -200,8 +199,7 @@ public class EnemyBase : MonoBehaviour, IEntity
 
     private void UpdateAttackIcon(ActionData a)
     {
-        var i = canvas.transform.Find("AttackIcon").GetComponent<Image>();
-        var c = a.type switch
+        _attackIcon.color = a.type switch
         {
             ActionType.Attack => Color.red,
             ActionType.Heal => Color.green,
@@ -209,23 +207,39 @@ public class EnemyBase : MonoBehaviour, IEntity
             ActionType.Debuff => Color.magenta,
             _ => Color.white
         };
-        i.color = c;
     }
 
     public virtual void Init(float magnification)
     {
+        _uiCanvas = UIManager.Instance.GetUICanvas();
+        var c = UIManager.Instance.GetUICamera();
+        var g = Instantiate(hpSliderPrefab, _uiCanvas.transform);
+        var pos = c.WorldToScreenPoint(this.transform.position);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            _uiCanvas.GetComponent<RectTransform>(), pos, c, out Vector2 localPosition
+        );
+        localPosition.y += 60;
+        g.GetComponent<RectTransform>().anchoredPosition = localPosition;
+        
+        _canvasGroup = g.GetComponent<CanvasGroup>();
+        _healthText = g.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
+        _healthSlider = g.GetComponent<Slider>();
+        _attackCountText = g.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
+        _attackIcon = g.transform.Find("AttackIcon").GetComponent<Image>();
+        _statusEffectUI = g.GetComponentInChildren<StatusEffectUI>();
+        
         MaxHealth = (int)(GameManager.Instance.RandomRange(hMin, hMax) * magnification);
         Health = MaxHealth;
         attack = (int)(attack * (magnification * 0.3f));
         exp = exp + (int)(magnification);
 
         GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-        canvas.GetComponent<CanvasGroup>().alpha = 0;
+        // _canvas.GetComponent<CanvasGroup>().alpha = 0;
 
-        HealthSlider.maxValue = MaxHealth;
-        HealthSlider.value = Health;
-        HealthText.text = Health + "/" + MaxHealth;
-        AttackCountText.text = (actionInterval - TurnCount).ToString();
+        _healthSlider.maxValue = MaxHealth;
+        _healthSlider.value = Health;
+        _healthText.text = Health + "/" + MaxHealth;
+        _attackCountText.text = (actionInterval - TurnCount).ToString();
         
         // 通常攻撃の設定
         NormalAttack.type = ActionType.Attack;
