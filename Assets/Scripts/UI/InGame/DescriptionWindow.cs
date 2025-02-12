@@ -24,6 +24,7 @@ public class DescriptionWindow : MonoBehaviour
     [SerializeField] private Vector2 subMinPos;
     [SerializeField] private Vector2 subMaxPos;
     [SerializeField] private Camera uiCamera;
+    [SerializeField] private GameObject windowContainer;
     
     private CanvasGroup _cg;
     private Tween _moveTween;
@@ -97,23 +98,38 @@ public class DescriptionWindow : MonoBehaviour
         var description = wordDictionary.GetWordEntry(word).description;
         var textColor = wordDictionary.GetWordEntry(word).textColor;
         
-        var g = Instantiate(subWindowPrefab, parent.transform);
-        g.transform.localScale = Vector3.one;
+        var g = Instantiate(subWindowPrefab, windowContainer.transform);
         g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = $"<color=#{ColorUtility.ToHtmlStringRGB(textColor)}>{word}</color>";
         g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = Utils.GetHighlightWords(description);
         
         Utils.AddEventToObject(g, () => HideSubWindow(parent, word), EventTriggerType.PointerExit);
-
-        var offset = Vector2.one * 25;
-        var rectTransform = g.GetComponent<RectTransform>();
-
-        var localMin = rectTransform.parent.InverseTransformPoint(subMinPos);
-        var localMax = rectTransform.parent.InverseTransformPoint(subMaxPos);
-        var clampedX = Mathf.Clamp(offset.x, localMin.x, localMax.x);
-        var clampedY = Mathf.Clamp(offset.y, localMin.y, localMax.y);
-
-        rectTransform.localPosition = new Vector3(clampedX, clampedY, rectTransform.localPosition.z);
-
+        
+        // --- 位置計算の開始 ---
+        // ① 対象オブジェクト(parent)の位置を取得し、スクリーン座標へ変換
+        var parentRect = parent.GetComponent<RectTransform>();
+        var parentScreenPos = RectTransformUtility.WorldToScreenPoint(uiCamera, parentRect.position);
+        // ② 専用コンテナ(windowContainer)のRectTransformを取得し、
+        //     スクリーン座標からローカル座標へ変換（※これにより、windowContainer内での位置が得られる）
+        var containerRect = windowContainer.GetComponent<RectTransform>();
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            containerRect, 
+            parentScreenPos, 
+            uiCamera, 
+            out var localParentPos
+        );
+        // ③ 固定のオフセットを付与（必要に応じてオフセット値は変更してください）
+        var offset = new Vector2(100f, 25f);
+        var desiredPosition = localParentPos + offset;
+        // ④ サブウィンドウが画面外に出ないように、クランプ処理
+        var clampedPosition = new Vector2(
+            Mathf.Clamp(desiredPosition.x, subMinPos.x, subMaxPos.x),
+            Mathf.Clamp(desiredPosition.y, subMinPos.y, subMaxPos.y)
+        );
+        // ⑤ 位置を適用（UIの場合、anchoredPositionの利用が望ましい）
+        var subWindowRect = g.GetComponent<RectTransform>();
+        subWindowRect.anchoredPosition = clampedPosition;
+        // --- 位置計算の終了 ---
+        
         g.transform.DOMoveY(0.3f, 0.2f).SetRelative(true).SetUpdate(true).SetEase(Ease.OutBack).SetLink(g);
         g.GetComponent<CanvasGroup>().DOFade(1, 0.15f).SetUpdate(true).SetLink(g);
         _subWindows[(parent, word)] = g;
@@ -296,6 +312,7 @@ public class DescriptionWindow : MonoBehaviour
         else Destroy(gameObject);
         
         this.transform.position = _disablePos;
+        this.transform.parent = windowContainer.transform;
         _cg = this.gameObject.GetComponent<CanvasGroup>();
     }
     

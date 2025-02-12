@@ -1170,11 +1170,12 @@ MonoBehaviour:
   - {fileID: 1494915230187355105}
   - {fileID: 332849840086084253}
   - {fileID: 3374522014009312474}
-  rootMinPos: {x: -300, y: -100}
+  rootMinPos: {x: -330, y: -100}
   rootMaxPos: {x: 345, y: 80}
   subMinPos: {x: -315, y: -125}
-  subMaxPos: {x: 6.5, y: 3.1}
+  subMaxPos: {x: 390, y: 180}
   uiCamera: {fileID: 0}
+  windowContainer: {fileID: 0}
 --- !u!1 &8641179968069719563
 GameObject:
   m_ObjectHideFlags: 0
