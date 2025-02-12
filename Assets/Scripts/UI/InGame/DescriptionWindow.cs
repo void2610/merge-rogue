@@ -29,12 +29,17 @@ public class DescriptionWindow : MonoBehaviour
     private CanvasGroup _cg;
     private Tween _moveTween;
     private Tween _fadeTween;
-    private Vector3 _disablePos = new Vector3(999, 999, 0);
+    private readonly Vector3 _disablePos = new (999, 999, 0);
     // (親オブジェクト, 単語) -> サブウィンドウオブジェクト
     private readonly Dictionary<(GameObject, string), GameObject> _subWindows = new();
+    // その他のウィンドウ対象オブジェクト
+    private readonly List<GameObject> _otherTriggerObjects = new();
     // ルートウィンドウのトリガー元のオブジェクト
     private GameObject _rootTriggerObject;
     private bool _isCheckingMouse = false;
+    
+    public void AddTextToObservation(GameObject text) => _otherTriggerObjects.Add(text);
+    public void RemoveTextFromObservation(GameObject text) => _otherTriggerObjects.Remove(text);
 
     public void ShowWindow(object obj, GameObject rootTriggerObject, int ballLevel = 0)
     {
@@ -315,7 +320,7 @@ public class DescriptionWindow : MonoBehaviour
         this.transform.parent = windowContainer.transform;
         _cg = this.gameObject.GetComponent<CanvasGroup>();
     }
-    
+
     private void Update()
     {
         // マウスがウィンドウ外に出た場合にチェックを開始
@@ -323,22 +328,30 @@ public class DescriptionWindow : MonoBehaviour
         {
             StartMouseCheck().Forget();
         }
-        
+
         // マウスがホバーしているリンクを取得
         var windows = new List<GameObject>(_subWindows.Values) { this.gameObject };
-        var linkIndices = windows.Select(w => TMP_TextUtilities.FindIntersectingLink(w.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>(), Input.mousePosition, uiCamera)).ToList();
+        windows.AddRange(_otherTriggerObjects);
+        var linkIndices = windows.Select(w =>
+            TMP_TextUtilities.FindIntersectingLink(w.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>(),
+                Input.mousePosition, uiCamera)).ToList();
         var enumerable = linkIndices.Where(i => i != -1).ToList();
         if (!enumerable.Any()) return;
         var link = enumerable.First();
         var index = linkIndices.IndexOf(link);
         if (link == -1) return;
-        
+
         // マウスがリンクにホバーしている場合はサブウィンドウを表示
-        var linkInfo = windows[index].transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().textInfo.linkInfo[link];
+        var linkInfo = windows[index].transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().textInfo
+            .linkInfo[link];
         var parent = windows[index] == this.gameObject ? descriptionText.gameObject : windows[index];
-        // 最前面のウィンドウ以外のリンクは無視
-        var topWindow = _subWindows.Count == 0 ? descriptionText.gameObject : _subWindows.Values.Last();
-        if (parent != topWindow) return;
+
+        if (!_otherTriggerObjects.Contains(parent))
+        {
+            // 最前面のウィンドウ以外のリンクは無視
+            var topWindow = _subWindows.Count == 0 ? descriptionText.gameObject : _subWindows.Values.Last();
+            if (parent != topWindow) return;
+        }
         ShowSubWindowImpl(parent, linkInfo.GetLinkID());
     }
 }

@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -27,9 +29,16 @@ public class TutorialPanel : MonoBehaviour
     
     private void ChangePage(int page)
     {
-        if(_currentActivePage) Destroy(_currentActivePage);
+        if (_currentActivePage)
+        {
+            DescriptionWindow.Instance.RemoveTextFromObservation(_currentActivePage);
+            Destroy(_currentActivePage);
+        }
         _currentActivePage = Instantiate(pages[page], this.transform);
         _currentPage = page;
+        
+        // ハイライトからウィンドウ表示できるように
+        DescriptionWindow.Instance.AddTextToObservation(_currentActivePage);
         
         previousButton.interactable = _currentPage > 0;
         nextButton.interactable = _currentPage < pages.Count - 1;
