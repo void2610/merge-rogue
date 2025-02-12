@@ -73,6 +73,13 @@ public class DescriptionWindow : MonoBehaviour
     
     public void ShowSubWindow(GameObject parent, string word)
     {
+        //ウィンドウのリストを更新
+        for(var i = _subWindows.Count - 1; i >= 0; i--)
+        {
+            var window = _subWindows.ElementAt(i);
+            if (!window.Value) _subWindows.Remove(window.Key);
+        }
+        
         // 最前面のウィンドウ以外のリンクは無視
         if (_subWindows.Count >= 1)
             if (parent != _subWindows.Values.Last()) return;
@@ -193,7 +200,7 @@ public class DescriptionWindow : MonoBehaviour
         while (true)
         {
             if (g == this.gameObject.transform) return true;
-            if (g == null) return false;
+            if (!g) return false;
             g = g.parent;
         }
     }
@@ -230,6 +237,10 @@ public class DescriptionWindow : MonoBehaviour
 
         // 全てのコライダーをチェック
         var allWindows = new List<GameObject>(_subWindows.Values) { this.gameObject, _rootTriggerObject };
+        // subWindowの親も追加
+        foreach (var k in _subWindows.Keys)
+            allWindows.Add(k.Item1);
+        
         foreach (var window in allWindows)
         {
             if(!window) continue;

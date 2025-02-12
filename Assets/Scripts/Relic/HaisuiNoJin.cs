@@ -12,6 +12,8 @@ public class HaisuiNoJin : RelicBase
 
         var max = GameManager.Instance.Player.MaxHealth.Value;
         GameManager.Instance.Player.MaxHealth.Value = max / 4;
+        if (GameManager.Instance.Player.Health.Value > GameManager.Instance.Player.MaxHealth.Value)
+            GameManager.Instance.Player.Health.Value = GameManager.Instance.Player.MaxHealth.Value;
     }
 
     protected override void EffectImpl(Unit _)
