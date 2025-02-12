@@ -91,10 +91,10 @@ public class DescriptionWindow : MonoBehaviour
         if (_subWindows.Count >= 1)
             if (parent != _subWindows.Values.Last()) return;
 
-        ShowSubWindowImpl(parent, word);
+        ShowSubWindowImpl(parent, word, parent.transform.position);
     }
 
-    private void ShowSubWindowImpl(GameObject parent, string word)
+    private void ShowSubWindowImpl(GameObject parent, string word, Vector2 basePosition)
     {
         // 同じ親オブジェクトに対して複数のサブウィンドウを表示しない
         if(_subWindows.ContainsKey((parent, word))) return;
@@ -124,7 +124,7 @@ public class DescriptionWindow : MonoBehaviour
         );
         // ③ 固定のオフセットを付与（必要に応じてオフセット値は変更してください）
         var offset = new Vector2(100f, 25f);
-        var desiredPosition = localParentPos + offset;
+        var desiredPosition = basePosition + offset;
         // ④ サブウィンドウが画面外に出ないように、クランプ処理
         var clampedPosition = new Vector2(
             Mathf.Clamp(desiredPosition.x, subMinPos.x, subMaxPos.x),
@@ -329,29 +329,59 @@ public class DescriptionWindow : MonoBehaviour
             StartMouseCheck().Forget();
         }
 
-        // マウスがホバーしているリンクを取得
+        // すべてのウィンドウ(サブウィンドウ + this.gameObject +その他の対象オブジェクト)を収集
         var windows = new List<GameObject>(_subWindows.Values) { this.gameObject };
         windows.AddRange(_otherTriggerObjects);
+
+        // 各ウィンドウのDescriptionText内のリンク検出
         var linkIndices = windows.Select(w =>
-            TMP_TextUtilities.FindIntersectingLink(w.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>(),
-                Input.mousePosition, uiCamera)).ToList();
-        var enumerable = linkIndices.Where(i => i != -1).ToList();
-        if (!enumerable.Any()) return;
-        var link = enumerable.First();
-        var index = linkIndices.IndexOf(link);
-        if (link == -1) return;
+            TMP_TextUtilities.FindIntersectingLink(
+                w.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>(),
+                Input.mousePosition, uiCamera)
+        ).ToList();
 
-        // マウスがリンクにホバーしている場合はサブウィンドウを表示
-        var linkInfo = windows[index].transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().textInfo
-            .linkInfo[link];
-        var parent = windows[index] == this.gameObject ? descriptionText.gameObject : windows[index];
+        var validLinks = linkIndices.Where(i => i != -1).ToList();
+        if (!validLinks.Any()) return;
+        int linkIndex = validLinks.First();
+        int windowIndex = linkIndices.IndexOf(linkIndex);
+        if (linkIndex == -1) return;
 
+        // 対象テキストコンポーネント取得
+        var textComponent = windows[windowIndex].transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>();
+        TMP_TextInfo textInfo = textComponent.textInfo;
+        TMP_LinkInfo linkInfo = textInfo.linkInfo[linkIndex];
+
+        // 対象ウィンドウ（親）の決定
+        // this.gameObjectならdescriptionText、そうでなければそのウィンドウ
+        var parent = windows[windowIndex] == this.gameObject ? descriptionText.gameObject : windows[windowIndex];
+
+        // 最前面ウィンドウ以外のリンクは無視（必要に応じて）
         if (!_otherTriggerObjects.Contains(parent))
         {
-            // 最前面のウィンドウ以外のリンクは無視
             var topWindow = _subWindows.Count == 0 ? descriptionText.gameObject : _subWindows.Values.Last();
             if (parent != topWindow) return;
         }
-        ShowSubWindowImpl(parent, linkInfo.GetLinkID());
+
+        // --- リンクの文字位置を計算 ---
+        // リンク内の最初の文字の情報を利用する例
+        int charIndex = linkInfo.linkTextfirstCharacterIndex;
+        TMP_CharacterInfo charInfo = textInfo.characterInfo[charIndex];
+        // ここでは底辺の中央を基準とする（必要に応じて変更してください）
+        Vector3 charMidLocal = (charInfo.bottomLeft + charInfo.bottomRight) / 2;
+        // テキストコンポーネントのTransformでワールド座標に変換
+        Vector3 worldPos = textComponent.transform.TransformPoint(charMidLocal);
+
+        // 専用コンテナ(windowContainer)のローカル座標に変換（Overlayの場合、カメラはnull）
+        RectTransform containerRect = windowContainer.GetComponent<RectTransform>();
+        Vector2 localLinkPos;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            containerRect,
+            RectTransformUtility.WorldToScreenPoint(null, worldPos),
+            null,
+            out localLinkPos
+        );
+
+        // サブウィンドウの表示：リンクIDと、基準位置(localLinkPos)を渡す
+        ShowSubWindowImpl(parent, linkInfo.GetLinkID(), localLinkPos);
     }
 }
