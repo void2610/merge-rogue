@@ -50,7 +50,6 @@ public class EnemyBase : MonoBehaviour, IEntity
     protected readonly ActionData NormalAttack = new ();
     private ActionData _nextAction;
 
-    private Canvas _uiCanvas;
     private CanvasGroup _canvasGroup;
     private TextMeshProUGUI _healthText;
     private Slider _healthSlider;
@@ -187,6 +186,7 @@ public class EnemyBase : MonoBehaviour, IEntity
 
         this.GetComponent<SpriteRenderer>().DOFade(0, 0.5f).OnComplete(() =>
         {
+            Destroy(_healthSlider.gameObject);
             Destroy(this.transform.parent.gameObject);
         }).SetLink(gameObject);
     }
@@ -211,12 +211,11 @@ public class EnemyBase : MonoBehaviour, IEntity
 
     public virtual void Init(float magnification)
     {
-        _uiCanvas = UIManager.Instance.GetUICanvas();
         var c = UIManager.Instance.GetUICamera();
-        var g = Instantiate(hpSliderPrefab, _uiCanvas.transform);
+        var g = Instantiate(hpSliderPrefab, UIManager.Instance.GetEnemyUIContainer());
         var pos = c.WorldToScreenPoint(this.transform.position);
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            _uiCanvas.GetComponent<RectTransform>(), pos, c, out Vector2 localPosition
+            UIManager.Instance.GetUICanvas().GetComponent<RectTransform>(), pos, c, out Vector2 localPosition
         );
         localPosition.y += 60;
         g.GetComponent<RectTransform>().anchoredPosition = localPosition;

@@ -43,6 +43,7 @@ public class UIManager : MonoBehaviour
     
     public Canvas GetUICanvas() => uiCanvas;
     public Camera GetUICamera() => uiCamera;
+    public Transform GetEnemyUIContainer() => uiCanvas.transform.Find("EnemyStatusUIContainer");
     public void ShowRelicDescriptionWindow(RelicData r, GameObject g) => descriptionWindow.ShowWindow(r, g);
     public void ShowBallDescriptionWindow(BallData b, GameObject g, int level) => descriptionWindow.ShowWindow(b, g, level);
 
