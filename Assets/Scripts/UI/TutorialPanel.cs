@@ -44,8 +44,7 @@ public class TutorialPanel : MonoBehaviour
         nextButton.interactable = _currentPage < pages.Count - 1;
     }
 
-    private void Awake()
-    {
+    private void Start(){
         ChangePage(0);
         
         nextButton.onClick.AddListener(NextPage);

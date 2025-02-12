@@ -90,8 +90,16 @@ public class DescriptionWindow : MonoBehaviour
         // 最前面のウィンドウ以外のリンクは無視
         if (_subWindows.Count >= 1)
             if (parent != _subWindows.Values.Last()) return;
+        
+        var containerRect = windowContainer.GetComponent<RectTransform>();
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            containerRect,
+            RectTransformUtility.WorldToScreenPoint(uiCamera, parent.transform.position),
+            uiCamera,
+            out var localLinkPos
+        );
 
-        ShowSubWindowImpl(parent, word, parent.transform.position);
+        ShowSubWindowImpl(parent, word, localLinkPos);
     }
 
     private void ShowSubWindowImpl(GameObject parent, string word, Vector2 basePosition)
@@ -364,21 +372,20 @@ public class DescriptionWindow : MonoBehaviour
 
         // --- リンクの文字位置を計算 ---
         // リンク内の最初の文字の情報を利用する例
-        int charIndex = linkInfo.linkTextfirstCharacterIndex;
-        TMP_CharacterInfo charInfo = textInfo.characterInfo[charIndex];
+        var charIndex = linkInfo.linkTextfirstCharacterIndex;
+        var charInfo = textInfo.characterInfo[charIndex];
         // ここでは底辺の中央を基準とする（必要に応じて変更してください）
-        Vector3 charMidLocal = (charInfo.bottomLeft + charInfo.bottomRight) / 2;
+        var charMidLocal = (charInfo.bottomLeft + charInfo.bottomRight) / 2;
         // テキストコンポーネントのTransformでワールド座標に変換
-        Vector3 worldPos = textComponent.transform.TransformPoint(charMidLocal);
+        var worldPos = textComponent.transform.TransformPoint(charMidLocal);
 
-        // 専用コンテナ(windowContainer)のローカル座標に変換（Overlayの場合、カメラはnull）
-        RectTransform containerRect = windowContainer.GetComponent<RectTransform>();
-        Vector2 localLinkPos;
+        // 専用コンテナ(windowContainer)のローカル座標に変換
+        var containerRect = windowContainer.GetComponent<RectTransform>();
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             containerRect,
-            RectTransformUtility.WorldToScreenPoint(null, worldPos),
-            null,
-            out localLinkPos
+            RectTransformUtility.WorldToScreenPoint(uiCamera, worldPos),
+            uiCamera,
+            out var localLinkPos
         );
 
         // サブウィンドウの表示：リンクIDと、基準位置(localLinkPos)を渡す
