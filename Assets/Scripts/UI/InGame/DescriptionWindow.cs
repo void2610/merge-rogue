@@ -87,7 +87,6 @@ public class DescriptionWindow : MonoBehaviour
             // 対象UI（rootTriggerObject）上にマウスが存在しなければ、ウィンドウを非表示にして終了
             if (!IsMouseOverObject(rootTriggerObject))
             {
-                Debug.Log("Mouse is not over the item");
                 HideWindow();
                 progressImage.fillAmount = 0f;
                 return;
@@ -102,7 +101,6 @@ public class DescriptionWindow : MonoBehaviour
             // フレーム待機（Updateタイミングでチェック）
             await UniTask.Yield(PlayerLoopTiming.Update);
             elapsed += Time.deltaTime * 1000f; // Time.deltaTimeは秒単位なのでミリ秒に変換
-            Debug.Log("elapsed: " + elapsed);
         }
 
         // 一定時間経過したら進捗を満タンにしてロック状態にする
