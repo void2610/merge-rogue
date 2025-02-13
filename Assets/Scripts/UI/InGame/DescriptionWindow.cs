@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DescriptionWindow : MonoBehaviour
 {
@@ -36,15 +38,81 @@ public class DescriptionWindow : MonoBehaviour
     private readonly List<GameObject> _otherTriggerObjects = new();
     // ルートウィンドウのトリガー元のオブジェクト
     private GameObject _rootTriggerObject;
-    private bool _isCheckingMouse = false;
+    private bool _isWindowLocked = false;
+    private CancellationTokenSource _hoverTokenSource;
     
     public void AddTextToObservation(GameObject text) => _otherTriggerObjects.Add(text);
     public void RemoveTextFromObservation(GameObject text) => _otherTriggerObjects.Remove(text);
-
-    public void ShowWindow(object obj, GameObject rootTriggerObject, int ballLevel = 0)
+    
+    /// <summary>
+    /// マウスが入った際のウィンドウ表示と、ホバー状態を待つ処理
+    /// </summary>
+    /// <param name="data">表示するデータオブジェクト（BallData/RelicDataなど）</param>
+    /// <param name="rootTriggerObject">対象UIオブジェクト</param>
+    /// <param name="ballLevel">（必要なら）球体レベル</param>
+    public async UniTaskVoid ShowWindowWithHoverCheck(object data, GameObject rootTriggerObject, int ballLevel = 0)
     {
-        if (IsMouseOverWindowOrDescendants(this.gameObject)) return;
+        _hoverTokenSource?.Cancel();
+        _hoverTokenSource = new CancellationTokenSource();
+
+        Utils.AddEventToObject(rootTriggerObject, () =>
+        {
+            // 待機中のタスクをキャンセル
+            _hoverTokenSource?.Cancel();
+            _hoverTokenSource = null;
         
+            // ロック状態でなければ、すぐにウィンドウを非表示にする
+            if (!_isWindowLocked)
+            {
+                HideWindow();
+            }
+        }, EventTriggerType.PointerExit, false);
+        
+        
+        // まずはウィンドウを表示
+        ShowWindow(data, rootTriggerObject, ballLevel);
+        
+        // ホバー待機時間（ミリ秒）
+        var totalDelay = 1500f * Time.timeScale;
+        var elapsed = 0f;
+        var progressImage = this.transform.Find("ProgressImage")?.GetComponent<Image>();
+        if (!progressImage) return;
+
+        // 進捗表示用のImageがあれば初期化
+        progressImage.fillAmount = 0f;
+        
+        // ホバー状態を待つループ
+        while (elapsed < totalDelay)
+        {
+            // 対象UI（rootTriggerObject）上にマウスが存在しなければ、ウィンドウを非表示にして終了
+            if (!IsMouseOverObject(rootTriggerObject))
+            {
+                Debug.Log("Mouse is not over the item");
+                HideWindow();
+                progressImage.fillAmount = 0f;
+                return;
+            }
+
+            // 経過時間に応じた進捗を更新
+            if (progressImage)
+            {
+                progressImage.fillAmount = elapsed / totalDelay;
+            }
+
+            // フレーム待機（Updateタイミングでチェック）
+            await UniTask.Yield(PlayerLoopTiming.Update);
+            elapsed += Time.deltaTime * 1000f; // Time.deltaTimeは秒単位なのでミリ秒に変換
+            Debug.Log("elapsed: " + elapsed);
+        }
+
+        // 一定時間経過したら進捗を満タンにしてロック状態にする
+        progressImage.fillAmount = 1f;
+        _isWindowLocked = true;
+        this.transform.Find("Window").GetComponent<Image>().raycastTarget = true;
+    }
+
+    private void ShowWindow(object obj, GameObject rootTriggerObject, int ballLevel = 0)
+    {
         foreach (var window in _subWindows.Values) Destroy(window);
         _subWindows.Clear();
         this.gameObject.SetActive(true);
@@ -175,10 +243,6 @@ public class DescriptionWindow : MonoBehaviour
 
     private void HideWindow()
     {
-        if(!descriptionText) return;
-        if(IsMouseOverWindowOrDescendants(descriptionText.gameObject)) return;
-        if(_moveTween != null && _moveTween.active) return;
-        
         _moveTween?.Kill();
         _fadeTween?.Kill();
         
@@ -191,6 +255,8 @@ public class DescriptionWindow : MonoBehaviour
             Destroy(window);
         }
         _subWindows.Clear();
+        
+        this.transform.Find("Window").GetComponent<Image>().raycastTarget = false;
     }
     
     private void HideSubWindow(GameObject parent, string word)
@@ -221,18 +287,6 @@ public class DescriptionWindow : MonoBehaviour
         }
     }
     
-    private bool IsParentWindowIsThis(GameObject window)
-    {
-        if (window == this.gameObject) return true;
-        var g = window.transform.parent;
-        while (true)
-        {
-            if (g == this.gameObject.transform) return true;
-            if (!g) return false;
-            g = g.parent;
-        }
-    }
-    
     private bool IsMouseOverWindowOrDescendants(GameObject window)
     {
         if(!window) return false;
@@ -259,6 +313,16 @@ public class DescriptionWindow : MonoBehaviour
         return false;
     }
     
+    private bool IsMouseOverObject(GameObject obj)
+    {
+        if (!obj) throw new System.ArgumentNullException();
+        return RectTransformUtility.RectangleContainsScreenPoint(
+            obj.GetComponent<RectTransform>(),
+            Input.mousePosition,
+            uiCamera
+        );
+    }
+    
     private bool IsMouseOverAnyWindow()
     {
         if (!this) return false;
@@ -283,60 +347,17 @@ public class DescriptionWindow : MonoBehaviour
         return false;
     }
     
-    private async UniTaskVoid StartMouseCheck()
-    {
-        if (_isCheckingMouse) return;
-
-        _isCheckingMouse = true;
-
-        // マウスが1秒間連続してウィンドウ外にあるかチェック
-        while (true)
-        {
-            if (!await CheckMouseOutsideForSeconds(0.15f))
-            {
-                _isCheckingMouse = false;
-                return;
-            }
-
-            // ウィンドウを隠す処理を実行
-            HideWindow();
-        }
-    }
-
-    private async UniTask<bool> CheckMouseOutsideForSeconds(float duration)
-    {
-        var cancelToken = this.GetCancellationTokenOnDestroy();
-        var timer = 0f;
-        while (timer < duration)
-        {
-            // マウスがウィンドウ内に戻った場合は中断
-            if (IsMouseOverAnyWindow()) return false;
-            // 経過時間を加算
-            timer += Time.deltaTime / Time.timeScale;
-            // フレームの終了まで待機
-            await UniTask.Yield(PlayerLoopTiming.Update, cancelToken);
-        }
-        return true;
-    }
-
     private void Awake()
     {
         if (Instance == null) Instance = this;
         else Destroy(gameObject);
         
         this.transform.position = _disablePos;
-        this.transform.parent = windowContainer.transform;
         _cg = this.gameObject.GetComponent<CanvasGroup>();
     }
 
     private void Update()
     {
-        // マウスがウィンドウ外に出た場合にチェックを開始
-        if (!IsMouseOverAnyWindow() && !_isCheckingMouse)
-        {
-            StartMouseCheck().Forget();
-        }
-
         // すべてのウィンドウ(サブウィンドウ + this.gameObject +その他の対象オブジェクト)を収集
         var windows = new List<GameObject>(_subWindows.Values) { this.gameObject };
         windows.AddRange(_otherTriggerObjects);

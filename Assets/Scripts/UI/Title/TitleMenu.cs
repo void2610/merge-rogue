@@ -78,7 +78,7 @@ public class TitleMenu : MonoBehaviour
     
     public void ShowDescriptionWindow(object o, GameObject g)
     {
-        descriptionWindow.ShowWindow(o, g);
+        descriptionWindow.ShowWindowWithHoverCheck(o, g).Forget();
     }
 
     public static void PlayButtonSe()

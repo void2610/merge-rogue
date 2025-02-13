@@ -13,14 +13,15 @@ public class Utils : MonoBehaviour
     /// <summary>
     /// オブジェクトにイベントを追加する
     /// </summary>
-    public static void AddEventToObject(GameObject obj, System.Action action, EventTriggerType type)
+    public static void AddEventToObject(GameObject obj, System.Action action, EventTriggerType type, bool removeExisting = true)
     {
         var trigger = obj.GetComponent<EventTrigger>();
         if (!trigger)
         {
             trigger = obj.AddComponent<EventTrigger>();
         }
-        trigger.triggers.RemoveAll(x => x.eventID == type);
+        
+        if(removeExisting) trigger.triggers.RemoveAll(x => x.eventID == type);
         
         var entry = new EventTrigger.Entry {eventID = type};
         entry.callback.AddListener((data) => action());
