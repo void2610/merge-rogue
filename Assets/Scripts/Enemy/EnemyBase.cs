@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -66,17 +67,18 @@ public class EnemyBase : MonoBehaviour, IEntity
         {
             effect.SetEntityPosition(this.transform.position);
             StatusEffects.Add(effect);
+            SeManager.Instance.PlaySe("addStatusEffect");
         }
         _statusEffectUI.UpdateUI(StatusEffects);
     }
     
-    public void UpdateStatusEffects()
+    public async UniTaskVoid UpdateStatusEffects()
     {
         for (var i = StatusEffects.Count - 1; i >= 0; i--)
         {
             StatusEffects[i].OnTurnEnd(this);
-            if (StatusEffects[i].ReduceStack())
-                StatusEffects.RemoveAt(i);
+            if (StatusEffects[i].ReduceStack()) StatusEffects.RemoveAt(i);
+            await UniTask.Delay((int)(500 * GameManager.Instance.TimeScale));
         }
         
         _statusEffectUI.UpdateUI(StatusEffects);
@@ -247,5 +249,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         UpdateAttackIcon(_nextAction);
         
         OnAppear();
+        
+        StatusEffectFactory.AddStatusEffect(this, StatusEffectType.Shield, 10);
     }
 }

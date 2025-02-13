@@ -26,9 +26,7 @@ public class StatusEffectUI : MonoBehaviour
     public void UpdateUI(List<StatusEffectBase> effects)
     {
         foreach (var icon in _statusEffectIcons.Values)
-        {
-            icon.SetActive(false);
-        }
+            if(icon) icon.SetActive(false);
         
         for (var i = 0; i < effects.Count; i++)
         {

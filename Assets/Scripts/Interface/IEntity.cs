@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 
 public interface IEntity
 {
@@ -7,6 +8,6 @@ public interface IEntity
     public void Heal(int healAmount);
     public void AddStatusEffect(StatusEffectBase effect);
     int ModifyIncomingDamage(int amount);
-    public void UpdateStatusEffects();
+    public UniTaskVoid UpdateStatusEffects();
     public void OnBattleEnd();
 }

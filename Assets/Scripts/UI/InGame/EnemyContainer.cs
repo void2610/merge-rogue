@@ -193,11 +193,9 @@ public class EnemyContainer : MonoBehaviour
         await UniTask.Delay(100);
         
         // 状態異常を更新
-        GameManager.Instance.Player.UpdateStatusEffects();
-        for(var i = 0; i < _currentEnemies.Count; i++)
-        {
-            _currentEnemies[i].transform.GetChild(0).GetComponent<EnemyBase>().UpdateStatusEffects();
-        }
+        GameManager.Instance.Player.UpdateStatusEffects().Forget();
+        foreach (var t in _currentEnemies)
+            t.transform.GetChild(0).GetComponent<EnemyBase>().UpdateStatusEffects().Forget();
 
         if(_currentEnemies.Count > 0)
             GameManager.Instance.ChangeState(GameManager.GameState.Merge);

@@ -93,11 +93,8 @@ public class DescriptionWindow : MonoBehaviour
             }
 
             // 経過時間に応じた進捗を更新
-            if (progressImage)
-            {
-                progressImage.fillAmount = elapsed / totalDelay;
-            }
-
+            progressImage.fillAmount = elapsed / totalDelay;
+            
             // フレーム待機（Updateタイミングでチェック）
             await UniTask.Yield(PlayerLoopTiming.Update);
             elapsed += Time.deltaTime * 1000f; // Time.deltaTimeは秒単位なのでミリ秒に変換
@@ -249,9 +246,7 @@ public class DescriptionWindow : MonoBehaviour
             this.transform.position = _disablePos;
         }).SetLink(this.gameObject);
         foreach (var window in _subWindows.Values)
-        {
             Destroy(window);
-        }
         _subWindows.Clear();
         
         this.transform.Find("Window").GetComponent<Image>().raycastTarget = false;
@@ -263,10 +258,7 @@ public class DescriptionWindow : MonoBehaviour
         if (_subWindows.TryGetValue((parent, word), out var window))
         {
             // マウスが現在のウィンドウまたはその子孫ウィンドウにいる場合は閉じない
-            if (IsMouseOverWindowOrDescendants(window))
-            {
-                return;
-            }
+            if (IsMouseOverWindowOrDescendants(window)) return;
 
             // 子ウィンドウを再帰的に閉じる
             var children = _subWindows
@@ -275,9 +267,7 @@ public class DescriptionWindow : MonoBehaviour
                 .ToList();
 
             foreach (var child in children)
-            {
                 HideSubWindow(child.Item1, child.Item2); // 再帰的に子ウィンドウを閉じる
-            }
 
             // 現在のウィンドウを削除
             window.GetComponent<CanvasGroup>().DOFade(0, 0.15f).SetUpdate(true).OnComplete(() => Destroy(window)).SetLink(window);
@@ -301,10 +291,7 @@ public class DescriptionWindow : MonoBehaviour
             if (entry.Key.Item1 == window) // 現在のウィンドウの子孫ウィンドウの場合
             {
                 // 再帰的に子孫ウィンドウをチェック
-                if (IsMouseOverWindowOrDescendants(entry.Value))
-                {
-                    return true;
-                }
+                if (IsMouseOverWindowOrDescendants(entry.Value)) return true;
             }
         }
 

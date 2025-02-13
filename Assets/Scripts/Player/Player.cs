@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using R3;
 using UnityEngine.Serialization;
@@ -29,16 +30,18 @@ public class Player : MonoBehaviour, IEntity
         {
             effect.SetEntityPosition(this.transform.position, true);
             StatusEffects.Add(effect);
+            SeManager.Instance.PlaySe("addStatusEffect");
         }
         statusEffectUI.UpdateUI(StatusEffects);
     }
     
-    public void UpdateStatusEffects()
+    public async UniTaskVoid UpdateStatusEffects()
     {
         for (var i = StatusEffects.Count - 1; i >= 0; i--)
         {
             StatusEffects[i].OnTurnEnd(this);
             if (StatusEffects[i].ReduceStack()) StatusEffects.RemoveAt(i);
+            await UniTask.Delay((int)(500 * GameManager.Instance.TimeScale));
         }
         statusEffectUI.UpdateUI(StatusEffects);
     }

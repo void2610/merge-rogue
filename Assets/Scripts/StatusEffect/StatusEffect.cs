@@ -50,7 +50,7 @@ public abstract class StatusEffectBase
         return true; 
     }
 
-    protected void ShowEffectText()
+    protected void ShowEffectText(int priority = 0)
     {
         var effectText = Type switch
         {
@@ -66,7 +66,8 @@ public abstract class StatusEffectBase
         var textColor = Type.GetStatusEffectColor();
         
         var isP = _isPlayer ? 1 : -1;
-        ParticleManager.Instance.WavyText(effectText, _entityPosition + new Vector3(0.8f * isP, 0.5f, 0), textColor);
+        var offset = new Vector3(-priority * 0.1f, priority * 0.25f, 0);
+        ParticleManager.Instance.WavyText(effectText, _entityPosition + new Vector3(0.8f * isP, 0.2f, 0) + offset, textColor);
     }
 }
 
@@ -161,7 +162,7 @@ public class ShieldEffect : StatusEffectBase
         var absorbed = Math.Min(StackCount, incomingDamage);
         StackCount -= absorbed;
 
-        ShowEffectText();
+        ShowEffectText(1);
         SeManager.Instance.PlaySe("shield");
         return incomingDamage - absorbed;
     }
@@ -185,7 +186,7 @@ public class InvincibleEffect : StatusEffectBase
     public override int ModifyDamage(int incomingDamage)
     {
         // TODO: シールドよりも優先度を高くする
-        ShowEffectText();
+        ShowEffectText(1);
         SeManager.Instance.PlaySe("shield");
         return 0;
     }
