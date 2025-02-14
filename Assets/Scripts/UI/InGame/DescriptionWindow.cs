@@ -332,6 +332,18 @@ public class DescriptionWindow : MonoBehaviour
         return false;
     }
     
+    private static bool IsCanvasGroupAlphaLow(Transform target, float threshold = 0.5f)
+    {
+        while (target)
+        {
+            var canvasGroup = target.GetComponent<CanvasGroup>();
+            if (canvasGroup) return canvasGroup.alpha <= threshold;
+            target = target.parent; // 親オブジェクトをたどる
+        }
+        // CanvasGroupが見つからなかった場合は false を返す
+        return false;
+    }
+    
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -343,6 +355,13 @@ public class DescriptionWindow : MonoBehaviour
 
     private void Update()
     {
+        // マウスがウィンドウ上にない場合、ウィンドウを非表示にする
+        if (!IsMouseOverAnyWindow() && _isWindowLocked)
+        {
+            HideWindow();
+        }
+        
+        
         // すべてのウィンドウ(サブウィンドウ + this.gameObject +その他の対象オブジェクト)を収集
         var windows = new List<GameObject>(_subWindows.Values) { this.gameObject };
         windows.AddRange(_otherTriggerObjects);
@@ -362,8 +381,9 @@ public class DescriptionWindow : MonoBehaviour
 
         // 対象テキストコンポーネント取得
         var textComponent = windows[windowIndex].transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>();
-        TMP_TextInfo textInfo = textComponent.textInfo;
-        TMP_LinkInfo linkInfo = textInfo.linkInfo[linkIndex];
+        if (IsCanvasGroupAlphaLow(textComponent.transform)) return;
+        var textInfo = textComponent.textInfo;
+        var linkInfo = textInfo.linkInfo[linkIndex];
 
         // 対象ウィンドウ（親）の決定
         // this.gameObjectならdescriptionText、そうでなければそのウィンドウ
