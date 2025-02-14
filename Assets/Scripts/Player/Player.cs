@@ -30,7 +30,6 @@ public class Player : MonoBehaviour, IEntity
         {
             effect.SetEntityPosition(this.transform.position, true);
             StatusEffects.Add(effect);
-            SeManager.Instance.PlaySe("addStatusEffect");
         }
         statusEffectUI.UpdateUI(StatusEffects);
     }

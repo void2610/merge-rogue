@@ -32,6 +32,7 @@ public class StatusEffectUI : MonoBehaviour
         {
             var effect = effects[i];
             var icon = _statusEffectIcons[effect.Type];
+            if (!icon) continue;
             icon.SetActive(true);
             icon.transform.position = this.transform.position + new Vector3( offset.x + i * margin, offset.y, 0);
             icon.transform.Find("Stack").GetComponent<TextMeshProUGUI>().text = effect.StackCount.ToString();

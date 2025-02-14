@@ -300,7 +300,7 @@ public class DescriptionWindow : MonoBehaviour
     
     private bool IsMouseOverObject(GameObject obj)
     {
-        if (!obj) throw new System.ArgumentNullException();
+        if (!obj) return false;
         return RectTransformUtility.RectangleContainsScreenPoint(
             obj.GetComponent<RectTransform>(),
             Input.mousePosition,

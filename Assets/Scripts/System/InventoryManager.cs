@@ -20,7 +20,7 @@ public class InventoryManager : MonoBehaviour
     public InventoryUI InventoryUI => this.GetComponent<InventoryUI>();
     private readonly List<GameObject> _inventory = new();
     public readonly List<float> Sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f , 1.1f};
-    public readonly List<float> Probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f };
+    private readonly List<float> _probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f };
     
     public void UpgradeBall(int index)
     {
@@ -34,7 +34,7 @@ public class InventoryManager : MonoBehaviour
     }
 
     // ボールを任意の位置に追加する
-    public void SetBall(BallData data, int rank)
+    private void SetBall(BallData data, int rank)
     {
         if (rank is <= 0 or > MAX_INVENTORY_SIZE) return;
         
@@ -62,13 +62,15 @@ public class InventoryManager : MonoBehaviour
         if (index1 < 0 || index1 >= InventorySize || index2 < 0 || index2 >= InventorySize) return;
        
         var data1 = _inventory[index1].GetComponent<BallBase>().Data;
+        var level1 = _inventory[index1].GetComponent<BallBase>().Level;
         var data2 = _inventory[index2].GetComponent<BallBase>().Data;
+        var level2 = _inventory[index2].GetComponent<BallBase>().Level;
         
         Destroy(_inventory[index1]);
         Destroy(_inventory[index2]);
         
-        _inventory[index1] = CreateBallInstanceFromBallData(data2, index1 + 1);
-        _inventory[index2] = CreateBallInstanceFromBallData(data1, index2 + 1);
+        _inventory[index1] = CreateBallInstanceFromBallData(data2, index1 + 1, level2);
+        _inventory[index2] = CreateBallInstanceFromBallData(data1, index2 + 1, level1);
         
         InventoryUI.CreateBallUI(_inventory[index1], index1, _inventory[index1].GetComponent<BallBase>());
         InventoryUI.CreateBallUI(_inventory[index2], index2, _inventory[index2].GetComponent<BallBase>());
@@ -83,8 +85,9 @@ public class InventoryManager : MonoBehaviour
         for (var i = index; i < InventorySize - 1; i++)
         {
             var data = _inventory[i + 1].GetComponent<BallBase>().Data;
+            var level = _inventory[i + 1].GetComponent<BallBase>().Level;
             Destroy(_inventory[i + 1]);
-            _inventory[i] = CreateBallInstanceFromBallData(data, i + 1);
+            _inventory[i] = CreateBallInstanceFromBallData(data, i + 1, level);
             InventoryUI.CreateBallUI(_inventory[i], i, _inventory[i].GetComponent<BallBase>());
         }
         InventorySize--;
@@ -115,17 +118,17 @@ public class InventoryManager : MonoBehaviour
     public GameObject GetRandomBall(Vector3 position = default)
     {
         GameObject ball;
-        var total = Probabilities.Sum();
+        var total = _probabilities.Sum();
         var r = GameManager.Instance.RandomRange(0.0f, total);
         for (var i = 0; i < InventorySize; i++)
         {
-            if (r < Probabilities[i])
+            if (r < _probabilities[i])
             {
                 ball = CopyBall(_inventory[i], position);
                 ball.GetComponent<BallBase>().Freeze();
                 return ball;
             }
-            r -= Probabilities[i];
+            r -= _probabilities[i];
         }
         
         // みつからなかった場合は一番最初のボールを返す

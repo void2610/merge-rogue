@@ -67,7 +67,6 @@ public class EnemyBase : MonoBehaviour, IEntity
         {
             effect.SetEntityPosition(this.transform.position);
             StatusEffects.Add(effect);
-            SeManager.Instance.PlaySe("addStatusEffect");
         }
         _statusEffectUI.UpdateUI(StatusEffects);
     }
@@ -249,7 +248,5 @@ public class EnemyBase : MonoBehaviour, IEntity
         UpdateAttackIcon(_nextAction);
         
         OnAppear();
-        
-        StatusEffectFactory.AddStatusEffect(this, StatusEffectType.Shield, 10);
     }
 }
