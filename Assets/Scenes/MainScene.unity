@@ -4764,11 +4764,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_LocalScale.x
@@ -6388,11 +6388,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_LocalScale.x
@@ -7374,6 +7374,7 @@ MonoBehaviour:
   testRelics:
   - {fileID: 11400000, guid: 4b42e1b1fb0c64699bffb20370ba4edc, type: 2}
   - {fileID: 11400000, guid: 4b42e1b1fb0c64699bffb20370ba4edc, type: 2}
+  - {fileID: 11400000, guid: 4537f3d659b96485da932172c3764c56, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -7700,11 +7701,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_LocalScale.x
@@ -9798,11 +9799,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_LocalScale.x
@@ -13732,11 +13733,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_LocalScale.x
@@ -14503,11 +14504,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 100
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1332579628747640216, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}
       propertyPath: m_LocalScale.x
@@ -20935,6 +20936,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.size
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.data[19].name
+      value: addStatusEffect
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.data[19].volume
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.data[19].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 0bd254bf6869044f1956508e3975a305, type: 3}
     - target: {fileID: 7521127176204447298, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

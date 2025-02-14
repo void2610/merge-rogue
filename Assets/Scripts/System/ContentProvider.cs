@@ -119,7 +119,7 @@ public class ContentProvider : MonoBehaviour
     /// <param name="rarity">アイテムのレアリティ</param>
     public static int GetSHopPrice(Shop.ShopItemType type, Rarity rarity)
     {
-        if(type == Shop.ShopItemType.Remove) return 50;
+        if(type == Shop.ShopItemType.Remove) return GetBallRemovePrice();
         var price = rarity switch
         {
             Rarity.Common => 10,
@@ -129,19 +129,19 @@ public class ContentProvider : MonoBehaviour
             Rarity.Legendary => 500,
             _ => 100000
         };
-        if (type == Shop.ShopItemType.Ball) price = (int)(price * 1.5f);
+        if (type == Shop.ShopItemType.Ball) price = (int)(price * 0.75f);
         return price;
     }
     
     /// <summary>
     /// ボール除去の価格を返す
     /// </summary>
-    public static int GetBallRemovePrice() => 50;
+    public static int GetBallRemovePrice() => 25;
     
     /// <summary>
     /// ボール強化の価格を返す
     /// </summary>
-    public static int GetBallUpgradePrice() => 25;
+    public static int GetBallUpgradePrice() => 10;
     
     /// <summary>
     /// アクトを進める
