@@ -457,6 +457,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7549564100464722199, guid: 0553222bca1ea46b18f08dd19ed1e5db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -16538,6 +16542,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7549564100464722199, guid: 0553222bca1ea46b18f08dd19ed1e5db, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -20936,22 +20944,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
-      propertyPath: soundDatas.Array.size
-      value: 19
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
-      propertyPath: soundDatas.Array.data[19].name
-      value: addStatusEffect
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
-      propertyPath: soundDatas.Array.data[19].volume
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
-      propertyPath: soundDatas.Array.data[19].audioClip
-      value: 
-      objectReference: {fileID: 8300000, guid: 0bd254bf6869044f1956508e3975a305, type: 3}
     - target: {fileID: 7521127176204447298, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
