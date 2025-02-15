@@ -18,6 +18,7 @@ public class Treasure : MonoBehaviour
     
     [SerializeField] private List<GameObject> items;
     [SerializeField] private TextMeshProUGUI descriptionText;
+    [SerializeField] private Button skipButton;
     [SerializeField] private Image fadeImage;
     [SerializeField] private StageManager stageManager;
     [SerializeField] private Vector3 itemPosition;
@@ -122,6 +123,13 @@ public class Treasure : MonoBehaviour
         }, EventTriggerType.PointerEnter);
     }
     
+    private void OnClickSkip()
+    {
+        SeManager.Instance.PlaySe("button");
+        EventManager.OnTreasureSkipped.Trigger(0);
+        CloseTreasure();
+    }
+    
     private void Awake()
     {
         foreach (var item in items)
@@ -129,5 +137,7 @@ public class Treasure : MonoBehaviour
             item.transform.position = _disablePosition;
         }
         fadeImage.color = new Color(0, 0, 0, 1);
+        
+        skipButton.onClick.AddListener(OnClickSkip);
     }
 }

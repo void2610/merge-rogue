@@ -94,47 +94,6 @@ public class UIManager : MonoBehaviour
         }
         expText.text = "exp: " + now + "/" + max;
     }
-    
-    public void OnClickRestButton()
-    {
-        var restAmount = GameManager.Instance.Player.MaxHealth.Value  * 0.2f;
-        EventManager.OnRest.Trigger((int)restAmount);
-        var v = EventManager.OnRest.GetAndResetValue();
-        if(v > 0) GameManager.Instance.Player.Heal(v);
-        
-        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
-        EnableCanvasGroup("Rest", false);
-    }
-
-    public void OnClickOrganiseButton()
-    {
-        SeManager.Instance.PlaySe("button");
-        EventManager.OnOrganise.Trigger(0);
-        EnableCanvasGroup("Rest", false);
-        InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Swap);
-    }
-    
-    public void OnClickSkippRestButton()
-    {
-        SeManager.Instance.PlaySe("button");
-        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
-        EnableCanvasGroup("Rest", false);
-    }
-
-    public void OnClickShopExit()
-    {
-        SeManager.Instance.PlaySe("button");
-        EnableCanvasGroup("Shop", false);
-        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
-        shop.CloseShop();
-    }
-    
-    public void OnClickTreasureExit()
-    {
-        SeManager.Instance.PlaySe("button");
-        EventManager.OnTreasureSkipped.Trigger(0);
-        treasure.CloseTreasure();
-    }
 
     public void OnClickPauseButton()
     {

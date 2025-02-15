@@ -16,6 +16,7 @@ public class Shop : MonoBehaviour
     }
     
     [SerializeField] private GameObject itemContainer;
+    [SerializeField] private GameObject skipButton;
     [SerializeField] private GameObject removeButton;
     
     private readonly List<object> _currentItems = new();
@@ -61,7 +62,7 @@ public class Shop : MonoBehaviour
         }
     }
 
-    public void CloseShop()
+    private void CloseShop()
     {
         for (var i = 0; i < ITEM_NUM; i++)
         {
@@ -69,6 +70,9 @@ public class Shop : MonoBehaviour
             _itemObjects[i].transform.DOScale(1, 0.1f).SetUpdate(true);
         }
         InventoryManager.Instance.InventoryUI.EnableCursor(false);
+        
+        UIManager.Instance.EnableCanvasGroup("Shop", false);
+        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
     }
 
     private void BuyBall(int index)
@@ -173,6 +177,12 @@ public class Shop : MonoBehaviour
         GameManager.Instance.SubCoin(price);
         InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Remove);
     }
+    
+    private void OnClickSkipButton()
+    {
+        SeManager.Instance.PlaySe("button");
+        CloseShop();
+    }
 
     private void Awake()
     {
@@ -180,6 +190,7 @@ public class Shop : MonoBehaviour
         _itemObjects.ForEach(x => _itemPositions.Add(x.transform.position));
         _itemPositions.Add(removeButton.transform.position);
         
+        skipButton.GetComponent<Button>().onClick.AddListener(OnClickSkipButton);
         removeButton.GetComponent<Button>().onClick.AddListener(OnClickRemoveButton);
     }
 }
