@@ -195,6 +195,7 @@ GameObject:
   - component: {fileID: 6724646135468097598}
   - component: {fileID: 4008495509281221478}
   - component: {fileID: -2145254744683246053}
+  - component: {fileID: 6845875570397839249}
   m_Layer: 5
   m_Name: ShopItem
   m_TagString: Untagged
@@ -332,6 +333,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorType: 1
+--- !u!114 &6845875570397839249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6729976926087826395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94889eaa300124d00841a3cffdfeffae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSe: {fileID: 8300000, guid: b43d102aac6b145468dcaa94a5cccae1, type: 3}
+  hoverVolume: 0.2
+  clickSe: {fileID: 0}
+  clickVolume: 0
 --- !u!1 &7212339378998284162
 GameObject:
   m_ObjectHideFlags: 0
