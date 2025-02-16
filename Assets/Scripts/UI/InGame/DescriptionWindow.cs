@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -40,6 +41,7 @@ public class DescriptionWindow : MonoBehaviour
     private GameObject _rootTriggerObject;
     private bool _isWindowLocked = false;
     private CancellationTokenSource _hoverTokenSource;
+    private CancellationTokenSource _hideTokenSource;
     
     public void AddTextToObservation(GameObject text) => _otherTriggerObjects.Add(text);
     public void RemoveTextFromObservation(GameObject text) => _otherTriggerObjects.Remove(text);
@@ -344,6 +346,30 @@ public class DescriptionWindow : MonoBehaviour
         return false;
     }
     
+    private async UniTaskVoid HideWindowAfterDelay()
+    {
+        try
+        {
+            // 500ミリ秒待機。待機中にキャンセルされた場合は OperationCanceledException が発生
+            await UniTask.Delay((int)(500 * Time.timeScale), cancellationToken: _hideTokenSource.Token);
+
+            // 待機後もマウスがウィンドウ上にないなら非表示
+            if (!IsMouseOverAnyWindow())
+            {
+                HideWindow();
+            }
+        }
+        catch (OperationCanceledException)
+        {
+            // キャンセルされた場合は何もしない
+        }
+        finally
+        {
+            // タスク終了後はトークンをリセット
+            _hideTokenSource = null;
+        }
+    }
+    
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -355,12 +381,25 @@ public class DescriptionWindow : MonoBehaviour
 
     private void Update()
     {
-        // マウスがウィンドウ上にない場合、ウィンドウを非表示にする
+        // マウスがウィンドウ上にない場合、非表示処理を開始
         if (!IsMouseOverAnyWindow() && _isWindowLocked)
         {
-            HideWindow();
+            // すでに待機中でなければ、新たにタスクを開始する
+            if (_hideTokenSource == null)
+            {
+                _hideTokenSource = new CancellationTokenSource();
+                HideWindowAfterDelay().Forget();
+            }
         }
-        
+        else
+        {
+            // マウスがウィンドウ上にある場合、待機中のタスクがあればキャンセル
+            if (_hideTokenSource != null)
+            {
+                _hideTokenSource.Cancel();
+                _hideTokenSource = null;
+            }
+        }
         
         // すべてのウィンドウ(サブウィンドウ + this.gameObject +その他の対象オブジェクト)を収集
         var windows = new List<GameObject>(_subWindows.Values) { this.gameObject };
