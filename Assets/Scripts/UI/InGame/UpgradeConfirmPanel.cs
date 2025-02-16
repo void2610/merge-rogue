@@ -51,7 +51,6 @@ public class UpgradeConfirmPanel : MonoBehaviour
     
     private void Cancel()
     {
-        SeManager.Instance.PlaySe("button");
         UIManager.Instance.EnableCanvasGroup("Upgrade", false);
     }
 

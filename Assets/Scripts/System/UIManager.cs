@@ -97,7 +97,6 @@ public class UIManager : MonoBehaviour
 
     public void OnClickPauseButton()
     {
-        SeManager.Instance.PlaySe("button");
         IsPaused = !IsPaused;
         Time.timeScale = IsPaused ? 0 : GameManager.Instance.TimeScale;
         EnableCanvasGroup("Pause", IsPaused);
@@ -105,13 +104,11 @@ public class UIManager : MonoBehaviour
 
     public void OnClickSpeedButton()
     {
-        SeManager.Instance.PlaySe("button");
         GameManager.Instance.ChangeTimeScale();
     }
     
     public void OnClickMapButton()
     {
-        SeManager.Instance.PlaySe("button");
         IsMapOpened = !IsMapOpened;
         EnableCanvasGroup("Map", IsMapOpened);
     }
@@ -125,21 +122,18 @@ public class UIManager : MonoBehaviour
     
     public void OnClickTutorialButton()
     {
-        SeManager.Instance.PlaySe("button");
         IsTutorialOpened = !IsTutorialOpened;
         EnableCanvasGroup("Tutorial", IsTutorialOpened);
     }
 
     public void OnClickTitle()
     {
-        SeManager.Instance.PlaySe("button");
         fadeImage.color = new Color(0, 0, 0, 0);
         fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("TitleScene")).SetUpdate(true);
     }
 
     public void OnClickRetry()
     {
-        SeManager.Instance.PlaySe("button");
         fadeImage.color = new Color(0, 0, 0, 0);
         fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("MainScene")).SetUpdate(true);
     }

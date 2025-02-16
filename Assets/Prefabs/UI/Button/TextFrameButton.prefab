@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 673821720620445671}
   - component: {fileID: 5267377982018965836}
   - component: {fileID: -6384727912980378791}
+  - component: {fileID: 4575908717014251673}
   m_Layer: 5
   m_Name: TextFrameButton
   m_TagString: Untagged
@@ -166,6 +167,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorType: 1
+--- !u!114 &4575908717014251673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1064869200036372540}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94889eaa300124d00841a3cffdfeffae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSe: {fileID: 8300000, guid: b43d102aac6b145468dcaa94a5cccae1, type: 3}
+  hoverVolume: 0.2
+  clickSe: {fileID: 8300000, guid: a2af495fb5b1b43a3b9457da3e08de07, type: 3}
+  clickVolume: 1
 --- !u!1 &3261057891911758215
 GameObject:
   m_ObjectHideFlags: 0

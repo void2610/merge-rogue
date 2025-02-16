@@ -12,14 +12,12 @@ public class AfterBattleUI : MonoBehaviour
     
     private void OnClickBallUpgradeButton()
     {
-        SeManager.Instance.PlaySe("button");
         InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Upgrade);
         ballUpgradeButton.interactable = false;
     }
     
     private void OnClickSkipAfterBattle()
     {
-        SeManager.Instance.PlaySe("button");
         InventoryManager.Instance.InventoryUI.EnableCursor(false);
         UIManager.Instance.EnableCanvasGroup("AfterBattle", false);
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);

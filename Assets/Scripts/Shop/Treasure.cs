@@ -111,7 +111,6 @@ public class Treasure : MonoBehaviour
                 if (!relic) return;
                 
                 RelicManager.Instance.AddRelic(relic);
-                SeManager.Instance.PlaySe("coin");
                 g.transform.position = _disablePosition;
                 EventManager.OnRelicObtainedTreasure.Trigger(relic);
                 CloseTreasure();
@@ -125,7 +124,6 @@ public class Treasure : MonoBehaviour
     
     private void OnClickSkip()
     {
-        SeManager.Instance.PlaySe("button");
         EventManager.OnTreasureSkipped.Trigger(0);
         CloseTreasure();
     }

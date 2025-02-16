@@ -1095,6 +1095,7 @@ GameObject:
   - component: {fileID: 114456723}
   - component: {fileID: 114456727}
   - component: {fileID: 114456728}
+  - component: {fileID: 114456729}
   m_Layer: 6
   m_Name: Option3
   m_TagString: Untagged
@@ -1310,6 +1311,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorType: 1
+--- !u!114 &114456729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114456721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94889eaa300124d00841a3cffdfeffae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSe: {fileID: 0}
+  hoverVolume: 1
+  clickSe: {fileID: 0}
+  clickVolume: 1
 --- !u!1001 &127237018
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5892,6 +5909,7 @@ GameObject:
   - component: {fileID: 707017148}
   - component: {fileID: 707017152}
   - component: {fileID: 707017153}
+  - component: {fileID: 707017154}
   m_Layer: 6
   m_Name: Option2
   m_TagString: Untagged
@@ -6107,6 +6125,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorType: 1
+--- !u!114 &707017154
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 707017146}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94889eaa300124d00841a3cffdfeffae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSe: {fileID: 0}
+  hoverVolume: 1
+  clickSe: {fileID: 0}
+  clickVolume: 1
 --- !u!4 &714334732 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7878350319992209165, guid: 7489b30d21a934c678ecfabbb4f9e6ec, type: 3}
@@ -13086,6 +13120,7 @@ GameObject:
   - component: {fileID: 1466561435}
   - component: {fileID: 1466561439}
   - component: {fileID: 1466561440}
+  - component: {fileID: 1466561441}
   m_Layer: 6
   m_Name: Option1
   m_TagString: Untagged
@@ -13301,6 +13336,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorType: 1
+--- !u!114 &1466561441
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1466561433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94889eaa300124d00841a3cffdfeffae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSe: {fileID: 0}
+  hoverVolume: 1
+  clickSe: {fileID: 0}
+  clickVolume: 1
 --- !u!1 &1477400320
 GameObject:
   m_ObjectHideFlags: 0

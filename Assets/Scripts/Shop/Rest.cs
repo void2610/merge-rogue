@@ -20,7 +20,6 @@ public class Rest : MonoBehaviour
 
     private static void OnClickOrganise()
     {
-        SeManager.Instance.PlaySe("button");
         EventManager.OnOrganise.Trigger(0);
         InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Swap);
         UIManager.Instance.EnableCanvasGroup("Rest", false);
@@ -28,7 +27,6 @@ public class Rest : MonoBehaviour
     
     private static void OnClickSkip()
     {
-        SeManager.Instance.PlaySe("button");
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
         UIManager.Instance.EnableCanvasGroup("Rest", false);
     }

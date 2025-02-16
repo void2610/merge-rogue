@@ -422,6 +422,7 @@ GameObject:
   - component: {fileID: 6095059329198060541}
   - component: {fileID: -6177092554125990622}
   - component: {fileID: -2943531028894741355}
+  - component: {fileID: 823926944154484948}
   m_Layer: 5
   m_Name: RelicUI
   m_TagString: Untagged
@@ -502,6 +503,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cursorType: 2
+--- !u!114 &823926944154484948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6729976926087826395}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94889eaa300124d00841a3cffdfeffae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSe: {fileID: 8300000, guid: b43d102aac6b145468dcaa94a5cccae1, type: 3}
+  hoverVolume: 0.2
+  clickSe: {fileID: 0}
+  clickVolume: 0
 --- !u!1 &8619178044442869612
 GameObject:
   m_ObjectHideFlags: 0

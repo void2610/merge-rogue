@@ -83,7 +83,6 @@ public class Shop : MonoBehaviour
         InventoryManager.Instance.AddBall(ball);
         _itemObjects[index].transform.position = _disabledPosition;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
-        SeManager.Instance.PlaySe("coin");
     }
 
     private void BuyRelic(int index)
@@ -94,7 +93,6 @@ public class Shop : MonoBehaviour
         RelicManager.Instance.AddRelic(relic);
         _itemObjects[index].transform.position = _disabledPosition;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
-        SeManager.Instance.PlaySe("coin");
     }
 
     private void SetBallEvent(GameObject g, BallData ball, int index)
@@ -178,11 +176,7 @@ public class Shop : MonoBehaviour
         InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Remove);
     }
     
-    private void OnClickSkipButton()
-    {
-        SeManager.Instance.PlaySe("button");
-        CloseShop();
-    }
+    private void OnClickSkipButton() => CloseShop();
 
     private void Awake()
     {

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8397706770627611309}
   - component: {fileID: -3941906540827043490}
   - component: {fileID: 289179466497742642}
+  - component: {fileID: 3136627871262568734}
   m_Layer: 0
   m_Name: BallUI
   m_TagString: Untagged
@@ -106,6 +107,22 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 2.5, y: -5}
   m_UseGraphicAlpha: 1
+--- !u!114 &3136627871262568734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5315751102541514650}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94889eaa300124d00841a3cffdfeffae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hoverSe: {fileID: 8300000, guid: b43d102aac6b145468dcaa94a5cccae1, type: 3}
+  hoverVolume: 0.2
+  clickSe: {fileID: 0}
+  clickVolume: 0
 --- !u!1 &5754675438085831740
 GameObject:
   m_ObjectHideFlags: 0

@@ -78,16 +78,8 @@ public class SeManager : MonoBehaviour
     {
         var soundData = soundDatas.FirstOrDefault(t => t.name == seName);
         var audioSource = GetUnusedAudioSource();
-        if (soundData == null)
-        {
-            Debug.LogError("AudioClip could not be found: " + seName);
-            return;
-        }
-        if (!audioSource)
-        {
-            // Debug.LogWarning("There is no available AudioSource");
-            return;
-        }
+        if (soundData == null) return;
+        if (!audioSource) return;
 
         audioSource.clip = soundData.audioClip;
         audioSource.volume = soundData.volume * volume;
