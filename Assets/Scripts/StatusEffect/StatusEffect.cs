@@ -99,6 +99,7 @@ public static class StatusEffectFactory
             StatusEffectType.Invincible => new InvincibleEffect(initialStack),
             StatusEffectType.Shock => new ShockEffect(initialStack),
             StatusEffectType.Power => new PowerEffect(initialStack),
+            StatusEffectType.Strength => new StrengthEffect(initialStack),
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
         
@@ -116,7 +117,8 @@ public static class StatusEffectFactory
             StatusEffectType.Freeze => new Color(0, 0.5f, 1),
             StatusEffectType.Invincible => new Color(1, 1, 0),
             StatusEffectType.Shock => new Color(0.7f, 0, 0.7f),
-            StatusEffectType.Power => new Color(1, 0.5f, 0),
+            StatusEffectType.Power => new Color(1, 0.3f, 0),
+            StatusEffectType.Strength => new Color(1, 0.2f, 0.5f),
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
     }
@@ -133,6 +135,7 @@ public static class StatusEffectFactory
             StatusEffectType.Invincible => "Invincible",
             StatusEffectType.Shock => "Shock",
             StatusEffectType.Power => "Power",
+            StatusEffectType.Strength => "Strength",
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
     }
@@ -149,6 +152,7 @@ public static class StatusEffectFactory
             StatusEffectType.Invincible => "無敵",
             StatusEffectType.Shock => "感電",
             StatusEffectType.Power => "パワー",
+            StatusEffectType.Strength => "強化",
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
     }
@@ -243,5 +247,17 @@ public class PowerEffect : StatusEffectBase
     {
         ShowEffectText();
         return outgoingAttack + StackCount;
+    }
+}
+
+// スタック数に応じて攻撃力に倍率をかける　(1 + 0.1 * n)倍
+public class StrengthEffect : StatusEffectBase
+{
+    public StrengthEffect(int initialStack) : base(StatusEffectType.Strength, initialStack, true) { }
+
+    public override int ModifyAttack(int outgoingAttack)
+    {
+        ShowEffectText();
+        return (int)(outgoingAttack * (1 + StackCount * 0.1f));
     }
 }
