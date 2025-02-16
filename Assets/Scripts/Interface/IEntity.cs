@@ -8,6 +8,7 @@ public interface IEntity
     public void Heal(int healAmount);
     public void AddStatusEffect(StatusEffectBase effect);
     int ModifyIncomingDamage(int amount);
+    int ModifyOutgoingAttack(int amount);
     public UniTaskVoid UpdateStatusEffects();
     public void OnBattleEnd();
 }

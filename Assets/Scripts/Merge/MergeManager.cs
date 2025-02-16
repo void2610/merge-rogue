@@ -153,6 +153,10 @@ public class MergeManager : MonoBehaviour
             return;
         }
         
+        // プレイヤーの状態異常で攻撃力を更新
+        _singleAttackCount = GameManager.Instance.Player.ModifyOutgoingAttack(_singleAttackCount);
+        _allAttackCount = GameManager.Instance.Player.ModifyOutgoingAttack(_allAttackCount);
+        
         // イベントでパラメータを更新
         var p = ((int)(_singleAttackCount * attackMagnification), (int)(_allAttackCount * attackMagnification));
         EventManager.OnPlayerAttack.Trigger(p);

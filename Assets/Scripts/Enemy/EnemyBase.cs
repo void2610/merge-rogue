@@ -88,6 +88,11 @@ public class EnemyBase : MonoBehaviour, IEntity
         return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyDamage(current));
     }
     
+    public int ModifyOutgoingAttack(int amount)
+    {
+        return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyAttack(current));
+    }
+    
     public void OnBattleEnd()
     {
         foreach (var effect in StatusEffects)
@@ -161,7 +166,9 @@ public class EnemyBase : MonoBehaviour, IEntity
 
     private void Attack()
     {
-        GameManager.Instance.Player.Damage(Mathf.Max(1, attack));
+        // 状態異常で攻撃力を更新
+        var damage = ModifyOutgoingAttack(attack);
+        GameManager.Instance.Player.Damage(Mathf.Max(1, damage));
         this.transform.DOMoveX(-0.75f, 0.02f).SetRelative(true).OnComplete(() =>
                 {
                     this.transform.DOMoveX(0.75f, 0.2f).SetRelative(true).SetEase(Ease.OutExpo).SetLink(gameObject);

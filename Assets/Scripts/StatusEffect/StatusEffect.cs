@@ -1,6 +1,26 @@
 using System;
 using UnityEngine;
 
+public enum StatusEffectType
+{
+    Burn,
+    Regeneration,
+    Shield,
+    Freeze,
+    Invincible,
+    Shock,
+    Power,
+    Strength,
+    // Poison,
+    // Stun,
+    // Barrier,
+    // Weakness,
+    // Drain,  
+    // Reflect,
+    // Absorb,
+    // Counter,
+    // Dodge,
+}
 
 public abstract class StatusEffectBase
 {
@@ -36,11 +56,16 @@ public abstract class StatusEffectBase
     }
     
     // ターン経過時の処理、スタック数が0になったらtrueを返す
-    public abstract void OnTurnEnd(IEntity target);
+    public virtual void OnTurnEnd(IEntity target) { }
     
     public virtual int ModifyDamage(int incomingDamage)
     {
         return incomingDamage;
+    }
+    
+    public virtual int ModifyAttack(int outgoingAttack)
+    {
+        return outgoingAttack;
     }
     
     // 戦闘終了時の処理、スタック数が0になったらtrueを返す
@@ -52,17 +77,7 @@ public abstract class StatusEffectBase
 
     protected void ShowEffectText(int priority = 0)
     {
-        var effectText = Type switch
-        {
-            StatusEffectType.Burn => "Burn",
-            StatusEffectType.Regeneration => "Regeneration",
-            StatusEffectType.Shield => "Guard",
-            StatusEffectType.Freeze => "Freeze",
-            StatusEffectType.Invincible => "Invincible",
-            StatusEffectType.Shock => "Shock",
-            _ => throw new ArgumentException("Invalid StatusEffectType")
-        };
-        
+        var effectText = Type.GetStatusEffectName();
         var textColor = Type.GetStatusEffectColor();
         
         var isP = _isPlayer ? 1 : -1;
@@ -83,6 +98,7 @@ public static class StatusEffectFactory
             StatusEffectType.Freeze => new FreezeEffect(initialStack),
             StatusEffectType.Invincible => new InvincibleEffect(initialStack),
             StatusEffectType.Shock => new ShockEffect(initialStack),
+            StatusEffectType.Power => new PowerEffect(initialStack),
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
         
@@ -100,6 +116,23 @@ public static class StatusEffectFactory
             StatusEffectType.Freeze => new Color(0, 0.5f, 1),
             StatusEffectType.Invincible => new Color(1, 1, 0),
             StatusEffectType.Shock => new Color(0.7f, 0, 0.7f),
+            StatusEffectType.Power => new Color(1, 0.5f, 0),
+            _ => throw new ArgumentException("Invalid StatusEffectType")
+        };
+    }
+    
+    // 状態異常の英語名を取得する拡張メソッド
+    public static string GetStatusEffectName(this StatusEffectType type)
+    {
+        return type switch
+        {
+            StatusEffectType.Burn => "Burn",
+            StatusEffectType.Regeneration => "Regeneration",
+            StatusEffectType.Shield => "Guard",
+            StatusEffectType.Freeze => "Freeze",
+            StatusEffectType.Invincible => "Invincible",
+            StatusEffectType.Shock => "Shock",
+            StatusEffectType.Power => "Power",
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
     }
@@ -115,6 +148,7 @@ public static class StatusEffectFactory
             StatusEffectType.Freeze => "凍結",
             StatusEffectType.Invincible => "無敵",
             StatusEffectType.Shock => "感電",
+            StatusEffectType.Power => "パワー",
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
     }
@@ -152,8 +186,6 @@ public class RegenerationEffect : StatusEffectBase
 public class ShieldEffect : StatusEffectBase
 {
     public ShieldEffect(int initialStack) : base(StatusEffectType.Shield, initialStack, true) { }
-
-    public override void OnTurnEnd(IEntity target) { }
     
     public override int ModifyDamage(int incomingDamage)
     {
@@ -172,16 +204,12 @@ public class ShieldEffect : StatusEffectBase
 public class FreezeEffect : StatusEffectBase
 {
     public FreezeEffect(int initialStack) : base(StatusEffectType.Freeze, initialStack, false) { }
-
-    public override void OnTurnEnd(IEntity target) { }
 }
 
 // スタックがある限り無敵
 public class InvincibleEffect : StatusEffectBase
 {
     public InvincibleEffect(int initialStack) : base(StatusEffectType.Invincible, initialStack, false) { }
-
-    public override void OnTurnEnd(IEntity target) { }
     
     public override int ModifyDamage(int incomingDamage)
     {
@@ -203,5 +231,17 @@ public class ShockEffect : StatusEffectBase
         EnemyContainer.Instance.DamageAllEnemies(damage);
         SeManager.Instance.PlaySe("enemyAttack");
         ShowEffectText();
+    }
+}
+
+// スタック数に応じて追加ダメージを与える
+public class PowerEffect : StatusEffectBase
+{
+    public PowerEffect(int initialStack) : base(StatusEffectType.Power, initialStack, true) { }
+
+    public override int ModifyAttack(int outgoingAttack)
+    {
+        ShowEffectText();
+        return outgoingAttack + StackCount;
     }
 }

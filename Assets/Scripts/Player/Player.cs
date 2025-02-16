@@ -50,6 +50,11 @@ public class Player : MonoBehaviour, IEntity
         return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyDamage(current));
     }
     
+    public int ModifyOutgoingAttack(int amount)
+    {
+        return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyAttack(current));
+    }
+    
     public void OnBattleEnd()
     {
         for (var i = StatusEffects.Count - 1; i >= 0; i--)

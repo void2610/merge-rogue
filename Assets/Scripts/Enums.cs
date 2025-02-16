@@ -29,26 +29,6 @@ public enum StageType
     Undefined
 }
 
-public enum StatusEffectType
-{
-    Burn,
-    Regeneration,
-    Shield,
-    Freeze,
-    Invincible,
-    Shock,
-    // Poison,
-    // Stun,
-    // Barrier,
-    // Weakness,
-    // Strength,
-    // Drain,  
-    // Reflect,
-    // Absorb,
-    // Counter,
-    // Dodge,
-}
-
 public static class MyColors
 {
     /// <summary>
