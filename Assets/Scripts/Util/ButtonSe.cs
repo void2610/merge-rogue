@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ButtonSe : MonoBehaviour
+public class ButtonSe : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
 {
     [SerializeField] private AudioClip hoverSe;
     [SerializeField] private float hoverVolume = 1.0f;
@@ -13,5 +13,12 @@ public class ButtonSe : MonoBehaviour
         if (clickSe == null) return;
         var pitch = Random.Range(0.9f, 1.1f); 
         SeManager.Instance.PlaySe(clickSe, clickVolume, pitch);
+    }
+    
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (hoverSe == null) return;
+        var pitch = Random.Range(0.9f, 1.1f); 
+        SeManager.Instance.PlaySe(hoverSe, hoverVolume, pitch);
     }
 }
