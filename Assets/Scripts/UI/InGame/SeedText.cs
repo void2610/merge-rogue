@@ -15,7 +15,7 @@ public class SeedText : MonoBehaviour
         this.GetComponent<Button>().onClick.AddListener(() =>
         {
             GUIUtility.systemCopyBuffer = _text.text.Split(' ')[1];
-            NotifyWindow.Instance.Notify("シード値をコピーしました");
+            NotifyWindow.Instance.Notify("シード値をコピーしました", NotifyWindow.NotifyIconType.Setting);
         });
     }
 }

@@ -312,7 +312,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94889eaa300124d00841a3cffdfeffae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverSe: {fileID: 8300000, guid: b43d102aac6b145468dcaa94a5cccae1, type: 3}
-  hoverVolume: 0.2
+  hoverSe: {fileID: 0}
+  hoverVolume: 0
   clickSe: {fileID: 8300000, guid: 716112fe76c2042118b1544b0bff7125, type: 3}
   clickVolume: 1

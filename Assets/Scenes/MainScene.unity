@@ -1323,9 +1323,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94889eaa300124d00841a3cffdfeffae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverSe: {fileID: 0}
-  hoverVolume: 1
-  clickSe: {fileID: 0}
+  hoverSe: {fileID: 8300000, guid: b43d102aac6b145468dcaa94a5cccae1, type: 3}
+  hoverVolume: 0.2
+  clickSe: {fileID: 8300000, guid: a2af495fb5b1b43a3b9457da3e08de07, type: 3}
   clickVolume: 1
 --- !u!1001 &127237018
 PrefabInstance:
@@ -6137,9 +6137,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94889eaa300124d00841a3cffdfeffae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverSe: {fileID: 0}
-  hoverVolume: 1
-  clickSe: {fileID: 0}
+  hoverSe: {fileID: 8300000, guid: b43d102aac6b145468dcaa94a5cccae1, type: 3}
+  hoverVolume: 0.2
+  clickSe: {fileID: 8300000, guid: a2af495fb5b1b43a3b9457da3e08de07, type: 3}
   clickVolume: 1
 --- !u!4 &714334732 stripped
 Transform:
@@ -13348,9 +13348,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 94889eaa300124d00841a3cffdfeffae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hoverSe: {fileID: 0}
-  hoverVolume: 1
-  clickSe: {fileID: 0}
+  hoverSe: {fileID: 8300000, guid: b43d102aac6b145468dcaa94a5cccae1, type: 3}
+  hoverVolume: 0.2
+  clickSe: {fileID: 8300000, guid: a2af495fb5b1b43a3b9457da3e08de07, type: 3}
   clickVolume: 1
 --- !u!1 &1477400320
 GameObject:
@@ -18299,13 +18299,13 @@ MonoBehaviour:
   iconSprites:
     _list:
     - key: 0
-      value: {fileID: 21300000, guid: 141dcd1439a644dbc95eaf535c21d822, type: 3}
+      value: {fileID: 21300000, guid: 4a06ac434eddc4ba9b229395ef26af41, type: 3}
     - key: 1
-      value: {fileID: -1571012651542167539, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+      value: {fileID: 21300000, guid: 962ad27993ed9487f8233a134e56b3af, type: 3}
     - key: 2
-      value: {fileID: 21300000, guid: a54e7f6dba5444be1a868f9b27485ede, type: 3}
-    - key: 3
       value: {fileID: 21300000, guid: fb1884f08ef724424a2417026dbe35f3, type: 3}
+    - key: 3
+      value: {fileID: 21300000, guid: 141dcd1439a644dbc95eaf535c21d822, type: 3}
 --- !u!114 &2230902143142103757
 MonoBehaviour:
   m_ObjectHideFlags: 0

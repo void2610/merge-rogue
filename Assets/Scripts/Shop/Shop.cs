@@ -79,7 +79,7 @@ public class Shop : MonoBehaviour
     {
         var ball = _currentItems[index] as BallData;
         if (!ball) return;
-        
+        SeManager.Instance.PlaySe("coin");
         InventoryManager.Instance.AddBall(ball);
         _itemObjects[index].transform.position = _disabledPosition;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
@@ -89,7 +89,7 @@ public class Shop : MonoBehaviour
     {
         var relic = _currentItems[index] as RelicData;
         if (!relic) return;
-    
+        SeManager.Instance.PlaySe("coin");
         RelicManager.Instance.AddRelic(relic);
         _itemObjects[index].transform.position = _disabledPosition;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
