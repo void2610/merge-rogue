@@ -20,7 +20,6 @@ public class TitleMenu : MonoBehaviour
 
     public void StartGame()
     {
-        SeManager.Instance.PlaySe("button");
         fadeImage.color = new Color(0, 0, 0, 0);
         fadeImage.DOFade(1.0f, 1.0f).OnComplete(() =>
         {
@@ -30,7 +29,6 @@ public class TitleMenu : MonoBehaviour
     
     public void ShowEncyclopedia()
     {
-        PlayButtonSe();
         encyclopedia.alpha = 1.0f;
         encyclopedia.interactable = true;
         encyclopedia.blocksRaycasts = true;
@@ -38,7 +36,6 @@ public class TitleMenu : MonoBehaviour
     
     public void HideEncyclopedia()
     {
-        PlayButtonSe();
         encyclopedia.alpha = 0.0f;
         encyclopedia.interactable = false;
         encyclopedia.blocksRaycasts = false;
@@ -46,7 +43,6 @@ public class TitleMenu : MonoBehaviour
 
     public void ShowCredit()
     {
-        PlayButtonSe();
         credit.alpha = 1.0f;
         credit.interactable = true;
         credit.blocksRaycasts = true;
@@ -54,7 +50,6 @@ public class TitleMenu : MonoBehaviour
 
     public void HideCredit()
     {
-        PlayButtonSe();
         credit.alpha = 0.0f;
         credit.interactable = false;
         credit.blocksRaycasts = false;
@@ -62,7 +57,6 @@ public class TitleMenu : MonoBehaviour
 
     public void ShowLicense()
     {
-        PlayButtonSe();
         license.alpha = 1.0f;
         license.interactable = true;
         license.blocksRaycasts = true;
@@ -70,7 +64,6 @@ public class TitleMenu : MonoBehaviour
 
     public void HideLicense()
     {
-        PlayButtonSe();
         license.alpha = 0.0f;
         license.interactable = false;
         license.blocksRaycasts = false;
@@ -79,12 +72,6 @@ public class TitleMenu : MonoBehaviour
     public void ShowDescriptionWindow(object o, GameObject g)
     {
         descriptionWindow.ShowWindowWithHoverCheck(o, g).Forget();
-    }
-
-    public static void PlayButtonSe()
-    {
-        if (Time.time > 0.5f)
-            SeManager.Instance.PlaySe("button");
     }
 
     private static void InitPlayerPrefs()
