@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using UnityEngine;
-
 public class CriticalBall : BallBase
 {
     protected override void Effect(BallBase other)

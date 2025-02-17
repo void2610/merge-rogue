@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using UnityEngine;
 using R3;
 
 public class DoubleAttackWhenLowHealth : RelicBase
@@ -15,7 +12,7 @@ public class DoubleAttackWhenLowHealth : RelicBase
     {
         if (GameManager.Instance.Player.Health.Value <= GameManager.Instance.Player.MaxHealth.Value * 0.2f)
         {
-            StatusEffectFactory.AddStatusEffect(GameManager.Instance.Player, StatusEffectType.Rage, 10);
+            StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Rage, 10);
             UI?.ActivateUI();
         }
     }

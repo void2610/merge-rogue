@@ -88,8 +88,22 @@ public abstract class StatusEffectBase
 
 public static class StatusEffectFactory
 {
+    public static void AddStatusEffectToPlayer(StatusEffectType type, int initialStack = 1)
+    {
+        EventManager.OnPlayerStatusEffect.Trigger(type);
+        AddStatusEffect(GameManager.Instance.Player, type, initialStack);
+    }
+    
     public static void AddStatusEffect(IEntity target, StatusEffectType type, int initialStack = 1)
     {
+        if (target is EnemyBase enemyBase)
+        {
+            EventManager.OnEnemyStatusEffect.Trigger((enemyBase, type));
+            target = enemyBase;
+        }
+        else
+            throw new ArgumentException("Invalid Entity Type");
+        
         StatusEffectBase newEffect = type switch
         {
             StatusEffectType.Burn => new BurnEffect(initialStack),

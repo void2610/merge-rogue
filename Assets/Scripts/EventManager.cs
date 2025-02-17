@@ -21,6 +21,10 @@ public static class EventManager
     public static readonly GameEvent<int> OnPlayerDamage = new (0);
     // プレイヤーの回復時: プレイヤーの回復量
     public static readonly GameEvent<int> OnPlayerHeal = new (0);
+    // プレイヤーの状態異常時: 状態異常の種類
+    public static readonly GameEvent<StatusEffectType> OnPlayerStatusEffect = new (StatusEffectType.Burn);
+    // 敵の状態異常時: (敵, 状態異常の種類)
+    public static readonly GameEvent<(EnemyBase, StatusEffectType)> OnEnemyStatusEffect = new ((null, StatusEffectType.Burn));
     // 敵出現時: 敵の出現数
     public static readonly GameEvent<int> OnEnemySpawn = new (0);
     // 敵の初期化時: 敵のステータス倍率

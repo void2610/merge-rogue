@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class #SCRIPT_NAME# : BallBase
 {
     protected override void Awake()

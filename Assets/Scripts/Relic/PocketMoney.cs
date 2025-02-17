@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using UnityEngine;
 using R3;
 
 public class PocketMoney : RelicBase

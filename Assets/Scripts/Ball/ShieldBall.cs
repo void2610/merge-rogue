@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class ShieldBall : BallBase
 {
     protected override void Effect(BallBase other)
@@ -7,6 +5,6 @@ public class ShieldBall : BallBase
         base.Effect(other);
         
         DefaultMergeParticle();
-        StatusEffectFactory.AddStatusEffect(GameManager.Instance.Player, StatusEffectType.Shield, this.Rank);
+        StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Shield, this.Rank);
     }
 }

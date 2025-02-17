@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using UnityEngine;
 using R3;
 
 public class HaisuiNoJin : RelicBase
@@ -18,7 +15,7 @@ public class HaisuiNoJin : RelicBase
 
     protected override void EffectImpl(Unit _)
     {   
-        StatusEffectFactory.AddStatusEffect(GameManager.Instance.Player, StatusEffectType.Invincible, 1);
+        StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Invincible, 1);
         UI?.ActivateUI();
     }
 }

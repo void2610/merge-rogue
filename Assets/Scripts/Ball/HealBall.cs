@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class HealBall : BallBase
 {
     protected override void Effect(BallBase other)
