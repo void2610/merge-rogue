@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ButtonSe : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler
+public class ButtonSe : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, ISelectHandler, ISubmitHandler
 {
     [SerializeField] private AudioClip hoverSe;
     [SerializeField] private float hoverVolume = 1.0f;
@@ -11,24 +11,45 @@ public class ButtonSe : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     
     private Button _button;
     
-    public void OnPointerClick(PointerEventData eventData)
+    private void Awake()
     {
-        if(_button && !_button.interactable) return;
+        _button = GetComponent<Button>();
+    }
+    
+    // 共通のホバーサウンド再生処理
+    private void PlayHoverSound()
+    {
+        if (_button && !_button.interactable) return;
+        if (hoverSe == null) return;
+        var pitch = Random.Range(0.9f, 1.1f);
+        SeManager.Instance.PlaySe(hoverSe, hoverVolume, pitch);
+    }
+    
+    private void PlayClickSound()
+    {
+        if (_button && !_button.interactable) return;
         if (clickSe == null) return;
-        var pitch = Random.Range(0.9f, 1.1f); 
+        var pitch = Random.Range(0.9f, 1.1f);
         SeManager.Instance.PlaySe(clickSe, clickVolume, pitch);
     }
     
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if(_button && !_button.interactable) return;
-        if (hoverSe == null) return;
-        var pitch = Random.Range(0.9f, 1.1f); 
-        SeManager.Instance.PlaySe(hoverSe, hoverVolume, pitch);
+        PlayHoverSound();
     }
     
-    private void Awake()
+    public void OnSelect(BaseEventData eventData)
     {
-        _button = this.GetComponent<Button>();
+        PlayHoverSound();
+    }
+    
+    public void OnSubmit(BaseEventData eventData)
+    {
+        PlayClickSound();
+    }
+    
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        PlayClickSound();
     }
 }

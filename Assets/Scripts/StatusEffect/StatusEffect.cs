@@ -101,9 +101,7 @@ public static class StatusEffectFactory
             EventManager.OnEnemyStatusEffect.Trigger((enemyBase, type));
             target = enemyBase;
         }
-        else
-            throw new ArgumentException("Invalid Entity Type");
-        
+
         StatusEffectBase newEffect = type switch
         {
             StatusEffectType.Burn => new BurnEffect(initialStack),
