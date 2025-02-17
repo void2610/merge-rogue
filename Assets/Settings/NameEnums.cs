@@ -27,9 +27,10 @@ namespace uPalette.Generated
         BackGround,
         Display,
         Accent,
-        Button,
-        WindowBackGround,
+        PressedButton,
+        NormalButton,
         SubText,
+        NewColor,
     }
 
     public static class ColorEntryExtensions
@@ -46,12 +47,14 @@ namespace uPalette.Generated
                     return "b64c48df-8757-4910-a698-0f474f0b13e1";
                 case ColorEntry.Accent:
                     return "c2f11f32-6b76-49f4-a9cf-916e11b26cc6";
-                case ColorEntry.Button:
+                case ColorEntry.PressedButton:
                     return "a4a97bfe-89a3-46d8-86dd-bd692b94adb3";
-                case ColorEntry.WindowBackGround:
+                case ColorEntry.NormalButton:
                     return "8ab899da-40ec-48f6-acd4-8f66a0079bc6";
                 case ColorEntry.SubText:
                     return "2e8f84c6-5cff-4f73-8793-b449a0124623";
+                case ColorEntry.NewColor:
+                    return "ad87a1fd-fc16-4446-9f4c-d9390dbca292";
                 default:
                     throw new ArgumentOutOfRangeException(nameof(entry), entry, null);
             }

@@ -22,6 +22,7 @@ MonoBehaviour:
       - a4a97bfe-89a3-46d8-86dd-bd692b94adb3
       - 8ab899da-40ec-48f6-acd4-8f66a0079bc6
       - 2e8f84c6-5cff-4f73-8793-b449a0124623
+      - ad87a1fd-fc16-4446-9f4c-d9390dbca292
       _values:
       - _id: af515ef3-f896-4abf-80b8-0ab3bc46b877
         _name:
@@ -30,7 +31,7 @@ MonoBehaviour:
           _keys:
           - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
           _values:
-          - _value: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+          - _value: {r: 0.9245283, g: 0.9245283, b: 0.9245283, a: 1}
       - _id: 08bdf8f5-274e-41e3-9fb0-10254636975e
         _name:
           _value: BackGround
@@ -62,7 +63,7 @@ MonoBehaviour:
           _keys:
           - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
           _values:
-          - _value: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 1}
+          - _value: {r: 1, g: 1, b: 1, a: 1}
       - _id: 8ab899da-40ec-48f6-acd4-8f66a0079bc6
         _name:
           _value: WindowBackGround
@@ -70,7 +71,7 @@ MonoBehaviour:
           _keys:
           - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
           _values:
-          - _value: {r: 0.41509432, g: 0.41509432, b: 0.41509432, a: 1}
+          - _value: {r: 0.43529412, g: 0.43529412, b: 0.43529412, a: 1}
       - _id: 2e8f84c6-5cff-4f73-8793-b449a0124623
         _name:
           _value: SubText
@@ -79,6 +80,14 @@ MonoBehaviour:
           - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
           _values:
           - _value: {r: 0.4, g: 0.4, b: 0.4, a: 1}
+      - _id: ad87a1fd-fc16-4446-9f4c-d9390dbca292
+        _name:
+          _value: New Color
+        _values:
+          _keys:
+          - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
+          _values:
+          - _value: {r: 1, g: 1, b: 1, a: 1}
     _themes:
       _keys:
       - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
@@ -95,6 +104,7 @@ MonoBehaviour:
       - a4a97bfe-89a3-46d8-86dd-bd692b94adb3
       - 8ab899da-40ec-48f6-acd4-8f66a0079bc6
       - 2e8f84c6-5cff-4f73-8793-b449a0124623
+      - ad87a1fd-fc16-4446-9f4c-d9390dbca292
     _themeOrders:
       _ids:
       - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
