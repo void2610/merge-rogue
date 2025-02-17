@@ -340,6 +340,7 @@ public class StageManager : MonoBehaviour
                 // 敵の出現量と強さを設定
                 GameManager.Instance.EnemyContainer.SpawnEnemy(CurrentStageCount.Value + 1, CurrentStageCount.Value);
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
+                EventManager.OnBattleStart.Trigger(0);
                 break;
             case StageType.Boss:
                 GameManager.Instance.EnemyContainer.SpawnBoss(CurrentStageCount.Value);

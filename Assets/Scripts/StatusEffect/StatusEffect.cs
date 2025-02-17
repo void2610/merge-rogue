@@ -10,7 +10,7 @@ public enum StatusEffectType
     Invincible,
     Shock,
     Power,
-    Strength,
+    Rage,
     // Poison,
     // Stun,
     // Barrier,
@@ -99,7 +99,7 @@ public static class StatusEffectFactory
             StatusEffectType.Invincible => new InvincibleEffect(initialStack),
             StatusEffectType.Shock => new ShockEffect(initialStack),
             StatusEffectType.Power => new PowerEffect(initialStack),
-            StatusEffectType.Strength => new StrengthEffect(initialStack),
+            StatusEffectType.Rage => new RageEffect(initialStack),
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
         
@@ -118,7 +118,7 @@ public static class StatusEffectFactory
             StatusEffectType.Invincible => new Color(1, 1, 0),
             StatusEffectType.Shock => new Color(0.7f, 0, 0.7f),
             StatusEffectType.Power => new Color(1, 0.3f, 0),
-            StatusEffectType.Strength => new Color(1, 0.2f, 0.5f),
+            StatusEffectType.Rage => new Color(1, 0.2f, 0.5f),
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
     }
@@ -135,7 +135,7 @@ public static class StatusEffectFactory
             StatusEffectType.Invincible => "Invincible",
             StatusEffectType.Shock => "Shock",
             StatusEffectType.Power => "Power",
-            StatusEffectType.Strength => "Strength",
+            StatusEffectType.Rage => "Rage",
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
     }
@@ -152,7 +152,7 @@ public static class StatusEffectFactory
             StatusEffectType.Invincible => "無敵",
             StatusEffectType.Shock => "感電",
             StatusEffectType.Power => "パワー",
-            StatusEffectType.Strength => "強化",
+            StatusEffectType.Rage => "怒り",
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
     }
@@ -251,9 +251,9 @@ public class PowerEffect : StatusEffectBase
 }
 
 // スタック数に応じて攻撃力に倍率をかける　(1 + 0.1 * n)倍
-public class StrengthEffect : StatusEffectBase
+public class RageEffect : StatusEffectBase
 {
-    public StrengthEffect(int initialStack) : base(StatusEffectType.Strength, initialStack, true) { }
+    public RageEffect(int initialStack) : base(StatusEffectType.Rage, initialStack, true) { }
 
     public override int ModifyAttack(int outgoingAttack)
     {

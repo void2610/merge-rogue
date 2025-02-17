@@ -7,6 +7,8 @@ public static class EventManager
 {
     // ゲーム開始時: なし
     public static readonly GameEvent<int> OnGameStart = new (0);
+    // バトル開始時: なし
+    public static readonly GameEvent<int> OnBattleStart = new (0);
     // コイン獲得時: コイン獲得量
     public static readonly GameEvent<int> OnCoinGain = new (0);
     // コイン消費時: コイン消費量

@@ -7,7 +7,7 @@ public class DoubleAttackWhenLowHealth : RelicBase
 {
     protected override void SubscribeEffect()
     {
-        var disposable = EventManager.OnPlayerAttack.Subscribe(EffectImpl).AddTo(this);
+        var disposable = EventManager.OnBattleStart.Subscribe(EffectImpl).AddTo(this);
         Disposables.Add(disposable);
     }
     
@@ -15,8 +15,7 @@ public class DoubleAttackWhenLowHealth : RelicBase
     {
         if (GameManager.Instance.Player.Health.Value <= GameManager.Instance.Player.MaxHealth.Value * 0.2f)
         {
-            var atk = EventManager.OnPlayerAttack.GetValue();
-            EventManager.OnPlayerAttack.SetValue((atk.Item1 * 2, atk.Item2 * 2));
+            StatusEffectFactory.AddStatusEffect(GameManager.Instance.Player, StatusEffectType.Rage, 10);
             UI?.ActivateUI();
         }
     }
