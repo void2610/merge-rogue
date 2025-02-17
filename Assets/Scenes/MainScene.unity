@@ -7271,7 +7271,7 @@ MonoBehaviour:
   relicOffset: {x: 40, y: 37}
   relicUISize: 0.75
   testRelics:
-  - {fileID: 11400000, guid: 7c835d3faab7646dd9adc5f9736ffd5b, type: 2}
+  - {fileID: 11400000, guid: 64fe3870994dc4a6f8c7c24742c0f02b, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -16028,7 +16028,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1463760408155065306, guid: e480bd1c2f5a74059b9b2701a4c82171, type: 3}
       propertyPath: margin
-      value: 20
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 1463760408155065306, guid: e480bd1c2f5a74059b9b2701a4c82171, type: 3}
       propertyPath: iconSize
@@ -16036,7 +16036,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1463760408155065306, guid: e480bd1c2f5a74059b9b2701a4c82171, type: 3}
       propertyPath: offset.x
-      value: 0
+      value: -0.3
       objectReference: {fileID: 0}
     - target: {fileID: 1463760408155065306, guid: e480bd1c2f5a74059b9b2701a4c82171, type: 3}
       propertyPath: offset.y

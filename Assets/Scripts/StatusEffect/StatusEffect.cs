@@ -77,7 +77,7 @@ public abstract class StatusEffectBase
 
     protected void ShowEffectText(int priority = 0)
     {
-        var effectText = Type.GetStatusEffectName();
+        var effectText = Type.ToString() + "!";
         var textColor = Type.GetStatusEffectColor();
         
         var isP = _isPlayer ? 1 : -1;
@@ -119,23 +119,6 @@ public static class StatusEffectFactory
             StatusEffectType.Shock => new Color(0.7f, 0, 0.7f),
             StatusEffectType.Power => new Color(1, 0.3f, 0),
             StatusEffectType.Rage => new Color(1, 0.2f, 0.5f),
-            _ => throw new ArgumentException("Invalid StatusEffectType")
-        };
-    }
-    
-    // 状態異常の英語名を取得する拡張メソッド
-    public static string GetStatusEffectName(this StatusEffectType type)
-    {
-        return type switch
-        {
-            StatusEffectType.Burn => "Burn",
-            StatusEffectType.Regeneration => "Regeneration",
-            StatusEffectType.Shield => "Guard",
-            StatusEffectType.Freeze => "Freeze",
-            StatusEffectType.Invincible => "Invincible",
-            StatusEffectType.Shock => "Shock",
-            StatusEffectType.Power => "Power",
-            StatusEffectType.Rage => "Rage",
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
     }
