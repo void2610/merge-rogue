@@ -10,7 +10,7 @@ public class DoubleAttackWhenLowHealth : RelicBase
     
     protected override void EffectImpl(Unit _)
     {
-        if (GameManager.Instance.Player.Health.Value <= GameManager.Instance.Player.MaxHealth.Value * 0.2f)
+        if (GameManager.Instance.Player.Health.Value <= GameManager.Instance.Player.MaxHealth.Value * 0.2f　|| GameManager.Instance.Player.Health.Value <= 20)
         {
             StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Rage, 10);
             UI?.ActivateUI();
