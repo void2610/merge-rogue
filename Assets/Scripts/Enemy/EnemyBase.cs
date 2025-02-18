@@ -71,7 +71,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         _statusEffectUI.UpdateUI(StatusEffects);
     }
     
-    public async UniTaskVoid UpdateStatusEffects()
+    public async UniTask UpdateStatusEffects()
     {
         for (var i = StatusEffects.Count - 1; i >= 0; i--)
         {

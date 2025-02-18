@@ -20,7 +20,7 @@ public class EnemyContainer : MonoBehaviour
     [SerializeField] private float alignment = 4;
     [SerializeField] private Treasure treasure;
     public readonly ReactiveProperty<int> DefeatedEnemyCount = new(0);
-    private readonly List<GameObject> _currentEnemies = new();
+    private readonly List<EnemyBase> _currentEnemies = new();
     private readonly List<Vector3> _positions = new();
     private const int ENEMY_NUM = 4;
     private int _gainedExp;
@@ -32,19 +32,20 @@ public class EnemyContainer : MonoBehaviour
 
     public List<EnemyBase> GetAllEnemies()
     {
-        return _currentEnemies.Select(enemy => enemy.transform.GetChild(0).GetComponent<EnemyBase>()).ToList();
+        return _currentEnemies;
     }
 
     public void SpawnBoss(int stage)
     {
         var boss = ContentProvider.Instance.GetRandomBoss();
+        var bossBase = boss.transform.GetChild(0).GetComponent<EnemyBase>();
         boss.transform.parent = this.transform;
         boss.transform.localScale = new Vector3(1, 1, 1);
         boss.transform.position = _positions[_currentEnemies.Count];
         // 敵の強さパラメータを設定
         var m = ((stage + 1) * 0.6f);
-        boss.transform.GetComponentsInChildren<EnemyBase>()[0].Init(m);
-        _currentEnemies.Add(boss);
+        bossBase.Init(m);
+        _currentEnemies.Add(bossBase);
     }
 
     public void SpawnEnemy(int count, int stage)
@@ -59,8 +60,9 @@ public class EnemyContainer : MonoBehaviour
             e.transform.localScale = new Vector3(1, 1, 1);
             // 敵の強さパラメータを設定
             var m = ((stage + 1) * 0.6f);
-            e.transform.GetComponentsInChildren<EnemyBase>()[0].Init(m);
-            _currentEnemies.Add(e);
+            var enemyBase = e.transform.GetComponentsInChildren<EnemyBase>()[0];
+            enemyBase.Init(m);
+            _currentEnemies.Add(enemyBase);
         }
     }
     
@@ -68,7 +70,7 @@ public class EnemyContainer : MonoBehaviour
     {
         for(var i = 0; i < _currentEnemies.Count; i++)
         {
-            _currentEnemies[i].transform.GetChild(0).GetComponent<EnemyBase>().Damage(damage);
+            _currentEnemies[i].Damage(damage);
         }
     }
 
@@ -77,8 +79,7 @@ public class EnemyContainer : MonoBehaviour
         var enemyBase = enemy.GetComponent<EnemyBase>();
         DefeatedEnemyCount.Value++;
         _gainedExp += enemyBase.exp;
-        var g = enemy.transform.parent.gameObject;
-        _currentEnemies.Remove(g);
+        _currentEnemies.Remove(enemyBase);
         enemyBase.OnDisappear();
 
         // ボスを倒したら全回復してレリック獲得
@@ -139,9 +140,9 @@ public class EnemyContainer : MonoBehaviour
             ParticleManager.Instance.AllHitParticle(new Vector3(-3.7f, 3.3f, 0));
             CameraMove.Instance.ShakeCamera(0.5f, allDamage * 0.03f);
             SeManager.Instance.PlaySe("playerAttack");
-            foreach (var e in es)
+            for(var i = 0; i < es.Count; i++)
             {
-                e.Damage(allDamage);
+                es[i].Damage(allDamage);
             }
             yield return new WaitForSeconds(0.5f);
         }
@@ -150,8 +151,9 @@ public class EnemyContainer : MonoBehaviour
 
         // 単体攻撃
         // 一番前の敵を攻撃、攻撃力が残っていたら次の敵を攻撃
-        foreach (var e in es)
+        for(var i = 0; i < es.Count; i++)
         {
+            var e = es[i];
             if(!e) continue;
             if (singleDamage <= 0) break;
             var actualDamage = singleDamage > e.Health ? e.Health : singleDamage;
@@ -183,7 +185,7 @@ public class EnemyContainer : MonoBehaviour
     private async UniTaskVoid AttackPlayerAsync()
     {
         // 行動
-        foreach (var enemyBase in _currentEnemies.Select(enemy => enemy.transform.GetChild(0).GetComponent<EnemyBase>()))
+        foreach (var enemyBase in _currentEnemies)
         {
             enemyBase.Action();
             // 0.5秒待つ
@@ -193,9 +195,9 @@ public class EnemyContainer : MonoBehaviour
         await UniTask.Delay(100);
         
         // 状態異常を更新
-        GameManager.Instance.Player.UpdateStatusEffects().Forget();
-        for (var i = 0; i < _currentEnemies.Count; i++)
-            _currentEnemies[i].transform.GetChild(0).GetComponent<EnemyBase>().UpdateStatusEffects().Forget();
+        await GameManager.Instance.Player.UpdateStatusEffects();
+        var tasks = _currentEnemies.ToList().Select(e => e.UpdateStatusEffects());
+        await UniTask.WhenAll(tasks);
 
         if(_currentEnemies.Count > 0)
             GameManager.Instance.ChangeState(GameManager.GameState.Merge);

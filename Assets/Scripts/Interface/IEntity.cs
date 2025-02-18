@@ -9,6 +9,6 @@ public interface IEntity
     public void AddStatusEffect(StatusEffectBase effect);
     int ModifyIncomingDamage(int amount);
     int ModifyOutgoingAttack(int amount);
-    public UniTaskVoid UpdateStatusEffects();
+    public UniTask UpdateStatusEffects();
     public void OnBattleEnd();
 }
