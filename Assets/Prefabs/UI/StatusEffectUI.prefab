@@ -52,15 +52,15 @@ MonoBehaviour:
   - type: 2
     sprite: {fileID: 21300000, guid: c83253d08f1ad4138b20d6ec1f7f6e7c, type: 3}
   - type: 3
-    sprite: {fileID: 3495086814825567685, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+    sprite: {fileID: 21300000, guid: c6e2320e4608a4b008789a3ae6e428a3, type: 3}
   - type: 4
     sprite: {fileID: 21300000, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
   - type: 5
-    sprite: {fileID: 8158563787144471110, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+    sprite: {fileID: 21300000, guid: 5c7c0d1c6c3c44f519591b024c5c54aa, type: 3}
   - type: 6
-    sprite: {fileID: -702928828, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+    sprite: {fileID: 21300000, guid: 80b8a6be5fb5b444ca82e5fd5a154cbc, type: 3}
   - type: 7
-    sprite: {fileID: 2101787439100353768, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+    sprite: {fileID: 21300000, guid: 2a0295ac0fa2a4f928839bebec56c29d, type: 3}
   statusEffectIconPrefab: {fileID: 3708291531335187832, guid: b3256b1f024ce47e79c60c9628eac4e6, type: 3}
   iconSize: 0.0125
   offset: {x: -0.68, y: 0.23}

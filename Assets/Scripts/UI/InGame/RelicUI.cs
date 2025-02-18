@@ -17,8 +17,8 @@ public class RelicUI : MonoBehaviour
     
     public void SetRelicData(RelicData r)
     {
-        _defaultColor = this.transform.Find("defaultColor").GetComponent<Image>().color;
-        _bloomColor = this.transform.Find("bloomColor").GetComponent<Image>().color;
+        // 6F6F6F
+        _defaultColor = new Color(0.435f, 0.435f, 0.435f, 1);
         
         this._relicData = r;
         relicImage.sprite = _relicData.sprite;
