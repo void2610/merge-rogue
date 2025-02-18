@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public static class EventManager
 {
-    // ゲーム開始時: なし
-    public static readonly GameEvent<int> OnGameStart = new (0);
     // バトル開始時: なし
     public static readonly GameEvent<int> OnBattleStart = new (0);
     // コイン獲得時: コイン獲得量
@@ -21,10 +19,14 @@ public static class EventManager
     public static readonly GameEvent<int> OnPlayerDamage = new (0);
     // プレイヤーの回復時: プレイヤーの回復量
     public static readonly GameEvent<int> OnPlayerHeal = new (0);
-    // プレイヤーの状態異常時: 状態異常の種類
-    public static readonly GameEvent<StatusEffectType> OnPlayerStatusEffect = new (StatusEffectType.Burn);
-    // 敵の状態異常時: (敵, 状態異常の種類)
-    public static readonly GameEvent<(EnemyBase, StatusEffectType)> OnEnemyStatusEffect = new ((null, StatusEffectType.Burn));
+    // プレイヤーに状態異常追加時: (状態異常の種類, スタック数)
+    public static readonly GameEvent<(StatusEffectType, int)> OnPlayerStatusEffectAdded = new ((StatusEffectType.Burn, 0));
+    // プレイヤーの状態異常発動時: 状態異常の種類
+    public static readonly GameEvent<StatusEffectType> OnPlayerStatusEffectTriggered = new (StatusEffectType.Burn);
+    // 敵に状態異常追加時: (敵, 状態異常の種類, スタック数)
+    public static readonly GameEvent<(EnemyBase, StatusEffectType, int)> OnEnemyStatusEffectAdded = new ((null, StatusEffectType.Burn, 0));
+    // 敵の状態異常発動時: (敵, 状態異常の種類)
+    public static readonly GameEvent<(EnemyBase, StatusEffectType)> OnEnemyStatusEffectTriggered = new ((null, StatusEffectType.Burn));
     // 敵出現時: 敵の出現数
     public static readonly GameEvent<int> OnEnemySpawn = new (0);
     // 敵の初期化時: 敵のステータス倍率

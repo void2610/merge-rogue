@@ -90,32 +90,34 @@ public static class StatusEffectFactory
 {
     public static void AddStatusEffectToPlayer(StatusEffectType type, int initialStack = 1)
     {
-        EventManager.OnPlayerStatusEffect.Trigger(type);
-        AddStatusEffect(GameManager.Instance.Player, type, initialStack);
+        EventManager.OnPlayerStatusEffectAdded.Trigger((type, initialStack));
+        var v = EventManager.OnPlayerStatusEffectAdded.GetValue();
+        AddStatusEffect(GameManager.Instance.Player, v.Item1, v.Item2);
     }
     
     public static void AddStatusEffect(IEntity target, StatusEffectType type, int initialStack = 1)
     {
         if (target is EnemyBase enemyBase)
         {
-            EventManager.OnEnemyStatusEffect.Trigger((enemyBase, type));
+            EventManager.OnEnemyStatusEffectAdded.Trigger((enemyBase, type, initialStack));
             target = enemyBase;
         }
+        var v = EventManager.OnEnemyStatusEffectAdded.GetValue();
 
-        StatusEffectBase newEffect = type switch
+        StatusEffectBase newEffect = v.Item2 switch
         {
-            StatusEffectType.Burn => new BurnEffect(initialStack),
-            StatusEffectType.Regeneration => new RegenerationEffect(initialStack),
-            StatusEffectType.Shield => new ShieldEffect(initialStack),
-            StatusEffectType.Freeze => new FreezeEffect(initialStack),
-            StatusEffectType.Invincible => new InvincibleEffect(initialStack),
-            StatusEffectType.Shock => new ShockEffect(initialStack),
-            StatusEffectType.Power => new PowerEffect(initialStack),
-            StatusEffectType.Rage => new RageEffect(initialStack),
+            StatusEffectType.Burn => new BurnEffect(v.Item3),
+            StatusEffectType.Regeneration => new RegenerationEffect(v.Item3),
+            StatusEffectType.Shield => new ShieldEffect(v.Item3),
+            StatusEffectType.Freeze => new FreezeEffect(v.Item3),
+            StatusEffectType.Invincible => new InvincibleEffect(v.Item3),
+            StatusEffectType.Shock => new ShockEffect(v.Item3),
+            StatusEffectType.Power => new PowerEffect(v.Item3),
+            StatusEffectType.Rage => new RageEffect(v.Item3),
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
         
-        target.AddStatusEffect(newEffect);
+        v.Item1.AddStatusEffect(newEffect);
     }
     
     // 状態異常の色を取得する拡張メソッド
