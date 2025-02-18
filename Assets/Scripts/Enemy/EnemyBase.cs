@@ -73,6 +73,7 @@ public class EnemyBase : MonoBehaviour, IEntity
     
     public async UniTask UpdateStatusEffects()
     {
+        if (!this.gameObject) return;
         for (var i = StatusEffects.Count - 1; i >= 0; i--)
         {
             StatusEffects[i].OnTurnEnd(this);
@@ -85,19 +86,19 @@ public class EnemyBase : MonoBehaviour, IEntity
     
     public int ModifyIncomingDamage(int amount)
     {
-        return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyDamage(current));
+        return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyDamage(this, current));
     }
     
     public int ModifyOutgoingAttack(int amount)
     {
-        return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyAttack(current));
+        return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyAttack(this, current));
     }
     
     public void OnBattleEnd()
     {
         foreach (var effect in StatusEffects)
         {
-            effect.OnBattleEnd();
+            effect.OnBattleEnd(this);
         }
         _statusEffectUI.UpdateUI(StatusEffects);
     }

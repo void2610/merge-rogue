@@ -184,10 +184,12 @@ public class EnemyContainer : MonoBehaviour
 
     private async UniTaskVoid AttackPlayerAsync()
     {
+        if(_currentEnemies.Count == 0) return;
         // 行動
-        foreach (var enemyBase in _currentEnemies)
+        for(var i = 0; i < _currentEnemies.Count; i ++)
         {
-            enemyBase.Action();
+            if (!_currentEnemies[i].gameObject) continue;
+            _currentEnemies[i].Action();
             // 0.5秒待つ
             await UniTask.Delay(500);
         }

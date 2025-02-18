@@ -24,16 +24,26 @@ public enum StatusEffectType
 
 public abstract class StatusEffectBase
 {
+    public enum EffectTiming
+    {
+        OnTurnEnd,
+        OnBattleEnd,
+        OnAttack,
+        OnDamage,
+    }
+    
     public StatusEffectType Type { get; }
     public int StackCount { get; protected set; }
+    private readonly EffectTiming _timing;
     private readonly bool _isPermanent;
     private bool _isPlayer = false;
     private Vector3 _entityPosition;
 
-    protected StatusEffectBase(StatusEffectType type, int initialStack, bool isPermanent = false)
+    protected StatusEffectBase(StatusEffectType type, int initialStack, EffectTiming timing, bool isPermanent = false)
     {
         this.Type = type;
         StackCount = initialStack;
+        _timing = timing;
         this._isPermanent = isPermanent;
     }
     
@@ -56,26 +66,60 @@ public abstract class StatusEffectBase
     }
     
     // ターン経過時の処理、スタック数が0になったらtrueを返す
-    public virtual void OnTurnEnd(IEntity target) { }
-    
-    public virtual int ModifyDamage(int incomingDamage)
+    public virtual void OnTurnEnd(IEntity target)
     {
+        if (_timing == EffectTiming.OnTurnEnd)
+        {
+            ShowEffectText();
+            if(_isPlayer)
+                EventManager.OnPlayerStatusEffectTriggered.Trigger((Type, StackCount));
+            else
+                EventManager.OnEnemyStatusEffectTriggered.Trigger((target as EnemyBase, Type, StackCount));
+        }
+    }
+    
+    public virtual int ModifyDamage(IEntity target, int incomingDamage)
+    {
+        if (_timing == EffectTiming.OnDamage)
+        {
+            ShowEffectText(1);
+            if (_isPlayer)
+                EventManager.OnPlayerStatusEffectTriggered.Trigger((Type, StackCount));
+            else
+                EventManager.OnEnemyStatusEffectTriggered.Trigger((target as EnemyBase, Type, StackCount));
+        }
         return incomingDamage;
     }
     
-    public virtual int ModifyAttack(int outgoingAttack)
+    public virtual int ModifyAttack(IEntity target, int outgoingAttack)
     {
+        if (_timing == EffectTiming.OnAttack)
+        {
+            ShowEffectText();
+            if (_isPlayer)
+                EventManager.OnPlayerStatusEffectTriggered.Trigger((Type, StackCount));
+            else
+                EventManager.OnEnemyStatusEffectTriggered.Trigger((target as EnemyBase, Type, StackCount));
+        }
         return outgoingAttack;
     }
     
     // 戦闘終了時の処理、スタック数が0になったらtrueを返す
-    public virtual bool OnBattleEnd()
+    public virtual bool OnBattleEnd(IEntity target)
     {
+        if (_timing == EffectTiming.OnBattleEnd)
+        {
+            ShowEffectText();
+            if (_isPlayer)
+                EventManager.OnPlayerStatusEffectTriggered.Trigger((Type, StackCount));
+            else
+                EventManager.OnEnemyStatusEffectTriggered.Trigger((target as EnemyBase, Type, StackCount));
+        }
         StackCount = 0;
         return true; 
     }
 
-    protected void ShowEffectText(int priority = 0)
+    private void ShowEffectText(int priority = 0)
     {
         var effectText = Type.ToString() + "!";
         var textColor = Type.GetStatusEffectColor();
@@ -91,33 +135,38 @@ public static class StatusEffectFactory
     public static void AddStatusEffectToPlayer(StatusEffectType type, int initialStack = 1)
     {
         EventManager.OnPlayerStatusEffectAdded.Trigger((type, initialStack));
-        var v = EventManager.OnPlayerStatusEffectAdded.GetValue();
-        AddStatusEffect(GameManager.Instance.Player, v.Item1, v.Item2);
+        AddStatusEffect(GameManager.Instance.Player, type, initialStack);
     }
     
     public static void AddStatusEffect(IEntity target, StatusEffectType type, int initialStack = 1)
     {
+        var tar = target;
+        StatusEffectType ty;
+        int stack;
         if (target is EnemyBase enemyBase)
         {
             EventManager.OnEnemyStatusEffectAdded.Trigger((enemyBase, type, initialStack));
-            target = enemyBase;
+            (tar, ty, stack) = EventManager.OnEnemyStatusEffectAdded.GetValue();
         }
-        var v = EventManager.OnEnemyStatusEffectAdded.GetValue();
-
-        StatusEffectBase newEffect = v.Item2 switch
+        else
         {
-            StatusEffectType.Burn => new BurnEffect(v.Item3),
-            StatusEffectType.Regeneration => new RegenerationEffect(v.Item3),
-            StatusEffectType.Shield => new ShieldEffect(v.Item3),
-            StatusEffectType.Freeze => new FreezeEffect(v.Item3),
-            StatusEffectType.Invincible => new InvincibleEffect(v.Item3),
-            StatusEffectType.Shock => new ShockEffect(v.Item3),
-            StatusEffectType.Power => new PowerEffect(v.Item3),
-            StatusEffectType.Rage => new RageEffect(v.Item3),
+            (ty, stack) = EventManager.OnPlayerStatusEffectAdded.GetValue();
+        }
+
+        StatusEffectBase newEffect = ty switch
+        {
+            StatusEffectType.Burn => new BurnEffect(stack),
+            StatusEffectType.Regeneration => new RegenerationEffect(stack),
+            StatusEffectType.Shield => new ShieldEffect(stack),
+            StatusEffectType.Freeze => new FreezeEffect(stack),
+            StatusEffectType.Invincible => new InvincibleEffect(stack),
+            StatusEffectType.Shock => new ShockEffect(stack),
+            StatusEffectType.Power => new PowerEffect(stack),
+            StatusEffectType.Rage => new RageEffect(stack),
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
         
-        v.Item1.AddStatusEffect(newEffect);
+        tar.AddStatusEffect(newEffect);
     }
     
     // 状態異常の色を取得する拡張メソッド
@@ -158,14 +207,14 @@ public static class StatusEffectFactory
 // 毎ターン、スタック数に応じたダメージを受ける
 public class BurnEffect : StatusEffectBase
 {
-    public BurnEffect(int initialStack) : base(StatusEffectType.Burn, initialStack, false) { }
+    public BurnEffect(int initialStack) : base(StatusEffectType.Burn, initialStack, EffectTiming.OnTurnEnd, false) { }
 
     public override void OnTurnEnd(IEntity target)
     {
+        base.OnTurnEnd(target);
         var damage = StackCount;
         SeManager.Instance.PlaySe("playerAttack");
         target.Damage(damage);
-        ShowEffectText();
         SeManager.Instance.PlaySe("burn");
     }
 }
@@ -173,29 +222,28 @@ public class BurnEffect : StatusEffectBase
 // 毎ターン、スタック数に応じてHPを回復する
 public class RegenerationEffect : StatusEffectBase
 {
-    public RegenerationEffect(int initialStack) : base(StatusEffectType.Regeneration, initialStack, false) { }
+    public RegenerationEffect(int initialStack) : base(StatusEffectType.Regeneration, initialStack, EffectTiming.OnTurnEnd, false) { }
 
     public override void OnTurnEnd(IEntity target)
     {
         var heal = StackCount;
         target.Heal(heal);
-        ShowEffectText();
     }
 }
 
 // ダメージを吸収する、スタック数はダメージを受けるたびに減少
 public class ShieldEffect : StatusEffectBase
 {
-    public ShieldEffect(int initialStack) : base(StatusEffectType.Shield, initialStack, true) { }
+    public ShieldEffect(int initialStack) : base(StatusEffectType.Shield, initialStack, EffectTiming.OnDamage, true) { }
     
-    public override int ModifyDamage(int incomingDamage)
+    public override int ModifyDamage(IEntity target, int incomingDamage)
     {
+        base.ModifyDamage(target, incomingDamage);
         if (StackCount <= 0) return incomingDamage;
 
         var absorbed = Math.Min(StackCount, incomingDamage);
         StackCount -= absorbed;
 
-        ShowEffectText(1);
         SeManager.Instance.PlaySe("shield");
         return incomingDamage - absorbed;
     }
@@ -204,18 +252,18 @@ public class ShieldEffect : StatusEffectBase
 // (敵専用)スタックがある限り行動できない
 public class FreezeEffect : StatusEffectBase
 {
-    public FreezeEffect(int initialStack) : base(StatusEffectType.Freeze, initialStack, false) { }
+    public FreezeEffect(int initialStack) : base(StatusEffectType.Freeze, initialStack, EffectTiming.OnTurnEnd, false) { }
 }
 
 // スタックがある限り無敵
 public class InvincibleEffect : StatusEffectBase
 {
-    public InvincibleEffect(int initialStack) : base(StatusEffectType.Invincible, initialStack, false) { }
+    public InvincibleEffect(int initialStack) : base(StatusEffectType.Invincible, initialStack, EffectTiming.OnDamage, false) { }
     
-    public override int ModifyDamage(int incomingDamage)
+    public override int ModifyDamage(IEntity target, int incomingDamage)
     {
+        base.ModifyDamage(target, incomingDamage);
         // TODO: シールドよりも優先度を高くする
-        ShowEffectText(1);
         SeManager.Instance.PlaySe("shield");
         return 0;
     }
@@ -224,25 +272,25 @@ public class InvincibleEffect : StatusEffectBase
 // (敵専用)毎ターン、スタック数に応じたダメージを敵全体に受ける
 public class ShockEffect : StatusEffectBase
 {
-    public ShockEffect(int initialStack) : base(StatusEffectType.Shock, initialStack, false) { }
+    public ShockEffect(int initialStack) : base(StatusEffectType.Shock, initialStack, EffectTiming.OnTurnEnd, false) { }
 
     public override void OnTurnEnd(IEntity target)
     {
+        base.OnTurnEnd(target);
         var damage = StackCount;
         EnemyContainer.Instance.DamageAllEnemies(damage);
         SeManager.Instance.PlaySe("enemyAttack");
-        ShowEffectText();
     }
 }
 
 // スタック数に応じて追加ダメージを与える
 public class PowerEffect : StatusEffectBase
 {
-    public PowerEffect(int initialStack) : base(StatusEffectType.Power, initialStack, true) { }
+    public PowerEffect(int initialStack) : base(StatusEffectType.Power, initialStack, EffectTiming.OnAttack, true) { }
 
-    public override int ModifyAttack(int outgoingAttack)
+    public override int ModifyAttack(IEntity target, int outgoingAttack)
     {
-        ShowEffectText();
+        base.ModifyAttack(target, outgoingAttack);
         return outgoingAttack + StackCount;
     }
 }
@@ -250,11 +298,11 @@ public class PowerEffect : StatusEffectBase
 // スタック数に応じて攻撃力に倍率をかける　(1 + 0.1 * n)倍
 public class RageEffect : StatusEffectBase
 {
-    public RageEffect(int initialStack) : base(StatusEffectType.Rage, initialStack, true) { }
+    public RageEffect(int initialStack) : base(StatusEffectType.Rage, initialStack, EffectTiming.OnAttack, true) { }
 
-    public override int ModifyAttack(int outgoingAttack)
+    public override int ModifyAttack(IEntity target, int outgoingAttack)
     {
-        ShowEffectText();
+        base.ModifyAttack(target, outgoingAttack);
         return (int)(outgoingAttack * (1 + StackCount * 0.1f));
     }
 }

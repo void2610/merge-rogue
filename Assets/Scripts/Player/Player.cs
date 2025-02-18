@@ -47,19 +47,19 @@ public class Player : MonoBehaviour, IEntity
     
     public int ModifyIncomingDamage(int amount)
     {
-        return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyDamage(current));
+        return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyDamage(this, current));
     }
     
     public int ModifyOutgoingAttack(int amount)
     {
-        return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyAttack(current));
+        return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyAttack(this, current));
     }
     
     public void OnBattleEnd()
     {
         for (var i = StatusEffects.Count - 1; i >= 0; i--)
         {
-            if (StatusEffects[i].OnBattleEnd()) StatusEffects.RemoveAt(i);
+            if (StatusEffects[i].OnBattleEnd(this)) StatusEffects.RemoveAt(i);
         }
         statusEffectUI.UpdateUI(StatusEffects);
     }
