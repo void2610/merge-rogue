@@ -74,7 +74,7 @@ public class MergeManager : MonoBehaviour
     public void StartMerge()
     {
         _isMovable = true;
-        ResetRemainingBalls();
+        Reset();
     }
     
     public async UniTaskVoid EndMerge()
@@ -105,10 +105,8 @@ public class MergeManager : MonoBehaviour
     public void RemoveAllBalls() => _ballContainer.GetComponentsInChildren<Rigidbody2D>().ToList().ForEach(b => Destroy(b.gameObject));
     
     // 次のボールを生成
-    private void ResetRemainingBalls()
+    private void Reset()
     {
-        _allAttackCount = 0;
-        _singleAttackCount = 0;
         RemainingBalls = _ballPerOneTurn;
         if (_ballPerOneTurn > 1)
         {
@@ -156,6 +154,17 @@ public class MergeManager : MonoBehaviour
         disturb.transform.position = GetValidRandomPosition();
         disturb.transform.SetParent(_ballContainer.transform);
         disturb.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+    }
+
+    public void MergeAll()
+    {
+        for(var i = 0; i < _ballContainer.transform.childCount; i++)
+        {
+            if (!_ballContainer.transform.GetChild(i)) continue;
+            var b = _ballContainer.transform.GetChild(i).GetComponent<BallBase>();
+            if (!b) continue;
+            b.EffectAndDestroy(null);
+        }
     }
 
     public void Attack()

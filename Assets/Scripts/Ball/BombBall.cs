@@ -29,7 +29,7 @@ public class BombBall : BallBase
             // 自身を無視
             if (col.gameObject == this.gameObject) continue;
             // merge相手を無視
-            if (col.gameObject == other.gameObject) continue;
+            if (other && col.gameObject == other.gameObject) continue;
             
             var ball = col.gameObject.GetComponent<BallBase>();
             if (ball == null) continue;

@@ -97,7 +97,7 @@ public class BallBase : MonoBehaviour
     
     public void EffectAndDestroy(BallBase other)
     {
-        if(other) Effect(other);
+        Effect(other);
         this.isDestroyed = true;
         
         transform.DOScale(0, 0.2f).SetEase(Ease.InBack).OnComplete(() =>
