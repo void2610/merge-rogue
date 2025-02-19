@@ -133,11 +133,20 @@ public class MergeManager : MonoBehaviour
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
     }
     
-    private Vector3 GetValidRandomPosition()
+    public Vector3 GetValidRandomPosition()
     {
         var width = wall.WallWidth;
         var r = GameManager.Instance.RandomRange(-width / 2 + 0.2f, width / 2 - 0.2f);
         return new Vector3(r, 0.8f, 0);
+    }
+    
+    public void CreateRandomBall()
+    {
+        var ball = InventoryManager.Instance.GetRandomBall();
+        ball.transform.position = GetValidRandomPosition();
+        ball.transform.SetParent(_ballContainer.transform);
+        ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        ball.GetComponent<BallBase>().Unfreeze();
     }
     
     public void CreateBombBall()

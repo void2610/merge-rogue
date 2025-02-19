@@ -43,7 +43,7 @@ public static class EventManager
     public static readonly GameEvent<bool> OnPlayerDeath = new (false);
     // ボールを落とした時: なし
     public static readonly GameEvent<int> OnBallDrop = new (0);
-    // ボールを消費した時: なし
+    // ボールをスキップした時: なし
     public static readonly GameEvent<int> OnBallSkip = new (0);
     // ボールをマージした時: (マージしたボール1, ボール2)
     public static readonly GameEvent<(BallBase, BallBase)> OnBallMerged = new ((null, null));
