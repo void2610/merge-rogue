@@ -105,7 +105,7 @@ public class EnemyContainer : MonoBehaviour
 
     public void AttackEnemy(int singleDamage, int allDamage)
     {
-        StartCoroutine(AttackEnemyCoroutine(singleDamage, allDamage));
+        AttackEnemyAsync(singleDamage, allDamage).Forget();
     }
 
     public void AttackEnemyBySkill(int damage, List<bool> isAttacks)
@@ -130,9 +130,9 @@ public class EnemyContainer : MonoBehaviour
         
     }
     
-    private IEnumerator AttackEnemyCoroutine(int singleDamage, int allDamage)
+    private async UniTaskVoid AttackEnemyAsync(int singleDamage, int allDamage)
     {
-        var es = GetAllEnemies();
+        var es = GetAllEnemies().ToList();
         
         // 全体攻撃
         if (allDamage > 0)
@@ -144,10 +144,10 @@ public class EnemyContainer : MonoBehaviour
             {
                 es[i].Damage(allDamage);
             }
-            yield return new WaitForSeconds(0.5f);
+            await UniTask.Delay(500);
         }
 
-        if (GameManager.Instance.EnemyContainer.GetCurrentEnemyCount() == 0) yield break;
+        if (GameManager.Instance.EnemyContainer.GetCurrentEnemyCount() == 0) return;
 
         // 単体攻撃
         // 一番前の敵を攻撃、攻撃力が残っていたら次の敵を攻撃
@@ -164,9 +164,8 @@ public class EnemyContainer : MonoBehaviour
             e.Damage(actualDamage);
             singleDamage -= actualDamage;
             
-            // TODO: もう少しなだらかな上昇幅がいいかも
             CameraMove.Instance.ShakeCamera(0.5f, actualDamage * 0.01f);
-            yield return new WaitForSeconds(0.3f);
+            await UniTask.Delay(300);
         }
         
         // 敵が残っていたら敵の攻撃へ
