@@ -7376,6 +7376,9 @@ MonoBehaviour:
   relicUISize: 0.75
   testRelics:
   - {fileID: 11400000, guid: 51287a301beab49199f663bf5b8ffb59, type: 2}
+  - {fileID: 11400000, guid: f05f606538d5346979759f2c994f26d0, type: 2}
+  - {fileID: 11400000, guid: 9a6b1d8fe9c704e7aae9b89bf05212ed, type: 2}
+  - {fileID: 11400000, guid: 6d1c33c4225dd400882bb24ab916ba9f, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
