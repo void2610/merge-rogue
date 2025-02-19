@@ -11,14 +11,10 @@ public enum StatusEffectType
     Shock,
     Power,
     Rage,
-    // Poison,
+    Curse,
     // Stun,
-    // Barrier,
     // Weakness,
     // Drain,  
-    // Reflect,
-    // Absorb,
-    // Counter,
     // Dodge,
 }
 
@@ -304,5 +300,24 @@ public class RageEffect : StatusEffectBase
     {
         base.ModifyAttack(target, outgoingAttack);
         return (int)(outgoingAttack * (1 + StackCount * 0.1f));
+    }
+}
+
+// (プレイヤー専用)毎ターン、スタック数に応じてお邪魔ボールが降ってくる
+public class CurseEffect : StatusEffectBase
+{
+    public CurseEffect(int initialStack) : base(StatusEffectType.Curse, initialStack, EffectTiming.OnTurnEnd, false) { }
+    
+    public override void OnTurnEnd(IEntity target)
+    {
+        base.OnTurnEnd(target);
+        var count = StackCount;
+        for (var i = 0; i < count; i++)
+        {
+            var width = MergeManager.Instance.Wall.WallWidth;
+            var r = GameManager.Instance.RandomRange(-width / 2 + 0.1f, width / 2 - 0.1f);
+            var p = new Vector3(r, 0.8f, 0);
+            MergeManager.Instance.CreateDisturbBall(p);
+        }
     }
 }

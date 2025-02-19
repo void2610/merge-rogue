@@ -135,7 +135,7 @@ public class MergeManager : MonoBehaviour
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
     }
     
-    public void CreateBomb(Vector3 p)
+    public void CreateBombBall(Vector3 p)
     {
         var bomb = InventoryManager.Instance.GetBombBall();
         bomb.transform.position = p;
@@ -143,6 +143,13 @@ public class MergeManager : MonoBehaviour
         bomb.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
     }
     
+    public void CreateDisturbBall(Vector3 p)
+    {
+        var disturb = InventoryManager.Instance.GetDisturbBall();
+        disturb.transform.position = p;
+        disturb.transform.SetParent(_ballContainer.transform);
+        disturb.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+    }
 
     public void Attack()
     {

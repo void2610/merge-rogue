@@ -102,6 +102,15 @@ public class InventoryManager : MonoBehaviour
         return ball;
     }
 
+    public GameObject GetDisturbBall()
+    {
+        var bd = allBallDataList.GetBallDataFromClassName("DisturbBall");
+        var ball = CreateBallInstanceFromBallData(bd, 1);
+        ball.GetComponent<BallBase>().Unfreeze();
+        ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        return ball;
+    }
+
     // マージ時に次のボールを生成
     public GameObject GetBallByRank(int rank)
     {

@@ -47,12 +47,16 @@ public class Player : MonoBehaviour, IEntity
     
     public int ModifyIncomingDamage(int amount)
     {
-        return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyDamage(this, current));
+        var v = StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyDamage(this, current));
+        statusEffectUI.UpdateUI(StatusEffects);
+        return v;
     }
     
     public int ModifyOutgoingAttack(int amount)
     {
-        return StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyAttack(this, current));
+        var v = StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyAttack(this, current));
+        statusEffectUI.UpdateUI(StatusEffects);
+        return v;
     }
     
     public void OnBattleEnd()
