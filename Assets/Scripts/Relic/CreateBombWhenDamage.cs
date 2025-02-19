@@ -24,10 +24,7 @@ public class CreateBombWhenDamage : RelicBase
         while (Count.Value >= 20)
         {
             Count.Value -= 20;
-            var width = MergeManager.Instance.Wall.WallWidth;
-            var r = GameManager.Instance.RandomRange(-width / 2 + 0.1f, width / 2 - 0.1f);
-            var p = new Vector3(r, 0.8f, 0);
-            MergeManager.Instance.CreateBombBall(p);
+            MergeManager.Instance.CreateBombBall();
             isActivated = true;
         }
     

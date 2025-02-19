@@ -313,11 +313,6 @@ public class CurseEffect : StatusEffectBase
         base.OnTurnEnd(target);
         var count = StackCount;
         for (var i = 0; i < count; i++)
-        {
-            var width = MergeManager.Instance.Wall.WallWidth;
-            var r = GameManager.Instance.RandomRange(-width / 2 + 0.1f, width / 2 - 0.1f);
-            var p = new Vector3(r, 0.8f, 0);
-            MergeManager.Instance.CreateDisturbBall(p);
-        }
+            MergeManager.Instance.CreateDisturbBall();
     }
 }
