@@ -159,6 +159,7 @@ public static class StatusEffectFactory
             StatusEffectType.Shock => new ShockEffect(stack),
             StatusEffectType.Power => new PowerEffect(stack),
             StatusEffectType.Rage => new RageEffect(stack),
+            StatusEffectType.Curse => new CurseEffect(stack),
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
         
@@ -178,6 +179,7 @@ public static class StatusEffectFactory
             StatusEffectType.Shock => new Color(0.7f, 0, 0.7f),
             StatusEffectType.Power => new Color(1, 0.3f, 0),
             StatusEffectType.Rage => new Color(1, 0.2f, 0.5f),
+            StatusEffectType.Curse => new Color(0.3f, 0.1f, 0.3f),
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
     }
@@ -195,6 +197,7 @@ public static class StatusEffectFactory
             StatusEffectType.Shock => "感電",
             StatusEffectType.Power => "パワー",
             StatusEffectType.Rage => "怒り",
+            StatusEffectType.Curse => "呪い",
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
     }

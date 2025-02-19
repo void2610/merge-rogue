@@ -138,7 +138,7 @@ public class MergeManager : MonoBehaviour
     private Vector3 GetValidRandomPosition()
     {
         var width = wall.WallWidth;
-        var r = GameManager.Instance.RandomRange(-width / 2 + 0.1f, width / 2 - 0.1f);
+        var r = GameManager.Instance.RandomRange(-width / 2 + 0.2f, width / 2 - 0.2f);
         return new Vector3(r, 0.8f, 0);
     }
     

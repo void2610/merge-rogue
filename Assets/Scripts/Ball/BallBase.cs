@@ -15,6 +15,7 @@ public class BallBase : MonoBehaviour
     public BallData Data { get; private set; }
     public bool IsFrozen { get; private set; } = false;
     public bool isDestroyed;
+    public bool isMergable = true;
 
     private List<float> _attacks = new();
     private List<float> _sizes = new();
@@ -72,15 +73,16 @@ public class BallBase : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (isDestroyed || IsFrozen) return;
+        if (isDestroyed || IsFrozen || !isMergable) return;
 
         if (other.gameObject.TryGetComponent(out BallBase b))
         {
-            if (b.Rank == this.Rank && !b.IsFrozen && !b.isDestroyed)
+            if (b.Rank == this.Rank && !b.IsFrozen && !b.isDestroyed && b.isMergable)
             {
                 if (this.Serial < b.Serial)
                 {
-                    EventManager.OnBallMerged.Trigger(this.Rank);
+                    var pos = (this.transform.position + b.transform.position) / 2;
+                    EventManager.OnBallMerged.Trigger((this, b));
                     
                     var center = (this.transform.position + other.transform.position) / 2;
                     var rotation = Quaternion.Lerp(this.transform.rotation, other.transform.rotation, 0.5f);
@@ -95,12 +97,12 @@ public class BallBase : MonoBehaviour
     
     public void EffectAndDestroy(BallBase other)
     {
-        Effect(other);
+        if(other) Effect(other);
         this.isDestroyed = true;
         
         transform.DOScale(0, 0.2f).SetEase(Ease.InBack).OnComplete(() =>
         {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }).SetLink(gameObject);
     }
     

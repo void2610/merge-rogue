@@ -8,17 +8,14 @@ public class HealWhenMergeLastBall : RelicBase
         Disposables.Add(disposable);
     }
     
-    
     protected override void EffectImpl(Unit _)
     {
-        var maxLevel = InventoryManager.Instance.InventorySize;
-        if (EventManager.OnBallMerged.GetValue() == maxLevel)
+        var maxRank = InventoryManager.Instance.InventorySize;
+        if (EventManager.OnBallMerged.GetValue().Item1.Rank == maxRank)
         {
             int heal = GameManager.Instance.Player.MaxHealth.Value / 4;
             GameManager.Instance.Player.Heal(heal);
             UI?.ActivateUI();
         }
     }
-    
-   
 }

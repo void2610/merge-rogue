@@ -1,17 +1,9 @@
 public class #SCRIPT_NAME# : BallBase
 {
-    protected override void Awake()
-    {
-        base.Awake();
-
-        size = 1.0f;
-        attack = 1;
-    }
-
     protected override void Effect(BallBase other)
     {
         base.Effect(other);
         DefaultMergeParticle();
-        MergeManager.Instance.AddSingleAttackCount(attack * level, this.transform.position);
+        MergeManager.Instance.AddSingleAttackCount(Attack * Rank, this.transform.position);
     }
 }
