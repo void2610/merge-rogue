@@ -34,6 +34,12 @@ public class EnemyContainer : MonoBehaviour
     {
         return _currentEnemies;
     }
+    
+    public EnemyBase GetRandomEnemy()
+    {
+        int r = GameManager.Instance.RandomRange(0, _currentEnemies.Count);
+        return _currentEnemies[r];
+    }
 
     public void SpawnBoss(int stage)
     {
@@ -103,54 +109,33 @@ public class EnemyContainer : MonoBehaviour
         _gainedExp = 0;
     }
 
-    public void AttackEnemy(int singleDamage, int allDamage)
+    public void AttackEnemy(Dictionary<AttackType, int> damage)
     {
-        AttackEnemyAsync(singleDamage, allDamage).Forget();
+        AttackEnemyAsync(damage).Forget();
     }
 
-    public void AttackEnemyBySkill(int damage, List<bool> isAttacks)
-    {
-        // listで指定したindexの敵に攻撃
-        StartCoroutine(AttackEnemyBySkillCoroutine(damage, isAttacks));
-    }
-    
-    private IEnumerator AttackEnemyBySkillCoroutine(int damage, List<bool> isAttacks)
-    {
-        if(isAttacks.Count != _currentEnemies.Count) Debug.LogError("The number of bool list does not match the number of enemies");
-        
-        var es = GetAllEnemies();
-        for (var i = 0; i < isAttacks.Count; i++)
-        {
-            if (!isAttacks[i]) continue;
-
-            es[i].Damage(damage);
-            CameraMove.Instance.ShakeCamera(0.5f, damage * 0.01f);
-        }
-        yield return new WaitForSeconds(0.5f);
-        
-    }
-    
-    private async UniTaskVoid AttackEnemyAsync(int singleDamage, int allDamage)
+    private async UniTaskVoid AttackEnemyAsync(Dictionary<AttackType, int> damages)
     {
         var es = GetAllEnemies().ToList();
         
         // 全体攻撃
-        if (allDamage > 0)
+        if (damages[AttackType.All] > 0)
         {
             ParticleManager.Instance.AllHitParticle(new Vector3(-3.7f, 3.3f, 0));
-            CameraMove.Instance.ShakeCamera(0.5f, allDamage * 0.03f);
+            CameraMove.Instance.ShakeCamera(0.5f, damages[AttackType.All] * 0.03f);
             SeManager.Instance.PlaySe("playerAttack");
             for(var i = 0; i < es.Count; i++)
             {
-                es[i].Damage(allDamage);
+                es[i].Damage(damages[AttackType.All]);
             }
             await UniTask.Delay(500);
         }
 
-        if (GameManager.Instance.EnemyContainer.GetCurrentEnemyCount() == 0) return;
+        if (GetCurrentEnemyCount() == 0) return;
 
         // 単体攻撃
         // 一番前の敵を攻撃、攻撃力が残っていたら次の敵を攻撃
+        var singleDamage = damages[AttackType.Normal];
         for(var i = 0; i < es.Count; i++)
         {
             var e = es[i];
@@ -168,8 +153,22 @@ public class EnemyContainer : MonoBehaviour
             await UniTask.Delay(300);
         }
         
+        if (GetCurrentEnemyCount() == 0) return;
+        await UniTask.Delay(300);
+        
+        // ランダム攻撃
+        if (damages[AttackType.Random] > 0)
+        {
+            var randomEnemy = GetRandomEnemy();
+            SeManager.Instance.PlaySe("playerAttack");
+            ParticleManager.Instance.DamageText(damages[AttackType.Random], randomEnemy.transform.position.x);
+            randomEnemy.Damage(damages[AttackType.Random]);
+            CameraMove.Instance.ShakeCamera(0.5f, damages[AttackType.Random] * 0.01f);
+            await UniTask.Delay(300);
+        }
+        
         // 敵が残っていたら敵の攻撃へ
-        if (GameManager.Instance.EnemyContainer.GetCurrentEnemyCount() > 0)
+        if (GetCurrentEnemyCount() > 0)
         {
             Observable.Timer(TimeSpan.FromSeconds(0.75f), destroyCancellationToken)
                 .Subscribe(_ => {GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);});

@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
@@ -57,5 +59,17 @@ public static class ExtendedMethods
         }
 
         return text;
+    }
+    
+    /// <summary>
+    /// 辞書の全ての要素に掛け算を行う
+    /// </summary>
+    public static Dictionary<AttackType, int> MultiplyAll(this Dictionary<AttackType, int> dict, float value)
+    {
+        foreach (var key in dict.Keys.ToList())
+        {
+            dict[key] = (int)(dict[key] * value);
+        }
+        return dict;
     }
 }

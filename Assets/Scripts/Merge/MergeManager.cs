@@ -193,20 +193,19 @@ public class MergeManager : MonoBehaviour
         _attackCounts[AttackType.All] = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts[AttackType.All]);
         
         // イベントでパラメータを更新
-        var p = ((int)(_attackCounts[AttackType.Normal] * attackMagnification), (int)(_attackCounts[AttackType.All] * attackMagnification));
-        EventManager.OnPlayerAttack.Trigger(p);
-        var atk = EventManager.OnPlayerAttack.GetAndResetValue();
+        EventManager.OnPlayerAttack.Trigger(_attackCounts);
+        _attackCounts = EventManager.OnPlayerAttack.GetValue();
+        _attackCounts.ToList().ForEach(a => _attackCounts[a.Key] = (int)(a.Value * attackMagnification));
         
         // ハイスコア更新
-        var totalAttack = atk.Item1 + atk.Item2 * GameManager.Instance.EnemyContainer.GetCurrentEnemyCount();
+        var totalAttack = _attackCounts.Sum(a => a.Value);
         if (PlayerPrefs.GetInt("maxAttack", 0) < totalAttack)
         {
             UnityroomApiClient.Instance.SendScore(2, totalAttack, ScoreboardWriteMode.HighScoreDesc);
             PlayerPrefs.SetInt("maxAttack", totalAttack);
         }
-
         // 攻撃処理
-        GameManager.Instance.EnemyContainer.AttackEnemy(atk.Item1, atk.Item2);
+        GameManager.Instance.EnemyContainer.AttackEnemy(_attackCounts);
         // 攻撃アニメーション
         GameManager.Instance.Player.gameObject.transform.DOMoveX(0.75f, 0.02f).SetRelative(true).OnComplete(() =>
         {

@@ -1,5 +1,6 @@
 using System;
 using R3;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -13,8 +14,8 @@ public static class EventManager
     public static readonly GameEvent<int> OnCoinConsume = new (0);
     // 経験値獲得時: 経験値獲得量
     public static readonly GameEvent<int> OnPlayerExpGain = new (0);
-    // プレイヤーの攻撃時: (単体攻撃の攻撃力, 全体攻撃の攻撃力)
-    public static readonly GameEvent<(int, int)> OnPlayerAttack = new ((0, 0));
+    // プレイヤーの攻撃時: タイプ別の攻撃力
+    public static readonly GameEvent<Dictionary<AttackType, int>> OnPlayerAttack = new (new Dictionary<AttackType, int>());
     // プレイヤーのダメージ時: プレイヤーのダメージ量
     public static readonly GameEvent<int> OnPlayerDamage = new (0);
     // プレイヤーの回復時: プレイヤーの回復量
