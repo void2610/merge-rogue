@@ -109,7 +109,7 @@ public class BallBase : MonoBehaviour
     protected void DefaultMergeParticle()
     {
         ParticleManager.Instance.MergeParticle(this.transform.position);
-        ParticleManager.Instance.MergePowerParticle(this.transform.position, MyColors.GetBallColor(Rank-1));
+        ParticleManager.Instance.MergePowerParticle(this.transform.position, MyEnumUtil.GetBallColor(Rank-1));
         
         var i = Random.Range(0, 5);
         SeManager.Instance.PlaySe("ball" + i);

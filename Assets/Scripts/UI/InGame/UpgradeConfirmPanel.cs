@@ -29,7 +29,7 @@ public class UpgradeConfirmPanel : MonoBehaviour
     private void SetBallTexts(GameObject g, BallData b, int level)
     {
         g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = b.displayName;
-        g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().color = MyColors.GetRarityColor(b.rarity);
+        g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().color = b.rarity.GetColor();
         g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = b.descriptions[level];
         g.transform.Find("FlavorText").GetComponent<TextMeshProUGUI>().text = b.flavorText;
         g.transform.Find("Status").Find("Status1").GetComponent<TextMeshProUGUI>().text = "level: " + (level + 1);

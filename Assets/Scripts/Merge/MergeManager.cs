@@ -39,8 +39,7 @@ public class MergeManager : MonoBehaviour
     private float _limit = -2.5f;
     private Vector3 _currentBallPosition = new(0, 1f, 0);
     private int _ballPerOneTurn = 2;
-    private int _singleAttackCount;
-    private int _allAttackCount;
+    private Dictionary<AttackType, int> _attackCounts = new();
     private Dictionary<Rigidbody2D, float> _stopTimers;
     private bool _isMovable = false;
     private Camera _mainCamera;
@@ -70,68 +69,8 @@ public class MergeManager : MonoBehaviour
     {
         return wallMaterial;
     }
-    
-    public void StartMerge()
-    {
-        _isMovable = true;
-        Reset();
-    }
-    
-    public async UniTaskVoid EndMerge()
-    {
-        if(!_isMovable) return;
-        
-        if (NextBall)
-        {
-            Destroy(NextBall);
-            NextBall = null;
-        }
-        if (CurrentBall)
-        {
-            Destroy(CurrentBall);
-            CurrentBall = null;
-        }
-        
-        ballCountText.text = "0/" + _ballPerOneTurn;
-        arrow.DOFade(0, 0.5f).Forget();
-        _isMovable = false;
-        
-        await UniTask.Delay(1000);
-        
-        GameManager.Instance.ChangeState(GameManager.GameState.PlayerAttack);
-    }
-    
     public int GetBallCount() => _ballContainer.GetComponentsInChildren<Rigidbody2D>().Length;
     public void RemoveAllBalls() => _ballContainer.GetComponentsInChildren<Rigidbody2D>().ToList().ForEach(b => Destroy(b.gameObject));
-    
-    // 次のボールを生成
-    private void Reset()
-    {
-        RemainingBalls = _ballPerOneTurn;
-        if (_ballPerOneTurn > 1)
-        {
-            NextBall = InventoryManager.Instance.GetRandomBall(nextBallPosition);
-        }
-        CurrentBall = InventoryManager.Instance.GetRandomBall(fallAnchor.transform.position - Vector3.up * 0.2f);
-        CurrentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        fallAnchor.GetComponent<HingeJoint2D>().connectedBody = CurrentBall.GetComponent<Rigidbody2D>();
-        
-        ballCountText.text = RemainingBalls + "/" + _ballPerOneTurn;
-        fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = true;
-        arrow.DOFade(1, 0.5f).Forget();
-    }
-    
-
-    public void SpawnBallFromLevel(int level, Vector3 p, Quaternion q)
-    {
-        var ball = InventoryManager.Instance.GetBallByRank(level);
-        if (!ball) return;
-
-        ball.transform.position = p;
-        ball.transform.rotation = q;
-        ball.transform.SetParent(_ballContainer.transform);
-        ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-    }
     
     public Vector3 GetValidRandomPosition()
     {
@@ -175,22 +114,86 @@ public class MergeManager : MonoBehaviour
             b.EffectAndDestroy(null);
         }
     }
+    
+    public void StartMerge()
+    {
+        _isMovable = true;
+        Reset();
+    }
+    
+    public async UniTaskVoid EndMerge()
+    {
+        if(!_isMovable) return;
+        
+        if (NextBall)
+        {
+            Destroy(NextBall);
+            NextBall = null;
+        }
+        if (CurrentBall)
+        {
+            Destroy(CurrentBall);
+            CurrentBall = null;
+        }
+        
+        ballCountText.text = "0/" + _ballPerOneTurn;
+        arrow.DOFade(0, 0.5f).Forget();
+        _isMovable = false;
+        
+        await UniTask.Delay(1000);
+        
+        GameManager.Instance.ChangeState(GameManager.GameState.PlayerAttack);
+    }
+    
+    // 次のボールを生成
+    private void Reset()
+    {
+        RemainingBalls = _ballPerOneTurn;
+        if (_ballPerOneTurn > 1)
+        {
+            NextBall = InventoryManager.Instance.GetRandomBall(nextBallPosition);
+        }
+        CurrentBall = InventoryManager.Instance.GetRandomBall(fallAnchor.transform.position - Vector3.up * 0.2f);
+        CurrentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        fallAnchor.GetComponent<HingeJoint2D>().connectedBody = CurrentBall.GetComponent<Rigidbody2D>();
+        
+        ballCountText.text = RemainingBalls + "/" + _ballPerOneTurn;
+        fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = true;
+        arrow.DOFade(1, 0.5f).Forget();
+    }
+
+    public void AddAttackCount(AttackType type, float atk, Vector3 p)
+    {
+        _attackCounts[type] = _attackCounts.ContainsKey(type) ? _attackCounts[type] + (int)atk : (int)atk;
+        ParticleManager.Instance.MergeText((int)atk, p, type.GetColor());
+    }
+    
+    public void SpawnBallFromLevel(int level, Vector3 p, Quaternion q)
+    {
+        var ball = InventoryManager.Instance.GetBallByRank(level);
+        if (!ball) return;
+
+        ball.transform.position = p;
+        ball.transform.rotation = q;
+        ball.transform.SetParent(_ballContainer.transform);
+        ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+    }
 
     public void Attack()
     {
         // 攻撃がない場合は敵の攻撃に移行
-        if (_singleAttackCount <= 0 && _allAttackCount <= 0)
+        if (_attackCounts.All(a => a.Value == 0))
         {
             GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
             return;
         }
         
         // プレイヤーの状態異常で攻撃力を更新
-        _singleAttackCount = GameManager.Instance.Player.ModifyOutgoingAttack(_singleAttackCount);
-        _allAttackCount = GameManager.Instance.Player.ModifyOutgoingAttack(_allAttackCount);
+        _attackCounts[AttackType.Normal] = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts[AttackType.Normal]);
+        _attackCounts[AttackType.All] = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts[AttackType.All]);
         
         // イベントでパラメータを更新
-        var p = ((int)(_singleAttackCount * attackMagnification), (int)(_allAttackCount * attackMagnification));
+        var p = ((int)(_attackCounts[AttackType.Normal] * attackMagnification), (int)(_attackCounts[AttackType.All] * attackMagnification));
         EventManager.OnPlayerAttack.Trigger(p);
         var atk = EventManager.OnPlayerAttack.GetAndResetValue();
         
@@ -210,20 +213,8 @@ public class MergeManager : MonoBehaviour
             GameManager.Instance.Player.gameObject.transform.DOMoveX(-0.75f, 0.2f).SetRelative(true)
                 .SetEase(Ease.OutExpo);
         });
-        _singleAttackCount = 0;
-        _allAttackCount = 0;
-    }
-
-    public void AddSingleAttackCount(float atk, Vector3 p)
-    {  
-        _singleAttackCount += Mathf.CeilToInt(atk);
-        ParticleManager.Instance.MergeText(_singleAttackCount, p);
-    }
-    
-    public void AddAllAttackCount(float atk, Vector3 p)
-    {
-        _allAttackCount += Mathf.CeilToInt(atk);
-        ParticleManager.Instance.MergeText(_allAttackCount, p, Color.red);
+        
+        ResetAttackCount();
     }
 
     private void DropBall()
@@ -293,6 +284,15 @@ public class MergeManager : MonoBehaviour
         return true;
     }
 
+    private void ResetAttackCount()
+    {
+        // enumの全要素で、0を代入
+        foreach (AttackType type in System.Enum.GetValues(typeof(AttackType)))
+        {
+            _attackCounts[type] = 0;
+        }
+    }
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -309,10 +309,11 @@ public class MergeManager : MonoBehaviour
 
     private void Start()
     {
-        // if (Application.isEditor) coolTime = 0.1f;
         ballGauge.GetComponent<SpriteRenderer>().material.SetFloat(_ratio, 1);
         fallAnchor.transform.position = _currentBallPosition;
         _mainCamera = Camera.main;
+        
+        ResetAttackCount();
     }
 
     private void Update()
