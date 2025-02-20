@@ -10,8 +10,9 @@ public class AddOneToAllAttack : RelicBase
     
     protected override void EffectImpl(Unit _)
     {
-        var x = EventManager.OnPlayerAttack.GetValue();
-        EventManager.OnPlayerAttack.SetValue((x.Item1 + 5, x.Item2));
+        var dic = EventManager.OnPlayerAttack.GetValue();
+        dic[AttackType.Normal] += 5;
+        EventManager.OnPlayerAttack.SetValue(dic);
         UI?.ActivateUI();
     }
 }

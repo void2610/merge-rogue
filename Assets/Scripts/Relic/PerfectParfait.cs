@@ -13,8 +13,8 @@ public class PerfectParfait : RelicBase
         var count = MergeManager.Instance.GetBallCount();
         if(count > 0) return;
 
-        var attack = EventManager.OnPlayerAttack.GetValue();
-        EventManager.OnPlayerAttack.SetValue((attack.Item1 * 5, attack.Item2 * 5));
+        var dic = EventManager.OnPlayerAttack.GetValue();
+        EventManager.OnPlayerAttack.SetValue(dic.MultiplyAll(5.0f));
         UI?.ActivateUI();
     }
 }
