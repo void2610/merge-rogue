@@ -145,7 +145,6 @@ public class EnemyContainer : MonoBehaviour
             if (es.IndexOf(e) == es.Count - 1) actualDamage = singleDamage;
             
             SeManager.Instance.PlaySe("playerAttack");
-            ParticleManager.Instance.DamageText(actualDamage, e.transform.position.x);
             e.Damage(actualDamage);
             singleDamage -= actualDamage;
             
@@ -161,7 +160,6 @@ public class EnemyContainer : MonoBehaviour
         {
             var randomEnemy = GetRandomEnemy();
             SeManager.Instance.PlaySe("playerAttack");
-            ParticleManager.Instance.DamageText(damages[AttackType.Random], randomEnemy.transform.position.x);
             randomEnemy.Damage(damages[AttackType.Random]);
             CameraMove.Instance.ShakeCamera(0.5f, damages[AttackType.Random] * 0.01f);
             await UniTask.Delay(300);
