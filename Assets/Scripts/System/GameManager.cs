@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour
             case GameState.Event:
                 break;
             case GameState.AfterBattle:
-                afterBattleUI.UpdateBallUpgradeButton();
+                afterBattleUI.OpenAfterBattle();
                 UIManager.Instance.EnableCanvasGroup("AfterBattle", true);
                 break;
             case GameState.LevelUp:

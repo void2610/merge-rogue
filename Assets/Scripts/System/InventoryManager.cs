@@ -16,7 +16,7 @@ public class InventoryManager : MonoBehaviour
 
     private const int MAX_INVENTORY_SIZE = 8;
     private const int MIN_INVENTORY_SIZE = 1;
-    private const int FIRST_INVENTORY_SIZE = 4;
+    private const int FIRST_INVENTORY_SIZE = 5;
     public int InventorySize { get; private set; } = FIRST_INVENTORY_SIZE;
     public InventoryUI InventoryUI => this.GetComponent<InventoryUI>();
     private readonly List<GameObject> _inventory = new();
@@ -60,7 +60,7 @@ public class InventoryManager : MonoBehaviour
     // 2つのボールを入れ替える
     public async UniTask SwapBall(int index1, int index2)
     {
-        if (index1 < 0 || index1 > InventorySize || index2 < 0 || index2 > InventorySize) return;
+        if (index1 < 0 || index1 >= InventorySize || index2 < 0 || index2 >= InventorySize) return;
        
         var data1 = _inventory[index1].GetComponent<BallBase>().Data;
         var level1 = _inventory[index1].GetComponent<BallBase>().Level;

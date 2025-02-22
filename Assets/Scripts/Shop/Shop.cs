@@ -30,7 +30,7 @@ public class Shop : MonoBehaviour
 
     public void OpenShop(int count = 6)
     {
-        if (count > ITEM_NUM) return;
+        if (count > ITEM_NUM) throw new System.Exception("Invalid count");
         
         for (var i = 0; i < ITEM_NUM; i++)
         {
