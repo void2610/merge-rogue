@@ -3,6 +3,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
 public class InventoryUI : MonoBehaviour
 {
@@ -26,30 +27,52 @@ public class InventoryUI : MonoBehaviour
     private int _swapIndex = -1;
     private InventoryUIState _state = InventoryUIState.Disabled;
 
-    public void CreateBallUI(GameObject ball, int level, BallBase ballBase)
+    public void CreateBallUI(GameObject ball, int rank, BallBase ballBase)
     {
         var g = Instantiate(ballUIPrefab, inventoryUIContainer.transform);
         
-        g.transform.position = CalcInventoryPosition(level);
-        g.transform.localScale = new Vector3(BallSizes[level], BallSizes[level], 1);
+        g.transform.position = CalcInventoryPosition(rank);
+        g.transform.localScale = new Vector3(BallSizes[rank], BallSizes[rank], 1);
         
         var color = ball.GetComponent<SpriteRenderer>().color;
         g.GetComponent<Image>().color = color;
         
         var sprite = ball.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite;
-        if (sprite != null) g.transform.Find("Icon").GetComponent<Image>().sprite = sprite;
+        if (sprite) g.transform.Find("Icon").GetComponent<Image>().sprite = sprite;
         else g.transform.Find("Icon").GetComponent<Image>().color = new Color(0, 0, 0, 0);
         
-        SetEvent(g, level, ballBase);
-        if (_items.Count <= level)
+        SetEvent(g, rank, ballBase);
+        if (_items.Count <= rank)
         {
             _items.Add(g);
         }
         else
         {
-            Destroy(_items[level]);
-            _items[level] = g;
+            Destroy(_items[rank]);
+            _items[rank] = g;
         }
+    }
+    
+    public async UniTask CreateBallUITween(GameObject ball, int startRank, int endRank, BallBase ballBase)
+    {
+        var g = Instantiate(ballUIPrefab, inventoryUIContainer.transform);
+        
+        g.transform.position = CalcInventoryPosition(startRank);
+        g.transform.localScale = new Vector3(BallSizes[startRank], BallSizes[startRank], 1);
+        
+        var color = ball.GetComponent<SpriteRenderer>().color;
+        g.GetComponent<Image>().color = color;
+        
+        var sprite = ball.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite;
+        if (sprite) g.transform.Find("Icon").GetComponent<Image>().sprite = sprite;
+        else g.transform.Find("Icon").GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        
+        SetEvent(g, endRank, ballBase);
+        Destroy(_items[endRank]);
+        _items[endRank] = g;
+
+        g.transform.DOMove(CalcInventoryPosition(endRank), 2.0f).SetEase(Ease.OutQuint).ToUniTask();
+        await g.transform.DOScale(new Vector3(BallSizes[endRank], BallSizes[endRank], 1), 2.0f).SetEase(Ease.OutQuint);
     }
     
     public void RemoveBallUI(int level)
@@ -97,14 +120,14 @@ public class InventoryUI : MonoBehaviour
         // マウスオーバーでカーソル移動とウィンドウ表示 (とアニメーション)
         Utils.AddEventToObject(ballObj, () => { 
             var rt = ballObj.GetComponent<RectTransform>();
-            rt.DORotate(new Vector3(0, 0, 15), 0.75f).SetEase(Ease.Flash, 10, 0.9f).OnComplete(() => rt.DORotate(Vector3.zero, 0.1f));
+            rt.DORotate(new Vector3(0, 0, 15), 0.75f).SetEase(Ease.Flash, 10, 0.9f).OnComplete(() => rt.DORotate(Vector3.zero, 0.1f).SetLink(ballObj)).SetLink(ballObj);
             
             SetCursor(index);
             UIManager.Instance.ShowBallDescriptionWindow(ballBase.Data, ballObj, ballBase.Level); 
         }, EventTriggerType.PointerEnter);
     }
 
-    private void OnClickBall(int index)
+    private async UniTaskVoid OnClickBall(int index)
     {
         switch (_state)
         {
@@ -127,11 +150,11 @@ public class InventoryUI : MonoBehaviour
                 SetSubCursor(index);
                 break;
             case InventoryUIState.Swap:
-                InventoryManager.Instance.SwapBall(_swapIndex, index);
                 SeManager.Instance.PlaySe("button");
-                GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
                 EnableCursor(false);
                 subCursor.GetComponent<Image>().enabled = false;
+                await InventoryManager.Instance.SwapBall(_swapIndex, index);
+                GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
                 _swapIndex = -1;
                 _state = InventoryUIState.Disabled;
                 break;

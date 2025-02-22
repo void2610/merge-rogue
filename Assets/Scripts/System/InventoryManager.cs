@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -57,9 +58,9 @@ public class InventoryManager : MonoBehaviour
     }
     
     // 2つのボールを入れ替える
-    public void SwapBall(int index1, int index2)
+    public async UniTask SwapBall(int index1, int index2)
     {
-        if (index1 < 0 || index1 >= InventorySize || index2 < 0 || index2 >= InventorySize) return;
+        if (index1 < 0 || index1 > InventorySize || index2 < 0 || index2 > InventorySize) return;
        
         var data1 = _inventory[index1].GetComponent<BallBase>().Data;
         var level1 = _inventory[index1].GetComponent<BallBase>().Level;
@@ -72,8 +73,9 @@ public class InventoryManager : MonoBehaviour
         _inventory[index1] = CreateBallInstanceFromBallData(data2, index1 + 1, level2);
         _inventory[index2] = CreateBallInstanceFromBallData(data1, index2 + 1, level1);
         
-        InventoryUI.CreateBallUI(_inventory[index1], index1, _inventory[index1].GetComponent<BallBase>());
-        InventoryUI.CreateBallUI(_inventory[index2], index2, _inventory[index2].GetComponent<BallBase>());
+        InventoryUI.CreateBallUITween(_inventory[index1], index2,index1, _inventory[index1].GetComponent<BallBase>());
+        await InventoryUI.CreateBallUITween(_inventory[index2], index1,index2, _inventory[index2].GetComponent<BallBase>());
+        await UniTask.Delay(1000);
     }
 
     // 任意の場所のボールを削除し、後ろのボールを前に詰める
