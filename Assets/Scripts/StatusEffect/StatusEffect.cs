@@ -1,5 +1,7 @@
 using System;
+using System.Linq;
 using UnityEngine;
+using System.Collections.Generic;
 
 public enum StatusEffectType
 {
@@ -102,7 +104,7 @@ public abstract class StatusEffectBase
         return incomingDamage;
     }
     
-    public virtual int ModifyAttack(IEntity target, int outgoingAttack)
+    public virtual Dictionary<AttackType, int> ModifyAttack(IEntity target, Dictionary<AttackType, int> outgoingAttack)
     {
         if (_timing == EffectTiming.OnAttack)
         {
@@ -321,15 +323,16 @@ public class ShockEffect : StatusEffectBase
     }
 }
 
-// スタック数に応じて追加ダメージを与える
+// スタック数に応じて通常攻撃で追加ダメージを与える
 public class PowerEffect : StatusEffectBase
 {
     public PowerEffect(int initialStack) : base(StatusEffectType.Power, initialStack, EffectTiming.OnAttack, true) { }
 
-    public override int ModifyAttack(IEntity target, int outgoingAttack)
+    public override Dictionary<AttackType, int> ModifyAttack(IEntity target, Dictionary<AttackType, int> outgoingAttack)
     {
         base.ModifyAttack(target, outgoingAttack);
-        return outgoingAttack + StackCount;
+        outgoingAttack[AttackType.Normal] += StackCount;
+        return outgoingAttack;
     }
 }
 
@@ -338,10 +341,12 @@ public class RageEffect : StatusEffectBase
 {
     public RageEffect(int initialStack) : base(StatusEffectType.Rage, initialStack, EffectTiming.OnAttack, true) { }
 
-    public override int ModifyAttack(IEntity target, int outgoingAttack)
+    public override Dictionary<AttackType, int> ModifyAttack(IEntity target, Dictionary<AttackType, int> outgoingAttack)
     {
         base.ModifyAttack(target, outgoingAttack);
-        return (int)(outgoingAttack * (1 + StackCount * 0.1f));
+        var multiplier = (1 + StackCount * 0.1f);
+        outgoingAttack.ToList().ForEach(a => outgoingAttack[a.Key] = (int)(a.Value * multiplier));
+        return outgoingAttack;
     }
 }
 

@@ -61,9 +61,9 @@ public class Player : MonoBehaviour, IEntity
         return v;
     }
     
-    public int ModifyOutgoingAttack(int amount)
+    public Dictionary<AttackType, int> ModifyOutgoingAttack(Dictionary<AttackType, int> attack)
     {
-        var v = StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyAttack(this, current));
+        var v = StatusEffects.Aggregate(attack, (current, effect) => effect.ModifyAttack(this, current));
         statusEffectUI.UpdateUI(StatusEffects);
         return v;
     }

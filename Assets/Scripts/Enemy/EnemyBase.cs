@@ -100,7 +100,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         return v;
     }
     
-    public int ModifyOutgoingAttack(int amount)
+    public Dictionary<AttackType, int> ModifyOutgoingAttack(Dictionary<AttackType, int> amount)
     {
         var v = StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyAttack(this, current));
         _statusEffectUI.UpdateUI(StatusEffects);
@@ -183,7 +183,8 @@ public class EnemyBase : MonoBehaviour, IEntity
     private void Attack()
     {
         // 状態異常で攻撃力を更新
-        var damage = ModifyOutgoingAttack(attack);
+        var dic = new Dictionary<AttackType, int> {{AttackType.Normal, attack}};
+        var damage = ModifyOutgoingAttack(dic)[AttackType.Normal];
         GameManager.Instance.Player.Damage(Mathf.Max(1, damage));
         this.transform.DOMoveX(-0.75f, 0.02f).SetRelative(true).OnComplete(() =>
                 {

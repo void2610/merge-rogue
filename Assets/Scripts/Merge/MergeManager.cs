@@ -182,21 +182,20 @@ public class MergeManager : MonoBehaviour
     public void Attack()
     {
         // 攻撃がない場合は敵の攻撃に移行
-        if (_attackCounts.All(a => a.Value == 0))
+        var canAttack = _attackCounts.Any(a => a.Value != 0);
+        // Freeze状態なら行動しない
+        var freeze = (FreezeEffect)GameManager.Instance.Player.StatusEffects.Find(e => e.Type == StatusEffectType.Freeze);
+        var isFrozen = freeze != null && freeze.IsFrozen();
+        if (!canAttack || isFrozen)
         {
             GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
             return;
         }
         
-        // Freeze状態なら行動しない
-        var freeze = (FreezeEffect)GameManager.Instance.Player.StatusEffects.Find(e => e.Type == StatusEffectType.Freeze);
-        if (freeze != null && freeze.IsFrozen()) return;
+        // 状態異常を適用
+        _attackCounts = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts);
         
-        // プレイヤーの状態異常で攻撃力を更新
-        _attackCounts[AttackType.Normal] = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts[AttackType.Normal]);
-        _attackCounts[AttackType.All] = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts[AttackType.All]);
-        
-        // イベントでパラメータを更新
+        // イベントとプレイヤー攻撃力を適用
         EventManager.OnPlayerAttack.Trigger(_attackCounts);
         _attackCounts = EventManager.OnPlayerAttack.GetValue();
         _attackCounts.ToList().ForEach(a => _attackCounts[a.Key] = (int)(a.Value * attackMagnification));
@@ -208,6 +207,7 @@ public class MergeManager : MonoBehaviour
             UnityroomApiClient.Instance.SendScore(2, totalAttack, ScoreboardWriteMode.HighScoreDesc);
             PlayerPrefs.SetInt("maxAttack", totalAttack);
         }
+        
         // 実際の攻撃処理
         GameManager.Instance.EnemyContainer.AttackEnemy(_attackCounts);
         // 攻撃アニメーション
