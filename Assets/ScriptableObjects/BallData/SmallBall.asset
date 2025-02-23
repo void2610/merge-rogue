@@ -17,7 +17,7 @@ MonoBehaviour:
   descriptions:
   - "\u901A\u5E38\u653B\u6483"
   - "\u901A\u5E38\u653B\u6483"
-  - "\u901A\u5E38\u653B\u6483"
+  - "\u4E00\u756A\u5F8C\u308D\u306E\u6575\u3092\u653B\u6483"
   flavorText: "\u5C0F\u3055\u306A\u4F53\u306B\u5927\u304D\u306A\u529B"
   sprite: {fileID: 21300000, guid: 401e19353088e4a0fbb969995fe66b3c, type: 3}
   rarity: 0

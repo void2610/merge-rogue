@@ -4,6 +4,9 @@ public class SmallBall : BallBase
     {
         base.Effect(other);
         DefaultMergeParticle();
-        MergeManager.Instance.AddAttackCount(AttackType.Normal, Attack * Rank, this.transform.position);
+        
+        // レベル3だけ後ろを攻撃
+        var type = Level >= 2 ? AttackType.Last : AttackType.Normal;
+        MergeManager.Instance.AddAttackCount(type, Attack * Rank, this.transform.position);
     }
 }

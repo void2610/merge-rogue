@@ -71,8 +71,8 @@ public class InventoryUI : MonoBehaviour
         Destroy(_items[endRank]);
         _items[endRank] = g;
 
-        g.transform.DOMove(CalcInventoryPosition(endRank), 2.0f).SetEase(Ease.OutQuint).ToUniTask();
-        await g.transform.DOScale(new Vector3(BallSizes[endRank], BallSizes[endRank], 1), 2.0f).SetEase(Ease.OutQuint);
+        g.transform.DOMove(CalcInventoryPosition(endRank), 2.0f).SetEase(Ease.OutQuint).Forget();
+        await g.transform.DOScale(new Vector3(BallSizes[endRank], BallSizes[endRank], 1), 2.0f).SetEase(Ease.OutQuint).ToUniTask();
     }
     
     public void RemoveBallUI(int level)
@@ -115,7 +115,7 @@ public class InventoryUI : MonoBehaviour
     private void SetEvent(GameObject ballObj, int index, BallBase ballBase)
     {
         // クリックでボールの選択、入れ替え、削除
-        Utils.AddEventToObject(ballObj, () => OnClickBall(index), EventTriggerType.PointerClick);
+        Utils.AddEventToObject(ballObj, () => OnClickBall(index).Forget(), EventTriggerType.PointerClick);
         
         // マウスオーバーでカーソル移動とウィンドウ表示 (とアニメーション)
         Utils.AddEventToObject(ballObj, () => { 

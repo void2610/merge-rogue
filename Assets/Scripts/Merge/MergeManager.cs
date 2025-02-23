@@ -208,7 +208,7 @@ public class MergeManager : MonoBehaviour
             UnityroomApiClient.Instance.SendScore(2, totalAttack, ScoreboardWriteMode.HighScoreDesc);
             PlayerPrefs.SetInt("maxAttack", totalAttack);
         }
-        // 攻撃処理
+        // 実際の攻撃処理
         GameManager.Instance.EnemyContainer.AttackEnemy(_attackCounts);
         // 攻撃アニメーション
         GameManager.Instance.Player.gameObject.transform.DOMoveX(0.75f, 0.02f).SetRelative(true).OnComplete(() =>

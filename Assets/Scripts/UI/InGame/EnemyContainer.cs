@@ -109,10 +109,7 @@ public class EnemyContainer : MonoBehaviour
         _gainedExp = 0;
     }
 
-    public void AttackEnemy(Dictionary<AttackType, int> damage)
-    {
-        AttackEnemyAsync(damage).Forget();
-    }
+    public void AttackEnemy(Dictionary<AttackType, int> damage) => AttackEnemyAsync(damage).Forget();
 
     private async UniTaskVoid AttackEnemyAsync(Dictionary<AttackType, int> damages)
     {
@@ -132,6 +129,20 @@ public class EnemyContainer : MonoBehaviour
         }
 
         if (GetCurrentEnemyCount() == 0) return;
+        es = GetAllEnemies().ToList();
+        
+        // 一番後ろの敵を攻撃
+        if (damages[AttackType.Last] > 0)
+        {
+            var lastEnemy = es.Last();
+            SeManager.Instance.PlaySe("playerAttack");
+            lastEnemy.Damage(damages[AttackType.Last]);
+            CameraMove.Instance.ShakeCamera(0.5f, damages[AttackType.Last] * 0.01f);
+            await UniTask.Delay(500);
+        }
+        
+        if (GetCurrentEnemyCount() == 0) return;
+        es = GetAllEnemies().ToList();
 
         // 単体攻撃
         // 一番前の敵を攻撃、攻撃力が残っていたら次の敵を攻撃
@@ -151,9 +162,10 @@ public class EnemyContainer : MonoBehaviour
             CameraMove.Instance.ShakeCamera(0.5f, actualDamage * 0.01f);
             await UniTask.Delay(300);
         }
+        await UniTask.Delay(200);
         
         if (GetCurrentEnemyCount() == 0) return;
-        await UniTask.Delay(300);
+        es = GetAllEnemies().ToList();
         
         // ランダム攻撃
         if (damages[AttackType.Random] > 0)
@@ -162,7 +174,7 @@ public class EnemyContainer : MonoBehaviour
             SeManager.Instance.PlaySe("playerAttack");
             randomEnemy.Damage(damages[AttackType.Random]);
             CameraMove.Instance.ShakeCamera(0.5f, damages[AttackType.Random] * 0.01f);
-            await UniTask.Delay(300);
+            await UniTask.Delay(500);
         }
         
         // 敵が残っていたら敵の攻撃へ

@@ -73,7 +73,7 @@ public class InventoryManager : MonoBehaviour
         _inventory[index1] = CreateBallInstanceFromBallData(data2, index1 + 1, level2);
         _inventory[index2] = CreateBallInstanceFromBallData(data1, index2 + 1, level1);
         
-        InventoryUI.CreateBallUITween(_inventory[index1], index2,index1, _inventory[index1].GetComponent<BallBase>());
+        InventoryUI.CreateBallUITween(_inventory[index1], index2,index1, _inventory[index1].GetComponent<BallBase>()).Forget();
         await InventoryUI.CreateBallUITween(_inventory[index2], index1,index2, _inventory[index2].GetComponent<BallBase>());
         await UniTask.Delay(1000);
     }
