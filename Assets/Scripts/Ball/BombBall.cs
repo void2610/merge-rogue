@@ -21,20 +21,11 @@ public class BombBall : BallBase
         
         MergeManager.Instance.AddAttackCount(AttackType.All, Attack * Rank, this.transform.position);
 
-        var hitColliders = Physics2D.OverlapCircleAll(this.transform.position, Size);
+        var hitBalls = Utils.GetNearbyBalls(this.gameObject, other.gameObject, Size);
 
-        // 取得したコライダーをリストに変換
-        foreach (var col in hitColliders)
+        // 取得したボールを破壊
+        foreach (var ball in hitBalls)
         {
-            // 自身を無視
-            if (col.gameObject == this.gameObject) continue;
-            // merge相手を無視
-            if (other && col.gameObject == other.gameObject) continue;
-            
-            var ball = col.gameObject.GetComponent<BallBase>();
-            if (ball == null) continue;
-            if (ball.IsFrozen || ball.isDestroyed) continue;
-            
             ball.isDestroyed = true;
             ball.EffectAndDestroy(this);
         }

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -65,7 +66,9 @@ public class Utils : MonoBehaviour
         return description;
     }
 
-    // 既存のハイライトを解除するメソッド
+    /// <summary>
+    /// 既存のハイライトを解除する
+    /// </summary>
     private static string RemoveExistingHighlights(string description, string word)
     {
         // ハイライト形式の正規表現を作成
@@ -73,6 +76,30 @@ public class Utils : MonoBehaviour
 
         // ハイライト部分を元の文字列に戻す
         return Regex.Replace(description, pattern, word);
+    }
+
+    /// <summary>
+    /// マージ時に近くにある別のボールを取得する
+    /// </summary>
+    public static List<BallBase> GetNearbyBalls(GameObject obj, GameObject other, float radius)
+    {
+        var result = new List<BallBase>();
+        var hitColliders = Physics2D.OverlapCircleAll(obj.transform.position, radius);
+        // 取得したコライダーをリストに変換
+        foreach (var col in hitColliders)
+        {
+            // 自身を無視
+            if (col.gameObject == obj) continue;
+            // merge相手を無視
+            if (col.gameObject == other) continue;
+            
+            var ball = col.gameObject.GetComponent<BallBase>();
+            if (ball == null) continue;
+            if (ball.IsFrozen || ball.isDestroyed) continue;
+            
+            result.Add(ball);
+        }
+        return result;
     }
 
     private void Awake()

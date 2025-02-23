@@ -6,7 +6,9 @@ public class BallData : ScriptableObject
 {
     public string className;
     public string displayName;
+    [TextArea(1, 5)]
     public List<string> descriptions = new (){"", "", ""};
+    [TextArea(1, 5)]
     public string flavorText;
     public Sprite sprite;
     public Rarity rarity;
