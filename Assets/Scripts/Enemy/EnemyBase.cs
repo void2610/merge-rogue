@@ -71,6 +71,15 @@ public class EnemyBase : MonoBehaviour, IEntity
         _statusEffectUI.UpdateUI(StatusEffects);
     }
     
+    public void RemoveStatusEffect(StatusEffectType type, int stack)
+    {
+        var effect = StatusEffects.Find(e => e.Type == type);
+        if (effect == null) return;
+        if (effect.ReduceStack(stack))
+            StatusEffects.Remove(effect);
+        _statusEffectUI.UpdateUI(StatusEffects);
+    }
+    
     public async UniTask UpdateStatusEffects()
     {
         if (!this.gameObject) return;

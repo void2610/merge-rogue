@@ -54,10 +54,24 @@ public abstract class StatusEffectBase
         StackCount += count;
     }
 
+    /// <summary>
+    /// ターン終了時にスタック数を1減らす
+    /// </summary>
+    /// <returns>スタック数が0になったらtrue</returns>
     public bool ReduceStack()
     {
         if (_isPermanent && StackCount > 0) return false;
         StackCount--;
+        return StackCount <= 0;
+    }
+    
+    /// <summary>
+    /// その他の要因で指定したスタック数を減らす
+    /// </summary>
+    /// <returns>スタック数が0になったらtrue</returns>
+    public bool ReduceStack(int count)
+    {
+        StackCount -= count;
         return StackCount <= 0;
     }
     
@@ -164,6 +178,16 @@ public static class StatusEffectFactory
         };
         
         tar.AddStatusEffect(newEffect);
+    }
+    
+    public static void RemoveStatusEffectFromPlayer(StatusEffectType type, int stack = 1)
+    {
+        RemoveStatusEffect(GameManager.Instance.Player, type, stack);
+    }
+    
+    public static void RemoveStatusEffect(IEntity target, StatusEffectType type, int stack = 1)
+    {
+        target.RemoveStatusEffect(type, stack);
     }
     
     // 状態異常の色を取得する拡張メソッド

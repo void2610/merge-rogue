@@ -34,6 +34,15 @@ public class Player : MonoBehaviour, IEntity
         statusEffectUI.UpdateUI(StatusEffects);
     }
     
+    public void RemoveStatusEffect(StatusEffectType type, int stack)
+    {
+        var effect = StatusEffects.Find(e => e.Type == type);
+        if (effect == null) return;
+        if (effect.ReduceStack(stack))
+            StatusEffects.Remove(effect);
+        statusEffectUI.UpdateUI(StatusEffects);
+    }
+    
     public async UniTask UpdateStatusEffects()
     {
         for (var i = StatusEffects.Count - 1; i >= 0; i--)
