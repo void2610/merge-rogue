@@ -26,6 +26,7 @@ public abstract class StatusEffectBase
         OnBattleEnd,
         OnAttack,
         OnDamage,
+        Random,
     }
     
     public StatusEffectType Type { get; }
@@ -129,7 +130,7 @@ public abstract class StatusEffectBase
         return true; 
     }
 
-    private void ShowEffectText(int priority = 0)
+    protected void ShowEffectText(int priority = 0)
     {
         var effectText = Type.ToString() + "!";
         var textColor = Type.GetStatusEffectColor();
@@ -272,10 +273,24 @@ public class ShieldEffect : StatusEffectBase
     }
 }
 
-// (敵専用)スタックがある限り行動できない
+// スタック数*10%の確率で行動不能、行動不能時にスタック数が半分になる
 public class FreezeEffect : StatusEffectBase
 {
-    public FreezeEffect(int initialStack) : base(StatusEffectType.Freeze, initialStack, EffectTiming.OnTurnEnd, false) { }
+    public FreezeEffect(int initialStack) : base(StatusEffectType.Freeze, initialStack, EffectTiming.Random, true) { }
+
+    public bool IsFrozen()
+    {
+        if (StackCount <= 0) return false;
+        
+        var rand = GameManager.Instance.RandomRange(0.0f, 100.0f);
+        if (rand < StackCount * 10)
+        {
+            StackCount /= 2;
+            ShowEffectText();
+            return true;
+        }
+        return false;
+    }
 }
 
 // スタックがある限り無敵

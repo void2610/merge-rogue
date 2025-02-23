@@ -188,6 +188,10 @@ public class MergeManager : MonoBehaviour
             return;
         }
         
+        // Freeze状態なら行動しない
+        var freeze = (FreezeEffect)GameManager.Instance.Player.StatusEffects.Find(e => e.Type == StatusEffectType.Freeze);
+        if (freeze != null && freeze.IsFrozen()) return;
+        
         // プレイヤーの状態異常で攻撃力を更新
         _attackCounts[AttackType.Normal] = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts[AttackType.Normal]);
         _attackCounts[AttackType.All] = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts[AttackType.All]);

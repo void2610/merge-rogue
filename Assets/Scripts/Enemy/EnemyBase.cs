@@ -153,7 +153,8 @@ public class EnemyBase : MonoBehaviour, IEntity
     public void Action()
     {
         // Freeze状態なら行動しない
-        if (StatusEffects.Any(e => e.Type == StatusEffectType.Freeze)) return;
+        FreezeEffect freeze = (FreezeEffect)StatusEffects.Find(e => e.Type == StatusEffectType.Freeze);
+        if (freeze != null && freeze.IsFrozen()) return;
         
         TurnCount++;
         if(TurnCount == actionInterval)
