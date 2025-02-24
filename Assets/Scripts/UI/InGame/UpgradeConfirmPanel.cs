@@ -12,6 +12,7 @@ public class UpgradeConfirmPanel : MonoBehaviour
     [SerializeField] private Button upgradeButton;
     
     private int _currentBallIndex;
+    private Color _defaultTextColor;
 
     public void OpenUpgradeConfirmPanel(int index)
     {
@@ -20,25 +21,55 @@ public class UpgradeConfirmPanel : MonoBehaviour
         var rank = InventoryManager.Instance.GetBallLevel(index);
         
         SetBallTexts(leftWindow, ball, rank);
-        SetBallTexts(rightWindow, ball, rank + 1);
+        SetBallTexts(rightWindow, ball, rank + 1, true);
         ballImage.sprite = ball.sprite;
         if(!ball.sprite) ballImage.color = new Color(0, 0, 0, 0);
         UIManager.Instance.EnableCanvasGroup("Upgrade", true);
     }
     
-    private void SetBallTexts(GameObject g, BallData b, int level)
+    private void SetBallTexts(GameObject g, BallData b, int level, bool highlightDifferences = false)
     {
-        g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = b.displayName;
-        g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().color = b.rarity.GetColor();
+        var nameText = g.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
+        nameText.text = b.displayName;
+        nameText.color = b.rarity.GetColor();
+
         g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = b.descriptions[level];
         g.transform.Find("FlavorText").GetComponent<TextMeshProUGUI>().text = b.flavorText;
-        g.transform.Find("Status").Find("Status1").GetComponent<TextMeshProUGUI>().text = "level: " + (level + 1);
-        g.transform.Find("Status").Find("Status1").GetComponent<TextMeshProUGUI>().alpha = 1;
-        g.transform.Find("Status").Find("Status2").GetComponent<TextMeshProUGUI>().text = "attack: " + b.attacks[level];
-        g.transform.Find("Status").Find("Status2").GetComponent<TextMeshProUGUI>().alpha = 1;
-        g.transform.Find("Status").Find("Status3").GetComponent<TextMeshProUGUI>().text = "size: " + b.sizes[level];
-        g.transform.Find("Status").Find("Status3").GetComponent<TextMeshProUGUI>().alpha = 1;
+
+        var levelText = g.transform.Find("Status").Find("Status1").GetComponent<TextMeshProUGUI>();
+        var attackText = g.transform.Find("Status").Find("Status2").GetComponent<TextMeshProUGUI>();
+        var sizeText = g.transform.Find("Status").Find("Status3").GetComponent<TextMeshProUGUI>();
+
+        levelText.text = "level: " + (level + 1);
+        levelText.alpha = 1;
+
+        attackText.text = "attack: " + b.attacks[level];
+        sizeText.text = "size: " + b.sizes[level];
+
+        attackText.alpha = 1;
+        sizeText.alpha = 1;
+
+        // **フラグに基づく比較処理**
+        if (highlightDifferences && level > 0)
+        {
+            // 攻撃力: 上昇 → 緑色、低下 → 赤色、変化なし → 白色
+            if (b.attacks[level] > b.attacks[level - 1])
+                attackText.color = Color.green;
+            else if (b.attacks[level] < b.attacks[level - 1])
+                attackText.color = Color.red;
+            else
+                attackText.color = _defaultTextColor;
+
+            // サイズ: 上昇 → 赤色、低下 → 緑色、変化なし → 白色
+            if (b.sizes[level] > b.sizes[level - 1])
+                sizeText.color = Color.red;
+            else if (b.sizes[level] < b.sizes[level - 1])
+                sizeText.color = Color.green;
+            else
+                sizeText.color = _defaultTextColor;
+        }
     }
+
     
     private void Upgrade()
     {
@@ -56,6 +87,7 @@ public class UpgradeConfirmPanel : MonoBehaviour
 
     private void Awake()
     {
+        _defaultTextColor = leftWindow.transform.Find("Status").Find("Status1").GetComponent<TextMeshProUGUI>().color;
         cancelButton.onClick.AddListener(Cancel);
         upgradeButton.onClick.AddListener(Upgrade);
     }
