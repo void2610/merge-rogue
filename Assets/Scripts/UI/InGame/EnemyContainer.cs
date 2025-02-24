@@ -108,10 +108,8 @@ public class EnemyContainer : MonoBehaviour
         GameManager.Instance.Player.AddExp(_gainedExp);
         _gainedExp = 0;
     }
-
-    public void AttackEnemy(Dictionary<AttackType, int> damage) => AttackEnemyAsync(damage).Forget();
-
-    private async UniTaskVoid AttackEnemyAsync(Dictionary<AttackType, int> damages)
+    
+    public async UniTask AttackEnemy(Dictionary<AttackType, int> damages)
     {
         var es = GetAllEnemies().ToList();
         
@@ -144,25 +142,28 @@ public class EnemyContainer : MonoBehaviour
         if (GetCurrentEnemyCount() == 0) return;
         es = GetAllEnemies().ToList();
 
-        // 単体攻撃
+        // 通常攻撃
         // 一番前の敵を攻撃、攻撃力が残っていたら次の敵を攻撃
-        var singleDamage = damages[AttackType.Normal];
-        for(var i = 0; i < es.Count; i++)
+        if (damages[AttackType.Normal] > 0)
         {
-            var e = es[i];
-            if(!e) continue;
-            if (singleDamage <= 0) break;
-            var actualDamage = singleDamage > e.Health ? e.Health : singleDamage;
-            if (es.IndexOf(e) == es.Count - 1) actualDamage = singleDamage;
-            
-            SeManager.Instance.PlaySe("playerAttack");
-            e.Damage(actualDamage);
-            singleDamage -= actualDamage;
-            
-            CameraMove.Instance.ShakeCamera(0.5f, actualDamage * 0.01f);
-            await UniTask.Delay(300);
+            var singleDamage = damages[AttackType.Normal];
+            for (var i = 0; i < es.Count; i++)
+            {
+                var e = es[i];
+                if (!e) continue;
+                if (singleDamage <= 0) break;
+                var actualDamage = singleDamage > e.Health ? e.Health : singleDamage;
+                if (es.IndexOf(e) == es.Count - 1) actualDamage = singleDamage;
+
+                SeManager.Instance.PlaySe("playerAttack");
+                e.Damage(actualDamage);
+                singleDamage -= actualDamage;
+
+                CameraMove.Instance.ShakeCamera(0.5f, actualDamage * 0.01f);
+                await UniTask.Delay(250);
+            }
         }
-        await UniTask.Delay(200);
+        await UniTask.Delay(500);
         
         if (GetCurrentEnemyCount() == 0) return;
         es = GetAllEnemies().ToList();
@@ -174,7 +175,7 @@ public class EnemyContainer : MonoBehaviour
             SeManager.Instance.PlaySe("playerAttack");
             randomEnemy.Damage(damages[AttackType.Random]);
             CameraMove.Instance.ShakeCamera(0.5f, damages[AttackType.Random] * 0.01f);
-            await UniTask.Delay(500);
+            await UniTask.Delay(300);
         }
         
         // 敵が残っていたら敵の攻撃へ

@@ -115,7 +115,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.PlayerAttack:
                 Physics2D.simulationMode = SimulationMode2D.Script;
-                MergeManager.Instance.Attack();
+                MergeManager.Instance.Attack().Forget();
                 break;
             case GameState.EnemyAttack:
                 EnemyContainer.Action();

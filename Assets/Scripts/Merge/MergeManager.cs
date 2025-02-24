@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
@@ -179,7 +178,7 @@ public class MergeManager : MonoBehaviour
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
     }
 
-    public void Attack()
+    public async UniTaskVoid Attack()
     {
         // 攻撃がない場合は敵の攻撃に移行
         var canAttack = _attackCounts.Any(a => a.Value != 0);
@@ -208,8 +207,6 @@ public class MergeManager : MonoBehaviour
             PlayerPrefs.SetInt("maxAttack", totalAttack);
         }
         
-        // 実際の攻撃処理
-        GameManager.Instance.EnemyContainer.AttackEnemy(_attackCounts);
         // 攻撃アニメーション
         GameManager.Instance.Player.gameObject.transform.DOMoveX(0.75f, 0.02f).SetRelative(true).OnComplete(() =>
         {
@@ -217,6 +214,8 @@ public class MergeManager : MonoBehaviour
                 .SetEase(Ease.OutExpo);
         });
         
+        // 実際の攻撃処理
+        await GameManager.Instance.EnemyContainer.AttackEnemy(_attackCounts);
         ResetAttackCount();
     }
 
