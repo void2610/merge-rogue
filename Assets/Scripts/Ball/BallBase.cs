@@ -8,6 +8,7 @@ public class BallBase : MonoBehaviour
     public const int MAX_LEVEL = 3;
 
     public int Rank { get; private set; } = -1;
+    public int NextRank { get; protected set; } = 0;
     public int Level { get; private set; } = 0;
     public float Size { get; private set; } = 0;
     public float Attack { get; private set; } = 0;
@@ -50,6 +51,7 @@ public class BallBase : MonoBehaviour
         Serial = _ballSerial++;
         this.Data = d;
         this.Rank = rank;
+        this.NextRank = rank + 1;
         this._sizes = d.sizes;
         this._attacks = d.attacks;
         this.Level = level;
@@ -86,7 +88,7 @@ public class BallBase : MonoBehaviour
                     
                     var center = (this.transform.position + other.transform.position) / 2;
                     var rotation = Quaternion.Lerp(this.transform.rotation, other.transform.rotation, 0.5f);
-                    MergeManager.Instance.SpawnBallFromLevel(Rank + 1, center, rotation);
+                    MergeManager.Instance.SpawnBallFromLevel(NextRank, center, rotation);
 
                     EffectAndDestroy(b);
                     b.EffectAndDestroy(this);
