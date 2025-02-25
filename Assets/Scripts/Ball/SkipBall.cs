@@ -18,7 +18,8 @@ public class SkipBall : BallBase
     protected override void Effect(BallBase other)
     {
         base.Effect(other);
-        DefaultMergeParticle();
+        // レベル1では攻撃力0
+        if(Level > 0) DefaultMergeParticle();
         MergeManager.Instance.AddAttackCount(AttackType.Normal, Attack * Rank, this.transform.position);
     }
 }

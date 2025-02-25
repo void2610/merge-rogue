@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
 
@@ -52,7 +54,7 @@ public class BallBase : MonoBehaviour
         this.Data = d;
         this.Rank = rank;
         this.NextRank = rank + 1;
-        this._sizes = d.sizes;
+        this._sizes = d.sizes.Select(x => x * 1.25f).ToList();
         this._attacks = d.attacks;
         this.Level = level;
         this.Attack = _attacks[level];
