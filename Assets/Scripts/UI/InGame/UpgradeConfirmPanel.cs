@@ -77,43 +77,29 @@ public class UpgradeConfirmPanel : MonoBehaviour
         if (string.IsNullOrEmpty(beforeText)) return $"<color=green>{afterText}</color>";
         if (string.IsNullOrEmpty(afterText)) return beforeText;
 
-        // **初期容量を指定してStringBuilderを最適化**
-        StringBuilder result = new StringBuilder(afterText.Length + 50);
+        var result = new StringBuilder(afterText.Length + 50);
 
-        int beforeIndex = 0, afterIndex = 0;
+        var beforeLength = beforeText.Length;
+        var afterLength = afterText.Length;
+        var length = Mathf.Max(beforeLength, afterLength);
 
-        while (beforeIndex < beforeText.Length && afterIndex < afterText.Length)
+        for (var i = 0; i < length; i++)
         {
-            if (beforeText[beforeIndex] == afterText[afterIndex])
+            var afterChar = i < afterLength ? afterText[i] : '\0';
+            var beforeChar = i < beforeLength ? beforeText[i] : '\0';
+
+            if (afterChar == beforeChar)
             {
-                // 一致部分はそのまま追加
-                result.Append(afterText[afterIndex]);
-                beforeIndex++;
-                afterIndex++;
+                result.Append(afterChar);
             }
             else
             {
-                // 変更部分を収集
-                int startIndex = afterIndex;
-                while (afterIndex < afterText.Length && 
-                       (beforeIndex >= beforeText.Length || beforeText[beforeIndex] != afterText[afterIndex]))
-                {
-                    afterIndex++;
-                }
-
-                // 変更部分を緑色にして追加
+                // 変更された文字を緑色で表示
                 result.Append("<color=green>");
-                result.Append(afterText.Substring(startIndex, afterIndex - startIndex));
+                result.Append(afterChar);
                 result.Append("</color>");
             }
         }
-
-        // 残りの部分を追加
-        if (afterIndex < afterText.Length)
-        {
-            result.Append(afterText.Substring(afterIndex));
-        }
-
         return result.ToString();
     }
     
