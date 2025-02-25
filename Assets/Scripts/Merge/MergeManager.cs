@@ -212,7 +212,7 @@ public class MergeManager : MonoBehaviour
         {
             GameManager.Instance.Player.gameObject.transform.DOMoveX(-0.75f, 0.2f).SetRelative(true)
                 .SetEase(Ease.OutExpo);
-        });
+        }).Forget();
         
         // 実際の攻撃処理
         await GameManager.Instance.EnemyContainer.AttackEnemy(_attackCounts);

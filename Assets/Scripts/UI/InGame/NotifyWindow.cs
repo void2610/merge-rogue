@@ -66,12 +66,12 @@ public class NotifyWindow : MonoBehaviour
         var canvasGroup = window.GetComponent<CanvasGroup>();
         var gauge = window.transform.Find("Gauge").GetComponent<Image>();
 
-        await rectTransform.DOMoveX(rightMoveDistance, showDuration).SetEase(Ease.OutSine).SetRelative().SetUpdate(true).ToUniTask();
+        await rectTransform.DOMoveX(rightMoveDistance, showDuration).SetEase(Ease.OutSine).SetRelative().SetUpdate(true);
         gauge.DOFillAmount(1, waitDuration).SetEase(Ease.Linear).SetUpdate(true).Forget();
         await UniTask.Delay((int)waitDuration * 1000, ignoreTimeScale: true);
 
         rectTransform.DOMoveY(upMoveDistance, closeDuration).SetEase(Ease.InSine).SetRelative().SetUpdate(true).Forget();
-        await canvasGroup.DOFade(0, closeDuration).SetEase(Ease.InSine).SetUpdate(true).ToUniTask();
+        await canvasGroup.DOFade(0, closeDuration).SetEase(Ease.InSine).SetUpdate(true);
 
         // Reset
         await rectTransform.DOMoveX(-rightMoveDistance, 0).SetRelative().SetUpdate(true);

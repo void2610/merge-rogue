@@ -72,7 +72,7 @@ public class InventoryUI : MonoBehaviour
         _items[endRank] = g;
 
         g.transform.DOMove(CalcInventoryPosition(endRank), 2.0f).SetEase(Ease.OutQuint).Forget();
-        await g.transform.DOScale(new Vector3(BallSizes[endRank], BallSizes[endRank], 1), 2.0f).SetEase(Ease.OutQuint).ToUniTask();
+        await g.transform.DOScale(new Vector3(BallSizes[endRank], BallSizes[endRank], 1), 2.0f).SetEase(Ease.OutQuint);
     }
     
     public void RemoveBallUI(int level)
