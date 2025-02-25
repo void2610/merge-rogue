@@ -1,3 +1,4 @@
+using System.Text;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -33,7 +34,8 @@ public class UpgradeConfirmPanel : MonoBehaviour
         nameText.text = b.displayName;
         nameText.color = b.rarity.GetColor();
 
-        g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = b.descriptions[level];
+        var description = highlightDifferences ? GetColoredDifference(b.descriptions[level - 1], b.descriptions[level]) : b.descriptions[level];
+        g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = description;
         g.transform.Find("FlavorText").GetComponent<TextMeshProUGUI>().text = b.flavorText;
 
         var levelText = g.transform.Find("Status").Find("Status1").GetComponent<TextMeshProUGUI>();
@@ -69,7 +71,51 @@ public class UpgradeConfirmPanel : MonoBehaviour
                 sizeText.color = _defaultTextColor;
         }
     }
+    
+    public static string GetColoredDifference(string beforeText, string afterText)
+    {
+        if (string.IsNullOrEmpty(beforeText)) return $"<color=green>{afterText}</color>";
+        if (string.IsNullOrEmpty(afterText)) return beforeText;
 
+        // **初期容量を指定してStringBuilderを最適化**
+        StringBuilder result = new StringBuilder(afterText.Length + 50);
+
+        int beforeIndex = 0, afterIndex = 0;
+
+        while (beforeIndex < beforeText.Length && afterIndex < afterText.Length)
+        {
+            if (beforeText[beforeIndex] == afterText[afterIndex])
+            {
+                // 一致部分はそのまま追加
+                result.Append(afterText[afterIndex]);
+                beforeIndex++;
+                afterIndex++;
+            }
+            else
+            {
+                // 変更部分を収集
+                int startIndex = afterIndex;
+                while (afterIndex < afterText.Length && 
+                       (beforeIndex >= beforeText.Length || beforeText[beforeIndex] != afterText[afterIndex]))
+                {
+                    afterIndex++;
+                }
+
+                // 変更部分を緑色にして追加
+                result.Append("<color=green>");
+                result.Append(afterText.Substring(startIndex, afterIndex - startIndex));
+                result.Append("</color>");
+            }
+        }
+
+        // 残りの部分を追加
+        if (afterIndex < afterText.Length)
+        {
+            result.Append(afterText.Substring(afterIndex));
+        }
+
+        return result.ToString();
+    }
     
     private void Upgrade()
     {
