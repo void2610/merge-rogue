@@ -73,10 +73,10 @@ public class ParticleManager : MonoBehaviour
         mergeText.GetComponent<MergeText>().SetUp(value, color);
     }
     
-    public void DamageText(int value, float xPos)
+    public void DamageText(int value, float xPos, Color color = default)
     {
         var damageText = Instantiate(damageTextPrefab, textContainer);
-        damageText.GetComponent<DamageText>().SetUp(value, xPos);
+        damageText.GetComponent<DamageText>().SetUp(value, xPos, color);
     }
     
     public void WavyText(string text, Vector3 pos, Color color = default, float fontSize = 15f)

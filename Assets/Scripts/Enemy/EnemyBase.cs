@@ -116,7 +116,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         _statusEffectUI.UpdateUI(StatusEffects);
     }
     
-    public void Damage(int damage)
+    public void Damage(int damage, AttackType type = AttackType.Normal)
     {
         if(!this) return;
                 
@@ -127,10 +127,10 @@ public class EnemyBase : MonoBehaviour, IEntity
             m.DOColor(new Color(0.7f,0.7f,0.7f), 0.3f);
         });
         ParticleManager.Instance.HitParticle(this.transform.position + new Vector3(-0.3f, 0.2f, 0));
-        ParticleManager.Instance.DamageText(damage, this.transform.position.x);
         
         // 状態異常でダメージを更新
         damage = ModifyIncomingDamage(damage);
+        ParticleManager.Instance.DamageText(damage, this.transform.position.x, type.GetColor());
         Health -= damage;
         _statusEffectUI.UpdateUI(StatusEffects);
         _healthSlider.value = Health;

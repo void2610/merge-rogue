@@ -121,7 +121,7 @@ public class EnemyContainer : MonoBehaviour
             SeManager.Instance.PlaySe("playerAttack");
             for(var i = 0; i < es.Count; i++)
             {
-                es[i].Damage(damages[AttackType.All]);
+                es[i].Damage(damages[AttackType.All], AttackType.All);
             }
             await UniTask.Delay(500);
         }
@@ -134,7 +134,7 @@ public class EnemyContainer : MonoBehaviour
         {
             var lastEnemy = es.Last();
             SeManager.Instance.PlaySe("playerAttack");
-            lastEnemy.Damage(damages[AttackType.Last]);
+            lastEnemy.Damage(damages[AttackType.Last], AttackType.Last);
             CameraMove.Instance.ShakeCamera(0.5f, damages[AttackType.Last] * 0.01f);
             await UniTask.Delay(500);
         }
@@ -173,7 +173,7 @@ public class EnemyContainer : MonoBehaviour
         {
             var randomEnemy = GetRandomEnemy();
             SeManager.Instance.PlaySe("playerAttack");
-            randomEnemy.Damage(damages[AttackType.Random]);
+            randomEnemy.Damage(damages[AttackType.Random], AttackType.Random);
             CameraMove.Instance.ShakeCamera(0.5f, damages[AttackType.Random] * 0.01f);
             await UniTask.Delay(300);
         }

@@ -14,13 +14,12 @@ public class DisturbBall : BallBase
     
     private void CheckNearMerge(Unit _)
     {
+        // 周りのボールがマージされたら消滅する
         var (b1, b2) = EventManager.OnBallMerged.GetValue();
         var pos = (b2.transform.position - b1.transform.position) / 2;
         var distance = Vector3.Distance(this.transform.position, pos);
-        Debug.Log($"DisturbBall: Distance: {distance}");
         if (distance < 3f)
         {
-            Debug.Log("DisturbBall: Merged");
             this.EffectAndDestroy(null);
         }
     }

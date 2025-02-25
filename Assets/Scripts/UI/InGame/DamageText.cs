@@ -6,7 +6,8 @@ public class DamageText : MonoBehaviour
 {
     private const float FLOOR = 2.9f;
 
-    public void SetUp(int damage, float xPos){
+    public void SetUp(int damage, float xPos, Color color = default)
+    {
         this.transform.position = new Vector3(xPos, FLOOR + 1, 0);
         
         var t = GetComponent<TextMeshProUGUI>();
@@ -14,7 +15,7 @@ public class DamageText : MonoBehaviour
         
         t.text = damage.ToString();
         t.color = Color.red;
-        t.DOColor(Color.white, 0.8f).SetLink(gameObject);
+        t.DOColor(color, 0.8f).SetLink(gameObject);
     
         var s = 2 * (1 + ((damage - 15) / 100f));
         transform.DOScale(s, 0.1f).SetEase(Ease.Linear).OnComplete(() =>

@@ -4,22 +4,16 @@ public class SkipBall : BallBase
     {
         base.InitBall(d, rank, level);
         // マージ時にランクが2つ上のボールを生成する。
-        if (level < 2)
-        {
-            NextRank = rank + 2;
-        }
+        if (level < 2) NextRank = rank + 2;
         // マージ時にランクが3つ上のボールを生成する。
-        else
-        {
-            NextRank = rank + 3;
-        }
+        else NextRank = rank + 3;
     }
     
     protected override void Effect(BallBase other)
     {
         base.Effect(other);
         // レベル1では攻撃力0
-        if(Level > 0) DefaultMergeParticle();
+        if(Attack > 0) DefaultMergeParticle();
         MergeManager.Instance.AddAttackCount(AttackType.Normal, Attack * Rank, this.transform.position);
     }
 }
