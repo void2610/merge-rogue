@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using System.Threading;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
@@ -30,7 +31,7 @@ public static class ExtendedMethods
     /// <summary>
     /// TextMeshProUGUIの文字をフェードインさせる
     /// </summary>
-    public static async UniTask<TextMeshProUGUI> ShowTextTween(this TextMeshProUGUI text, float duration = 0.1f)
+    public static async UniTask<TextMeshProUGUI> ShowTextTween(this TextMeshProUGUI text, float duration = 0.1f, CancellationToken cancellationToken = default)
     {
         if (string.IsNullOrEmpty(text.text)) return text;
         
@@ -38,26 +39,67 @@ public static class ExtendedMethods
         var animator = new DOTweenTMPAnimator(text);
         
         if (animator.textInfo.characterCount == 0) return text;
-
-        for (var i = 0; i < animator.textInfo.characterCount; i++)
+        
+        int totalChars = animator.textInfo.characterCount;
+        
+        for (var i = 0; i < totalChars; i++)
         {
-            // 初期オフセット（少し下にずらす）
+            // キャンセルが要求されていたらループを抜ける
+            if (cancellationToken.IsCancellationRequested)
+            {
+                break;
+            }
+            
+            // 各文字に初期オフセットと回転を設定
             animator.SetCharOffset(i, new Vector3(0, -5, 0));
             animator.SetCharRotation(i, new Vector3(0, 0, 10));
 
-            // 改行の場合は待機時間を長くする
-            if (text.text[i] == '\n') await UniTask.Delay(TimeSpan.FromSeconds(duration * 5));
+            // 改行の場合は待機時間を長めに
+            if (text.text[i] == '\n')
+            {
+                try
+                {
+                    await UniTask.Delay(TimeSpan.FromSeconds(duration * 5), cancellationToken: cancellationToken);
+                }
+                catch (OperationCanceledException)
+                {
+                    break;
+                }
+            }
 
-            // 透明度とY座標を上昇させるアニメーションを同時に実行
+            // Tweenを生成：透明度、位置（オフセット）、回転を最終状態（alpha=1, offset=0, rotation=0）にアニメーション
             var fadeTween = animator.DOFadeChar(i, 1, duration);
             var moveTween = animator.DOOffsetChar(i, Vector3.zero, duration);
             var rotateTween = animator.DORotateChar(i, Vector3.zero, duration);
             
             if (fadeTween == null || moveTween == null || rotateTween == null) continue;
-
-            await UniTask.WhenAll(fadeTween.ToUniTask(), moveTween.ToUniTask(), rotateTween.ToUniTask());
+            
+            try
+            {
+                await UniTask.WhenAll(
+                    fadeTween.ToUniTask(cancellationToken: cancellationToken),
+                    moveTween.ToUniTask(cancellationToken: cancellationToken),
+                    rotateTween.ToUniTask(cancellationToken: cancellationToken)
+                );
+            }
+            catch (OperationCanceledException)
+            {
+                break;
+            }
         }
-
+        
+        // キャンセルが要求された場合は、残りの文字に対して即時に最終状態を適用する
+        if (cancellationToken.IsCancellationRequested)
+        {
+            // 現在のTweenを全て停止
+            DOTween.Kill(text);
+            for (var i = 0; i < totalChars; i++)
+            {
+                animator.SetCharAlpha(i, 1);
+                animator.SetCharOffset(i, Vector3.zero);
+                animator.SetCharRotation(i, Vector3.zero);
+            }
+        }
         return text;
     }
     
@@ -71,5 +113,16 @@ public static class ExtendedMethods
             dict[key] = (int)(dict[key] * value);
         }
         return dict;
+    }
+    
+    /// <summary>
+    /// DOTweenTMPAnimatorの文字の透明度を設定する
+    /// </summary>
+    public static DOTweenTMPAnimator SetCharAlpha(this DOTweenTMPAnimator animator, int index, float alpha)
+    {
+        var color = animator.GetCharColor(index);
+        color.a = alpha;
+        animator.SetCharColor(index, color);
+        return animator;
     }
 }
