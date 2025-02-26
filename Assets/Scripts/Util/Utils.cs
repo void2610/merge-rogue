@@ -1,11 +1,15 @@
-using UnityEngine;
+using System;
+using System.Threading;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
+using TMPro;
+using Cysharp.Threading.Tasks;
+
 
 public class Utils : MonoBehaviour
 {
@@ -100,6 +104,34 @@ public class Utils : MonoBehaviour
             result.Add(ball);
         }
         return result;
+    }
+    
+    /// <summary>
+    /// 指定時間 await するが、途中で指定した条件が満たされた場合は即座に終了する
+    /// </summary>
+    /// <param name="delayTime">待機時間(ms)</param>
+    /// <param name="condition">途中で終了させる条件</param>
+    /// <param name="cancellationToken">キャンセル用トークン（オプション）</param>
+    public static async UniTask WaitOrSkip(int delayTime, Func<bool> condition, CancellationToken cancellationToken = default)
+    {
+        using (var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken))
+        {
+            var delayTask = UniTask.Delay(delayTime, cancellationToken: cts.Token);
+            var conditionTask = UniTask.WaitUntil(condition, cancellationToken: cts.Token);
+            
+            var result = await UniTask.WhenAny(delayTask, conditionTask);
+
+            // 待機をスキップするためキャンセル
+            if (result == 1) cts.Cancel();
+        }
+    }
+
+    /// <summary>
+    /// 指定時間 await するが、途中でクリックかキー操作がされた場合は即座に終了する
+    /// </summary>
+    public static async UniTask WaitOrSkipInput(int delayTime, CancellationToken cancellationToken = default)
+    {
+        await WaitOrSkip(delayTime, () => Input.anyKeyDown || Input.GetMouseButtonDown(0), cancellationToken);
     }
 
     private void Awake()
