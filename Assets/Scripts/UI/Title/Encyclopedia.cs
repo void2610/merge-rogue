@@ -13,12 +13,12 @@ public class Encyclopedia : MonoBehaviour
     [SerializeField] private Transform itemContainer;
     [SerializeField] private GameObject ballContainerPrefab;
     [SerializeField] private GameObject relicContainerPrefab;
-    [SerializeField] private Vector2 offset;
-    [SerializeField] private Vector2 align;
-    [SerializeField] private int column = 3;
     
-    private List<GameObject> _items = new ();
-    
+    // 空白セルの高さ（例えば、セルの高さと同じか、調整したい値）
+    [SerializeField] private float spacerHeight = 100f;
+
+    private List<GameObject> _items = new();
+
     private void SetBallData(GameObject g, BallData b)
     {
         var image = g.transform.Find("Icon").GetComponent<Image>();
@@ -45,48 +45,45 @@ public class Encyclopedia : MonoBehaviour
         }, EventTriggerType.PointerEnter);
     }
     
-    private void AdjustContentSize()
+    private void CreateSpacer(int count)
     {
-        var contentRect = itemContainer.GetComponent<RectTransform>();
-        var count = allBallDataList.list.Count + allRelicDataList.list.Count;
-        var rows = Mathf.CeilToInt((float)count / column);
-        var totalHeight = rows * (align.y + 300) + offset.y;
+        for(var i = 0; i < count; i++)
+        {
+            // 空のGameObjectを生成
+            GameObject spacer = new GameObject("Spacer", typeof(RectTransform));
+            spacer.transform.SetParent(itemContainer, false);
 
-        // Contentの高さを設定
-        contentRect.sizeDelta = new Vector2(contentRect.sizeDelta.x, totalHeight);
-        contentRect.anchoredPosition = new Vector2(contentRect.anchoredPosition.x, 0);
+            // LayoutElementを追加して、スペースとしてのサイズを指定
+            LayoutElement le = spacer.AddComponent<LayoutElement>();
+            // グリッドの方向に合わせたPreferred値を設定する
+            le.preferredHeight = spacerHeight;
+        }
     }
 
     private void Start()
     {
-        if(allBallDataList.list.Count == 0) return;
-        
-        var tempColumn = 0;
-        
-        var balls = allBallDataList.list;
-        for (var i = balls.Count - 1; i >= 0; i--)
+        // Grid Layout Group が itemContainer にアタッチされている前提で位置設定は不要
+
+        // Ball アイテムの生成
+        foreach (var ball in allBallDataList.list)
         {
-            var pos = new Vector3((i % column) * align.x, -(i / column) * align.y, 0) + new Vector3(offset.x, offset.y, 0);
             var container = Instantiate(ballContainerPrefab, itemContainer);
-            container.GetComponent<RectTransform>().anchoredPosition = pos;
-            SetBallData(container, balls[i]);
-            tempColumn = i / column;
+            SetBallData(container, ball);
             _items.Add(container);
         }
 
-        tempColumn += 2;
+        // ボールとレリックの間に空白セル（Spacer）を挟む
+        CreateSpacer(16);
 
-        var relics = allRelicDataList.list;
-        for (var i =　relics.Count - 1; i >= 0; i--)
+        // Relic アイテムの生成
+        foreach (var relic in allRelicDataList.list)
         {
-            var pos = new Vector3((i % column) * align.x, -((i / column) + tempColumn) * align.y, 0) + new Vector3(offset.x, offset.y, 0);
             var container = Instantiate(relicContainerPrefab, itemContainer);
-            container.GetComponent<RectTransform>().anchoredPosition = pos;
-            SetRelicData(container, relics[i]);
+            SetRelicData(container, relic);
             _items.Add(container);
         }
         
-        AdjustContentSize();
+        // レイアウト更新
         Canvas.ForceUpdateCanvases();
     }
 }
