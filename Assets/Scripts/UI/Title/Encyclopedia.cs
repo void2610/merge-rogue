@@ -23,13 +23,12 @@ public class Encyclopedia : MonoBehaviour
     {
         var image = g.transform.Find("Icon").GetComponent<Image>();
         image.sprite = b.sprite;
-        if (b.sprite == null)
-            image.color = new Color(0, 0, 0, 0);
+        if (b.sprite == null) image.color = new Color(0, 0, 0, 0);
         
         // イベントを登録
         Utils.AddEventToObject(g,  () =>
         {
-            TitleMenu.Instance.ShowDescriptionWindow(b, g.transform.Find("BG").gameObject);
+            TitleMenu.Instance.ShowDescriptionWindow(b, g);
         }, EventTriggerType.PointerEnter);
     }
     
@@ -50,11 +49,11 @@ public class Encyclopedia : MonoBehaviour
         for(var i = 0; i < count; i++)
         {
             // 空のGameObjectを生成
-            GameObject spacer = new GameObject("Spacer", typeof(RectTransform));
+            var spacer = new GameObject("Spacer", typeof(RectTransform));
             spacer.transform.SetParent(itemContainer, false);
 
             // LayoutElementを追加して、スペースとしてのサイズを指定
-            LayoutElement le = spacer.AddComponent<LayoutElement>();
+            var le = spacer.AddComponent<LayoutElement>();
             // グリッドの方向に合わせたPreferred値を設定する
             le.preferredHeight = spacerHeight;
         }
@@ -62,8 +61,6 @@ public class Encyclopedia : MonoBehaviour
 
     private void Start()
     {
-        // Grid Layout Group が itemContainer にアタッチされている前提で位置設定は不要
-
         // Ball アイテムの生成
         foreach (var ball in allBallDataList.list)
         {
