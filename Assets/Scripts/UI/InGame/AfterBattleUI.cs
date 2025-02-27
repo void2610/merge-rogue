@@ -37,7 +37,7 @@ public class AfterBattleUI : MonoBehaviour
         
         for(var i = 0; i < ITEM_NUM; i++)
         {
-            var balls = AllBalls.GetBallListExceptNormal();
+            var balls = ContentProvider.Instance.GetBallListExceptNormal();
             var index = GameManager.Instance.RandomRange(0, balls.Count);
             _currentItems.Add(balls[index]);
             SetBallEvent(_itemObjects[i].transform.gameObject, balls[index], i);

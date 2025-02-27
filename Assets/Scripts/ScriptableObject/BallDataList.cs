@@ -57,9 +57,4 @@ public class BallDataList : ScriptableObject
     {
         return list.FirstOrDefault(bd => bd.className == className);
     }
-    
-    public List<BallData> GetBallListExceptNormal()
-    {
-        return list.Where(x => x.className != "NormalBall").ToList();
-    }
 }

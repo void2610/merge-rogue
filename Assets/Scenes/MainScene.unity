@@ -7869,8 +7869,7 @@ MonoBehaviour:
   relicGridSize: {x: 3, y: 9}
   relicOffset: {x: 40, y: 37}
   relicUISize: 0.75
-  testRelics:
-  - {fileID: 11400000, guid: 7c835d3faab7646dd9adc5f9736ffd5b, type: 2}
+  testRelics: []
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -17202,10 +17201,10 @@ MonoBehaviour:
   ballBasePrefab: {fileID: 5528515049713681562, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
   inventoryPosition: {x: 0, y: -7, z: 0}
   testBalls:
-  - {fileID: 11400000, guid: acc38c6b0104842cba29ae60999b32af, type: 2}
-  - {fileID: 11400000, guid: 5772b32e00e0a45548bb53564b1218bf, type: 2}
-  - {fileID: 11400000, guid: b883c0d61330747518a09d553f7bd5b7, type: 2}
-  - {fileID: 11400000, guid: b337591ee82694160a0ff43036df9c64, type: 2}
+  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
+  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
+  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
+  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   - {fileID: 0}
   - {fileID: 0}
@@ -18265,12 +18264,14 @@ MonoBehaviour:
     - data: {fileID: 11500000, guid: 5b32f3e64ebd74bb78b8e03d97106fbb, type: 3}
       probability: 1
     - data: {fileID: 11500000, guid: 9c69f80c7606542d2ba15c5a4ef34780, type: 3}
-      probability: 1
+      probability: 0.5
     - data: {fileID: 11500000, guid: 8822c9bb9900a4512ae2a33846d2abd7, type: 3}
       probability: 1
     - data: {fileID: 11500000, guid: c41486fb5d56e4063a772ae99ce184b3, type: 3}
       probability: 1
-  ballList: []
+    - data: {fileID: 11500000, guid: 94bbdbb5538b5471bb10783b0b255c7c, type: 3}
+      probability: 1
+  ballList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
 --- !u!1001 &2020573309
 PrefabInstance:
   m_ObjectHideFlags: 0

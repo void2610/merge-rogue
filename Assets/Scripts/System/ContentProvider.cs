@@ -25,7 +25,7 @@ public class ContentProvider : MonoBehaviour
     [SerializeField] private List<ContentDataList> bossList;
     [SerializeField] private RelicDataList relicList;
     [SerializeField] private List<ContentDataList> eventList;
-    [SerializeField] private List<ContentDataList> ballList;
+    [SerializeField] private BallDataList ballList;
     
     private int _act = 0;
 
@@ -86,6 +86,16 @@ public class ContentProvider : MonoBehaviour
             // _ => Rarity.Legendary       //  5%
         };
     }
+
+    /// <summary>
+    /// ノーマルボール以外のボールを取得する
+    /// </summary>
+    public List<BallData> GetBallListExceptNormal() => ballList.list.Where(bd => bd.className != "NormalBall").ToList();
+    
+    /// <summary>
+    /// ノーマルボールを取得する
+    /// </summary>
+    public BallData GetNormalBallData() => ballList.list.Find(bd => bd.className == "NormalBall");
     
     /// <summary>
     /// RelicDataをランダムで取得する

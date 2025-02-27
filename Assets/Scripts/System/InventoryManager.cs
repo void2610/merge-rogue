@@ -23,6 +23,9 @@ public class InventoryManager : MonoBehaviour
     public readonly List<float> Sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f , 1.1f};
     private readonly List<float> _probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f };
     
+    public bool IsFull => InventorySize >= MAX_INVENTORY_SIZE;
+    public bool IsOnlyOne => InventorySize == 1;
+    
     public void UpgradeBall(int index)
     {
         if (index < 0 || index >= InventorySize) return;

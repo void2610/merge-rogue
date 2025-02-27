@@ -25,8 +25,6 @@ public class Shop : MonoBehaviour
     private List<GameObject> _itemObjects;
     private readonly List<Vector3> _itemPositions = new();
     private readonly Vector3 _disabledPosition = new (100, 100, 0);
-    private static BallDataList AllBalls => InventoryManager.Instance.allBallDataList;
-
 
     public void OpenShop(int count = 6)
     {
@@ -45,7 +43,7 @@ public class Shop : MonoBehaviour
         
         for(var i = 0; i < ITEM_NUM; i++)
         {
-            var balls = AllBalls.GetBallListExceptNormal();
+            var balls = ContentProvider.Instance.GetBallListExceptNormal();
             var isBall = GameManager.Instance.RandomRange(0.0f, 1.0f) > 0.5f;
             if (isBall)
             {
