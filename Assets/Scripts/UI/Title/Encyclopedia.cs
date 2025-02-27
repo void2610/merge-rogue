@@ -70,7 +70,7 @@ public class Encyclopedia : MonoBehaviour
         }
 
         // ボールとレリックの間に空白セル（Spacer）を挟む
-        CreateSpacer(16);
+        CreateSpacer(15 + (allBallDataList.list.Count % 15));
 
         // Relic アイテムの生成
         foreach (var relic in allRelicDataList.list)
