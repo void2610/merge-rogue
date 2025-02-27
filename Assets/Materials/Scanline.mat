@@ -44,12 +44,12 @@ Material:
     m_Floats:
     - _Alpha: 1
     - _Blur_Offset: 0
-    - _Float: 0.1
+    - _Float: 0.2
     - _Fullscreen_DepthWrite: 0
     - _Num: 150
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Speed: 0.0025
+    - _Speed: 0.002
     m_Colors:
     - _Color: {r: 0, g: 0, b: 0, a: 1}
     - _White: {r: 1, g: 1, b: 1, a: 0}

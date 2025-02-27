@@ -6,7 +6,7 @@ using UnityEngine.VFX;
 public class MergePowerParticle : MonoBehaviour
 {
     [SerializeField] private Vector3 targetPosition = Vector3.zero; // 移動先の座標
-    [SerializeField] private float duration = 2f; // 移動時間
+    [SerializeField] private const float DURATION = 2.5f; // 移動時間
     [SerializeField] private int intermediatePointCount = 3; // 中間点の数
     [SerializeField] private float maxControlPointOffset = 3f; // 制御点オフセットの最大値
     
@@ -18,32 +18,19 @@ public class MergePowerParticle : MonoBehaviour
         _vfx = GetComponent<VisualEffect>();
         _vfx.SetVector3("Color", new Vector3(color.r, color.g, color.b));
         
-        duration = Random.Range(Mathf.Max(0.01f, duration - 1f), duration + 1f);
-        
-        // 現在位置とターゲット位置を取得
+        var duration = Random.Range(Mathf.Max(0.01f, DURATION - 0.5f), DURATION + 0.5f);
         var startPosition = transform.position;
-
-        // 中間点を自動生成
         var pathPoints = GenerateIntermediatePoints(startPosition, targetPosition);
 
         // DOTweenで移動
-        transform.DOPath(
-                pathPoints,
-                duration,
-                PathType.CatmullRom, // Catmull-Romスプラインを使用
-                PathMode.Sidescroller2D
-            )
-            .SetEase(Ease.InOutSine) // 移動のスムーズさ
-            .OnComplete(() =>
-            {
-                StartCoroutine(WaitAndDestroy(3f));
-            });
+        transform.DOPath(pathPoints, duration, PathType.CatmullRom, PathMode.Sidescroller2D).SetEase(Ease.InOutSine).SetLink(this.gameObject);
         
         // 少し早めにVFXを停止
         DOVirtual.DelayedCall(duration - 0.3f, () =>
         {
-            if (_vfx != null) _vfx.Stop();
+            if (_vfx) _vfx.Stop();
         });
+        Destroy(this.gameObject, duration);
     }
 
     private Vector3[] GenerateIntermediatePoints(Vector3 start, Vector3 end)
@@ -68,11 +55,5 @@ public class MergePowerParticle : MonoBehaviour
         }
 
         return points;
-    }
-    
-    private IEnumerator WaitAndDestroy(float time)
-    {
-        yield return new WaitForSeconds(time / GameManager.Instance.TimeScale);
-        Destroy(this.gameObject);
     }
 }

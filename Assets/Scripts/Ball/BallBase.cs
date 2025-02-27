@@ -63,19 +63,14 @@ public class BallBase : MonoBehaviour
 
     private void Start()
     {
-        if(Rank == -1)
-        {
-            Debug.LogError("Ball is not initialized");
-            return;
-        }
-        
+        if(Rank == -1) throw new System.Exception("Rank is not set.");
         // アニメーション
         var tmp = transform.localScale.x;
         transform.localScale = Vector3.zero;
         transform.DOScale(tmp, 0.2f).SetEase(Ease.OutBack).SetLink(gameObject);
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    protected virtual void OnCollisionEnter2D(Collision2D other)
     {
         if (isDestroyed || IsFrozen || !isMergable) return;
 

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e20d261e1bba4e309354d2a524b6d0d, type: 3}
+  m_Name: WildBall
+  m_EditorClassIdentifier: 
+  className: WildBall
+  displayName: "\u30EF\u30A4\u30EB\u30C9\u30DC\u30FC\u30EB"
+  descriptions:
+  - "\u3069\u306E\u30E9\u30F3\u30AF\u306E\u30DC\u30FC\u30EB\u3068\u3082\u30DE\u30FC\u30B8\u3067\u304D\u308B\u3002"
+  - "\u3069\u306E\u30E9\u30F3\u30AF\u306E\u30DC\u30FC\u30EB\u3068\u3082\u30DE\u30FC\u30B8\u3067\u304D\u308B\u3002"
+  - "\u3069\u306E\u30E9\u30F3\u30AF\u306E\u30DC\u30FC\u30EB\u3068\u3082\u30DE\u30FC\u30B8\u3067\u304D\u308B\u3002"
+  flavorText: 
+  sprite: {fileID: -1659708932042841261, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  rarity: 3
+  attacks:
+  - 0
+  - 0.3
+  - 0.5
+  sizes:
+  - 1
+  - 1.25
+  - 1.5
