@@ -1,10 +1,14 @@
+using UnityEngine;
+
 public class MagiciansOrb : BallBase
 {
     public override void InitBall(BallData d, int rank, int level = 0)
     {
-        base.InitBall(d, rank, level);
+        useIcon = false;
         // 通常ではマージ不可
         this.isMergable = false;
+
+        base.InitBall(d, rank, level);
     }
     
     protected override void Effect(BallBase other)

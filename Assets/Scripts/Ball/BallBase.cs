@@ -19,6 +19,7 @@ public class BallBase : MonoBehaviour
     public bool IsFrozen { get; private set; } = false;
     public bool isDestroyed;
     public bool isMergable = true;
+    public bool useIcon = true;
 
     private List<float> _attacks = new();
     private List<float> _sizes = new();
@@ -59,6 +60,18 @@ public class BallBase : MonoBehaviour
         this.Level = level;
         this.Attack = _attacks[level];
         this.Size = _sizes[level];
+
+        if (useIcon)
+        {
+            this.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = d.sprite;
+            this.transform.Find("IconShadow").GetComponent<SpriteRenderer>().sprite = d.sprite;
+        }
+        else
+        {
+            this.transform.Find("Icon").GetComponent<SpriteRenderer>().enabled = false;
+            this.transform.Find("IconShadow").GetComponent<SpriteRenderer>().enabled = false;
+            this.GetComponent<SpriteRenderer>().sprite = d.sprite;
+        }
     }
 
     private void Start()

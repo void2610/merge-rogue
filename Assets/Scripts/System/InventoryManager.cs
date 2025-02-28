@@ -186,8 +186,6 @@ public class InventoryManager : MonoBehaviour
         // HDRカラーに変換
         var color = MyEnumUtil.GetBallColor(rank - 1) * 1.05f;
         ball.GetComponent<SpriteRenderer>().color = color;
-        ball.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = data.sprite;
-        ball.transform.Find("IconShadow").GetComponent<SpriteRenderer>().sprite = data.sprite;
         ball.GetComponent<BallBase>().Freeze();
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         ball.transform.position = CalcInventoryPosition(rank - 1);

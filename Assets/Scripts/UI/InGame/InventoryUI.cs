@@ -36,9 +36,9 @@ public class InventoryUI : MonoBehaviour
         
         var color = ball.GetComponent<SpriteRenderer>().color;
         g.GetComponent<Image>().color = color;
-        
-        var sprite = ball.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite;
-        if (sprite) g.transform.Find("Icon").GetComponent<Image>().sprite = sprite;
+
+        var s = ballBase.Data.sprite;
+        if (s) g.transform.Find("Icon").GetComponent<Image>().sprite = s;
         else g.transform.Find("Icon").GetComponent<Image>().color = new Color(0, 0, 0, 0);
         
         SetEvent(g, rank, ballBase);
