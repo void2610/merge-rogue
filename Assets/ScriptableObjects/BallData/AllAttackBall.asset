@@ -18,7 +18,7 @@ MonoBehaviour:
   - "\u5168\u4F53\u653B\u6483"
   - "\u5168\u4F53\u653B\u6483"
   - "\u5168\u4F53\u653B\u6483"
-  flavorText: "\u30CD\u30BF\u5207\u308C"
+  flavorText: 
   sprite: {fileID: 1461871564780703198, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
   rarity: 2
   attacks:
