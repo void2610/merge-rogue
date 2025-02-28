@@ -90,7 +90,7 @@ public class StageEventProcessor : MonoBehaviour
     private async UniTaskVoid ProcessActionAsync(StageEventBase.OptionData option)
     {
         option.Action();
-        HideOptions();
+        if(!option.isEndless) HideOptions();
         descriptionText.text = option.resultDescription;
 
         using (var cts = new CancellationTokenSource())
@@ -115,12 +115,28 @@ public class StageEventProcessor : MonoBehaviour
             }
         }
 
-        if (option.isEndless) return;
+        if (option.isEndless)
+        {
+            UpdateOptions();
+            return;
+        }
+        
         await Utils.WaitOrSkipInput(2500);
-
         UIManager.Instance.EnableCanvasGroup("Event", false);
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
     }
     
     private void HideOptions() => options.ForEach(option => option.SetActive(false));
+    
+    private void UpdateOptions()
+    {
+        HideOptions();
+        for (var i = 0; i < _currentEvent.Options.Count; i++)
+        {
+            options[i].SetActive(true);
+            SetOptionBehaviour(options[i].GetComponent<Button>(), _currentEvent.Options[i]);
+            options[i].GetComponent<Button>().interactable = _currentEvent.Options[i].IsAvailable();
+            options[i].GetComponentInChildren<TextMeshProUGUI>().text = _currentEvent.Options[i].description;
+        }
+    }
 }

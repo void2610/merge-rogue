@@ -12,7 +12,7 @@ public static class ExtendedMethods
     /// <summary>
     /// stringのListの値を全てLogする
     /// </summary>
-    public static void Print(this System.Collections.Generic.List<string> list)
+    public static void Print<T>(this List<T> list)
     {
         foreach (var s in list)
         {

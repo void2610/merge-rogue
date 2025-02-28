@@ -113,7 +113,7 @@ public class ContentProvider : MonoBehaviour
     /// </summary>
     /// <param name="n">レリックの名前</param>
     /// <returns></returns>
-    public RelicData GetRelicByName(string n)
+    public RelicData GetRelicByClassName(string n)
     {
         var r = relicList.list.Find(relic => relic.name == n);
         if (!r) throw new Exception("Relic not found");
