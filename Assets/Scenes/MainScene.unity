@@ -18258,20 +18258,22 @@ MonoBehaviour:
   - list:
     - data: {fileID: 5901398579228155482, guid: 2804a6531370042f293b3369b843b3c3, type: 3}
       probability: 1
-  relicList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
   eventList:
   - list:
     - data: {fileID: 11500000, guid: 5b32f3e64ebd74bb78b8e03d97106fbb, type: 3}
       probability: 1
     - data: {fileID: 11500000, guid: 9c69f80c7606542d2ba15c5a4ef34780, type: 3}
-      probability: 0.5
+      probability: 0.7
     - data: {fileID: 11500000, guid: 8822c9bb9900a4512ae2a33846d2abd7, type: 3}
       probability: 1
     - data: {fileID: 11500000, guid: c41486fb5d56e4063a772ae99ce184b3, type: 3}
       probability: 1
     - data: {fileID: 11500000, guid: 94bbdbb5538b5471bb10783b0b255c7c, type: 3}
       probability: 1
+    - data: {fileID: 11500000, guid: c20f604d7a468471a88d4d8d30ffa0aa, type: 3}
+      probability: 1
   ballList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
+  relicList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
 --- !u!1001 &2020573309
 PrefabInstance:
   m_ObjectHideFlags: 0

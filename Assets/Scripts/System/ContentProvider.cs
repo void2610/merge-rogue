@@ -23,9 +23,9 @@ public class ContentProvider : MonoBehaviour
     
     [SerializeField] private List<ContentDataList> enemyList;
     [SerializeField] private List<ContentDataList> bossList;
-    [SerializeField] private RelicDataList relicList;
     [SerializeField] private List<ContentDataList> eventList;
     [SerializeField] private BallDataList ballList;
+    [SerializeField] private RelicDataList relicList;
     
     private int _act = 0;
 
@@ -96,6 +96,11 @@ public class ContentProvider : MonoBehaviour
     /// ノーマルボールを取得する
     /// </summary>
     public BallData GetNormalBallData() => ballList.list.Find(bd => bd.className == "NormalBall");
+    
+    /// <summary>
+    /// クラス名からボールデータを取得する
+    /// </summary>
+    public BallData GetBallDataFromClassName(string className) => ballList.GetBallDataFromClassName(className);
     
     /// <summary>
     /// RelicDataをランダムで取得する

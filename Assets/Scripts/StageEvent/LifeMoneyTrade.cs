@@ -12,13 +12,13 @@ public class LifeMoneyTrade : StageEventBase
             new OptionData
             {
                 description = "取引する。",
-                resultDescription = "(50ゴールドを差し出し、HPを999回復した)",
+                resultDescription = "(25ゴールドを差し出し、HPを999回復した)",
                 Action = () =>
                 {
-                    GameManager.Instance.SubCoin(50);
+                    GameManager.Instance.SubCoin(25);
                     GameManager.Instance.Player.Heal(999);
                 },
-                IsAvailable = () => GameManager.Instance.Coin.Value >= 50
+                IsAvailable = () => GameManager.Instance.Coin.Value >= 25
             },
             new OptionData
             {
