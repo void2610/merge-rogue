@@ -75,7 +75,7 @@ public class MergeManager : MonoBehaviour
     {
         var width = wall.WallWidth;
         var r = GameManager.Instance.RandomRange(-width / 2 + 0.2f, width / 2 - 0.2f);
-        return new Vector3(r, 0.8f, 0);
+        return new Vector3(r, 0.6f, 0);
     }
     
     public void CreateRandomBall()

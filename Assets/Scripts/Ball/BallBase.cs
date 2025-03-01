@@ -32,6 +32,20 @@ public class BallBase : MonoBehaviour
     public void Unfreeze()
     {
         IsFrozen = false;
+        
+        // 既に接触しているオブジェクトを取得
+        var contacts = new ContactPoint2D[10]; // 最大10個まで接触しているオブジェクトを取得
+        var contactCount = GetComponent<Rigidbody2D>().GetContacts(contacts);
+
+        for (var i = 0; i < contactCount; i++)
+        {
+            var otherCollider = contacts[i].collider;
+            if (otherCollider && otherCollider.TryGetComponent(out BallBase b))
+            {
+                HandleCollision(b);
+                b.HandleCollision(this);
+            }
+        }
     }
 
     protected virtual void Effect(BallBase other)
@@ -82,29 +96,29 @@ public class BallBase : MonoBehaviour
         transform.localScale = Vector3.zero;
         transform.DOScale(tmp, 0.2f).SetEase(Ease.OutBack).SetLink(gameObject);
     }
-
-    protected virtual void OnCollisionEnter2D(Collision2D other)
+    protected　virtual void HandleCollision(BallBase b)
     {
         if (isDestroyed || IsFrozen || !isMergable) return;
-
-        if (other.gameObject.TryGetComponent(out BallBase b))
+        if (b.Rank == this.Rank && !b.IsFrozen && !b.isDestroyed && b.isMergable)
         {
-            if (b.Rank == this.Rank && !b.IsFrozen && !b.isDestroyed && b.isMergable)
+            if (this.Serial < b.Serial)
             {
-                if (this.Serial < b.Serial)
-                {
-                    var pos = (this.transform.position + b.transform.position) / 2;
-                    EventManager.OnBallMerged.Trigger((this, b));
-                    
-                    var center = (this.transform.position + other.transform.position) / 2;
-                    var rotation = Quaternion.Lerp(this.transform.rotation, other.transform.rotation, 0.5f);
-                    MergeManager.Instance.SpawnBallFromLevel(NextRank, center, rotation);
+                var pos = (this.transform.position + b.transform.position) / 2;
+                EventManager.OnBallMerged.Trigger((this, b));
+                
+                var center = (this.transform.position + b.transform.position) / 2;
+                var rotation = Quaternion.Lerp(this.transform.rotation, b.transform.rotation, 0.5f);
+                MergeManager.Instance.SpawnBallFromLevel(NextRank, center, rotation);
 
-                    EffectAndDestroy(b);
-                    b.EffectAndDestroy(this);
-                }
+                EffectAndDestroy(b);
+                b.EffectAndDestroy(this);
             }
         }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.TryGetComponent(out BallBase b)) HandleCollision(b);
     }
     
     public void EffectAndDestroy(BallBase other)
