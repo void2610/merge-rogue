@@ -40,7 +40,7 @@ public static class ExtendedMethods
         
         if (animator.textInfo.characterCount == 0) return text;
         
-        int totalChars = animator.textInfo.characterCount;
+        var totalChars = animator.textInfo.characterCount;
         
         for (var i = 0; i < totalChars; i++)
         {
@@ -93,12 +93,7 @@ public static class ExtendedMethods
         {
             // 現在のTweenを全て停止
             DOTween.Kill(text);
-            for (var i = 0; i < totalChars; i++)
-            {
-                animator.SetCharAlpha(i, 1);
-                animator.SetCharOffset(i, Vector3.zero);
-                animator.SetCharRotation(i, Vector3.zero);
-            }
+            animator.ResetAllChars();
         }
         return text;
     }
@@ -114,6 +109,17 @@ public static class ExtendedMethods
         }
         return dict;
     }
+
+    /// <summary>
+    /// DOTweenTMPAnimatorの全ての文字のアニメーションをリセットする
+    /// </summary>
+    public static DOTweenTMPAnimator ResetAllChars(this DOTweenTMPAnimator animator)
+    {
+        animator.SetAllCharsAlpha(1);
+        animator.SetAllCharOffsets(Vector2.zero);
+        animator.SetAllCharRotations(Vector3.zero);
+        return animator;
+    }
     
     /// <summary>
     /// DOTweenTMPAnimatorの文字の透明度を設定する
@@ -123,6 +129,64 @@ public static class ExtendedMethods
         var color = animator.GetCharColor(index);
         color.a = alpha;
         animator.SetCharColor(index, color);
+        return animator;
+    }
+
+    /// <summary>
+    /// DOTweenTMPAnimatorの全ての文字の透明度を設定する
+    /// </summary>
+    public static DOTweenTMPAnimator SetAllCharsAlpha(this DOTweenTMPAnimator animator, float alpha)
+    {
+        for (var i = 0; i < animator.textInfo.characterCount; i++)
+        {
+            if (!animator.textInfo.characterInfo[i].isVisible) continue;
+            var color = animator.GetCharColor(i);
+            color.a = alpha;
+            animator.SetCharColor(i, color);
+        }
+
+        return animator;
+    }
+    
+    /// <summary>
+    /// DOTweenTMPAnimatorの全ての文字の位置を設定する
+    /// </summary>
+    public static DOTweenTMPAnimator SetAllCharOffsets(this DOTweenTMPAnimator animator, Vector2 offset)
+    {
+        for (var i = 0; i < animator.textInfo.characterCount; i++)
+        {
+            if (!animator.textInfo.characterInfo[i].isVisible) continue;
+            animator.SetCharOffset(i, offset);
+        }
+
+        return animator;
+    }
+
+    /// <summary>
+    /// DOTweenTMPAnimatorの全ての文字の角度を設定する
+    /// </summary>
+    public static DOTweenTMPAnimator SetAllCharRotations(this DOTweenTMPAnimator animator, Vector2 rotation)
+    {
+        for (var i = 0; i < animator.textInfo.characterCount; i++)
+        {
+            if (!animator.textInfo.characterInfo[i].isVisible) continue;
+            animator.SetCharRotation(i, rotation);
+        }
+
+        return animator;
+    }
+
+    /// <summary>
+    /// DOTweenTMPAnimatorの全ての文字の大きさを設定する
+    /// </summary>
+    public static DOTweenTMPAnimator SetAllCharScales(this DOTweenTMPAnimator animator, float scale)
+    {
+        for (var i = 0; i < animator.textInfo.characterCount; i++)
+        {
+            if (!animator.textInfo.characterInfo[i].isVisible) continue;
+            animator.SetCharScale(i, Vector3.one * scale);
+        }
+
         return animator;
     }
 }

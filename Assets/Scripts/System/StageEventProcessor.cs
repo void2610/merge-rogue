@@ -35,12 +35,7 @@ public class StageEventProcessor : MonoBehaviour
                 cts.Cancel();
                 descriptionText.alpha = 1;
                 var animator = new DOTweenTMPAnimator(descriptionText);
-                for (var i = 0; i < animator.textInfo.characterCount; i++)
-                {
-                    animator.SetCharAlpha(i, 1);
-                    animator.SetCharOffset(i, Vector3.zero);
-                    animator.SetCharRotation(i, Vector3.zero);
-                }
+                animator.ResetAllChars();
             }
 
             await Utils.WaitOrSkipInput(500);
@@ -62,12 +57,7 @@ public class StageEventProcessor : MonoBehaviour
                     cts.Cancel();
                     optionText.alpha = 1;
                     var animatorOption = new DOTweenTMPAnimator(optionText);
-                    for (var j = 0; j < animatorOption.textInfo.characterCount; j++)
-                    {
-                        animatorOption.SetCharAlpha(j, 1);
-                        animatorOption.SetCharOffset(j, Vector3.zero);
-                        animatorOption.SetCharRotation(j, Vector3.zero);
-                    }
+                    animatorOption.ResetAllChars();
                 }
 
                 await Utils.WaitOrSkipInput(200);
@@ -106,12 +96,7 @@ public class StageEventProcessor : MonoBehaviour
                 // 残りの文字を最終状態にする
                 descriptionText.alpha = 1;
                 var animator = new DOTweenTMPAnimator(descriptionText);
-                for (var i = 0; i < animator.textInfo.characterCount; i++)
-                {
-                    animator.SetCharAlpha(i, 1);
-                    animator.SetCharOffset(i, Vector3.zero);
-                    animator.SetCharRotation(i, Vector3.zero);
-                }
+                animator.ResetAllChars();
             }
         }
 
