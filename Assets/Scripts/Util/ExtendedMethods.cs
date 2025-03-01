@@ -189,4 +189,18 @@ public static class ExtendedMethods
 
         return animator;
     }
+    
+    /// <summary>
+    /// DOTweenTMPAnimatorの全ての文字を揺らす
+    /// </summary>
+    public static void WobbleChars(this DOTweenTMPAnimator animator, Vector2 sinAmplitude, Vector2 sinFrequency)
+    {
+        for (var i = 0; i < animator.textInfo.characterCount; i++)
+        {
+            if (!animator.textInfo.characterInfo[i].isVisible) continue;
+            var times = sinFrequency * ((Time.timeSinceLevelLoad + i) * 2 * Mathf.PI);
+            var offset = sinAmplitude * new Vector2(Mathf.Sin(times.x), Mathf.Sin(times.y));
+            animator.SetCharOffset(i, offset);
+        }
+    }
 }
