@@ -23,18 +23,13 @@ public class ParticleManager : MonoBehaviour
     [SerializeField] private GameObject mergeParticle;
     [SerializeField] private GameObject mergePowerParticle;
     [SerializeField] private GameObject bombFireParticle;
+    [SerializeField] private GameObject thunderParticle;
     [Header("テキスト")]
     [SerializeField] private GameObject damageTextPrefab;
     [SerializeField] private GameObject mergeTextPrefab;
     [SerializeField] private GameObject wavyTextPrefab;
     
-    // private Canvas pixelCanvas => GameManager.Instance.pixelCanvas;
-    // private static Canvas uiCanvas => GameManager.Instance.uiCanvas;
-    
-    public void HealParticle(Vector3 pos)
-    {
-        Instantiate(healParticlePrefab, pos, Quaternion.identity);
-    }
+    public void HealParticle(Vector3 pos) => Instantiate(healParticlePrefab, pos, Quaternion.identity);
     
     public void HealParticleToPlayer()
     {
@@ -42,20 +37,13 @@ public class ParticleManager : MonoBehaviour
         Instantiate(healParticlePrefab, pos, Quaternion.identity);
     }
     
-    public void HitParticle(Vector3 pos)
-    {
-        Instantiate(hitParticle, pos, Quaternion.identity);
-    }
+    public void HitParticle(Vector3 pos) => Instantiate(hitParticle, pos, Quaternion.identity);
     
-    public void AllHitParticle(Vector3 pos)
-    {
-        Instantiate(allHitParticle, pos, Quaternion.identity);
-    }
+    public void AllHitParticle(Vector3 pos) => Instantiate(allHitParticle, pos, Quaternion.identity);
     
-    public void MergeParticle(Vector3 pos)
-    {
-        Instantiate(mergeParticle, pos, Quaternion.identity);
-    }
+    public void MergeParticle(Vector3 pos) => Instantiate(mergeParticle, pos, Quaternion.identity);
+    
+    public void ThunderParticle(Vector3 pos) => Instantiate(thunderParticle, pos, Quaternion.identity);
     
     public void MergePowerParticle(Vector3 pos, Color color)
     {

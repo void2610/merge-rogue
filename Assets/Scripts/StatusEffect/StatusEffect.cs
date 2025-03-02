@@ -36,7 +36,7 @@ public abstract class StatusEffectBase
     private readonly EffectTiming _timing;
     private readonly bool _isPermanent;
     private bool _isPlayer = false;
-    private Vector3 _entityPosition;
+    protected Vector3 EntityPosition;
 
     protected StatusEffectBase(StatusEffectType type, int initialStack, EffectTiming timing, bool isPermanent = false)
     {
@@ -48,7 +48,7 @@ public abstract class StatusEffectBase
     
     public void SetEntityPosition(Vector3 position, bool isPlayer = false)
     {
-        _entityPosition = position;
+        EntityPosition = position;
         _isPlayer = isPlayer;
     }
 
@@ -139,7 +139,7 @@ public abstract class StatusEffectBase
         
         var isP = _isPlayer ? 1 : -1;
         var offset = new Vector3(-priority * 0.1f, priority * 0.25f, 0);
-        ParticleManager.Instance.WavyText(effectText, _entityPosition + new Vector3(0.8f * isP, 0.2f, 0) + offset, textColor);
+        ParticleManager.Instance.WavyText(effectText, EntityPosition + new Vector3(0.8f * isP, 0.2f, 0) + offset, textColor);
     }
 }
 
@@ -319,7 +319,8 @@ public class ShockEffect : StatusEffectBase
         base.OnTurnEnd(target);
         var damage = StackCount;
         EnemyContainer.Instance.DamageAllEnemies(damage);
-        SeManager.Instance.PlaySe("enemyAttack");
+        ParticleManager.Instance.ThunderParticle(EntityPosition + new Vector3(0, 0.3f, 0));
+        SeManager.Instance.PlaySe("shock");
     }
 }
 

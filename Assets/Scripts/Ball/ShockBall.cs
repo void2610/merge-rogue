@@ -18,5 +18,7 @@ public class ShockBall : BallBase
             count++;
             if (count >= max) break;
         }
+        ParticleManager.Instance.ThunderParticle(this.transform.position);
+        SeManager.Instance.PlaySe("shock");
     }
 }
