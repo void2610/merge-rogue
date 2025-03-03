@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   className: PerfectParfait
-  sprite: {fileID: 2441754920960949527, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  sprite: {fileID: 21300000, guid: 6036336a4018342539ad16b35b5f6eb8, type: 3}
   displayName: "\u5B8C\u74A7\u30D1\u30D5\u30A7"
   description: "\u653B\u6483\u6642\u306B\u30DE\u30FC\u30B8\u30A8\u30EA\u30A2\u306E\u30DC\u30FC\u30EB\u304C0\u500B\u306A\u3089\u3001\u653B\u6483\u529B\u30925\u500D\u306B\u3059\u308B\u3002"
   flavorText: 
