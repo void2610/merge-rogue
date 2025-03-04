@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 0
   className: NoConsumeCoinDuringBattle
-  sprite: {fileID: 6409830552331150148, guid: 215687feeab0b7445b4a1cd86c82c2e1, type: 3}
+  sprite: {fileID: 21300000, guid: 633c37f8e8a2c4c27980e3e49671a3f5, type: 3}
   displayName: "\u8CE2\u8005\u306E\u77F3"
   description: "\u6226\u95D8\u4E2D\u306E\u30B3\u30A4\u30F3\u6D88\u8CBB\u91CF\u30920\u306B\u3059\u308B"
   flavorText: 
