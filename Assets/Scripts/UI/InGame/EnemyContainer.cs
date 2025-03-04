@@ -25,21 +25,10 @@ public class EnemyContainer : MonoBehaviour
     private const int ENEMY_NUM = 4;
     private int _gainedExp;
 
-    public int GetCurrentEnemyCount()
-    {
-        return _currentEnemies.Count;
-    }
-
-    public List<EnemyBase> GetAllEnemies()
-    {
-        return _currentEnemies;
-    }
-    
-    public EnemyBase GetRandomEnemy()
-    {
-        int r = GameManager.Instance.RandomRange(0, _currentEnemies.Count);
-        return _currentEnemies[r];
-    }
+    public int GetCurrentEnemyCount() => _currentEnemies.Count;
+    public List<EnemyBase> GetAllEnemies() => _currentEnemies;
+    public EnemyBase GetRandomEnemy() => _currentEnemies[GameManager.Instance.RandomRange(0, _currentEnemies.Count)];
+    public int GetEnemyIndex(EnemyBase enemy) => _currentEnemies.IndexOf(enemy);
 
     public void SpawnBoss(int stage)
     {

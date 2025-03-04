@@ -64,10 +64,7 @@ public class MergeManager : MonoBehaviour
         _ballPerOneTurn++;
     }
     
-    public PhysicsMaterial2D GetWallMaterial()
-    {
-        return wallMaterial;
-    }
+    public PhysicsMaterial2D GetWallMaterial() => wallMaterial;
     public int GetBallCount() => _ballContainer.GetComponentsInChildren<Rigidbody2D>().Length;
     public void RemoveAllBalls() => _ballContainer.GetComponentsInChildren<Rigidbody2D>().ToList().ForEach(b => Destroy(b.gameObject));
     
