@@ -6,15 +6,6 @@ using DG.Tweening;
 
 public class BgmManager : MonoBehaviour
 {
-    public enum BgmType
-    {
-        Battle,
-        AfterBattle,
-        Shop,
-        Event,
-        Boss,
-    }
-    
     [System.Serializable]
     public class SoundData
     {
@@ -69,7 +60,7 @@ public class BgmManager : MonoBehaviour
         AudioSource.DOFade(0, FADE_TIME).SetUpdate(true).SetEase(Ease.InQuad).OnComplete(() => AudioSource.Stop());
     }
 
-    private void PlayRandomBGM(BgmType bgmType = BgmType.Battle)
+    public void PlayRandomBGM(BgmType bgmType = BgmType.Battle)
     {
         if (bgmList.Count == 0) return;
 

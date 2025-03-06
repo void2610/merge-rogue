@@ -8343,7 +8343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc79548f2dae64c48ac81603b61140ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playOnStart: 1
+  playOnStart: 0
   bmgMixerGroup: {fileID: 2467584790655498006, guid: f789843a274c340cb976f3e5fb359cf3, type: 2}
   bgmList:
   - audioClip: {fileID: 8300000, guid: 4bd83efd0496444c9845bccfc5798993, type: 3}

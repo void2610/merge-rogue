@@ -312,6 +312,18 @@ public class StageManager : MonoBehaviour
         CurrentStageCount.Value++;
         CurrentStage = next;
         
+        var bgmType = CurrentStage.Type switch
+        {
+            StageType.Enemy => BgmType.Battle,
+            StageType.Boss => BgmType.Boss,
+            StageType.Shop => BgmType.Shop,
+            StageType.Rest => BgmType.Rest,
+            StageType.Treasure => BgmType.Rest,
+            StageType.Events => BgmType.Event,
+            _ => throw new ArgumentOutOfRangeException()
+        };
+        BgmManager.Instance.PlayRandomBGM(bgmType);
+        
         var r = 0;
         if(CurrentStage.Type == StageType.Events)
         {

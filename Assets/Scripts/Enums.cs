@@ -8,6 +8,16 @@ public enum CursorType
     Help,
 }
 
+public enum BgmType
+{
+    Battle,
+    AfterBattle,
+    Shop,
+    Rest,
+    Event,
+    Boss,
+}
+
 public enum Rarity
 {
     Common,
