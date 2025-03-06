@@ -8348,10 +8348,16 @@ MonoBehaviour:
   bgmList:
   - audioClip: {fileID: 8300000, guid: 4bd83efd0496444c9845bccfc5798993, type: 3}
     volume: 0.1
+    bgmType: 0
   - audioClip: {fileID: 8300000, guid: 29aa3941e2cae40ae8a2c9da09e028e9, type: 3}
     volume: 0.1
+    bgmType: 0
   - audioClip: {fileID: 8300000, guid: 83e4291cf23f547d094863888a9a8a89, type: 3}
     volume: 0.1
+    bgmType: 0
+  - audioClip: {fileID: 8300000, guid: 18795d0011b454703a7daa462063a600, type: 3}
+    volume: 0.2
+    bgmType: 4
 --- !u!1001 &894024782
 PrefabInstance:
   m_ObjectHideFlags: 0
