@@ -12,6 +12,7 @@ public class BallData : ScriptableObject
     public string flavorText;
     public Sprite sprite;
     public Rarity rarity;
+    public BallShapeType shapeType = BallShapeType.Circle;
     public List<float> attacks = new (){0, 0, 0};
     public List<float> sizes = new (){1, 1, 1};
 }

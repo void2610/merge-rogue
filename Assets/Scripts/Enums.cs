@@ -28,6 +28,15 @@ public enum Rarity
     Boss
 }
 
+public enum BallShapeType
+{
+    Circle,
+    Triangle,
+    Square,
+    Rectangle,
+    Bar,
+}
+
 public enum StageType
 {
     Enemy,

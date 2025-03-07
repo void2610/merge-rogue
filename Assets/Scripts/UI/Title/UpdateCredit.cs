@@ -1,8 +1,5 @@
 using TMPro;
 using UnityEngine;
-
-using UnityEngine;
-using TMPro;
 using UnityEngine.EventSystems;
 
 public class UpdateCredit : MonoBehaviour, IPointerClickHandler

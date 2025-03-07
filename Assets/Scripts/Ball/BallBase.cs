@@ -75,6 +75,7 @@ public class BallBase : MonoBehaviour
         this.Attack = _attacks[level];
         this.Size = _sizes[level];
 
+        // 画像の設定
         if (useIcon)
         {
             this.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = d.sprite;
@@ -85,6 +86,37 @@ public class BallBase : MonoBehaviour
             this.transform.Find("Icon").GetComponent<SpriteRenderer>().enabled = false;
             this.transform.Find("IconShadow").GetComponent<SpriteRenderer>().enabled = false;
             this.GetComponent<SpriteRenderer>().sprite = d.sprite;
+        }
+        
+        // コライダーの設定
+        if (d.shapeType != BallShapeType.Circle)
+        {
+            if(TryGetComponent(out CircleCollider2D tmp)) Destroy(tmp);
+            
+            switch (d.shapeType)
+            {
+                case BallShapeType.Square:
+                    var bc = this.gameObject.AddComponent<BoxCollider2D>();
+                    bc.size = new Vector2(1, 1);
+                    break;
+                case BallShapeType.Triangle:
+                    var pc = this.gameObject.AddComponent<PolygonCollider2D>();
+                    pc.points = new Vector2[]
+                    {
+                        new Vector2(0, 0.5f),
+                        new Vector2(0.5f, -0.5f),
+                        new Vector2(-0.5f, -0.5f),
+                    };
+                    break;
+                case BallShapeType.Rectangle:
+                    var bc2 = this.gameObject.AddComponent<BoxCollider2D>();
+                    bc2.size = new Vector2(1, 0.5f);
+                    break;
+                case BallShapeType.Circle:
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
