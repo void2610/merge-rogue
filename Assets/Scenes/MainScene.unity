@@ -8355,6 +8355,9 @@ MonoBehaviour:
   - audioClip: {fileID: 8300000, guid: 83e4291cf23f547d094863888a9a8a89, type: 3}
     volume: 0.1
     bgmType: 0
+  - audioClip: {fileID: 8300000, guid: 33e6d908e4c1d468c8d499dd206fc2f3, type: 3}
+    volume: 0.2
+    bgmType: 0
   - audioClip: {fileID: 8300000, guid: 18795d0011b454703a7daa462063a600, type: 3}
     volume: 0.2
     bgmType: 4
