@@ -105,9 +105,9 @@ public class BallBase : MonoBehaviour
                     var pc = this.gameObject.AddComponent<PolygonCollider2D>();
                     pc.points = new Vector2[]
                     {
-                        new Vector2(0, 0.5f),
-                        new Vector2(0.5f, -0.5f),
-                        new Vector2(-0.5f, -0.5f),
+                        new Vector2(0, 0.55f),
+                        new Vector2(0.6f, -0.5f),
+                        new Vector2(-0.6f, -0.5f),
                     };
                     break;
                 case BallShapeType.Rectangle:

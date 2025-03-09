@@ -96,7 +96,7 @@ public class EnemyContainer : MonoBehaviour
         GameManager.Instance.Player.OnBattleEnd();
         GameManager.Instance.Player.AddExp(_gainedExp);
         _gainedExp = 0;
-        BgmManager.Instance.Pause();
+        BgmManager.Instance.Stop();
     }
     
     public async UniTask AttackEnemy(Dictionary<AttackType, int> damages)

@@ -60,6 +60,13 @@ public class BgmManager : MonoBehaviour
         _isPlaying = false;
         AudioSource.DOFade(0, FADE_TIME).SetUpdate(true).SetEase(Ease.InQuad).OnComplete(() => AudioSource.Stop()).Forget();
     }
+    
+    public async UniTaskVoid Stop()
+    {
+        _isPlaying = false;
+        await AudioSource.DOFade(0, FADE_TIME).SetUpdate(true).SetEase(Ease.InQuad).OnComplete(() => AudioSource.Stop());
+        _currentBGM = null;
+    }
 
     public async UniTaskVoid PlayRandomBGM(BgmType bgmType = BgmType.Battle)
     {
