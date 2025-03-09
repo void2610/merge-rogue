@@ -316,11 +316,7 @@ public class StageManager : MonoBehaviour
         {
             StageType.Enemy => BgmType.Battle,
             StageType.Boss => BgmType.Boss,
-            StageType.Shop => BgmType.Event,
-            StageType.Rest => BgmType.Event,
-            StageType.Treasure => BgmType.Event,
-            StageType.Events => BgmType.Event,
-            _ => throw new ArgumentOutOfRangeException()
+            _ => BgmType.Other
         };
         BgmManager.Instance.PlayRandomBGM(bgmType).Forget();
         

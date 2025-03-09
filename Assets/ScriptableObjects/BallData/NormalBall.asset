@@ -21,7 +21,7 @@ MonoBehaviour:
   flavorText: "\u30DC\u30FC\u30EB\u3060\u3088\uFF01"
   sprite: {fileID: 0}
   rarity: 0
-  shapeType: 1
+  shapeType: 4
   attacks:
   - 1
   - 2

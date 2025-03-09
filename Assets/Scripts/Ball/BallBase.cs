@@ -112,9 +112,11 @@ public class BallBase : MonoBehaviour
                     break;
                 case BallShapeType.Rectangle:
                     var bc2 = this.gameObject.AddComponent<BoxCollider2D>();
-                    bc2.size = new Vector2(1, 0.5f);
+                    bc2.size = new Vector2(0.6f, 1f);
                     break;
-                case BallShapeType.Circle:
+                case BallShapeType.Bar:
+                    var bc3 = this.gameObject.AddComponent<BoxCollider2D>();
+                    bc3.size = new Vector2(0.2f, 1f);
                     break;
                 default:
                     break;

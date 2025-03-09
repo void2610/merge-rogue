@@ -8346,9 +8346,6 @@ MonoBehaviour:
   playOnStart: 0
   bmgMixerGroup: {fileID: 2467584790655498006, guid: f789843a274c340cb976f3e5fb359cf3, type: 2}
   bgmList:
-  - audioClip: {fileID: 8300000, guid: 4bd83efd0496444c9845bccfc5798993, type: 3}
-    volume: 0.1
-    bgmType: 0
   - audioClip: {fileID: 8300000, guid: 29aa3941e2cae40ae8a2c9da09e028e9, type: 3}
     volume: 0.1
     bgmType: 0
@@ -8361,15 +8358,15 @@ MonoBehaviour:
   - audioClip: {fileID: 8300000, guid: 904b059b61af8408392e8bf68eaf0fc0, type: 3}
     volume: 0.2
     bgmType: 0
-  - audioClip: {fileID: 8300000, guid: 41d7f5ae3f22b4798986ae5dcfbcaf08, type: 3}
-    volume: 0.2
-    bgmType: 4
-  - audioClip: {fileID: 8300000, guid: 18795d0011b454703a7daa462063a600, type: 3}
-    volume: 0.2
-    bgmType: 5
   - audioClip: {fileID: 8300000, guid: fc7251e342b694303b8c0df74aaad73f, type: 3}
     volume: 0.2
     bgmType: 0
+  - audioClip: {fileID: 8300000, guid: 18795d0011b454703a7daa462063a600, type: 3}
+    volume: 0.2
+    bgmType: 2
+  - audioClip: {fileID: 8300000, guid: 4bd83efd0496444c9845bccfc5798993, type: 3}
+    volume: 0.2
+    bgmType: 3
 --- !u!1001 &894024782
 PrefabInstance:
   m_ObjectHideFlags: 0

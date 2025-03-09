@@ -12,10 +12,8 @@ public enum BgmType
 {
     Battle,
     AfterBattle,
-    Shop,
-    Rest,
-    Event,
     Boss,
+    Other,
 }
 
 public enum Rarity
