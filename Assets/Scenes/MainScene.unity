@@ -18610,6 +18610,18 @@ MonoBehaviour:
       probability: 1
   ballList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
   relicList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
+  ballBaseImages:
+    _list:
+    - key: 0
+      value: {fileID: 21300000, guid: d4b7bfc0defa141fbb64120daafff3b3, type: 3}
+    - key: 1
+      value: {fileID: 0}
+    - key: 2
+      value: {fileID: 21300000, guid: 1053a8ce93a2b4b17811e03ffbc05131, type: 3}
+    - key: 3
+      value: {fileID: 0}
+    - key: 4
+      value: {fileID: 0}
 --- !u!1001 &2020573309
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -40,6 +40,7 @@ public class InventoryUI : MonoBehaviour
         var s = ballBase.Data.sprite;
         if (s) g.transform.Find("Icon").GetComponent<Image>().sprite = s;
         else g.transform.Find("Icon").GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        g.GetComponent<Image>().sprite = ContentProvider.Instance.GetBallBaseImage(ballBase.Data.shapeType);
         
         SetEvent(g, rank, ballBase);
         if (_items.Count <= rank)

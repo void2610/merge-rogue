@@ -87,6 +87,8 @@ public class BallBase : MonoBehaviour
             this.transform.Find("IconShadow").GetComponent<SpriteRenderer>().enabled = false;
             this.GetComponent<SpriteRenderer>().sprite = d.sprite;
         }
+
+        this.GetComponent<SpriteRenderer>().sprite = ContentProvider.Instance.GetBallBaseImage(d.shapeType);
         
         // コライダーの設定
         if (d.shapeType != BallShapeType.Circle)

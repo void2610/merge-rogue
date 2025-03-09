@@ -26,6 +26,7 @@ public class ContentProvider : MonoBehaviour
     [SerializeField] private List<ContentDataList> eventList;
     [SerializeField] private BallDataList ballList;
     [SerializeField] private RelicDataList relicList;
+    [SerializeField] private SerializableDictionary<BallShapeType, Sprite> ballBaseImages;
     
     private int _act = 0;
 
@@ -162,6 +163,8 @@ public class ContentProvider : MonoBehaviour
     /// アクトを進める
     /// </summary>
     public void AddAct() => _act++;
+
+    public Sprite GetBallBaseImage(BallShapeType type) => ballBaseImages[type];
     
     // =============================================================================================================
     // PRIVATE METHODS

@@ -27,7 +27,7 @@ public class BgmManager : MonoBehaviour
     private bool _isPlaying = false;
     private SoundData _currentBGM = null;
     private float _volume = 1.0f;
-    private const float FADE_TIME = 0.5f;
+    private const float FADE_TIME = 1.0f;
     private bool _isFading = false;
 
     public float BgmVolume
