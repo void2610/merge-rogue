@@ -8358,9 +8358,18 @@ MonoBehaviour:
   - audioClip: {fileID: 8300000, guid: 33e6d908e4c1d468c8d499dd206fc2f3, type: 3}
     volume: 0.2
     bgmType: 0
-  - audioClip: {fileID: 8300000, guid: 18795d0011b454703a7daa462063a600, type: 3}
+  - audioClip: {fileID: 8300000, guid: 904b059b61af8408392e8bf68eaf0fc0, type: 3}
+    volume: 0.2
+    bgmType: 0
+  - audioClip: {fileID: 8300000, guid: 41d7f5ae3f22b4798986ae5dcfbcaf08, type: 3}
     volume: 0.2
     bgmType: 4
+  - audioClip: {fileID: 8300000, guid: 18795d0011b454703a7daa462063a600, type: 3}
+    volume: 0.2
+    bgmType: 5
+  - audioClip: {fileID: 8300000, guid: fc7251e342b694303b8c0df74aaad73f, type: 3}
+    volume: 0.2
+    bgmType: 0
 --- !u!1001 &894024782
 PrefabInstance:
   m_ObjectHideFlags: 0

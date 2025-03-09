@@ -899,6 +899,7 @@ MonoBehaviour:
   bgmList:
   - audioClip: {fileID: 8300000, guid: 0d4d930d3b1c34e5da124ced2a6eae71, type: 3}
     volume: 0
+    bgmType: 0
 --- !u!1001 &432572825
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2431,7 +2432,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: var_0.8.3
+  m_text: var_0.8.4
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 51b066cd8e0b7476c94d04d3a90a0709, type: 2}
   m_sharedMaterial: {fileID: 322069558015029290, guid: 51b066cd8e0b7476c94d04d3a90a0709, type: 2}

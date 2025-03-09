@@ -13,7 +13,7 @@ public class StrongBurnWhenManyBalls : RelicBase
     {   
         var value = EventManager.OnEnemyStatusEffectTriggered.GetValue();
         if (value.Item2 != StatusEffectType.Burn) return;
-        // if (MergeManager.Instance.GetBallCount() < 10) return;
+        if (MergeManager.Instance.GetBallCount() < 10) return;
 
         var idx = EnemyContainer.Instance.GetEnemyIndex(value.Item1);
         if (EnemyContainer.Instance.GetCurrentEnemyCount() < idx + 2) return;
