@@ -8365,7 +8365,7 @@ MonoBehaviour:
     volume: 0.2
     bgmType: 2
   - audioClip: {fileID: 8300000, guid: 4bd83efd0496444c9845bccfc5798993, type: 3}
-    volume: 0.2
+    volume: 0.12
     bgmType: 3
 --- !u!1001 &894024782
 PrefabInstance:
@@ -17534,7 +17534,7 @@ MonoBehaviour:
   testBalls:
   - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  - {fileID: 11400000, guid: b883c0d61330747518a09d553f7bd5b7, type: 2}
+  - {fileID: 11400000, guid: e7d1bbbec6f844ab4b886b17d5aa6b6c, type: 2}
   - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   - {fileID: 0}

@@ -99,8 +99,11 @@ public class Shop : MonoBehaviour
         _currentItemPrices[index] = price;
         var priceText = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
         priceText.text = price.ToString();
+        var baseImage = g.transform.Find("BallBase").GetComponent<Image>();
+        baseImage.sprite = ContentProvider.Instance.GetBallBaseImage(ball.shapeType);        
         var image = g.transform.Find("Icon").GetComponent<Image>();
-        image.sprite = ball.sprite;
+        if (ball.sprite) image.sprite = ball.sprite;
+        else image.color = new Color(0, 0, 0, 0);
         var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
         ballImage.color = new Color(0.6f, 0.6f, 0.6f, 1);
         var button = g.GetComponent<Button>();
