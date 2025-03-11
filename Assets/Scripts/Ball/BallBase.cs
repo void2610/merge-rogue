@@ -74,21 +74,6 @@ public class BallBase : MonoBehaviour
         this.Level = level;
         this.Attack = _attacks[level];
         this.Size = _sizes[level];
-
-        // 画像の設定
-        if (useIcon)
-        {
-            this.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = d.sprite;
-            this.transform.Find("IconShadow").GetComponent<SpriteRenderer>().sprite = d.sprite;
-        }
-        else
-        {
-            this.transform.Find("Icon").GetComponent<SpriteRenderer>().enabled = false;
-            this.transform.Find("IconShadow").GetComponent<SpriteRenderer>().enabled = false;
-            this.GetComponent<SpriteRenderer>().sprite = d.sprite;
-        }
-
-        this.GetComponent<SpriteRenderer>().sprite = ContentProvider.Instance.GetBallBaseImage(d.shapeType);
         
         // コライダーの設定
         if (d.shapeType != BallShapeType.Circle)
@@ -121,6 +106,20 @@ public class BallBase : MonoBehaviour
                 default:
                     break;
             }
+        }
+        
+        // 画像の設定
+        this.GetComponent<SpriteRenderer>().sprite = ContentProvider.Instance.GetBallBaseImage(d.shapeType);
+        if (useIcon)
+        {
+            this.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = d.sprite;
+            this.transform.Find("IconShadow").GetComponent<SpriteRenderer>().sprite = d.sprite;
+        }
+        else
+        {
+            this.transform.Find("Icon").GetComponent<SpriteRenderer>().enabled = false;
+            this.transform.Find("IconShadow").GetComponent<SpriteRenderer>().enabled = false;
+            this.GetComponent<SpriteRenderer>().sprite = d.sprite;
         }
     }
 
