@@ -13,6 +13,7 @@ public class Encyclopedia : MonoBehaviour
     [SerializeField] private Transform itemContainer;
     [SerializeField] private GameObject ballContainerPrefab;
     [SerializeField] private GameObject relicContainerPrefab;
+    [SerializeField] private SerializableDictionary<BallShapeType, Sprite> ballBaseImages;
     
     // 空白セルの高さ（例えば、セルの高さと同じか、調整したい値）
     [SerializeField] private float spacerHeight = 100f;
@@ -21,6 +22,8 @@ public class Encyclopedia : MonoBehaviour
 
     private void SetBallData(GameObject g, BallData b)
     {
+        var ballBase = g.transform.Find("BallBase").GetComponent<Image>();
+        ballBase.sprite = ballBaseImages[b.shapeType];
         var image = g.transform.Find("Icon").GetComponent<Image>();
         image.sprite = b.sprite;
         if (b.sprite == null) image.color = new Color(0, 0, 0, 0);

@@ -2841,6 +2841,18 @@ MonoBehaviour:
   itemContainer: {fileID: 1181778949}
   ballContainerPrefab: {fileID: 6729976926087826395, guid: 19219da249c854829af0642a1d0a40bc, type: 3}
   relicContainerPrefab: {fileID: 6729976926087826395, guid: f5ddaffe2cb4242c8a69a14a50d44c11, type: 3}
+  ballBaseImages:
+    _list:
+    - key: 0
+      value: {fileID: 21300000, guid: 7ee14596be770485d82adfccf7478e9f, type: 3}
+    - key: 1
+      value: {fileID: 21300000, guid: 99ce4d9fcd58e4310af680f5c79accc1, type: 3}
+    - key: 2
+      value: {fileID: 21300000, guid: 7e975f6e07d4c47cd94d6228f0d0b9c7, type: 3}
+    - key: 3
+      value: {fileID: 21300000, guid: 0b8da0e67670c4992b7ca52c41b771c4, type: 3}
+    - key: 4
+      value: {fileID: 21300000, guid: 8fb699a673a084c6f8794359fc1277f9, type: 3}
   spacerHeight: 100
 --- !u!224 &1447030974 stripped
 RectTransform:

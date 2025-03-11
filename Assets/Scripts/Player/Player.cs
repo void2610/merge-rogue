@@ -135,14 +135,9 @@ public class Player : MonoBehaviour, IEntity
         Exp.Value += amount;
 
         if (CheckAndLevelUp())
-        {
-            SeManager.Instance.PlaySe("levelUp");
             GameManager.Instance.ChangeState(GameManager.GameState.LevelUp);
-        }
         else
-        {        
             GameManager.Instance.ChangeState(GameManager.GameState.AfterBattle);
-        }
         Exp.ForceNotify();
     }
 
