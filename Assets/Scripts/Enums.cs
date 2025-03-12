@@ -35,6 +35,23 @@ public enum BallShapeType
     Bar,
 }
 
+public enum ActionType
+{
+    Attack,
+    Heal,
+    Buff,
+    Debuff,
+    Damage,
+}
+
+public enum EnemyType
+{
+    Normal,
+    Minion,
+    MiniBoss,
+    Boss,
+}
+
 public enum StageType
 {
     Enemy,

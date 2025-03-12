@@ -9,21 +9,6 @@ using DG.Tweening;
 
 public class EnemyBase : MonoBehaviour, IEntity
 {
-    public enum EnemyType
-    {
-        Normal,
-        Minion,
-        MiniBoss,
-        Boss,
-    }
-    
-    public enum ActionType
-    {
-        Attack,
-        Heal,
-        Buff,
-        Debuff,
-    }
     [Serializable]
     public class ActionData
     {

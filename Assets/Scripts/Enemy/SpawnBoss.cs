@@ -2,29 +2,17 @@ using UnityEngine;
 
 public class SpawnBoss : EnemyBase
 {
-    private bool _isUsedSpawn = false;
-    private const int SHIELD_STACK = 3;
-    private ActionData _spawnAction;
     protected override ActionData GetNextAction()
     {
-        if (_isUsedSpawn)
+        var r = GameManager.Instance.RandomRange(0, 2);
+        switch (r)
         {
-            _isUsedSpawn = false;
-            return NormalAttack;
+            case 0:
+                return EnemyActions.AllHealAction(this, (int)Stage+1);
+            case 1:
+                return EnemyActions.SpawnAction(this, Stage);
+            default:
+                return EnemyActions.AllHealAction(this, (int)Stage+1);
         }
-        
-        _isUsedSpawn = true;
-        return _spawnAction;
-    }
-    
-    public override void Init(int stage)
-    {
-        _spawnAction = new ActionData
-        {
-            type = ActionType.Buff,
-            Action = () => { EnemyContainer.Instance.SpawnEnemy(1, Stage); }
-        };
-        
-        base.Init(stage);
     }
 }

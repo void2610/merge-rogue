@@ -64,6 +64,20 @@ public class EnemyContainer : MonoBehaviour
             _currentEnemies[i].Damage(damage);
         }
     }
+    
+    public void HealAllEnemies(int heal)
+    {
+        for(var i = 0; i < _currentEnemies.Count; i++)
+        {
+            _currentEnemies[i].Heal(heal);
+        }
+    }
+    
+    public void HealEnemy(int index, int heal)
+    {
+        if (index < 0 || index >= _currentEnemies.Count) return;
+        _currentEnemies[index].Heal(heal);
+    }
 
     public void RemoveEnemy(GameObject enemy)
     {
@@ -73,15 +87,17 @@ public class EnemyContainer : MonoBehaviour
         _currentEnemies.Remove(enemyBase);
         enemyBase.OnDisappear();
 
-        // ボスを倒したら全回復してレリック獲得
-        if (enemyBase.enemyType == EnemyBase.EnemyType.Boss){
-            GameManager.Instance.Player.HealToFull(); 
-            treasure.OpenTreasure(Treasure.TreasureType.Boss);
-        }
-        else
+        // 全ての敵を倒したらステージ進行
+        if (_currentEnemies.Count == 0)
         {
-            // 全ての敵を倒したらステージ進行
-            if (_currentEnemies.Count == 0) EndBattle().Forget();
+            if(GameManager.Instance.StageManager.CurrentStage.Type == StageType.Boss)
+            {
+                treasure.OpenTreasure(Treasure.TreasureType.Boss);
+            }
+            else
+            {
+                EndBattle().Forget();
+            }
         }
     }
     
