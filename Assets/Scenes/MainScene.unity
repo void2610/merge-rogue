@@ -5183,7 +5183,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.03
+      scalar: 0.04
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -7585,7 +7585,7 @@ ParticleSystem:
     strength:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.1
+      scalar: 0.12
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -7638,7 +7638,7 @@ ParticleSystem:
     strengthY:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 0.05
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -7691,7 +7691,7 @@ ParticleSystem:
     strengthZ:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0.08
+      scalar: 0
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -10238,7 +10238,8 @@ MonoBehaviour:
   uiCamera: {fileID: 371541724}
   bgmSlider: {fileID: 1144609053041968782}
   seSlider: {fileID: 9088715935136075098}
-  seedText: {fileID: 1289804352}
+  pauseSeedText: {fileID: 1289804352}
+  gameoverSeedText: {fileID: 1687792462}
   fadeImage: {fileID: 1749989334}
   descriptionWindow: {fileID: 1978004778}
   volume: {fileID: 703202738}
@@ -20534,6 +20535,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6895230682066168502, guid: b5d513c1af31f4e858857229df5cf5c1, type: 3}
   m_PrefabInstance: {fileID: 1687792460}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1687792462 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5763856610207175512, guid: b5d513c1af31f4e858857229df5cf5c1, type: 3}
+  m_PrefabInstance: {fileID: 1687792460}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aca86335b35345d18edcef7c74b03b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1695384001
 GameObject:
   m_ObjectHideFlags: 0

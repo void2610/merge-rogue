@@ -20,7 +20,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Camera uiCamera;
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider seSlider;
-    [SerializeField] private SeedText seedText;
+    [SerializeField] private SeedText pauseSeedText;
+    [SerializeField] private SeedText gameoverSeedText;
     [SerializeField] private Image fadeImage;
     [SerializeField] private DescriptionWindow descriptionWindow;
     
@@ -49,7 +50,11 @@ public class UIManager : MonoBehaviour
     public void ShowBallDescriptionWindow(BallData b, GameObject g, int level) =>
         descriptionWindow.ShowWindowWithHoverCheck(b, g, level).Forget();
 
-    public void SetSeedText(string seed) => seedText.SetText(seed);
+    public void SetSeedText(string seed)
+    {
+        pauseSeedText.SetText(seed);
+        gameoverSeedText.SetText(seed);
+    }
 
     public void EnableCanvasGroup(string canvasName, bool e) => EnableCanvasGroupAsync(canvasName, e).Forget();
     private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);

@@ -102,7 +102,11 @@ public class Shop : MonoBehaviour
         var baseImage = g.transform.Find("BallBase").GetComponent<Image>();
         baseImage.sprite = ContentProvider.Instance.GetBallBaseImage(ball.shapeType);        
         var image = g.transform.Find("Icon").GetComponent<Image>();
-        if (ball.sprite) image.sprite = ball.sprite;
+        if (ball.sprite)
+        {
+            image.color = new Color(1, 1, 1, 1);
+            image.sprite = ball.sprite;
+        }
         else image.color = new Color(0, 0, 0, 0);
         var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
         ballImage.color = new Color(0.6f, 0.6f, 0.6f, 1);
