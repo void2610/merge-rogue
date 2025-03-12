@@ -49,6 +49,8 @@ public class EnemyBase : MonoBehaviour, IEntity
 
     protected int TurnCount = 0;
     protected readonly ActionData NormalAttack = new ();
+    protected int Stage = 0;
+    protected float Magnification = 1;
     private ActionData _nextAction;
 
     private CanvasGroup _canvasGroup;
@@ -234,7 +236,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         };
     }
 
-    public virtual void Init(float magnification)
+    public virtual void Init(int stage)
     {
         var c = UIManager.Instance.GetUICamera();
         var g = Instantiate(hpSliderPrefab, UIManager.Instance.GetEnemyUIContainer());
@@ -251,11 +253,13 @@ public class EnemyBase : MonoBehaviour, IEntity
         _attackCountText = g.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
         _attackIcon = g.transform.Find("AttackIcon").GetComponent<Image>();
         _statusEffectUI = g.GetComponentInChildren<StatusEffectUI>();
-        
-        MaxHealth = (int)(GameManager.Instance.RandomRange(hMin, hMax) * magnification);
+
+        Stage = stage;
+        Magnification = ((stage + 1) * 0.6f);
+        MaxHealth = (int)(GameManager.Instance.RandomRange(hMin, hMax) * Magnification);
         Health = MaxHealth;
-        attack = (int)(attack * (magnification * 0.3f));
-        exp = exp + (int)(magnification);
+        attack = (int)(attack * (Magnification * 0.3f));
+        exp = exp + (int)(Magnification);
 
         GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         // _canvas.GetComponent<CanvasGroup>().alpha = 0;

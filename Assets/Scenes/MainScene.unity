@@ -12706,7 +12706,6 @@ MonoBehaviour:
   relicUISize: 0.75
   testRelics:
   - {fileID: 11400000, guid: 4b42e1b1fb0c64699bffb20370ba4edc, type: 2}
-  - {fileID: 11400000, guid: 1c74975eefd6e47f2ba89fe6d97e79cb, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -23121,6 +23120,8 @@ MonoBehaviour:
   - list:
     - data: {fileID: 5901398579228155482, guid: 2804a6531370042f293b3369b843b3c3, type: 3}
       probability: 1
+    - data: {fileID: 5901398579228155482, guid: db2976e6549fd4e6397e3890b0479170, type: 3}
+      probability: 9999999
   eventList:
   - list:
     - data: {fileID: 11500000, guid: 5b32f3e64ebd74bb78b8e03d97106fbb, type: 3}

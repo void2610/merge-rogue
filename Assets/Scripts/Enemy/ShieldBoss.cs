@@ -18,15 +18,15 @@ public class ShieldBoss : EnemyBase
         return _shieldAction;
     }
     
-    public override void Init(float magnification)
+    public override void Init(int stage)
     {
-        _shieldStack = (int) (magnification * SHIELD_STACK);
+        _shieldStack = (int) ((stage + 1) * 0.6f * SHIELD_STACK);
         _shieldAction = new ActionData
         {
             type = ActionType.Buff,
             Action = () => { StatusEffectFactory.AddStatusEffect(this, StatusEffectType.Shield, _shieldStack); }
         };
         
-        base.Init(magnification);
+        base.Init(stage);
     }
 }

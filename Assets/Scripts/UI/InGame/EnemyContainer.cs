@@ -37,9 +37,7 @@ public class EnemyContainer : MonoBehaviour
         boss.transform.parent = this.transform;
         boss.transform.localScale = new Vector3(1, 1, 1);
         boss.transform.position = _positions[_currentEnemies.Count];
-        // 敵の強さパラメータを設定
-        var m = ((stage + 1) * 0.6f);
-        bossBase.Init(m);
+        bossBase.Init(stage);
         _currentEnemies.Add(bossBase);
     }
 
@@ -53,10 +51,8 @@ public class EnemyContainer : MonoBehaviour
             e.transform.parent = this.transform;
             e.transform.position = _positions[_currentEnemies.Count];
             e.transform.localScale = new Vector3(1, 1, 1);
-            // 敵の強さパラメータを設定
-            var m = ((stage + 1) * 0.6f);
             var enemyBase = e.transform.GetComponentsInChildren<EnemyBase>()[0];
-            enemyBase.Init(m);
+            enemyBase.Init(stage);
             _currentEnemies.Add(enemyBase);
         }
     }
