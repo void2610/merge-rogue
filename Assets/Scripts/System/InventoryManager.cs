@@ -196,7 +196,10 @@ public class InventoryManager : MonoBehaviour
     {
         var newBall = Instantiate(ball, position, Quaternion.identity);
         var rank = ball.GetComponent<BallBase>().Rank;
-        var data = ball.GetComponent<BallBase>().Data;
+
+        EventManager.OnBallCreate.Trigger(ball.GetComponent<BallBase>().Data);
+        var data = EventManager.OnBallCreate.GetAndResetValue();
+        
         var level = ball.GetComponent<BallBase>().Level;
         newBall.GetComponent<BallBase>().InitBall(data, rank, level);
         newBall.transform.localScale = ball.transform.localScale;

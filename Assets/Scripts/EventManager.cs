@@ -42,6 +42,8 @@ public static class EventManager
     public static readonly GameEvent<EnemyBase> OnEnemyDefeated = new (null);
     // プレイヤー死亡時: 復活するかどうか
     public static readonly GameEvent<bool> OnPlayerDeath = new (false);
+    // ボールを生成する時: 生成するボールデータ
+    public static readonly GameEvent<BallData> OnBallCreate = new (null);
     // ボールを落とした時: なし
     public static readonly GameEvent<int> OnBallDrop = new (0);
     // ボールをスキップした時: なし
