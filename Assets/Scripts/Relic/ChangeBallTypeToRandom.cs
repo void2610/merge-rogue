@@ -11,9 +11,10 @@ public class ChangeBallTypeToRandom : RelicBase
     protected override void EffectImpl(Unit _)
     {   
         var type = (BallShapeType)(GameManager.Instance.RandomRange(0, BallShapeType.GetValues(typeof(BallShapeType)).Length));
-        var data = EventManager.OnBallCreate.GetValue();
-        data.shapeType = type;
-        EventManager.OnBallCreate.SetValue(data);
+        var originalData = EventManager.OnBallCreate.GetValue();
+        var newData = Instantiate(originalData);
+        newData.shapeType = type;
+        EventManager.OnBallCreate.SetValue(newData);
         
         UI?.ActivateUI();
     }

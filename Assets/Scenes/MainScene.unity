@@ -10344,7 +10344,7 @@ MonoBehaviour:
   stageTypes: 
   mapSize: {x: 16, y: 7}
   pathCount: 9
-  startStage: 5
+  startStage: 0
 --- !u!114 &567445625
 MonoBehaviour:
   m_ObjectHideFlags: 0
