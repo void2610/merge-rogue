@@ -1344,6 +1344,7 @@ GameObject:
   - component: {fileID: 525522647}
   - component: {fileID: 525522648}
   - component: {fileID: 525522649}
+  - component: {fileID: 525522650}
   m_Layer: 0
   m_Name: Script
   m_TagString: Untagged
@@ -1409,6 +1410,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6ccf73d461f5241baa67416d537c6fc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &525522650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 525522644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b20401d4b42114af3854e490d3d5b2ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &541858113 stripped
@@ -2432,7 +2445,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: var_0.8.5
+  m_text: var_0.8.6
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 51b066cd8e0b7476c94d04d3a90a0709, type: 2}
   m_sharedMaterial: {fileID: 322069558015029290, guid: 51b066cd8e0b7476c94d04d3a90a0709, type: 2}

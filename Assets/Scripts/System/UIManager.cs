@@ -57,6 +57,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void EnableCanvasGroup(string canvasName, bool e) => EnableCanvasGroupAsync(canvasName, e).Forget();
+    public bool IsEnableCanvasGroup(string canvasName) => canvasGroups.Find(c => c.name == canvasName).alpha > 0;
     private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
     private void UpdateCoinText(BigInteger amount) => coinText.text = "coin: " + amount;
 

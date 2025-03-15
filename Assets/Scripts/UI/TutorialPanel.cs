@@ -53,6 +53,8 @@ public class TutorialPanel : MonoBehaviour
 
     private void Update()
     {
+        if(!UIManager.Instance.IsEnableCanvasGroup("Tutorial")) return;
+        
         if (InputProvider.Instance.UI.Right.triggered)
         {
             NextPage();
