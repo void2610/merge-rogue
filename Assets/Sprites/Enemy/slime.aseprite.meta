@@ -8,6 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  importerVersion: 1
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -125,7 +126,7 @@ ScriptedImporter:
   - name: slime_Frame_0
     originalName: 
     pivot: {x: 0.5, y: 0}
-    alignment: 7
+    alignment: 9
     border: {x: 0, y: 0, z: 0, w: 0}
     customData: 
     rect:
@@ -167,13 +168,13 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: -1337320074
+    guid: -1355688242
     name: slime
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: slime_Frame_0
+    - name: Frame_0
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
@@ -182,7 +183,7 @@ ScriptedImporter:
         width: 6
         height: 7
       spriteId: b748e2d0522474ed3b1e2df5221267b7
-    - name: slime_Frame_1
+    - name: Frame_1
       frameIndex: 1
       additiveSortOrder: 0
       cellRect:
@@ -234,3 +235,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 8, y: 8}
+  previousTextureSize: {x: 16, y: 32}

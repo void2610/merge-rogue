@@ -13192,6 +13192,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
     nameFileIdTable:
       Keyboard-a: -1978512990
       Keyboard-b: 846954205

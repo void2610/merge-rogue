@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.DualShock;
-using UnityEngine.InputSystem.Switch;
+// using UnityEngine.InputSystem.Switch;
 using UnityEngine.InputSystem.XInput;
 
 public class InputGuide : MonoBehaviour
@@ -52,12 +52,9 @@ public class InputGuide : MonoBehaviour
                 if (string.IsNullOrEmpty(deviceIconGroup)) continue;
 
                 var controlPathContent = control.path.Substring(control.device.name.Length + 2);
-
                 var iconName = $"{deviceIconGroup}-{controlPathContent}";
-
-                var spriteIndex = text.spriteAsset.GetSpriteIndexFromName(iconName);
-                Debug.Log(spriteIndex);
-
+                var spriteIndex = GetSpriteCharacterIndex(iconName);
+                
                 if (spriteIndex >= 0)
                 {
                     TempStringBuilder.Append("<sprite=");
@@ -72,7 +69,12 @@ public class InputGuide : MonoBehaviour
 
         text.text = TempStringBuilder.ToString();
     }
-
+    
+    private int GetSpriteCharacterIndex(string name)
+    {
+        var t = text.spriteAsset.spriteCharacterTable.FirstOrDefault(character => character.name == name);
+        return text.spriteAsset.spriteCharacterTable.IndexOf(t);
+    }
 
     private static string GetDeviceIconGroup(InputDevice device)
     {
@@ -82,7 +84,7 @@ public class InputGuide : MonoBehaviour
             Mouse => "Mouse",
             XInputController => "XInputController",
             DualShockGamepad => "DualShockGamepad",
-            SwitchProControllerHID => "SwitchProController",
+            // SwitchProControllerHID => "SwitchProController",
             _ => null
         };
     }

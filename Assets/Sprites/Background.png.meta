@@ -171,6 +171,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
     nameFileIdTable:
       Background_0: -1955448553306655712
   mipmapLimitGroupName: 

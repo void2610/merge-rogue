@@ -8,6 +8,7 @@ ScriptedImporter:
   assetBundleName: 
   assetBundleVariant: 
   script: {fileID: 11500000, guid: 62a9f0aa5b59740cfbadc7e5f9823bb0, type: 3}
+  importerVersion: 1
   textureImporterSettings:
     alphaSource: 1
     mipMapMode: 0
@@ -209,13 +210,13 @@ ScriptedImporter:
   spriteSheetImportData: []
   asepriteLayers:
   - layerIndex: 0
-    guid: 1445796219
+    guid: 696029479
     name: bat
     layerFlags: 0
     layerType: 0
     blendMode: 0
     cells:
-    - name: bat_Frame_0
+    - name: Frame_0
       frameIndex: 0
       additiveSortOrder: 0
       cellRect:
@@ -224,7 +225,7 @@ ScriptedImporter:
         width: 16
         height: 11
       spriteId: 1c137540091ec49ec82ae32a480079b7
-    - name: bat_Frame_1
+    - name: Frame_1
       frameIndex: 1
       additiveSortOrder: 0
       cellRect:
@@ -233,7 +234,7 @@ ScriptedImporter:
         width: 16
         height: 11
       spriteId: 44136667ad071430096dc8efbe77f011
-    - name: bat_Frame_2
+    - name: Frame_2
       frameIndex: 2
       additiveSortOrder: 0
       cellRect:
@@ -242,7 +243,7 @@ ScriptedImporter:
         width: 15
         height: 11
       spriteId: 432cb4eaf12fa4955b457b44128aeca2
-    - name: bat_Frame_3
+    - name: Frame_3
       frameIndex: 3
       additiveSortOrder: 0
       cellRect:
@@ -294,3 +295,4 @@ ScriptedImporter:
   secondarySpriteTextures: []
   spritePackingTag: 
   canvasSize: {x: 16, y: 16}
+  previousTextureSize: {x: 64, y: 64}
