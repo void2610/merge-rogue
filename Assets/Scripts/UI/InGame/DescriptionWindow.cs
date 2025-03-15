@@ -282,7 +282,7 @@ public class DescriptionWindow : MonoBehaviour
         if(!window) return false;
         // マウスが現在のウィンドウ上にあるかチェック
         if (RectTransformUtility.RectangleContainsScreenPoint(
-                window.GetComponent<RectTransform>(), Input.mousePosition, uiCamera))
+                window.GetComponent<RectTransform>(), InputProvider.Instance.GetMousePosition(), uiCamera))
         {
             return true;
         }
@@ -305,7 +305,7 @@ public class DescriptionWindow : MonoBehaviour
         if (!obj) return false;
         return RectTransformUtility.RectangleContainsScreenPoint(
             obj.GetComponent<RectTransform>(),
-            Input.mousePosition,
+            InputProvider.Instance.GetMousePosition(),
             uiCamera
         );
     }
@@ -325,7 +325,7 @@ public class DescriptionWindow : MonoBehaviour
             if(!window) continue;
             if (RectTransformUtility.RectangleContainsScreenPoint(
                     window.GetComponent<RectTransform>(),
-                    Input.mousePosition,
+                    InputProvider.Instance.GetMousePosition(),
                     uiCamera))
             {
                 return true;
@@ -409,7 +409,7 @@ public class DescriptionWindow : MonoBehaviour
         var linkIndices = windows.Select(w =>
             TMP_TextUtilities.FindIntersectingLink(
                 w.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>(),
-                Input.mousePosition, uiCamera)
+                InputProvider.Instance.GetMousePosition(), uiCamera)
         ).ToList();
 
         var validLinks = linkIndices.Where(i => i != -1).ToList();

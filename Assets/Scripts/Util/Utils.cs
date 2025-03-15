@@ -131,7 +131,7 @@ public class Utils : MonoBehaviour
     /// </summary>
     public static async UniTask WaitOrSkipInput(int delayTime, CancellationToken cancellationToken = default)
     {
-        await WaitOrSkip(delayTime, () => Input.anyKeyDown || Input.GetMouseButtonDown(0), cancellationToken);
+        await WaitOrSkip(delayTime, () => InputProvider.Instance.IsSkipButtonPressed(), cancellationToken);
     }
 
     private void Awake()

@@ -27,7 +27,7 @@ public class StageEventProcessor : MonoBehaviour
         {
             // 説明文の表示アニメーションとクリック待機タスクを同時に開始
             var textTweenTask = descriptionText.ShowTextTween(0.1f, cts.Token);
-            var clickTask = UniTask.WaitUntil(() => Input.anyKeyDown || Input.GetMouseButtonDown(0));
+            var clickTask = UniTask.WaitUntil(() => InputProvider.Instance.IsSkipButtonPressed());
             var result = await UniTask.WhenAny(textTweenTask, clickTask);
             // クリックが先に検知されたらスキップ
             if (!result.hasResultLeft)
@@ -50,7 +50,7 @@ public class StageEventProcessor : MonoBehaviour
                 optionText.text = _currentEvent.Options[i].description;
 
                 var optionTweenTask = optionText.ShowTextTween(0.1f, cts.Token);
-                var clickTaskOption = UniTask.WaitUntil(() => Input.anyKeyDown || Input.GetMouseButtonDown(0));
+                var clickTaskOption = UniTask.WaitUntil(() => InputProvider.Instance.IsSkipButtonPressed());
                 var resultOption = await UniTask.WhenAny(optionTweenTask, clickTaskOption);
                 if (!resultOption.hasResultLeft)
                 {
@@ -86,7 +86,7 @@ public class StageEventProcessor : MonoBehaviour
         using (var cts = new CancellationTokenSource())
         {
             var textTweenTask = descriptionText.ShowTextTween(0.1f, cts.Token);
-            var clickTask = UniTask.WaitUntil(() => Input.anyKeyDown || Input.GetMouseButtonDown(0), cancellationToken: cts.Token);
+            var clickTask = UniTask.WaitUntil(() => InputProvider.Instance.IsSkipButtonPressed(), cancellationToken: cts.Token);
             var result = await UniTask.WhenAny(textTweenTask, clickTask);
         
             // クリック（またはキー入力）が先に完了した場合

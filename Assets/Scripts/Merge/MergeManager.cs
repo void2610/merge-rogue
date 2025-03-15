@@ -334,7 +334,7 @@ public class MergeManager : MonoBehaviour
         ballGauge.transform.localScale = CurrentBall.transform.localScale * 1.01f;
         ballGauge.transform.position = CurrentBall.transform.position;
         
-        var mousePosX = (Input.mousePosition.x - Screen.width / 2) / Screen.width * 20;
+        var mousePosX = (InputProvider.Instance.GetMousePosition().x - Screen.width / 2) / Screen.width * 20;
         var isMouseOvered = cursorSetter.IsMergeArea;
         if (isMouseOvered)
         {
@@ -343,12 +343,12 @@ public class MergeManager : MonoBehaviour
         }
         else
         {
-            if (Input.GetKey(KeyCode.A) && _currentBallPosition.x - size / 2 > -_limit)
+            if (InputProvider.Instance.Gameplay.LeftMove.IsPressed() && _currentBallPosition.x - size / 2 > -_limit)
             {
                 _currentBallPosition += Vector3.left * (MOVE_SPEED * Time.deltaTime);
             }
 
-            if (Input.GetKey(KeyCode.D) && _currentBallPosition.x + size / 2 < _limit)
+            if (InputProvider.Instance.Gameplay.RightMove.IsPressed() && _currentBallPosition.x + size / 2 < _limit)
             {
                 _currentBallPosition += Vector3.right * (MOVE_SPEED * Time.deltaTime);
             }
@@ -360,16 +360,15 @@ public class MergeManager : MonoBehaviour
         
         // プレイヤー操作        
         if(UIManager.Instance.IsPaused || UIManager.Instance.IsMapOpened) return;
-        var isMain = Input.GetKey(KeyCode.Space) || (Input.GetMouseButton(0) && isMouseOvered);
-        var isAlt = Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift) || (Input.GetMouseButton(1) && isMouseOvered);
-        if (isMain)
+        
+        if (InputProvider.Instance.Gameplay.LeftClick.IsPressed())
         {
             SeManager.Instance.PlaySe("fall");
             _lastFallTime = Time.time;
             DropBall();
             DecideNextBall().Forget();
         }
-        else if (isAlt)
+        else if (InputProvider.Instance.Gameplay.RightClick.IsPressed())
         {
             SeManager.Instance.PlaySe("alt");
             _lastFallTime = Time.time;

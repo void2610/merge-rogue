@@ -189,13 +189,13 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
+        if (InputProvider.Instance.UI.OpenPause.triggered)
             UIManager.Instance.OnClickPauseButton();
-        if (Input.GetKeyDown(KeyCode.M))
+        if (InputProvider.Instance.UI.OpenMap.triggered)
             UIManager.Instance.OnClickMapButton();
-        if (Input.GetKeyDown(KeyCode.T))
+        if (InputProvider.Instance.UI.ChangeSpeed.triggered)
             UIManager.Instance.OnClickSpeedButton();
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (InputProvider.Instance.UI.OpenTutorial.triggered)
             UIManager.Instance.OnClickTutorialButton();
     }
     

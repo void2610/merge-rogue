@@ -70,7 +70,7 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         // マウスからrayを飛ばして、ボタンの上にマウスがあるかどうかを判定する
         var pointerEventData = new PointerEventData(eventSystem)
         {
-            position = Input.mousePosition
+            position = InputProvider.Instance.GetMousePosition()
         };
         var results = new List<RaycastResult>();
         raycaster.Raycast(pointerEventData, results);

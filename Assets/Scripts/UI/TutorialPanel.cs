@@ -53,11 +53,11 @@ public class TutorialPanel : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
+        if (InputProvider.Instance.UI.Right.triggered)
         {
             NextPage();
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
+        else if (InputProvider.Instance.UI.Left.triggered)
         {
             PreviousPage();
         }
