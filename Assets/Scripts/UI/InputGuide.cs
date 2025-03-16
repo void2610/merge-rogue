@@ -54,6 +54,7 @@ public class InputGuide : MonoBehaviour
                 var controlPathContent = control.path.Substring(control.device.name.Length + 2);
                 var iconName = $"{deviceIconGroup}-{controlPathContent}";
                 var spriteIndex = GetSpriteCharacterIndex(iconName);
+                Debug.Log($"{iconName}: {spriteIndex}");
                 
                 if (spriteIndex >= 0)
                 {
