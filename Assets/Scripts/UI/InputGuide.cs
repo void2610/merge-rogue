@@ -23,7 +23,7 @@ public class InputGuide : MonoBehaviour
     [SerializeField] private Vector2 position;
     [SerializeField] private float alignment;
     private static readonly StringBuilder _tempStringBuilder = new();
-    private InputGuideType _currentType = InputGuideType.Merge;
+    private InputGuideType _currentType = InputGuideType.Navigate;
 
     private void Awake()
     {
@@ -41,7 +41,6 @@ public class InputGuide : MonoBehaviour
                 for(var i = 0; i < t1.Count; i++)
                 {
                     var obj = Instantiate(inputGuidePrefab, this.transform);
-                    if (i != 0) Debug.Log(last1.GetPreferredValues().x);
                     var a = i == 0 ? position.x : (last1.transform.localPosition.x + alignment * last1.GetPreferredValues().x);
                     obj.transform.localPosition = new Vector2(a, position.y);
                     obj.GetComponent<TextMeshProUGUI>().text = t1[i];
@@ -54,8 +53,8 @@ public class InputGuide : MonoBehaviour
                 for(var i = 0; i < t2.Count; i++)
                 {
                     var obj = Instantiate(inputGuidePrefab, this.transform);
-                    var a = i == 0 ? alignment * position.x : alignment * (last2.transform.position.x + last2.GetPreferredValues().x);
-                    obj.transform.localPosition = position + new Vector2(a, 0);
+                    var a = i == 0 ? position.x : (last2.transform.localPosition.x + alignment * last2.GetPreferredValues().x);
+                    obj.transform.localPosition = new Vector2(a, position.y);
                     obj.GetComponent<TextMeshProUGUI>().text = t2[i];
                     last2 = obj.GetComponent<TextMeshProUGUI>();
                 }
