@@ -3788,7 +3788,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Keyboard-lefArrow
+      name: Keyboard-leftArrow
       rect:
         serializedVersion: 2
         x: 528
@@ -17192,7 +17192,7 @@ TextureImporter:
       Keyboard-j: 1546818832
       Keyboard-k: 735308038
       Keyboard-l: 586595554
-      Keyboard-lefArrow: -1921462514
+      Keyboard-leftArrow: -1921462514
       Keyboard-m: -965791023
       Keyboard-n: 84820844
       Keyboard-o: -600062411

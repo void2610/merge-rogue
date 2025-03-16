@@ -65,17 +65,6 @@
                 },
                 {
                     "name": "",
-                    "id": "dcf27e3f-1683-49c2-8155-41c076fb656c",
-                    "path": "<Keyboard>/enter",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LeftClick",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "dc7116d9-eb45-4c11-85bb-597e71d4343e",
                     "path": "<Keyboard>/space",
                     "interactions": "",
