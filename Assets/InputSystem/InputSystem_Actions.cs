@@ -399,17 +399,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             ""bindings"": [
                 {
                     ""name"": """",
-                    ""id"": ""ded0027f-7974-437c-b6a8-aa11c76add36"",
-                    ""path"": ""<Keyboard>/enter"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""Submit"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""9d30ad62-551a-4398-b979-791142f4c9f8"",
                     ""path"": ""<Keyboard>/space"",
                     ""interactions"": """",

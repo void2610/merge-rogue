@@ -119,8 +119,8 @@ public class InputGuide : MonoBehaviour
     {
         Debug.Log("GetNavigateGuideTexts");
         var navigaTetexts = new List<string>();
-        navigaTetexts.Add("選択: <sprite name=\"Keyboard-leftArrow\"><sprite name=\"Keyboard-rightArrow\">");
-        navigaTetexts.Add("決定: <sprite name=\"Keyboard-space\">");
+        navigaTetexts.Add("選択: <sprite name=\"Keyboard-leftArrow\"><sprite name=\"Keyboard-rightArrow\">/<sprite name=\"Keyboard-a\"><sprite name=\"Keyboard-d\">/<sprite name=\"Mouse-position\">");
+        navigaTetexts.Add("決定: <sprite name=\"Keyboard-space\">/<sprite name=\"Keyboard-space\">/<sprite name=\"Mouse-leftButton\">");
         return navigaTetexts;
     }
     
