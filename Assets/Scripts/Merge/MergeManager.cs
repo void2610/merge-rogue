@@ -360,15 +360,18 @@ public class MergeManager : MonoBehaviour
         
         // プレイヤー操作        
         if(UIManager.Instance.IsPaused || UIManager.Instance.IsMapOpened) return;
+
+        var left = isMouseOvered ? Input.GetMouseButton(0) : InputProvider.Instance.Gameplay.LeftClick.IsPressed();
+        var right = isMouseOvered ? Input.GetMouseButton(1) : InputProvider.Instance.Gameplay.RightClick.IsPressed();
         
-        if (InputProvider.Instance.Gameplay.LeftClick.IsPressed())
+        if (left)
         {
             SeManager.Instance.PlaySe("fall");
             _lastFallTime = Time.time;
             DropBall();
             DecideNextBall().Forget();
         }
-        else if (InputProvider.Instance.Gameplay.RightClick.IsPressed())
+        else if (right)
         {
             SeManager.Instance.PlaySe("alt");
             _lastFallTime = Time.time;

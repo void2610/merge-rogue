@@ -10293,7 +10293,7 @@ MonoBehaviour:
   gameoverSeedText: {fileID: 1687792462}
   fadeImage: {fileID: 1749989334}
   descriptionWindow: {fileID: 1978004778}
-  inputGuide: {fileID: 0}
+  inputGuide: {fileID: 557012292}
   volume: {fileID: 703202738}
   canvasGroups:
   - {fileID: 403790023}

@@ -58,6 +58,7 @@ public class UIManager : MonoBehaviour
 
     public void EnableCanvasGroup(string canvasName, bool e) => EnableCanvasGroupAsync(canvasName, e).Forget();
     public bool IsEnableCanvasGroup(string canvasName) => canvasGroups.Find(c => c.name == canvasName).alpha > 0;
+    public bool IsAnyCanvasGroupEnabled() => canvasGroups.Exists(c => c.alpha > 0);
     private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
     private void UpdateCoinText(BigInteger amount) => coinText.text = "coin: " + amount;
 
@@ -85,11 +86,10 @@ public class UIManager : MonoBehaviour
         }
         
         _canvasGroupTween[canvasName] = seq;
-        // var t = e ? InputGuide.InputGuideType.Navigate : InputGuide.InputGuideType.Merge;
-        // inputGuide.UpdateText(InputGuide.InputGuideType.Merge);
         
         await seq.AsyncWaitForCompletion();
         
+        inputGuide.UpdateText(IsAnyCanvasGroupEnabled() ? InputGuide.InputGuideType.Navigate : InputGuide.InputGuideType.Merge);
         _canvasGroupTween[canvasName] = null;
         cg.interactable = e;
         cg.blocksRaycasts = e;

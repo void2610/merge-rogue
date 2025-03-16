@@ -22,16 +22,19 @@ public class InputGuide : MonoBehaviour
     [SerializeField] private TMP_SpriteAsset spriteAsset;
     [SerializeField] private Vector2 position;
     [SerializeField] private float alignment;
+    
     private static readonly StringBuilder _tempStringBuilder = new();
     private InputGuideType _currentType = InputGuideType.Navigate;
 
-    private void Awake()
+    private void Start()
     {
-        UpdateText(_currentType);
+        UpdateText(InputGuideType.Navigate);
     }
 
     public void UpdateText(InputGuideType type)
     {
+        foreach(Transform child in this.transform) Destroy(child.gameObject);
+        
         _currentType = type;
         switch (type)
         {
@@ -61,50 +64,6 @@ public class InputGuide : MonoBehaviour
                 break;
         }
     }
-
-    private void ProcessAction(InputAction action)
-    {
-        _tempStringBuilder.Clear();
-
-        foreach (var binding in action.bindings)
-        {
-            //InputBindingのパスを取得する
-            //effectivePathは、ランタイムのRebindingなどでoverridePathが設定されている場合も実効的なパスを取得できる
-            var path = binding.effectivePath;
-
-            //パスに合致するcontrolを取得する
-            var matchedControls = action.controls.Where(control => InputControlPath.Matches(path, control));
-
-            foreach (var control in matchedControls)
-            {
-                if (control is InputDevice) continue;
-
-                // controlのpathは "/[デバイス名]/[パス]" のようフォーマットになっている
-                // このデバイス名は"XInputControllerWindows" や "DualShock4GamepadHID"のように具体的すぎるので、
-                // "XInputController"や"DualShockGamepad"のように、アイコンを表示するうえで適度に抽象化されたデバイス名に置き換える
-
-                var deviceIconGroup = GetDeviceIconGroup(control.device);
-                if (string.IsNullOrEmpty(deviceIconGroup)) continue;
-
-                var controlPathContent = control.path.Substring(control.device.name.Length + 2);
-                var iconName = $"{deviceIconGroup}-{controlPathContent}";
-                var spriteIndex = GetSpriteCharacterIndex(iconName);
-                Debug.Log($"{iconName}: {spriteIndex}");
-                
-                if (spriteIndex >= 0)
-                {
-                    _tempStringBuilder.Append("<sprite=");
-                    _tempStringBuilder.Append(spriteIndex);
-                    _tempStringBuilder.Append(">");
-                }
-            }
-        }
-
-        _tempStringBuilder.Append(" ");
-        _tempStringBuilder.Append(action.name);
-
-        // text.text = _tempStringBuilder.ToString();
-    }
     
     private List<string> GetMergeGuideTexts()
     {
@@ -117,7 +76,6 @@ public class InputGuide : MonoBehaviour
     
     private List<string> GetNavigateGuideTexts()
     {
-        Debug.Log("GetNavigateGuideTexts");
         var navigaTetexts = new List<string>();
         navigaTetexts.Add("選択: <sprite name=\"Keyboard-leftArrow\"><sprite name=\"Keyboard-rightArrow\">/<sprite name=\"Keyboard-a\"><sprite name=\"Keyboard-d\">/<sprite name=\"Mouse-position\">");
         navigaTetexts.Add("決定: <sprite name=\"Keyboard-space\">/<sprite name=\"Keyboard-space\">/<sprite name=\"Mouse-leftButton\">");
