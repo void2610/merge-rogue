@@ -24,7 +24,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private SeedText gameoverSeedText;
     [SerializeField] private Image fadeImage;
     [SerializeField] private DescriptionWindow descriptionWindow;
-    
+    [SerializeField] private InputGuide inputGuide;
     [SerializeField] private Volume volume;
     [SerializeField] private List<CanvasGroup> canvasGroups;
     [SerializeField] private TextMeshProUGUI coinText;
@@ -85,7 +85,11 @@ public class UIManager : MonoBehaviour
         }
         
         _canvasGroupTween[canvasName] = seq;
+        // var t = e ? InputGuide.InputGuideType.Navigate : InputGuide.InputGuideType.Merge;
+        // inputGuide.UpdateText(InputGuide.InputGuideType.Merge);
+        
         await seq.AsyncWaitForCompletion();
+        
         _canvasGroupTween[canvasName] = null;
         cg.interactable = e;
         cg.blocksRaycasts = e;

@@ -107,13 +107,6 @@ public class SpriteAssetSelectiveEditor : EditorWindow
         overrideMetricsXAdvance = EditorGUILayout.Toggle("Override XAdvance", overrideMetricsXAdvance);
         if (overrideMetricsXAdvance)
             newMetricsXAdvance = EditorGUILayout.FloatField("XAdvance (horizontalAdvance)", newMetricsXAdvance);
-
-        EditorGUILayout.Space();
-
-        // -------------------------
-        // Scale
-        // -------------------------
-        GUILayout.Label("Scale (SpriteCharacter)", EditorStyles.boldLabel);
         overrideScale = EditorGUILayout.Toggle("Override Scale", overrideScale);
         if (overrideScale)
             newScale = EditorGUILayout.FloatField("Scale", newScale);
@@ -176,6 +169,7 @@ public class SpriteAssetSelectiveEditor : EditorWindow
             float by     = overrideMetricsYOffset  ? newMetricsYOffset : oldMetrics.horizontalBearingY;
             float adv    = overrideMetricsXAdvance ? newMetricsXAdvance: oldMetrics.horizontalAdvance;
             glyph.metrics = new GlyphMetrics(width, height, bx, by, adv);
+            glyph.scale = overrideScale ? newScale : glyph.scale;
 
             // ------ AtlasIndex (必要に応じて) ------
             if (overrideAtlasIndex)
@@ -185,10 +179,6 @@ public class SpriteAssetSelectiveEditor : EditorWindow
         // 2. spriteCharacterTable を更新 (ScaleやID等)
         foreach (var character in spriteAsset.spriteCharacterTable)
         {
-            // Scaleの上書き
-            if (overrideScale)
-                character.scale = newScale;
-
             // IDの上書き (注意: 既存の文字コードと重複すると不整合が起きる可能性がある)
             if (overrideID)
                 character.unicode = newID; 
