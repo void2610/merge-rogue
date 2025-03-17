@@ -10235,7 +10235,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inputGuidePrefab: {fileID: 2972133348279723198, guid: 4d70e7b4c71b249a6ab518715295b517, type: 3}
   spriteAsset: {fileID: 11400000, guid: e7710c76791a7438fb7ee7c3124f7e48, type: 2}
-  position: {x: -315, y: -255}
+  leftPos: {x: -315, y: -257}
+  rightPos: {x: 390, y: -257}
   alignment: 1.2
 --- !u!1 &567445620
 GameObject:

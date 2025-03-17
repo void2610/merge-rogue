@@ -8,6 +8,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.DualShock;
 // using UnityEngine.InputSystem.Switch;
 using UnityEngine.InputSystem.XInput;
+using UnityEngine.Serialization;
 
 public class InputGuide : MonoBehaviour
 {
@@ -20,7 +21,8 @@ public class InputGuide : MonoBehaviour
     //InputActionReferenceはInputActionAsset内に存在する特定のInputActionへの参照をシリアライズできる
     [SerializeField] private GameObject inputGuidePrefab;
     [SerializeField] private TMP_SpriteAsset spriteAsset;
-    [SerializeField] private Vector2 position;
+    [SerializeField] private Vector2 leftPos;
+    [SerializeField] private Vector2 rightPos;
     [SerializeField] private float alignment;
     
     private static readonly StringBuilder _tempStringBuilder = new();
@@ -44,8 +46,8 @@ public class InputGuide : MonoBehaviour
                 for(var i = 0; i < t1.Count; i++)
                 {
                     var obj = Instantiate(inputGuidePrefab, this.transform);
-                    var a = i == 0 ? position.x : (last1.transform.localPosition.x + alignment * last1.GetPreferredValues().x);
-                    obj.transform.localPosition = new Vector2(a, position.y);
+                    var a = i == 0 ? leftPos.x : (last1.transform.localPosition.x + alignment * last1.GetPreferredValues().x);
+                    obj.transform.localPosition = new Vector2(a, leftPos.y);
                     obj.GetComponent<TextMeshProUGUI>().text = t1[i];
                     last1 = obj.GetComponent<TextMeshProUGUI>();
                 }
@@ -56,13 +58,34 @@ public class InputGuide : MonoBehaviour
                 for(var i = 0; i < t2.Count; i++)
                 {
                     var obj = Instantiate(inputGuidePrefab, this.transform);
-                    var a = i == 0 ? position.x : (last2.transform.localPosition.x + alignment * last2.GetPreferredValues().x);
-                    obj.transform.localPosition = new Vector2(a, position.y);
+                    var a = i == 0 ? leftPos.x : (last2.transform.localPosition.x + alignment * last2.GetPreferredValues().x);
+                    obj.transform.localPosition = new Vector2(a, leftPos.y);
                     obj.GetComponent<TextMeshProUGUI>().text = t2[i];
                     last2 = obj.GetComponent<TextMeshProUGUI>();
                 }
                 break;
         }
+
+        var t3 = GetShortcutGuideTexts();
+        TextMeshProUGUI last3 = null;
+        for(var i = 0; i < t3.Count; i++)
+        {
+            var obj = Instantiate(inputGuidePrefab, this.transform);
+            var a = i == 0 ? rightPos.x : (last3.transform.localPosition.x + alignment * last3.GetPreferredValues().x);
+            obj.transform.localPosition = new Vector2(a, rightPos.y);
+            obj.GetComponent<TextMeshProUGUI>().text = t3[i];
+            last3 = obj.GetComponent<TextMeshProUGUI>();
+        }
+    }
+    
+    private List<string> GetShortcutGuideTexts()
+    {
+        var shortcutTexts = new List<string>();
+        shortcutTexts.Add("チュートリアル: <sprite name=\"Keyboard-q\">");
+        shortcutTexts.Add("マップ: <sprite name=\"Keyboard-m\">");
+        shortcutTexts.Add("倍速: <sprite name=\"Keyboard-t\">");
+        shortcutTexts.Add("ポーズ: <sprite name=\"Keyboard-p\">");
+        return shortcutTexts;
     }
     
     private List<string> GetMergeGuideTexts()
