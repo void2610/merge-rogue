@@ -75,3 +75,5 @@ Assets/Materials/BGMaterial.mat
 /Packages/*
 !/Packages/manifest.json
 /Packages/packages-lock.json
+
+.DS_Store
