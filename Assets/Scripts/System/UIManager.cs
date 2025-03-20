@@ -59,6 +59,7 @@ public class UIManager : MonoBehaviour
     public void EnableCanvasGroup(string canvasName, bool e) => EnableCanvasGroupAsync(canvasName, e).Forget();
     public bool IsEnableCanvasGroup(string canvasName) => canvasGroups.Find(c => c.name == canvasName).alpha > 0;
     public bool IsAnyCanvasGroupEnabled() => canvasGroups.Exists(c => c.alpha > 0);
+    public GameObject GetTopCanvasGroup() => canvasGroups.Find(c => c.alpha > 0)?.gameObject;
     private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
     private void UpdateCoinText(BigInteger amount) => coinText.text = "coin: " + amount;
 
@@ -93,6 +94,14 @@ public class UIManager : MonoBehaviour
         _canvasGroupTween[canvasName] = null;
         cg.interactable = e;
         cg.blocksRaycasts = e;
+        
+        // FocusSelectableがアタッチされているオブジェクトがあればフォーカス
+        var focusSelectable = GetTopCanvasGroup()?.GetComponentInChildren<FocusSelectable>();
+        if (focusSelectable)
+        {
+            EventSystem.current.SetSelectedGameObject(null);
+            EventSystem.current.SetSelectedGameObject(focusSelectable.gameObject);
+        }
     }
 
     private void UpdateExpText(int now, int max)
