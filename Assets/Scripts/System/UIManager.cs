@@ -97,11 +97,9 @@ public class UIManager : MonoBehaviour
         
         // FocusSelectableがアタッチされているオブジェクトがあればフォーカス
         var focusSelectable = GetTopCanvasGroup()?.GetComponentInChildren<FocusSelectable>();
-        if (focusSelectable)
-        {
-            EventSystem.current.SetSelectedGameObject(null);
-            EventSystem.current.SetSelectedGameObject(focusSelectable.gameObject);
-        }
+        CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(null);
+        if (focusSelectable?.GetComponent<Selectable>().interactable == true)
+            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(focusSelectable.gameObject);
     }
 
     private void UpdateExpText(int now, int max)

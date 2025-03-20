@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 
 public class UIHoverSelection : MonoBehaviour
 {
+    [SerializeField] private GameObject currentSelectedGameObject;
     [SerializeField] private List<string> ignoreTags = new();
     
     private void Update()
@@ -31,7 +32,8 @@ public class UIHoverSelection : MonoBehaviour
             // 最初に適切なUIを見つけたら、それを選択
             if (EventSystem.current.currentSelectedGameObject != hoveredObject)
             {
-                EventSystem.current.SetSelectedGameObject(hoveredObject);
+                CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(hoveredObject);
+                currentSelectedGameObject = hoveredObject;
             }
             break; // 最初の適切なUIだけを選択する
         }

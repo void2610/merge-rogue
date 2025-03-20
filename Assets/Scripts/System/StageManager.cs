@@ -338,6 +338,9 @@ public class StageManager : MonoBehaviour
         {
             ProcessStage(CurrentStage.Type);
         }
+        
+        // カーソルの位置を変更
+        ChangeFocusNode(next.Connections[0]);
     }
 
     private void ProcessStage(StageType s)
@@ -379,6 +382,17 @@ public class StageManager : MonoBehaviour
                 throw new ArgumentOutOfRangeException(nameof(s), s, null);
         }
     }
+    
+    private void ChangeFocusNode(StageNode node)
+    {
+        foreach (var n in _mapNodes.SelectMany(column => column))
+        {
+            if(!n.Obj) continue;
+            if (n.Obj.TryGetComponent(out FocusSelectable f)) Destroy(f);
+        }
+        
+        node.Obj.AddComponent<FocusSelectable>();
+    }
 
     public void Awake()
     {
@@ -393,5 +407,8 @@ public class StageManager : MonoBehaviour
         _playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
         
         m.SetTextureOffset(_mainTex, new Vector2(0, 0)); 
+        
+        // カーソルの初期位置を設定
+        ChangeFocusNode(_mapNodes[0][0]);
     }
 }
