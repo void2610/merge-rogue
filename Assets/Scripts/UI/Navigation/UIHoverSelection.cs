@@ -26,7 +26,7 @@ public class UIHoverSelection : MonoBehaviour
             var hoveredObject = result.gameObject;
 
             // 特定のタグを持つオブジェクトは無視
-            if (ignoreTags.Contains(hoveredObject.tag)) continue;
+            if (ignoreTags.Contains(hoveredObject.tag)) break;
 
             // 最初に適切なUIを見つけたら、それを選択
             if (EventSystem.current.currentSelectedGameObject != hoveredObject)
