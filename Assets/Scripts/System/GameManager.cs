@@ -166,6 +166,7 @@ public class GameManager : MonoBehaviour
             Debug.Log("fixed seed: " + _seedText);
         }
         _random = new System.Random(_seed);
+        Register.Clear();
         DOTween.SetTweensCapacity(tweenersCapacity: 800, sequencesCapacity: 800);
 
         Player = playerObj.GetComponent<Player>();

@@ -23288,6 +23288,8 @@ MonoBehaviour:
       probability: 1
     - data: {fileID: 11500000, guid: ba865c5df106944e0b7dd50a57166c40, type: 3}
       probability: 1
+    - data: {fileID: 11500000, guid: 7186b3d7216524f518bba12cd4659978, type: 3}
+      probability: 9999
   ballList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
   relicList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
   ballBaseImages:
