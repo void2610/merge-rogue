@@ -1,31 +1,39 @@
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class UIHoverSelection : MonoBehaviour
 {
+    [SerializeField] private List<string> ignoreTags = new();
+    
     private void Update()
     {
         if (!EventSystem.current) return;
 
-        // マウス位置から UI の Raycast を取得
+        // マウスの位置を取得
         var pointerData = new PointerEventData(EventSystem.current)
         {
             position = Mouse.current.position.ReadValue()
         };
 
-        var results = new System.Collections.Generic.List<RaycastResult>();
+        var results = new List<RaycastResult>();
         EventSystem.current.RaycastAll(pointerData, results);
 
-        if (results.Count > 0)
+        foreach (var result in results)
         {
-            var hoveredObject = results[0].gameObject;
+            var hoveredObject = result.gameObject;
 
-            // 現在選択されているオブジェクトが異なる場合のみ更新
+            // 特定のタグを持つオブジェクトは無視
+            if (ignoreTags.Contains(hoveredObject.tag)) continue;
+
+            // 最初に適切なUIを見つけたら、それを選択
             if (EventSystem.current.currentSelectedGameObject != hoveredObject)
             {
                 EventSystem.current.SetSelectedGameObject(hoveredObject);
             }
+            break; // 最初の適切なUIだけを選択する
         }
     }
 }
