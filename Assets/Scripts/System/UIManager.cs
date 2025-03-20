@@ -87,6 +87,7 @@ public class UIManager : MonoBehaviour
         }
         
         _canvasGroupTween[canvasName] = seq;
+        CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(null);
         
         await seq.AsyncWaitForCompletion();
         
@@ -97,7 +98,6 @@ public class UIManager : MonoBehaviour
         
         // FocusSelectableがアタッチされているオブジェクトがあればフォーカス
         var focusSelectable = GetTopCanvasGroup()?.GetComponentInChildren<FocusSelectable>();
-        CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(null);
         if (focusSelectable?.GetComponent<Selectable>().interactable == true)
             CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(focusSelectable.gameObject);
     }
