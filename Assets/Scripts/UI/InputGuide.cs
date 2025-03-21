@@ -81,6 +81,7 @@ public class InputGuide : MonoBehaviour
     private List<string> GetShortcutGuideTexts()
     {
         var shortcutTexts = new List<string>();
+        shortcutTexts.Add("カーソルをリセット: <sprite name=\"Keyboard-r\">");
         shortcutTexts.Add("チュートリアル: <sprite name=\"Keyboard-q\">");
         shortcutTexts.Add("マップ: <sprite name=\"Keyboard-m\">");
         shortcutTexts.Add("倍速: <sprite name=\"Keyboard-t\">");

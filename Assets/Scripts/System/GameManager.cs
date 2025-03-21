@@ -198,6 +198,8 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.OnClickSpeedButton();
         if (InputProvider.Instance.UI.OpenTutorial.triggered)
             UIManager.Instance.OnClickTutorialButton();
+        if (InputProvider.Instance.UI.ResetCursor.triggered)
+            UIManager.Instance.ResetSelectedGameObject();
     }
     
     private void OnSceneUnloaded(Scene scene)
