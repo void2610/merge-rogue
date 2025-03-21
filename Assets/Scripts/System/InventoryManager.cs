@@ -247,6 +247,5 @@ public class InventoryManager : MonoBehaviour
             }
         }
         
-        InventoryUI.SetCursor(0);
     }
 }

@@ -67,7 +67,6 @@ public class Shop : MonoBehaviour
             _itemObjects[i].GetComponent<Image>().color = new Color(1, 1, 1, 1);
             _itemObjects[i].transform.DOScale(1, 0.1f).SetUpdate(true);
         }
-        InventoryManager.Instance.InventoryUI.EnableCursor(false);
         
         UIManager.Instance.EnableCanvasGroup("Shop", false);
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);

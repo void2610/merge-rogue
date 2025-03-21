@@ -108,7 +108,6 @@ public class UpgradeConfirmPanel : MonoBehaviour
         InventoryManager.Instance.UpgradeBall(_currentBallIndex);
         GameManager.Instance.SubCoin(ContentProvider.GetBallUpgradePrice());
         SeManager.Instance.PlaySe("levelUp");
-        InventoryManager.Instance.InventoryUI.EnableCursor(false);
         UIManager.Instance.EnableCanvasGroup("Upgrade", false);
     }
     

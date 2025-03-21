@@ -18,7 +18,6 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private GameObject ballUIPrefab;
     [SerializeField] private Vector3 inventoryPosition;
     [SerializeField] private GameObject inventoryUIContainer;
-    [SerializeField] private GameObject cursor;
     [SerializeField] private GameObject subCursor;
     [SerializeField] private UpgradeConfirmPanel upgradeConfirmPanel;
     private const float SIZE_COEFFICIENT = 8f;
@@ -82,14 +81,6 @@ public class InventoryUI : MonoBehaviour
         Destroy(_items[level]);
         _items.RemoveAt(level);
     }
-
-    public void SetCursor(int index)
-    {
-        if (_items.Count == 0 || index < 0 || index >= _items.Count) return;
-        cursor.transform.DOMove(_items[index].transform.position, 0.3f).SetUpdate(true).SetEase(Ease.OutQuint);
-        var size = _items[index].transform.localScale.x * SIZE_COEFFICIENT;
-        cursor.transform.DOScale(new Vector3(size, size, 1), 0.3f).SetUpdate(true).SetEase(Ease.OutQuint);
-    }
     
     private void SetSubCursor(int index)
     {
@@ -98,32 +89,23 @@ public class InventoryUI : MonoBehaviour
         var size = _items[index].transform.localScale.x * SIZE_COEFFICIENT;
         subCursor.transform.localScale = new Vector3(size, size, 1);
     }
-
-    public void EnableCursor(bool b)
-    {
-        cursor.GetComponent<Image>().enabled = b;
-        _state = InventoryUIState.Disabled;
-    }
     
     public void StartEdit(InventoryUIState s)
     {
         if (s == InventoryUIState.Disabled) return;
-        EnableCursor(true);
-        SetCursor(0);
         _state = s;
+        CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(_items[0]);
     }
     
     private void SetEvent(GameObject ballObj, int index, BallBase ballBase)
     {
         // クリックでボールの選択、入れ替え、削除
-        Utils.AddEventToObject(ballObj, () => OnClickBall(index).Forget(), EventTriggerType.PointerClick);
-        
+        ballObj.GetComponent<Button>().onClick.AddListener(() => OnClickBall(index).Forget());
         // マウスオーバーでカーソル移動とウィンドウ表示 (とアニメーション)
         Utils.AddEventToObject(ballObj, () => { 
             var rt = ballObj.GetComponent<RectTransform>();
             rt.DORotate(new Vector3(0, 0, 15), 0.75f).SetEase(Ease.Flash, 10, 0.9f).OnComplete(() => rt.DORotate(Vector3.zero, 0.1f).SetLink(ballObj)).SetLink(ballObj);
             
-            SetCursor(index);
             UIManager.Instance.ShowBallDescriptionWindow(ballBase.Data, ballObj, ballBase.Level); 
         }, EventTriggerType.PointerEnter);
     }
@@ -152,7 +134,6 @@ public class InventoryUI : MonoBehaviour
                 break;
             case InventoryUIState.Swap:
                 SeManager.Instance.PlaySe("button");
-                EnableCursor(false);
                 subCursor.GetComponent<Image>().enabled = false;
                 await InventoryManager.Instance.SwapBall(_swapIndex, index);
                 GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
@@ -162,7 +143,6 @@ public class InventoryUI : MonoBehaviour
             case InventoryUIState.Remove:
                 SeManager.Instance.PlaySe("button");
                 InventoryManager.Instance.RemoveAndShiftBall(index);
-                EnableCursor(false);
                 _state = InventoryUIState.Disabled;
                 break;
         }
@@ -175,7 +155,6 @@ public class InventoryUI : MonoBehaviour
 
     private void Awake()
     {
-        EnableCursor(false);
         subCursor.GetComponent<Image>().enabled = false;
     }
 }

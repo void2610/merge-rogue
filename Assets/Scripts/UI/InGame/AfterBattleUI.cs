@@ -100,7 +100,6 @@ public class AfterBattleUI : MonoBehaviour
     
     private void OnClickSkipAfterBattle()
     {
-        InventoryManager.Instance.InventoryUI.EnableCursor(false);
         UIManager.Instance.EnableCanvasGroup("AfterBattle", false);
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
     }
