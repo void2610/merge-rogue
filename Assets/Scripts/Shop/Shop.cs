@@ -33,6 +33,7 @@ public class Shop : MonoBehaviour
         for (var i = 0; i < ITEM_NUM; i++)
         {
             _itemObjects[i].transform.position = _itemPositions[i];
+            _itemObjects[i].GetComponent<Button>().interactable = true;
         }
         removeButton.transform.position = _itemPositions[ITEM_NUM];
         removeButton.transform.Find("Price").GetComponent<TextMeshProUGUI>().text = ContentProvider.GetBallRemovePrice().ToString();
@@ -79,6 +80,7 @@ public class Shop : MonoBehaviour
         SeManager.Instance.PlaySe("coin");
         InventoryManager.Instance.AddBall(ball);
         _itemObjects[index].transform.position = _disabledPosition;
+        _itemObjects[index].GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
     }
 
@@ -89,6 +91,7 @@ public class Shop : MonoBehaviour
         SeManager.Instance.PlaySe("coin");
         RelicManager.Instance.AddRelic(relic);
         _itemObjects[index].transform.position = _disabledPosition;
+        _itemObjects[index].GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
     }
 
@@ -176,6 +179,7 @@ public class Shop : MonoBehaviour
         
         EventManager.OnBallRemove.Trigger(0);
         removeButton.transform.position = _disabledPosition;
+        removeButton.GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(price);
         InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Remove);
     }
