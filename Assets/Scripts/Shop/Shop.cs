@@ -82,6 +82,8 @@ public class Shop : MonoBehaviour
         _itemObjects[index].transform.position = _disabledPosition;
         _itemObjects[index].GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
+        
+        UIManager.Instance.ResetSelectedGameObject();
     }
 
     private void BuyRelic(int index)
@@ -93,6 +95,8 @@ public class Shop : MonoBehaviour
         _itemObjects[index].transform.position = _disabledPosition;
         _itemObjects[index].GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
+        
+        UIManager.Instance.ResetSelectedGameObject();
     }
 
     private void SetBallEvent(GameObject g, BallData ball, int index)

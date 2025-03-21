@@ -63,6 +63,13 @@ public class UIManager : MonoBehaviour
     private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
     private void UpdateCoinText(BigInteger amount) => coinText.text = "coin: " + amount;
 
+    public void ResetSelectedGameObject()
+    {
+        var focusSelectable = GetTopCanvasGroup()?.GetComponentInChildren<FocusSelectable>();
+        if (focusSelectable?.GetComponent<Selectable>().interactable == true)
+            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(focusSelectable.gameObject);
+    }
+    
     private async UniTaskVoid EnableCanvasGroupAsync(string canvasName, bool e)
     {
         var cg = canvasGroups.Find(c => c.name == canvasName);
@@ -97,9 +104,7 @@ public class UIManager : MonoBehaviour
         cg.blocksRaycasts = e;
         
         // FocusSelectableがアタッチされているオブジェクトがあればフォーカス
-        var focusSelectable = GetTopCanvasGroup()?.GetComponentInChildren<FocusSelectable>();
-        if (focusSelectable?.GetComponent<Selectable>().interactable == true)
-            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(focusSelectable.gameObject);
+        ResetSelectedGameObject();
     }
 
     private void UpdateExpText(int now, int max)

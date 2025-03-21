@@ -51,7 +51,10 @@ public class AfterBattleUI : MonoBehaviour
         SeManager.Instance.PlaySe("coin");
         InventoryManager.Instance.AddBall(ball);
         _itemObjects[index].transform.position = _disabledPosition;
+        _itemObjects[index].GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
+        
+        UIManager.Instance.ResetSelectedGameObject();
     }
     
     private void SetBallEvent(GameObject g, BallData ball, int index)
