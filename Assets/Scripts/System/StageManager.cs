@@ -340,7 +340,7 @@ public class StageManager : MonoBehaviour
         }
         
         // カーソルの位置を変更
-        ChangeFocusNode(next.Connections[0]);
+        if(next.Connections.Count > 0) ChangeFocusNode(next.Connections[0]);
     }
 
     private void ProcessStage(StageType s)

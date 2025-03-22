@@ -90,7 +90,6 @@ public class AfterBattleUI : MonoBehaviour
     private void OnClickBallUpgradeButton()
     {
         InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Upgrade);
-        ballUpgradeButton.interactable = false;
     }
     
     private void OnClickSkipAfterBattle()

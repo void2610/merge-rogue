@@ -36,7 +36,7 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
         {
             _previousSelected = null;
             // マーカーをフェードアウト
-            if (markerImage.color.a > 0)
+            if (markerImage.color.a >= 1)
             {
                 markerImage.DOFade(0, tweenDuration).SetUpdate(true);
             }
@@ -55,7 +55,7 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
         var sel = currentSelected.GetComponent<Selectable>();
         if (currentSelected != _previousSelected)
         {
-            // プログラムによる変更でない場合、CanvasGroupやInteractable状態をチェック
+            // プログラムによる変更でない場合、CanvasGroupをチェック
             if (!_allowProgrammaticChange)
             {
                 // CanvasGroupの判定（両者にCanvasGroupがあれば比較）
@@ -101,7 +101,7 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
     /// </summary>
     private void TweenMarker(GameObject selectedObject)
     {
-        if (selectedObject.TryGetComponent<RectTransform>(out RectTransform selectedRect))
+        if (selectedObject.TryGetComponent<RectTransform>(out var selectedRect))
         {
             var corners = new Vector3[4];
             selectedRect.GetWorldCorners(corners);
@@ -114,7 +114,7 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
             // Tweenの開始（前のTweenはKillしてから開始）
             marker.DOMove(targetPos, tweenDuration).SetEase(Ease.OutQuad).SetUpdate(true);
             marker.DOSizeDelta(targetSize, tweenDuration).SetEase(Ease.OutQuad).SetUpdate(true);
-            if (markerImage.color.a < 1)
+            if (markerImage.color.a <= 0)
             {
                 markerImage.DOFade(1, tweenDuration).SetUpdate(true);
             }
