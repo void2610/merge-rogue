@@ -69,6 +69,14 @@ public class Encyclopedia : MonoBehaviour
         {
             var container = Instantiate(ballContainerPrefab, itemContainer);
             SetBallData(container, ball);
+            
+            #if DEMO_PLAY
+                container.transform.Find("LockIcon").gameObject.SetActive(!ball.availableDemo);
+                container.GetComponent<Image>().color = ball.availableDemo ? new Color(0.4352941f, 0.4352941f, 0.4352941f, 1) : new Color(0.4352941f, 0.4352941f, 0.4352941f, 0.5f);
+            #else
+                container.transform.Find("LockIcon").gameObject.SetActive(false);
+            #endif
+            
             _items.Add(container);
         }
 
@@ -80,6 +88,14 @@ public class Encyclopedia : MonoBehaviour
         {
             var container = Instantiate(relicContainerPrefab, itemContainer);
             SetRelicData(container, relic);
+            
+            #if DEMO_PLAY
+                container.transform.Find("LockIcon").gameObject.SetActive(!relic.availableDemo);
+                container.GetComponent<Image>().color = relic.availableDemo ? new Color(0.4352941f, 0.4352941f, 0.4352941f, 1) : new Color(0.4352941f, 0.4352941f, 0.4352941f, 0.5f);
+            #else
+                container.transform.Find("LockIcon").gameObject.SetActive(false);
+            #endif
+            
             _items.Add(container);
         }
         

@@ -216,6 +216,19 @@ public class DescriptionWindow : MonoBehaviour
     private void SetBallTexts(BallData b, int level)
     {
         nameText.text = b.displayName;
+        
+        #if DEMO_PLAY
+            if (!b.availableDemo)
+            {
+                descriptionText.text = b.descriptions[level] + "\n" + "(デモ版では使用不可)";
+                flavorText.text = "?????";
+                statusTexts[0].text = "?????";
+                statusTexts[1].text = "?????";
+                statusTexts[2].text = "?????";
+                return;
+            }
+        #endif
+        
         nameText.color = b.rarity.GetColor();
         descriptionText.text = b.descriptions[level];
         flavorText.text = b.flavorText;
@@ -230,6 +243,19 @@ public class DescriptionWindow : MonoBehaviour
     private void SetRelicTexts(RelicData r)
     {
         nameText.text = r.displayName;
+        
+        #if DEMO_PLAY
+            if (!r.availableDemo)
+            {
+                descriptionText.text = r.description　+ "\n" + "(デモ版では使用不可)";
+                flavorText.text = "?????";
+                statusTexts[0].text = "?????";
+                statusTexts[1].text = "?????";
+                statusTexts[2].text = "?????";
+                return;
+            }
+        #endif
+        
         nameText.color = r.rarity.GetColor();
         descriptionText.text = r.description;
         flavorText.text = r.flavorText;
