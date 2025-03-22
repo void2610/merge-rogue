@@ -13,4 +13,5 @@ public class RelicData : ScriptableObject
     [TextArea(1, 5)]
     public string flavorText;
     public Rarity rarity;
+    public bool availableDemo = false;
 }
