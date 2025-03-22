@@ -58,13 +58,6 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
             // プログラムによる変更でない場合、CanvasGroupやInteractable状態をチェック
             if (!_allowProgrammaticChange)
             {
-                // まず、Selectableが非interactableなら不許可
-                if (sel && !sel.interactable)
-                {
-                    RevertSelection();
-                    return;
-                }
-
                 // CanvasGroupの判定（両者にCanvasGroupがあれば比較）
                 var currentGroup = currentSelected.GetComponentInParent<CanvasGroup>();
                 var previousGroup = _previousSelected.GetComponentInParent<CanvasGroup>();

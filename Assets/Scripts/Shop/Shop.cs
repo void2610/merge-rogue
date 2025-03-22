@@ -23,8 +23,6 @@ public class Shop : MonoBehaviour
     private readonly List<int> _currentItemPrices = new();
     private const int ITEM_NUM = 6;
     private List<GameObject> _itemObjects;
-    private readonly List<Vector3> _itemPositions = new();
-    private readonly Vector3 _disabledPosition = new (100, 100, 0);
 
     public void OpenShop(int count = 6)
     {
@@ -32,10 +30,8 @@ public class Shop : MonoBehaviour
         
         for (var i = 0; i < ITEM_NUM; i++)
         {
-            _itemObjects[i].transform.position = _itemPositions[i];
             _itemObjects[i].GetComponent<Button>().interactable = true;
         }
-        removeButton.transform.position = _itemPositions[ITEM_NUM];
         removeButton.transform.Find("Price").GetComponent<TextMeshProUGUI>().text = ContentProvider.GetBallRemovePrice().ToString();
         
         _currentItems.Clear();
@@ -79,7 +75,6 @@ public class Shop : MonoBehaviour
         if (!ball) return;
         SeManager.Instance.PlaySe("coin");
         InventoryManager.Instance.AddBall(ball);
-        _itemObjects[index].transform.position = _disabledPosition;
         _itemObjects[index].GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
         
@@ -92,7 +87,6 @@ public class Shop : MonoBehaviour
         if (!relic) return;
         SeManager.Instance.PlaySe("coin");
         RelicManager.Instance.AddRelic(relic);
-        _itemObjects[index].transform.position = _disabledPosition;
         _itemObjects[index].GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
         
@@ -182,7 +176,6 @@ public class Shop : MonoBehaviour
         }
         
         EventManager.OnBallRemove.Trigger(0);
-        removeButton.transform.position = _disabledPosition;
         removeButton.GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(price);
         InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Remove);
@@ -193,8 +186,6 @@ public class Shop : MonoBehaviour
     private void Awake()
     {
         _itemObjects = itemContainer.GetComponentInChildren<Transform>().Cast<Transform>().Select(x => x.gameObject).ToList();
-        _itemObjects.ForEach(x => _itemPositions.Add(x.transform.position));
-        _itemPositions.Add(removeButton.transform.position);
         
         skipButton.GetComponent<Button>().onClick.AddListener(OnClickSkipButton);
         removeButton.GetComponent<Button>().onClick.AddListener(OnClickRemoveButton);

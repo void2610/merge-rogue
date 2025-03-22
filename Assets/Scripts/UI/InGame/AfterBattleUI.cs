@@ -16,8 +16,6 @@ public class AfterBattleUI : MonoBehaviour
     private readonly List<BallData> _currentItems = new();
     private readonly List<int> _currentItemPrices = new();
     private List<GameObject> _itemObjects;
-    private readonly List<Vector3> _itemPositions = new();
-    private readonly Vector3 _disabledPosition = new (100, 100, 0);
     private static BallDataList AllBalls => InventoryManager.Instance.allBallDataList;
     
     public void SetInteractable(bool b) => ballUpgradeButton.interactable = b;
@@ -25,11 +23,6 @@ public class AfterBattleUI : MonoBehaviour
     private void OpenShop(int count = 3)
     {
         if (count > ITEM_NUM) throw new System.Exception("Invalid count");
-        
-        for (var i = 0; i < ITEM_NUM; i++)
-        {
-            _itemObjects[i].GetComponent<RectTransform>().anchoredPosition = _itemPositions[i];
-        }
         
         _currentItems.Clear();
         _currentItemPrices.Clear();
@@ -50,7 +43,6 @@ public class AfterBattleUI : MonoBehaviour
         if (!ball) return;
         SeManager.Instance.PlaySe("coin");
         InventoryManager.Instance.AddBall(ball);
-        _itemObjects[index].transform.position = _disabledPosition;
         _itemObjects[index].GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
         
@@ -119,7 +111,6 @@ public class AfterBattleUI : MonoBehaviour
     private void Awake()
     {
         _itemObjects = itemContainer.GetComponentInChildren<Transform>().Cast<Transform>().Select(x => x.gameObject).ToList();
-        _itemObjects.ForEach(x => _itemPositions.Add(x.GetComponent<RectTransform>().anchoredPosition));
         
         ballUpgradeButton.onClick.AddListener(OnClickBallUpgradeButton);
         skipButton.onClick.AddListener(OnClickSkipAfterBattle);
