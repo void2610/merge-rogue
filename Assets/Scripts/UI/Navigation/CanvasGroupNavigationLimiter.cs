@@ -5,37 +5,39 @@ using DG.Tweening;
 
 public class CanvasGroupNavigationLimiter : MonoBehaviour
 {
-    [SerializeField] private RectTransform marker;    // マーカーのRectTransform
-    [SerializeField] private Image markerImage;         // マーカーのImageコンポーネント
-    [SerializeField] private Camera uiCamera;           // UI表示用のカメラ
-    [SerializeField] private Vector2 offset;            // サイズに加算するオフセット
-    [SerializeField] private float tweenDuration = 0.2f;  // Tweenの所要時間
+    [SerializeField] private RectTransform marker;
+    [SerializeField] private Image markerImage;
+    [SerializeField] private Camera uiCamera;
+    [SerializeField] private float magnification = 4f;
+    [SerializeField] private Vector2 offset;
+    [SerializeField] private float tweenDuration = 0.2f;
 
-    // 前回の正当な選択対象
+    private Canvas _canvas;
+    private RectTransform _canvasRect;
+
     private GameObject _previousSelected;
-
-    // プログラム側での選択変更の場合はtrueにするフラグ
     private static bool _allowProgrammaticChange = false;
 
-    /// <summary>
-    /// プログラム側からの選択変更用ラッパーメソッド。
-    /// このメソッド経由なら、CanvasGroupの制限チェックを無視して選択変更が行われます。
-    /// </summary>
     public static void SetSelectedGameObjectSafe(GameObject go)
     {
         _allowProgrammaticChange = true;
         EventSystem.current.SetSelectedGameObject(go);
     }
 
+    private void Awake()
+    {
+        // CanvasとそのRectTransformを取得
+        _canvas = marker.GetComponentInParent<Canvas>();
+        _canvasRect = _canvas.GetComponent<RectTransform>();
+    }
+
     private void Update()
     {
         var currentSelected = EventSystem.current.currentSelectedGameObject;
 
-        // 選択が無い場合
         if (!currentSelected)
         {
             _previousSelected = null;
-            // マーカーをフェードアウト
             if (markerImage.color.a >= 1)
             {
                 markerImage.DOFade(0, tweenDuration).SetUpdate(true);
@@ -43,7 +45,6 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
             return;
         }
 
-        // 初回の選択なら、即時反映
         if (!_previousSelected)
         {
             _previousSelected = currentSelected;
@@ -51,68 +52,73 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
             return;
         }
 
-        // 前回と異なるUI要素が選ばれた場合
-        var sel = currentSelected.GetComponent<Selectable>();
         if (currentSelected != _previousSelected)
         {
-            // プログラムによる変更でない場合、CanvasGroupをチェック
             if (!_allowProgrammaticChange)
             {
-                // CanvasGroupの判定（両者にCanvasGroupがあれば比較）
                 var currentGroup = currentSelected.GetComponentInParent<CanvasGroup>();
                 var previousGroup = _previousSelected.GetComponentInParent<CanvasGroup>();
 
                 if (currentGroup && previousGroup && currentGroup != previousGroup)
                 {
-                    // 異なるグループへの移動はユーザー入力として不許可
                     RevertSelection();
                     return;
                 }
             }
-
-            // ここまで来た場合、選択変更は許容されるのでTweenで移動
             _previousSelected = currentSelected;
             TweenMarker(currentSelected);
-            // プログラム側フラグはリセット
             _allowProgrammaticChange = false;
         }
     }
 
     /// <summary>
-    /// 選択対象のRectTransformからマーカーの位置とサイズを即時反映します。
+    /// 選択対象のRectTransformからマーカーの位置とサイズをキャンバスのローカル座標で即時反映します。
     /// </summary>
     private void UpdateMarkerImmediate(GameObject selectedObject)
     {
-        var corners = new Vector3[4];
+        Vector3[] corners = new Vector3[4];
         if (selectedObject.TryGetComponent<RectTransform>(out RectTransform selectedRect))
         {
             selectedRect.GetWorldCorners(corners);
-            var min = RectTransformUtility.WorldToScreenPoint(uiCamera, corners[0]);
-            var max = RectTransformUtility.WorldToScreenPoint(uiCamera, corners[2]);
+            
+            // ワールド座標→スクリーン座標
+            var screenMin = RectTransformUtility.WorldToScreenPoint(uiCamera, corners[0]);
+            var screenMax = RectTransformUtility.WorldToScreenPoint(uiCamera, corners[2]);
 
-            marker.position = selectedRect.position;
-            marker.sizeDelta = new Vector2(max.x - min.x, max.y - min.y) + offset;
+            // スクリーン座標→キャンバスローカル座標に変換
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, screenMin, uiCamera, out var localMin);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, screenMax, uiCamera, out var localMax);
+
+            // 中心とサイズを算出
+            var localCenter = ((localMin + localMax) / 2f) + offset;
+            marker.localPosition = localCenter;
+            marker.sizeDelta = new Vector2(localMax.x - localMin.x, localMax.y - localMin.y) * magnification;
             markerImage.color = new Color(1, 1, 1, 1);
         }
     }
 
     /// <summary>
-    /// Tweenを利用してマーカーを滑らかに移動・サイズ変更します。
+    /// Tweenを利用してマーカーを滑らかに移動・サイズ変更します（キャンバスローカル座標で計算）。
     /// </summary>
     private void TweenMarker(GameObject selectedObject)
     {
-        if (selectedObject.TryGetComponent<RectTransform>(out var selectedRect))
+        if (selectedObject.TryGetComponent<RectTransform>(out RectTransform selectedRect))
         {
             var corners = new Vector3[4];
             selectedRect.GetWorldCorners(corners);
-            var min = RectTransformUtility.WorldToScreenPoint(uiCamera, corners[0]);
-            var max = RectTransformUtility.WorldToScreenPoint(uiCamera, corners[2]);
+        
+            var screenMin = RectTransformUtility.WorldToScreenPoint(uiCamera, corners[0]);
+            var screenMax = RectTransformUtility.WorldToScreenPoint(uiCamera, corners[2]);
 
-            var targetPos = selectedRect.position;
-            var targetSize = new Vector2(max.x - min.x, max.y - min.y) + offset;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, screenMin, uiCamera, out var localMin);
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, screenMax, uiCamera, out var localMax);
 
-            // Tweenの開始（前のTweenはKillしてから開始）
-            marker.DOMove(targetPos, tweenDuration).SetEase(Ease.OutQuad).SetUpdate(true);
+            // キャンバスローカル座標で中心位置とサイズを算出
+            var targetCenter = ((localMin + localMax) / 2f) + offset;
+            var targetSize = new Vector2(localMax.x - localMin.x, localMax.y - localMin.y) * magnification;
+
+            // ここでは、DOMoveではなくDOAnchorPosを使用して、アンカー座標をTweenします
+            marker.DOAnchorPos(targetCenter, tweenDuration).SetEase(Ease.OutQuad).SetUpdate(true);
             marker.DOSizeDelta(targetSize, tweenDuration).SetEase(Ease.OutQuad).SetUpdate(true);
             if (markerImage.color.a <= 0)
             {
@@ -121,9 +127,7 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 選択変更が不許可の場合、直ちに前回の選択対象に戻します。
-    /// </summary>
+
     private void RevertSelection()
     {
         EventSystem.current.SetSelectedGameObject(_previousSelected);
