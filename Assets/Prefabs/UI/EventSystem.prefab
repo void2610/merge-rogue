@@ -108,3 +108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7543ba29d77dd43a6b28954b6a3e44c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  marker: {fileID: 0}
+  markerImage: {fileID: 0}
+  uiCamera: {fileID: 0}
+  offset: {x: 10, y: 5}
+  tweenDuration: 0.1

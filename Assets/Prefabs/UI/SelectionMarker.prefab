@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 698344622012658214}
   - component: {fileID: 6746534916263038432}
   - component: {fileID: 9022286838581987537}
-  - component: {fileID: 156408732964531841}
   m_Layer: 0
   m_Name: SelectionMarker
   m_TagString: Untagged
@@ -26,7 +25,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5514833393157043936}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
   m_ConstrainProportionsScale: 1
@@ -76,17 +75,3 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &156408732964531841
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5514833393157043936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c65d9741cc6dd41bfa586dcdd45b498b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offset: {x: -10, y: -5}
-  uiCamera: {fileID: 0}

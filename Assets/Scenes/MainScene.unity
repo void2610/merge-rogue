@@ -1107,7 +1107,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 109174365}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -11040,6 +11040,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1131721150097231899, guid: 69ed81fdb761c4e2592f6670ba4b7e7a, type: 3}
   m_PrefabInstance: {fileID: 5251202301697223565}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &631807575 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9022286838581987537, guid: b812673a42d30453790358671728fe8f, type: 3}
+  m_PrefabInstance: {fileID: 7826961852508974335}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &632287031
 GameObject:
   m_ObjectHideFlags: 0
@@ -25347,6 +25358,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3018424584535979395, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
+      propertyPath: marker
+      value: 
+      objectReference: {fileID: 521663558}
+    - target: {fileID: 3018424584535979395, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
+      propertyPath: uiCamera
+      value: 
+      objectReference: {fileID: 371541724}
+    - target: {fileID: 3018424584535979395, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
+      propertyPath: markerImage
+      value: 
+      objectReference: {fileID: 631807575}
     - target: {fileID: 5263260357051236221, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
       propertyPath: m_FirstSelected
       value: 
@@ -26639,10 +26662,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 380910489}
     m_Modifications:
-    - target: {fileID: 156408732964531841, guid: b812673a42d30453790358671728fe8f, type: 3}
-      propertyPath: uiCamera
-      value: 
-      objectReference: {fileID: 371541724}
     - target: {fileID: 698344622012658214, guid: b812673a42d30453790358671728fe8f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

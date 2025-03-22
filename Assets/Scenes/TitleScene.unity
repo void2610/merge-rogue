@@ -1545,6 +1545,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 698344622012658214, guid: b812673a42d30453790358671728fe8f, type: 3}
   m_PrefabInstance: {fileID: 586434432}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &586434434 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9022286838581987537, guid: b812673a42d30453790358671728fe8f, type: 3}
+  m_PrefabInstance: {fileID: 586434432}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &685820660
 GameObject:
   m_ObjectHideFlags: 0
@@ -2947,6 +2958,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3018424584535979395, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
+      propertyPath: marker
+      value: 
+      objectReference: {fileID: 586434433}
+    - target: {fileID: 3018424584535979395, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
+      propertyPath: uiCamera
+      value: 
+      objectReference: {fileID: 268676074}
+    - target: {fileID: 3018424584535979395, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
+      propertyPath: markerImage
+      value: 
+      objectReference: {fileID: 586434434}
     - target: {fileID: 5263260357051236221, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
       propertyPath: m_FirstSelected
       value: 
