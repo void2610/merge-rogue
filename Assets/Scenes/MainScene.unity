@@ -22561,6 +22561,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ballUIPrefab: {fileID: 5315751102541514650, guid: 99dbff61fceb64a369f7d0f952d05246, type: 3}
+  shop: {fileID: 1941433902}
   inventoryPosition: {x: -0.4, y: 1.95, z: 0}
   inventoryUIContainer: {fileID: 725906728}
   subCursor: {fileID: 240537029}

@@ -2792,7 +2792,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Ver.0.8.8 (demo)
+  m_text: Ver.0.0.0 (demo)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 51b066cd8e0b7476c94d04d3a90a0709, type: 2}
   m_sharedMaterial: {fileID: 322069558015029290, guid: 51b066cd8e0b7476c94d04d3a90a0709, type: 2}
@@ -2883,7 +2883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90817c03c17914fab9e092a190ae8fa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 0.8.9
+  version: 0.9.0
 --- !u!114 &1076025709 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7247047407357346821, guid: 34c59e3fd9b634f9e8f66c815d5d0861, type: 3}

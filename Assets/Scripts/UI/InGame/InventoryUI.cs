@@ -16,6 +16,7 @@ public class InventoryUI : MonoBehaviour
     }
     
     [SerializeField] private GameObject ballUIPrefab;
+    [SerializeField] private Shop shop;
     [SerializeField] private Vector3 inventoryPosition;
     [SerializeField] private GameObject inventoryUIContainer;
     [SerializeField] private GameObject subCursor;
@@ -145,6 +146,7 @@ public class InventoryUI : MonoBehaviour
                 InventoryManager.Instance.RemoveAndShiftBall(index);
                 _state = InventoryUIState.Disabled;
                 UIManager.Instance.ResetSelectedGameObject();
+                shop.EnableSkipButton(true);
                 break;
         }
     }

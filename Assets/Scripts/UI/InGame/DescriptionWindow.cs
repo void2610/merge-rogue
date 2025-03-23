@@ -51,7 +51,7 @@ public class DescriptionWindow : MonoBehaviour
     /// </summary>
     /// <param name="data">表示するデータオブジェクト（BallData/RelicDataなど）</param>
     /// <param name="rootTriggerObject">対象UIオブジェクト</param>
-    /// <param name="ballLevel">（必要なら）球体レベル</param>
+    /// <param name="ballLevel">（必要なら）ボールレベル</param>
     public async UniTaskVoid ShowWindowWithHoverCheck(object data, GameObject rootTriggerObject, int ballLevel = 0)
     {
         _hoverTokenSource?.Cancel();

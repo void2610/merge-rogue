@@ -23,6 +23,8 @@ public class Shop : MonoBehaviour
     private readonly List<int> _currentItemPrices = new();
     private const int ITEM_NUM = 6;
     private List<GameObject> _itemObjects;
+    
+    public void EnableSkipButton(bool enable) => skipButton.GetComponent<Button>().interactable = enable;
 
     public void OpenShop(int count = 6)
     {
@@ -177,6 +179,7 @@ public class Shop : MonoBehaviour
         
         EventManager.OnBallRemove.Trigger(0);
         removeButton.GetComponent<Button>().interactable = false;
+        EnableSkipButton(false);
         GameManager.Instance.SubCoin(price);
         InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Remove);
     }
