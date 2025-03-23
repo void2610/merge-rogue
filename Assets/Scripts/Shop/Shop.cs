@@ -63,7 +63,6 @@ public class Shop : MonoBehaviour
     {
         for (var i = 0; i < ITEM_NUM; i++)
         {
-            _itemObjects[i].GetComponent<Image>().color = new Color(1, 1, 1, 1);
             _itemObjects[i].transform.DOScale(3, 0.1f).SetUpdate(true);
         }
         

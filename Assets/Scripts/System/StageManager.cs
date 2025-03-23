@@ -245,6 +245,7 @@ public class StageManager : MonoBehaviour
             GenerateMap();
             DrawMap();
             SetButtonEvent();
+            ChangeFocusNode(_mapNodes[0][0]);
             
             _playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
             var pos = _mapNodes[^1][0].Obj.GetComponent<RectTransform>().localPosition;

@@ -145,8 +145,8 @@ public class InventoryUI : MonoBehaviour
                 SeManager.Instance.PlaySe("button");
                 InventoryManager.Instance.RemoveAndShiftBall(index);
                 _state = InventoryUIState.Disabled;
-                UIManager.Instance.ResetSelectedGameObject();
                 shop.EnableSkipButton(true);
+                UIManager.Instance.ResetSelectedGameObject();
                 break;
         }
     }
