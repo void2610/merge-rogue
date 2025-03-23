@@ -48,7 +48,7 @@ jobs:
 
       - name: Remove DEMO_PLAY symbol
         run: |
-          unity -batchmode -nographics -quit -executeMethod RemoveDemoDefine.RemoveDemoPlayDefine
+          /opt/unity/Editor/Unity -batchmode -nographics -quit -executeMethod RemoveDemoDefine.RemoveDemoPlayDefine
         env:
           UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
           UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
