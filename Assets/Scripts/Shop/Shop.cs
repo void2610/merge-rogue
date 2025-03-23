@@ -123,6 +123,7 @@ public class Shop : MonoBehaviour
                 {
                     NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
                     SeManager.Instance.PlaySe("error");
+                    CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(g);
                 }
             });
         }
@@ -143,6 +144,7 @@ public class Shop : MonoBehaviour
         
         var image = g.transform.Find("Icon").GetComponent<Image>();
         image.sprite = relic.sprite;
+        image.color = new Color(1, 1, 1, 1);
         // ボールの画像を透明にする
         var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
         ballImage.color = new Color(1, 1, 1, 0);
@@ -157,6 +159,7 @@ public class Shop : MonoBehaviour
                 {
                     NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
                     SeManager.Instance.PlaySe("error");
+                    CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(g);
                 }
             });
         }
@@ -173,6 +176,7 @@ public class Shop : MonoBehaviour
         {
             NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
             SeManager.Instance.PlaySe("error");
+            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(removeButton);
             return;
         }
         
