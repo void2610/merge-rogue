@@ -49,6 +49,7 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
         {
             _previousSelected = currentSelected;
             UpdateMarkerImmediate(currentSelected);
+            _allowProgrammaticChange = false;
             return;
         }
 
@@ -58,10 +59,10 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
             {
                 var currentGroup = currentSelected.GetComponentInParent<CanvasGroup>();
                 var previousGroup = _previousSelected.GetComponentInParent<CanvasGroup>();
-
+                // グループが異なる場合は選択をキャンセル
                 if (currentGroup && previousGroup && currentGroup != previousGroup)
                 {
-                    RevertSelection();
+                    EventSystem.current.SetSelectedGameObject(_previousSelected);
                     return;
                 }
             }
@@ -76,7 +77,7 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
     /// </summary>
     private void UpdateMarkerImmediate(GameObject selectedObject)
     {
-        Vector3[] corners = new Vector3[4];
+        var corners = new Vector3[4];
         if (selectedObject.TryGetComponent<RectTransform>(out RectTransform selectedRect))
         {
             selectedRect.GetWorldCorners(corners);
@@ -125,11 +126,5 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
                 markerImage.DOFade(1, tweenDuration).SetUpdate(true);
             }
         }
-    }
-
-
-    private void RevertSelection()
-    {
-        EventSystem.current.SetSelectedGameObject(_previousSelected);
     }
 }

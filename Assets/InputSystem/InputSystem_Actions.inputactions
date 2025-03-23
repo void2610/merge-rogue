@@ -837,8 +837,19 @@
                 },
                 {
                     "name": "",
-                    "id": "df7c6125-13c3-4a59-a8d2-f1c5f611188f",
-                    "path": "*/{Submit}",
+                    "id": "e86aac94-6808-4f72-a04e-b70275b1e557",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Skip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "feaf03f5-a241-4b82-80cb-bfaa84b0d402",
+                    "path": "<Keyboard>/space",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
