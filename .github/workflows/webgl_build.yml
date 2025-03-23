@@ -46,6 +46,14 @@ jobs:
 #        with:
 #         githubToken: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Remove DEMO_PLAY symbol
+        run: |
+          unity -batchmode -nographics -quit -executeMethod RemoveDemoDefine.RemoveDemoPlayDefine
+        env:
+          UNITY_LICENSE: ${{ secrets.UNITY_LICENSE }}
+          UNITY_EMAIL: ${{ secrets.UNITY_EMAIL }}
+          UNITY_PASSWORD: ${{ secrets.UNITY_PASSWORD }}
+
       - name: Build project 🏗️
         uses: game-ci/unity-builder@v4
         env:
@@ -58,8 +66,6 @@ jobs:
           allowDirtyBuild: true
           buildsPath: CIBuilds
           buildName: build
-          # ビルド前にDEMO_PLAYシンボルを削除するメソッドを実行
-          executeMethod: RemoveDemoDefine.RemoveDemoPlayDefine
 
       - name: Prepare artifact for deployment 🎯
         run: |
