@@ -105,5 +105,6 @@ public class Encyclopedia : MonoBehaviour
         
         // レイアウト更新
         Canvas.ForceUpdateCanvases();
+        _items[0].AddComponent<FocusSelectable>();
     }
 }

@@ -2,8 +2,10 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
+using Cysharp.Threading.Tasks;
 
 public class TitleMenu : MonoBehaviour
 {
@@ -13,11 +15,57 @@ public class TitleMenu : MonoBehaviour
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider seSlider;
     [SerializeField] private TMP_InputField seedInputField;
-    [SerializeField] private CanvasGroup credit;
-    [SerializeField] private CanvasGroup license;
-    [SerializeField] private CanvasGroup encyclopedia;
+    [SerializeField] private List<CanvasGroup> canvasGroups;
     [SerializeField] private DescriptionWindow descriptionWindow;
+    
+    private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
 
+    public GameObject GetTopCanvasGroup() => canvasGroups.Find(c => c.alpha > 0)?.gameObject;
+    
+    public void ResetSelectedGameObject()
+    {
+        var focusSelectable = GetTopCanvasGroup()?.GetComponentInChildren<FocusSelectable>();
+        if (focusSelectable?.GetComponent<Selectable>().interactable == true)
+            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(focusSelectable.gameObject);
+    }
+    
+    private async UniTaskVoid EnableCanvasGroupAsync(string canvasName, bool e)
+    {
+        var cg = canvasGroups.Find(c => c.name == canvasName);
+        if (!cg) return;
+        if (_canvasGroupTween[canvasName].IsActive()) return;
+        
+        // アニメーション中は操作をブロック
+        cg.interactable = false;
+        cg.blocksRaycasts = false;
+        
+        var seq = DOTween.Sequence();
+        seq.SetUpdate(true).Forget();
+        if (e)
+        {
+            seq.Join(cg.transform.DOMoveY(-0.45f, 0).SetRelative(true)).Forget();
+            seq.Join(cg.transform.DOMoveY(0.45f, 0.2f).SetRelative(true).SetEase(Ease.OutBack)).Forget();
+            seq.Join(cg.DOFade(1, 0.2f)).Forget();
+        }
+        else
+        {
+            seq.Join(cg.DOFade(0, 0.2f)).Forget();
+        }
+        
+        _canvasGroupTween[canvasName] = seq;
+        CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(null);
+        
+        await seq.AsyncWaitForCompletion();
+        
+        // inputGuide.UpdateText(IsAnyCanvasGroupEnabled() ? InputGuide.InputGuideType.Navigate : InputGuide.InputGuideType.Merge);
+        _canvasGroupTween[canvasName] = null;
+        cg.interactable = e;
+        cg.blocksRaycasts = e;
+        
+        // FocusSelectableがアタッチされているオブジェクトがあればフォーカス
+        ResetSelectedGameObject();
+    }
+    
     public void StartGame()
     {
         fadeImage.color = new Color(0, 0, 0, 0);
@@ -27,47 +75,12 @@ public class TitleMenu : MonoBehaviour
         });
     }
     
-    public void ShowEncyclopedia()
-    {
-        encyclopedia.alpha = 1.0f;
-        encyclopedia.interactable = true;
-        encyclopedia.blocksRaycasts = true;
-    }
-    
-    public void HideEncyclopedia()
-    {
-        encyclopedia.alpha = 0.0f;
-        encyclopedia.interactable = false;
-        encyclopedia.blocksRaycasts = false;
-    }
-
-    public void ShowCredit()
-    {
-        credit.alpha = 1.0f;
-        credit.interactable = true;
-        credit.blocksRaycasts = true;
-    }
-
-    public void HideCredit()
-    {
-        credit.alpha = 0.0f;
-        credit.interactable = false;
-        credit.blocksRaycasts = false;
-    }
-
-    public void ShowLicense()
-    {
-        license.alpha = 1.0f;
-        license.interactable = true;
-        license.blocksRaycasts = true;
-    }
-
-    public void HideLicense()
-    {
-        license.alpha = 0.0f;
-        license.interactable = false;
-        license.blocksRaycasts = false;
-    }
+    public void ShowEncyclopedia() => EnableCanvasGroupAsync("Encyclopedia", true).Forget();
+    public void HideEncyclopedia() => EnableCanvasGroupAsync("Encyclopedia", false).Forget();
+    public void ShowCredit() => EnableCanvasGroupAsync("Credit", true).Forget();
+    public void HideCredit() => EnableCanvasGroupAsync("Credit", false).Forget();
+    public void ShowLicense() => EnableCanvasGroupAsync("License", true).Forget();
+    public void HideLicense() => EnableCanvasGroupAsync("License", false).Forget();
     
     public void ShowDescriptionWindow(object o, GameObject g)
     {
@@ -99,11 +112,13 @@ public class TitleMenu : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+       
+        foreach (var canvasGroup in canvasGroups)
+        {
+            _canvasGroupTween.Add(canvasGroup.name, null);
+            EnableCanvasGroupAsync(canvasGroup.name, false).Forget();
+        }
         
-        
-        HideCredit();
-        HideLicense();
-        HideEncyclopedia();
         if (!PlayerPrefs.HasKey("BgmVolume")) InitPlayerPrefs();
     }
 
@@ -145,5 +160,8 @@ public class TitleMenu : MonoBehaviour
         var seed = seedInputField.text.GetHashCode();
         PlayerPrefs.SetInt("Seed", seed);
         PlayerPrefs.SetString("SeedText", seedInputField.text);
+        
+        if (InputProvider.Instance.UI.ResetCursor.triggered)
+            ResetSelectedGameObject();
     }
 }
