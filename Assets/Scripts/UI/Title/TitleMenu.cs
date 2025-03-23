@@ -14,6 +14,7 @@ public class TitleMenu : MonoBehaviour
     [SerializeField] private Image fadeImage;
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider seSlider;
+    [SerializeField] private Button startButton;
     [SerializeField] private TMP_InputField seedInputField;
     [SerializeField] private List<CanvasGroup> canvasGroups;
     [SerializeField] private DescriptionWindow descriptionWindow;
@@ -24,9 +25,17 @@ public class TitleMenu : MonoBehaviour
     
     public void ResetSelectedGameObject()
     {
-        var focusSelectable = GetTopCanvasGroup()?.GetComponentInChildren<FocusSelectable>();
-        if (focusSelectable?.GetComponent<Selectable>().interactable == true)
-            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(focusSelectable.gameObject);
+        var topCanvas = GetTopCanvasGroup();
+        if (topCanvas)
+        {
+            var focusSelectable = topCanvas.GetComponentInChildren<FocusSelectable>();
+            if (focusSelectable.GetComponent<Selectable>().interactable == true)
+                CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(focusSelectable.gameObject);
+        }
+        else
+        {
+            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(startButton.gameObject);
+        }
     }
     
     private async UniTaskVoid EnableCanvasGroupAsync(string canvasName, bool e)
