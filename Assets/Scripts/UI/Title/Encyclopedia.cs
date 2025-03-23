@@ -72,6 +72,8 @@ public class Encyclopedia : MonoBehaviour
             
             #if DEMO_PLAY
                 container.transform.Find("LockIcon").gameObject.SetActive(!ball.availableDemo);
+                if(!ball.availableDemo)
+                    container.transform.Find("BallBase").GetComponent<Image>().color =  new Color(0.4352941f, 0.4352941f, 0.4352941f, 0.5f);
                 container.GetComponent<Image>().color = ball.availableDemo ? new Color(0.4352941f, 0.4352941f, 0.4352941f, 1) : new Color(0.4352941f, 0.4352941f, 0.4352941f, 0.5f);
             #else
                 container.transform.Find("LockIcon").gameObject.SetActive(false);
@@ -91,6 +93,8 @@ public class Encyclopedia : MonoBehaviour
             
             #if DEMO_PLAY
                 container.transform.Find("LockIcon").gameObject.SetActive(!relic.availableDemo);
+                if(!relic.availableDemo)
+                    container.transform.Find("Icon").GetComponent<Image>().color =  new Color(0.4352941f, 0.4352941f, 0.4352941f, 0.5f);
                 container.GetComponent<Image>().color = relic.availableDemo ? new Color(0.4352941f, 0.4352941f, 0.4352941f, 1) : new Color(0.4352941f, 0.4352941f, 0.4352941f, 0.5f);
             #else
                 container.transform.Find("LockIcon").gameObject.SetActive(false);

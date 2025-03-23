@@ -220,7 +220,7 @@ public class DescriptionWindow : MonoBehaviour
         #if DEMO_PLAY
             if (!b.availableDemo)
             {
-                descriptionText.text = b.descriptions[level] + "\n" + "(デモ版では使用不可)";
+                descriptionText.text = b.descriptions[level] + "\n" + "(デモ版ではロック中)";
                 flavorText.text = "?????";
                 statusTexts[0].text = "?????";
                 statusTexts[1].text = "?????";
@@ -247,7 +247,7 @@ public class DescriptionWindow : MonoBehaviour
         #if DEMO_PLAY
             if (!r.availableDemo)
             {
-                descriptionText.text = r.description　+ "\n" + "(デモ版では使用不可)";
+                descriptionText.text = r.description　+ "\n" + "(デモ版ではロック中)";
                 flavorText.text = "?????";
                 statusTexts[0].text = "?????";
                 statusTexts[1].text = "?????";
