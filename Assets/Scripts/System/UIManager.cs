@@ -34,6 +34,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI hpText;
     [SerializeField] private Shop shop;
     [SerializeField] private Treasure treasure;
+    [SerializeField] private GameObject mergeArea;
 
     public bool IsPaused { get; private set; } = false;
     public bool IsMapOpened { get; private set; } = false;
@@ -65,9 +66,17 @@ public class UIManager : MonoBehaviour
 
     public void ResetSelectedGameObject()
     {
-        var focusSelectable = GetTopCanvasGroup()?.GetComponentInChildren<FocusSelectable>();
-        if (focusSelectable?.GetComponent<Selectable>().interactable == true)
-            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(focusSelectable.gameObject);
+        var topCanvasGroup = GetTopCanvasGroup();
+        if (topCanvasGroup)
+        {
+            var focusSelectable = topCanvasGroup.GetComponentInChildren<FocusSelectable>();
+            if (focusSelectable?.GetComponent<Selectable>().interactable == true)
+                CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(focusSelectable.gameObject);
+        }
+        else
+        {
+            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(mergeArea);
+        }
     }
     
     private async UniTaskVoid EnableCanvasGroupAsync(string canvasName, bool e)

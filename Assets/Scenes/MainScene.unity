@@ -3622,7 +3622,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 403790021}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -4736,6 +4736,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9088715935136075098}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 1289804354}
+    - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
       objectReference: {fileID: 457257708}
@@ -4821,7 +4825,7 @@ GameObject:
   - component: {fileID: 502658206}
   m_Layer: 0
   m_Name: MergeAreaCursorEvent
-  m_TagString: IgnoreSelection
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -4842,8 +4846,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -100}
-  m_SizeDelta: {x: 330, y: 330}
+  m_AnchoredPosition: {x: 0, y: -90}
+  m_SizeDelta: {x: 280, y: 260}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &502658203
 MonoBehaviour:
@@ -4873,7 +4877,7 @@ MonoBehaviour:
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_RaycastPadding: {x: -50, y: -30, z: -50, w: -30}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
@@ -10376,6 +10380,7 @@ MonoBehaviour:
   hpText: {fileID: 1566874251}
   shop: {fileID: 1941433902}
   treasure: {fileID: 1607858726}
+  mergeArea: {fileID: 502658201}
   remainingLevelUps: 0
 --- !u!114 &567445623
 MonoBehaviour:
@@ -10828,7 +10833,7 @@ GameObject:
   - component: {fileID: 611215499}
   m_Layer: 6
   m_Name: Description
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10925,7 +10930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -17353,6 +17358,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aca86335b35345d18edcef7c74b03b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1289804354 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5735301961790221818, guid: b5d513c1af31f4e858857229df5cf5c1, type: 3}
+  m_PrefabInstance: {fileID: 4414187642388702377}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1291005974
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19084,7 +19100,7 @@ GameObject:
   - component: {fileID: 1447001658}
   m_Layer: 6
   m_Name: EventText
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19137,7 +19153,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -20204,6 +20220,10 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_Navigation.m_SelectOnLeft
+      value: 
+      objectReference: {fileID: 1687792464}
+    - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
       objectReference: {fileID: 1932308514}
@@ -20997,6 +21017,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2aca86335b35345d18edcef7c74b03b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1687792464 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5735301961790221818, guid: b5d513c1af31f4e858857229df5cf5c1, type: 3}
+  m_PrefabInstance: {fileID: 1687792460}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1695384001
@@ -24981,8 +25012,8 @@ MonoBehaviour:
   showDuration: 0.2
   waitDuration: 1.5
   closeDuration: 0.5
-  rightMoveDistance: 5
-  upMoveDistance: 0.5
+  rightMoveDistance: 270
+  shiftUpDistance: 30
   iconSprites:
     _list:
     - key: 0
