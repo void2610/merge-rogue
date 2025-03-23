@@ -58,7 +58,9 @@ jobs:
           allowDirtyBuild: true
           buildsPath: CIBuilds
           buildName: build
-          
+          # ビルド前にDEMO_PLAYシンボルを削除するメソッドを実行
+          executeMethod: RemoveDemoDefine.RemoveDemoPlayDefine
+
       - name: Prepare artifact for deployment 🎯
         run: |
           sudo mkdir -p ./public
