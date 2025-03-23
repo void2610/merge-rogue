@@ -217,6 +217,15 @@ public class ContentProvider : MonoBehaviour
         else
             Destroy(this);
         
+        ballList.Register();
         relicList.Register();
+        
+        #if DEMO_PLAY
+            // コピーを作成して使用可能なものだけを残す
+            ballList = Instantiate(ballList);
+            ballList.list = ballList.list.FindAll(b => b.availableDemo);
+            relicList = Instantiate(relicList);
+            relicList.list = relicList.list.FindAll(r => r.availableDemo);
+        #endif
     }
 }

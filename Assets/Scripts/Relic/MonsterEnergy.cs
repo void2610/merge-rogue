@@ -22,7 +22,6 @@ public class MonsterEnergy : RelicBase
         
         EventManager.OnRest.SetValue(0);
         Count.Value--;
-        Debug.Log("MonsterEnergy: " + Count.Value);
         UI?.ActivateUI();
     }
 }

@@ -15,10 +15,7 @@ public class ItemBase : MonoBehaviour
     private Image Image => transform.Find("Canvas").transform.Find("Image").GetComponent<Image>();
 
 
-    public virtual void Use(Player p)
-    {
-        Debug.Log("Using item: " + itemName);
-    }
+    public virtual void Use(Player p) { }
 
     protected virtual void Awake()
     {

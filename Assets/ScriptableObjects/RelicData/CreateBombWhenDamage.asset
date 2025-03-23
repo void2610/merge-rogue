@@ -19,4 +19,4 @@ MonoBehaviour:
   description: "\u30C0\u30E1\u30FC\u30B8\u309220\u53D7\u3051\u308B\u305F\u3073\u306B\u30D0\u30AF\u30C0\u30F3\u3092\u751F\u307F\u51FA\u3059"
   flavorText: 
   rarity: 5
-  availableDemo: 0
+  availableDemo: 1

@@ -216,6 +216,7 @@ public class DescriptionWindow : MonoBehaviour
     private void SetBallTexts(BallData b, int level)
     {
         nameText.text = b.displayName;
+        nameText.color = b.rarity.GetColor();
         
         #if DEMO_PLAY
             if (!b.availableDemo)
@@ -229,7 +230,6 @@ public class DescriptionWindow : MonoBehaviour
             }
         #endif
         
-        nameText.color = b.rarity.GetColor();
         descriptionText.text = b.descriptions[level];
         flavorText.text = b.flavorText;
         statusTexts[0].text = "level: " + (level + 1);
@@ -243,6 +243,7 @@ public class DescriptionWindow : MonoBehaviour
     private void SetRelicTexts(RelicData r)
     {
         nameText.text = r.displayName;
+        nameText.color = r.rarity.GetColor();
         
         #if DEMO_PLAY
             if (!r.availableDemo)
@@ -256,7 +257,6 @@ public class DescriptionWindow : MonoBehaviour
             }
         #endif
         
-        nameText.color = r.rarity.GetColor();
         descriptionText.text = r.description;
         flavorText.text = r.flavorText;
         statusTexts[0].text = "price: " + ContentProvider.GetSHopPrice(Shop.ShopItemType.Ball, r.rarity);

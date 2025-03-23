@@ -222,8 +222,6 @@ public class InventoryManager : MonoBehaviour
         {
             Destroy(this);
         }
-        
-        allBallDataList.Register();
 
         for(var i = 0; i < MAX_INVENTORY_SIZE; i++) _inventory.Add(null);
     }

@@ -28,11 +28,9 @@ public class UpdateCredit : MonoBehaviour, IPointerClickHandler
     /// </summary>
     public void OnPointerClick(PointerEventData eventData)
     {
-        Debug.Log("Click");
         var linkIndex = TMP_TextUtilities.FindIntersectingLink(text, eventData.position, Camera.main);
         if (linkIndex != -1)
         {
-            Debug.Log("Link Clicked");
             var linkInfo = text.textInfo.linkInfo[linkIndex];
             var url = linkInfo.GetLinkID();
             Application.OpenURL(url);
