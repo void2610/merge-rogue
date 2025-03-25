@@ -97,6 +97,7 @@ public class GameManager : MonoBehaviour
         ScoreManager.ShowScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value, Coin.Value);
     }
     
+    // ReSharper disable Unity.PerformanceAnalysis
     public void ChangeState(GameState newState)
     {
         state = newState;
@@ -121,6 +122,15 @@ public class GameManager : MonoBehaviour
                 EnemyContainer.Action();
                 break;
             case GameState.MapSelect:
+                // デモ版ではact1で終了
+                # if DEMO_PLAY
+                    if (StageManager.CurrentStage?.Type == StageType.Boss)
+                    {
+                        UIManager.Instance.EnableCanvasGroup("Clear", true);
+                        break;
+                    } 
+                # endif 
+                
                 StageManager.SetNextNodeActive();
                 UIManager.Instance.OnClickMapButtonForce(true);
                 break;
