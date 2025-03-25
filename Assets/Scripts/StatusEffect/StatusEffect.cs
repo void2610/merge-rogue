@@ -289,6 +289,7 @@ public class FreezeEffect : StatusEffectBase
         {
             StackCount /= 2;
             ShowEffectText();
+            SeManager.Instance.PlaySe("freeze");
             return true;
         }
         return false;

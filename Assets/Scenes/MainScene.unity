@@ -12929,7 +12929,11 @@ MonoBehaviour:
   relicOffset: {x: 40, y: 36}
   relicUISize: 0.75
   testRelics:
-  - {fileID: 11400000, guid: 4537f3d659b96485da932172c3764c56, type: 2}
+  - {fileID: 11400000, guid: 0837f85fc711344c1a3b79c8cee80e85, type: 2}
+  - {fileID: 11400000, guid: 0837f85fc711344c1a3b79c8cee80e85, type: 2}
+  - {fileID: 11400000, guid: 0837f85fc711344c1a3b79c8cee80e85, type: 2}
+  - {fileID: 11400000, guid: 0837f85fc711344c1a3b79c8cee80e85, type: 2}
+  - {fileID: 11400000, guid: 0837f85fc711344c1a3b79c8cee80e85, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -24975,20 +24979,32 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: soundDatas.Array.size
-      value: 20
+      value: 21
       objectReference: {fileID: 0}
     - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: soundDatas.Array.data[19].name
       value: shock
       objectReference: {fileID: 0}
     - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.data[20].name
+      value: freeze
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: soundDatas.Array.data[19].volume
       value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.data[20].volume
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: soundDatas.Array.data[19].audioClip
       value: 
       objectReference: {fileID: 8300000, guid: a4173069eb162466bb2a6187b2a7a87f, type: 3}
+    - target: {fileID: 4911436224570022636, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
+      propertyPath: soundDatas.Array.data[20].audioClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 01f4703a55d04442b99870513ed0221e, type: 3}
     - target: {fileID: 7521127176204447298, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -70,7 +70,6 @@ public class DescriptionWindow : MonoBehaviour
             }
         }, EventTriggerType.PointerExit, false);
         
-        
         // まずはウィンドウを表示
         ShowWindow(data, rootTriggerObject, ballLevel);
         

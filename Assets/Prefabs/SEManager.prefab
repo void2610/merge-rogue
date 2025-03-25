@@ -103,3 +103,9 @@ MonoBehaviour:
   - name: bomb
     audioClip: {fileID: 8300000, guid: 25940b6ffd6344966af3f7f25ffaeef3, type: 3}
     volume: 0.2
+  - name: shock
+    audioClip: {fileID: 8300000, guid: a4173069eb162466bb2a6187b2a7a87f, type: 3}
+    volume: 0.6
+  - name: freeze
+    audioClip: {fileID: 8300000, guid: 01f4703a55d04442b99870513ed0221e, type: 3}
+    volume: 0.4
