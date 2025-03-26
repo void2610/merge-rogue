@@ -122,9 +122,9 @@ public class GameManager : MonoBehaviour
                 EnemyContainer.Action();
                 break;
             case GameState.MapSelect:
-                // デモ版ではact1で終了
+                // デモ版ではact2で終了
                 # if DEMO_PLAY
-                    if (StageManager.CurrentStage?.Type == StageType.Boss)
+                    if (StageManager.CurrentStage?.Type == StageType.Boss && ContentProvider.Instance.Act > 0)
                     {
                         UIManager.Instance.EnableCanvasGroup("Clear", true);
                         break;

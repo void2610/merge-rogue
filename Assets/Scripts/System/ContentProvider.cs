@@ -29,6 +29,7 @@ public class ContentProvider : MonoBehaviour
     [SerializeField] private SerializableDictionary<BallShapeType, Sprite> ballBaseImages;
     
     private int _act = 0;
+    public int Act => _act;
 
     /// <summary>
     /// StageEventをランダムで取得する
