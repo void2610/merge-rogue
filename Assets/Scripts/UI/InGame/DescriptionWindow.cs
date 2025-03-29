@@ -107,6 +107,9 @@ public class DescriptionWindow : MonoBehaviour
         this.transform.Find("Window").GetComponent<Image>().raycastTarget = true;
     }
 
+    public void ShowWindowFromNavigation(object data, GameObject rootTriggerObject, int ballLevel = 0) => ShowWindow(data, rootTriggerObject, ballLevel);
+    public void HideWindowFromNavigation() => HideWindow();
+
     private void ShowWindow(object obj, GameObject rootTriggerObject, int ballLevel = 0)
     {
         foreach (var window in _subWindows.Values) Destroy(window);

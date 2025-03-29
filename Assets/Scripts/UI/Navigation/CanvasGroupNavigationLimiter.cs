@@ -69,6 +69,19 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
             _previousSelected = currentSelected;
             TweenMarker(currentSelected);
             _allowProgrammaticChange = false;
+            
+            // 説明ウィンドウを出す
+            if (currentSelected.TryGetComponent<ShowDescription>(out var sd))
+            {
+                if(sd.isBall)
+                    DescriptionWindow.Instance.ShowWindowFromNavigation( sd.ballData, currentSelected, 0);
+                else
+                    DescriptionWindow.Instance.ShowWindowFromNavigation(sd.relicData, currentSelected);
+            }
+            else
+            {
+                DescriptionWindow.Instance.HideWindowFromNavigation();
+            }
         }
     }
 
