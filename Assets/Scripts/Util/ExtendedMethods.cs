@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public static class ExtendedMethods
 {
@@ -96,6 +97,33 @@ public static class ExtendedMethods
             animator.ResetAllChars();
         }
         return text;
+    }
+
+    public static void AddDescriptionWindowEvent(this GameObject g, object data, int level = 0)
+    {
+        if (!g || data == null) Debug.LogError("e");
+        if(data is not BallData && data is not RelicData) Debug.LogError("e");
+
+        var d = g.AddComponent<ShowDescription>();
+        
+        if (data is BallData ballData)
+        {
+            Utils.AddEventToObject(g, () => { 
+                UIManager.Instance.ShowBallDescriptionWindow(ballData, g, level);
+            }, EventTriggerType.PointerEnter);
+            
+            d.isBall = true;
+            d.ballData = ballData; 
+        }
+        else if (data is RelicData relicData)
+        {
+            Utils.AddEventToObject(g, () => { 
+                UIManager.Instance.ShowRelicDescriptionWindow(relicData, g);
+            }, EventTriggerType.PointerEnter);
+            
+            d.isBall = false;
+            d.relicData = relicData;
+        }
     }
     
     /// <summary>

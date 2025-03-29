@@ -128,9 +128,7 @@ public class Shop : MonoBehaviour
             });
         }
         
-        Utils.AddEventToObject(g, () => { 
-            UIManager.Instance.ShowBallDescriptionWindow(ball, g, 0);
-        }, EventTriggerType.PointerEnter);
+        g.AddDescriptionWindowEvent(ball);
     }
     
     private void SetRelicEvent(GameObject g, RelicData relic, int index)
@@ -164,9 +162,7 @@ public class Shop : MonoBehaviour
             });
         }
 
-        Utils.AddEventToObject(g, () => { 
-            UIManager.Instance.ShowRelicDescriptionWindow(relic, g);
-        }, EventTriggerType.PointerEnter);
+        g.AddDescriptionWindowEvent(relic);
     }
     
     private void OnClickRemoveButton()

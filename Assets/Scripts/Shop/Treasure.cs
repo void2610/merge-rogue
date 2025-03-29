@@ -117,13 +117,7 @@ public class Treasure : MonoBehaviour
             });
         }
 
-        Utils.AddEventToObject(g, () => { 
-            UIManager.Instance.ShowRelicDescriptionWindow(relic, g);
-        }, EventTriggerType.PointerEnter);
-
-        var d = g.AddComponent<ShowDescription>();
-        d.isBall = false;
-        d.relicData = relic;
+        g.AddDescriptionWindowEvent(relic);
     }
     
     private void OnClickSkip()

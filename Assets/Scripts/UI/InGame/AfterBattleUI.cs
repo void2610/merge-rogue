@@ -82,9 +82,7 @@ public class AfterBattleUI : MonoBehaviour
             });
         }
         
-        Utils.AddEventToObject(g, () => { 
-            UIManager.Instance.ShowBallDescriptionWindow(ball, g, 0);
-        }, EventTriggerType.PointerEnter);
+        g.AddDescriptionWindowEvent(ball);
     }
     
     private void OnClickBallUpgradeButton()

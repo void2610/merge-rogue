@@ -98,17 +98,17 @@ public class InventoryUI : MonoBehaviour
         CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(_items[0]);
     }
     
-    private void SetEvent(GameObject ballObj, int index, BallBase ballBase)
+    private void SetEvent(GameObject g, int index, BallBase ballBase)
     {
         // クリックでボールの選択、入れ替え、削除
-        ballObj.GetComponent<Button>().onClick.AddListener(() => OnClickBall(index).Forget());
+        g.GetComponent<Button>().onClick.AddListener(() => OnClickBall(index).Forget());
         // マウスオーバーでカーソル移動とウィンドウ表示 (とアニメーション)
-        Utils.AddEventToObject(ballObj, () => { 
-            var rt = ballObj.GetComponent<RectTransform>();
-            rt.DORotate(new Vector3(0, 0, 15), 0.75f).SetEase(Ease.Flash, 10, 0.9f).OnComplete(() => rt.DORotate(Vector3.zero, 0.1f).SetLink(ballObj)).SetLink(ballObj);
-            
-            UIManager.Instance.ShowBallDescriptionWindow(ballBase.Data, ballObj, ballBase.Level); 
+        Utils.AddEventToObject(g, () => { 
+            var rt = g.GetComponent<RectTransform>();
+            rt.DORotate(new Vector3(0, 0, 15), 0.75f).SetEase(Ease.Flash, 10, 0.9f).OnComplete(() => rt.DORotate(Vector3.zero, 0.1f).SetLink(g)).SetLink(g);
         }, EventTriggerType.PointerEnter);
+        
+        g.AddDescriptionWindowEvent(ballBase.Data);
     }
 
     private async UniTaskVoid OnClickBall(int index)
