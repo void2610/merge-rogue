@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 101710650639113301}
   m_Layer: 5
   m_Name: FlavorText
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 3565885494899296910}
   m_Layer: 5
   m_Name: ProgressImage
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 3988939791753592053}
   m_Layer: 5
   m_Name: DescriptionText
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -393,7 +393,7 @@ GameObject:
   - component: {fileID: 1651400385567321820}
   m_Layer: 5
   m_Name: Status3
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -545,7 +545,7 @@ GameObject:
   - component: {fileID: 7046229951024439959}
   m_Layer: 5
   m_Name: Window
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -636,7 +636,7 @@ GameObject:
   - component: {fileID: 170914027067214421}
   m_Layer: 5
   m_Name: NameText
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -788,7 +788,7 @@ GameObject:
   - component: {fileID: 6249793527937321327}
   m_Layer: 5
   m_Name: Status2
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -940,7 +940,7 @@ GameObject:
   - component: {fileID: 1300116158797091550}
   m_Layer: 5
   m_Name: Bar
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1031,7 +1031,7 @@ GameObject:
   - component: {fileID: 7621822446016156901}
   m_Layer: 5
   m_Name: Status1
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1182,7 +1182,7 @@ GameObject:
   - component: {fileID: 7247047407357346821}
   m_Layer: 5
   m_Name: DescriptionWindow
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1263,7 +1263,7 @@ GameObject:
   - component: {fileID: 2770352426065211985}
   m_Layer: 0
   m_Name: Status
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
