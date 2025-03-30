@@ -412,6 +412,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""VirtualMouse"",
+                    ""type"": ""Button"",
+                    ""id"": ""923b10bc-a612-4566-a2e1-b9c90769516f"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -964,6 +973,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""ResetCursor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e32442a2-5322-405b-be87-9a0d80ddeee5"",
+                    ""path"": ""<Keyboard>/l"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""VirtualMouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -993,6 +1013,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_Skip = m_UI.FindAction("Skip", throwIfNotFound: true);
         m_UI_MousePosition = m_UI.FindAction("MousePosition", throwIfNotFound: true);
         m_UI_ResetCursor = m_UI.FindAction("ResetCursor", throwIfNotFound: true);
+        m_UI_VirtualMouse = m_UI.FindAction("VirtualMouse", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1228,6 +1249,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Skip;
     private readonly InputAction m_UI_MousePosition;
     private readonly InputAction m_UI_ResetCursor;
+    private readonly InputAction m_UI_VirtualMouse;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1296,6 +1318,10 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @ResetCursor => m_Wrapper.m_UI_ResetCursor;
         /// <summary>
+        /// Provides access to the underlying input action "UI/VirtualMouse".
+        /// </summary>
+        public InputAction @VirtualMouse => m_Wrapper.m_UI_VirtualMouse;
+        /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
         public InputActionMap Get() { return m_Wrapper.m_UI; }
@@ -1363,6 +1389,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ResetCursor.started += instance.OnResetCursor;
             @ResetCursor.performed += instance.OnResetCursor;
             @ResetCursor.canceled += instance.OnResetCursor;
+            @VirtualMouse.started += instance.OnVirtualMouse;
+            @VirtualMouse.performed += instance.OnVirtualMouse;
+            @VirtualMouse.canceled += instance.OnVirtualMouse;
         }
 
         /// <summary>
@@ -1416,6 +1445,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ResetCursor.started -= instance.OnResetCursor;
             @ResetCursor.performed -= instance.OnResetCursor;
             @ResetCursor.canceled -= instance.OnResetCursor;
+            @VirtualMouse.started -= instance.OnVirtualMouse;
+            @VirtualMouse.performed -= instance.OnVirtualMouse;
+            @VirtualMouse.canceled -= instance.OnVirtualMouse;
         }
 
         /// <summary>
@@ -1597,5 +1629,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnResetCursor(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "VirtualMouse" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnVirtualMouse(InputAction.CallbackContext context);
     }
 }

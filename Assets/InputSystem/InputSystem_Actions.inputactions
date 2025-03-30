@@ -326,6 +326,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "VirtualMouse",
+                    "type": "Button",
+                    "id": "923b10bc-a612-4566-a2e1-b9c90769516f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -876,6 +885,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "ResetCursor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e32442a2-5322-405b-be87-9a0d80ddeee5",
+                    "path": "<Keyboard>/l",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "VirtualMouse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

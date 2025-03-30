@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using Cysharp.Threading.Tasks;
+using UnityEngine.InputSystem.UI;
 
 public class TitleMenu : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class TitleMenu : MonoBehaviour
     [SerializeField] private TMP_InputField seedInputField;
     [SerializeField] private List<CanvasGroup> canvasGroups;
     [SerializeField] private DescriptionWindow descriptionWindow;
+    [SerializeField] private GameObject virtualMouse;
     
     private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
 
@@ -35,6 +37,22 @@ public class TitleMenu : MonoBehaviour
         else
         {
             CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(startButton.gameObject);
+        }
+    }
+
+    public void ToggleVirtualMouse()
+    {
+        if (virtualMouse.GetComponent<Image>().enabled)
+        {
+            virtualMouse.GetComponent<Image>().enabled = false; 
+            virtualMouse.GetComponent<VirtualMouseInput>().enabled = false;
+            EventSystem.current.sendNavigationEvents = true;
+        }
+        else
+        {
+            virtualMouse.GetComponent<Image>().enabled = true;
+            virtualMouse.GetComponent<VirtualMouseInput>().enabled = true;
+            EventSystem.current.sendNavigationEvents = false;
         }
     }
     
@@ -121,6 +139,9 @@ public class TitleMenu : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        
+        // 仮想マウスを無効化
+        ToggleVirtualMouse();
        
         foreach (var canvasGroup in canvasGroups)
         {
@@ -172,5 +193,7 @@ public class TitleMenu : MonoBehaviour
         
         if (InputProvider.Instance.UI.ResetCursor.triggered)
             ResetSelectedGameObject();
+        if (InputProvider.Instance.UI.VirtualMouse.triggered)
+            ToggleVirtualMouse();
     }
 }

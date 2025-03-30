@@ -26,6 +26,7 @@ public class TitleInputGuide : MonoBehaviour
         list.Add("選択: <sprite name=\"Keyboard-leftArrow\"><sprite name=\"Keyboard-rightArrow\">/<sprite name=\"Keyboard-a\"><sprite name=\"Keyboard-d\">/<sprite name=\"Mouse-position\">");
         list.Add("決定: <sprite name=\"Keyboard-space\">/<sprite name=\"Keyboard-space\">/<sprite name=\"Mouse-leftButton\">");
         list.Add("カーソルをリセット: <sprite name=\"Keyboard-r\">");
+        list.Add("仮想マウス切り替え: <sprite name=\"Keyboard-l\">");
         
         TextMeshProUGUI last = null;
         for(var i = 0; i < list.Count; i++)
