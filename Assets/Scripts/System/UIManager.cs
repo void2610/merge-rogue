@@ -70,8 +70,8 @@ public class UIManager : MonoBehaviour
         if (topCanvasGroup)
         {
             var focusSelectable = topCanvasGroup.GetComponentInChildren<FocusSelectable>();
-            if (focusSelectable?.GetComponent<Selectable>().interactable == true)
-                CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(focusSelectable.gameObject);
+            if (!focusSelectable) return;
+            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(focusSelectable.gameObject);
         }
         else
         {

@@ -81,7 +81,10 @@ public class StageEventProcessor : MonoBehaviour
     private async UniTaskVoid ProcessActionAsync(StageEventBase.OptionData option)
     {
         option.Action();
-        if(!option.isEndless) HideOptions();
+        
+        if (!option.isEndless) HideOptions();
+        else UpdateOptions();
+
         descriptionText.text = option.resultDescription;
 
         using (var cts = new CancellationTokenSource())
@@ -101,11 +104,9 @@ public class StageEventProcessor : MonoBehaviour
             }
         }
 
-        if (option.isEndless)
-        {
-            UpdateOptions();
-            return;
-        }
+        UIManager.Instance.ResetSelectedGameObject();
+
+        if (option.isEndless) return;
         
         await Utils.WaitOrSkipInput(2500);
         UIManager.Instance.EnableCanvasGroup("Event", false);
