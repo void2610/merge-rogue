@@ -114,6 +114,7 @@ public class UIManager : MonoBehaviour
         
         // FocusSelectableがアタッチされているオブジェクトがあればフォーカス
         ResetSelectedGameObject();
+        descriptionWindow.HideWindowFromNavigation();
     }
 
     private void UpdateExpText(int now, int max)

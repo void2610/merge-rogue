@@ -34,6 +34,7 @@ public class AfterBattleUI : MonoBehaviour
             var index = GameManager.Instance.RandomRange(0, balls.Count);
             _currentItems.Add(balls[index]);
             SetBallEvent(_itemObjects[i].transform.gameObject, balls[index], i);
+            _itemObjects[i].GetComponent<Button>().interactable = true;
         }
     }
     
