@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using Cysharp.Threading.Tasks;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 
 public class TitleMenu : MonoBehaviour
@@ -44,14 +45,16 @@ public class TitleMenu : MonoBehaviour
     {
         if (virtualMouse.GetComponent<Image>().enabled)
         {
-            virtualMouse.GetComponent<Image>().enabled = false; 
-            virtualMouse.GetComponent<VirtualMouseInput>().enabled = false;
+            virtualMouse.GetComponent<Image>().enabled = false;
+            // 仮想マウスデバイスの入力更新を無効化
+            InputSystem.DisableDevice(virtualMouse.GetComponent<VirtualMouseInput>().virtualMouse);
             EventSystem.current.sendNavigationEvents = true;
         }
         else
         {
             virtualMouse.GetComponent<Image>().enabled = true;
-            virtualMouse.GetComponent<VirtualMouseInput>().enabled = true;
+            // 仮想マウスデバイスの入力更新を有効化
+            InputSystem.EnableDevice(virtualMouse.GetComponent<VirtualMouseInput>().virtualMouse);
             EventSystem.current.sendNavigationEvents = false;
         }
     }
