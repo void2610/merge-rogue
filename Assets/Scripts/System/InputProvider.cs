@@ -16,13 +16,13 @@ public class InputProvider : MonoBehaviour
         else Destroy(this);
         
         _inputActions = new InputSystem_Actions();
-        _inputActions.Gameplay.Enable();
-        _inputActions.UI.Enable();
+        Gameplay.Enable();
+        UI.Enable();
     }
     
     private void OnDestroy()
     {
-        _inputActions.Gameplay.Disable();
-        _inputActions.UI.Disable();
+        Gameplay.Disable();
+        UI.Disable();
     }
 }

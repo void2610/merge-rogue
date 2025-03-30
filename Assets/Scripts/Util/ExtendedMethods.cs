@@ -52,8 +52,8 @@ public static class ExtendedMethods
             }
             
             // 各文字に初期オフセットと回転を設定
-            animator.SetCharOffset(i, new Vector3(0, -5, 0));
-            animator.SetCharRotation(i, new Vector3(0, 0, 10));
+            animator?.SetCharOffset(i, new Vector3(0, -5, 0));
+            animator?.SetCharRotation(i, new Vector3(0, 0, 10));
 
             // 改行の場合は待機時間を長めに
             if (text.text[i] == '\n')

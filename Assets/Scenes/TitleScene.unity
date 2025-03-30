@@ -553,7 +553,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 880.00977}
+  m_AnchoredPosition: {x: 0, y: 880.00006}
   m_SizeDelta: {x: 0, y: 1200}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &191197720
@@ -2726,8 +2726,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1870222280}
   m_HandleRect: {fileID: 1870222279}
   m_Direction: 2
-  m_Value: -0.000048828126
-  m_Size: 0.61524254
+  m_Value: -0.00000026537023
+  m_Size: 0.61639327
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3113,7 +3113,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 230.01122}
+  m_AnchoredPosition: {x: 0, y: 230.00006}
   m_SizeDelta: {x: 863, y: 600}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1181778950
@@ -3341,6 +3341,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 268676074}
     - target: {fileID: 3018424584535979395, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3018424584535979395, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
       propertyPath: markerImage
       value: 
       objectReference: {fileID: 586434434}
@@ -3348,6 +3352,10 @@ PrefabInstance:
       propertyPath: m_FirstSelected
       value: 
       objectReference: {fileID: 1569074203}
+    - target: {fileID: 6447313014586748290, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 9193171264711487427, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
       propertyPath: m_Name
       value: EventSystem
@@ -4421,8 +4429,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 465917899}
   m_HandleRect: {fileID: 465917897}
   m_Direction: 2
-  m_Value: -0.0000110973015
-  m_Size: 0.26605088
+  m_Value: 0
+  m_Size: 0.26654845
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
