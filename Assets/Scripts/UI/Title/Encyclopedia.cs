@@ -33,6 +33,10 @@ public class Encyclopedia : MonoBehaviour
         {
             TitleMenu.Instance.ShowDescriptionWindow(b, g);
         }, EventTriggerType.PointerEnter);
+        
+        var d = g.AddComponent<ShowDescription>();
+        d.isBall = true;
+        d.ballData = b;
     }
     
     private void SetRelicData(GameObject g, RelicData r)
@@ -45,6 +49,10 @@ public class Encyclopedia : MonoBehaviour
         {
             TitleMenu.Instance.ShowDescriptionWindow(r, g);
         }, EventTriggerType.PointerEnter);
+        
+        var d = g.AddComponent<ShowDescription>();
+        d.isBall = false;
+        d.relicData = r;
     }
     
     private void CreateSpacer(int count)
