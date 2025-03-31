@@ -64,7 +64,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] private StageType startStage;
     public readonly ReactiveProperty<int> CurrentStageCount = new(-1);
     private readonly List<List<StageNode>> _mapNodes = new();
-    public StageNode CurrentStage { get; private set; } = null;
+    public static StageNode CurrentStage { get; private set; } = null;
     private static readonly int _mainTex = Shader.PropertyToID("_MainTex");
     private Tween _torchTween;
     
@@ -241,7 +241,6 @@ public class StageManager : MonoBehaviour
         // ボスを倒したらマップを再生成して次のステージを設定
         if (CurrentStage?.Type == StageType.Boss)
         {
-            ContentProvider.Instance.AddAct();
             GenerateMap();
             DrawMap();
             SetButtonEvent();

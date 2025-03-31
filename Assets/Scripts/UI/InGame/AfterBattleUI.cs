@@ -94,6 +94,10 @@ public class AfterBattleUI : MonoBehaviour
     private void OnClickSkipAfterBattle()
     {
         UIManager.Instance.EnableCanvasGroup("AfterBattle", false);
+        
+        if(StageManager.CurrentStage.Type == StageType.Boss)
+            ContentProvider.Instance.AddAct();
+        
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
     }
     

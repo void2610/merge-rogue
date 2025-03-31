@@ -190,10 +190,11 @@ public class ContentProvider : MonoBehaviour
     
     private Object GetRandomObjectFromList(List<ContentDataList> contentLists)
     {
-        // アクトに基づいてリストを選択
+        // actに基づいてリストを選択
         if (contentLists.Count <= _act) _act = contentLists.Count - 1;
 
-        var contentDataList = contentLists[_act].list;
+        // TODO: actを実装したらここを変える
+        var contentDataList = contentLists[0].list;
         var totalProbability = contentDataList.Sum(d => d.probability);
         var randomPoint = GameManager.Instance.RandomRange(0.0f, totalProbability);
 

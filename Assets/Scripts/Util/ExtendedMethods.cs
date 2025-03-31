@@ -104,7 +104,9 @@ public static class ExtendedMethods
         if (!g || data == null) Debug.LogError("e");
         if(data is not BallData && data is not RelicData) Debug.LogError("e");
 
-        var d = g.AddComponent<ShowDescription>();
+        ShowDescription d;
+        if (!g.TryGetComponent<ShowDescription>(out d))
+            d = g.AddComponent<ShowDescription>();
         
         if (data is BallData ballData)
         {
