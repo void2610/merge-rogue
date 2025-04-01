@@ -34,6 +34,8 @@ public class Shop : MonoBehaviour
         {
             _itemObjects[i].GetComponent<Button>().interactable = true;
         }
+
+        removeButton.GetComponent<Button>().interactable = true;
         removeButton.transform.Find("Price").GetComponent<TextMeshProUGUI>().text = ContentProvider.GetBallRemovePrice().ToString();
         
         _currentItems.Clear();

@@ -71,6 +71,12 @@ public class UIManager : MonoBehaviour
         ResetSelectedGameObject();
     }
 
+    public void ToggleCursorState(CursorStateType state)
+    {
+        _cursorState = state;
+        ResetSelectedGameObject();
+    }
+    
     public void EnableCanvasGroup(string canvasName, bool e) => EnableCanvasGroupAsync(canvasName, e).Forget();
     public bool IsEnableCanvasGroup(string canvasName) => canvasGroups.Find(c => c.name == canvasName).alpha > 0;
     public bool IsAnyCanvasGroupEnabled() => canvasGroups.Exists(c => c.alpha > 0);

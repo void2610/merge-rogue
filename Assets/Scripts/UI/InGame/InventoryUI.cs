@@ -95,7 +95,7 @@ public class InventoryUI : MonoBehaviour
     {
         if (s == InventoryUIState.Disabled) return;
         _state = s;
-        CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(_items[0]);
+        UIManager.Instance.ToggleCursorState(CursorStateType.Ball);
     }
     
     private void SetEvent(GameObject g, int index, BallBase ballBase)
