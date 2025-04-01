@@ -436,7 +436,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""VirtualMouse"",
+                    ""name"": ""ToggleVirtualMouse"",
                     ""type"": ""Button"",
                     ""id"": ""923b10bc-a612-4566-a2e1-b9c90769516f"",
                     ""expectedControlType"": """",
@@ -448,6 +448,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""name"": ""Scroll"",
                     ""type"": ""PassThrough"",
                     ""id"": ""bd3f638e-df2c-4014-82eb-c116e06a99cb"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleCursorState"",
+                    ""type"": ""Button"",
+                    ""id"": ""b018cb28-0489-4772-b512-c5a5595a8d95"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1034,7 +1043,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""VirtualMouse"",
+                    ""action"": ""ToggleVirtualMouse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1045,7 +1054,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""VirtualMouse"",
+                    ""action"": ""ToggleVirtualMouse"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1068,6 +1077,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Scroll"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c6f63a71-8359-4dea-8558-7544e84d6d59"",
+                    ""path"": ""<Keyboard>/n"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleCursorState"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b07fc274-5358-459c-915f-1992ed83351a"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleCursorState"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1099,8 +1130,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_Skip = m_UI.FindAction("Skip", throwIfNotFound: true);
         m_UI_MousePosition = m_UI.FindAction("MousePosition", throwIfNotFound: true);
         m_UI_ResetCursor = m_UI.FindAction("ResetCursor", throwIfNotFound: true);
-        m_UI_VirtualMouse = m_UI.FindAction("VirtualMouse", throwIfNotFound: true);
+        m_UI_ToggleVirtualMouse = m_UI.FindAction("ToggleVirtualMouse", throwIfNotFound: true);
         m_UI_Scroll = m_UI.FindAction("Scroll", throwIfNotFound: true);
+        m_UI_ToggleCursorState = m_UI.FindAction("ToggleCursorState", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1336,8 +1368,9 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Skip;
     private readonly InputAction m_UI_MousePosition;
     private readonly InputAction m_UI_ResetCursor;
-    private readonly InputAction m_UI_VirtualMouse;
+    private readonly InputAction m_UI_ToggleVirtualMouse;
     private readonly InputAction m_UI_Scroll;
+    private readonly InputAction m_UI_ToggleCursorState;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1406,13 +1439,17 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @ResetCursor => m_Wrapper.m_UI_ResetCursor;
         /// <summary>
-        /// Provides access to the underlying input action "UI/VirtualMouse".
+        /// Provides access to the underlying input action "UI/ToggleVirtualMouse".
         /// </summary>
-        public InputAction @VirtualMouse => m_Wrapper.m_UI_VirtualMouse;
+        public InputAction @ToggleVirtualMouse => m_Wrapper.m_UI_ToggleVirtualMouse;
         /// <summary>
         /// Provides access to the underlying input action "UI/Scroll".
         /// </summary>
         public InputAction @Scroll => m_Wrapper.m_UI_Scroll;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/ToggleCursorState".
+        /// </summary>
+        public InputAction @ToggleCursorState => m_Wrapper.m_UI_ToggleCursorState;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1481,12 +1518,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ResetCursor.started += instance.OnResetCursor;
             @ResetCursor.performed += instance.OnResetCursor;
             @ResetCursor.canceled += instance.OnResetCursor;
-            @VirtualMouse.started += instance.OnVirtualMouse;
-            @VirtualMouse.performed += instance.OnVirtualMouse;
-            @VirtualMouse.canceled += instance.OnVirtualMouse;
+            @ToggleVirtualMouse.started += instance.OnToggleVirtualMouse;
+            @ToggleVirtualMouse.performed += instance.OnToggleVirtualMouse;
+            @ToggleVirtualMouse.canceled += instance.OnToggleVirtualMouse;
             @Scroll.started += instance.OnScroll;
             @Scroll.performed += instance.OnScroll;
             @Scroll.canceled += instance.OnScroll;
+            @ToggleCursorState.started += instance.OnToggleCursorState;
+            @ToggleCursorState.performed += instance.OnToggleCursorState;
+            @ToggleCursorState.canceled += instance.OnToggleCursorState;
         }
 
         /// <summary>
@@ -1540,12 +1580,15 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ResetCursor.started -= instance.OnResetCursor;
             @ResetCursor.performed -= instance.OnResetCursor;
             @ResetCursor.canceled -= instance.OnResetCursor;
-            @VirtualMouse.started -= instance.OnVirtualMouse;
-            @VirtualMouse.performed -= instance.OnVirtualMouse;
-            @VirtualMouse.canceled -= instance.OnVirtualMouse;
+            @ToggleVirtualMouse.started -= instance.OnToggleVirtualMouse;
+            @ToggleVirtualMouse.performed -= instance.OnToggleVirtualMouse;
+            @ToggleVirtualMouse.canceled -= instance.OnToggleVirtualMouse;
             @Scroll.started -= instance.OnScroll;
             @Scroll.performed -= instance.OnScroll;
             @Scroll.canceled -= instance.OnScroll;
+            @ToggleCursorState.started -= instance.OnToggleCursorState;
+            @ToggleCursorState.performed -= instance.OnToggleCursorState;
+            @ToggleCursorState.canceled -= instance.OnToggleCursorState;
         }
 
         /// <summary>
@@ -1728,12 +1771,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnResetCursor(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "VirtualMouse" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "ToggleVirtualMouse" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnVirtualMouse(InputAction.CallbackContext context);
+        void OnToggleVirtualMouse(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "Scroll" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
@@ -1741,5 +1784,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnScroll(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ToggleCursorState" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnToggleCursorState(InputAction.CallbackContext context);
     }
 }

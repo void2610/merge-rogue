@@ -1171,7 +1171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cfd2797a89f44139de4718491154f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorType: 1
+  cursorIconType: 1
 --- !u!114 &114456729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4807,7 +4807,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cfd2797a89f44139de4718491154f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorType: 1
+  cursorIconType: 1
 --- !u!114 &502658204
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11687,7 +11687,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cfd2797a89f44139de4718491154f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorType: 1
+  cursorIconType: 1
 --- !u!114 &707017154
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19680,7 +19680,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cfd2797a89f44139de4718491154f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorType: 1
+  cursorIconType: 1
 --- !u!114 &1466561441
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25074,7 +25074,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: rightPos.x
-      value: 280
+      value: 30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -26065,7 +26065,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cfd2797a89f44139de4718491154f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorType: 1
+  cursorIconType: 1
 --- !u!1 &7003774174689937118
 GameObject:
   m_ObjectHideFlags: 0
@@ -26256,7 +26256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cfd2797a89f44139de4718491154f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorType: 1
+  cursorIconType: 1
 --- !u!224 &8189032139786980170
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26393,7 +26393,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cfd2797a89f44139de4718491154f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorType: 1
+  cursorIconType: 1
 --- !u!1 &8857985571489895784
 GameObject:
   m_ObjectHideFlags: 0
@@ -26423,7 +26423,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cfd2797a89f44139de4718491154f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorType: 1
+  cursorIconType: 1
 --- !u!114 &9088715935136075098
 MonoBehaviour:
   m_ObjectHideFlags: 0

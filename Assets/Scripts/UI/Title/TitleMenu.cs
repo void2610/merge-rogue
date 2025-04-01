@@ -196,7 +196,7 @@ public class TitleMenu : MonoBehaviour
         
         if (InputProvider.Instance.UI.ResetCursor.triggered)
             ResetSelectedGameObject();
-        if (InputProvider.Instance.UI.VirtualMouse.triggered)
+        if (InputProvider.Instance.UI.ToggleVirtualMouse.triggered)
             ToggleVirtualMouse();
     }
 }

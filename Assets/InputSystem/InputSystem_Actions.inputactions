@@ -350,7 +350,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "VirtualMouse",
+                    "name": "ToggleVirtualMouse",
                     "type": "Button",
                     "id": "923b10bc-a612-4566-a2e1-b9c90769516f",
                     "expectedControlType": "",
@@ -362,6 +362,15 @@
                     "name": "Scroll",
                     "type": "PassThrough",
                     "id": "bd3f638e-df2c-4014-82eb-c116e06a99cb",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "ToggleCursorState",
+                    "type": "Button",
+                    "id": "b018cb28-0489-4772-b512-c5a5595a8d95",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -948,7 +957,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "VirtualMouse",
+                    "action": "ToggleVirtualMouse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -959,7 +968,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "VirtualMouse",
+                    "action": "ToggleVirtualMouse",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -982,6 +991,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Scroll",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c6f63a71-8359-4dea-8558-7544e84d6d59",
+                    "path": "<Keyboard>/n",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleCursorState",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b07fc274-5358-459c-915f-1992ed83351a",
+                    "path": "<Gamepad>/leftStickPress",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "ToggleCursorState",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

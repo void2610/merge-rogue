@@ -6,13 +6,13 @@ public class MouseCursorManager : MonoBehaviour
 {
     public static MouseCursorManager Instance { get; private set; }
     
-    [SerializeField] private SerializableDictionary<CursorType, Texture2D> cursorTextures;
-    [SerializeField] private SerializableDictionary<CursorType, Sprite> cursorSprites;
+    [SerializeField] private SerializableDictionary<CursorIconType, Texture2D> cursorTextures;
+    [SerializeField] private SerializableDictionary<CursorIconType, Sprite> cursorSprites;
     
-    public void SetCursor(CursorType type)
+    public void SetCursor(CursorIconType iconType)
     {
-        Cursor.SetCursor(cursorTextures[type], Vector2.zero, CursorMode.Auto); 
-        FindFirstObjectByType<VirtualMouseInput>().GetComponent<Image>().sprite = cursorSprites[type];
+        Cursor.SetCursor(cursorTextures[iconType], Vector2.zero, CursorMode.Auto); 
+        FindFirstObjectByType<VirtualMouseInput>().GetComponent<Image>().sprite = cursorSprites[iconType];
     }
     
     private void Awake()
@@ -20,6 +20,6 @@ public class MouseCursorManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else Destroy(this);
         
-        SetCursor(CursorType.Default);
+        SetCursor(CursorIconType.Default);
     }
 }

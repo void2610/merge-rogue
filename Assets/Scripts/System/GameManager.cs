@@ -210,8 +210,10 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.OnClickTutorialButton();
         if (InputProvider.Instance.UI.ResetCursor.triggered)
             UIManager.Instance.ResetSelectedGameObject();
-        if (InputProvider.Instance.UI.VirtualMouse.triggered)
+        if (InputProvider.Instance.UI.ToggleVirtualMouse.triggered)
             UIManager.Instance.ToggleVirtualMouse();
+        if (InputProvider.Instance.UI.ToggleCursorState.triggered)
+            CanvasGroupNavigationLimiter.ToggleCursorState();
     }
     
     private void OnSceneUnloaded(Scene scene)

@@ -1,11 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum CursorType
+public enum CursorIconType
 {
     Default,
     Select,
     Help,
+}
+
+public enum CursorStateType
+{
+    Merge,
+    Ball,
+    Relic,
+    StatusEffect,
 }
 
 public enum BgmType

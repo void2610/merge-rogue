@@ -22,6 +22,17 @@ public static class ExtendedMethods
     }
     
     /// <summary>
+    /// enumを順番に切り替えた結果を返す 
+    /// </summary>
+    public static T Toggle<T>(this T current) where T : System.Enum
+    {
+        var values = (T[])System.Enum.GetValues(current.GetType());
+        var index = System.Array.IndexOf(values, current);
+        var nextIndex = (index + 1) % values.Length;
+        return values[nextIndex];
+    }
+    
+    /// <summary>
     /// DOTweenの警告を無視する拡張メソッド
     /// </summary>
     public static void Forget(this Tween tween)
