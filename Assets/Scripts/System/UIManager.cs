@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.UI;
 using TMPro;
 using DG.Tweening;
 using R3;
@@ -35,6 +37,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Shop shop;
     [SerializeField] private Treasure treasure;
     [SerializeField] private GameObject mergeArea;
+    [SerializeField] private GameObject virtualMouse;
 
     public bool IsPaused { get; private set; } = false;
     public bool IsMapOpened { get; private set; } = false;
@@ -76,6 +79,24 @@ public class UIManager : MonoBehaviour
         else
         {
             CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(mergeArea);
+        }
+    }
+    
+    public void ToggleVirtualMouse()
+    {
+        if (virtualMouse.GetComponent<Image>().enabled)
+        {
+            virtualMouse.GetComponent<Image>().enabled = false;
+            // 仮想マウスデバイスの入力更新を無効化
+            InputSystem.DisableDevice(virtualMouse.GetComponent<VirtualMouseInput>().virtualMouse);
+            EventSystem.current.sendNavigationEvents = true;
+        }
+        else
+        {
+            virtualMouse.GetComponent<Image>().enabled = true;
+            // 仮想マウスデバイスの入力更新を有効化
+            InputSystem.EnableDevice(virtualMouse.GetComponent<VirtualMouseInput>().virtualMouse);
+            EventSystem.current.sendNavigationEvents = false;
         }
     }
     
@@ -196,6 +217,8 @@ public class UIManager : MonoBehaviour
             if(canvasGroup.name != "Treasure")
                 EnableCanvasGroup(canvasGroup.name, false);
         }
+        
+        ToggleVirtualMouse();
     }
 
     private void Start()

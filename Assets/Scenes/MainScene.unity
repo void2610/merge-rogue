@@ -2391,6 +2391,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &260402606 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4708163982929759418, guid: c61584230ac814755b2c9093a1616784, type: 3}
+  m_PrefabInstance: {fileID: 885543999}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &261970354 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6954130584768704883, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
@@ -10440,6 +10445,7 @@ MonoBehaviour:
   shop: {fileID: 1941433902}
   treasure: {fileID: 1607858726}
   mergeArea: {fileID: 502658201}
+  virtualMouse: {fileID: 260402606}
   remainingLevelUps: 0
 --- !u!114 &567445623
 MonoBehaviour:

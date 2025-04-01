@@ -74,7 +74,7 @@ MonoBehaviour:
   m_LeftClickAction: {fileID: 7423022053566597026, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
   m_MiddleClickAction: {fileID: 0}
   m_RightClickAction: {fileID: 9033324786063241920, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-  m_ScrollWheelAction: {fileID: 0}
+  m_ScrollWheelAction: {fileID: -63555222925372694, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
   m_TrackedDevicePositionAction: {fileID: 0}
   m_TrackedDeviceOrientationAction: {fileID: 0}
   m_DeselectOnBackgroundClick: 1
@@ -111,5 +111,6 @@ MonoBehaviour:
   marker: {fileID: 0}
   markerImage: {fileID: 0}
   uiCamera: {fileID: 0}
-  offset: {x: 10, y: 5}
+  magnification: 4
+  offset: {x: 0, y: 0}
   tweenDuration: 0.1

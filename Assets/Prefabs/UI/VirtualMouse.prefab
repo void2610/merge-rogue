@@ -223,6 +223,46 @@ MonoBehaviour:
         m_Groups: 
         m_Action: Stick
         m_Flags: 8
+      - m_Name: DPad
+        m_Id: 0848f280-148c-4230-8667-6796480c839c
+        m_Path: 2DVector
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Stick
+        m_Flags: 4
+      - m_Name: up
+        m_Id: e0d702eb-ae84-42ce-a133-f123a8624f4b
+        m_Path: <Gamepad>/dpad/up
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Stick
+        m_Flags: 8
+      - m_Name: down
+        m_Id: 27ac9b81-e02c-4a3e-9c88-9f470bb91d7b
+        m_Path: <Gamepad>/dpad/down
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Stick
+        m_Flags: 8
+      - m_Name: left
+        m_Id: 11dc0417-0294-4393-8efe-c0b964484c32
+        m_Path: <Gamepad>/dpad/left
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Stick
+        m_Flags: 8
+      - m_Name: right
+        m_Id: 1ddf42cd-80cc-47f5-930f-73e1cc307cb5
+        m_Path: <Gamepad>/dpad/right
+        m_Interactions: 
+        m_Processors: 
+        m_Groups: 
+        m_Action: Stick
+        m_Flags: 8
       m_Flags: 0
     m_Reference: {fileID: 0}
   m_LeftButtonAction:
