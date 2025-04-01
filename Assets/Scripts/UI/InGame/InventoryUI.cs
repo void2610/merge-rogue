@@ -109,6 +109,17 @@ public class InventoryUI : MonoBehaviour
         }, EventTriggerType.PointerEnter);
         
         g.AddDescriptionWindowEvent(ballBase.Data);
+        
+        // ナビゲーションを手動設定
+        var nav = g.GetComponent<Button>().navigation;
+        
+        nav.mode = Navigation.Mode.Explicit;
+        nav.selectOnDown = null;
+        nav.selectOnUp = null;
+        if (index <= 0) nav.selectOnLeft = null;
+        else nav.selectOnLeft = _items[index - 1].GetComponent<Button>();
+        if (index >= _items.Count) nav.selectOnRight = null;
+        else nav.selectOnRight = _items[index].GetComponent<Button>();
     }
 
     private async UniTaskVoid OnClickBall(int index)
