@@ -38,6 +38,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Treasure treasure;
     [SerializeField] private GameObject mergeArea;
     [SerializeField] private GameObject virtualMouse;
+    [SerializeField] private Transform ballUIContainer;
+    [SerializeField] private Transform relicContainer;
+    [SerializeField] private Transform statusEffectContainer;
+    
+    private static CursorStateType _cursorState = CursorStateType.Merge;
 
     public bool IsPaused { get; private set; } = false;
     public bool IsMapOpened { get; private set; } = false;
@@ -59,6 +64,12 @@ public class UIManager : MonoBehaviour
         pauseSeedText.SetText(seed);
         gameoverSeedText.SetText(seed);
     }
+    
+    public void ToggleCursorState()
+    {
+        _cursorState = _cursorState.Toggle();
+        ResetSelectedGameObject();
+    }
 
     public void EnableCanvasGroup(string canvasName, bool e) => EnableCanvasGroupAsync(canvasName, e).Forget();
     public bool IsEnableCanvasGroup(string canvasName) => canvasGroups.Find(c => c.name == canvasName).alpha > 0;
@@ -78,7 +89,16 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(mergeArea);
+            // ウィンドウがない時はcursorStateに従って選択をリセット
+            var target = _cursorState switch
+            {
+                CursorStateType.Merge => mergeArea,
+                CursorStateType.Ball => ballUIContainer.GetChild(0).gameObject,
+                CursorStateType.Relic => relicContainer.GetChild(0).gameObject,
+                CursorStateType.StatusEffect => statusEffectContainer.GetChild(0).gameObject,
+                _ => null,
+            };
+            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(target);
         }
     }
     

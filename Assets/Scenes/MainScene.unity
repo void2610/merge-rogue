@@ -10446,6 +10446,9 @@ MonoBehaviour:
   treasure: {fileID: 1607858726}
   mergeArea: {fileID: 502658201}
   virtualMouse: {fileID: 260402606}
+  ballUIContainer: {fileID: 725906729}
+  relicContainer: {fileID: 1029647713}
+  statusEffectContainer: {fileID: 1888057322}
   remainingLevelUps: 0
 --- !u!114 &567445623
 MonoBehaviour:

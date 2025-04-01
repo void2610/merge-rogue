@@ -213,7 +213,7 @@ public class GameManager : MonoBehaviour
         if (InputProvider.Instance.UI.ToggleVirtualMouse.triggered)
             UIManager.Instance.ToggleVirtualMouse();
         if (InputProvider.Instance.UI.ToggleCursorState.triggered)
-            CanvasGroupNavigationLimiter.ToggleCursorState();
+            UIManager.Instance.ToggleCursorState();
     }
     
     private void OnSceneUnloaded(Scene scene)

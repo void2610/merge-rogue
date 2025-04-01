@@ -17,18 +17,11 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
 
     private GameObject _previousSelected;
     private static bool _allowProgrammaticChange = false;
-    private static CursorStateType _cursorState = CursorStateType.Merge;
 
     public static void SetSelectedGameObjectSafe(GameObject go)
     {
         _allowProgrammaticChange = true;
         EventSystem.current.SetSelectedGameObject(go);
-    }
-
-    public static void ToggleCursorState()
-    {
-        _cursorState = _cursorState.Toggle();
-        Debug.Log(_cursorState);
     }
 
     private void Awake()
