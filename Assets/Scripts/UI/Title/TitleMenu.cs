@@ -143,8 +143,7 @@ public class TitleMenu : MonoBehaviour
             return;
         }
         
-        // 仮想マウスを無効化
-        ToggleVirtualMouse();
+       
        
         foreach (var canvasGroup in canvasGroups)
         {
@@ -185,6 +184,10 @@ public class TitleMenu : MonoBehaviour
 
         fadeImage.color = new Color(0, 0, 0, 1);
         fadeImage.DOFade(0.0f, 1.0f);
+        
+        // 仮想マウスを無効化
+        ToggleVirtualMouse(); 
+        
         Debug.Log("TitleMenu Start");
     }
 
