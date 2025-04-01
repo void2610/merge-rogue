@@ -8,15 +8,18 @@ public class UIHoverSelection : MonoBehaviour
 {
     [SerializeField] private GameObject currentSelectedGameObject;
     [SerializeField] private List<string> ignoreTags = new();
-    
+
     private void Update()
     {
-        if (!EventSystem.current) return;
+        if (!EventSystem.current)
+            return;
 
-        // マウスの位置を取得
+        // 仮想マウスがあればそれを優先して使用、なければ物理マウス
+        var pointerPosition = InputProvider.Instance.GetMousePosition();
+
         var pointerData = new PointerEventData(EventSystem.current)
         {
-            position = Mouse.current.position.ReadValue()
+            position = pointerPosition
         };
 
         var results = new List<RaycastResult>();
@@ -27,7 +30,8 @@ public class UIHoverSelection : MonoBehaviour
             var hoveredObject = result.gameObject;
 
             // 特定のタグを持つオブジェクトは無視
-            if (ignoreTags.Contains(hoveredObject.tag)) break;
+            if (ignoreTags.Contains(hoveredObject.tag))
+                break;
 
             // 最初に適切なUIを見つけたら、それを選択
             if (EventSystem.current.currentSelectedGameObject != hoveredObject)

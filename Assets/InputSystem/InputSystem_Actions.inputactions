@@ -7,7 +7,7 @@
             "actions": [
                 {
                     "name": "MousePosition",
-                    "type": "Value",
+                    "type": "PassThrough",
                     "id": "8afd7e9f-559a-45be-be67-87baa3207f3d",
                     "expectedControlType": "Vector2",
                     "processors": "",
@@ -16,7 +16,7 @@
                 },
                 {
                     "name": "LeftClick",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "b991ddc6-7058-4b17-a5fa-c9a0599d06ed",
                     "expectedControlType": "",
                     "processors": "",
@@ -25,7 +25,7 @@
                 },
                 {
                     "name": "RightClick",
-                    "type": "Button",
+                    "type": "PassThrough",
                     "id": "dd9b65a5-c40a-4c7d-8e7f-50ab211a6359",
                     "expectedControlType": "",
                     "processors": "",
@@ -330,15 +330,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "MousePosition",
-                    "type": "Value",
-                    "id": "af8b2359-fe43-4665-9965-f045bc7bc54a",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 },
                 {
                     "name": "ResetCursor",
@@ -650,17 +641,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "Cancel",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "4984d164-09b0-4403-8ae4-5a157a058b57",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "MousePosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

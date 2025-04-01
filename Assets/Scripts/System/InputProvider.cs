@@ -7,7 +7,7 @@ public class InputProvider : MonoBehaviour
     public InputSystem_Actions.UIActions UI => _inputActions.UI;
     private InputSystem_Actions _inputActions;
     
-    public Vector2 GetMousePosition () => _inputActions.UI.MousePosition.ReadValue<Vector2>();
+    public Vector2 GetMousePosition () => _inputActions.Gameplay.MousePosition.ReadValue<Vector2>();
     public bool IsSkipButtonPressed() => _inputActions.UI.Skip.triggered;
     
     private void Awake()

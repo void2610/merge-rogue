@@ -47,14 +47,14 @@ public class TitleMenu : MonoBehaviour
         {
             virtualMouse.GetComponent<Image>().enabled = false;
             // 仮想マウスデバイスの入力更新を無効化
-            InputSystem.DisableDevice(virtualMouse.GetComponent<VirtualMouseInput>().virtualMouse);
+            InputSystem.DisableDevice(virtualMouse.GetComponent<MyVirtualMouseInput>().virtualMouse);
             EventSystem.current.sendNavigationEvents = true;
         }
         else
         {
             virtualMouse.GetComponent<Image>().enabled = true;
             // 仮想マウスデバイスの入力更新を有効化
-            InputSystem.EnableDevice(virtualMouse.GetComponent<VirtualMouseInput>().virtualMouse);
+            InputSystem.EnableDevice(virtualMouse.GetComponent<MyVirtualMouseInput>().virtualMouse);
             EventSystem.current.sendNavigationEvents = false;
         }
     }

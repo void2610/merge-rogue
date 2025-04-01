@@ -93,7 +93,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""MousePosition"",
-                    ""type"": ""Value"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""8afd7e9f-559a-45be-be67-87baa3207f3d"",
                     ""expectedControlType"": ""Vector2"",
                     ""processors"": """",
@@ -102,7 +102,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""LeftClick"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""b991ddc6-7058-4b17-a5fa-c9a0599d06ed"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -111,7 +111,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""RightClick"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""dd9b65a5-c40a-4c7d-8e7f-50ab211a6359"",
                     ""expectedControlType"": """",
                     ""processors"": """",
@@ -416,15 +416,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""MousePosition"",
-                    ""type"": ""Value"",
-                    ""id"": ""af8b2359-fe43-4665-9965-f045bc7bc54a"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""ResetCursor"",
@@ -736,17 +727,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Cancel"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""4984d164-09b0-4403-8ae4-5a157a058b57"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""MousePosition"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -1128,7 +1108,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_OpenPause = m_UI.FindAction("OpenPause", throwIfNotFound: true);
         m_UI_ChangeSpeed = m_UI.FindAction("ChangeSpeed", throwIfNotFound: true);
         m_UI_Skip = m_UI.FindAction("Skip", throwIfNotFound: true);
-        m_UI_MousePosition = m_UI.FindAction("MousePosition", throwIfNotFound: true);
         m_UI_ResetCursor = m_UI.FindAction("ResetCursor", throwIfNotFound: true);
         m_UI_ToggleVirtualMouse = m_UI.FindAction("ToggleVirtualMouse", throwIfNotFound: true);
         m_UI_Scroll = m_UI.FindAction("Scroll", throwIfNotFound: true);
@@ -1366,7 +1345,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_OpenPause;
     private readonly InputAction m_UI_ChangeSpeed;
     private readonly InputAction m_UI_Skip;
-    private readonly InputAction m_UI_MousePosition;
     private readonly InputAction m_UI_ResetCursor;
     private readonly InputAction m_UI_ToggleVirtualMouse;
     private readonly InputAction m_UI_Scroll;
@@ -1430,10 +1408,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "UI/Skip".
         /// </summary>
         public InputAction @Skip => m_Wrapper.m_UI_Skip;
-        /// <summary>
-        /// Provides access to the underlying input action "UI/MousePosition".
-        /// </summary>
-        public InputAction @MousePosition => m_Wrapper.m_UI_MousePosition;
         /// <summary>
         /// Provides access to the underlying input action "UI/ResetCursor".
         /// </summary>
@@ -1512,9 +1486,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Skip.started += instance.OnSkip;
             @Skip.performed += instance.OnSkip;
             @Skip.canceled += instance.OnSkip;
-            @MousePosition.started += instance.OnMousePosition;
-            @MousePosition.performed += instance.OnMousePosition;
-            @MousePosition.canceled += instance.OnMousePosition;
             @ResetCursor.started += instance.OnResetCursor;
             @ResetCursor.performed += instance.OnResetCursor;
             @ResetCursor.canceled += instance.OnResetCursor;
@@ -1574,9 +1545,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Skip.started -= instance.OnSkip;
             @Skip.performed -= instance.OnSkip;
             @Skip.canceled -= instance.OnSkip;
-            @MousePosition.started -= instance.OnMousePosition;
-            @MousePosition.performed -= instance.OnMousePosition;
-            @MousePosition.canceled -= instance.OnMousePosition;
             @ResetCursor.started -= instance.OnResetCursor;
             @ResetCursor.performed -= instance.OnResetCursor;
             @ResetCursor.canceled -= instance.OnResetCursor;
@@ -1756,13 +1724,6 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnSkip(InputAction.CallbackContext context);
-        /// <summary>
-        /// Method invoked when associated input action "MousePosition" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnMousePosition(InputAction.CallbackContext context);
         /// <summary>
         /// Method invoked when associated input action "ResetCursor" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>

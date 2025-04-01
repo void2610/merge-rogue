@@ -12,7 +12,7 @@ public class MouseCursorManager : MonoBehaviour
     public void SetCursor(CursorIconType iconType)
     {
         Cursor.SetCursor(cursorTextures[iconType], Vector2.zero, CursorMode.Auto); 
-        FindFirstObjectByType<VirtualMouseInput>().GetComponent<Image>().sprite = cursorSprites[iconType];
+        FindFirstObjectByType<MyVirtualMouseInput>().GetComponent<Image>().sprite = cursorSprites[iconType];
     }
     
     private void Awake()
