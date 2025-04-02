@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -5,6 +6,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.DualShock;
 // using UnityEngine.InputSystem.Switch;
 using UnityEngine.InputSystem.XInput;
@@ -18,15 +20,89 @@ public class InputGuide : MonoBehaviour
         Navigate,
     }
     
-    //InputActionReferenceはInputActionAsset内に存在する特定のInputActionへの参照をシリアライズできる
+    public enum InputSchemeType
+    {
+        KeyboardAndMouse,
+        Gamepad
+    }
+    
     [SerializeField] private GameObject inputGuidePrefab;
     [SerializeField] private TMP_SpriteAsset spriteAsset;
     [SerializeField] private Vector2 leftPos;
     [SerializeField] private Vector2 rightPos;
     [SerializeField] private float alignment;
     
-    private static readonly StringBuilder _tempStringBuilder = new();
+    public event Action<InputSchemeType> OnSchemeChanged;
+    private Action<InputSchemeType> _onSchemeChanged;
     private InputGuideType _currentType = InputGuideType.Navigate;
+    private InputSchemeType _scheme = InputSchemeType.KeyboardAndMouse;
+
+    public InputSchemeType Scheme
+    {
+        get => _scheme;
+        private set
+        {
+            if (_scheme == value) return;
+            _scheme = value;
+            OnSchemeChanged?.Invoke(_scheme);
+        }
+    }
+
+    // デバイスからの生の入力を受け取って現在のスキーマを更新する
+    private void OnEvent(InputEventPtr eventPtr, InputDevice device)
+    {
+        var eventType = eventPtr.type;
+        if (eventType != StateEvent.Type && eventType != DeltaStateEvent.Type)
+            return;
+
+        var anyControl = eventPtr.EnumerateControls(
+            InputControlExtensions.Enumerate.IncludeNonLeafControls |
+            InputControlExtensions.Enumerate.IncludeSyntheticControls |
+            InputControlExtensions.Enumerate.IgnoreControlsInCurrentState |
+            InputControlExtensions.Enumerate.IgnoreControlsInDefaultState
+        ).GetEnumerator().MoveNext();
+
+        if (!anyControl) return;
+
+        Scheme = device switch
+        {
+            Keyboard or Mouse => InputSchemeType.KeyboardAndMouse,
+            Gamepad => InputSchemeType.Gamepad,
+            _ => Scheme
+        };
+    }
+    
+    private static string GetDeviceIconGroup(InputDevice device)
+    {
+        return device switch
+        {
+            Keyboard => "Keyboard",
+            Mouse => "Mouse",
+            XInputController => "XInputController",
+            DualShockGamepad => "DualShockGamepad",
+            // SwitchProControllerHID => "SwitchProController",
+            _ => null
+        };
+    }
+    
+    private void OnEnable()
+    {
+        UpdateText(_currentType);
+        OnSchemeChanged += _onSchemeChanged = _ => UpdateText(_currentType);
+        
+        InputSystem.onEvent += OnEvent;
+    }
+
+    private void OnDisable()
+    {
+        if (_onSchemeChanged != null)
+        {
+            OnSchemeChanged -= _onSchemeChanged;
+            _onSchemeChanged = null;
+        }
+        
+        InputSystem.onEvent -= OnEvent;
+    }
 
     private void Start()
     {
@@ -106,31 +182,5 @@ public class InputGuide : MonoBehaviour
         navigaTetexts.Add("選択: <sprite name=\"Keyboard-leftArrow\"><sprite name=\"Keyboard-rightArrow\">/<sprite name=\"Keyboard-a\"><sprite name=\"Keyboard-d\">/<sprite name=\"Mouse-position\">");
         navigaTetexts.Add("決定: <sprite name=\"Keyboard-space\">/<sprite name=\"Keyboard-space\">/<sprite name=\"Mouse-leftButton\">");
         return navigaTetexts;
-    }
-    
-    private int GetSpriteCharacterIndex(string name)
-    {
-        var t = spriteAsset.spriteCharacterTable.FirstOrDefault(character => character.name == name);
-        return spriteAsset.spriteCharacterTable.IndexOf(t);
-    }
-
-    private static string GetDeviceIconGroup(InputDevice device)
-    {
-        return device switch
-        {
-            Keyboard => "Keyboard",
-            Mouse => "Mouse",
-            XInputController => "XInputController",
-            DualShockGamepad => "DualShockGamepad",
-            // SwitchProControllerHID => "SwitchProController",
-            _ => null
-        };
-    }
-    
-    private int GetTextLength(string inputText)
-    {
-        var pattern = @"<sprite\s+name=""[^""]*"">";
-        var replacement = "<sprite>";
-        return Regex.Replace(inputText, pattern, replacement).Length;
     }
 }
