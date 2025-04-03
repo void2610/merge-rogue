@@ -25082,10 +25082,10 @@ PrefabInstance:
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: spriteAsset
       value: 
-      objectReference: {fileID: 11400000, guid: e7710c76791a7438fb7ee7c3124f7e48, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: mergeGuides.Array.size
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: mergeGuideData.Array.size
@@ -25097,15 +25097,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: navigationGuides.Array.size
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: mergeGuides.Array.data[0].name
-      value: "\u79FB\u52D5"
+      value: "\u30B9\u30AD\u30C3\u30D7"
       objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: mergeGuides.Array.data[1].name
-      value: "\u30C9\u30ED\u30C3\u30D7"
+      value: "\u30B9\u30AD\u30C3\u30D7"
       objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: mergeGuides.Array.data[2].name
@@ -25114,11 +25114,11 @@ PrefabInstance:
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: mergeGuides.Array.data[0].action
       value: 
-      objectReference: {fileID: 7038775932474874882, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
+      objectReference: {fileID: 9033324786063241920, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: mergeGuides.Array.data[1].action
       value: 
-      objectReference: {fileID: 7423022053566597026, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
+      objectReference: {fileID: 9033324786063241920, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: mergeGuides.Array.data[2].action
       value: 
@@ -25153,11 +25153,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: navigationGuides.Array.data[0].name
-      value: "\u9078\u629E"
+      value: "\u30AD\u30E3\u30F3\u30BB\u30EB"
       objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: navigationGuides.Array.data[1].name
-      value: "\u6C7A\u5B9A"
+      value: "\u30AD\u30E3\u30F3\u30BB\u30EB"
       objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: navigationGuides.Array.data[2].name
@@ -25194,11 +25194,11 @@ PrefabInstance:
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: navigationGuides.Array.data[0].action
       value: 
-      objectReference: {fileID: -3610790561787528987, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
+      objectReference: {fileID: -5678864026237735204, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: navigationGuides.Array.data[1].action
       value: 
-      objectReference: {fileID: -8833823302840024419, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
+      objectReference: {fileID: -5678864026237735204, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: navigationGuides.Array.data[2].action
       value: 

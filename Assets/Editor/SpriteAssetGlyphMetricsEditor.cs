@@ -181,7 +181,11 @@ public class SpriteAssetSelectiveEditor : EditorWindow
         {
             // IDの上書き (注意: 既存の文字コードと重複すると不整合が起きる可能性がある)
             if (overrideID)
-                character.unicode = newID; 
+                character.unicode = newID;
+
+            // SpriteCharacter の Scale を上書き
+            // if (overrideScale)
+            //     character.scale = newScale;
         }
 
         // Lookupテーブルを更新

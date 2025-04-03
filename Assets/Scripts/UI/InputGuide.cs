@@ -123,29 +123,30 @@ public class InputGuide : MonoBehaviour
         foreach(Transform child in this.transform) Destroy(child.gameObject);
         
         _currentType = type;
+        var t = GetOperationDisplay(_currentType);
         switch (type)
         {
             case InputGuideType.Merge:
-                var t1 = GetGuideTexts(mergeGuides);
+                t.AddRange(GetGuideTexts(mergeGuides));
                 TextMeshProUGUI last1 = null;
-                for(var i = 0; i < t1.Count; i++)
+                for(var i = 0; i < t.Count; i++)
                 {
                     var obj = Instantiate(inputGuidePrefab, this.transform);
                     var a = i == 0 ? leftPos.x : (last1.transform.localPosition.x + alignment * last1.GetPreferredValues().x);
                     obj.transform.localPosition = new Vector2(a, leftPos.y);
-                    obj.GetComponent<TextMeshProUGUI>().text = t1[i];
+                    obj.GetComponent<TextMeshProUGUI>().text = t[i];
                     last1 = obj.GetComponent<TextMeshProUGUI>();
                 }
                 break;
             case InputGuideType.Navigate:
-                var t2 = GetGuideTexts(navigationGuides);
+                t.AddRange(GetGuideTexts(navigationGuides));
                 TextMeshProUGUI last2 = null;
-                for(var i = 0; i < t2.Count; i++)
+                for(var i = 0; i < t.Count; i++)
                 {
                     var obj = Instantiate(inputGuidePrefab, this.transform);
                     var a = i == 0 ? leftPos.x : (last2.transform.localPosition.x + alignment * last2.GetPreferredValues().x);
                     obj.transform.localPosition = new Vector2(a, leftPos.y);
-                    obj.GetComponent<TextMeshProUGUI>().text = t2[i];
+                    obj.GetComponent<TextMeshProUGUI>().text = t[i];
                     last2 = obj.GetComponent<TextMeshProUGUI>();
                 }
                 break;
@@ -184,7 +185,6 @@ public class InputGuide : MonoBehaviour
             }
             // 見つからなければ空文字のまま
             shortcutTexts.Add($"{data.name}: {displaySprite}");
-            Debug.Log(displaySprite);
         }
         return shortcutTexts;
     }
@@ -241,20 +241,21 @@ public class InputGuide : MonoBehaviour
         return false;
     }
 
-    private List<string> GetMergeGuideTexts()
+    private List<string> GetOperationDisplay(InputGuideType type)
     {
-        var mergeTexts = new List<string>();
-        mergeTexts.Add("移動: <sprite name=\"Keyboard-leftArrow\"><sprite name=\"Keyboard-rightArrow\">/<sprite name=\"Keyboard-a\"><sprite name=\"Keyboard-d\">/<sprite name=\"Mouse-position\">");
-        mergeTexts.Add("ドロップ: <sprite name=\"Keyboard-space\">/<sprite name=\"Mouse-leftButton\">");
-        mergeTexts.Add("スキップ: <sprite name=\"Keyboard-shift\">/<sprite name=\"Mouse-rightButton\">");
-        return mergeTexts;
-    }
-    
-    private List<string> GetNavigateGuideTexts()
-    {
-        var navigaTetexts = new List<string>();
-        navigaTetexts.Add("選択: <sprite name=\"Keyboard-leftArrow\"><sprite name=\"Keyboard-rightArrow\">/<sprite name=\"Keyboard-a\"><sprite name=\"Keyboard-d\">/<sprite name=\"Mouse-position\">");
-        navigaTetexts.Add("決定: <sprite name=\"Keyboard-space\">/<sprite name=\"Keyboard-space\">/<sprite name=\"Mouse-leftButton\">");
-        return navigaTetexts;
+        var t1 = type == InputGuideType.Merge ? "移動" : "選択";
+        var t2 = type == InputGuideType.Merge ? "ドロップ" : "決定";
+        var list = new List<string>();
+        if (_scheme == InputSchemeType.KeyboardAndMouse)
+        {
+            list.Add(t1 + ": <sprite name=\"Keyboard-leftArrow\"><sprite name=\"Keyboard-rightArrow\">/<sprite name=\"Keyboard-a\"><sprite name=\"Keyboard-d\">/<sprite name=\"Mouse-position\">");
+            list.Add(t2 + ": <sprite name=\"Keyboard-space\">/<sprite name=\"Mouse-leftButton\">");
+        }
+        else
+        {
+            list.Add(t1 + ": <sprite name=\"Gamepad-leftsticknone\">/<sprite name=\"Gamepad-dpad\">");
+            list.Add(t2 + ": <sprite name=\"Gamepad-buttonSouth\">");
+        }
+        return list;
     }
 }
