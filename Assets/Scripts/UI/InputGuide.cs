@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.DualShock;
@@ -40,6 +41,7 @@ public class InputGuide : MonoBehaviour
     [SerializeField] private Vector2 leftPos;
     [SerializeField] private Vector2 rightPos;
     [SerializeField] private float alignment;
+    [SerializeField] private bool showShortcut = true;
     
     public event Action<InputSchemeType> OnSchemeChanged;
     private Action<InputSchemeType> _onSchemeChanged;
@@ -120,7 +122,11 @@ public class InputGuide : MonoBehaviour
 
     public void UpdateText(InputGuideType type)
     {
-        foreach(Transform child in this.transform) Destroy(child.gameObject);
+        foreach (Transform child in this.transform)
+        {
+            if(!child.TryGetComponent<Image>(out var image))
+                Destroy(child.gameObject);
+        }
         
         _currentType = type;
         var t = GetOperationDisplay(_currentType);
@@ -152,6 +158,7 @@ public class InputGuide : MonoBehaviour
                 break;
         }
 
+        if (!showShortcut) return;
         var t3 = GetGuideTexts(shortcutGuides);
         TextMeshProUGUI last3 = null;
         for(var i = 0; i < t3.Count; i++)
@@ -248,7 +255,7 @@ public class InputGuide : MonoBehaviour
         var list = new List<string>();
         if (_scheme == InputSchemeType.KeyboardAndMouse)
         {
-            list.Add(t1 + ": <sprite name=\"Keyboard-leftArrow\"><sprite name=\"Keyboard-rightArrow\">/<sprite name=\"Keyboard-a\"><sprite name=\"Keyboard-d\">/<sprite name=\"Mouse-position\">");
+            list.Add(t1 + ": <sprite name=\"Keyboard-leftArrow\"><sprite name=\"Keyboard-rightArrow\"><sprite name=\"Keyboard-upArrow\"><sprite name=\"Keyboard-downArrow\">/<sprite name=\"Keyboard-a\"><sprite name=\"Keyboard-d\"><sprite name=\"Keyboard-s\"><sprite name=\"Keyboard-w\">/<sprite name=\"Mouse-position\">");
             list.Add(t2 + ": <sprite name=\"Keyboard-space\">/<sprite name=\"Mouse-leftButton\">");
         }
         else

@@ -11,8 +11,7 @@ public class UIHoverSelection : MonoBehaviour
 
     private void Update()
     {
-        if (!EventSystem.current)
-            return;
+        if (!EventSystem.current) return;
 
         // 仮想マウスがあればそれを優先して使用、なければ物理マウス
         var pointerPosition = InputProvider.Instance.GetMousePosition();

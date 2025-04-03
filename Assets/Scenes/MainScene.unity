@@ -424,7 +424,7 @@ GameObject:
   - component: {fileID: 54491766}
   m_Layer: 5
   m_Name: BallCountText
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2033,9 +2033,10 @@ GameObject:
   - component: {fileID: 240537030}
   - component: {fileID: 240537032}
   - component: {fileID: 240537031}
+  - component: {fileID: 240537033}
   m_Layer: 5
   m_Name: InventorySubCursor
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2097,6 +2098,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 240537029}
   m_CullTransparentMesh: 1
+--- !u!225 &240537033
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 240537029}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &246165869
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3244,7 +3257,6 @@ RectTransform:
   - {fileID: 67873874}
   - {fileID: 2092346927}
   - {fileID: 521663558}
-  - {fileID: 1011294475}
   - {fileID: 557012291}
   - {fileID: 9186421915211760720}
   - {fileID: 810942824}
@@ -10589,7 +10601,7 @@ GameObject:
   - component: {fileID: 595156497}
   m_Layer: 5
   m_Name: Text
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11333,7 +11345,7 @@ GameObject:
   - component: {fileID: 676991514}
   m_Layer: 0
   m_Name: InventryFrame
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11778,6 +11790,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 725906729}
+  - component: {fileID: 725906730}
   m_Layer: 5
   m_Name: InventoryUIContainer
   m_TagString: Untagged
@@ -11804,6 +11817,18 @@ RectTransform:
   m_AnchoredPosition: {x: 170, y: 110}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &725906730
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725906728}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1001 &731875496
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15113,81 +15138,6 @@ MonoBehaviour:
   _entryId:
     _value: af515ef3-f896-4abf-80b8-0ab3bc46b877
   _component: {fileID: 1007425568}
---- !u!1 &1011294474
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1011294475}
-  - component: {fileID: 1011294477}
-  - component: {fileID: 1011294476}
-  m_Layer: 5
-  m_Name: InputGuideBG
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1011294475
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1011294474}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 380910489}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -264}
-  m_SizeDelta: {x: 1000, y: 20}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1011294476
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1011294474}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.11320752, g: 0.11320752, b: 0.11320752, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1011294477
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1011294474}
-  m_CullTransparentMesh: 1
 --- !u!1 &1029647712
 GameObject:
   m_ObjectHideFlags: 0
@@ -15197,6 +15147,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1029647713}
+  - component: {fileID: 1029647714}
   m_Layer: 0
   m_Name: RelicContainer
   m_TagString: Untagged
@@ -15219,6 +15170,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 380910489}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!225 &1029647714
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029647712}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1066192357
 GameObject:
   m_ObjectHideFlags: 0
@@ -17588,7 +17551,7 @@ GameObject:
   - component: {fileID: 1296743696}
   m_Layer: 0
   m_Name: StatusBGFrame
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18191,7 +18154,7 @@ GameObject:
   - component: {fileID: 1336181240}
   m_Layer: 6
   m_Name: Block
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18791,7 +18754,7 @@ GameObject:
   - component: {fileID: 1413525774}
   m_Layer: 5
   m_Name: NextBallText
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22180,7 +22143,7 @@ GameObject:
   - component: {fileID: 1880978493}
   m_Layer: 0
   m_Name: MergeWallImage
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22218,7 +22181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.38823533, g: 0.70353454, b: 0.8666667, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -25075,134 +25038,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: InputGuides
       objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: rightPos.x
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: spriteAsset
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: mergeGuides.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: mergeGuideData.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.size
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: navigationGuides.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: mergeGuides.Array.data[0].name
-      value: "\u30B9\u30AD\u30C3\u30D7"
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: mergeGuides.Array.data[1].name
-      value: "\u30B9\u30AD\u30C3\u30D7"
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: mergeGuides.Array.data[2].name
-      value: "\u30B9\u30AD\u30C3\u30D7"
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: mergeGuides.Array.data[0].action
-      value: 
-      objectReference: {fileID: 9033324786063241920, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: mergeGuides.Array.data[1].action
-      value: 
-      objectReference: {fileID: 9033324786063241920, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: mergeGuides.Array.data[2].action
-      value: 
-      objectReference: {fileID: 9033324786063241920, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.data[0].name
-      value: "\u30AB\u30FC\u30BD\u30EB\u3092\u30EA\u30BB\u30C3\u30C8"
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.data[1].name
-      value: "\u30AB\u30FC\u30BD\u30EB\u4F4D\u7F6E\u5207\u308A\u66FF\u3048"
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.data[2].name
-      value: "\u4EEE\u60F3\u30DE\u30A6\u30B9\u5207\u308A\u66FF\u3048"
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.data[3].name
-      value: "\u30C1\u30E5\u30FC\u30C8\u30EA\u30A2\u30EB"
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.data[4].name
-      value: "\u30DE\u30C3\u30D7"
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.data[5].name
-      value: "\u500D\u901F"
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.data[6].name
-      value: "\u30DD\u30FC\u30BA"
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: navigationGuides.Array.data[0].name
-      value: "\u30AD\u30E3\u30F3\u30BB\u30EB"
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: navigationGuides.Array.data[1].name
-      value: "\u30AD\u30E3\u30F3\u30BB\u30EB"
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: navigationGuides.Array.data[2].name
-      value: "\u30AD\u30E3\u30F3\u30BB\u30EB"
-      objectReference: {fileID: 0}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.data[0].action
-      value: 
-      objectReference: {fileID: 4373192305444842450, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.data[1].action
-      value: 
-      objectReference: {fileID: -1500263598598297771, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.data[2].action
-      value: 
-      objectReference: {fileID: -6704409545524244513, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.data[3].action
-      value: 
-      objectReference: {fileID: 395453771764169163, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.data[4].action
-      value: 
-      objectReference: {fileID: -3610997454309488152, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.data[5].action
-      value: 
-      objectReference: {fileID: 3978082133985793858, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: shortcutGuides.Array.data[6].action
-      value: 
-      objectReference: {fileID: -1500263598598297771, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: navigationGuides.Array.data[0].action
-      value: 
-      objectReference: {fileID: -5678864026237735204, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: navigationGuides.Array.data[1].action
-      value: 
-      objectReference: {fileID: -5678864026237735204, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
-      propertyPath: navigationGuides.Array.data[2].action
-      value: 
-      objectReference: {fileID: -5678864026237735204, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

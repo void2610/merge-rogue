@@ -54,6 +54,7 @@ public class UIManager : MonoBehaviour
     public Canvas GetUICanvas() => uiCanvas;
     public Camera GetUICamera() => uiCamera;
     public Transform GetEnemyUIContainer() => uiCanvas.transform.Find("EnemyStatusUIContainer");
+    public bool IsVirtualMouseActive() => virtualMouse.GetComponent<Image>().enabled;
     public void ShowRelicDescriptionWindow(RelicData r, GameObject g) => descriptionWindow.ShowWindowWithHoverCheck(r, g).Forget();
 
     public void ShowBallDescriptionWindow(BallData b, GameObject g, int level) =>
@@ -110,7 +111,7 @@ public class UIManager : MonoBehaviour
     
     public void ToggleVirtualMouse()
     {
-        if (virtualMouse.GetComponent<Image>().enabled)
+        if (IsVirtualMouseActive())
         {
             virtualMouse.GetComponent<Image>().enabled = false;
             // 仮想マウスデバイスの入力更新を無効化
@@ -124,6 +125,12 @@ public class UIManager : MonoBehaviour
             InputSystem.EnableDevice(virtualMouse.GetComponent<MyVirtualMouseInput>().virtualMouse);
             EventSystem.current.sendNavigationEvents = false;
         }
+    }
+    
+    public void SetVirtualMousePosition(UnityEngine.Vector2 pos)
+    {
+        var rectTransform = virtualMouse.GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = pos;
     }
     
     private async UniTaskVoid EnableCanvasGroupAsync(string canvasName, bool e)
@@ -243,8 +250,6 @@ public class UIManager : MonoBehaviour
             if(canvasGroup.name != "Treasure")
                 EnableCanvasGroup(canvasGroup.name, false);
         }
-        
-        ToggleVirtualMouse();
     }
 
     private void Start()
@@ -284,5 +289,7 @@ public class UIManager : MonoBehaviour
 
         fadeImage.color = new Color(0, 0, 0, 1);
         Fade(false);
+        
+        ToggleVirtualMouse();
     }
 }

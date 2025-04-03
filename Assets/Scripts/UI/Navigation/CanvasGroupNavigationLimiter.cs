@@ -60,7 +60,7 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
                 var currentGroup = currentSelected.GetComponentInParent<CanvasGroup>();
                 var previousGroup = _previousSelected.GetComponentInParent<CanvasGroup>();
                 // グループが異なる場合は選択をキャンセル
-                if (currentGroup && previousGroup && currentGroup != previousGroup)
+                if ((currentGroup && previousGroup && currentGroup != previousGroup) || !currentSelected.GetComponent<Selectable>().interactable)
                 {
                     EventSystem.current.SetSelectedGameObject(_previousSelected);
                     return;

@@ -6,6 +6,7 @@ using R3;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using Vector2 = UnityEngine.Vector2;
 
 public class GameManager : MonoBehaviour
 {
@@ -214,6 +215,9 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.ToggleVirtualMouse();
         if (InputProvider.Instance.UI.ToggleCursorState.triggered)
             UIManager.Instance.ToggleCursorState();
+        
+        if(!UIManager.Instance.IsVirtualMouseActive())
+            UIManager.Instance.SetVirtualMousePosition(new Vector2(9999, 9999));
     }
     
     private void OnSceneUnloaded(Scene scene)

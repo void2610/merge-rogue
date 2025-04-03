@@ -55,11 +55,11 @@ public class TutorialPanel : MonoBehaviour
     {
         if(!UIManager.Instance.IsEnableCanvasGroup("Tutorial")) return;
         
-        if (InputProvider.Instance.UI.Right.triggered)
+        if (InputProvider.Instance.Gameplay.RightMove.triggered)
         {
             NextPage();
         }
-        else if (InputProvider.Instance.UI.Left.triggered)
+        else if (InputProvider.Instance.Gameplay.LeftMove.triggered)
         {
             PreviousPage();
         }
