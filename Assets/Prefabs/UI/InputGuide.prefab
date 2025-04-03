@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: <sprite=149> New Text
+  m_text: <sprite name="gamepad-buttoneast"> New Text
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7c73491222ca6457b8195c05494722d4, type: 2}
   m_sharedMaterial: {fileID: -8324807274589790789, guid: 7c73491222ca6457b8195c05494722d4, type: 2}

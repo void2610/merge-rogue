@@ -246,7 +246,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tilemap_packed_4
+      name: gamepad-buttonsouth
       rect:
         serializedVersion: 2
         x: 64
@@ -268,7 +268,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tilemap_packed_5
+      name: gamepad-buttoneast
       rect:
         serializedVersion: 2
         x: 80
@@ -4646,7 +4646,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tilemap_packed_213
+      name: gamepad-leftstickup
       rect:
         serializedVersion: 2
         x: 144
@@ -4668,7 +4668,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tilemap_packed_214
+      name: gamepad-leftstickright
       rect:
         serializedVersion: 2
         x: 160
@@ -4690,7 +4690,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tilemap_packed_215
+      name: gamepad-leftstickdown
       rect:
         serializedVersion: 2
         x: 176
@@ -4712,7 +4712,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tilemap_packed_216
+      name: gamepad-leftstickleft
       rect:
         serializedVersion: 2
         x: 192
@@ -11356,7 +11356,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tilemap_packed_551
+      name: gamepad-lefttrigger
       rect:
         serializedVersion: 2
         x: 112
@@ -11378,7 +11378,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tilemap_packed_552
+      name: gamepad-righttrigger
       rect:
         serializedVersion: 2
         x: 128
@@ -11400,7 +11400,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tilemap_packed_553
+      name: gamepad-leftshoulder
       rect:
         serializedVersion: 2
         x: 144
@@ -11422,7 +11422,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tilemap_packed_554
+      name: gamepad-rightshoulder
       rect:
         serializedVersion: 2
         x: 160
@@ -12786,7 +12786,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tilemap_packed_616
+      name: gamepad-select
       rect:
         serializedVersion: 2
         x: 64
@@ -12808,7 +12808,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: tilemap_packed_617
+      name: gamepad-start
       rect:
         serializedVersion: 2
         x: 80
@@ -17217,6 +17217,18 @@ TextureImporter:
       Mouse-middleButton: 363383794
       Mouse-position: 1213636112
       Mouse-rightButton: 510204848
+      gamepad-buttoneast: 418720396
+      gamepad-buttonsouth: 1255983351
+      gamepad-leftshoulder: -940709108
+      gamepad-leftstickdown: 1632462348
+      gamepad-leftstickleft: -2090280431
+      gamepad-leftstickright: -1890687692
+      gamepad-leftstickup: 1656907862
+      gamepad-lefttrigger: 2125086044
+      gamepad-rightshoulder: 244670947
+      gamepad-righttrigger: -1177270907
+      gamepad-select: -1227443106
+      gamepad-start: -1486425766
       slime_cube_0: -5731436181159932807
       tilemap_packed_0: -655595912
       tilemap_packed_1: -43610799
@@ -17323,10 +17335,6 @@ TextureImporter:
       tilemap_packed_210: 1020644480
       tilemap_packed_211: -1893556267
       tilemap_packed_212: 1506953334
-      tilemap_packed_213: 1656907862
-      tilemap_packed_214: -1890687692
-      tilemap_packed_215: 1632462348
-      tilemap_packed_216: -2090280431
       tilemap_packed_217: 773088324
       tilemap_packed_218: -1802306640
       tilemap_packed_219: -675324335
@@ -17527,7 +17535,6 @@ TextureImporter:
       tilemap_packed_397: -1641007518
       tilemap_packed_398: -683985606
       tilemap_packed_399: 1329300922
-      tilemap_packed_4: 1255983351
       tilemap_packed_40: 2071289070
       tilemap_packed_400: 1909384498
       tilemap_packed_401: 797493874
@@ -17638,7 +17645,6 @@ TextureImporter:
       tilemap_packed_497: -791610232
       tilemap_packed_498: 1717640429
       tilemap_packed_499: -1997431983
-      tilemap_packed_5: 418720396
       tilemap_packed_50: 346154850
       tilemap_packed_500: -378124307
       tilemap_packed_501: -1808175275
@@ -17696,10 +17702,6 @@ TextureImporter:
       tilemap_packed_549: 1677567672
       tilemap_packed_55: 85158702
       tilemap_packed_550: 1197666684
-      tilemap_packed_551: 2125086044
-      tilemap_packed_552: -1177270907
-      tilemap_packed_553: -940709108
-      tilemap_packed_554: 244670947
       tilemap_packed_555: -1372541306
       tilemap_packed_556: 288406607
       tilemap_packed_557: -55170697
@@ -17768,8 +17770,6 @@ TextureImporter:
       tilemap_packed_613: 1848987826
       tilemap_packed_614: -459182870
       tilemap_packed_615: 1717520872
-      tilemap_packed_616: -1227443106
-      tilemap_packed_617: -1486425766
       tilemap_packed_618: -287967210
       tilemap_packed_619: -2085717798
       tilemap_packed_62: 567773234

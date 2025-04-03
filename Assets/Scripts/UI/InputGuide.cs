@@ -25,9 +25,18 @@ public class InputGuide : MonoBehaviour
         KeyboardAndMouse,
         Gamepad
     }
-    
+
+    [Serializable]
+    public class InputGuideData
+    {
+        public string name;
+        public InputActionReference action;
+    }
+
+    [SerializeField] private List<InputGuideData> mergeGuides = new();
+    [SerializeField] private List<InputGuideData> navigationGuides = new();
+    [SerializeField] private List<InputGuideData> shortcutGuides = new();
     [SerializeField] private GameObject inputGuidePrefab;
-    [SerializeField] private TMP_SpriteAsset spriteAsset;
     [SerializeField] private Vector2 leftPos;
     [SerializeField] private Vector2 rightPos;
     [SerializeField] private float alignment;
@@ -117,7 +126,7 @@ public class InputGuide : MonoBehaviour
         switch (type)
         {
             case InputGuideType.Merge:
-                var t1 = GetMergeGuideTexts();
+                var t1 = GetGuideTexts(mergeGuides);
                 TextMeshProUGUI last1 = null;
                 for(var i = 0; i < t1.Count; i++)
                 {
@@ -129,7 +138,7 @@ public class InputGuide : MonoBehaviour
                 }
                 break;
             case InputGuideType.Navigate:
-                var t2 = GetNavigateGuideTexts();
+                var t2 = GetGuideTexts(navigationGuides);
                 TextMeshProUGUI last2 = null;
                 for(var i = 0; i < t2.Count; i++)
                 {
@@ -142,7 +151,7 @@ public class InputGuide : MonoBehaviour
                 break;
         }
 
-        var t3 = GetShortcutGuideTexts();
+        var t3 = GetGuideTexts(shortcutGuides);
         TextMeshProUGUI last3 = null;
         for(var i = 0; i < t3.Count; i++)
         {
@@ -154,19 +163,84 @@ public class InputGuide : MonoBehaviour
         }
     }
     
-    private List<string> GetShortcutGuideTexts()
+    private List<string> GetGuideTexts(List<InputGuideData> list)
     {
         var shortcutTexts = new List<string>();
-        shortcutTexts.Add("カーソルをリセット: <sprite name=\"Keyboard-r\">");
-        shortcutTexts.Add("カーソル位置を切り替え: <sprite name=\"Keyboard-n\">");
-        shortcutTexts.Add("仮想マウス切り替え: <sprite name=\"Keyboard-l\">");
-        shortcutTexts.Add("チュートリアル: <sprite name=\"Keyboard-q\">");
-        shortcutTexts.Add("マップ: <sprite name=\"Keyboard-m\">");
-        shortcutTexts.Add("倍速: <sprite name=\"Keyboard-t\">");
-        shortcutTexts.Add("ポーズ: <sprite name=\"Keyboard-p\">");
+        foreach (var data in list)
+        {
+            string displaySprite = "";
+            var action = data.action.action;
+            // 現在のスキーマに合致するバインディングを探す
+            foreach (var binding in action.bindings)
+            {
+                if (IsBindingForCurrentScheme(binding))
+                {
+                    // binding.pathからスプライト用の名前を作成する
+                    string spriteName = GetSpriteNameFromBinding(binding);
+                    // スプライトタグとして出力（例: <sprite name="keyboard-shift">）
+                    displaySprite = $"<sprite name=\"{spriteName}\">";
+                    break;
+                }
+            }
+            // 見つからなければ空文字のまま
+            shortcutTexts.Add($"{data.name}: {displaySprite}");
+            Debug.Log(displaySprite);
+        }
         return shortcutTexts;
     }
-    
+
+    /// <summary>
+    /// binding.path から、スプライト命名規則に沿った名前を生成する。
+    /// 例: binding.path が "<Keyboard>/shift" の場合 "keyboard-shift" を返す。
+    /// </summary>
+    private string GetSpriteNameFromBinding(InputBinding binding)
+    {
+        if (string.IsNullOrEmpty(binding.path))
+            return "";
+        
+        // 例: "<Keyboard>/shift" から "Keyboard" を抽出
+        int start = binding.path.IndexOf('<') + 1;
+        int end = binding.path.IndexOf('>');
+        if (start < 0 || end < 0 || end <= start)
+            return "";
+        string device = binding.path.Substring(start, end - start);
+
+        // '/' 以降のコントロール名を抽出（例: "shift"）
+        int slashIndex = binding.path.IndexOf('/');
+        string control = "";
+        if (slashIndex >= 0 && slashIndex < binding.path.Length - 1)
+        {
+             control = binding.path.Substring(slashIndex + 1);
+        }
+
+        // スプライト命名は小文字に変換して、"device-control" の形式にする
+        // 必要に応じて、特殊な名称の変換もここで実施可能
+        return $"{device}-{control}".ToLower();
+    }
+
+    /// <summary>
+    /// 現在の入力スキーマに該当するかを、バインディングの path を元に判定する
+    /// </summary>
+    private bool IsBindingForCurrentScheme(InputBinding binding)
+    {
+        if (string.IsNullOrEmpty(binding.path))
+            return false;
+
+        if (_scheme == InputSchemeType.KeyboardAndMouse)
+        {
+            // 例: "<Keyboard>/p" または "<Mouse>/leftButton" なら KeyboardAndMouse と判定
+            return binding.path.StartsWith("<Keyboard>") || binding.path.StartsWith("<Mouse>");
+        }
+        else if (_scheme == InputSchemeType.Gamepad)
+        {
+            // 例: "<Gamepad>/buttonSouth" などの場合
+            return binding.path.StartsWith("<Gamepad>") ||
+                   binding.path.StartsWith("<XInputController>") ||
+                   binding.path.StartsWith("<DualShockGamepad>");
+        }
+        return false;
+    }
+
     private List<string> GetMergeGuideTexts()
     {
         var mergeTexts = new List<string>();

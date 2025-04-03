@@ -35,7 +35,7 @@ MonoBehaviour:
     m_StrikethroughOffset: 0
     m_StrikethroughThickness: 0
     m_TabWidth: 0
-  m_Material: {fileID: 2251388565026387832}
+  m_Material: {fileID: 1668260272217339723}
   spriteSheet: {fileID: 2800000, guid: e4d2ba433cf644fb9a089df1b5fe41c5, type: 3}
   m_SpriteCharacterTable:
   - m_ElementType: 2
@@ -62,12 +62,12 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 4
     m_Scale: 1.3
-    m_Name: tilemap_packed_4
+    m_Name: gamepad-buttonsouth
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 5
     m_Scale: 1.3
-    m_Name: tilemap_packed_5
+    m_Name: gamepad-buttoneast
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 6
@@ -1062,22 +1062,22 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 204
     m_Scale: 1.3
-    m_Name: tilemap_packed_213
+    m_Name: gamepad-leftstickup
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 205
     m_Scale: 1.3
-    m_Name: tilemap_packed_214
+    m_Name: gamepad-leftstickright
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 206
     m_Scale: 1.3
-    m_Name: tilemap_packed_215
+    m_Name: gamepad-leftstickdown
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 207
     m_Scale: 1.3
-    m_Name: tilemap_packed_216
+    m_Name: gamepad-leftstickleft
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 208
@@ -2587,22 +2587,22 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 509
     m_Scale: 1.3
-    m_Name: tilemap_packed_551
+    m_Name: gamepad-lefttrigger
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 510
     m_Scale: 1.3
-    m_Name: tilemap_packed_552
+    m_Name: gamepad-righttrigger
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 511
     m_Scale: 1.3
-    m_Name: tilemap_packed_553
+    m_Name: gamepad-leftshoulder
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 512
     m_Scale: 1.3
-    m_Name: tilemap_packed_554
+    m_Name: gamepad-rightshoulder
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 513
@@ -2912,12 +2912,12 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 574
     m_Scale: 1.3
-    m_Name: tilemap_packed_616
+    m_Name: gamepad-select
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 575
     m_Scale: 1.3
-    m_Name: tilemap_packed_617
+    m_Name: gamepad-start
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 576
@@ -16295,14 +16295,14 @@ MonoBehaviour:
     sprite: {fileID: 1450146260, guid: e4d2ba433cf644fb9a089df1b5fe41c5, type: 3}
   spriteInfoList: []
   fallbackSpriteAssets: []
---- !u!21 &2251388565026387832
+--- !u!21 &1668260272217339723
 Material:
   serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: input_icons 1 Material
+  m_Name: input_icons Material
   m_Shader: {fileID: 4800000, guid: cf81c85f95fe47e1a27f6ae460cf182c, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
