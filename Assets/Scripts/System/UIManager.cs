@@ -75,7 +75,7 @@ public class UIManager : MonoBehaviour
     public void ToggleCursorState(CursorStateType state)
     {
         _cursorState = state;
-        ResetSelectedGameObject();
+        ResetSelectedGameObject(true);
     }
     
     public void EnableCanvasGroup(string canvasName, bool e) => EnableCanvasGroupAsync(canvasName, e).Forget();
@@ -90,10 +90,10 @@ public class UIManager : MonoBehaviour
     private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
     private void UpdateCoinText(System.Numerics.BigInteger amount) => coinText.text = "coin: " + amount;
 
-    public void ResetSelectedGameObject()
+    public void ResetSelectedGameObject(bool isToggle = false)
     {
         var topCanvasGroup = GetTopCanvasGroup();
-        if (topCanvasGroup)
+        if (topCanvasGroup && !isToggle && _cursorState == CursorStateType.Merge)
         {
             var focusSelectable = topCanvasGroup.GetComponentInChildren<FocusSelectable>();
             if (!focusSelectable) return;

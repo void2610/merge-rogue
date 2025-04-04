@@ -4,6 +4,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
+using UnityEngine.EventSystems;
 using unityroom.Api;
 
 public class MergeManager : MonoBehaviour
@@ -334,6 +335,10 @@ public class MergeManager : MonoBehaviour
         ballGauge.transform.localScale = CurrentBall.transform.localScale * 1.01f;
         ballGauge.transform.position = CurrentBall.transform.position;
         
+        // プレイヤー操作        
+        if(UIManager.Instance.IsAnyCanvasGroupEnabled()) return;
+        if (EventSystem.current.currentSelectedGameObject != cursorSetter.gameObject) return;
+        
         var mousePosX = (InputProvider.Instance.GetMousePosition().x - Screen.width / 2) / Screen.width * 20;
         var isMouseOvered = cursorSetter.IsMergeArea;
         if (isMouseOvered)
@@ -355,14 +360,11 @@ public class MergeManager : MonoBehaviour
         }
 
         fallAnchor.transform.position = _currentBallPosition + new Vector3(0, 0, 0);
+        
         if (Time.time - _lastFallTime <= COOL_TIME || RemainingBalls < 0) return;
 
-        
-        // プレイヤー操作        
-        if(UIManager.Instance.IsPaused || UIManager.Instance.IsMapOpened) return;
-
-        var left = isMouseOvered ? Input.GetMouseButton(0) : InputProvider.Instance.Gameplay.LeftClick.IsPressed();
-        var right = isMouseOvered ? Input.GetMouseButton(1) : InputProvider.Instance.Gameplay.RightClick.IsPressed();
+        var left = InputProvider.Instance.Gameplay.LeftClick.IsPressed();
+        var right = InputProvider.Instance.Gameplay.RightClick.IsPressed();
         
         if (left)
         {

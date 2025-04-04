@@ -122,6 +122,12 @@ public class InventoryUI : MonoBehaviour
         else nav.selectOnRight = _items[index].GetComponent<Button>();
     }
 
+    public void CancelEdit()
+    {
+        _state = InventoryUIState.Disabled;
+        UIManager.Instance.ToggleCursorState(CursorStateType.Merge);
+    }
+
     private async UniTaskVoid OnClickBall(int index)
     {
         switch (_state)
@@ -129,6 +135,7 @@ public class InventoryUI : MonoBehaviour
             case InventoryUIState.Disabled:
                 break;
             case InventoryUIState.Upgrade:
+                CancelEdit();
                 if (InventoryManager.Instance.GetBallLevel(index) >= 2)
                 {
                     SeManager.Instance.PlaySe("error");
@@ -150,12 +157,12 @@ public class InventoryUI : MonoBehaviour
                 await InventoryManager.Instance.SwapBall(_swapIndex, index);
                 GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
                 _swapIndex = -1;
-                _state = InventoryUIState.Disabled;
+                CancelEdit();
                 break;
             case InventoryUIState.Remove:
                 SeManager.Instance.PlaySe("button");
                 InventoryManager.Instance.RemoveAndShiftBall(index);
-                _state = InventoryUIState.Disabled;
+                CancelEdit();
                 shop.EnableSkipButton(true);
                 UIManager.Instance.ResetSelectedGameObject();
                 break;
