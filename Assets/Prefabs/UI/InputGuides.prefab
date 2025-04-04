@@ -128,7 +128,7 @@ MonoBehaviour:
   - name: "\u30AB\u30FC\u30BD\u30EB\u3092\u30EA\u30BB\u30C3\u30C8"
     action: {fileID: 4373192305444842450, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
   - name: "\u30AB\u30FC\u30BD\u30EB\u4F4D\u7F6E\u5207\u308A\u66FF\u3048"
-    action: {fileID: -1500263598598297771, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
+    action: {fileID: 6977238633748583719, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
   - name: "\u4EEE\u60F3\u30DE\u30A6\u30B9\u5207\u308A\u66FF\u3048"
     action: {fileID: -6704409545524244513, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
   - name: "\u30C1\u30E5\u30FC\u30C8\u30EA\u30A2\u30EB"
@@ -143,3 +143,4 @@ MonoBehaviour:
   leftPos: {x: -315, y: -257}
   rightPos: {x: 30, y: -257}
   alignment: 1.2
+  showShortcut: 1

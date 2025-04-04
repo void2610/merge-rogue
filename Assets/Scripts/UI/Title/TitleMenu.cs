@@ -8,6 +8,7 @@ using TMPro;
 using Cysharp.Threading.Tasks;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.InputSystem.LowLevel;
 
 public class TitleMenu : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class TitleMenu : MonoBehaviour
     private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
 
     public GameObject GetTopCanvasGroup() => canvasGroups.Find(c => c.alpha > 0)?.gameObject;
+    public bool IsVirtualMouseActive() => virtualMouse.GetComponent<MyVirtualMouseInput>().isActive;
     
     public void ResetSelectedGameObject()
     {
@@ -41,21 +43,33 @@ public class TitleMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 仮想マウスを任意の位置へ移動させるメソッド
+    /// </summary>
+    /// <param name="newPosition">移動先のスクリーン座標（ピクセル単位）</param>
+    public void MoveVirtualMouseToCenter()
+    {
+        var vm = virtualMouse.GetComponent<MyVirtualMouseInput>();
+        var centerPos = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        InputState.Change(vm.virtualMouse.position, centerPos);
+        // ソフトウェアカーソル（UI上の表示）の位置も更新（存在する場合）
+        // もしCanvasのスケール等を考慮する必要があるなら、ここで座標変換を行う
+        virtualMouse.transform.position = Vector2.zero;
+    }
+
     public void ToggleVirtualMouse()
     {
-        if (virtualMouse.GetComponent<Image>().enabled)
+        if (IsVirtualMouseActive())
         {
-            virtualMouse.GetComponent<Image>().enabled = false;
-            // 仮想マウスデバイスの入力更新を無効化
-            InputSystem.DisableDevice(virtualMouse.GetComponent<MyVirtualMouseInput>().virtualMouse);
+            virtualMouse.GetComponent<MyVirtualMouseInput>().isActive = false;
             EventSystem.current.sendNavigationEvents = true;
+            virtualMouse.transform.position = new Vector2(-1000, -1000);
         }
         else
         {
-            virtualMouse.GetComponent<Image>().enabled = true;
-            // 仮想マウスデバイスの入力更新を有効化
-            InputSystem.EnableDevice(virtualMouse.GetComponent<MyVirtualMouseInput>().virtualMouse);
+            virtualMouse.GetComponent<MyVirtualMouseInput>().isActive = true;
             EventSystem.current.sendNavigationEvents = false;
+            MoveVirtualMouseToCenter();
         }
     }
     

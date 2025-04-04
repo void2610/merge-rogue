@@ -556,7 +556,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 880.0011}
+  m_AnchoredPosition: {x: 0, y: 880.0002}
   m_SizeDelta: {x: 0, y: 1200}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &191197720
@@ -2708,8 +2708,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1870222280}
   m_HandleRect: {fileID: 1870222279}
   m_Direction: 2
-  m_Value: -0.0000051747197
-  m_Size: 0.6118646
+  m_Value: -0.0000010614809
+  m_Size: 0.61663973
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2976,6 +2976,10 @@ PrefabInstance:
       value: -262.5
       objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: rightPos.x
+      value: 410
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: rightPos.y
       value: -262.5
       objectReference: {fileID: 0}
@@ -2983,6 +2987,18 @@ PrefabInstance:
       propertyPath: showShortcut
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[1].name
+      value: "\u4EEE\u60F3\u30DE\u30A6\u30B9\u5207\u308A\u66FF\u3048"
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[1].action
+      value: 
+      objectReference: {fileID: -6704409545524244513, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3173,7 +3189,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 230.00119}
+  m_AnchoredPosition: {x: 0, y: 230.00023}
   m_SizeDelta: {x: 863, y: 600}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1181778950
@@ -4481,8 +4497,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 465917899}
   m_HandleRect: {fileID: 465917897}
   m_Direction: 2
-  m_Value: -0.0000011790883
-  m_Size: 0.26459008
+  m_Value: -0.00000024275346
+  m_Size: 0.2666551
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

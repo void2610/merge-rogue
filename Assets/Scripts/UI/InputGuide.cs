@@ -41,7 +41,6 @@ public class InputGuide : MonoBehaviour
     [SerializeField] private Vector2 leftPos;
     [SerializeField] private Vector2 rightPos;
     [SerializeField] private float alignment;
-    [SerializeField] private bool showShortcut = true;
     
     public event Action<InputSchemeType> OnSchemeChanged;
     private Action<InputSchemeType> _onSchemeChanged;
@@ -158,7 +157,6 @@ public class InputGuide : MonoBehaviour
                 break;
         }
 
-        if (!showShortcut) return;
         var t3 = GetGuideTexts(shortcutGuides);
         TextMeshProUGUI last3 = null;
         for(var i = 0; i < t3.Count; i++)
