@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Numerics;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,11 +7,12 @@ using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
+using UnityEngine.InputSystem.LowLevel;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using TMPro;
 using DG.Tweening;
 using R3;
-using UnityEngine.Rendering;
-using UnityEngine.Rendering.Universal;
 
 public class UIManager : MonoBehaviour
 {
@@ -54,7 +54,7 @@ public class UIManager : MonoBehaviour
     public Canvas GetUICanvas() => uiCanvas;
     public Camera GetUICamera() => uiCamera;
     public Transform GetEnemyUIContainer() => uiCanvas.transform.Find("EnemyStatusUIContainer");
-    public bool IsVirtualMouseActive() => virtualMouse.GetComponent<Image>().enabled;
+    public bool IsVirtualMouseActive() => virtualMouse.GetComponent<MyVirtualMouseInput>().isActive;
     public void ShowRelicDescriptionWindow(RelicData r, GameObject g) => descriptionWindow.ShowWindowWithHoverCheck(r, g).Forget();
 
     public void ShowBallDescriptionWindow(BallData b, GameObject g, int level) =>
@@ -83,7 +83,7 @@ public class UIManager : MonoBehaviour
     public bool IsAnyCanvasGroupEnabled() => canvasGroups.Exists(c => c.alpha > 0);
     public GameObject GetTopCanvasGroup() => canvasGroups.Find(c => c.alpha > 0)?.gameObject;
     private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
-    private void UpdateCoinText(BigInteger amount) => coinText.text = "coin: " + amount;
+    private void UpdateCoinText(System.Numerics.BigInteger amount) => coinText.text = "coin: " + amount;
 
     public void ResetSelectedGameObject()
     {
@@ -109,25 +109,36 @@ public class UIManager : MonoBehaviour
         }
     }
     
+    /// <summary>
+    /// 仮想マウスを任意の位置へ移動させるメソッド
+    /// </summary>
+    /// <param name="newPosition">移動先のスクリーン座標（ピクセル単位）</param>
+    public void MoveVirtualMouseToCenter()
+    {
+        var vm = virtualMouse.GetComponent<MyVirtualMouseInput>();
+        var centerPos = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        InputState.Change(vm.virtualMouse.position, centerPos);
+        // ソフトウェアカーソル（UI上の表示）の位置も更新（存在する場合）
+        // もしCanvasのスケール等を考慮する必要があるなら、ここで座標変換を行う
+        virtualMouse.transform.position = Vector2.zero;
+    }
+
     public void ToggleVirtualMouse()
     {
         if (IsVirtualMouseActive())
         {
-            virtualMouse.GetComponent<Image>().enabled = false;
-            // 仮想マウスデバイスの入力更新を無効化
-            InputSystem.DisableDevice(virtualMouse.GetComponent<MyVirtualMouseInput>().virtualMouse);
+            virtualMouse.GetComponent<MyVirtualMouseInput>().isActive = false;
             EventSystem.current.sendNavigationEvents = true;
         }
         else
         {
-            virtualMouse.GetComponent<Image>().enabled = true;
-            // 仮想マウスデバイスの入力更新を有効化
-            InputSystem.EnableDevice(virtualMouse.GetComponent<MyVirtualMouseInput>().virtualMouse);
+            virtualMouse.GetComponent<MyVirtualMouseInput>().isActive = true;
             EventSystem.current.sendNavigationEvents = false;
+            MoveVirtualMouseToCenter();
         }
     }
     
-    public void SetVirtualMousePosition(UnityEngine.Vector2 pos)
+    public void SetVirtualMousePosition(Vector2 pos)
     {
         var rectTransform = virtualMouse.GetComponent<RectTransform>();
         rectTransform.anchoredPosition = pos;

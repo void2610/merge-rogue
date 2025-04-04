@@ -46,6 +46,8 @@ namespace UnityEngine.InputSystem.UI
     [AddComponentMenu("Input/My Virtual Mouse")]
     public class MyVirtualMouseInput : MonoBehaviour
     {
+        public bool isActive = true; // true: 有効, false: 無効
+        
         /// <summary>
         /// Optional transform that will be updated to correspond to the current mouse position.
         /// </summary>
@@ -403,6 +405,14 @@ namespace UnityEngine.InputSystem.UI
 
         private void UpdateMotion()
         {
+            // 無効状態なら、任意の位置（例えば画面外）に固定して早期リターンする
+            if (!isActive)
+            {
+                var offScreenPos = new Vector2(-9999, -9999);
+                InputState.Change(virtualMouse.position, offScreenPos);
+                return;
+            }
+            
             if (m_Canvas == null)
                 TryFindCanvas();
             if (m_VirtualMouse == null)
