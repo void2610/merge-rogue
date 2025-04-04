@@ -72,7 +72,7 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
             if (currentSelected.TryGetComponent<ShowDescription>(out var sd))
             {
                 if(sd.isBall)
-                    DescriptionWindow.Instance.ShowWindowFromNavigation( sd.ballData, currentSelected, 0);
+                    DescriptionWindow.Instance.ShowWindowFromNavigation( sd.ballData, currentSelected, sd.level);
                 else
                     DescriptionWindow.Instance.ShowWindowFromNavigation(sd.relicData, currentSelected);
             }

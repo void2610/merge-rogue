@@ -102,17 +102,11 @@ public class InventoryUI : MonoBehaviour
     {
         // クリックでボールの選択、入れ替え、削除
         g.GetComponent<Button>().onClick.AddListener(() => OnClickBall(index).Forget());
-        // マウスオーバーでカーソル移動とウィンドウ表示 (とアニメーション)
-        Utils.AddEventToObject(g, () => { 
-            var rt = g.GetComponent<RectTransform>();
-            rt.DORotate(new Vector3(0, 0, 15), 0.75f).SetEase(Ease.Flash, 10, 0.9f).OnComplete(() => rt.DORotate(Vector3.zero, 0.1f).SetLink(g)).SetLink(g);
-        }, EventTriggerType.PointerEnter);
-        
-        g.AddDescriptionWindowEvent(ballBase.Data);
+        g.RemoveAllEventTrigger();
+        g.AddDescriptionWindowEvent(ballBase.Data, ballBase.Level);
         
         // ナビゲーションを手動設定
         var nav = g.GetComponent<Button>().navigation;
-        
         nav.mode = Navigation.Mode.Explicit;
         nav.selectOnDown = null;
         nav.selectOnUp = null;

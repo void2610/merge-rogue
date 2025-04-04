@@ -127,6 +127,7 @@ public static class ExtendedMethods
             
             d.isBall = true;
             d.ballData = ballData; 
+            d.level = level;
         }
         else if (data is RelicData relicData)
         {
@@ -136,6 +137,18 @@ public static class ExtendedMethods
             
             d.isBall = false;
             d.relicData = relicData;
+        }
+    }
+    
+    public static void RemoveAllEventTrigger(this GameObject g)
+    {
+        if (!g) return;
+        var eventTrigger = g.GetComponent<EventTrigger>();
+        if (!eventTrigger) return;
+        
+        foreach (var entry in eventTrigger.triggers)
+        {
+            eventTrigger.triggers.Remove(entry);
         }
     }
     
