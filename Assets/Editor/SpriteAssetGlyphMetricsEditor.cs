@@ -32,6 +32,8 @@ public class SpriteAssetSelectiveEditor : EditorWindow
     // ------ Scale ------
     private bool overrideScale;
     private float newScale;
+    private bool overrideCaracterScale;
+    private float newCaracterScale;
 
     // ------ その他 (例: AtlasIndex, ID はSpriteCharacterではなくSpriteGlyphに相当) ------
     // 実運用ではIDを一括変更すると文字コードが被る可能性があるので注意が必要。
@@ -110,6 +112,9 @@ public class SpriteAssetSelectiveEditor : EditorWindow
         overrideScale = EditorGUILayout.Toggle("Override Scale", overrideScale);
         if (overrideScale)
             newScale = EditorGUILayout.FloatField("Scale", newScale);
+        overrideCaracterScale = EditorGUILayout.Toggle("Override Character Scale", overrideCaracterScale);
+        if (overrideCaracterScale)
+            newCaracterScale = EditorGUILayout.FloatField("Character Scale", newCaracterScale);
 
         EditorGUILayout.Space();
 
@@ -184,8 +189,8 @@ public class SpriteAssetSelectiveEditor : EditorWindow
                 character.unicode = newID;
 
             // SpriteCharacter の Scale を上書き
-            // if (overrideScale)
-            //     character.scale = newScale;
+            if (overrideScale)
+                character.scale = newCaracterScale;
         }
 
         // Lookupテーブルを更新

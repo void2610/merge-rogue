@@ -87,8 +87,30 @@
                 },
                 {
                     "name": "",
+                    "id": "9aa11755-ea86-4ffb-80dd-e6bd8230fc51",
+                    "path": "<Touchscreen>/touch0",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "LeftClick",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c70f9134-239a-4118-9ad1-0b5596ad2860",
                     "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "MousePosition",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "32997920-f13d-4c17-b24a-70e316faa4b1",
+                    "path": "<Touchscreen>/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -350,18 +372,18 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Scroll",
-                    "type": "PassThrough",
-                    "id": "bd3f638e-df2c-4014-82eb-c116e06a99cb",
+                    "name": "ToggleCursorState",
+                    "type": "Button",
+                    "id": "b018cb28-0489-4772-b512-c5a5595a8d95",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "ToggleCursorState",
-                    "type": "Button",
-                    "id": "b018cb28-0489-4772-b512-c5a5595a8d95",
+                    "name": "Scroll",
+                    "type": "PassThrough",
+                    "id": "bd3f638e-df2c-4014-82eb-c116e06a99cb",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -922,7 +944,7 @@
                 {
                     "name": "",
                     "id": "99f41bda-17df-48a5-8a0b-e9a5292e9d9e",
-                    "path": "<Gamepad>/rightShoulder",
+                    "path": "<Gamepad>/rightStickPress",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -944,7 +966,7 @@
                 {
                     "name": "",
                     "id": "0986d5a0-f0c5-422c-813b-d529d9179b79",
-                    "path": "<Gamepad>/leftShoulder",
+                    "path": "<Gamepad>/leftStickPress",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -988,7 +1010,7 @@
                 {
                     "name": "",
                     "id": "b07fc274-5358-459c-915f-1992ed83351a",
-                    "path": "<Gamepad>/leftStickPress",
+                    "path": "<Gamepad>/leftShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

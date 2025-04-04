@@ -173,8 +173,30 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""9aa11755-ea86-4ffb-80dd-e6bd8230fc51"",
+                    ""path"": ""<Touchscreen>/touch0"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""c70f9134-239a-4118-9ad1-0b5596ad2860"",
                     ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MousePosition"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""32997920-f13d-4c17-b24a-70e316faa4b1"",
+                    ""path"": ""<Touchscreen>/position"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -436,18 +458,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Scroll"",
-                    ""type"": ""PassThrough"",
-                    ""id"": ""bd3f638e-df2c-4014-82eb-c116e06a99cb"",
+                    ""name"": ""ToggleCursorState"",
+                    ""type"": ""Button"",
+                    ""id"": ""b018cb28-0489-4772-b512-c5a5595a8d95"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""ToggleCursorState"",
-                    ""type"": ""Button"",
-                    ""id"": ""b018cb28-0489-4772-b512-c5a5595a8d95"",
+                    ""name"": ""Scroll"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""bd3f638e-df2c-4014-82eb-c116e06a99cb"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
@@ -1008,7 +1030,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""99f41bda-17df-48a5-8a0b-e9a5292e9d9e"",
-                    ""path"": ""<Gamepad>/rightShoulder"",
+                    ""path"": ""<Gamepad>/rightStickPress"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1030,7 +1052,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""0986d5a0-f0c5-422c-813b-d529d9179b79"",
-                    ""path"": ""<Gamepad>/leftShoulder"",
+                    ""path"": ""<Gamepad>/leftStickPress"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1074,7 +1096,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""b07fc274-5358-459c-915f-1992ed83351a"",
-                    ""path"": ""<Gamepad>/leftStickPress"",
+                    ""path"": ""<Gamepad>/leftShoulder"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -1110,8 +1132,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_UI_Skip = m_UI.FindAction("Skip", throwIfNotFound: true);
         m_UI_ResetCursor = m_UI.FindAction("ResetCursor", throwIfNotFound: true);
         m_UI_ToggleVirtualMouse = m_UI.FindAction("ToggleVirtualMouse", throwIfNotFound: true);
-        m_UI_Scroll = m_UI.FindAction("Scroll", throwIfNotFound: true);
         m_UI_ToggleCursorState = m_UI.FindAction("ToggleCursorState", throwIfNotFound: true);
+        m_UI_Scroll = m_UI.FindAction("Scroll", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -1347,8 +1369,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_Skip;
     private readonly InputAction m_UI_ResetCursor;
     private readonly InputAction m_UI_ToggleVirtualMouse;
-    private readonly InputAction m_UI_Scroll;
     private readonly InputAction m_UI_ToggleCursorState;
+    private readonly InputAction m_UI_Scroll;
     /// <summary>
     /// Provides access to input actions defined in input action map "UI".
     /// </summary>
@@ -1417,13 +1439,13 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @ToggleVirtualMouse => m_Wrapper.m_UI_ToggleVirtualMouse;
         /// <summary>
-        /// Provides access to the underlying input action "UI/Scroll".
-        /// </summary>
-        public InputAction @Scroll => m_Wrapper.m_UI_Scroll;
-        /// <summary>
         /// Provides access to the underlying input action "UI/ToggleCursorState".
         /// </summary>
         public InputAction @ToggleCursorState => m_Wrapper.m_UI_ToggleCursorState;
+        /// <summary>
+        /// Provides access to the underlying input action "UI/Scroll".
+        /// </summary>
+        public InputAction @Scroll => m_Wrapper.m_UI_Scroll;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -1492,12 +1514,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ToggleVirtualMouse.started += instance.OnToggleVirtualMouse;
             @ToggleVirtualMouse.performed += instance.OnToggleVirtualMouse;
             @ToggleVirtualMouse.canceled += instance.OnToggleVirtualMouse;
-            @Scroll.started += instance.OnScroll;
-            @Scroll.performed += instance.OnScroll;
-            @Scroll.canceled += instance.OnScroll;
             @ToggleCursorState.started += instance.OnToggleCursorState;
             @ToggleCursorState.performed += instance.OnToggleCursorState;
             @ToggleCursorState.canceled += instance.OnToggleCursorState;
+            @Scroll.started += instance.OnScroll;
+            @Scroll.performed += instance.OnScroll;
+            @Scroll.canceled += instance.OnScroll;
         }
 
         /// <summary>
@@ -1551,12 +1573,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @ToggleVirtualMouse.started -= instance.OnToggleVirtualMouse;
             @ToggleVirtualMouse.performed -= instance.OnToggleVirtualMouse;
             @ToggleVirtualMouse.canceled -= instance.OnToggleVirtualMouse;
-            @Scroll.started -= instance.OnScroll;
-            @Scroll.performed -= instance.OnScroll;
-            @Scroll.canceled -= instance.OnScroll;
             @ToggleCursorState.started -= instance.OnToggleCursorState;
             @ToggleCursorState.performed -= instance.OnToggleCursorState;
             @ToggleCursorState.canceled -= instance.OnToggleCursorState;
+            @Scroll.started -= instance.OnScroll;
+            @Scroll.performed -= instance.OnScroll;
+            @Scroll.canceled -= instance.OnScroll;
         }
 
         /// <summary>
@@ -1739,18 +1761,18 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleVirtualMouse(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Scroll" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
-        /// </summary>
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
-        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnScroll(InputAction.CallbackContext context);
-        /// <summary>
         /// Method invoked when associated input action "ToggleCursorState" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnToggleCursorState(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Scroll" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnScroll(InputAction.CallbackContext context);
     }
 }

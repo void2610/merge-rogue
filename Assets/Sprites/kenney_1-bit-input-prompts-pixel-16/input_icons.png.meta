@@ -8936,7 +8936,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: gamepad-leftstickp
+      name: gamepad-leftstickpress
       rect:
         serializedVersion: 2
         x: 256
@@ -10322,7 +10322,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: gamepad-rightstick
+      name: gamepad-rightstickpress
       rect:
         serializedVersion: 2
         x: 256
@@ -17237,20 +17237,20 @@ TextureImporter:
       gamepad-leftstickmovehori: -1734650139
       gamepad-leftstickmovever: 2091886073
       gamepad-leftsticknone: 1790645607
-      gamepad-leftstickp: 18648991
+      gamepad-leftstickpress: 18648991
       gamepad-leftstickrigh: 1460533962
       gamepad-leftstickright: -1890687692
       gamepad-leftsticku: 1975326562
       gamepad-leftstickup: 1656907862
       gamepad-lefttrigger: 2125086044
       gamepad-rightshoulder: 244670947
-      gamepad-rightstick: -2091606992
       gamepad-rightstickdown: -1233265291
       gamepad-rightstickleft: 1603174130
       gamepad-rightstickmove: 1130211503
       gamepad-rightstickmovehori: 1288444291
       gamepad-rightstickmovever: -221829932
       gamepad-rightsticknone: -1965191953
+      gamepad-rightstickpress: -2091606992
       gamepad-rightstickright: 1085518164
       gamepad-rightstickup: 695099880
       gamepad-righttrigger: -1177270907

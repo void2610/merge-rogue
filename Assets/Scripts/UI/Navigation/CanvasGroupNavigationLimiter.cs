@@ -38,10 +38,8 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
         if (!currentSelected)
         {
             _previousSelected = null;
-            if (markerImage.color.a >= 1)
-            {
-                markerImage.DOFade(0, tweenDuration).SetUpdate(true);
-            }
+            if(UIManager.Instance) UIManager.Instance.ResetSelectedGameObject();
+            // if (markerImage.color.a >= 1) markerImage.DOFade(0, tweenDuration).SetUpdate(true);
             return;
         }
 
