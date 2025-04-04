@@ -79,8 +79,18 @@ public class UIManager : MonoBehaviour
     }
     
     public void EnableCanvasGroup(string canvasName, bool e) => EnableCanvasGroupAsync(canvasName, e).Forget();
-    public bool IsEnableCanvasGroup(string canvasName) => canvasGroups.Find(c => c.name == canvasName).alpha > 0;
-    public bool IsAnyCanvasGroupEnabled() => canvasGroups.Exists(c => c.alpha > 0);
+
+    public bool IsEnableCanvasGroup(string canvasName)
+    {
+        if (canvasGroups == null || canvasGroups.Count == 0) return false;
+        return canvasGroups.Find(c => c.name == canvasName).alpha > 0;
+    }
+
+    public bool IsAnyCanvasGroupEnabled()
+    {
+        if (canvasGroups == null || canvasGroups.Count == 0) return false;
+        return canvasGroups.Exists(c => c.alpha > 0);
+    }
 
     public GameObject GetTopCanvasGroup()
     { 
@@ -173,7 +183,6 @@ public class UIManager : MonoBehaviour
         }
         
         _canvasGroupTween[canvasName] = seq;
-        CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(null);
         
         await seq.AsyncWaitForCompletion();
         
@@ -183,6 +192,7 @@ public class UIManager : MonoBehaviour
         cg.blocksRaycasts = e;
         
         // FocusSelectableがアタッチされているオブジェクトがあればフォーカス
+        CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(null);
         ResetSelectedGameObject();
         descriptionWindow.HideWindowFromNavigation();
     }
@@ -266,6 +276,7 @@ public class UIManager : MonoBehaviour
             if(canvasGroup.name != "Treasure")
                 EnableCanvasGroup(canvasGroup.name, false);
         }
+        _cursorState = CursorStateType.Merge;
     }
 
     private void Start()

@@ -193,7 +193,7 @@ public class EnemyContainer : MonoBehaviour
         // 行動
         for(var i = 0; i < _currentEnemies.Count; i ++)
         {
-            if (!_currentEnemies[i].gameObject) continue;
+            if (!_currentEnemies[i]?.gameObject) continue;
             _currentEnemies[i].Action();
             // 0.5秒待つ
             await UniTask.Delay(500);
