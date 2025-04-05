@@ -9,6 +9,7 @@ public class InputProvider : MonoBehaviour
     
     public Vector2 GetMousePosition () => _inputActions.Gameplay.MousePosition.ReadValue<Vector2>();
     public bool IsSkipButtonPressed() => _inputActions.UI.Skip.triggered;
+    public Vector2 GetScrollSpeed() => _inputActions.UI.Scroll.ReadValue<Vector2>();
     
     private void Awake()
     {

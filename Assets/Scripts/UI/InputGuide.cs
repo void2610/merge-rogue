@@ -41,7 +41,7 @@ public class InputGuide : MonoBehaviour
     [SerializeField] private Vector2 leftPos;
     [SerializeField] private Vector2 rightPos;
     [SerializeField] private float alignment;
-    
+    [SerializeField] private bool isTitleMenu;
     public event Action<InputSchemeType> OnSchemeChanged;
     private Action<InputSchemeType> _onSchemeChanged;
     private InputGuideType _currentType = InputGuideType.Navigate;
@@ -250,17 +250,22 @@ public class InputGuide : MonoBehaviour
     {
         var t1 = type == InputGuideType.Merge ? "移動" : "選択";
         var t2 = type == InputGuideType.Merge ? "ドロップ" : "決定";
+        var t3 = "スクロール";
         var list = new List<string>();
         if (_scheme == InputSchemeType.KeyboardAndMouse)
         {
             list.Add(t1 + ": <sprite name=\"Keyboard-leftArrow\"><sprite name=\"Keyboard-rightArrow\"><sprite name=\"Keyboard-upArrow\"><sprite name=\"Keyboard-downArrow\">/<sprite name=\"Keyboard-a\"><sprite name=\"Keyboard-d\"><sprite name=\"Keyboard-s\"><sprite name=\"Keyboard-w\">/<sprite name=\"Mouse-position\">");
             list.Add(t2 + ": <sprite name=\"Keyboard-space\">/<sprite name=\"Mouse-leftButton\">");
+            list.Add(t3 + ": <sprite name=\"Mouse-wheel\">");
         }
         else
         {
             list.Add(t1 + ": <sprite name=\"Gamepad-leftsticknone\">/<sprite name=\"Gamepad-dpad\">");
             list.Add(t2 + ": <sprite name=\"Gamepad-buttonSouth\">");
+            list.Add(t3 + ": <sprite name=\"Gamepad-rightstickmovever\">");
         }
+        
+        if(!isTitleMenu) list.RemoveAt(2);
         return list;
     }
 }

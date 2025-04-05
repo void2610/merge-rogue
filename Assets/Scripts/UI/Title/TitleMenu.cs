@@ -42,6 +42,20 @@ public class TitleMenu : MonoBehaviour
             CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(startButton.gameObject);
         }
     }
+    
+    public ScrollRect GetActiveScrollRect()
+    {
+        var topCanvas = GetTopCanvasGroup();
+        if (topCanvas)
+        {
+            var scrollRect = topCanvas.GetComponentInChildren<ScrollRect>();
+            if (scrollRect)
+            {
+                return scrollRect;
+            }
+        }
+        return null;
+    }
 
     /// <summary>
     /// 仮想マウスを任意の位置へ移動させるメソッド
@@ -215,5 +229,14 @@ public class TitleMenu : MonoBehaviour
             ResetSelectedGameObject();
         if (InputProvider.Instance.UI.ToggleVirtualMouse.triggered)
             ToggleVirtualMouse();
+        
+        // スクロール操作
+        var sr = GetActiveScrollRect();
+        if (sr)
+        {
+            var speed = InputProvider.Instance.GetScrollSpeed();
+            var newPos = sr.verticalNormalizedPosition + speed.y * Time.unscaledDeltaTime;
+            sr.verticalNormalizedPosition = Mathf.Clamp01(newPos);
+        }
     }
 }

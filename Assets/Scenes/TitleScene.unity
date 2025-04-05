@@ -342,7 +342,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_Mode
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
@@ -556,7 +556,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 880.0001}
+  m_AnchoredPosition: {x: 0, y: 880.0003}
   m_SizeDelta: {x: 0, y: 1200}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &191197720
@@ -1392,7 +1392,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_Mode
-      value: 4
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_SelectOnUp
@@ -2538,7 +2538,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 4
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2678,7 +2678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 3
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -2708,8 +2708,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1870222280}
   m_HandleRect: {fileID: 1870222279}
   m_Direction: 2
-  m_Value: -0.00000053074046
-  m_Size: 0.61666167
+  m_Value: -0.0000014595363
+  m_Size: 0.6166151
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -2914,7 +2914,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90817c03c17914fab9e092a190ae8fa7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 0.9.3
+  version: 0.9.4
 --- !u!1001 &1033453927
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2984,6 +2984,10 @@ PrefabInstance:
       value: -262.5
       objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: isTitleMenu
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: showShortcut
       value: 0
       objectReference: {fileID: 0}
@@ -2992,13 +2996,25 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: navigationGuides.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: shortcutGuides.Array.data[1].name
       value: "\u4EEE\u60F3\u30DE\u30A6\u30B9\u5207\u308A\u66FF\u3048"
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: navigationGuides.Array.data[0].name
+      value: "\u30B9\u30AF\u30ED\u30FC\u30EB"
       objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: shortcutGuides.Array.data[1].action
       value: 
       objectReference: {fileID: -6704409545524244513, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: navigationGuides.Array.data[0].action
+      value: 
+      objectReference: {fileID: -63555222925372694, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -3189,7 +3205,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 230.00014}
+  m_AnchoredPosition: {x: 0, y: 230.00034}
   m_SizeDelta: {x: 863, y: 600}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1181778950
@@ -4467,7 +4483,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Navigation:
-    m_Mode: 4
+    m_Mode: 0
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 0}
     m_SelectOnDown: {fileID: 0}
@@ -4497,8 +4513,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 465917899}
   m_HandleRect: {fileID: 465917897}
   m_Direction: 2
-  m_Value: -0.0000001040372
-  m_Size: 0.26666456
+  m_Value: -0.00000024275346
+  m_Size: 0.26664442
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
