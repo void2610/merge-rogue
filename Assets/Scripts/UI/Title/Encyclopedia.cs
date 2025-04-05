@@ -14,7 +14,8 @@ public class Encyclopedia : MonoBehaviour
     [SerializeField] private GameObject ballContainerPrefab;
     [SerializeField] private GameObject relicContainerPrefab;
     [SerializeField] private SerializableDictionary<BallShapeType, Sprite> ballBaseImages;
-    
+    [SerializeField] private int numColumns = 15; // 列数
+    [SerializeField] private Selectable cloceButton;
     // 空白セルの高さ（例えば、セルの高さと同じか、調整したい値）
     [SerializeField] private float spacerHeight = 100f;
 
@@ -91,7 +92,7 @@ public class Encyclopedia : MonoBehaviour
         }
 
         // ボールとレリックの間に空白セル（Spacer）を挟む
-        CreateSpacer(15 + 15 - (allBallDataList.list.Count % 15));
+        CreateSpacer(numColumns + numColumns - (allBallDataList.list.Count % numColumns));
 
         // Relic アイテムの生成
         foreach (var relic in allRelicDataList.list)
@@ -109,6 +110,24 @@ public class Encyclopedia : MonoBehaviour
             #endif
             
             _items.Add(container);
+        }
+        
+        // cloceボタンへのナビゲーション
+        for (var i = _items.Count - numColumns; i < _items.Count; i++)
+        {
+            var s = _items[i].GetComponent<Selectable>();
+            
+            var right = i + 1 < _items.Count ? _items[i + 1].GetComponent<Selectable>() : cloceButton;
+            
+            var nav = new Navigation
+            {
+                mode = Navigation.Mode.Explicit,
+                selectOnUp = _items[i - numColumns].GetComponent<Selectable>(),
+                selectOnDown = cloceButton,
+                selectOnLeft = _items[i - 1].GetComponent<Selectable>(),
+                selectOnRight = right,
+            };
+            s.navigation = nav;
         }
         
         // レイアウト更新

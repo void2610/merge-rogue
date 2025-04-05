@@ -171,8 +171,18 @@ public class TitleMenu : MonoBehaviour
             return;
         }
         
-       
-       
+        // ScrollRectの初期化
+        foreach(var scrollRect in FindObjectsByType<ScrollRect>(FindObjectsSortMode.None))
+        {
+            var sr = scrollRect.GetComponentInChildren<ScrollRect>();
+            if (sr)
+            {
+                sr.verticalNormalizedPosition = 1.0f;
+                sr.horizontalNormalizedPosition = 0.0f;
+            }
+        }
+        
+        // CanvasGroupの初期化
         foreach (var canvasGroup in canvasGroups)
         {
             _canvasGroupTween.Add(canvasGroup.name, null);
