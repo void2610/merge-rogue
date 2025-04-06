@@ -144,6 +144,16 @@ public class TitleMenu : MonoBehaviour
     {
         descriptionWindow.ShowWindowWithHoverCheck(o, g).Forget();
     }
+    
+    public void OpenTwitter()
+    {
+        Application.OpenURL("https://x.com/void2610");
+    }
+    
+    public void OpenSteam()
+    {
+        Application.OpenURL("https://store.steampowered.com/app/3646540/Merge_Rogue/?beta=1");
+    }
 
     private static void InitPlayerPrefs()
     {

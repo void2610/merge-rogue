@@ -3615,7 +3615,9 @@ Transform:
   - {fileID: 1291005975}
   - {fileID: 1963347568}
   - {fileID: 1289804348}
+  - {fileID: 5427546673967695252}
   - {fileID: 1234911113452205199}
+  - {fileID: 1501053563233108025}
   - {fileID: 1385672741606598524}
   - {fileID: 489786698}
   - {fileID: 62338220}
@@ -3629,7 +3631,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 403790021}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -24673,7 +24675,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 5427546673967695252}
   - {fileID: 8127415138396433636}
   - {fileID: 2906331929304203087}
   m_Father: {fileID: 403790022}
@@ -24695,7 +24696,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 1501053563233108025}
   - {fileID: 8836156364989618226}
   - {fileID: 4722551790243911055}
   m_Father: {fileID: 403790022}
@@ -24713,15 +24713,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6676255347382103813}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.000015258789}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1385672741606598524}
+  m_Father: {fileID: 403790022}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: 6}
+  m_AnchoredPosition: {x: -130, y: -18.999996}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1640004429422575220
@@ -24747,7 +24747,7 @@ GameObject:
   - component: {fileID: 8127415138396433638}
   m_Layer: 6
   m_Name: Background
-  m_TagString: IgnoreSelection
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -24824,7 +24824,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -25570,7 +25570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.6981132, g: 0.6981132, b: 0.6981132, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -25715,15 +25715,15 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8240931337226158507}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.000015258789}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 1234911113452205199}
+  m_Father: {fileID: 403790022}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -100, y: 6}
+  m_AnchoredPosition: {x: -130, y: 56.000004}
   m_SizeDelta: {x: 200, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5439434730160100551
@@ -25740,7 +25740,7 @@ GameObject:
   - component: {fileID: 6506451241351037065}
   m_Layer: 6
   m_Name: Fill
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26034,7 +26034,7 @@ GameObject:
   - component: {fileID: 6784393366904745446}
   m_Layer: 6
   m_Name: Fill Area
-  m_TagString: IgnoreSelection
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26311,7 +26311,7 @@ GameObject:
   - component: {fileID: 8836156364989618228}
   m_Layer: 6
   m_Name: Background
-  m_TagString: IgnoreSelection
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26392,7 +26392,7 @@ GameObject:
   - component: {fileID: 8857985571489895785}
   m_Layer: 6
   m_Name: Fill Area
-  m_TagString: IgnoreSelection
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -26475,7 +26475,7 @@ GameObject:
   - component: {fileID: 9155259457876486974}
   m_Layer: 6
   m_Name: Fill
-  m_TagString: Untagged
+  m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
