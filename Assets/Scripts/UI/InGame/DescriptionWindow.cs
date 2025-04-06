@@ -108,12 +108,7 @@ public class DescriptionWindow : MonoBehaviour
     }
 
     public void ShowWindowFromNavigation(object data, GameObject rootTriggerObject, int ballLevel = 0) => ShowWindow(data, rootTriggerObject, ballLevel);
-    public void HideWindowFromNavigation()
-    {
-        Debug.Log("HideWindowFromNavigation");
-        HideWindow();
-    }
-
+    public void HideWindowFromNavigation() => HideWindow();
     public void HideSubWindowFromNavigation(GameObject parent, string word) => HideSubWindow(parent, word);
 
     private void ShowWindow(object obj, GameObject rootTriggerObject, int ballLevel = 0)

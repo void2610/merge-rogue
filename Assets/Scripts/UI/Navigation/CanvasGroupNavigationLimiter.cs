@@ -13,8 +13,6 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
     [SerializeField] private float magnification = 4f;
     [SerializeField] private Vector2 offset;
     [SerializeField] private float tweenDuration = 0.2f;
-    [SerializeField] private GameObject playerStatusUI;
-    [SerializeField] private GameObject enemyStatusUIContainer;
 
     private Canvas _canvas;
     private RectTransform _canvasRect;
@@ -36,11 +34,11 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
         if (result) return true;
 
         // StatusEffectUIだけは許可
-        if (enemyStatusUIContainer.transform.OfType<Transform>().ToList().Contains(currentGroup.transform))
+        if (UIManager.Instance.EnemyStatusUIContainer.OfType<Transform>().ToList().Contains(currentGroup.transform))
         {
             result = true;
         }
-        else if (playerStatusUI.transform.OfType<Transform>().ToList().Contains(currentSelected.transform))
+        else if (UIManager.Instance.PlayerStatusUI.OfType<Transform>().ToList().Contains(currentSelected.transform))
         {
             result = true;
         }

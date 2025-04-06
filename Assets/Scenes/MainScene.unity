@@ -10462,6 +10462,8 @@ MonoBehaviour:
   virtualMouse: {fileID: 260402606}
   ballUIContainer: {fileID: 725906729}
   relicContainer: {fileID: 1029647713}
+  playerStatusUI: {fileID: 1888057322}
+  enemyStatusUIContainer: {fileID: 1620129485}
   remainingLevelUps: 0
 --- !u!114 &567445623
 MonoBehaviour:

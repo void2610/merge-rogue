@@ -41,6 +41,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject virtualMouse;
     [SerializeField] private Transform ballUIContainer;
     [SerializeField] private Transform relicContainer;
+    [SerializeField] private Transform playerStatusUI;
+    [SerializeField] private Transform enemyStatusUIContainer;
     
     private static CursorStateType _cursorState = CursorStateType.Merge;
     private Selectable _firstStatusEffectUI;
@@ -52,6 +54,8 @@ public class UIManager : MonoBehaviour
     
     private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
     
+    public Transform PlayerStatusUI => playerStatusUI;
+    public Transform EnemyStatusUIContainer => enemyStatusUIContainer;
     public Canvas GetUICanvas() => uiCanvas;
     public Camera GetUICamera() => uiCamera;
     public Transform GetEnemyUIContainer() => uiCanvas.transform.Find("EnemyStatusUIContainer");
@@ -113,9 +117,12 @@ public class UIManager : MonoBehaviour
         else
         {
             // ウィンドウがない時はcursorStateに従って選択をリセット
-            
             if (_cursorState == CursorStateType.StatusEffect && !_firstStatusEffectUI)
-                _cursorState = CursorStateType.Merge;
+            {
+                ToggleCursorState(CursorStateType.Merge);
+                ResetSelectedGameObject();
+                return;
+            }
             
             var target = _cursorState switch
             {
@@ -213,18 +220,7 @@ public class UIManager : MonoBehaviour
         expText.text = "exp: " + now + "/" + max;
     }
     
-    private void UpdateStatusEffectUINavigation()
-    {
-        var seUIs = FindObjectsByType<StatusEffectUI>(FindObjectsSortMode.None).ToList();
-        var selectables = new List<Selectable>();
-        foreach (var seUI in seUIs)
-        {
-           selectables.AddRange(seUI.GetStatusEffectIcons());
-        }
-        if (selectables.Count == 0) return;
-        selectables.SetNavigation();
-        _firstStatusEffectUI = selectables[0];
-    }
+
 
     public void OnClickPauseButton()
     {
@@ -267,6 +263,20 @@ public class UIManager : MonoBehaviour
     {
         fadeImage.color = new Color(0, 0, 0, 0);
         fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("MainScene")).SetUpdate(true);
+    }
+    
+    private void UpdateStatusEffectUINavigation()
+    {
+        var seUIs = new List<StatusEffectUI>(){playerStatusUI.GetComponent<StatusEffectUI>()};
+        seUIs.AddRange(enemyStatusUIContainer.GetComponentsInChildren<StatusEffectUI>().ToList());
+        var selectables = new List<Selectable>();
+        foreach (var seUI in seUIs)
+        {
+           selectables.AddRange(seUI.GetStatusEffectIcons());
+        }
+        if (selectables.Count == 0) return;
+        selectables.SetNavigation();
+        _firstStatusEffectUI = selectables[0];
     }
     
     private void Fade(bool e)
