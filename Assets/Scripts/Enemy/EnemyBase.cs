@@ -45,6 +45,8 @@ public class EnemyBase : MonoBehaviour, IEntity
     private StatusEffectUI _statusEffectUI;
     private Image _attackIcon;
     
+    public StatusEffectUI StatusEffectUI => _statusEffectUI;
+    
     public void AddStatusEffect(StatusEffectBase effect)
     {
         var existingEffect = StatusEffects.Find(e => e.Type == effect.Type);

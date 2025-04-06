@@ -22,6 +22,19 @@ public class StatusEffectUI : MonoBehaviour
     [SerializeField] private float margin = 0.4f;
     
     private readonly Dictionary<StatusEffectType, GameObject> _statusEffectIcons = new();
+    
+    public List<Selectable> GetStatusEffectIcons()
+    {
+        var icons = new List<Selectable>();
+        foreach (var icon in _statusEffectIcons.Values)
+        {
+            if (!icon || !icon.activeSelf) continue;
+            icons.Add(icon.GetComponent<Selectable>());
+        }
+        // 表示位置に基づいて昇順にソートする
+        icons.Sort((a, b) => a.transform.position.x.CompareTo(b.transform.position.x));
+        return icons;
+    }
 
     public void UpdateUI(List<StatusEffectBase> effects)
     {

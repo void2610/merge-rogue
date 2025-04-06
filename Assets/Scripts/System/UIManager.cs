@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.UI;
@@ -40,9 +41,9 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject virtualMouse;
     [SerializeField] private Transform ballUIContainer;
     [SerializeField] private Transform relicContainer;
-    [SerializeField] private Transform statusEffectContainer;
     
     private static CursorStateType _cursorState = CursorStateType.Merge;
+    private Selectable _firstStatusEffectUI;
 
     public bool IsPaused { get; private set; } = false;
     public bool IsMapOpened { get; private set; } = false;
@@ -112,14 +113,19 @@ public class UIManager : MonoBehaviour
         else
         {
             // ウィンドウがない時はcursorStateに従って選択をリセット
+            
+            if (_cursorState == CursorStateType.StatusEffect && !_firstStatusEffectUI)
+                _cursorState = CursorStateType.Merge;
+            
             var target = _cursorState switch
             {
                 CursorStateType.Merge => mergeArea,
                 CursorStateType.Ball => ballUIContainer.GetChild(0).gameObject,
                 CursorStateType.Relic => relicContainer.GetChild(0).gameObject,
-                CursorStateType.StatusEffect => statusEffectContainer.GetChild(0).gameObject,
+                CursorStateType.StatusEffect => _firstStatusEffectUI.gameObject,
                 _ => null,
             };
+
             CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(target);
         }
     }
@@ -205,6 +211,19 @@ public class UIManager : MonoBehaviour
             return;
         }
         expText.text = "exp: " + now + "/" + max;
+    }
+    
+    private void UpdateStatusEffectUINavigation()
+    {
+        var seUIs = FindObjectsByType<StatusEffectUI>(FindObjectsSortMode.None).ToList();
+        var selectables = new List<Selectable>();
+        foreach (var seUI in seUIs)
+        {
+           selectables.AddRange(seUI.GetStatusEffectIcons());
+        }
+        if (selectables.Count == 0) return;
+        selectables.SetNavigation();
+        _firstStatusEffectUI = selectables[0];
     }
 
     public void OnClickPauseButton()
@@ -318,5 +337,10 @@ public class UIManager : MonoBehaviour
         Fade(false);
         
         ToggleVirtualMouse();
+    }
+
+    private void Update()
+    {
+        UpdateStatusEffectUINavigation();
     }
 }

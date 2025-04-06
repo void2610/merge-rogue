@@ -3631,7 +3631,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 403790021}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -10462,7 +10462,6 @@ MonoBehaviour:
   virtualMouse: {fileID: 260402606}
   ballUIContainer: {fileID: 725906729}
   relicContainer: {fileID: 1029647713}
-  statusEffectContainer: {fileID: 1888057322}
   remainingLevelUps: 0
 --- !u!114 &567445623
 MonoBehaviour:
@@ -12996,9 +12995,10 @@ MonoBehaviour:
   testRelics:
   - {fileID: 11400000, guid: 0837f85fc711344c1a3b79c8cee80e85, type: 2}
   - {fileID: 11400000, guid: 0837f85fc711344c1a3b79c8cee80e85, type: 2}
-  - {fileID: 11400000, guid: 0837f85fc711344c1a3b79c8cee80e85, type: 2}
-  - {fileID: 11400000, guid: 0837f85fc711344c1a3b79c8cee80e85, type: 2}
-  - {fileID: 11400000, guid: 0837f85fc711344c1a3b79c8cee80e85, type: 2}
+  - {fileID: 11400000, guid: 4b42e1b1fb0c64699bffb20370ba4edc, type: 2}
+  - {fileID: 11400000, guid: 4b42e1b1fb0c64699bffb20370ba4edc, type: 2}
+  - {fileID: 11400000, guid: 4537f3d659b96485da932172c3764c56, type: 2}
+  - {fileID: 11400000, guid: 4537f3d659b96485da932172c3764c56, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -22269,7 +22269,7 @@ MonoBehaviour:
   ballBasePrefab: {fileID: 5528515049713681562, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
   inventoryPosition: {x: 0, y: -7, z: 0}
   testBalls:
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
+  - {fileID: 11400000, guid: 988658c93269b4a7aa2905750b6622a2, type: 2}
   - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
@@ -22413,7 +22413,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1463760408155065306, guid: e480bd1c2f5a74059b9b2701a4c82171, type: 3}
   m_PrefabInstance: {fileID: 1888057321}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2006557201}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 55ed9b3e934064dbb86586e6ffe7234b, type: 3}
@@ -23638,6 +23638,11 @@ MonoBehaviour:
       value: {fileID: 21300000, guid: 0b8da0e67670c4992b7ca52c41b771c4, type: 3}
     - key: 4
       value: {fileID: 21300000, guid: 8fb699a673a084c6f8794359fc1277f9, type: 3}
+--- !u!1 &2006557201 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7788278458683728539, guid: e480bd1c2f5a74059b9b2701a4c82171, type: 3}
+  m_PrefabInstance: {fileID: 1888057321}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2020573309
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -24928,6 +24933,18 @@ PrefabInstance:
       propertyPath: markerImage
       value: 
       objectReference: {fileID: 631807575}
+    - target: {fileID: 3018424584535979395, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
+      propertyPath: playerStatusUI
+      value: 
+      objectReference: {fileID: 2006557201}
+    - target: {fileID: 3018424584535979395, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
+      propertyPath: enemyStatusUIContainer
+      value: 
+      objectReference: {fileID: 1620129484}
+    - target: {fileID: 3018424584535979395, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
+      propertyPath: playerStatusUIContainer
+      value: 
+      objectReference: {fileID: 2006557201}
     - target: {fileID: 5263260357051236221, guid: f8d746d99fc684efdb439785a7e63824, type: 3}
       propertyPath: m_FirstSelected
       value: 

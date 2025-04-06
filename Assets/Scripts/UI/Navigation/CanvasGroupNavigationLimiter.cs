@@ -1,7 +1,9 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.Serialization;
 
 public class CanvasGroupNavigationLimiter : MonoBehaviour
 {
@@ -11,10 +13,11 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
     [SerializeField] private float magnification = 4f;
     [SerializeField] private Vector2 offset;
     [SerializeField] private float tweenDuration = 0.2f;
+    [SerializeField] private GameObject playerStatusUI;
+    [SerializeField] private GameObject enemyStatusUIContainer;
 
     private Canvas _canvas;
     private RectTransform _canvasRect;
-
     private GameObject _previousSelected;
     private static bool _allowProgrammaticChange = false;
 
@@ -22,6 +25,26 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
     {
         _allowProgrammaticChange = true;
         EventSystem.current.SetSelectedGameObject(go);
+    }
+    
+    // ナビゲーション移動がCanvasGroupを跨いでいるかどうかを判定する
+    private bool IsSameCanvasGroup(GameObject currentSelected, GameObject previousSelected)
+    {
+        var currentGroup = currentSelected.GetComponentInParent<CanvasGroup>();
+        var previousGroup = previousSelected.GetComponentInParent<CanvasGroup>();
+        var result = (currentGroup && previousGroup && currentGroup == previousGroup);
+        if (result) return true;
+
+        // StatusEffectUIだけは許可
+        if (enemyStatusUIContainer.transform.OfType<Transform>().ToList().Contains(currentGroup.transform))
+        {
+            result = true;
+        }
+        else if (playerStatusUI.transform.OfType<Transform>().ToList().Contains(currentSelected.transform))
+        {
+            result = true;
+        }
+        return result;
     }
 
     private void Awake()
@@ -55,10 +78,8 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
         {
             if (!_allowProgrammaticChange)
             {
-                var currentGroup = currentSelected.GetComponentInParent<CanvasGroup>();
-                var previousGroup = _previousSelected.GetComponentInParent<CanvasGroup>();
                 // グループが異なる場合は選択をキャンセル
-                if ((currentGroup && previousGroup && currentGroup != previousGroup) || !currentSelected.GetComponent<Selectable>().interactable)
+                if (!IsSameCanvasGroup(currentSelected, _previousSelected) || !currentSelected.GetComponent<Selectable>().interactable)
                 {
                     EventSystem.current.SetSelectedGameObject(_previousSelected);
                     return;
