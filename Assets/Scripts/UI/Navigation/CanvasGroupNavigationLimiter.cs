@@ -89,6 +89,13 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
             TweenMarker(currentSelected);
             _allowProgrammaticChange = false;
             
+            
+            // 前の選択対象の説明ウィンドウを非表示にする
+            if (_previousSelected.TryGetComponent<ShowSubDescription>(out var sd2))
+            {
+                DescriptionWindow.Instance.HideSubWindowFromNavigation(_previousSelected, sd2.word);
+            }
+            
             // 説明ウィンドウを出す
             if (currentSelected.TryGetComponent<ShowDescription>(out var sd))
             {
@@ -100,6 +107,11 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
             else
             {
                 DescriptionWindow.Instance.HideWindowFromNavigation();
+            }
+            
+            if (currentSelected.TryGetComponent<ShowSubDescription>(out var ssd))
+            {
+                DescriptionWindow.Instance.ShowSubWindow(currentSelected, ssd.word);
             }
         }
     }

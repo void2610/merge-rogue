@@ -139,8 +139,8 @@ public static class ExtendedMethods
 
     public static void AddDescriptionWindowEvent(this GameObject g, object data, int level = 0)
     {
-        if (!g || data == null) Debug.LogError("e");
-        if(data is not BallData && data is not RelicData) Debug.LogError("e");
+        if (!g || data == null) Debug.LogError("AddDescriptionWindowEvent: g or data is null");
+        if(data is not BallData && data is not RelicData) Debug.LogError("AddDescriptionWindowEvent: data is not BallData or RelicData");
 
         ShowDescription d;
         if (!g.TryGetComponent<ShowDescription>(out d))
@@ -165,6 +165,21 @@ public static class ExtendedMethods
             d.isBall = false;
             d.relicData = relicData;
         }
+    }
+    
+    public static void AddSubDescriptionWindowEvent(this GameObject g, string word)
+    {
+        if (!g || string.IsNullOrEmpty(word)) Debug.LogError("AddSubDescriptionWindowEvent: g or word is null");
+        
+        ShowSubDescription d;
+        if (!g.TryGetComponent<ShowSubDescription>(out d))
+            d = g.AddComponent<ShowSubDescription>();
+        
+        Utils.AddEventToObject(g, () => { 
+            DescriptionWindow.Instance.ShowSubWindow(g, word);
+        }, EventTriggerType.PointerEnter);
+        
+        d.word = word;
     }
     
     public static void RemoveAllEventTrigger(this GameObject g)
