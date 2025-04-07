@@ -219,8 +219,6 @@ public class UIManager : MonoBehaviour
         }
         expText.text = "exp: " + now + "/" + max;
     }
-    
-
 
     public void OnClickPauseButton()
     {
@@ -263,6 +261,11 @@ public class UIManager : MonoBehaviour
     {
         fadeImage.color = new Color(0, 0, 0, 0);
         fadeImage.DOFade(1f, 1f).OnComplete(() => SceneManager.LoadScene("MainScene")).SetUpdate(true);
+    }
+    
+    public void OpenSteam()
+    {
+        Application.OpenURL("https://store.steampowered.com/app/3646540/Merge_Rogue/?beta=1");
     }
     
     private void UpdateStatusEffectUINavigation()

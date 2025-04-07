@@ -98,6 +98,18 @@ public class GameManager : MonoBehaviour
         ScoreManager.ShowScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value, Coin.Value);
     }
     
+    public void TweetScore()
+    {
+        var (s, e, c) = ScoreManager.CalcScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value,
+            Coin.Value);
+        var score = (ulong)(s + e + c);
+        var text = $"Merge Rogueでスコア: {score}を獲得しました！\n" +
+                   $"#MergeRogue #unityroom\n" +
+                   $"https://unityroom.com/games/mergerogue";
+        var url = "https://twitter.com/intent/tweet?text=" + UnityEngine.Networking.UnityWebRequest.EscapeURL(text);
+        Application.OpenURL(url);
+    }
+    
     // ReSharper disable Unity.PerformanceAnalysis
     public void ChangeState(GameState newState)
     {

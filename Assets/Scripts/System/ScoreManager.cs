@@ -27,9 +27,7 @@ public class ScoreManager : MonoBehaviour
         ResetTransform(totalText);
 
         // スコア計算
-        var stageScore = (int)(stageCount * STAGE_COEFFICIENT);
-        var enemyScore = (int)(enemyCount * ENEMY_COEFFICIENT);
-        var coinScore = coinCount * COIN_COEFFICIENT;
+        var (stageScore, enemyScore, coinScore) = CalcScore(stageCount, enemyCount,coinCount);  
         var total = (ulong)(stageScore + enemyScore + coinScore);
         
         if(UnityroomApiClient.Instance != null)
@@ -69,6 +67,15 @@ public class ScoreManager : MonoBehaviour
                 {
                     AnimateTotal(totalText, total);
                 }).SetUpdate(true);
+    }
+    
+    public (int, int, BigInteger) CalcScore(int stageCount, int enemyCount, BigInteger coinCount)
+    {
+        // スコア計算
+        var stageScore = (int)(stageCount * STAGE_COEFFICIENT);
+        var enemyScore = (int)(enemyCount * ENEMY_COEFFICIENT);
+        var coinScore = coinCount * COIN_COEFFICIENT;
+        return (stageScore, enemyScore, coinScore);
     }
 
     private static void AnimateText(TextMeshProUGUI text, string header, ulong count, float coefficient)

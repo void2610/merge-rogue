@@ -556,7 +556,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 880.0001}
+  m_AnchoredPosition: {x: 0, y: 880.00024}
   m_SizeDelta: {x: 0, y: 1200}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &191197720
@@ -2861,8 +2861,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1870222280}
   m_HandleRect: {fileID: 1870222279}
   m_Direction: 2
-  m_Value: -0.00000026537023
-  m_Size: 0.61666393
+  m_Value: -0.00000053074046
+  m_Size: 0.6164268
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3304,7 +3304,7 @@ PrefabInstance:
     - target: {fileID: 8134991718131163088, guid: e6c276f54712146c090c1b1dfdc20a6c, type: 3}
       propertyPath: m_Navigation.m_SelectOnDown
       value: 
-      objectReference: {fileID: 1575053790}
+      objectReference: {fileID: 1127570501579463181}
     - target: {fileID: 8134991718131163088, guid: e6c276f54712146c090c1b1dfdc20a6c, type: 3}
       propertyPath: m_Navigation.m_SelectOnLeft
       value: 
@@ -3522,7 +3522,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 230.00006}
+  m_AnchoredPosition: {x: 0, y: 230.0001}
   m_SizeDelta: {x: 863, y: 600}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1181778950
@@ -4404,7 +4404,7 @@ PrefabInstance:
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_SelectOnRight
       value: 
-      objectReference: {fileID: 1127570501579463181}
+      objectReference: {fileID: 1082281966}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -4832,8 +4832,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 465917899}
   m_HandleRect: {fileID: 465917897}
   m_Direction: 2
-  m_Value: -0.0000001040372
-  m_Size: 0.26666483
+  m_Value: -0.00000024275346
+  m_Size: 0.26656294
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
