@@ -8,6 +8,7 @@ public class UpgradeConfirmPanel : MonoBehaviour
     [SerializeField] private AfterBattleUI afterBattleUI;
     [SerializeField] private GameObject leftWindow;
     [SerializeField] private GameObject rightWindow;
+    [SerializeField] private Image ballBaseImage;
     [SerializeField] private Image ballImage;
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button upgradeButton;
@@ -25,6 +26,7 @@ public class UpgradeConfirmPanel : MonoBehaviour
         SetBallTexts(rightWindow, ball, rank + 1, true);
         ballImage.sprite = ball.sprite;
         if(!ball.sprite) ballImage.color = new Color(0, 0, 0, 0);
+        ballBaseImage.sprite = ContentProvider.Instance.GetBallBaseImage(ball.shapeType);
         UIManager.Instance.EnableCanvasGroup("Upgrade", true);
     }
     

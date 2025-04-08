@@ -67,6 +67,7 @@ public class InventoryUI : MonoBehaviour
         var sprite = ball.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite;
         if (sprite) g.transform.Find("Icon").GetComponent<Image>().sprite = sprite;
         else g.transform.Find("Icon").GetComponent<Image>().color = new Color(0, 0, 0, 0);
+        g.GetComponent<Image>().sprite = ContentProvider.Instance.GetBallBaseImage(ballBase.Data.shapeType);
         
         SetEvent(g, endRank, ballBase);
         Destroy(_items[endRank]);
