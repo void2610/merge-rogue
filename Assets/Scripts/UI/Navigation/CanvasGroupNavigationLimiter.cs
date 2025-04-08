@@ -34,6 +34,7 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
         if (result) return true;
 
         // StatusEffectUIだけは許可
+        if (!UIManager.Instance) return false;
         if (UIManager.Instance.EnemyStatusUIContainer.OfType<Transform>().ToList().Contains(currentGroup.transform))
         {
             result = true;

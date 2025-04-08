@@ -23,8 +23,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Camera uiCamera;
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider seSlider;
-    [SerializeField] private SeedText pauseSeedText;
-    [SerializeField] private SeedText gameoverSeedText;
     [SerializeField] private Image fadeImage;
     [SerializeField] private DescriptionWindow descriptionWindow;
     [SerializeField] private InputGuide inputGuide;
@@ -67,8 +65,10 @@ public class UIManager : MonoBehaviour
 
     public void SetSeedText(string seed)
     {
-        pauseSeedText.SetText(seed);
-        gameoverSeedText.SetText(seed);
+        foreach(var seedText in FindObjectsByType<SeedText>(FindObjectsSortMode.None))
+        {
+            seedText.SetText(seed);
+        }
     }
     
     public void ToggleCursorState()
