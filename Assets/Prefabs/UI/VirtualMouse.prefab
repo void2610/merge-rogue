@@ -88,13 +88,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66ae0be05e8014a478635ff0b1636aed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isActive: 1
   m_CursorMode: 0
   m_CursorGraphic: {fileID: 2870707759635299730}
   m_CursorTransform: {fileID: 3242042165249655485}
   m_CursorSpeed: 1100
   m_ScrollSpeed: 45
   m_StickAction:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
       m_Name: Stick
       m_Type: 0
@@ -264,7 +265,7 @@ MonoBehaviour:
         m_Action: Stick
         m_Flags: 8
       m_Flags: 0
-    m_Reference: {fileID: 0}
+    m_Reference: {fileID: -3610790561787528987, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
   m_LeftButtonAction:
     m_UseReference: 0
     m_Action:
