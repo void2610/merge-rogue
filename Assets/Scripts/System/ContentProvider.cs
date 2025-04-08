@@ -191,7 +191,7 @@ public class ContentProvider : MonoBehaviour
     private Object GetRandomObjectFromList(List<ContentDataList> contentLists)
     {
         // actに基づいてリストを選択
-        if (contentLists.Count <= _act) _act = contentLists.Count - 1;
+        // if (contentLists.Count <= _act) _act = contentLists.Count - 1;
 
         // TODO: actを実装したらここを変える
         var contentDataList = contentLists[0].list;

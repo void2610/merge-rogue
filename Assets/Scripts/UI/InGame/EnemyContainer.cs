@@ -90,7 +90,8 @@ public class EnemyContainer : MonoBehaviour
         // 全ての敵を倒したらステージ進行
         if (_currentEnemies.Count == 0)
         {
-            if(StageManager.CurrentStage.Type == StageType.Boss) treasure.OpenTreasure(Treasure.TreasureType.Boss);
+            if (StageManager.CurrentStage.Type == StageType.Boss)
+                treasure.OpenTreasure(Treasure.TreasureType.Boss);
             else EndBattle().Forget();
         }
     }
@@ -103,6 +104,14 @@ public class EnemyContainer : MonoBehaviour
         GameManager.Instance.Player.AddExp(_gainedExp);
         _gainedExp = 0;
         BgmManager.Instance.PlayRandomBGM(BgmType.Other).Forget();
+        
+        // ボスを倒した時
+        if (StageManager.CurrentStage.Type == StageType.Boss)
+        {
+            GameManager.Instance.Player.HealToFull();
+            ContentProvider.Instance.AddAct();
+            Debug.Log(ContentProvider.Instance.Act);
+        }
     }
     
     public async UniTask AttackEnemy(Dictionary<AttackType, int> damages)
