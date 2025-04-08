@@ -3,12 +3,10 @@ using DG.Tweening;
 
 public class FloatMove : MonoBehaviour
 {
-    [SerializeField]
-    private float moveDistance = 0.2f;
-    [SerializeField]
-    private float moveDuration = 1f;
-    [SerializeField]
-    private float delay = 0f;
+    [SerializeField] private float moveDistance = 0.2f;
+    [SerializeField] private float moveDuration = 1f;
+    [SerializeField] private float delay = 0f;
+    [SerializeField] private Ease ease;
 
     private Tween _floatTween;
 
@@ -41,7 +39,7 @@ public class FloatMove : MonoBehaviour
                 currentY + moveDistance,
                 moveDuration
             )
-            .SetEase(Ease.InOutSine)
+            .SetEase(ease)
             .SetLoops(-1, LoopType.Yoyo);
     }
 
