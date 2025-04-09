@@ -109,8 +109,9 @@ public class StageEventProcessor : MonoBehaviour
         if (option.isEndless) return;
         
         await Utils.WaitOrSkipInput(2500);
-        UIManager.Instance.EnableCanvasGroup("Event", false);
+        
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+        UIManager.Instance.EnableCanvasGroup("Event", false);
     }
     
     private void HideOptions() => options.ForEach(option => option.SetActive(false));

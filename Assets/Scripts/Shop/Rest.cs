@@ -17,12 +17,12 @@ public class Rest : MonoBehaviour
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
         UIManager.Instance.EnableCanvasGroup("Rest", false);
     }
-
+    
     private static void OnClickOrganise()
     {
         EventManager.OnOrganise.Trigger(0);
-        UIManager.Instance.EnableCanvasGroup("Rest", false);
         InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Swap);
+        UIManager.Instance.EnableCanvasGroup("Rest", false);
     }
     
     private static void OnClickSkip()
