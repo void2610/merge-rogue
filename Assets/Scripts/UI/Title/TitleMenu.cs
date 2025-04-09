@@ -155,6 +155,15 @@ public class TitleMenu : MonoBehaviour
         Application.OpenURL("https://store.steampowered.com/app/3646540/Merge_Rogue/?beta=1");
     }
 
+    public void ExitGame()
+    {
+        // エディタ上での動作確認用
+        #if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+        #endif
+        
+        Application.Quit();
+    }
     private static void InitPlayerPrefs()
     {
         PlayerPrefs.SetFloat("BgmVolume", 1.0f);
