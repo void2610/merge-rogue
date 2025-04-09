@@ -11064,6 +11064,7 @@ GameObject:
   - component: {fileID: 611215501}
   - component: {fileID: 611215500}
   - component: {fileID: 611215499}
+  - component: {fileID: 611215503}
   m_Layer: 6
   m_Name: Description
   m_TagString: IgnoreSelection
@@ -11248,6 +11249,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 611215497}
   m_CullTransparentMesh: 1
+--- !u!114 &611215503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 611215497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2fa6efa9683646ee94195eda5211a35, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &613562756
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -19904,7 +19917,6 @@ GameObject:
   - component: {fileID: 1466561439}
   - component: {fileID: 1466561440}
   - component: {fileID: 1466561441}
-  - component: {fileID: 1466561442}
   - component: {fileID: 1466561443}
   m_Layer: 6
   m_Name: Option1
@@ -20137,18 +20149,6 @@ MonoBehaviour:
   hoverVolume: 0.2
   clickSe: {fileID: 8300000, guid: a2af495fb5b1b43a3b9457da3e08de07, type: 3}
   clickVolume: 1
---- !u!114 &1466561442
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1466561433}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2fa6efa9683646ee94195eda5211a35, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1466561443
 MonoBehaviour:
   m_ObjectHideFlags: 0
