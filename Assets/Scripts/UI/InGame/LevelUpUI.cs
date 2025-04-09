@@ -92,12 +92,12 @@ public class LevelUpUI : MonoBehaviour
             button.gameObject.SetActive(false);
         }
         
-        UIManager.Instance.remainingLevelUps--;
+        Player.RemainingLevelUps--;
         SeManager.Instance.PlaySe("levelUp");
         CameraMove.Instance.ShakeCamera(0.5f, 0.3f);
         Destroy(p, 1f);
         
-        if (UIManager.Instance.remainingLevelUps > 0) return;
+        if (Player.RemainingLevelUps > 0) return;
         
         this.transform.parent.GetComponent<CanvasGroup>().interactable = false;
         

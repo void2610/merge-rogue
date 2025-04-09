@@ -20,8 +20,6 @@ public class GameManager : MonoBehaviour
         AfterBattle,
         LevelUp,
         MapSelect,
-        StageMoving,
-        Event,
         GameOver,
         Clear,
     }
@@ -116,13 +114,6 @@ public class GameManager : MonoBehaviour
         state = newState;
         switch (newState)
         {
-            case GameState.StageMoving:
-                // レベルアップが残っている場合はレベルアップ画面を表示
-                if (UIManager.Instance.remainingLevelUps > 0 && Player.CanLevelUp())
-                    ChangeState(GameState.LevelUp);
-                else
-                    ChangeState(GameState.MapSelect);
-                break;
             case GameState.Merge:
                 Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
                 MergeManager.Instance.StartMerge();
@@ -147,8 +138,6 @@ public class GameManager : MonoBehaviour
                 StageManager.SetNextNodeActive();
                 UIManager.Instance.OnClickMapButtonForce(true);
                 break;
-            case GameState.Event:
-                break;
             case GameState.AfterBattle:
                 afterBattleUI.OpenAfterBattle();
                 UIManager.Instance.EnableCanvasGroup("AfterBattle", true);
@@ -160,7 +149,7 @@ public class GameManager : MonoBehaviour
                 }
                 else
                 {
-                    UIManager.Instance.remainingLevelUps = 0;
+                    Player.RemainingLevelUps = 0;
                     ChangeState(GameState.AfterBattle);
                 }
                 break;

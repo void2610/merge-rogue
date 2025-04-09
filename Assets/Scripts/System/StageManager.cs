@@ -276,7 +276,7 @@ public class StageManager : MonoBehaviour
     private async UniTaskVoid NextStage(StageNode next)
     {
         if (GameManager.Instance.IsGameOver) return;
-        var token = this.GetCancellationTokenOnDestroy();
+        if(next.Connections.Count > 0) ChangeFocusNode(next.Connections[0]);
         
         // 演出
         SetAllNodeInactive();
@@ -306,7 +306,7 @@ public class StageManager : MonoBehaviour
         var pos = next.Obj.GetComponent<RectTransform>().localPosition;
         _playerIconObj.GetComponent<FloatMove>().MoveTo(pos + new Vector3(0, 2, 0), 0.5f);
         
-        await UniTask.Delay(2000, cancellationToken: token);
+        await UniTask.Delay(2000);
         
         // ステージ進行
         CurrentStageCount.Value++;
@@ -340,7 +340,6 @@ public class StageManager : MonoBehaviour
         }
         
         // カーソルの位置を変更
-        if(next.Connections.Count > 0) ChangeFocusNode(next.Connections[0]);
     }
 
     private void ProcessStage(StageType s)
@@ -358,22 +357,18 @@ public class StageManager : MonoBehaviour
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
                 break;
             case StageType.Shop:
-                GameManager.Instance.ChangeState(GameManager.GameState.Event);
                 EventManager.OnShopEnter.Trigger(0);
                 shop.OpenShop();
                 UIManager.Instance.EnableCanvasGroup("Shop", true);
                 break;
             case StageType.Rest:
-                GameManager.Instance.ChangeState(GameManager.GameState.Event);
                 EventManager.OnRestEnter.Trigger(0);
                 UIManager.Instance.EnableCanvasGroup("Rest", true);
                 break;
             case StageType.Treasure:
-                GameManager.Instance.ChangeState(GameManager.GameState.Event);
                 treasure.OpenTreasure(Treasure.TreasureType.Normal);
                 break;
             case StageType.Events:
-                GameManager.Instance.ChangeState(GameManager.GameState.Event);
                 UIManager.Instance.EnableCanvasGroup("Event", true);
                 stageEventProcessor.StartEvent();
                 break;

@@ -20,6 +20,7 @@ public class Player : MonoBehaviour, IEntity
 
     private readonly List<int> _levelUpExp = new() { 20, 40, 80, 100, 150, 200, 250, 300, 350, 400, 500, 600, 700, 800, 900, 1000, 1200, 1400, 1600, 1800, 2000 };
     private Material _material;
+    public static int RemainingLevelUps = 0;
     
     public StatusEffectUI StatusEffectUI => statusEffectUI;
     
@@ -153,7 +154,7 @@ public class Player : MonoBehaviour, IEntity
         Exp.Value -= _levelUpExp[Level - 1];
         Level++;
         MaxExp = _levelUpExp[Level - 1];
-        UIManager.Instance.remainingLevelUps++;
+        RemainingLevelUps++;
         
         //最大レベルを超えたらレベルアップしない
         if (Level >= MAX_LEVEL) return true;
@@ -165,6 +166,7 @@ public class Player : MonoBehaviour, IEntity
 
     private void Start()
     {
+        RemainingLevelUps = 0;
         Health.Value = MaxHealth.Value;
         
         var spriteRenderer = this.transform.GetComponentsInChildren<SpriteRenderer>()[0];

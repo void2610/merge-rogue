@@ -48,7 +48,6 @@ public class UIManager : MonoBehaviour
     public bool IsPaused { get; private set; } = false;
     public bool IsMapOpened { get; private set; } = false;
     public bool IsTutorialOpened { get; set; } = false;
-    public int remainingLevelUps;
     
     private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
     

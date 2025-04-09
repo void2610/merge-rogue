@@ -110,7 +110,7 @@ public class StageEventProcessor : MonoBehaviour
         
         await Utils.WaitOrSkipInput(2500);
         UIManager.Instance.EnableCanvasGroup("Event", false);
-        GameManager.Instance.ChangeState(GameManager.GameState.StageMoving);
+        GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
     }
     
     private void HideOptions() => options.ForEach(option => option.SetActive(false));
