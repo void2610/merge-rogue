@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class FillingRateGauge : MonoBehaviour
+public class FillingRateManager : MonoBehaviour
 {
     public enum FillingRateType
     {
@@ -12,22 +12,21 @@ public class FillingRateGauge : MonoBehaviour
     
     [SerializeField] private FillingRateTrigger lowerTrigger;
     [SerializeField] private FillingRateTrigger higherTrigger;
-    [SerializeField] private FillingRateType fillingRate;
-    public FillingRateType GetFillingRate() => fillingRate;
+    public static FillingRateType FillingRate;
 
     private void CalcFillingGauge()
     {
         if (higherTrigger.IsCollideWithBall())
         {
-            fillingRate = FillingRateType.Higher;
+            FillingRate = FillingRateType.Higher;
         }
         else if (lowerTrigger.IsCollideWithBall())
         {
-            fillingRate = FillingRateType.Middle;
+            FillingRate = FillingRateType.Middle;
         }
         else 
         {
-            fillingRate = FillingRateType.Lower;
+            FillingRate = FillingRateType.Lower;
         }
     }
 
