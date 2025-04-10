@@ -113,6 +113,10 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
                 DescriptionWindow.Instance.ShowSubWindow(currentSelected, ssd.word);
             }
         }
+        else
+        {
+            _allowProgrammaticChange = false;
+        }
     }
 
     /// <summary>
