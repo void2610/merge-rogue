@@ -43,6 +43,7 @@ public class MergeManager : MonoBehaviour
     private Dictionary<Rigidbody2D, float> _stopTimers;
     private bool _isMovable = false;
     private Camera _mainCamera;
+    private float _fillingRateMagnification;
     
     public void LevelUpWallWidth()
     {
@@ -116,6 +117,14 @@ public class MergeManager : MonoBehaviour
     {
         _isMovable = true;
         Reset();
+        
+        var fill = FillingRateManager.Instance.CalcFillingGauge();
+        _fillingRateMagnification = fill switch
+        {
+            FillingRateManager.FillingRateType.Lower => 0.5f,
+            FillingRateManager.FillingRateType.Middle => 1.0f,
+            FillingRateManager.FillingRateType.Higher => 2.0f
+        };
     }
     
     public async UniTaskVoid EndMerge()
@@ -190,14 +199,7 @@ public class MergeManager : MonoBehaviour
         }
         
         // 充填率のバフを適用
-        var fillingRateMagnification = FillingRateManager.FillingRate switch
-        {
-            FillingRateManager.FillingRateType.Lower => 0.5f,
-            FillingRateManager.FillingRateType.Middle => 1.0f,
-            FillingRateManager.FillingRateType.Higher => 2.0f
-        };
-        Debug.Log(FillingRateManager.FillingRate);
-        _attackCounts.MultiplyAll(fillingRateMagnification);
+        _attackCounts.MultiplyAll(_fillingRateMagnification);
         
         // 状態異常を適用
         _attackCounts = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts);

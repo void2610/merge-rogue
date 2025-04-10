@@ -216,7 +216,6 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.ToggleVirtualMouse();
         if (InputProvider.Instance.UI.ToggleCursorState.triggered)
             UIManager.Instance.ToggleCursorState();
-        
         if(!UIManager.Instance.IsVirtualMouseActive())
             UIManager.Instance.SetVirtualMousePosition(new Vector2(9999, 9999));
     }
