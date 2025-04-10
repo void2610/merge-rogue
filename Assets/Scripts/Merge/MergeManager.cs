@@ -123,7 +123,8 @@ public class MergeManager : MonoBehaviour
         {
             FillingRateManager.FillingRateType.Lower => 0.5f,
             FillingRateManager.FillingRateType.Middle => 1.0f,
-            FillingRateManager.FillingRateType.Higher => 2.0f
+            FillingRateManager.FillingRateType.Higher => 2.0f,
+            _ => 1.0f
         };
     }
     
