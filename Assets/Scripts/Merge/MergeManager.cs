@@ -21,6 +21,7 @@ public class MergeManager : MonoBehaviour
     [SerializeField] private GameObject ballGauge;
     [SerializeField] private TextMeshProUGUI ballCountText;
     [SerializeField] private Vector3 nextBallPosition;
+    [SerializeField] private AttackCountUI attackCountUI;
     
     public float attackMagnification = 1.0f;
     public int RemainingBalls { get; private set; } = 0;
@@ -121,8 +122,8 @@ public class MergeManager : MonoBehaviour
         var fill = FillingRateManager.Instance.CalcFillingGauge();
         _fillingRateMagnification = fill switch
         {
-            FillingRateManager.FillingRateType.Lower => 0.5f,
-            FillingRateManager.FillingRateType.Middle => 1.0f,
+            FillingRateManager.FillingRateType.Lower => 1.0f,
+            FillingRateManager.FillingRateType.Middle => 1.5f,
             FillingRateManager.FillingRateType.Higher => 2.0f,
             _ => 1.0f
         };
@@ -149,6 +150,7 @@ public class MergeManager : MonoBehaviour
         
         await UniTask.Delay(1000);
         
+        attackCountUI.SetAttackCount(0);
         GameManager.Instance.ChangeState(GameManager.GameState.PlayerAttack);
     }
     
@@ -173,6 +175,7 @@ public class MergeManager : MonoBehaviour
     {
         _attackCounts[type] = _attackCounts.ContainsKey(type) ? _attackCounts[type] + (int)atk : (int)atk;
         ParticleManager.Instance.MergeText((int)atk, p, type.GetColor());
+        attackCountUI.SetAttackCount(_attackCounts.Sum(a => a.Value));
     }
     
     public void SpawnBallFromLevel(int level, Vector3 p, Quaternion q)
