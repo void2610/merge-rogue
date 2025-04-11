@@ -25,6 +25,7 @@ public class EnemyBase : MonoBehaviour, IEntity
     public int coin;
     public int exp;
 
+    [SerializeField] private float hpSliderOffset = 60f;
     [SerializeField] private GameObject hpSliderPrefab;
     [SerializeField] private GameObject coinPrefab;
 
@@ -231,7 +232,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             UIManager.Instance.GetUICanvas().GetComponent<RectTransform>(), pos, c, out Vector2 localPosition
         );
-        localPosition.y += 60;
+        localPosition.y += hpSliderOffset;
         g.GetComponent<RectTransform>().anchoredPosition = localPosition;
         
         _canvasGroup = g.GetComponent<CanvasGroup>();

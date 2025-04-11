@@ -24926,9 +24926,9 @@ MonoBehaviour:
   bossList:
   - list:
     - data: {fileID: 5901398579228155482, guid: 2804a6531370042f293b3369b843b3c3, type: 3}
-      probability: 1
+      probability: 9999
     - data: {fileID: 5901398579228155482, guid: db2976e6549fd4e6397e3890b0479170, type: 3}
-      probability: 1
+      probability: 0
   eventList:
   - list:
     - data: {fileID: 11500000, guid: 5b32f3e64ebd74bb78b8e03d97106fbb, type: 3}
