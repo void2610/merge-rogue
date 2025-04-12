@@ -231,6 +231,7 @@ MonoBehaviour:
   attack: 2
   coin: 4
   exp: 3
+  hpSliderOffset: 60
   hpSliderPrefab: {fileID: 3765540371106708028, guid: 5870f6351589f4b099ad1836b848608d, type: 3}
   coinPrefab: {fileID: 1812483531616101450, guid: 2c13a74f3d7c84bd29db8479f7091bf5, type: 3}
 --- !u!4 &2096758764268438115 stripped

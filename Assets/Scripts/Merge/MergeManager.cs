@@ -119,14 +119,7 @@ public class MergeManager : MonoBehaviour
         _isMovable = true;
         Reset();
         
-        var fill = FillingRateManager.Instance.CalcFillingGauge();
-        _fillingRateMagnification = fill switch
-        {
-            FillingRateManager.FillingRateType.Lower => 1.0f,
-            FillingRateManager.FillingRateType.Middle => 1.5f,
-            FillingRateManager.FillingRateType.Higher => 2.0f,
-            _ => 1.0f
-        };
+        _fillingRateMagnification = FillingRateManager.Instance.CalcFillingGauge();
     }
     
     public async UniTaskVoid EndMerge()

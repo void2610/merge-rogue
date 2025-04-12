@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using DG.Tweening;
+using TMPro;
 
 public class FillingRateManager : MonoBehaviour
 {
@@ -17,9 +18,11 @@ public class FillingRateManager : MonoBehaviour
     [SerializeField] private FillingRateTrigger lowerTrigger;
     [SerializeField] private FillingRateTrigger higherTrigger;
     [SerializeField] private Image fillImage;
+    [SerializeField] private TextMeshProUGUI fillingRateText;
+    
     public FillingRateType fillingRate;
 
-    public FillingRateType CalcFillingGauge()
+    public float CalcFillingGauge()
     {
         if (higherTrigger.IsCollideWithBall())
         {
@@ -42,7 +45,19 @@ public class FillingRateManager : MonoBehaviour
             _ => 0f
         };
         fillImage.DOFillAmount(fill, 0.5f);
-        return fillingRate;
+
+        var res = fillingRate switch
+        {
+            FillingRateType.Higher => 2f,
+            FillingRateType.Middle => 1.5f,
+            FillingRateType.Lower => 1f,
+            _ => 1f
+        };
+            
+        fillingRateText.text = "x" + res.ToString("F1");
+        fillingRateText.color = fillingRate.GetColor();
+        
+        return res;
     }
 
     private void Awake()

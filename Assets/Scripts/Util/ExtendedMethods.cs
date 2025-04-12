@@ -182,6 +182,17 @@ public static class ExtendedMethods
         d.word = word;
     }
     
+    public static Color GetColor(this FillingRateManager.FillingRateType fillingRateType)
+    {
+        return fillingRateType switch
+        {
+            FillingRateManager.FillingRateType.Higher => Color.red,
+            FillingRateManager.FillingRateType.Middle => Color.yellow,
+            FillingRateManager.FillingRateType.Lower => new Color(0.6981132f, 0.6981132f, 0.6981132f),
+            _ => Color.white
+        };
+    } 
+    
     public static void RemoveAllEventTrigger(this GameObject g)
     {
         if (!g) return;
