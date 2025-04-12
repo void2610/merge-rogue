@@ -168,6 +168,8 @@ public class MergeManager : MonoBehaviour
     {
         _attackCounts[type] = _attackCounts.ContainsKey(type) ? _attackCounts[type] + (int)atk : (int)atk;
         ParticleManager.Instance.MergeText((int)atk, p, type.GetColor());
+        // プレイヤー攻撃力を適用
+        _attackCounts.MultiplyAll(attackMagnification);
         attackCountUI.SetAttackCount(_attackCounts.Sum(a => a.Value));
     }
     
@@ -201,10 +203,9 @@ public class MergeManager : MonoBehaviour
         // 状態異常を適用
         _attackCounts = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts);
         
-        // イベントとプレイヤー攻撃力を適用
+        // イベントを適用
         EventManager.OnPlayerAttack.Trigger(_attackCounts);
         _attackCounts = EventManager.OnPlayerAttack.GetValue();
-        _attackCounts.ToList().ForEach(a => _attackCounts[a.Key] = (int)(a.Value * attackMagnification));
         
         // ハイスコア更新
         var totalAttack = _attackCounts.Sum(a => a.Value);
