@@ -20,6 +20,7 @@ public class FillingRateManager : MonoBehaviour
     [SerializeField] private FillingRateTrigger higherTrigger;
     [SerializeField] private Image fillImage;
     [SerializeField] private TextMeshProUGUI fillingRateText;
+    [SerializeField] private ParticleSystem fillingRateParticle;
     
     public FillingRateType fillingRate;
     private Material _gaugeMaterial;
@@ -49,6 +50,13 @@ public class FillingRateManager : MonoBehaviour
             _ => 0f
         };
         fillImage.DOFillAmount(fill, 0.5f);
+        fillingRateParticle.emissionRate = fillingRate switch
+        {
+            FillingRateType.Higher => 15,
+            FillingRateType.Middle => 2.5f,
+            FillingRateType.Lower => 0f,
+            _ => 0f
+        };
 
         var res = fillingRate switch
         {
@@ -84,8 +92,10 @@ public class FillingRateManager : MonoBehaviour
         DOTween.To(() => _currentIntensity, x => {
                 _currentIntensity = x;
                 _gaugeMaterial.SetColor("_EmissionColor", _baseColor * _currentIntensity);
-            }, 1.5f, 3.0f)
+            }, 1.0f, 3.0f)
             .SetEase(Ease.InOutSine)
             .SetLoops(-1, LoopType.Yoyo);
+        
+        fillingRateParticle.emissionRate = 0f;
     }
 }

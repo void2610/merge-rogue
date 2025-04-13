@@ -26,8 +26,8 @@ public class AttackCountUI : MonoBehaviour
         
         var inDuration = 0.03f + (target * 0.0001f);
         var outDuration = inDuration * 15;
-        var size = 1 + (target * 0.01f);
-        var angle = 5 + (target * 0.05f);
+        var size = 1 + (target * 0.001f);
+        var angle = 5 + (target * 0.03f);
         attackCountText.text = target.ToString();
         
         _sizeTween = attackCountText.transform.DOScale(Vector3.one * (_defaultSize * (size * 3)), inDuration)

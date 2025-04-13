@@ -166,10 +166,11 @@ public class MergeManager : MonoBehaviour
 
     public void AddAttackCount(AttackType type, float atk, Vector3 p)
     {
+        // プレイヤー攻撃力を適用
+        atk *= attackMagnification;
+        
         _attackCounts[type] = _attackCounts.ContainsKey(type) ? _attackCounts[type] + (int)atk : (int)atk;
         ParticleManager.Instance.MergeText((int)atk, p, type.GetColor());
-        // プレイヤー攻撃力を適用
-        _attackCounts.MultiplyAll(attackMagnification);
         attackCountUI.SetAttackCount(_attackCounts.Sum(a => a.Value));
     }
     
