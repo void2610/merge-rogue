@@ -29,8 +29,10 @@ public class FillingRateTrigger : MonoBehaviour
         // 取得したコライダーの中から、BallBaseを持つものがあるかチェック
         foreach (var col in overlappingColliders)
         {
-            // オブジェクトが破棄されている場合はcolがnullになっている可能性があるので注意
-            if(col && col.TryGetComponent<BallBase>(out _)) return true;
+            if (col && col.TryGetComponent<BallBase>(out var b))
+            {
+                if(!b.IsFrozen) return true;
+            }
         }
         return false;
     }

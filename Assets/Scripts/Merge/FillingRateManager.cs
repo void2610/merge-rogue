@@ -3,6 +3,7 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
+using DG.Tweening;
 
 public class FillingRateManager : MonoBehaviour
 {
@@ -21,7 +22,10 @@ public class FillingRateManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI fillingRateText;
     
     public FillingRateType fillingRate;
-
+    private Material _gaugeMaterial;
+    private float _currentIntensity;
+    private Color _baseColor = Color.red;
+    
     public float CalcFillingGauge()
     {
         if (higherTrigger.IsCollideWithBall())
@@ -73,5 +77,15 @@ public class FillingRateManager : MonoBehaviour
         
         fillImage.fillAmount = 0f;
         fillingRate = FillingRateType.Lower;
+        
+		_gaugeMaterial = fillImage.material;
+        _currentIntensity = 0.5f;
+        _gaugeMaterial.SetColor("_EmissionColor", _baseColor * _currentIntensity);
+        DOTween.To(() => _currentIntensity, x => {
+                _currentIntensity = x;
+                _gaugeMaterial.SetColor("_EmissionColor", _baseColor * _currentIntensity);
+            }, 1.5f, 3.0f)
+            .SetEase(Ease.InOutSine)
+            .SetLoops(-1, LoopType.Yoyo);
     }
 }
