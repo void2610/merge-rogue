@@ -52,7 +52,7 @@ public class FillingRateManager : MonoBehaviour
         fillImage.DOFillAmount(fill, 0.5f);
         fillingRateParticle.emissionRate = fillingRate switch
         {
-            FillingRateType.Higher => 15,
+            FillingRateType.Higher => 12.5f,
             FillingRateType.Middle => 2.5f,
             FillingRateType.Lower => 0f,
             _ => 0f
