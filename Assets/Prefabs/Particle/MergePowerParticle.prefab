@@ -55,13 +55,13 @@ VisualEffect:
       - m_Value: 2.5
         m_Name: Emission
         m_Overridden: 1
-      - m_Value: 50
+      - m_Value: 75
         m_Name: Rate
         m_Overridden: 1
-      - m_Value: 0.8
+      - m_Value: 0.5
         m_Name: Lifetime
         m_Overridden: 1
-      - m_Value: 0.45
+      - m_Value: 1
         m_Name: Velocity
         m_Overridden: 1
       - m_Value: 0.7
@@ -143,6 +143,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   targetPosition: {x: -5.75, y: 2, z: 0}
-  duration: 1.2
   intermediatePointCount: 5
   maxControlPointOffset: 2.5

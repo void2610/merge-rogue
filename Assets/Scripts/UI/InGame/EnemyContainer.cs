@@ -128,7 +128,7 @@ public class EnemyContainer : MonoBehaviour
             {
                 es[i].Damage(damages[AttackType.All], AttackType.All);
             }
-            await UniTask.Delay(500);
+            await UniTask.Delay(250);
         }
 
         if (GetCurrentEnemyCount() == 0) return;
@@ -141,7 +141,7 @@ public class EnemyContainer : MonoBehaviour
             SeManager.Instance.PlaySe("playerAttack");
             lastEnemy.Damage(damages[AttackType.Last], AttackType.Last);
             CameraMove.Instance.ShakeCamera(0.5f, damages[AttackType.Last] * 0.01f);
-            await UniTask.Delay(500);
+            await UniTask.Delay(250);
         }
         
         if (GetCurrentEnemyCount() == 0) return;
@@ -165,10 +165,10 @@ public class EnemyContainer : MonoBehaviour
                 singleDamage -= actualDamage;
 
                 CameraMove.Instance.ShakeCamera(0.5f, actualDamage * 0.01f);
-                await UniTask.Delay(250);
+                await UniTask.Delay(200);
             }
         }
-        await UniTask.Delay(500);
+        await UniTask.Delay(250);
         
         if (GetCurrentEnemyCount() == 0) return;
         es = GetAllEnemies().ToList();
@@ -180,7 +180,7 @@ public class EnemyContainer : MonoBehaviour
             SeManager.Instance.PlaySe("playerAttack");
             randomEnemy.Damage(damages[AttackType.Random], AttackType.Random);
             CameraMove.Instance.ShakeCamera(0.5f, damages[AttackType.Random] * 0.01f);
-            await UniTask.Delay(300);
+            await UniTask.Delay(250);
         }
         
         // 敵が残っていたら敵の攻撃へ
@@ -205,7 +205,7 @@ public class EnemyContainer : MonoBehaviour
             if (!_currentEnemies[i]?.gameObject) continue;
             _currentEnemies[i].Action();
             // 0.5秒待つ
-            await UniTask.Delay(500);
+            await UniTask.Delay(250);
         }
         
         await UniTask.Delay(100);

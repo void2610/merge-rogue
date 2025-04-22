@@ -141,7 +141,7 @@ public class MergeManager : MonoBehaviour
         arrow.DOFade(0, 0.5f).Forget();
         _isMovable = false;
         
-        await UniTask.Delay(1000);
+        await UniTask.Delay(200);
         
         attackCountUI.SetAttackCount(0);
         GameManager.Instance.ChangeState(GameManager.GameState.PlayerAttack);
