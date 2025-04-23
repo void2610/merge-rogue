@@ -17505,6 +17505,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundMaterial: {fileID: 2100000, guid: 6aad917c3f80a415a968f0360490f297, type: 2}
+  fillingRateGaugeMaterial: {fileID: 2100000, guid: d624ddc841733423f94649adb5e42431, type: 2}
 --- !u!114 &1168070102
 MonoBehaviour:
   m_ObjectHideFlags: 0

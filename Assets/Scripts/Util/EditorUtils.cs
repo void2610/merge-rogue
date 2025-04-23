@@ -5,6 +5,7 @@ using UnityEditor;
 public class EditorUtils : MonoBehaviour
 {
     [SerializeField] private Material backgroundMaterial;
+    [SerializeField] private Material fillingRateGaugeMaterial;
     
     private void OnEnable()
     {
@@ -32,9 +33,8 @@ public class EditorUtils : MonoBehaviour
 
     private void ResetMaterialParameters()
     {
-        if (backgroundMaterial != null) {
-            backgroundMaterial.mainTextureOffset = Vector2.zero;
-            Debug.Log("Material parameters reset to default.");
-        }
+        backgroundMaterial.mainTextureOffset = Vector2.zero;
+        fillingRateGaugeMaterial.SetColor("_EmissionColor", Color.red);
+        Debug.Log("Material parameters reset to default.");
     }
 }
