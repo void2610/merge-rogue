@@ -3,7 +3,6 @@ using UnityEngine.Serialization;
 using UnityEngine.UI;
 using DG.Tweening;
 using TMPro;
-using DG.Tweening;
 
 public class FillingRateManager : MonoBehaviour
 {
@@ -50,7 +49,8 @@ public class FillingRateManager : MonoBehaviour
             _ => 0f
         };
         fillImage.DOFillAmount(fill, 0.5f);
-        fillingRateParticle.emissionRate = fillingRate switch
+        var emission = fillingRateParticle.emission;
+        emission.rateOverTimeMultiplier = fillingRate switch
         {
             FillingRateType.Higher => 12.5f,
             FillingRateType.Middle => 2.5f,
@@ -96,6 +96,8 @@ public class FillingRateManager : MonoBehaviour
             .SetEase(Ease.InOutSine)
             .SetLoops(-1, LoopType.Yoyo);
         
-        fillingRateParticle.emissionRate = 0f;
+        // fillingRateParticle.emissionRate = 0f;
+        var emission = fillingRateParticle.emission;
+        emission.rateOverTimeMultiplier = 0f;
     }
 }

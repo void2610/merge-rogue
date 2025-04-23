@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using System.Numerics;
+using Cysharp.Threading.Tasks;
 using UnityEngine;
 using R3;
 using DG.Tweening;
@@ -107,9 +108,11 @@ public class GameManager : MonoBehaviour
         var url = "https://twitter.com/intent/tweet?text=" + UnityEngine.Networking.UnityWebRequest.EscapeURL(text);
         Application.OpenURL(url);
     }
+
+    public void ChangeState(GameState newState) => ChangeStateAsync(newState).Forget();
     
     // ReSharper disable Unity.PerformanceAnalysis
-    public void ChangeState(GameState newState)
+    private async UniTaskVoid ChangeStateAsync(GameState newState)
     {
         state = newState;
         switch (newState)
@@ -136,6 +139,7 @@ public class GameManager : MonoBehaviour
                 # endif 
                 
                 StageManager.SetNextNodeActive();
+                await UniTask.Delay(400, DelayType.UnscaledDeltaTime);
                 UIManager.Instance.OnClickMapButtonForce(true);
                 break;
             case GameState.AfterBattle:
