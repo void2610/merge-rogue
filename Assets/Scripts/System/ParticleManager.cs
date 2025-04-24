@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 using TMPro;
 using DG.Tweening;
 using R3;
+using Cysharp.Threading.Tasks;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
@@ -22,6 +23,8 @@ public class ParticleManager : MonoBehaviour
     [SerializeField] private GameObject allHitParticle;
     [SerializeField] private GameObject mergeParticle;
     [SerializeField] private GameObject mergePowerParticle;
+    [SerializeField] private GameObject mergeBallIconParticle;
+    [SerializeField] private AnimationCurve mergeBallIconParticleCurve;
     [SerializeField] private GameObject bombFireParticle;
     [SerializeField] private GameObject thunderParticle;
     [Header("テキスト")]
@@ -30,28 +33,29 @@ public class ParticleManager : MonoBehaviour
     [SerializeField] private GameObject wavyTextPrefab;
     
     public void HealParticle(Vector3 pos) => Instantiate(healParticlePrefab, pos, Quaternion.identity);
-    
-    public void HealParticleToPlayer()
-    {
-        var pos = new Vector3(-5.7f, 3.1f, 0);
-        Instantiate(healParticlePrefab, pos, Quaternion.identity);
-    }
-    
+    public void HealParticleToPlayer() => Instantiate(healParticlePrefab, new Vector3(-5.7f, 3.1f, 0), Quaternion.identity);
     public void HitParticle(Vector3 pos) => Instantiate(hitParticle, pos, Quaternion.identity);
-    
     public void AllHitParticle(Vector3 pos) => Instantiate(allHitParticle, pos, Quaternion.identity);
-    
     public void MergeParticle(Vector3 pos) => Instantiate(mergeParticle, pos, Quaternion.identity);
-    
     public void ThunderParticle(Vector3 pos) => Instantiate(thunderParticle, pos, Quaternion.identity);
-    
-    public void MergePowerParticle(Vector3 pos, Color color)
-    {
-        var mpp = Instantiate(mergePowerParticle, pos, Quaternion.identity).GetComponent<MergePowerParticle>();
-        mpp.MoveTo(color);
-    }
-    
+    public void MergePowerParticle(Vector3 pos, Color color) => Instantiate(mergePowerParticle, pos, Quaternion.identity).GetComponent<MergePowerParticle>().MoveTo(color);
     public GameObject GetBombFireParticle() => Instantiate(bombFireParticle);
+    public void MergeBallIconParticle(Vector3 pos, int ballRank, Sprite ballIcon) => MergeBallIconParticleAsync(pos, ballRank, ballIcon).Forget();
+    
+    private async UniTaskVoid MergeBallIconParticleAsync(Vector3 pos, int ballRank, Sprite ballIcon)
+    {
+        // 雷パーティクルも出す？
+        var s = Instantiate(mergeBallIconParticle, pos, Quaternion.identity).GetComponent<SpriteRenderer>();
+        s.sprite = ballIcon;
+        
+        s.color = MyEnumUtil.GetBallColor(ballRank - 1);
+        s.DOFade(0, 0);
+        s.transform.localScale = Vector3.zero;
+        s.transform.DOScale(1f, 0.1f).SetEase(Ease.OutExpo);
+        
+        await s.DOFade(1f, 0.75f).SetEase(mergeBallIconParticleCurve);
+        Destroy(s.gameObject);
+    }
     
     public void MergeText(int value, Vector3 pos, Color color = default)
     {

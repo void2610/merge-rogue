@@ -131,6 +131,7 @@ public class BallBase : MonoBehaviour
         transform.localScale = Vector3.zero;
         transform.DOScale(tmp, 0.2f).SetEase(Ease.OutBack).SetLink(gameObject);
     }
+    
     protected　virtual void HandleCollision(BallBase b)
     {
         if (isDestroyed || IsFrozen || !isMergable) return;
@@ -171,6 +172,9 @@ public class BallBase : MonoBehaviour
     {
         ParticleManager.Instance.MergeParticle(this.transform.position);
         ParticleManager.Instance.MergePowerParticle(this.transform.position, MyEnumUtil.GetBallColor(Rank-1));
+        
+        if (useIcon)
+            ParticleManager.Instance.MergeBallIconParticle(this.transform.position, this.Rank, this.Data.sprite);
         
         var i = Random.Range(0, 5);
         SeManager.Instance.PlaySe("ball" + i);
