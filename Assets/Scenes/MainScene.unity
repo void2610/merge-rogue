@@ -25164,9 +25164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyList:
   - list:
-    - data: {fileID: 5901398579228155482, guid: 48862e4bf4a2840eaae7664f1fe8025a, type: 3}
-      probability: 0.5
-    - data: {fileID: 5901398579228155482, guid: 54009fcfd956249999622bfbac938605, type: 3}
+    - data: {fileID: 6330652595540082318, guid: 5d46f33f378c241c29256ae6459f08fe, type: 3}
       probability: 0.5
   bossList:
   - list:

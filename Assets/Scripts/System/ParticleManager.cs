@@ -49,9 +49,9 @@ public class ParticleManager : MonoBehaviour
         s.sprite = ballIcon;
         
         s.color = MyEnumUtil.GetBallColor(ballRank - 1);
-        s.DOFade(0, 0);
+        s.DOFade(0, 0).Forget();
         s.transform.localScale = Vector3.zero;
-        s.transform.DOScale(1f, 0.1f).SetEase(Ease.OutExpo);
+        s.transform.DOScale(1f, 0.1f).SetEase(Ease.OutExpo).Forget();
         
         await s.DOFade(1f, 0.75f).SetEase(mergeBallIconParticleCurve);
         Destroy(s.gameObject);
