@@ -57,20 +57,20 @@ public class ContentProvider : MonoBehaviour
     /// 敵のPrefabをランダムで取得する
     /// </summary>
     /// <returns></returns>
-    public GameObject GetRandomEnemy()
+    public EnemyData GetRandomEnemy()
     {
-        var enemy = GetRandomObjectFromList(enemyList) as GameObject;
-        return Instantiate(enemy);
+        var enemy = GetRandomObjectFromList(enemyList) as EnemyData;
+        return enemy;
     }
     
     /// <summary>
     /// ボスのPrefabをランダムで取得する
     /// </summary>
     /// <returns></returns>
-    public GameObject GetRandomBoss()
+    public EnemyData GetRandomBoss()
     {
-        var boss = GetRandomObjectFromList(bossList) as GameObject;
-        return Instantiate(boss);
+        var boss = GetRandomObjectFromList(bossList) as EnemyData;
+        return boss;
     }
     
     /// <summary>

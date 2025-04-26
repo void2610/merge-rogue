@@ -19,16 +19,14 @@ public class EnemyBase : MonoBehaviour, IEntity
     public string enemyName = "Enemy";
     public EnemyType enemyType;
     public int actionInterval = 1;
-    public int hMax = 100;
-    public int hMin = 1;
     public int attack = 2;
     public int coin;
     public int exp;
 
-    [SerializeField] private float hpSliderOffset = 60f;
     [SerializeField] private GameObject hpSliderPrefab;
     [SerializeField] private GameObject coinPrefab;
 
+    public EnemyData Data { get; private set; }
     public int Health { get; protected set; }
     public int MaxHealth { get; protected set; }
     public List<StatusEffectBase> StatusEffects { get; } = new();
@@ -47,6 +45,7 @@ public class EnemyBase : MonoBehaviour, IEntity
     private Image _attackIcon;
     
     public StatusEffectUI StatusEffectUI => _statusEffectUI;
+
     
     public void AddStatusEffect(StatusEffectBase effect)
     {
@@ -184,6 +183,7 @@ public class EnemyBase : MonoBehaviour, IEntity
 
     private void OnAppear()
     {
+        this.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
         _canvasGroup.DOFade(1, 0.5f).SetLink(gameObject);
         this.GetComponent<SpriteRenderer>().DOFade(1, 0.5f).SetLink(gameObject);
     }
@@ -223,35 +223,33 @@ public class EnemyBase : MonoBehaviour, IEntity
             _ => Color.white
         };
     }
-
-    public virtual void Init(int stage)
+    
+    public virtual void Init(EnemyData d, int stage)
     {
+        // 敵のデータを設定
+        Stage = stage;
+        Magnification = ((stage + 1) * 0.6f);
+        MaxHealth = (int)(GameManager.Instance.RandomRange(d.maxHealthMin, d.maxHealthMax) * Magnification);
+        Health = MaxHealth;
+        attack = (int)(d.attack * (Magnification * 0.3f));
+        exp = d.exp + (int)(Magnification);
+
+
+        // UIの初期化
         var c = UIManager.Instance.GetUICamera();
         var g = Instantiate(hpSliderPrefab, UIManager.Instance.GetEnemyUIContainer());
         var pos = c.WorldToScreenPoint(this.transform.position);
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             UIManager.Instance.GetUICanvas().GetComponent<RectTransform>(), pos, c, out Vector2 localPosition
         );
-        localPosition.y += hpSliderOffset;
+        localPosition.y += d.hpSliderYOffset;
         g.GetComponent<RectTransform>().anchoredPosition = localPosition;
-        
         _canvasGroup = g.GetComponent<CanvasGroup>();
         _healthText = g.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
         _healthSlider = g.GetComponent<Slider>();
         _attackCountText = g.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
         _attackIcon = g.transform.Find("AttackIcon").GetComponent<Image>();
         _statusEffectUI = g.GetComponentInChildren<StatusEffectUI>();
-
-        Stage = stage;
-        Magnification = ((stage + 1) * 0.6f);
-        MaxHealth = (int)(GameManager.Instance.RandomRange(hMin, hMax) * Magnification);
-        Health = MaxHealth;
-        attack = (int)(attack * (Magnification * 0.3f));
-        exp = exp + (int)(Magnification);
-
-        GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-        // _canvas.GetComponent<CanvasGroup>().alpha = 0;
-
         _healthSlider.maxValue = MaxHealth;
         _healthSlider.value = Health;
         _healthText.text = Health + "/" + MaxHealth;

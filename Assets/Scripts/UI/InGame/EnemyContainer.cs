@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
 using R3;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyContainer : MonoBehaviour
@@ -17,6 +18,8 @@ public class EnemyContainer : MonoBehaviour
     
     public static EnemyContainer Instance { get; private set; }
 
+    [SerializeField] private GameObject enemyBasePrefab;
+    [SerializeField] private GameObject bossBasePrefab;
     [SerializeField] private float alignment = 4;
     [SerializeField] private Treasure treasure;
     public readonly ReactiveProperty<int> DefeatedEnemyCount = new(0);
@@ -32,13 +35,12 @@ public class EnemyContainer : MonoBehaviour
 
     public void SpawnBoss(int stage)
     {
-        var boss = ContentProvider.Instance.GetRandomBoss();
-        var bossBase = boss.transform.GetChild(0).GetComponent<EnemyBase>();
-        boss.transform.parent = this.transform;
-        boss.transform.localScale = new Vector3(1, 1, 1);
-        boss.transform.position = _positions[_currentEnemies.Count];
-        bossBase.Init(stage);
-        _currentEnemies.Add(bossBase);
+        var bossData = ContentProvider.Instance.GetRandomBoss();
+        var e = Instantiate(bossBasePrefab, this.transform).GetComponent<EnemyBase>();
+        e.transform.localScale = new Vector3(1, 1, 1);
+        e.transform.position = _positions[_currentEnemies.Count];
+        e.Init(bossData, stage);
+        _currentEnemies.Add(e);
     }
 
     public void SpawnEnemy(int count, int stage)
@@ -47,13 +49,12 @@ public class EnemyContainer : MonoBehaviour
         if (count <= 0) return;
         for(var i = 0; i < count; i++)
         {
-            var e = ContentProvider.Instance.GetRandomEnemy();
-            e.transform.parent = this.transform;
+            var enemyData = ContentProvider.Instance.GetRandomEnemy();
+            var e = Instantiate(enemyBasePrefab, this.transform).transform.GetChild(0).GetComponent<EnemyBase>();
             e.transform.position = _positions[_currentEnemies.Count];
             e.transform.localScale = new Vector3(1, 1, 1);
-            var enemyBase = e.transform.GetComponentsInChildren<EnemyBase>()[0];
-            enemyBase.Init(stage);
-            _currentEnemies.Add(enemyBase);
+            e.Init(enemyData, stage);
+            _currentEnemies.Add(e);
         }
     }
     

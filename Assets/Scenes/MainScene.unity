@@ -2047,6 +2047,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70bc072e737184b9e816b418e97e1fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyBasePrefab: {fileID: 7954668992148410542, guid: 0951d62e1178c43b68db7d78b6bec2fb, type: 3}
+  bossBasePrefab: {fileID: 0}
   alignment: 3
   treasure: {fileID: 1607858726}
 --- !u!1 &225880442
@@ -25164,7 +25166,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyList:
   - list:
-    - data: {fileID: 6330652595540082318, guid: 5d46f33f378c241c29256ae6459f08fe, type: 3}
+    - data: {fileID: 11400000, guid: a76c5edd71784422b8b798351be6af49, type: 2}
       probability: 0.5
   bossList:
   - list:
