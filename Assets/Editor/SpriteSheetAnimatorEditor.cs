@@ -3,7 +3,7 @@ using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
 
-[CustomEditor(typeof(SpriteSheetAnimator))]
+[CustomEditor(typeof(EnemyData))]
 public class SpriteSheetAnimatorEditor : Editor
 {
     public override void OnInspectorGUI()
@@ -12,7 +12,7 @@ public class SpriteSheetAnimatorEditor : Editor
         GUILayout.Space(6);
         if (GUILayout.Button("Refresh Frames"))
         {
-            (target as SpriteSheetAnimator)?.RefreshFrames();
+            (target as EnemyData)?.RefreshFrames();
         }
     }
 }

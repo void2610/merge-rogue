@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2572b47b9e4e04d16a633d6869ca039e, type: 3}
+  m_Name: Bat
+  m_EditorClassIdentifier: 
+  className: Bat
+  displayName: "\u30B3\u30A6\u30E2\u30EA"
+  flavorText: "\u30B3\u30A6\u30E2\u30EA"
+  enemyType: 0
+  maxHealthMin: 3
+  maxHealthMax: 6
+  attack: 1
+  interval: 1
+  coin: 1
+  exp: 2
+  spriteSheet: {fileID: 2800000, guid: f40834502e1774a8bad2530bce387704, type: 3}
+  sprites:
+  - {fileID: 309706386, guid: f40834502e1774a8bad2530bce387704, type: 3}
+  - {fileID: 709210051, guid: f40834502e1774a8bad2530bce387704, type: 3}
+  - {fileID: -1680270377, guid: f40834502e1774a8bad2530bce387704, type: 3}
+  - {fileID: -57574143, guid: f40834502e1774a8bad2530bce387704, type: 3}
+  framePerSecond: 3
+  hpSliderYOffset: 60
+  enemyYOffset: 2

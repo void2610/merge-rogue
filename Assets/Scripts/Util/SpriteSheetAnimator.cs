@@ -45,28 +45,7 @@ public class SpriteSheetAnimator : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Inspector 上のボタンから呼び出すため public に変更
-    /// </summary>
-    [ContextMenu("Refresh Frames")]
-    public void RefreshFrames()
-    {
-#if UNITY_EDITOR
-        if (!spriteSheet)
-        {
-            Debug.LogError("[SpriteSheetAnimator] spriteSheet が設定されていません。");
-            return;
-        }
-        var path = AssetDatabase.GetAssetPath(spriteSheet);
-        var assets = AssetDatabase.LoadAllAssetRepresentationsAtPath(path)
-                                  .OfType<Sprite>()
-                                  .OrderBy(s => s.name)
-                                  .ToList();
-        sprites = assets;
-        EditorUtility.SetDirty(this);
-        Debug.Log($"[SpriteSheetAnimator] {sprites.Count} 枚のフレームを読み込みました。 (SpriteSheet: {spriteSheet.name})");
-#endif
-    }
+
 }
 
 
