@@ -181,13 +181,6 @@ public class EnemyBase : MonoBehaviour, IEntity
                 }).SetLink(gameObject);
     }
 
-    private void OnAppear()
-    {
-        this.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-        _canvasGroup.DOFade(1, 0.5f).SetLink(gameObject);
-        this.GetComponent<SpriteRenderer>().DOFade(1, 0.5f).SetLink(gameObject);
-    }
-
     public void OnDisappear()
     {
         SeManager.Instance.PlaySe("coin");
@@ -243,7 +236,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         var g = Instantiate(hpSliderPrefab, UIManager.Instance.GetEnemyUIContainer());
         var pos = c.WorldToScreenPoint(this.transform.position);
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            UIManager.Instance.GetUICanvas().GetComponent<RectTransform>(), pos, c, out Vector2 localPosition
+            UIManager.Instance.GetUICanvas().GetComponent<RectTransform>(), pos, c, out var localPosition
         );
         localPosition.y += d.hpSliderYOffset;
         g.GetComponent<RectTransform>().anchoredPosition = localPosition;
@@ -264,6 +257,9 @@ public class EnemyBase : MonoBehaviour, IEntity
         _nextAction = GetNextAction();
         UpdateAttackIcon(_nextAction);
         
-        OnAppear();
+        // 出現のTween
+        this.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
+        _canvasGroup.DOFade(1, 0.5f).SetLink(gameObject);
+        this.GetComponent<SpriteRenderer>().DOFade(1, 0.5f).SetLink(gameObject);
     }
 }

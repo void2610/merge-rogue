@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2572b47b9e4e04d16a633d6869ca039e, type: 3}
+  m_Name: ShieldBoss
+  m_EditorClassIdentifier: 
+  className: ShieldBoss
+  displayName: "\u76FE\u30DC\u30B9"
+  flavorText: "\u76FE\u30DC\u30B9"
+  enemyType: 3
+  maxHealthMin: 10
+  maxHealthMax: 12
+  attack: 5
+  interval: 3
+  coin: 30
+  exp: 30
+  spriteSheet: {fileID: -8328923581568760697, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
+  sprites:
+  - {fileID: -6961294929897480010, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
+  - {fileID: 742495022508810720, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
+  - {fileID: -7511899882797719130, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
+  - {fileID: 8186637598177807608, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
+  - {fileID: 5281403225120349667, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
+  - {fileID: 1730644194916358549, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
+  - {fileID: 7746392857816733336, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
+  - {fileID: 4444287625598600754, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
+  framePerSecond: 7
+  hpSliderYOffset: 45
+  enemyYOffset: 0.12
