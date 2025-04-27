@@ -233,7 +233,10 @@ public class EnemyBase : MonoBehaviour, IEntity
         Health = MaxHealth;
         attack = (int)(d.attack * (Magnification * 0.3f));
         exp = d.exp + (int)(Magnification);
-
+        
+        // スプライトアニメーションを設定
+        this.GetComponent<SpriteSheetAnimator>().Setup(d.sprites, d.framePerSecond);
+        this.transform.Translate(0, d.enemyYOffset, 0);
 
         // UIの初期化
         var c = UIManager.Instance.GetUICamera();

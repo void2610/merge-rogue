@@ -50,7 +50,7 @@ public class EnemyContainer : MonoBehaviour
         for(var i = 0; i < count; i++)
         {
             var enemyData = ContentProvider.Instance.GetRandomEnemy();
-            var e = Instantiate(enemyBasePrefab, this.transform).transform.GetChild(0).GetComponent<EnemyBase>();
+            var e = Instantiate(enemyBasePrefab, this.transform).GetComponent<EnemyBase>();
             e.transform.position = _positions[_currentEnemies.Count];
             e.transform.localScale = new Vector3(1, 1, 1);
             e.Init(enemyData, stage);

@@ -1,29 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-#if UNITY_EDITOR
-using UnityEditor;
-using System.Linq;
-#endif
-
 /// <summary>
 /// SpriteSheet を指定し、分割済みスプライトを Inspector ボタンで一括取得してアニメーション再生するクラス
 /// </summary>
 [RequireComponent(typeof(SpriteRenderer))]
 public class SpriteSheetAnimator : MonoBehaviour
 {
-    [Header("スプライトシート（Multiple 設定済みの Texture2D）")]
-    [SerializeField] private Texture2D spriteSheet;
-
-    [Header("フレーム用スプライト（Editor の Refresh Frames で自動設定される）")]
-    [SerializeField] private List<Sprite> sprites = new List<Sprite>();
-
-    [Header("1秒あたりのフレーム数")]
+    [SerializeField] private List<Sprite> sprites = new ();
     [SerializeField] private float framesPerSecond = 10f;
 
     private float _timer;
     private int _currentFrame;
     private SpriteRenderer _spriteRenderer;
+
+    public void Setup(List<Sprite> s, int fps)
+    {
+        this.sprites = s;
+        this.framesPerSecond = fps;
+    }
 
     private void Start()
     {
@@ -44,8 +39,6 @@ public class SpriteSheetAnimator : MonoBehaviour
             _spriteRenderer.sprite = sprites[_currentFrame];
         }
     }
-
-
 }
 
 
