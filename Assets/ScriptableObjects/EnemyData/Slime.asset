@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2572b47b9e4e04d16a633d6869ca039e, type: 3}
+  m_Name: Slime
+  m_EditorClassIdentifier: 
+  className: Slime
+  displayName: "\u30B9\u30E9\u30A4\u30E0"
+  flavorText: "\u30B9\u30E9\u30A4\u30E0"
+  enemyType: 0
+  maxHealthMin: 5
+  maxHealthMax: 10
+  attack: 1
+  interval: 2
+  coin: 2
+  exp: 3
+  spriteSheet: {fileID: 2800000, guid: 8bdf07ce51ef041279efe3705a56e207, type: 3}
+  sprites:
+  - {fileID: -339588588, guid: 8bdf07ce51ef041279efe3705a56e207, type: 3}
+  - {fileID: -2060796417, guid: 8bdf07ce51ef041279efe3705a56e207, type: 3}
+  framePerSecond: 2
+  hpSliderYOffset: 45
+  enemyYOffset: 0.12

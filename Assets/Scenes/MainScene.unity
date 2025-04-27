@@ -25168,6 +25168,8 @@ MonoBehaviour:
   - list:
     - data: {fileID: 11400000, guid: a76c5edd71784422b8b798351be6af49, type: 2}
       probability: 0.5
+    - data: {fileID: 11400000, guid: b3473be55ae6f4664bd414a8841a8c0d, type: 2}
+      probability: 0.5
   bossList:
   - list:
     - data: {fileID: 5901398579228155482, guid: 2804a6531370042f293b3369b843b3c3, type: 3}
