@@ -36,6 +36,8 @@ public class EnemyContainer : MonoBehaviour
     public void SpawnBoss(int stage)
     {
         var bossData = ContentProvider.Instance.GetRandomBoss();
+        
+        // TODO: ボスの場合はEnemyBaseのサブクラスを取得して使用する
         var e = Instantiate(bossBasePrefab, this.transform).GetComponent<EnemyBase>();
         e.transform.localScale = new Vector3(1, 1, 1);
         e.transform.position = _positions[_currentEnemies.Count];
