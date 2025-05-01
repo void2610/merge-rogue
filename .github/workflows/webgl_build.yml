@@ -1,6 +1,14 @@
 name: WebGL Build ✨
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: write    # リポジトリの内容をプッシュする権限
+  pages: write       # GitHub Pages ブランチへの書き込み権限
 
 jobs:
   build:
@@ -61,41 +69,92 @@ jobs:
 
       - name: Prepare artifact for deployment 🎯
         run: |
-          sudo mkdir -p ./public
-          sudo mv CIBuilds/WebGL/build/* ./public/
-          sudo chown -R $USER:$USER ./public
+          # ブランチ名取得
+          BRANCH=${GITHUB_REF_NAME#refs/heads/}
+          # 出力先フォルダを決定
+          if [ "$BRANCH" = "main" ]; then
+            DEST_DIR="public"
+            PUBLISH_DEST=""
+          else
+            DEST_DIR="public/$BRANCH"
+            PUBLISH_DEST="$BRANCH"
+          fi
+          echo "Branch=$BRANCH -> DEST_DIR=$DEST_DIR PUBLISH_DEST=$PUBLISH_DEST"
+          # 環境変数として後続ステップに渡す
+          echo "PUBLISH_DEST=$PUBLISH_DEST" >> $GITHUB_ENV
+          # root 権限でディレクトリ作成・移動
+          sudo mkdir -p "$DEST_DIR"
+          sudo mv CIBuilds/WebGL/build/* "$DEST_DIR/"
+          # public 以下を現在のユーザー所有に変更
+          sudo chown -R $USER:$USER public
 
-      - name: Upload GitHub Pages artifact 🚀
+      - name: Deploy to gh-pages branch 📤
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token:    ${{ secrets.GITHUB_TOKEN }}
+          publish_dir:     public
+          publish_branch:  gh-pages
+          destination_dir: ${{ env.PUBLISH_DEST }}
+          keep_files: true
+
+      # ↑ここまでで gh-pages ブランチへのデプロイは完了↑
+
+      # ───────────────────────────────────────────────
+      # ▼ ここから「プレビュー用アーティファクト」のアップロード ▼
+
+      - name: Upload Pages artifact 🏷️
+        id: upload_pages
         uses: actions/upload-pages-artifact@v3
         with:
           path: public
+          # name はデフォルトで "github-pages" になるので省略可
+          # retention-days: 1   # 必要に応じて保持期間を設定
 
-  deploy:
-    name: Deploy to GitHub Pages 🚀
-    runs-on: ubuntu-latest
+  preview:
+    name: Deploy Preview 🌐
+    if: github.event_name == 'pull_request'
     needs: build
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
+    runs-on: ubuntu-latest
 
+    environment:
+      name: preview
+      # PR 番号＋mergeフォルダ構造に合わせたプレビュー URL を返す
+      url: https://void2610.github.io/bsgj2025-team5/${{ github.event.pull_request.number }}/merge/${{ github.event.pull_request.number }}/merge/
+    
     steps:
-      - name: Deploy to GitHub Pages 🌐
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - name: Download Pages artifact 📥
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages    # upload-pages-artifact のデフォルト名
+          path: public
+
+      - name: Deploy Preview to gh-pages 📤
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token:    ${{ secrets.GITHUB_TOKEN }}
+          publish_dir:     public/${{ github.event.pull_request.number }}/merge/${{ github.event.pull_request.number }}/merge
+          publish_branch:  gh-pages
+          destination_dir: ${{ github.event.pull_request.number }}/merge/${{ github.event.pull_request.number }}/merge
+          keep_files:      true
 
   discord:
     name: Notify Discord 🤖
     runs-on: ubuntu-latest
-    needs: deploy
+    needs: [build, preview]
     steps:
       - name: Notify Discord 🚨
         env:
-          DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL }}
-          GITHUB_ACTOR: ${{ github.actor }}
-          COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
+          DISCORD_WEBHOOK_URL:  ${{ secrets.DISCORD_WEBHOOK_URL }}
+          GITHUB_ACTOR:         ${{ github.event_name == 'pull_request' && github.event.pull_request.user.login || github.actor }}
+          COMMIT_MESSAGE:       ${{ github.event_name == 'pull_request' && github.event.pull_request.title || github.event.head_commit.message }}
+          REF_DIR:              ${{ github.event_name == 'pull_request' && github.event.pull_request.number || github.ref_name }}
+          BRANCH:               ${{ github.event_name == 'pull_request' && github.head_ref || github.ref_name }}
         run: |
+          if [ "$REF_DIR" = "main" ] || [ -z "$REF_DIR" ]; then
+            URL="https://void2610.github.io/merge-rogue/"
+          else
+            URL="https://void2610.github.io/merge-rogue/$REF_DIR/merge/$REF_DIR/merge/"
+          fi
           curl -X POST -H "Content-Type: application/json" -d "{
-          \"content\": \"ゲームがアップデートされました!:partying_face: \n https://void2610.github.io/merge-rogue/ \n コミット作成者: ${GITHUB_ACTOR} \n コミットメッセージ: ${COMMIT_MESSAGE}\"
+            \"content\": \"🔥 ビルド完了: <${URL}>\n💬 タイトル: ${COMMIT_MESSAGE}\n👤 作成者: ${GITHUB_ACTOR}\n🌲ブランチ: ${BRANCH}\"
           }" $DISCORD_WEBHOOK_URL
