@@ -3,13 +3,17 @@ using Cysharp.Threading.Tasks;
 
 public class CraneGameManager : SingletonMonoBehaviour<CraneGameManager>
 {
+    [SerializeField] private Transform craneRoot;
     [SerializeField] private Crane crane;
     [SerializeField] private Collider2D ballGetTrigger;
     [SerializeField] private int maxBalls = 10;
     [SerializeField] private Vector2 ballSpawnPositionX = new Vector2(-5, 5);
     [SerializeField] private float ballSpawnPositionY;
     
+    private const float MOVE_SPEED = 5f;
+    
     private bool _isCraneMoving;
+    private Vector3 _currentRootPosition = new Vector3(0, 1.6f, 0);
     
     public void CreateBalls()
     {
@@ -56,5 +60,14 @@ public class CraneGameManager : SingletonMonoBehaviour<CraneGameManager>
         if (_isCraneMoving) return;
         
         if (InputProvider.Instance.Gameplay.LeftClick.IsPressed()) StartCraneMoving().Forget();
+        
+        if (InputProvider.Instance.Gameplay.LeftMove.IsPressed() && _currentRootPosition.x > -2f)
+            _currentRootPosition += Vector3.left * (MOVE_SPEED * Time.deltaTime);
+
+        if (InputProvider.Instance.Gameplay.RightMove.IsPressed() && _currentRootPosition.x < 2f)
+            _currentRootPosition += Vector3.right * (MOVE_SPEED * Time.deltaTime);
+        
+        craneRoot.localPosition = _currentRootPosition;
+        crane.transform.localPosition = _currentRootPosition + new Vector3(0, -0.3f, 0);
     }
 }

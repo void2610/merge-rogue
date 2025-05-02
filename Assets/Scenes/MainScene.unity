@@ -1293,7 +1293,7 @@ MonoBehaviour:
   leftArm: {fileID: 1839297368}
   rightArm: {fileID: 1620462456}
   armSpeed: 0.5
-  cableLength: 15
+  cableLength: 17
 --- !u!1 &114456721
 GameObject:
   m_ObjectHideFlags: 0
@@ -3816,8 +3816,8 @@ Transform:
   m_GameObject: {fileID: 334463997}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: 0.5, y: -0.5, z: 0}
-  m_LocalScale: {x: 0.1, y: 1, z: 1}
+  m_LocalPosition: {x: 0.35, y: -0.2, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1839297368}
@@ -3978,8 +3978,8 @@ Transform:
   m_GameObject: {fileID: 358184325}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.15, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1620462456}
@@ -6107,8 +6107,8 @@ Transform:
   m_GameObject: {fileID: 500971259}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.15, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1839297368}
@@ -15898,8 +15898,8 @@ Transform:
   m_GameObject: {fileID: 958446090}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: 0.7071068, w: 0.7071068}
-  m_LocalPosition: {x: -0.5, y: -0.5, z: 0}
-  m_LocalScale: {x: 0.1, y: 1, z: 1}
+  m_LocalPosition: {x: -0.35, y: -0.2, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.75, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1620462456}
@@ -21247,6 +21247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1227ddb271184de4a2f9502413664c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  craneRoot: {fileID: 1796840231}
   crane: {fileID: 114387361}
   ballGetTrigger: {fileID: 164464465}
   maxBalls: 10
