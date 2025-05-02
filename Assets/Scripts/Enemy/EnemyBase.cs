@@ -15,18 +15,14 @@ public class EnemyBase : MonoBehaviour, IEntity
         public ActionType type;
         public Action Action;
     }
-    
-    public string enemyName = "Enemy";
-    public EnemyType enemyType;
-    public int actionInterval = 1;
-    public int attack = 2;
-    public int coin;
-    public int exp;
-
-    [SerializeField] private GameObject hpSliderPrefab;
-    [SerializeField] private GameObject coinPrefab;
 
     public EnemyData Data { get; private set; }
+    public string EnemyName => Data.displayName;
+    public EnemyType EnemyType => Data.enemyType;
+    public int ActionInterval { get; private set; } = 1;
+    public int Attack { get; private set; } = 1;
+    public int Coin { get; private set; } = 0;
+    public int Exp { get; private set; } = 0;
     public int Health { get; protected set; }
     public int MaxHealth { get; protected set; }
     public List<StatusEffectBase> StatusEffects { get; } = new();
@@ -146,7 +142,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         if (freeze != null && freeze.IsFrozen()) return;
         
         TurnCount++;
-        if(TurnCount == actionInterval)
+        if(TurnCount == ActionInterval)
         {
             TurnCount = 0;
             _nextAction.Action();
@@ -161,7 +157,7 @@ public class EnemyBase : MonoBehaviour, IEntity
             }).SetLink(gameObject);
         }
 
-        _attackCountText.text = (actionInterval - TurnCount).ToString();
+        _attackCountText.text = (ActionInterval - TurnCount).ToString();
     }
     
     protected virtual ActionData GetNextAction()
@@ -169,10 +165,10 @@ public class EnemyBase : MonoBehaviour, IEntity
         return NormalAttack;
     }
 
-    private void Attack()
+    private void DoAttack()
     {
         // 状態異常で攻撃力を更新
-        var dic = new Dictionary<AttackType, int> {{AttackType.Normal, attack}};
+        var dic = new Dictionary<AttackType, int> {{AttackType.Normal, Attack}};
         var damage = ModifyOutgoingAttack(dic)[AttackType.Normal];
         GameManager.Instance.Player.Damage(Mathf.Max(1, damage));
         this.transform.DOMoveX(-0.75f, 0.02f).SetRelative(true).OnComplete(() =>
@@ -184,7 +180,8 @@ public class EnemyBase : MonoBehaviour, IEntity
     public void OnDisappear()
     {
         SeManager.Instance.PlaySe("coin");
-        for (int i = 0; i < coin; i++)
+        var coinPrefab = EnemyContainer.Instance.GetCoinPrefab();
+        for (int i = 0; i < Coin; i++)
         {
             // コイン出現中に敵が消えるとエラーが出る
             var c = Instantiate(coinPrefab).GetComponent<Coin>();
@@ -224,8 +221,9 @@ public class EnemyBase : MonoBehaviour, IEntity
         Magnification = ((stage + 1) * 0.6f);
         MaxHealth = (int)(GameManager.Instance.RandomRange(d.maxHealthMin, d.maxHealthMax) * Magnification);
         Health = MaxHealth;
-        attack = (int)(d.attack * (Magnification * 0.3f));
-        exp = d.exp + (int)(Magnification);
+        Attack = (int)(d.attack * (Magnification * 0.3f));
+        Exp = d.exp + (int)(Magnification);
+        ActionInterval = d.interval;
         
         // スプライトアニメーションを設定
         this.GetComponent<SpriteSheetAnimator>().Setup(d.sprites, d.framePerSecond);
@@ -233,7 +231,8 @@ public class EnemyBase : MonoBehaviour, IEntity
 
         // UIの初期化
         var c = UIManager.Instance.GetUICamera();
-        var g = Instantiate(hpSliderPrefab, UIManager.Instance.GetEnemyUIContainer());
+        var hpSlider = EnemyContainer.Instance.GetHpSliderPrefab();
+        var g = Instantiate(hpSlider, UIManager.Instance.GetEnemyUIContainer());
         var pos = c.WorldToScreenPoint(this.transform.position);
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             UIManager.Instance.GetUICanvas().GetComponent<RectTransform>(), pos, c, out var localPosition
@@ -249,11 +248,11 @@ public class EnemyBase : MonoBehaviour, IEntity
         _healthSlider.maxValue = MaxHealth;
         _healthSlider.value = Health;
         _healthText.text = Health + "/" + MaxHealth;
-        _attackCountText.text = (actionInterval - TurnCount).ToString();
+        _attackCountText.text = (ActionInterval - TurnCount).ToString();
         
         // 通常攻撃の設定
         NormalAttack.type = ActionType.Attack;
-        NormalAttack.Action = Attack;
+        NormalAttack.Action = DoAttack;
         _nextAction = GetNextAction();
         UpdateAttackIcon(_nextAction);
         

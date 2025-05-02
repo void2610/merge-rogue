@@ -19,7 +19,8 @@ public class EnemyContainer : MonoBehaviour
     public static EnemyContainer Instance { get; private set; }
 
     [SerializeField] private GameObject enemyBasePrefab;
-    [SerializeField] private GameObject bossBasePrefab;
+    [SerializeField] private GameObject enemyHpSliderPrefab;
+    [SerializeField] private GameObject coinPrefab;
     [SerializeField] private float alignment = 4;
     [SerializeField] private Treasure treasure;
     public readonly ReactiveProperty<int> DefeatedEnemyCount = new(0);
@@ -32,17 +33,24 @@ public class EnemyContainer : MonoBehaviour
     public List<EnemyBase> GetAllEnemies() => _currentEnemies;
     public EnemyBase GetRandomEnemy() => _currentEnemies[GameManager.Instance.RandomRange(0, _currentEnemies.Count)];
     public int GetEnemyIndex(EnemyBase enemy) => _currentEnemies.IndexOf(enemy);
+    public GameObject GetHpSliderPrefab() => enemyHpSliderPrefab;
+    public GameObject GetCoinPrefab() => coinPrefab;
 
     public void SpawnBoss(int stage)
     {
         var bossData = ContentProvider.Instance.GetRandomBoss();
         
-        // TODO: ボスの場合はEnemyBaseのサブクラスを取得して使用する
-        var e = Instantiate(bossBasePrefab, this.transform).GetComponent<EnemyBase>();
+        // ボスの場合はEnemyBaseのサブクラスを取得して使用する
+        var e = Instantiate(enemyBasePrefab, this.transform);
+        Destroy(e.GetComponent<EnemyBase>());
+        var type = System.Type.GetType(bossData.className);
+        Debug.Log(bossData.className);
+        var behaviour = e.AddComponent(type) as EnemyBase;
+        
         e.transform.localScale = new Vector3(1, 1, 1);
         e.transform.position = _positions[_currentEnemies.Count];
-        e.Init(bossData, stage);
-        _currentEnemies.Add(e);
+        behaviour.Init(bossData, stage);
+        _currentEnemies.Add(behaviour);
     }
 
     public void SpawnEnemy(int count, int stage)
@@ -86,7 +94,7 @@ public class EnemyContainer : MonoBehaviour
     {
         var enemyBase = enemy.GetComponent<EnemyBase>();
         DefeatedEnemyCount.Value++;
-        _gainedExp += enemyBase.exp;
+        _gainedExp += enemyBase.Exp;
         _currentEnemies.Remove(enemyBase);
         enemyBase.OnDisappear();
 

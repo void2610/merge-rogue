@@ -69,6 +69,7 @@ public class ContentProvider : MonoBehaviour
     /// <returns></returns>
     public EnemyData GetRandomBoss()
     {
+        //TODO: 最初のアイテムの方が出やすい？？
         var boss = GetRandomObjectFromList(bossList) as EnemyData;
         return boss;
     }
