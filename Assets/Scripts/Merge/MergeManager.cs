@@ -118,8 +118,8 @@ public class MergeManager : MonoBehaviour
     public void AddBallFromCrane(BallBase ball)
     {
         ball.transform.SetParent(_ballContainer.transform);
-        ball.Unfreeze();
         ball.transform.position = GetValidRandomPosition();
+        ball.Unfreeze();
     }
     
     public void StartMerge()

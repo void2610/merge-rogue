@@ -19592,7 +19592,7 @@ MonoBehaviour:
   cablePartPrefab: {fileID: 6252725726022352446, guid: 62ff1423eabf64c97ad38fce82717c9c, type: 3}
   startObj: {fileID: 1796840229}
   endObj: {fileID: 114387356}
-  cablePartWeight: 1
+  cablePartWeight: 0.1
   cablePartSize: 1
   cableWidth: 0.1
   cableLength: 1
