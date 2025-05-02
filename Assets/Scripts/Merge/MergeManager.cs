@@ -119,8 +119,6 @@ public class MergeManager : MonoBehaviour
     {
         _isMovable = true;
         Reset();
-        craneGameManager.CreateBalls();
-        
         _fillingRateMagnification = FillingRateManager.Instance.CalcFillingGauge();
     }
     
@@ -331,10 +329,7 @@ public class MergeManager : MonoBehaviour
 
     private void Update()
     {
-        if (IsAllBallsStopped())
-        {
-            EndMerge().Forget();
-        }
+        if (IsAllBallsStopped()) EndMerge().Forget();
         
         if(!CurrentBall) return;
         if (GameManager.Instance.IsGameOver) return;
