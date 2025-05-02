@@ -28,9 +28,14 @@ public class BallBase : MonoBehaviour
     {
         IsFrozen = true;
     }
+    
+    public void Unfreeze() => UnfreezeAsync(0.5f).Forget();
 
-    public void Unfreeze()
+    private async UniTaskVoid UnfreezeAsync(float delay)
     {
+        await UniTask.Delay((int)(delay * 1000));
+        if (isDestroyed) return;
+        
         IsFrozen = false;
         
         // 既に接触しているオブジェクトを取得

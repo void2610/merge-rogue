@@ -15,6 +15,7 @@ public class MergeManager : MonoBehaviour
 
     [SerializeField] private MergeAreaCursorSetter cursorSetter;
     [SerializeField] private MergeWall wall;
+    [SerializeField] private CraneGameManager craneGameManager;
     [SerializeField] public PhysicsMaterial2D wallMaterial;
     [SerializeField] private GameObject fallAnchor;
     [SerializeField] private SpriteRenderer arrow;
@@ -113,12 +114,18 @@ public class MergeManager : MonoBehaviour
             b.EffectAndDestroy(null);
         }
     }
+
+    public void AddBallFromCrane(BallBase ball)
+    {
+        ball.transform.SetParent(_ballContainer.transform);
+        ball.transform.position = GetValidRandomPosition();
+        ball.Unfreeze();
+    }
     
     public void StartMerge()
     {
         _isMovable = true;
-        Reset();
-        
+        // Reset();
         _fillingRateMagnification = FillingRateManager.Instance.CalcFillingGauge();
     }
     
@@ -329,10 +336,7 @@ public class MergeManager : MonoBehaviour
 
     private void Update()
     {
-        if (IsAllBallsStopped())
-        {
-            EndMerge().Forget();
-        }
+        if (IsAllBallsStopped()) EndMerge().Forget();
         
         if(!CurrentBall) return;
         if (GameManager.Instance.IsGameOver) return;

@@ -227,7 +227,7 @@ public class EnemyContainer : MonoBehaviour
         await UniTask.WhenAll(tasks);
 
         if(_currentEnemies.Count > 0)
-            GameManager.Instance.ChangeState(GameManager.GameState.Merge);
+            GameManager.Instance.ChangeState(GameManager.GameState.Crane);
     }
 
     public void Awake()

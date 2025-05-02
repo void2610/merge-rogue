@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
 
     public enum GameState
     {
+        Crane,
         Merge,
         PlayerAttack,
         EnemyAttack,
@@ -117,8 +118,11 @@ public class GameManager : MonoBehaviour
         state = newState;
         switch (newState)
         {
-            case GameState.Merge:
+            case GameState.Crane:
                 Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
+                CraneGameManager.Instance.CreateBalls();
+                break;
+            case GameState.Merge:
                 MergeManager.Instance.StartMerge();
                 break;
             case GameState.PlayerAttack:
