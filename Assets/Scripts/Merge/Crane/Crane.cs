@@ -8,6 +8,7 @@ public class Crane : MonoBehaviour
     [SerializeField] private Transform leftArm;
     [SerializeField] private Transform rightArm;
     [SerializeField] private float armSpeed = 1f;
+    [SerializeField] private int cableLength = 10;
 
     private async UniTask OpenArm()
     {
@@ -23,29 +24,29 @@ public class Crane : MonoBehaviour
     
     private async UniTask DownArm()
     {
-        for (var i = 0; i < 10; i++)
+        for (var i = 0; i < cableLength; i++)
         {
             cableObject.AddLine();
-            await UniTask.Delay(100);
+            await UniTask.Delay(150);
         }
     }
     
     private async UniTask UpArm()
     {
-        for (var i = 0; i < 10; i++)
+        for (var i = 0; i < cableLength; i++)
         {
             cableObject.Reel();
-            await UniTask.Delay(100);
+            await UniTask.Delay(150);
         }
     }
     
     public async UniTask StartArmMove()
     {
-        await DownArm();
         await OpenArm();
-        await UniTask.Delay(1000);
+        await DownArm();
+        await UniTask.Delay(700);
         await CloseArm();
         await UpArm();
-        await UniTask.Delay(1000);
+        await UniTask.Delay(500);
     }
 }

@@ -182,7 +182,8 @@ public class InventoryManager : MonoBehaviour
 
         ballBase.InitBall(data, rank, level);
         
-        ball.transform.localScale = Vector3.one * (Sizes[rank - 1] * ballBase.Size);
+        // ここで全てのボールのサイズに倍率をかけれる
+        ball.transform.localScale = Vector3.one * (Sizes[rank - 1] * ballBase.Size * 0.5f);
         // HDRカラーに変換
         var color = MyEnumUtil.GetBallColor(rank - 1) * 1.05f;
         ball.GetComponent<SpriteRenderer>().color = color;

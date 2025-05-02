@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5751319776245186624}
+  - component: {fileID: 5866312574141661018}
   - component: {fileID: 4269577714056506583}
   - component: {fileID: 147635003678020929}
-  - component: {fileID: 5866312574141661018}
   m_Layer: 0
   m_Name: CablePart
   m_TagString: Untagged
@@ -34,6 +34,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5866312574141661018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6252725726022352446}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92bca137d3f5143989500ed05e784243, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weight: 0
+  size: 0
 --- !u!50 &4269577714056506583
 Rigidbody2D:
   serializedVersion: 5
@@ -87,17 +101,3 @@ HingeJoint2D:
   m_AngleLimits:
     m_LowerAngle: 0
     m_UpperAngle: 359
---- !u!114 &5866312574141661018
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6252725726022352446}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92bca137d3f5143989500ed05e784243, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Weight: 0
-  Size: 0

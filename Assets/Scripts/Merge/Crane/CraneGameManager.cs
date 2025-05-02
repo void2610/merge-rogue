@@ -40,7 +40,7 @@ public class CraneGameManager : SingletonMonoBehaviour<CraneGameManager>
             if (collider.TryGetComponent<BallBase>(out var ball))
             {
                 // ボールをマージエリアに移動
-                Debug.Log(ball.name);
+                MergeManager.Instance.AddBallFromCrane(ball);
             }
         }
         
@@ -50,10 +50,11 @@ public class CraneGameManager : SingletonMonoBehaviour<CraneGameManager>
     }
 
     private void Update()
-    {
-       if(GameManager.Instance.state != GameManager.GameState.Crane) return;
-         if (_isCraneMoving) return;
-
-         if (InputProvider.Instance.Gameplay.LeftClick.IsPressed()) StartCraneMoving().Forget();
+    { 
+        if(UIManager.Instance.IsAnyCanvasGroupEnabled()) return;
+        if(GameManager.Instance.state != GameManager.GameState.Crane) return;
+        if (_isCraneMoving) return;
+        
+        if (InputProvider.Instance.Gameplay.LeftClick.IsPressed()) StartCraneMoving().Forget();
     }
 }

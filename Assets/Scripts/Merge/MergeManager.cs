@@ -114,11 +114,18 @@ public class MergeManager : MonoBehaviour
             b.EffectAndDestroy(null);
         }
     }
+
+    public void AddBallFromCrane(BallBase ball)
+    {
+        ball.transform.SetParent(_ballContainer.transform);
+        ball.Unfreeze();
+        ball.transform.position = GetValidRandomPosition();
+    }
     
     public void StartMerge()
     {
         _isMovable = true;
-        Reset();
+        // Reset();
         _fillingRateMagnification = FillingRateManager.Instance.CalcFillingGauge();
     }
     

@@ -50,8 +50,8 @@ public class CableObject : MonoBehaviour
         newCablePart.name = "CablePart_" + (_vertices.Count + 1).ToString();
 
         var cablePartScript = newCablePart.GetComponent<CablePart>();
-        cablePartScript.Weight = cablePartWeight;
-        cablePartScript.Size = cablePartSize;
+        cablePartScript.weight = cablePartWeight;
+        cablePartScript.size = cablePartSize;
 
         _vertices.Add(newCablePart);
         //先端オブジェクトにくっつける
