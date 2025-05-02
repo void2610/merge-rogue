@@ -15,6 +15,7 @@ public class MergeManager : MonoBehaviour
 
     [SerializeField] private MergeAreaCursorSetter cursorSetter;
     [SerializeField] private MergeWall wall;
+    [SerializeField] private CraneGameManager craneGameManager;
     [SerializeField] public PhysicsMaterial2D wallMaterial;
     [SerializeField] private GameObject fallAnchor;
     [SerializeField] private SpriteRenderer arrow;
@@ -118,6 +119,7 @@ public class MergeManager : MonoBehaviour
     {
         _isMovable = true;
         Reset();
+        craneGameManager.CreateBalls();
         
         _fillingRateMagnification = FillingRateManager.Instance.CalcFillingGauge();
     }
