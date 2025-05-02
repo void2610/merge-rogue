@@ -195,14 +195,14 @@ public class EnemyBase : MonoBehaviour, IEntity
         this.GetComponent<SpriteRenderer>().DOFade(0, 0.5f).OnComplete(() =>
         {
             Destroy(_healthSlider.gameObject);
-            Destroy(this.transform.parent.gameObject);
+            Destroy(this.gameObject);
         }).SetLink(gameObject);
     }
 
     private void Death()
     {
         EventManager.OnEnemyDefeated.Trigger(this);
-        this.transform.parent.parent.GetComponent<EnemyContainer>().RemoveEnemy(this.gameObject);
+        this.transform.parent.GetComponent<EnemyContainer>().RemoveEnemy(this.gameObject);
     }
 
     private void UpdateAttackIcon(ActionData a)

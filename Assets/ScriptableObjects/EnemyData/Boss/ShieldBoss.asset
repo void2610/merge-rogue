@@ -22,16 +22,16 @@ MonoBehaviour:
   interval: 3
   coin: 30
   exp: 30
-  spriteSheet: {fileID: -8328923581568760697, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
+  spriteSheet: {fileID: 2800000, guid: 61b16598bbf0548209e95da50895cedc, type: 3}
   sprites:
-  - {fileID: -6961294929897480010, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
-  - {fileID: 742495022508810720, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
-  - {fileID: -7511899882797719130, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
-  - {fileID: 8186637598177807608, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
-  - {fileID: 5281403225120349667, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
-  - {fileID: 1730644194916358549, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
-  - {fileID: 7746392857816733336, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
-  - {fileID: 4444287625598600754, guid: bd15b53b83dcb453fba41cc3d4ed82c2, type: 3}
+  - {fileID: -287567443, guid: 61b16598bbf0548209e95da50895cedc, type: 3}
+  - {fileID: -666904320, guid: 61b16598bbf0548209e95da50895cedc, type: 3}
+  - {fileID: -620153104, guid: 61b16598bbf0548209e95da50895cedc, type: 3}
+  - {fileID: 2062162743, guid: 61b16598bbf0548209e95da50895cedc, type: 3}
+  - {fileID: -970107695, guid: 61b16598bbf0548209e95da50895cedc, type: 3}
+  - {fileID: -1392701668, guid: 61b16598bbf0548209e95da50895cedc, type: 3}
+  - {fileID: 1186448305, guid: 61b16598bbf0548209e95da50895cedc, type: 3}
+  - {fileID: -407927302, guid: 61b16598bbf0548209e95da50895cedc, type: 3}
   framePerSecond: 7
-  hpSliderYOffset: 45
-  enemyYOffset: 0.12
+  hpSliderYOffset: 35
+  enemyYOffset: 0.64
