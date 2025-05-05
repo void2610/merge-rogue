@@ -55,7 +55,7 @@ public class InventoryUI : MonoBehaviour
         g.transform.position = CalcInventoryPosition(startRank);
         g.transform.localScale = new Vector3(BallSizes[startRank], BallSizes[startRank], 1);
         
-        ball.GetComponent<SpriteRenderer>().sprite = ballBase.Data.sprite;
+        g.GetComponent<Image>().sprite = ballBase.Data.sprite;
         
         SetEvent(g, endRank, ballBase);
         Destroy(_items[endRank]);
