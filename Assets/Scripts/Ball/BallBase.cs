@@ -109,18 +109,7 @@ public class BallBase : MonoBehaviour
         }
         
         // 画像の設定
-        this.GetComponent<SpriteRenderer>().sprite = ContentProvider.Instance.GetBallBaseImage(d.shapeType);
-        if (useIcon)
-        {
-            this.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite = d.sprite;
-            this.transform.Find("IconShadow").GetComponent<SpriteRenderer>().sprite = d.sprite;
-        }
-        else
-        {
-            this.transform.Find("Icon").GetComponent<SpriteRenderer>().enabled = false;
-            this.transform.Find("IconShadow").GetComponent<SpriteRenderer>().enabled = false;
-            this.GetComponent<SpriteRenderer>().sprite = d.sprite;
-        }
+        this.GetComponent<SpriteRenderer>().sprite = d.sprite;
     }
 
     private void Start()

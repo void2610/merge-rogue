@@ -183,9 +183,6 @@ public class InventoryManager : MonoBehaviour
         ballBase.InitBall(data, rank, level);
         
         ball.transform.localScale = Vector3.one * (Sizes[rank - 1] * ballBase.Size * 0.75f);
-        // HDRカラーに変換
-        var color = MyEnumUtil.GetBallColor(rank - 1) * 1.05f;
-        ball.GetComponent<SpriteRenderer>().color = color;
         ball.GetComponent<BallBase>().Freeze();
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         ball.transform.position = CalcInventoryPosition(rank - 1);

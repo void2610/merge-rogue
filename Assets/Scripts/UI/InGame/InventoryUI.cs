@@ -34,13 +34,7 @@ public class InventoryUI : MonoBehaviour
         g.transform.position = CalcInventoryPosition(rank);
         g.transform.localScale = new Vector3(BallSizes[rank], BallSizes[rank], 1);
         
-        var color = ball.GetComponent<SpriteRenderer>().color;
-        g.GetComponent<Image>().color = color;
-
-        var s = ballBase.Data.sprite;
-        if (s) g.transform.Find("Icon").GetComponent<Image>().sprite = s;
-        else g.transform.Find("Icon").GetComponent<Image>().color = new Color(0, 0, 0, 0);
-        g.GetComponent<Image>().sprite = ContentProvider.Instance.GetBallBaseImage(ballBase.Data.shapeType);
+        g.GetComponent<Image>().sprite = ballBase.Data.sprite;
         
         SetEvent(g, rank, ballBase);
         if (_items.Count <= rank)
@@ -61,13 +55,7 @@ public class InventoryUI : MonoBehaviour
         g.transform.position = CalcInventoryPosition(startRank);
         g.transform.localScale = new Vector3(BallSizes[startRank], BallSizes[startRank], 1);
         
-        var color = ball.GetComponent<SpriteRenderer>().color;
-        g.GetComponent<Image>().color = color;
-        
-        var sprite = ball.transform.Find("Icon").GetComponent<SpriteRenderer>().sprite;
-        if (sprite) g.transform.Find("Icon").GetComponent<Image>().sprite = sprite;
-        else g.transform.Find("Icon").GetComponent<Image>().color = new Color(0, 0, 0, 0);
-        g.GetComponent<Image>().sprite = ContentProvider.Instance.GetBallBaseImage(ballBase.Data.shapeType);
+        ball.GetComponent<SpriteRenderer>().sprite = ballBase.Data.sprite;
         
         SetEvent(g, endRank, ballBase);
         Destroy(_items[endRank]);
