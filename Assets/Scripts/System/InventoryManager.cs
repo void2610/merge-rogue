@@ -14,9 +14,9 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private Vector3 inventoryPosition = new(5.5f, -1.0f, 0);
     [SerializeField] private List<BallData> testBalls;
 
-    private const int MAX_INVENTORY_SIZE = 8;
+    private const int MAX_INVENTORY_SIZE = 10;
     private const int MIN_INVENTORY_SIZE = 1;
-    private const int FIRST_INVENTORY_SIZE = 5;
+    private const int FIRST_INVENTORY_SIZE = 7;
     public int InventorySize { get; private set; } = FIRST_INVENTORY_SIZE;
     public InventoryUI InventoryUI => this.GetComponent<InventoryUI>();
     private readonly List<GameObject> _inventory = new();
@@ -182,7 +182,7 @@ public class InventoryManager : MonoBehaviour
 
         ballBase.InitBall(data, rank, level);
         
-        ball.transform.localScale = Vector3.one * (Sizes[rank - 1] * ballBase.Size);
+        ball.transform.localScale = Vector3.one * (Sizes[rank - 1] * ballBase.Size * 0.75f);
         // HDRカラーに変換
         var color = MyEnumUtil.GetBallColor(rank - 1) * 1.05f;
         ball.GetComponent<SpriteRenderer>().color = color;
