@@ -19,7 +19,7 @@ MonoBehaviour:
   - "\u901A\u5E38\u653B\u6483"
   - "\u901A\u5E38\u653B\u6483"
   flavorText: "\u30DC\u30FC\u30EB\u3060\u3088\uFF01"
-  sprite: {fileID: 0}
+  sprite: {fileID: 21300000, guid: 686e86f7c01a442c78022be705a30d87, type: 3}
   rarity: 0
   shapeType: 0
   attacks:

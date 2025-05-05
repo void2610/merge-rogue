@@ -19,7 +19,7 @@ MonoBehaviour:
   - "\u3069\u306E\u30E9\u30F3\u30AF\u306E\u30DC\u30FC\u30EB\u3068\u3082\u30DE\u30FC\u30B8\u3067\u304D\u308B\u3002"
   - "\u3069\u306E\u30E9\u30F3\u30AF\u306E\u30DC\u30FC\u30EB\u3068\u3082\u30DE\u30FC\u30B8\u3067\u304D\u308B\u3002"
   flavorText: 
-  sprite: {fileID: 21300000, guid: 9c907694ff2c345358826c303fddab18, type: 3}
+  sprite: {fileID: 21300000, guid: 1b6c6b026e8c5445d9ad56d27486435a, type: 3}
   rarity: 3
   shapeType: 0
   attacks:
