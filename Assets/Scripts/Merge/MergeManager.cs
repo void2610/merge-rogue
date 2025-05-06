@@ -137,6 +137,15 @@ public class MergeManager : MonoBehaviour
             CurrentBall = null;
         }
         
+        // ボールのターンエンド時の処理を行う
+        for(var i = 0; i < _ballContainer.transform.childCount; i++)
+        {
+            if (!_ballContainer.transform.GetChild(i)) continue;
+            var b = _ballContainer.transform.GetChild(i).GetComponent<BallBase>();
+            if (!b) continue;
+            b.OnTurnEnd();
+        }
+        
         ballCountText.text = "0/" + _ballPerOneTurn;
         arrow.DOFade(0, 0.5f).Forget();
         _isMovable = false;

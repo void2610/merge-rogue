@@ -83,7 +83,7 @@ public class Utils : MonoBehaviour
     }
 
     /// <summary>
-    /// マージ時に近くにある別のボールを取得する
+    /// マージ時のボールの近くにある別のボールを取得する(2つのボールを無視)
     /// </summary>
     public static List<BallBase> GetNearbyBalls(GameObject obj, GameObject other, float radius)
     {
@@ -96,6 +96,28 @@ public class Utils : MonoBehaviour
             if (col.gameObject == obj) continue;
             // merge相手を無視
             if (col.gameObject == other) continue;
+            
+            var ball = col.gameObject.GetComponent<BallBase>();
+            if (ball == null) continue;
+            if (ball.IsFrozen || ball.isDestroyed) continue;
+            
+            result.Add(ball);
+        }
+        return result;
+    }
+    
+    /// <summary>
+    /// 1つのボールの近くにある別のボールを取得する(1つのボールを無視)
+    /// </summary>
+    public static List<BallBase> GetNearbyBalls(GameObject obj, float radius)
+    {
+        var result = new List<BallBase>();
+        var hitColliders = Physics2D.OverlapCircleAll(obj.transform.position, radius);
+        // 取得したコライダーをリストに変換
+        foreach (var col in hitColliders)
+        {
+            // 自身を無視
+            if (col.gameObject == obj) continue;
             
             var ball = col.gameObject.GetComponent<BallBase>();
             if (ball == null) continue;

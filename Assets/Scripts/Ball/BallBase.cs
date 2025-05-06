@@ -19,7 +19,7 @@ public class BallBase : MonoBehaviour
     public bool IsFrozen { get; private set; } = false;
     public bool isDestroyed;
     public bool isMergable = true;
-    public bool useIcon = true;
+    public int elapsedTurns = 0;
 
     private List<float> _attacks = new();
     private List<float> _sizes = new();
@@ -53,6 +53,11 @@ public class BallBase : MonoBehaviour
         // Main Effect
     }
     
+    protected virtual void TurnEndEffect()
+    {
+        // Turn End Effect
+    }
+    
     public void Upgrade()
     {
         if (Level < MAX_LEVEL - 1)
@@ -61,6 +66,14 @@ public class BallBase : MonoBehaviour
             Attack = _attacks[Level];
             Size = _sizes[Level];
         }
+    }
+    
+    public void OnTurnEnd()
+    {
+        if (IsFrozen || isDestroyed) return;
+        
+        elapsedTurns++;
+        TurnEndEffect();
     }
 
     public virtual void InitBall(BallData d, int rank, int level = 0)
@@ -162,8 +175,7 @@ public class BallBase : MonoBehaviour
         ParticleManager.Instance.MergeParticle(this.transform.position);
         ParticleManager.Instance.MergePowerParticle(this.transform.position, MyEnumUtil.GetBallColor(Rank-1));
         
-        if (useIcon)
-            ParticleManager.Instance.MergeBallIconParticle(this.transform.position, this.Rank, this.Data.sprite);
+        ParticleManager.Instance.MergeBallIconParticle(this.transform.position, this.Rank, this.Data.sprite);
         
         var i = Random.Range(0, 5);
         SeManager.Instance.PlaySe("ball" + i);

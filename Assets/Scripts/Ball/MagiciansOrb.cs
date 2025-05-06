@@ -4,7 +4,6 @@ public class MagiciansOrb : BallBase
 {
     public override void InitBall(BallData d, int rank, int level = 0)
     {
-        useIcon = false;
         // 通常ではマージ不可
         this.isMergable = false;
 
