@@ -87,6 +87,17 @@ public class MergeManager : MonoBehaviour
         ball.GetComponent<BallBase>().Unfreeze();
     }
     
+    public void CreateBall(int rank, Vector3 p)
+    {
+        var ball = InventoryManager.Instance.GetBallByRank(rank);
+        if (!ball) return;
+
+        ball.transform.position = p;
+        ball.transform.SetParent(_ballContainer.transform);
+        ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        ball.GetComponent<BallBase>().Unfreeze();
+    }
+    
     public void CreateBombBall()
     {
         var bomb = InventoryManager.Instance.GetBombBall();
