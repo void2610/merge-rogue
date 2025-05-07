@@ -24,13 +24,14 @@ public class BallBase : MonoBehaviour
     private List<float> _attacks = new();
     private List<float> _sizes = new();
     
-    public void Freeze()
-    {
-        IsFrozen = true;
-    }
+    public void Freeze() => IsFrozen = true;
+    public void Unfreeze() => UnfreezeAsync().Forget();
 
-    public void Unfreeze()
+    private async UniTask UnfreezeAsync()
     {
+        await UniTask.Delay(1000);
+        if (!this || isDestroyed) return;
+            
         IsFrozen = false;
         
         // 既に接触しているオブジェクトを取得

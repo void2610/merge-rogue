@@ -12,7 +12,10 @@ public class PassiveAttackBall : BallBase
         base.TurnEndEffect();
         
         // 一番前の敵を攻撃
-        EnemyContainer.Instance.GetAllEnemies()?[0].Damage((int)(Attack * Rank));
+        var enemies = EnemyContainer.Instance.GetAllEnemies();
+        if (enemies == null || enemies.Count == 0) return;
+        
+        enemies[0].Damage((int)(Attack * Rank));
         ParticleManager.Instance.MergeBallIconParticle(this.transform.position, this.Size, this.Data.sprite);
     } 
 }
