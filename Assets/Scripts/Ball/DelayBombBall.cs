@@ -38,5 +38,6 @@ public class DelayBombBall : BallBase
         
         // 自分だけでマージ
         this.EffectAndDestroy(null);
+        ParticleManager.Instance.MergeBallIconParticle(this.transform.position, this.Size, this.Data.sprite);
     }
 }

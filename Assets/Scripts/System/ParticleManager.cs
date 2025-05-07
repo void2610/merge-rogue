@@ -40,18 +40,17 @@ public class ParticleManager : MonoBehaviour
     public void ThunderParticle(Vector3 pos) => Instantiate(thunderParticle, pos, Quaternion.identity);
     public void MergePowerParticle(Vector3 pos, Color color) => Instantiate(mergePowerParticle, pos, Quaternion.identity).GetComponent<MergePowerParticle>().MoveTo(color);
     public GameObject GetBombFireParticle() => Instantiate(bombFireParticle);
-    public void MergeBallIconParticle(Vector3 pos, int ballRank, Sprite ballIcon) => MergeBallIconParticleAsync(pos, ballRank, ballIcon).Forget();
+    public void MergeBallIconParticle(Vector3 pos, float size, Sprite ballIcon) => MergeBallIconParticleAsync(pos, size, ballIcon).Forget();
     
-    private async UniTaskVoid MergeBallIconParticleAsync(Vector3 pos, int ballRank, Sprite ballIcon)
+    private async UniTaskVoid MergeBallIconParticleAsync(Vector3 pos, float size, Sprite ballIcon)
     {
-        // 雷パーティクルも出す？
         var s = Instantiate(mergeBallIconParticle, pos, Quaternion.identity).GetComponent<SpriteRenderer>();
         s.sprite = ballIcon;
         
-        s.color = MyEnumUtil.GetBallColor(ballRank - 1);
+        s.color = Color.white;
         s.DOFade(0, 0).Forget();
         s.transform.localScale = Vector3.zero;
-        s.transform.DOScale(1f, 0.1f).SetEase(Ease.OutExpo).Forget();
+        s.transform.DOScale(size * 0.75f, 0.1f).SetEase(Ease.OutExpo).Forget();
         
         await s.DOFade(1f, 0.75f).SetEase(mergeBallIconParticleCurve);
         Destroy(s.gameObject);

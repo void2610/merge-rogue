@@ -175,7 +175,6 @@ public class BallBase : MonoBehaviour
         ParticleManager.Instance.MergeParticle(this.transform.position);
         ParticleManager.Instance.MergePowerParticle(this.transform.position, MyEnumUtil.GetBallColor(Rank-1));
         
-        ParticleManager.Instance.MergeBallIconParticle(this.transform.position, this.Rank, this.Data.sprite);
         
         var i = Random.Range(0, 5);
         SeManager.Instance.PlaySe("ball" + i);
