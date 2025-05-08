@@ -193,13 +193,6 @@ public class EnemyContainer : MonoBehaviour
             CameraMove.Instance.ShakeCamera(0.5f, damages[AttackType.Random] * 0.01f);
             await UniTask.Delay(250);
         }
-        
-        // 敵が残っていたら敵の攻撃へ
-        if (GetCurrentEnemyCount() > 0)
-        {
-            Observable.Timer(TimeSpan.FromSeconds(0.75f), destroyCancellationToken)
-                .Subscribe(_ => {GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);});
-        }
     }
     
     public void Action()

@@ -164,7 +164,7 @@ public class MergeManager : MonoBehaviour
         await UniTask.Delay(200);
         
         attackCountUI.SetAttackCount(0);
-        GameManager.Instance.ChangeState(GameManager.GameState.PlayerAttack);
+        
     }
     
     // 次のボールを生成
