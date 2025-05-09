@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     public enum GameState
     {
         Merge,
-        PlayerAttack,
         EnemyAttack,
         AfterBattle,
         LevelUp,
@@ -24,7 +23,6 @@ public class GameManager : MonoBehaviour
         GameOver,
         Clear,
     }
-    public GameState state = GameState.Merge;
     
     [Header("オブジェクト")]
     [SerializeField] private GameObject playerObj;
@@ -44,7 +42,12 @@ public class GameManager : MonoBehaviour
     public ScoreManager ScoreManager => GetComponent<ScoreManager>();
     public EnemyContainer EnemyContainer => enemyContainer;
     
-    public readonly ReactiveProperty<BigInteger> Coin = new(0);
+    public ReadOnlyReactiveProperty<BigInteger> Coin => _coin;
+    public ReadOnlyReactiveProperty<GameState> State => _state;
+    
+    private ReactiveProperty<BigInteger> _coin = new(0);
+    private ReactiveProperty<GameState> _state = new(GameState.Merge);
+    
     private string _seedText;
     private int _seed = 42;
     private System.Random _random;
@@ -65,14 +68,14 @@ public class GameManager : MonoBehaviour
     {
         EventManager.OnCoinGain.Trigger(amount);
         var c = EventManager.OnCoinGain.GetAndResetValue();
-        Coin.Value += c; 
+        _coin.Value += c; 
     }
     
     public void SubCoin(int amount)
     {
         EventManager.OnCoinConsume.Trigger(amount);
         var c = EventManager.OnCoinConsume.GetAndResetValue();
-        Coin.Value -= c;
+        _coin.Value -= c;
     }
 
     public void ChangeTimeScale()
@@ -94,13 +97,13 @@ public class GameManager : MonoBehaviour
     {
         IsGameOver = true;
         ChangeState(GameState.GameOver);
-        ScoreManager.ShowScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value, Coin.Value);
+        ScoreManager.ShowScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value, Coin.CurrentValue);
     }
     
     public void TweetScore()
     {
         var (s, e, c) = ScoreManager.CalcScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value,
-            Coin.Value);
+            Coin.CurrentValue);
         var score = (ulong)(s + e + c);
         var text = $"Merge Rogueでスコア: {score}を獲得しました！\n" +
                    $"#MergeRogue #unityroom\n" +
@@ -114,18 +117,15 @@ public class GameManager : MonoBehaviour
     // ReSharper disable Unity.PerformanceAnalysis
     private async UniTaskVoid ChangeStateAsync(GameState newState)
     {
-        state = newState;
+        _state.Value = newState;
         switch (newState)
         {
             case GameState.Merge:
                 Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
                 MergeManager.Instance.StartMerge();
                 break;
-            case GameState.PlayerAttack:
-                Physics2D.simulationMode = SimulationMode2D.Script;
-                MergeManager.Instance.Attack().Forget();
-                break;
             case GameState.EnemyAttack:
+                Physics2D.simulationMode = SimulationMode2D.Script;
                 EnemyContainer.Action();
                 break;
             case GameState.MapSelect:

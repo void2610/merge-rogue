@@ -17,7 +17,7 @@ public class CleaningService : StageEventBase
                     GameManager.Instance.SubCoin(50);
                     MergeManager.Instance.RemoveAllBalls();
                 },
-                IsAvailable = () => GameManager.Instance.Coin.Value >= 50
+                IsAvailable = () => GameManager.Instance.Coin.CurrentValue >= 50
             },
             new OptionData
             {

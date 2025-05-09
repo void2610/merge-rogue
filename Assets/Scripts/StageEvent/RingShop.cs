@@ -30,7 +30,7 @@ public class RingShop : StageEventBase
                     _count++;
                     _price += 15;
                 },
-                IsAvailable = () => GameManager.Instance.Coin.Value >= _price
+                IsAvailable = () => GameManager.Instance.Coin.CurrentValue >= _price
             },
             new OptionData
             {

@@ -120,7 +120,7 @@ public class Shop : MonoBehaviour
             button.onClick.AddListener(() =>
             {
                 if (!ball) return;
-                if (GameManager.Instance.Coin.Value >= price) BuyBall(index);
+                if (GameManager.Instance.Coin.CurrentValue >= price) BuyBall(index);
                 else
                 {
                     NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
@@ -154,7 +154,7 @@ public class Shop : MonoBehaviour
             button.onClick.AddListener(() =>
             {
                 if (!relic) return;
-                if (GameManager.Instance.Coin.Value >= price) BuyRelic(index);
+                if (GameManager.Instance.Coin.CurrentValue >= price) BuyRelic(index);
                 else
                 {
                     NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
@@ -170,7 +170,7 @@ public class Shop : MonoBehaviour
     private void OnClickRemoveButton()
     {
         var price = ContentProvider.GetBallRemovePrice();
-        if (GameManager.Instance.Coin.Value < price)
+        if (GameManager.Instance.Coin.CurrentValue < price)
         {
             NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
             SeManager.Instance.PlaySe("error");

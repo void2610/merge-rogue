@@ -16,12 +16,12 @@ public class Gambler : StageEventBase
             resultDescription = "ありがとよ！(コインを全て渡した)",
             Action = () =>
             {
-                var coin = (int)GameManager.Instance.Coin.Value;
+                var coin = (int)GameManager.Instance.Coin.CurrentValue;
                 if(Register.TryGetInt(GAMBLER_COIN_KEY, out var gamblerCoin)) Register.RegisterInt(GAMBLER_COIN_KEY, gamblerCoin + coin);
                 else Register.RegisterInt(GAMBLER_COIN_KEY, coin);
                 GameManager.Instance.SubCoin(coin);
             },
-            IsAvailable = () => GameManager.Instance.Coin.Value > 0
+            IsAvailable = () => GameManager.Instance.Coin.CurrentValue > 0
         };
         
         EventName = "Gambler";

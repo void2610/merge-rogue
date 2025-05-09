@@ -12,7 +12,7 @@ public class AllAttackByTenCoin : RelicBase
     
     protected override void EffectImpl(Unit _)
     {
-        var coin = GameManager.Instance.Coin.Value;
+        var coin = GameManager.Instance.Coin.CurrentValue;
         var e = GameManager.Instance.EnemyContainer.GetCurrentEnemyCount();
         var dic = EventManager.OnPlayerAttack.GetValue();
 

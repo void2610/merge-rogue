@@ -74,7 +74,7 @@ public class AfterBattleUI : MonoBehaviour
             button.onClick.AddListener(() =>
             {
                 if (!ball) return;
-                if (GameManager.Instance.Coin.Value >= price) BuyBall(index);
+                if (GameManager.Instance.Coin.CurrentValue >= price) BuyBall(index);
                 else
                 {
                     NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
@@ -101,7 +101,7 @@ public class AfterBattleUI : MonoBehaviour
     {
         var price = ContentProvider.GetBallUpgradePrice();
         ballUpgradePriceText.text = price.ToString();
-        var interactable = GameManager.Instance.Coin.Value >= price;
+        var interactable = GameManager.Instance.Coin.CurrentValue >= price;
         ballUpgradeButton.interactable = interactable;
         OpenShop();
     }
