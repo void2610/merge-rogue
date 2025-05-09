@@ -111,7 +111,7 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""RightClick"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""dd9b65a5-c40a-4c7d-8e7f-50ab211a6359"",
                     ""expectedControlType"": """",
                     ""processors"": """",

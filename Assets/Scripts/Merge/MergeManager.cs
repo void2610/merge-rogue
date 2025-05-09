@@ -14,6 +14,7 @@ public class MergeManager : MonoBehaviour
     private static readonly int _alpha = Shader.PropertyToID("_Alpha");
 
     [SerializeField] private MergeAreaCursorSetter cursorSetter;
+    [SerializeField] private MergeSkill mergeSkill;
     [SerializeField] private MergeWall wall;
     [SerializeField] public PhysicsMaterial2D wallMaterial;
     [SerializeField] private GameObject fallAnchor;
@@ -201,10 +202,13 @@ public class MergeManager : MonoBehaviour
         GameManager.Instance.EnemyContainer.AttackEnemy(_attackCounts).Forget();
         
         // ヒットストップ
-        Time.timeScale = 0.1f;
-        await UniTask.Delay((int)(350 / GameManager.Instance.TimeScale), DelayType.UnscaledDeltaTime);
-        Time.timeScale = GameManager.Instance.TimeScale;
-        
+        if (!mergeSkill.IsAiming)
+        {
+            Time.timeScale = 0.1f;
+            await UniTask.Delay((int)(350 / GameManager.Instance.TimeScale), DelayType.UnscaledDeltaTime);
+            Time.timeScale = GameManager.Instance.TimeScale;
+        }
+
         ResetAttackCount();
         
         ParticleManager.Instance.MergeText((int)atk, p, type.GetColor());
@@ -417,7 +421,7 @@ public class MergeManager : MonoBehaviour
         if (Time.time - _lastFallTime <= COOL_TIME || RemainingBalls < 0) return;
 
         var left = InputProvider.Instance.Gameplay.LeftClick.IsPressed();
-        var right = InputProvider.Instance.Gameplay.RightClick.IsPressed();
+        // var right = InputProvider.Instance.Gameplay.RightClick.IsPressed();
         
         if (left)
         {
@@ -426,12 +430,12 @@ public class MergeManager : MonoBehaviour
             DropBall();
             DecideNextBall().Forget();
         }
-        else if (right)
-        {
-            SeManager.Instance.PlaySe("alt");
-            _lastFallTime = Time.time;
-            SkipBall();
-            DecideNextBall().Forget();
-        }
+        // else if (right)
+        // {
+        //     SeManager.Instance.PlaySe("alt");
+        //     _lastFallTime = Time.time;
+        //     SkipBall();
+        //     DecideNextBall().Forget();
+        // }
     }
 }
