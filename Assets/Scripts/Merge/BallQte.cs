@@ -1,6 +1,6 @@
-using DG.Tweening;
-using Unity.VisualScripting;
 using UnityEngine;
+using DG.Tweening;
+using Cysharp.Threading.Tasks;
 
 public class BallQte : MonoBehaviour
 {
@@ -9,24 +9,38 @@ public class BallQte : MonoBehaviour
     [SerializeField] private Vector2 endPos;
     [SerializeField] private int maxBallCount = 7;
     [SerializeField] private float speed = 1.0f;
+
+    public async UniTask<int> GetBallRankFromQte()
+    {
+        StartQte();
+        
+        await UniTask.WaitUntil(() => InputProvider.Instance.Gameplay.LeftClick.IsPressed());
+        StopQte();
+        return GetBallRank();
+    }
     
-    public void StartQte()
+    private void StartQte()
     {
         qteCursor.gameObject.SetActive(true);
         qteCursor.DOAnchorPos(beginPos, 0.0f);
         qteCursor.DOAnchorPos(endPos, 1f / speed).SetEase(Ease.InQuad).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
     }
     
-    public void StopQte()
+    private void StopQte()
     {
         qteCursor.gameObject.SetActive(false);
         qteCursor.DOKill();
     }
 
-    public int GetBallRank()
+    private int GetBallRank()
     {
         var p = qteCursor.anchoredPosition.x / (endPos.x - beginPos.x);
         var rank = Mathf.FloorToInt(p * maxBallCount);
         return Mathf.Clamp(rank, 0, maxBallCount);
+    }
+
+    private void Awake()
+    {
+        qteCursor.gameObject.SetActive(false);
     }
 }

@@ -22,11 +22,11 @@ public class MergeManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI ballCountText;
     [SerializeField] private Vector3 nextBallPosition;
     [SerializeField] private AttackCountUI attackCountUI;
+    [SerializeField] private BallQte ballQte;
     
     public float attackMagnification = 1.0f;
     public int RemainingBalls { get; private set; } = 0;
     public GameObject CurrentBall { get; private set; } = null;
-    public GameObject NextBall { get; private set; } = null;
     public MergeWall Wall => wall;
     
     private const float MOVE_SPEED = 1.0f;
@@ -128,7 +128,7 @@ public class MergeManager : MonoBehaviour
     public void StartMerge()
     {
         _isMovable = true;
-        Reset();
+        Reset().Forget();
         
         _fillingRateMagnification = FillingRateManager.Instance.CalcFillingGauge();
     }
@@ -137,11 +137,6 @@ public class MergeManager : MonoBehaviour
     {
         if(!_isMovable) return;
         
-        if (NextBall)
-        {
-            Destroy(NextBall);
-            NextBall = null;
-        }
         if (CurrentBall)
         {
             Destroy(CurrentBall);
@@ -174,14 +169,13 @@ public class MergeManager : MonoBehaviour
     }
     
     // 次のボールを生成
-    private void Reset()
+    private async UniTaskVoid Reset()
     {
         RemainingBalls = _ballPerOneTurn;
-        if (_ballPerOneTurn > 1)
-        {
-            NextBall = InventoryManager.Instance.GetRandomBall(nextBallPosition);
-        }
-        CurrentBall = InventoryManager.Instance.GetRandomBall(fallAnchor.transform.position - Vector3.up * 0.2f);
+        
+        var rank = await ballQte.GetBallRankFromQte();
+        CurrentBall = InventoryManager.Instance.GetBallByRank(rank + 1);
+        CurrentBall.transform.position = fallAnchor.transform.position - Vector3.up * 0.2f;
         CurrentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         fallAnchor.GetComponent<HingeJoint2D>().connectedBody = CurrentBall.GetComponent<Rigidbody2D>();
         
@@ -283,7 +277,7 @@ public class MergeManager : MonoBehaviour
         Destroy(CurrentBall);
     }
 
-    private async UniTaskVoid DecideNextBall()
+    private async UniTask DecideNextBall()
     {
         if(!_isMovable) return;
         
@@ -293,24 +287,16 @@ public class MergeManager : MonoBehaviour
         if (--RemainingBalls > 0)
         {
             await UniTask.Delay((int)(COOL_TIME * 500));
-            CurrentBall = NextBall;
+            var rank = await ballQte.GetBallRankFromQte();
+            
+            CurrentBall = InventoryManager.Instance.GetBallByRank(rank + 1);
             CurrentBall.transform.position = fallAnchor.transform.position;
             CurrentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
             fallAnchor.GetComponent<HingeJoint2D>().connectedBody = CurrentBall.GetComponent<Rigidbody2D>();
-            if (RemainingBalls > 1)
-            {
-                NextBall = InventoryManager.Instance.GetRandomBall();
-                NextBall.transform.position = nextBallPosition;
-            }
-            else
-            {
-                NextBall = null;
-            }
         }
         else
         {
             CurrentBall = null;
-            NextBall = null;
             fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = false;
             arrow.DOFade(0, 0.5f).Forget();
         }
