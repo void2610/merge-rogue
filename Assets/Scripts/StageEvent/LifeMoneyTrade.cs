@@ -18,7 +18,7 @@ public class LifeMoneyTrade : StageEventBase
                     GameManager.Instance.SubCoin(25);
                     GameManager.Instance.Player.Heal(999);
                 },
-                IsAvailable = () => GameManager.Instance.Coin.Value >= 25
+                IsAvailable = () => GameManager.Instance.Coin.CurrentValue >= 25
             },
             new OptionData
             {

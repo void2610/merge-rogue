@@ -10,7 +10,7 @@ public class MergeSkill : MonoBehaviour
 
     private void OnPressRightClick(InputAction.CallbackContext ctx)
     {
-        if (GameManager.Instance.State.Value != GameManager.GameState.Merge) return;
+        if (GameManager.Instance.State.CurrentValue != GameManager.GameState.Merge) return;
         
         if (!_isAiming) StartAim();
         else EndAim();
@@ -18,7 +18,7 @@ public class MergeSkill : MonoBehaviour
 
     private void OnPressLeftClick(InputAction.CallbackContext ctx)
     {
-        if (GameManager.Instance.State.Value != GameManager.GameState.Merge) return;
+        if (GameManager.Instance.State.CurrentValue != GameManager.GameState.Merge) return;
         if (!_isAiming) return;
         
         var ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
