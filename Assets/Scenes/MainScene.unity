@@ -11037,7 +11037,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aec1c98b45be344e98abac33cf63c40f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
   playerObj: {fileID: 1993390309}
   treasure: {fileID: 1607858726}
   enemyContainer: {fileID: 198190389}
@@ -23500,6 +23499,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 371541724}
+  audioMixer: {fileID: 24100000, guid: f789843a274c340cb976f3e5fb359cf3, type: 2}
 --- !u!1 &1855568470
 GameObject:
   m_ObjectHideFlags: 0

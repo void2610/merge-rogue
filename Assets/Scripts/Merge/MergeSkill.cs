@@ -1,10 +1,12 @@
 using R3;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 
 public class MergeSkill : MonoBehaviour
 {
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private AudioMixer audioMixer;
     public bool IsAiming => _isAiming;
     private bool _isAiming = false;
 
@@ -38,6 +40,8 @@ public class MergeSkill : MonoBehaviour
         _isAiming = true;
         Time.timeScale = GameManager.Instance.TimeScale * 0.1f;
         UIManager.Instance.SetCA(1);
+        audioMixer.SetFloat("LowpassCutoffFreq", 300f);
+        audioMixer.SetFloat("LowpassResonance", 3f);
     }
     
     private void EndAim()
@@ -47,6 +51,8 @@ public class MergeSkill : MonoBehaviour
         _isAiming = false;
         Time.timeScale = GameManager.Instance.TimeScale;
         UIManager.Instance.SetCA(0.07f);
+        audioMixer.SetFloat("LowpassCutoffFreq", 5000f);
+        audioMixer.SetFloat("LowpassResonance", 1f);
     }
 
     private void Start()
