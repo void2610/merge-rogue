@@ -292,6 +292,12 @@ public class UIManager : MonoBehaviour
         if(!volume.profile.TryGet(out Vignette vignette)) return;
         vignette.intensity.value = value;
     }
+    
+    public void SetCA(float value)
+    {
+        if(!volume.profile.TryGet(out ChromaticAberration ca)) return;
+        DOTween.To(() => ca.intensity.value, x => ca.intensity.value = x, value, 0.5f).SetUpdate(true);
+    }
 
     private void Awake()
     {

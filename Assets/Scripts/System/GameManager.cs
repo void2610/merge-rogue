@@ -24,7 +24,6 @@ public class GameManager : MonoBehaviour
         GameOver,
         Clear,
     }
-    public GameState state = GameState.Merge;
     
     [Header("オブジェクト")]
     [SerializeField] private GameObject playerObj;
@@ -45,6 +44,8 @@ public class GameManager : MonoBehaviour
     public EnemyContainer EnemyContainer => enemyContainer;
     
     public readonly ReactiveProperty<BigInteger> Coin = new(0);
+    public readonly ReactiveProperty<GameState> State = new(GameState.Merge);
+    
     private string _seedText;
     private int _seed = 42;
     private System.Random _random;
@@ -114,7 +115,7 @@ public class GameManager : MonoBehaviour
     // ReSharper disable Unity.PerformanceAnalysis
     private async UniTaskVoid ChangeStateAsync(GameState newState)
     {
-        state = newState;
+        State.Value = newState;
         switch (newState)
         {
             case GameState.Merge:

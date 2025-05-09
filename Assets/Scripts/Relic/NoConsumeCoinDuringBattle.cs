@@ -10,7 +10,7 @@ public class NoConsumeCoinDuringBattle : RelicBase
 
     protected override void EffectImpl(Unit _)
     {   
-        if(GameManager.Instance.state != GameManager.GameState.Merge && GameManager.Instance.state != GameManager.GameState.PlayerAttack && GameManager.Instance.state != GameManager.GameState.EnemyAttack)
+        if(GameManager.Instance.State.Value != GameManager.GameState.Merge && GameManager.Instance.State.Value != GameManager.GameState.PlayerAttack && GameManager.Instance.State.Value != GameManager.GameState.EnemyAttack)
             return;
         
         EventManager.OnCoinConsume.SetValue(0);

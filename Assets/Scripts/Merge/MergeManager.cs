@@ -323,7 +323,7 @@ public class MergeManager : MonoBehaviour
     
     private bool IsAllBallsStopped()
     {
-        if (GameManager.Instance.state != GameManager.GameState.Merge || RemainingBalls != 0) return false;
+        if (GameManager.Instance.State.Value != GameManager.GameState.Merge || RemainingBalls != 0) return false;
         if(Time.time - _lastFallTime < COOL_TIME) return false;
         
         if(_stopTimers == null || _stopTimers.Count != _ballContainer.GetComponentsInChildren<Rigidbody2D>().Length){
@@ -382,7 +382,7 @@ public class MergeManager : MonoBehaviour
         
         if(!CurrentBall) return;
         if (GameManager.Instance.IsGameOver) return;
-        if (GameManager.Instance.state != GameManager.GameState.Merge) return;
+        if (GameManager.Instance.State.Value != GameManager.GameState.Merge) return;
         if (!_isMovable) return;
         if (mergeSkill.IsAiming) return;
         
