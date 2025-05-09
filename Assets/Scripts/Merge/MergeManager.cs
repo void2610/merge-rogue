@@ -29,6 +29,7 @@ public class MergeManager : MonoBehaviour
     public GameObject CurrentBall { get; private set; } = null;
     public GameObject NextBall { get; private set; } = null;
     public MergeWall Wall => wall;
+    public MergeSkill Skill => mergeSkill;
     
     private const float MOVE_SPEED = 1.0f;
     private const float COOL_TIME = 1.0f;
@@ -157,6 +158,8 @@ public class MergeManager : MonoBehaviour
             if (!b) continue;
             b.OnTurnEnd();
         }
+
+        mergeSkill.SubCoolDown();
         
         ballCountText.text = "0/" + _ballPerOneTurn;
         arrow.DOFade(0, 0.5f).Forget();
@@ -226,53 +229,48 @@ public class MergeManager : MonoBehaviour
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
     }
 
-    public async UniTaskVoid Attack()
-    {
-        GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
-        ResetAttackCount();
-        return;
-        
-        
-        // 攻撃がない場合は敵の攻撃に移行
-        var canAttack = _attackCounts.Any(a => a.Value != 0);
-        // Freeze状態なら行動しない
-        var freeze = (FreezeEffect)GameManager.Instance.Player.StatusEffects.Find(e => e.Type == StatusEffectType.Freeze);
-        var isFrozen = freeze != null && freeze.IsFrozen();
-        if (!canAttack || isFrozen)
-        {
-            GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
-            return;
-        }
-        
-        // 充填率のバフを適用
-        _attackCounts.MultiplyAll(_fillingRateMagnification);
-        
-        // 状態異常を適用
-        _attackCounts = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts);
-        
-        // イベントを適用
-        EventManager.OnPlayerAttack.Trigger(_attackCounts);
-        _attackCounts = EventManager.OnPlayerAttack.GetValue();
-        
-        // ハイスコア更新
-        var totalAttack = _attackCounts.Sum(a => a.Value);
-        if (PlayerPrefs.GetInt("maxAttack", 0) < totalAttack)
-        {
-            UnityroomApiClient.Instance.SendScore(2, totalAttack, ScoreboardWriteMode.HighScoreDesc);
-            PlayerPrefs.SetInt("maxAttack", totalAttack);
-        }
-        
-        // 攻撃アニメーション
-        GameManager.Instance.Player.gameObject.transform.DOMoveX(0.75f, 0.02f).SetRelative(true).OnComplete(() =>
-        {
-            GameManager.Instance.Player.gameObject.transform.DOMoveX(-0.75f, 0.2f).SetRelative(true)
-                .SetEase(Ease.OutExpo);
-        }).Forget();
-        
-        // 実際の攻撃処理
-        await GameManager.Instance.EnemyContainer.AttackEnemy(_attackCounts);
-        ResetAttackCount();
-    }
+    // public async UniTaskVoid Attack()
+    // {
+    //     // 攻撃がない場合は敵の攻撃に移行
+    //     var canAttack = _attackCounts.Any(a => a.Value != 0);
+    //     // Freeze状態なら行動しない
+    //     var freeze = (FreezeEffect)GameManager.Instance.Player.StatusEffects.Find(e => e.Type == StatusEffectType.Freeze);
+    //     var isFrozen = freeze != null && freeze.IsFrozen();
+    //     if (!canAttack || isFrozen)
+    //     {
+    //         GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
+    //         return;
+    //     }
+    //     
+    //     // 充填率のバフを適用
+    //     _attackCounts.MultiplyAll(_fillingRateMagnification);
+    //     
+    //     // 状態異常を適用
+    //     _attackCounts = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts);
+    //     
+    //     // イベントを適用
+    //     EventManager.OnPlayerAttack.Trigger(_attackCounts);
+    //     _attackCounts = EventManager.OnPlayerAttack.GetValue();
+    //     
+    //     // ハイスコア更新
+    //     var totalAttack = _attackCounts.Sum(a => a.Value);
+    //     if (PlayerPrefs.GetInt("maxAttack", 0) < totalAttack)
+    //     {
+    //         UnityroomApiClient.Instance.SendScore(2, totalAttack, ScoreboardWriteMode.HighScoreDesc);
+    //         PlayerPrefs.SetInt("maxAttack", totalAttack);
+    //     }
+    //     
+    //     // 攻撃アニメーション
+    //     GameManager.Instance.Player.gameObject.transform.DOMoveX(0.75f, 0.02f).SetRelative(true).OnComplete(() =>
+    //     {
+    //         GameManager.Instance.Player.gameObject.transform.DOMoveX(-0.75f, 0.2f).SetRelative(true)
+    //             .SetEase(Ease.OutExpo);
+    //     }).Forget();
+    //     
+    //     // 実際の攻撃処理
+    //     await GameManager.Instance.EnemyContainer.AttackEnemy(_attackCounts);
+    //     ResetAttackCount();
+    // }
 
     private void DropBall()
     {

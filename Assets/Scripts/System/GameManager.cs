@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     public enum GameState
     {
         Merge,
-        PlayerAttack,
         EnemyAttack,
         AfterBattle,
         LevelUp,
@@ -125,11 +124,8 @@ public class GameManager : MonoBehaviour
                 Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
                 MergeManager.Instance.StartMerge();
                 break;
-            case GameState.PlayerAttack:
-                Physics2D.simulationMode = SimulationMode2D.Script;
-                MergeManager.Instance.Attack().Forget();
-                break;
             case GameState.EnemyAttack:
+                Physics2D.simulationMode = SimulationMode2D.Script;
                 EnemyContainer.Action();
                 break;
             case GameState.MapSelect:

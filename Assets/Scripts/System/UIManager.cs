@@ -31,6 +31,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI coinText;
     [SerializeField] private TextMeshProUGUI stageText;
     [SerializeField] private TextMeshProUGUI expText;
+    [SerializeField] private TextMeshProUGUI skillTurnText;
     [SerializeField] private Slider hpSlider;
     [SerializeField] private TextMeshProUGUI hpText;
     [SerializeField] private Shop shop;
@@ -332,6 +333,11 @@ public class UIManager : MonoBehaviour
         {
             hpSlider.maxValue = v;
             hpText.text = GameManager.Instance.Player.Health.Value + "/" + v;
+        }).AddTo(this);
+        MergeManager.Instance.Skill.CurrentCoolDownTurn.Subscribe(v =>
+        {
+            var max = MergeManager.Instance.Skill.SkillCoolDownTurn;
+            skillTurnText.text = $"skill: {max-v}/{max}";
         }).AddTo(this);
         
         bgmSlider.onValueChanged.AddListener((value) =>
