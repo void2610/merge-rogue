@@ -384,6 +384,7 @@ public class MergeManager : MonoBehaviour
         if (GameManager.Instance.IsGameOver) return;
         if (GameManager.Instance.state != GameManager.GameState.Merge) return;
         if (!_isMovable) return;
+        if (mergeSkill.IsAiming) return;
         
         _limit = wall.WallWidth / 2 + 0.05f;
         var size = CurrentBall.transform.localScale.x + 0.5f;

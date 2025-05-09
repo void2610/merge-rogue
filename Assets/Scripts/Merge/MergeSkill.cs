@@ -3,6 +3,7 @@ using UnityEngine.InputSystem;
 
 public class MergeSkill : MonoBehaviour
 {
+    [SerializeField] private Camera mainCamera;
     public bool IsAiming => _isAiming;
     private bool _isAiming = false;
 
@@ -22,9 +23,27 @@ public class MergeSkill : MonoBehaviour
         }
     }
 
+    private void OnPressLeftClick(InputAction.CallbackContext ctx)
+    {
+        if (GameManager.Instance.state != GameManager.GameState.Merge) return;
+        if (!_isAiming) return;
+        
+        var ray = mainCamera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        var hit = Physics2D.Raycast(ray.origin, ray.direction);
+        if (hit)
+        {
+            Debug.Log("Hit: " + hit.collider.name);
+            if (hit.collider.TryGetComponent(out BallBase ball))
+            {
+                ball.EffectAndDestroy(null);
+            }
+        }
+    }
+
     private void Start()
     {
         InputProvider.Instance.Gameplay.RightClick.performed += OnPressRightClick;
+        InputProvider.Instance.Gameplay.LeftClick.performed += OnPressLeftClick;
     }
 
     private void Update()
@@ -35,6 +54,9 @@ public class MergeSkill : MonoBehaviour
     private void OnDestroy()
     {
         if (InputProvider.Instance != null)
+        {
             InputProvider.Instance.Gameplay.RightClick.performed -= OnPressRightClick;
+            InputProvider.Instance.Gameplay.LeftClick.performed -= OnPressLeftClick;
+        }
     }
 }
