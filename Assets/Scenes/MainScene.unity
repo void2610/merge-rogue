@@ -11168,7 +11168,7 @@ MonoBehaviour:
   coinText: {fileID: 1007425568}
   stageText: {fileID: 400580596}
   expText: {fileID: 1932937372}
-  skillTurnText: {fileID: 0}
+  skillTurnText: {fileID: 355658193}
   hpSlider: {fileID: 1951852459}
   hpText: {fileID: 1566874251}
   shop: {fileID: 1941433902}
