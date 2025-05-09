@@ -43,8 +43,8 @@ public class GameManager : MonoBehaviour
     public ScoreManager ScoreManager => GetComponent<ScoreManager>();
     public EnemyContainer EnemyContainer => enemyContainer;
     
-    public ReadOnlyReactiveProperty<BigInteger> Coin => Coin;
-    public ReadOnlyReactiveProperty<GameState> State => State;
+    public ReadOnlyReactiveProperty<BigInteger> Coin => _coin;
+    public ReadOnlyReactiveProperty<GameState> State => _state;
     
     private ReactiveProperty<BigInteger> _coin = new(0);
     private ReactiveProperty<GameState> _state = new(GameState.Merge);
