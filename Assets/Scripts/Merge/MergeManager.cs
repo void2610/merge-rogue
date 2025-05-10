@@ -32,7 +32,7 @@ public class MergeManager : MonoBehaviour
     private const float MOVE_SPEED = 1.0f;
     private const float COOL_TIME = 1.0f;
     private readonly List<float> _attacks = new() { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 3.75f, 4.0f};
-    private readonly List<float> _wallWidths = new() { 2.0f, 2.75f, 3.5f, 4.25f, 5.0f, 5.75f, 6.0f, 6.25f};
+    private readonly List<float> _wallWidths = new() { 4.75f, 5.0f, 5.25f, 5.5f, 5.75f, 6.0f, 6.25f, 6.5f};
     private int _wallWidthLevel = 0;
     private int _attackLevel = 0;
     private GameObject _ballContainer;
