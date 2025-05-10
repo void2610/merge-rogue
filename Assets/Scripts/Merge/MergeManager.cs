@@ -336,7 +336,6 @@ public class MergeManager : MonoBehaviour
     private void Start()
     {
         ballGauge.GetComponent<SpriteRenderer>().material.SetFloat(_ratio, 1);
-        fallAnchor.transform.position = _currentBallPosition;
         
         ResetAttackCount();
     }
