@@ -30,20 +30,14 @@ public class MergeManager : MonoBehaviour
     public MergeWall Wall => wall;
     
     private const float MOVE_SPEED = 1.0f;
-    private const float COOL_TIME = 1.0f;
     private readonly List<float> _attacks = new() { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 3.75f, 4.0f};
     private readonly List<float> _wallWidths = new() { 4.75f, 5.0f, 5.25f, 5.5f, 5.75f, 6.0f, 6.25f, 6.5f};
     private int _wallWidthLevel = 0;
     private int _attackLevel = 0;
     private GameObject _ballContainer;
-    private float _lastFallTime;
-    private float _limit = -2.5f;
-    private Vector3 _currentBallPosition = new(0, 1f, 0);
     private int _ballPerOneTurn = 2;
     private Dictionary<AttackType, int> _attackCounts = new();
     private Dictionary<Rigidbody2D, float> _stopTimers;
-    private bool _isMovable = false;
-    private Camera _mainCamera;
     private float _fillingRateMagnification;
     
     public void LevelUpWallWidth()
@@ -125,18 +119,57 @@ public class MergeManager : MonoBehaviour
         }
     }
     
-    public void StartMerge()
+    public async UniTaskVoid StartMerge()
     {
-        _isMovable = true;
-        Reset().Forget();
-        
         _fillingRateMagnification = FillingRateManager.Instance.CalcFillingGauge();
+        Reset();
+        
+        for (var i = 0; i < _ballPerOneTurn; i++)
+        {
+            await DecideNextBall();
+            await UniTask.Delay(500);
+            await DropBallByQte();
+            await UniTask.Delay(500);
+            RemainingBalls--;
+            ballCountText.text = RemainingBalls + "/" + _ballPerOneTurn;
+        }
+        
+        CurrentBall = null;
+        fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = false;
+        arrow.DOFade(0, 0.5f).Forget();
+        
+        await UniTask.WaitUntil(() => IsAllBallsStopped());
+        await UniTask.Delay(100);
+        EndMerge().Forget();
+    }
+
+    private async UniTask DropBallByQte()
+    {
+        var limit = (wall.WallWidth / 2) + CurrentBall.transform.localScale.x - 0.5f;
+        fallAnchor.transform.DOMoveX(-limit, 0f).Forget();
+        var t = fallAnchor.transform.DOMoveX(limit, 1 / MOVE_SPEED).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo).SetUpdate(true);
+        
+        await UniTask.WaitUntil(() => InputProvider.Instance.Gameplay.LeftClick.IsPressed());
+        
+        t.Kill();
+        EventManager.OnBallDrop.Trigger(0);
+        fallAnchor.GetComponent<HingeJoint2D>().connectedBody = null;
+        CurrentBall.GetComponent<BallBase>().Unfreeze();
+        CurrentBall.transform.SetParent(_ballContainer.transform); 
+    }
+    
+    private async UniTask DecideNextBall()
+    {
+        var rank = await ballQte.GetBallRankFromQte();
+    
+        CurrentBall = InventoryManager.Instance.GetBallByRank(rank + 1);
+        CurrentBall.transform.position = fallAnchor.transform.position;
+        CurrentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+        fallAnchor.GetComponent<HingeJoint2D>().connectedBody = CurrentBall.GetComponent<Rigidbody2D>();
     }
     
     public async UniTaskVoid EndMerge()
     {
-        if(!_isMovable) return;
-        
         if (CurrentBall)
         {
             Destroy(CurrentBall);
@@ -154,7 +187,6 @@ public class MergeManager : MonoBehaviour
         
         ballCountText.text = "0/" + _ballPerOneTurn;
         arrow.DOFade(0, 0.5f).Forget();
-        _isMovable = false;
         
         await UniTask.Delay(200);
         
@@ -169,16 +201,9 @@ public class MergeManager : MonoBehaviour
     }
     
     // 次のボールを生成
-    private async UniTaskVoid Reset()
+    private void Reset()
     {
         RemainingBalls = _ballPerOneTurn;
-        
-        var rank = await ballQte.GetBallRankFromQte();
-        CurrentBall = InventoryManager.Instance.GetBallByRank(rank + 1);
-        CurrentBall.transform.position = fallAnchor.transform.position - Vector3.up * 0.2f;
-        CurrentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        fallAnchor.GetComponent<HingeJoint2D>().connectedBody = CurrentBall.GetComponent<Rigidbody2D>();
-        
         ballCountText.text = RemainingBalls + "/" + _ballPerOneTurn;
         fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = true;
         arrow.DOFade(1, 0.5f).Forget();
@@ -264,49 +289,11 @@ public class MergeManager : MonoBehaviour
         ResetAttackCount();
     }
 
-    private void DropBall()
-    {
-        EventManager.OnBallDrop.Trigger(0);
-        CurrentBall.GetComponent<BallBase>().Unfreeze();
-        CurrentBall.transform.SetParent(_ballContainer.transform);
-    }
 
-    private void SkipBall()
-    {
-        EventManager.OnBallSkip.Trigger(0);
-        Destroy(CurrentBall);
-    }
-
-    private async UniTask DecideNextBall()
-    {
-        if(!_isMovable) return;
-        
-        fallAnchor.GetComponent<HingeJoint2D>().connectedBody = null;
-
-        // リロードするかどうか
-        if (--RemainingBalls > 0)
-        {
-            await UniTask.Delay((int)(COOL_TIME * 500));
-            var rank = await ballQte.GetBallRankFromQte();
-            
-            CurrentBall = InventoryManager.Instance.GetBallByRank(rank + 1);
-            CurrentBall.transform.position = fallAnchor.transform.position;
-            CurrentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-            fallAnchor.GetComponent<HingeJoint2D>().connectedBody = CurrentBall.GetComponent<Rigidbody2D>();
-        }
-        else
-        {
-            CurrentBall = null;
-            fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = false;
-            arrow.DOFade(0, 0.5f).Forget();
-        }
-        ballCountText.text = RemainingBalls + "/" + _ballPerOneTurn;
-    }
     
     private bool IsAllBallsStopped()
     {
         if (GameManager.Instance.state != GameManager.GameState.Merge || RemainingBalls != 0) return false;
-        if(Time.time - _lastFallTime < COOL_TIME) return false;
         
         if(_stopTimers == null || _stopTimers.Count != _ballContainer.GetComponentsInChildren<Rigidbody2D>().Length){
             _stopTimers = _ballContainer.GetComponentsInChildren<Rigidbody2D>().ToDictionary(b => b, _ => Time.time);
@@ -350,74 +337,7 @@ public class MergeManager : MonoBehaviour
     {
         ballGauge.GetComponent<SpriteRenderer>().material.SetFloat(_ratio, 1);
         fallAnchor.transform.position = _currentBallPosition;
-        _mainCamera = Camera.main;
         
         ResetAttackCount();
-    }
-
-    private void Update()
-    {
-        if (IsAllBallsStopped())
-        {
-            EndMerge().Forget();
-        }
-        
-        if(!CurrentBall) return;
-        if (GameManager.Instance.IsGameOver) return;
-        if (GameManager.Instance.state != GameManager.GameState.Merge) return;
-        if (!_isMovable) return;
-        
-        _limit = wall.WallWidth / 2 + 0.05f;
-        var size = CurrentBall.transform.localScale.x + 0.5f;
-        var r = Mathf.Min(1, (Time.time - _lastFallTime) / COOL_TIME);
-        ballGauge.GetComponent<SpriteRenderer>().material.SetFloat(_ratio, r + 0.1f);
-        ballGauge.transform.localScale = CurrentBall.transform.localScale * 1.01f;
-        ballGauge.transform.position = CurrentBall.transform.position;
-        
-        // プレイヤー操作        
-        if(UIManager.Instance.IsAnyCanvasGroupEnabled()) return;
-        if (EventSystem.current.currentSelectedGameObject != cursorSetter.gameObject) return;
-        
-        var mousePosX = (InputProvider.Instance.GetMousePosition().x - Screen.width / 2) / Screen.width * 20;
-        var isMouseOvered = cursorSetter.IsMergeArea;
-        if (isMouseOvered)
-        {
-            mousePosX = Mathf.Clamp(mousePosX, -_limit + size / 2, _limit - size / 2);
-            _currentBallPosition = new Vector3(mousePosX, _currentBallPosition.y, _currentBallPosition.z);
-        }
-        else
-        {
-            if (InputProvider.Instance.Gameplay.LeftMove.IsPressed() && _currentBallPosition.x - size / 2 > -_limit)
-            {
-                _currentBallPosition += Vector3.left * (MOVE_SPEED * Time.deltaTime);
-            }
-
-            if (InputProvider.Instance.Gameplay.RightMove.IsPressed() && _currentBallPosition.x + size / 2 < _limit)
-            {
-                _currentBallPosition += Vector3.right * (MOVE_SPEED * Time.deltaTime);
-            }
-        }
-
-        fallAnchor.transform.position = _currentBallPosition + new Vector3(0, 0, 0);
-        
-        if (Time.time - _lastFallTime <= COOL_TIME || RemainingBalls < 0) return;
-
-        var left = InputProvider.Instance.Gameplay.LeftClick.IsPressed();
-        var right = InputProvider.Instance.Gameplay.RightClick.IsPressed();
-        
-        if (left)
-        {
-            SeManager.Instance.PlaySe("fall");
-            _lastFallTime = Time.time;
-            DropBall();
-            DecideNextBall().Forget();
-        }
-        else if (right)
-        {
-            SeManager.Instance.PlaySe("alt");
-            _lastFallTime = Time.time;
-            SkipBall();
-            DecideNextBall().Forget();
-        }
     }
 }
