@@ -9,12 +9,7 @@ using DG.Tweening;
 
 public class EnemyBase : MonoBehaviour, IEntity
 {
-    [Serializable]
-    public class ActionData
-    {
-        public ActionType type;
-        public Action Action;
-    }
+
 
     public EnemyData Data { get; private set; }
     public string EnemyName => Data.displayName;
@@ -145,6 +140,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         if(TurnCount == ActionInterval)
         {
             TurnCount = 0;
+            Debug.Log($"{EnemyName}: {_nextAction.name}");
             _nextAction.Action();
             _nextAction = GetNextAction();
             UpdateAttackIcon(_nextAction);
@@ -217,6 +213,7 @@ public class EnemyBase : MonoBehaviour, IEntity
     public virtual void Init(EnemyData d, int stage)
     {
         // 敵のデータを設定
+        Data = d;
         Stage = stage;
         Magnification = ((stage + 1) * 0.6f);
         MaxHealth = (int)(GameManager.Instance.RandomRange(d.maxHealthMin, d.maxHealthMax) * Magnification);
@@ -251,6 +248,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         _attackCountText.text = (ActionInterval - TurnCount).ToString();
         
         // 通常攻撃の設定
+        NormalAttack.name = "攻撃";
         NormalAttack.type = ActionType.Attack;
         NormalAttack.Action = DoAttack;
         _nextAction = GetNextAction();

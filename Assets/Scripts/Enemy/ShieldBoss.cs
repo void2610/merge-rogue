@@ -14,7 +14,7 @@ public class ShieldBoss : EnemyBase
         }
         
         _isUsedShield = true;
-        return EnemyActions.ShieldAction(this, _shieldStack);
+        return EnemyActionFactory.ShieldAction(this, _shieldStack);
     }
     
     public override void Init(EnemyData d, int stage)
