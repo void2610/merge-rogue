@@ -106,7 +106,14 @@ public class MergeManager : MonoBehaviour
         bomb.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
     }
     
-    public void CreateDisturbBall()
+    public void CreateDisturbBall(int count = 1)
+    {
+        for (var i = 0; i < count; i++)
+            CreateDisturbBallInternal();
+    }
+
+    
+    private void CreateDisturbBallInternal()
     {
         var disturb = InventoryManager.Instance.GetDisturbBall();
         disturb.transform.position = GetValidRandomPosition();

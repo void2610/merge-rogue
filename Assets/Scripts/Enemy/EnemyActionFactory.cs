@@ -134,5 +134,16 @@ public static class EnemyActionFactory
             Action = () => { self.Damage(damage); }
         };
     }
+
+    [EnemyAction]
+    public static EnemyActionData DistarbBallAction(EnemyBase self, int count)
+    {
+        return new EnemyActionData
+        {
+            name = "お邪魔ボール",
+            type = ActionType.Debuff,
+            Action = () => { MergeManager.Instance.CreateDisturbBall(count); }
+        };
+    }
     
 }
