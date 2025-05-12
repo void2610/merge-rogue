@@ -26,9 +26,9 @@ MonoBehaviour:
   - probability: 1
     actionName: NormalAttack
     value: 2
-  - probability: 1
+  - probability: 0.5
     actionName: SelfHeal
-    value: 1
+    value: 5
   spriteSheet: {fileID: 2800000, guid: 8bdf07ce51ef041279efe3705a56e207, type: 3}
   sprites:
   - {fileID: -339588588, guid: 8bdf07ce51ef041279efe3705a56e207, type: 3}
