@@ -32,11 +32,6 @@ public static class EnemyActionFactory
                 m => m.Name.Replace("Action", ""), // メソッド名から ID を抽出
                 m => (Func<EnemyBase, int, EnemyActionData>)Delegate.CreateDelegate(
                     typeof(Func<EnemyBase, int, EnemyActionData>), m));
-        
-        foreach (var action in _actionMap)
-        {
-            Debug.Log($"Action: {action.Key}");
-        }
     }
 
     /// <summary>

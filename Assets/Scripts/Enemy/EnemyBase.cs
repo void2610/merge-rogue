@@ -139,7 +139,6 @@ public class EnemyBase : MonoBehaviour, IEntity
         if(TurnCount == ActionInterval)
         {
             TurnCount = 0;
-            Debug.Log($"{EnemyName}: {_nextAction.name}");
             _nextAction.Action();
             _nextAction = GetNextAction();
             UpdateAttackIcon(_nextAction);
