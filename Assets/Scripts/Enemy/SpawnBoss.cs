@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class SpawnBoss : EnemyBase
 {
-    protected override ActionData GetNextAction()
+    protected override EnemyActionData GetNextAction()
     {
         var r = GameManager.Instance.RandomRange(0, 2);
         switch (r)

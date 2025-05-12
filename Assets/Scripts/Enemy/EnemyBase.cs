@@ -23,10 +23,10 @@ public class EnemyBase : MonoBehaviour, IEntity
     public List<StatusEffectBase> StatusEffects { get; } = new();
 
     protected int TurnCount = 0;
-    protected readonly ActionData NormalAttack = new ();
+    protected readonly EnemyActionData NormalAttack = new ();
     protected int Stage = 0;
     protected float Magnification = 1;
-    private ActionData _nextAction;
+    private EnemyActionData _nextAction;
 
     private CanvasGroup _canvasGroup;
     private TextMeshProUGUI _healthText;
@@ -156,7 +156,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         _attackCountText.text = (ActionInterval - TurnCount).ToString();
     }
     
-    protected virtual ActionData GetNextAction()
+    protected virtual EnemyActionData GetNextAction()
     {
         return NormalAttack;
     }
@@ -198,7 +198,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         this.transform.parent.GetComponent<EnemyContainer>().RemoveEnemy(this.gameObject);
     }
 
-    private void UpdateAttackIcon(ActionData a)
+    private void UpdateAttackIcon(EnemyActionData a)
     {
         _attackIcon.color = a.type switch
         {

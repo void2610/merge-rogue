@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -9,6 +10,15 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "EnemyData", menuName = "Scriptable Objects/EnemyData")]
 public class EnemyData : ScriptableObject
 {
+    [Serializable]
+    public class EnemyBehaviorData
+    {
+        public float probability;
+        public EnemyActionData actionData;
+    }
+    
+    
+    [Header("Enemy Info")]
     public string className;
     public string displayName;
     [TextArea(1, 5)]
@@ -24,6 +34,9 @@ public class EnemyData : ScriptableObject
     public int coin;
     public int exp;
     
+    [Header("Enemy Actions")]
+    public List<EnemyActionData> actions;
+    
     [Header("Enemy Appearance")]
     public Texture2D spriteSheet;
     public List<Sprite> sprites;
@@ -31,6 +44,7 @@ public class EnemyData : ScriptableObject
     public float hpSliderYOffset;
     public float enemyYOffset;
     
+    // SpriteAnimatorの自動設定ボタン
     [ContextMenu("Refresh Frames")]
     public void RefreshFrames()
     {

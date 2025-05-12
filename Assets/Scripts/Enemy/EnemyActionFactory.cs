@@ -2,18 +2,18 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class ActionData
+public class EnemyActionData
 {
     public string name;
     public ActionType type;
     public Action Action;
 }
 
-public class EnemyActionFactory
+public static class EnemyActionFactory
 {
-    public static ActionData ShieldAction(EnemyBase self, int stack)
+    public static EnemyActionData ShieldAction(EnemyBase self, int stack)
     {
-        return new ActionData
+        return new EnemyActionData
         {
             name = "シールド",
             type = ActionType.Buff,
@@ -21,9 +21,9 @@ public class EnemyActionFactory
         };
     }
     
-    public static ActionData SpawnAction(EnemyBase self, int stage)
+    public static EnemyActionData SpawnAction(EnemyBase self, int stage)
     {
-        return new ActionData
+        return new EnemyActionData
         {
             name = "増援",
             type = ActionType.Buff,
@@ -31,9 +31,9 @@ public class EnemyActionFactory
         };
     }
     
-    public static ActionData SelfHealAction(EnemyBase self, int heal)
+    public static EnemyActionData SelfHealAction(EnemyBase self, int heal)
     {
-        return new ActionData
+        return new EnemyActionData
         {
             name = "自己回復",
             type = ActionType.Heal,
@@ -41,9 +41,9 @@ public class EnemyActionFactory
         };
     }
     
-    public static ActionData AllHealAction(EnemyBase self, int heal)
+    public static EnemyActionData AllHealAction(EnemyBase self, int heal)
     {
-        return new ActionData
+        return new EnemyActionData
         {
             name = "全体回復",
             type = ActionType.Heal,
@@ -51,9 +51,9 @@ public class EnemyActionFactory
         };
     }
     
-    public static ActionData HealAction(EnemyBase self, int index, int heal)
+    public static EnemyActionData HealAction(EnemyBase self, int index, int heal)
     {
-        return new ActionData
+        return new EnemyActionData
         {
             name = "回復",
             type = ActionType.Heal,
@@ -61,9 +61,9 @@ public class EnemyActionFactory
         };
     }
     
-    public static ActionData AllDamageAction(EnemyBase self, int damage)
+    public static EnemyActionData AllDamageAction(EnemyBase self, int damage)
     {
-        return new ActionData
+        return new EnemyActionData
         {
             name = "全体攻撃",
             type = ActionType.Damage,
@@ -71,9 +71,9 @@ public class EnemyActionFactory
         };
     }
     
-    public static ActionData SelfDamageAction(EnemyBase self, int damage)
+    public static EnemyActionData SelfDamageAction(EnemyBase self, int damage)
     {
-        return new ActionData
+        return new EnemyActionData
         {
             name = "自傷",
             type = ActionType.Damage,

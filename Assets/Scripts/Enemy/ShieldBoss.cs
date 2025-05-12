@@ -5,7 +5,7 @@ public class ShieldBoss : EnemyBase
     private bool _isUsedShield = false;
     private const int SHIELD_STACK = 3;
     private int _shieldStack;
-    protected override ActionData GetNextAction()
+    protected override EnemyActionData GetNextAction()
     {
         if (_isUsedShield)
         {
