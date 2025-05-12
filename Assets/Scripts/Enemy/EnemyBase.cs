@@ -25,8 +25,8 @@ public class EnemyBase : MonoBehaviour, IEntity
     protected int TurnCount = 0;
     protected int Stage = 0;
     protected float Magnification = 1;
+    
     private EnemyActionData _nextAction;
-
     private CanvasGroup _canvasGroup;
     private TextMeshProUGUI _healthText;
     private Slider _healthSlider;
@@ -157,9 +157,8 @@ public class EnemyBase : MonoBehaviour, IEntity
     
     protected virtual EnemyActionData GetNextAction()
     {
-        var n = this.Data.actions.ChooseByProbability().actionName;
-        var a = EnemyActionFactory.CreateActionByName(n, this, (int)Stage);
-        return a;
+        var behaviour = this.Data.actions.ChooseByProbability();
+        return EnemyActionFactory.CreateActionByName(behaviour.actionName, this, (int)(Stage * 0.6f + behaviour.value));
     }
 
     private void DoAttack()
