@@ -32,6 +32,33 @@ public static class ExtendedMethods
         var nextIndex = (index + 1) % values.Length;
         return values[nextIndex];
     }
+    
+    /// <summary>
+    /// EnemyBehaviorDataのリストから、probabilityの重みに従ってランダムに1つ選ぶ
+    /// </summary>
+    public static EnemyData.EnemyBehaviorData ChooseByProbability(this List<EnemyData.EnemyBehaviorData> list)
+    {
+        if (list == null || list.Count == 0)
+            throw new ArgumentException("EnemyBehaviorData list is empty or null");
+
+        var total = list.Sum(x => x.probability);
+        if (total <= 0f)
+            throw new ArgumentException("Total probability must be greater than zero");
+
+        var rand = GameManager.Instance.Random;
+        var r = (float)(rand.NextDouble() * total);
+
+        var cumulative = 0f;
+        foreach (var item in list)
+        {
+            cumulative += item.probability;
+            if (r <= cumulative)
+                return item;
+        }
+
+        // fallback（浮動小数点の誤差対策）
+        return list[list.Count - 1];
+    }
 
     /// <summary>
     /// Selectableのリストに対してナビゲーションを設定する

@@ -23,7 +23,6 @@ public class EnemyBase : MonoBehaviour, IEntity
     public List<StatusEffectBase> StatusEffects { get; } = new();
 
     protected int TurnCount = 0;
-    protected readonly EnemyActionData NormalAttack = new ();
     protected int Stage = 0;
     protected float Magnification = 1;
     private EnemyActionData _nextAction;
@@ -158,7 +157,9 @@ public class EnemyBase : MonoBehaviour, IEntity
     
     protected virtual EnemyActionData GetNextAction()
     {
-        return NormalAttack;
+        var n = this.Data.actions.ChooseByProbability().actionName;
+        var a = EnemyActionFactory.CreateActionByName(n, this, (int)Stage);
+        return a;
     }
 
     private void DoAttack()
@@ -248,9 +249,6 @@ public class EnemyBase : MonoBehaviour, IEntity
         _attackCountText.text = (ActionInterval - TurnCount).ToString();
         
         // 通常攻撃の設定
-        NormalAttack.name = "攻撃";
-        NormalAttack.type = ActionType.Attack;
-        NormalAttack.Action = DoAttack;
         _nextAction = GetNextAction();
         UpdateAttackIcon(_nextAction);
         

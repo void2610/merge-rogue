@@ -10,7 +10,7 @@ public class ShieldBoss : EnemyBase
         if (_isUsedShield)
         {
             _isUsedShield = false;
-            return NormalAttack;
+            return EnemyActionFactory.NormalAttackAction(this, (int)Stage + 1);
         }
         
         _isUsedShield = true;

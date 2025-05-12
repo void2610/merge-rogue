@@ -22,6 +22,10 @@ MonoBehaviour:
   interval: 1
   coin: 1
   exp: 2
+  actions:
+  - probability: 0
+    actionName: 
+    value: 0
   spriteSheet: {fileID: 2800000, guid: f40834502e1774a8bad2530bce387704, type: 3}
   sprites:
   - {fileID: 309706386, guid: f40834502e1774a8bad2530bce387704, type: 3}

@@ -48,6 +48,8 @@ public class GameManager : MonoBehaviour
     private string _seedText;
     private int _seed = 42;
     private System.Random _random;
+    
+    public System.Random Random => _random ??= new System.Random();
 
     public float RandomRange(float min, float max)
     {

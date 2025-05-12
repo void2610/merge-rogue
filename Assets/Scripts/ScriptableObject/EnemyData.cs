@@ -14,7 +14,8 @@ public class EnemyData : ScriptableObject
     public class EnemyBehaviorData
     {
         public float probability;
-        public EnemyActionData actionData;
+        public string actionName;
+        public int value;
     }
     
     
@@ -35,7 +36,7 @@ public class EnemyData : ScriptableObject
     public int exp;
     
     [Header("Enemy Actions")]
-    public List<EnemyActionData> actions;
+    public List<EnemyBehaviorData> actions;
     
     [Header("Enemy Appearance")]
     public Texture2D spriteSheet;

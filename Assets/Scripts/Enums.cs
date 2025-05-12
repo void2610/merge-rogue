@@ -49,7 +49,7 @@ public enum ActionType
     Heal,
     Buff,
     Debuff,
-    Damage,
+    SelfDamage,
 }
 
 public enum EnemyType
