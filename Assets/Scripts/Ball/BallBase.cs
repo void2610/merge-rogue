@@ -90,36 +90,16 @@ public class BallBase : MonoBehaviour
         this.Size = _sizes[level];
         
         // コライダーの設定
-        if (d.shapeType != BallShapeType.Circle)
+        var polygonCollider2D = this.GetComponent<PolygonCollider2D>();
+        var physicsShapeCount = d.sprite.GetPhysicsShapeCount();
+        polygonCollider2D.pathCount = physicsShapeCount;
+        var physicsShape = new List<Vector2>();
+        for ( var i = 0; i < physicsShapeCount; i++ )
         {
-            if(TryGetComponent(out CircleCollider2D tmp)) Destroy(tmp);
-            
-            switch (d.shapeType)
-            {
-                case BallShapeType.Square:
-                    var bc = this.gameObject.AddComponent<BoxCollider2D>();
-                    bc.size = new Vector2(1, 1);
-                    break;
-                case BallShapeType.Triangle:
-                    var pc = this.gameObject.AddComponent<PolygonCollider2D>();
-                    pc.points = new Vector2[]
-                    {
-                        new Vector2(0, 0.55f),
-                        new Vector2(0.6f, -0.5f),
-                        new Vector2(-0.6f, -0.5f),
-                    };
-                    break;
-                case BallShapeType.Rectangle:
-                    var bc2 = this.gameObject.AddComponent<BoxCollider2D>();
-                    bc2.size = new Vector2(0.6f, 1f);
-                    break;
-                case BallShapeType.Bar:
-                    var bc3 = this.gameObject.AddComponent<BoxCollider2D>();
-                    bc3.size = new Vector2(0.2f, 1f);
-                    break;
-                default:
-                    break;
-            }
+            physicsShape.Clear();
+            d.sprite.GetPhysicsShape( i, physicsShape );
+            var points = physicsShape.ToArray();
+            polygonCollider2D.SetPath( i, points );
         }
         
         // 画像の設定
