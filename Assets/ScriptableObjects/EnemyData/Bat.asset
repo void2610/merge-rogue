@@ -16,8 +16,8 @@ MonoBehaviour:
   displayName: "\u30B3\u30A6\u30E2\u30EA"
   flavorText: "\u30B3\u30A6\u30E2\u30EA"
   enemyType: 0
-  maxHealthMin: 3
-  maxHealthMax: 6
+  maxHealthMin: 5
+  maxHealthMax: 7
   attack: 1
   interval: 1
   coin: 1
