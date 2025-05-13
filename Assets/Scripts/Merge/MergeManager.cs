@@ -171,7 +171,13 @@ public class MergeManager : MonoBehaviour
         await UniTask.Delay(200);
         
         attackCountUI.SetAttackCount(0);
-        GameManager.Instance.ChangeState(GameManager.GameState.PlayerAttack);
+        
+        // 敵が残っていたら敵の攻撃へ
+        if (EnemyContainer.Instance.GetCurrentEnemyCount() > 0)
+        {
+            await UniTask.Delay(750);
+            GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
+        }
     }
     
     // 次のボールを生成
@@ -191,14 +197,25 @@ public class MergeManager : MonoBehaviour
         arrow.DOFade(1, 0.5f).Forget();
     }
 
-    public void AddAttackCount(AttackType type, float atk, Vector3 p)
+    public void AddAttackCount(AttackType type, float atk, Vector3 p) => AddAttackCountAsync(type, atk, p).Forget();
+    
+    private async UniTaskVoid AddAttackCountAsync(AttackType type, float atk, Vector3 p)
     {
         // プレイヤー攻撃力を適用
         atk *= attackMagnification;
         
         _attackCounts[type] = _attackCounts.ContainsKey(type) ? _attackCounts[type] + (int)atk : (int)atk;
+        GameManager.Instance.EnemyContainer.AttackEnemy(_attackCounts).Forget();
+        
+        // ヒットストップ
+        Time.timeScale = 0.1f;
+        await UniTask.Delay((int)(350 / GameManager.Instance.TimeScale), DelayType.UnscaledDeltaTime);
+        Time.timeScale = GameManager.Instance.TimeScale;
+        
+        ResetAttackCount();
+        
         ParticleManager.Instance.MergeText((int)atk, p, type.GetColor());
-        attackCountUI.SetAttackCount(_attackCounts.Sum(a => a.Value));
+        // attackCountUI.SetAttackCount(_attackCounts.Sum(a => a.Value));
     }
     
     public void SpawnBallFromLevel(int level, Vector3 p, Quaternion q)
@@ -214,6 +231,11 @@ public class MergeManager : MonoBehaviour
 
     public async UniTaskVoid Attack()
     {
+        GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
+        ResetAttackCount();
+        return;
+        
+        
         // 攻撃がない場合は敵の攻撃に移行
         var canAttack = _attackCounts.Any(a => a.Value != 0);
         // Freeze状態なら行動しない
