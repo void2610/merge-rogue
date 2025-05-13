@@ -5,11 +5,12 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
 
-public class InventoryUI : MonoBehaviour
+public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
 {
     public enum InventoryUIState
     {
         Disabled,
+        Replace,
         Upgrade,
         Swap,
         Remove
@@ -26,6 +27,7 @@ public class InventoryUI : MonoBehaviour
     private readonly List<GameObject> _items = new();
     private int _swapIndex = -1;
     private InventoryUIState _state = InventoryUIState.Disabled;
+    private BallData _replaceBallData;
 
     public void CreateBallUI(GameObject ball, int rank, BallBase ballBase)
     {
@@ -82,9 +84,16 @@ public class InventoryUI : MonoBehaviour
     
     public void StartEdit(InventoryUIState s)
     {
-        if (s == InventoryUIState.Disabled) return;
+        if (s == InventoryUIState.Replace) throw new System.ArgumentException("Replace state should be set with StartEditReplace");
         _state = s;
         UIManager.Instance.ToggleCursorState(CursorStateType.Ball);
+    }
+    
+    public void StartEditReplace(BallData ballData)
+    {
+        _state = InventoryUIState.Replace;
+        _replaceBallData = ballData;
+        UIManager.Instance.ToggleCursorState(CursorStateType.Merge);
     }
     
     private void SetEvent(GameObject g, int index, BallBase ballBase)
@@ -113,9 +122,14 @@ public class InventoryUI : MonoBehaviour
 
     private async UniTaskVoid OnClickBall(int index)
     {
+        SeManager.Instance.PlaySe("button");
         switch (_state)
         {
             case InventoryUIState.Disabled:
+                break;
+            case InventoryUIState.Replace:
+                CancelEdit();
+                InventoryManager.Instance.ReplaceBall(_replaceBallData, index);
                 break;
             case InventoryUIState.Upgrade:
                 CancelEdit();
@@ -125,17 +139,14 @@ public class InventoryUI : MonoBehaviour
                     NotifyWindow.Instance.Notify("これ以上ボールを強化できません", NotifyWindow.NotifyIconType.Error);
                     return;
                 }
-                SeManager.Instance.PlaySe("button");
                 upgradeConfirmPanel.OpenUpgradeConfirmPanel(index);
                 break;
             case InventoryUIState.Swap when _swapIndex == -1:
-                SeManager.Instance.PlaySe("button");
                 _swapIndex = index;
                 subCursor.GetComponent<Image>().enabled = true;
                 SetSubCursor(index);
                 break;
             case InventoryUIState.Swap:
-                SeManager.Instance.PlaySe("button");
                 subCursor.GetComponent<Image>().enabled = false;
                 await InventoryManager.Instance.SwapBall(_swapIndex, index);
                 GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
@@ -143,7 +154,6 @@ public class InventoryUI : MonoBehaviour
                 CancelEdit();
                 break;
             case InventoryUIState.Remove:
-                SeManager.Instance.PlaySe("button");
                 InventoryManager.Instance.RemoveAndShiftBall(index);
                 CancelEdit();
                 shop.EnableSkipButton(true);
@@ -157,8 +167,9 @@ public class InventoryUI : MonoBehaviour
         return inventoryPosition + new Vector3(index * (0.6f + BallSizes[index] * 0.4f), 0, 0);
     }
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         subCursor.GetComponent<Image>().enabled = false;
     }
 }

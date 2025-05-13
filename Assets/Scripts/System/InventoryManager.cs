@@ -28,7 +28,7 @@ public class InventoryManager : MonoBehaviour
     
     public void UpgradeBall(int index)
     {
-        if (index < 0 || index >= InventorySize) return;
+        if (index < 0 || index >= InventorySize) throw new ArgumentOutOfRangeException(nameof(index), "Index out of range");
         var ballBase = _inventory[index].GetComponent<BallBase>();
         ballBase.Upgrade();
         var tmp = _inventory[index];
@@ -40,7 +40,7 @@ public class InventoryManager : MonoBehaviour
     // ボールを任意の位置に追加する
     private void SetBall(BallData data, int rank)
     {
-        if (rank is <= 0 or > MAX_INVENTORY_SIZE) return;
+        if (rank is <= 0 or > MAX_INVENTORY_SIZE) throw new ArgumentOutOfRangeException(nameof(rank), "Rank must be between 1 and MAX_INVENTORY_SIZE.");
         
         var old = _inventory[rank - 1];
         var newBall = CreateBallInstanceFromBallData(data, rank);
@@ -53,17 +53,30 @@ public class InventoryManager : MonoBehaviour
     // ボールを最後尾に追加する
     public void AddBall(BallData data)
     {
-        if (InventorySize >= MAX_INVENTORY_SIZE) return;
+        if (InventorySize >= MAX_INVENTORY_SIZE) throw new InvalidOperationException("Inventory is full.");
         var ball = CreateBallInstanceFromBallData(data, InventorySize + 1);
         _inventory[InventorySize] = ball;
         InventorySize++;
         InventoryUI.CreateBallUI(ball, InventorySize - 1, ball.GetComponent<BallBase>());
     }
+
+    // 任意の位置のボールを新しいものに置き換える
+    public void ReplaceBall(BallData data, int rank)
+    {
+        if (rank < 0 || rank >= InventorySize) throw new ArgumentOutOfRangeException(nameof(rank), "Rank must be between 0 and InventorySize.");
+        
+        var old = _inventory[rank];
+        var newBall = CreateBallInstanceFromBallData(data, rank + 1);
+        
+        _inventory[rank] = newBall;
+        InventoryUI.CreateBallUI(newBall, rank, newBall.GetComponent<BallBase>());
+        Destroy(old);
+    }
     
     // 2つのボールを入れ替える
     public async UniTask SwapBall(int index1, int index2)
     {
-        if (index1 < 0 || index1 >= InventorySize || index2 < 0 || index2 >= InventorySize) return;
+        if (index1 < 0 || index1 >= InventorySize || index2 < 0 || index2 >= InventorySize) throw new ArgumentOutOfRangeException("Index out of range");
        
         var data1 = _inventory[index1].GetComponent<BallBase>().Data;
         var level1 = _inventory[index1].GetComponent<BallBase>().Level;
