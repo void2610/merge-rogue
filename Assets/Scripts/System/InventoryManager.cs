@@ -20,7 +20,7 @@ public class InventoryManager : MonoBehaviour
     public int InventorySize { get; private set; } = FIRST_INVENTORY_SIZE;
     public InventoryUI InventoryUI => this.GetComponent<InventoryUI>();
     private readonly List<GameObject> _inventory = new();
-    public readonly List<float> Sizes = new() { 0.4f, 0.5f, 0.6f, 0.7f, 0.8f, 0.9f, 1.0f , 1.1f};
+    public readonly List<float> Sizes = new() { 0.4f, 0.6f, 0.8f, 1.2f, 1.4f, 1.6f, 1.8f , 2f};
     private readonly List<float> _probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f };
     
     public bool IsFull => InventorySize >= MAX_INVENTORY_SIZE;
@@ -195,7 +195,7 @@ public class InventoryManager : MonoBehaviour
 
         ballBase.InitBall(data, rank, level);
         
-        ball.transform.localScale = Vector3.one * (Sizes[rank - 1] * ballBase.Size * 0.75f);
+        ball.transform.localScale = Vector3.one * (Sizes[rank - 1] * ballBase.Size * 0.6f);
         ball.GetComponent<BallBase>().Freeze();
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.FreezeAll;
         ball.transform.position = CalcInventoryPosition(rank - 1);

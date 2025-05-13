@@ -34,7 +34,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
         var g = Instantiate(ballUIPrefab, inventoryUIContainer.transform);
         
         g.transform.position = CalcInventoryPosition(rank);
-        g.transform.localScale = new Vector3(BallSizes[rank], BallSizes[rank], 1);
+        g.transform.localScale = new Vector3(BallSizes[rank], BallSizes[rank], 1) * 0.5f;
         
         g.GetComponent<Image>().sprite = ballBase.Data.sprite;
         
@@ -164,7 +164,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
     
     private Vector3 CalcInventoryPosition(int index)
     {
-        return inventoryPosition + new Vector3(index * (0.6f + BallSizes[index] * 0.4f), 0, 0);
+        return inventoryPosition + new Vector3(index * (0.6f + BallSizes[index] * 0.3f), 0, 0);
     }
 
     protected override void Awake()

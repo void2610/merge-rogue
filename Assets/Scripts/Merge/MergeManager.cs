@@ -39,7 +39,7 @@ public class MergeManager : MonoBehaviour
     private float _lastFallTime;
     private float _limit = -2.5f;
     private Vector3 _currentBallPosition = new(0, 1f, 0);
-    private int _ballPerOneTurn = 2;
+    private int _ballPerOneTurn = 3;
     private Dictionary<AttackType, int> _attackCounts = new();
     private Dictionary<Rigidbody2D, float> _stopTimers;
     private bool _isMovable = false;
