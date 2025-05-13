@@ -27,7 +27,7 @@ public class EnemyBase : MonoBehaviour, IEntity
     protected float Magnification = 1;
     
     private EnemyActionData _nextAction;
-    private CanvasGroup _canvasGroup;
+    private CanvasGroup _hpSliderCanvasGroup;
     private TextMeshProUGUI _healthText;
     private Slider _healthSlider;
     private TextMeshProUGUI _attackCountText;
@@ -171,19 +171,28 @@ public class EnemyBase : MonoBehaviour, IEntity
                     this.transform.DOMoveX(0.75f, 0.2f).SetRelative(true).SetEase(Ease.OutExpo).SetLink(gameObject);
                 }).SetLink(gameObject);
     }
+    
+    private void OnAppear()
+    {
+        // 出現のTween
+        this.GetComponent<SpriteRenderer>().sprite = Data.sprites[0];
+        this.GetComponent<SpriteRenderer>().DOColor(new Color(1, 1, 1, 0), 0);
+        _hpSliderCanvasGroup.DOFade(1, 0.5f).SetLink(gameObject);
+        this.GetComponent<SpriteRenderer>().DOFade(1, 0.5f).SetLink(gameObject);
+    }
 
     public void OnDisappear()
     {
         SeManager.Instance.PlaySe("coin");
         var coinPrefab = EnemyContainer.Instance.GetCoinPrefab();
-        for (int i = 0; i < Coin; i++)
+        for (var i = 0; i < Coin; i++)
         {
-            // コイン出現中に敵が消えるとエラーが出る
             var c = Instantiate(coinPrefab).GetComponent<Coin>();
             c?.SetUp(this.transform.position.x);
         }
-        _canvasGroup.DOFade(0, 0.5f).SetLink(gameObject);
-
+        
+        _hpSliderCanvasGroup.DOFade(0, 0.5f).SetLink(gameObject);
+        
         this.GetComponent<SpriteRenderer>().DOFade(0, 0.5f).OnComplete(() =>
         {
             Destroy(_healthSlider.gameObject);
@@ -228,19 +237,19 @@ public class EnemyBase : MonoBehaviour, IEntity
         // UIの初期化
         var c = UIManager.Instance.GetUICamera();
         var hpSlider = EnemyContainer.Instance.GetHpSliderPrefab();
-        var g = Instantiate(hpSlider, UIManager.Instance.GetEnemyUIContainer());
+        var slider = Instantiate(hpSlider, UIManager.Instance.GetEnemyUIContainer());
         var pos = c.WorldToScreenPoint(this.transform.position);
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
             UIManager.Instance.GetUICanvas().GetComponent<RectTransform>(), pos, c, out var localPosition
         );
         localPosition.y += d.hpSliderYOffset;
-        g.GetComponent<RectTransform>().anchoredPosition = localPosition;
-        _canvasGroup = g.GetComponent<CanvasGroup>();
-        _healthText = g.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
-        _healthSlider = g.GetComponent<Slider>();
-        _attackCountText = g.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
-        _attackIcon = g.transform.Find("AttackIcon").GetComponent<Image>();
-        _statusEffectUI = g.GetComponentInChildren<StatusEffectUI>();
+        slider.GetComponent<RectTransform>().anchoredPosition = localPosition;
+        _hpSliderCanvasGroup = slider.GetComponent<CanvasGroup>();
+        _healthText = slider.transform.Find("HPText").GetComponent<TextMeshProUGUI>();
+        _healthSlider = slider.GetComponent<Slider>();
+        _attackCountText = slider.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
+        _attackIcon = slider.transform.Find("AttackIcon").GetComponent<Image>();
+        _statusEffectUI = slider.GetComponentInChildren<StatusEffectUI>();
         _healthSlider.maxValue = MaxHealth;
         _healthSlider.value = Health;
         _healthText.text = Health + "/" + MaxHealth;
@@ -250,9 +259,6 @@ public class EnemyBase : MonoBehaviour, IEntity
         _nextAction = GetNextAction();
         UpdateAttackIcon(_nextAction);
         
-        // 出現のTween
-        this.GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0);
-        _canvasGroup.DOFade(1, 0.5f).SetLink(gameObject);
-        this.GetComponent<SpriteRenderer>().DOFade(1, 0.5f).SetLink(gameObject);
+        OnAppear();
     }
 }
