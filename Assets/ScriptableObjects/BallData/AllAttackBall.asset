@@ -30,4 +30,8 @@ MonoBehaviour:
   - 1.5
   - 1.25
   - 1
+  weights:
+  - 10
+  - 1
+  - 1
   availableDemo: 1

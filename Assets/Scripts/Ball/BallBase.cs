@@ -14,6 +14,7 @@ public class BallBase : MonoBehaviour
     public int Level { get; private set; } = 0;
     public float Size { get; private set; } = 0;
     public float Attack { get; private set; } = 0;
+    public float Weight { get; private set; } = 0;
     public int Serial { get; private set; } = 0;
     public BallData Data { get; private set; }
     public bool IsFrozen { get; private set; } = false;
@@ -23,6 +24,7 @@ public class BallBase : MonoBehaviour
 
     private List<float> _attacks = new();
     private List<float> _sizes = new();
+    private List<float> _weights = new();
     
     public void Freeze() => IsFrozen = true;
     public void Unfreeze() => UnfreezeAsync().Forget();
@@ -66,6 +68,8 @@ public class BallBase : MonoBehaviour
             Level++;
             Attack = _attacks[Level];
             Size = _sizes[Level];
+            Weight = _weights[Level];
+            this.GetComponent<Rigidbody2D>().mass = Weight;
         }
     }
     
@@ -85,9 +89,13 @@ public class BallBase : MonoBehaviour
         this.NextRank = rank + 1;
         this._sizes = d.sizes.Select(x => x * 1.2f).ToList();
         this._attacks = d.attacks;
+        this._weights = d.weights;
         this.Level = level;
         this.Attack = _attacks[level];
         this.Size = _sizes[level];
+        this.Weight = d.weights[level];
+        
+        this.GetComponent<Rigidbody2D>().mass = Weight;
         
         // コライダーの設定
         var polygonCollider2D = this.GetComponent<PolygonCollider2D>();

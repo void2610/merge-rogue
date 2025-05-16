@@ -15,5 +15,6 @@ public class BallData : ScriptableObject
     public BallShapeType shapeType = BallShapeType.Circle;
     public List<float> attacks = new (){0, 0, 0};
     public List<float> sizes = new (){1, 1, 1};
+    public List<float> weights = new (){1, 1, 1};
     public bool availableDemo = false;
 }
