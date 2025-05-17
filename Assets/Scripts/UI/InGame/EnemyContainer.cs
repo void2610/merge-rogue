@@ -101,6 +101,8 @@ public class EnemyContainer : MonoBehaviour
         // 全ての敵を倒したらステージ進行
         if (_currentEnemies.Count == 0)
         {
+            Physics2D.simulationMode = SimulationMode2D.Script;
+            
             if (StageManager.CurrentStage.Type == StageType.Boss)
                 treasure.OpenTreasure(Treasure.TreasureType.Boss);
             else EndBattle().Forget();

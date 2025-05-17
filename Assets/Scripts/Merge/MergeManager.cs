@@ -111,7 +111,6 @@ public class MergeManager : MonoBehaviour
         for (var i = 0; i < count; i++)
             CreateDisturbBallInternal();
     }
-
     
     private void CreateDisturbBallInternal()
     {
@@ -134,6 +133,7 @@ public class MergeManager : MonoBehaviour
     
     public void StartMerge()
     {
+        Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
         _isMovable = true;
         Reset();
         

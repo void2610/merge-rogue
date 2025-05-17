@@ -120,11 +120,9 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.Merge:
-                Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
                 MergeManager.Instance.StartMerge();
                 break;
             case GameState.PlayerAttack:
-                Physics2D.simulationMode = SimulationMode2D.Script;
                 MergeManager.Instance.Attack().Forget();
                 break;
             case GameState.EnemyAttack:
