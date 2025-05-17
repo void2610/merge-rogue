@@ -54,7 +54,7 @@ public static class EnemyActionFactory
         {
             name = "通常攻撃",
             type = ActionType.Attack,
-            Action = () => { GameManager.Instance.Player.Damage(damage); }
+            Action = () => { GameManager.Instance.Player.Damage(AttackType.Normal, damage); }
         };
     }
     
@@ -131,7 +131,7 @@ public static class EnemyActionFactory
         {
             name = "自傷",
             type = ActionType.SelfDamage,
-            Action = () => { self.Damage(damage); }
+            Action = () => { self.Damage(AttackType.Normal, damage); }
         };
     }
 

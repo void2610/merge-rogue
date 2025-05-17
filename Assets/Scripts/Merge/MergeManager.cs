@@ -203,19 +203,46 @@ public class MergeManager : MonoBehaviour
     {
         // プレイヤー攻撃力を適用
         atk *= attackMagnification;
+        // 充填率のバフを適用
+        atk *= _fillingRateMagnification;
+        // 状態異常を適用
+        _attackCounts = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts);
+        // イベントを適用
+        EventManager.OnPlayerAttack.Trigger(_attackCounts);
+        _attackCounts = EventManager.OnPlayerAttack.GetValue();
         
-        _attackCounts[type] = _attackCounts.ContainsKey(type) ? _attackCounts[type] + (int)atk : (int)atk;
-        GameManager.Instance.EnemyContainer.AttackEnemy(_attackCounts).Forget();
+        GameManager.Instance.EnemyContainer.AttackEnemy(type, (int)atk).Forget();
+        
+        // 攻撃アニメーション
+        // GameManager.Instance.Player.gameObject.transform.DOMoveX(0.75f, 0.02f).SetRelative(true).OnComplete(() =>
+        // {
+        //     GameManager.Instance.Player.gameObject.transform.DOMoveX(-0.75f, 0.2f).SetRelative(true)
+        //         .SetEase(Ease.OutExpo);
+        // }).Forget();
         
         // ヒットストップ
         Time.timeScale = 0.1f;
         await UniTask.Delay((int)(350 / GameManager.Instance.TimeScale), DelayType.UnscaledDeltaTime);
         Time.timeScale = GameManager.Instance.TimeScale;
         
-        ResetAttackCount();
-        
         ParticleManager.Instance.MergeText((int)atk, p, type.GetColor());
-        // attackCountUI.SetAttackCount(_attackCounts.Sum(a => a.Value));
+        
+        // TODO: Freeze状態なら行動しない
+        // var freeze = (FreezeEffect)GameManager.Instance.Player.StatusEffects.Find(e => e.Type == StatusEffectType.Freeze);
+        // var isFrozen = freeze != null && freeze.IsFrozen();
+        // if (isFrozen)
+        // {
+        //     GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
+        //     return;
+        // }
+        
+        // TODO: ハイスコア更新
+        // var totalAttack = _attackCounts.Sum(a => a.Value);
+        // if (PlayerPrefs.GetInt("maxAttack", 0) < totalAttack)
+        // {
+        //     UnityroomApiClient.Instance.SendScore(2, totalAttack, ScoreboardWriteMode.HighScoreDesc);
+        //     PlayerPrefs.SetInt("maxAttack", totalAttack);
+        // }
     }
     
     public void SpawnBallFromLevel(int level, Vector3 p, Quaternion q)
@@ -227,54 +254,6 @@ public class MergeManager : MonoBehaviour
         ball.transform.rotation = q;
         ball.transform.SetParent(_ballContainer.transform);
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-    }
-
-    public async UniTaskVoid Attack()
-    {
-        GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
-        ResetAttackCount();
-        return;
-        
-        
-        // 攻撃がない場合は敵の攻撃に移行
-        var canAttack = _attackCounts.Any(a => a.Value != 0);
-        // Freeze状態なら行動しない
-        var freeze = (FreezeEffect)GameManager.Instance.Player.StatusEffects.Find(e => e.Type == StatusEffectType.Freeze);
-        var isFrozen = freeze != null && freeze.IsFrozen();
-        if (!canAttack || isFrozen)
-        {
-            GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
-            return;
-        }
-        
-        // 充填率のバフを適用
-        _attackCounts.MultiplyAll(_fillingRateMagnification);
-        
-        // 状態異常を適用
-        _attackCounts = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts);
-        
-        // イベントを適用
-        EventManager.OnPlayerAttack.Trigger(_attackCounts);
-        _attackCounts = EventManager.OnPlayerAttack.GetValue();
-        
-        // ハイスコア更新
-        var totalAttack = _attackCounts.Sum(a => a.Value);
-        if (PlayerPrefs.GetInt("maxAttack", 0) < totalAttack)
-        {
-            UnityroomApiClient.Instance.SendScore(2, totalAttack, ScoreboardWriteMode.HighScoreDesc);
-            PlayerPrefs.SetInt("maxAttack", totalAttack);
-        }
-        
-        // 攻撃アニメーション
-        GameManager.Instance.Player.gameObject.transform.DOMoveX(0.75f, 0.02f).SetRelative(true).OnComplete(() =>
-        {
-            GameManager.Instance.Player.gameObject.transform.DOMoveX(-0.75f, 0.2f).SetRelative(true)
-                .SetEase(Ease.OutExpo);
-        }).Forget();
-        
-        // 実際の攻撃処理
-        await GameManager.Instance.EnemyContainer.AttackEnemy(_attackCounts);
-        ResetAttackCount();
     }
 
     private void DropBall()
@@ -344,15 +323,6 @@ public class MergeManager : MonoBehaviour
         return true;
     }
 
-    private void ResetAttackCount()
-    {
-        // enumの全要素で、0を代入
-        foreach (AttackType type in System.Enum.GetValues(typeof(AttackType)))
-        {
-            _attackCounts[type] = 0;
-        }
-    }
-
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -372,8 +342,6 @@ public class MergeManager : MonoBehaviour
         ballGauge.GetComponent<SpriteRenderer>().material.SetFloat(_ratio, 1);
         fallAnchor.transform.position = _currentBallPosition;
         _mainCamera = Camera.main;
-        
-        ResetAttackCount();
     }
 
     private void Update()

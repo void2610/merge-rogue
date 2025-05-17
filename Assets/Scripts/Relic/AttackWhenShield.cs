@@ -13,7 +13,7 @@ public class AttackWhenShield : RelicBase
         var v = EventManager.OnPlayerStatusEffectTriggered.GetValue();
         if(v.Item1 == StatusEffectType.Shield)
         {
-            EnemyContainer.Instance.GetAllEnemies()[0].Damage(v.Item2);
+            EnemyContainer.Instance.GetAllEnemies()[0].Damage(AttackType.Normal, v.Item2);
             UI?.ActivateUI();
         }
     }

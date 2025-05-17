@@ -72,7 +72,7 @@ public class EnemyContainer : MonoBehaviour
     {
         for(var i = 0; i < _currentEnemies.Count; i++)
         {
-            _currentEnemies[i].Damage(damage);
+            _currentEnemies[i].Damage(AttackType.All, damage);
         }
     }
     
@@ -127,74 +127,50 @@ public class EnemyContainer : MonoBehaviour
         }
     }
     
-    public async UniTask AttackEnemy(Dictionary<AttackType, int> damages)
+    public async UniTask AttackEnemy(AttackType type, int atk)
     {
         var es = GetAllEnemies().ToList();
         
-        // 全体攻撃
-        if (damages[AttackType.All] > 0)
+        switch (type)
         {
-            ParticleManager.Instance.AllHitParticle(new Vector3(-3.7f, 3.3f, 0));
-            CameraMove.Instance.ShakeCamera(0.5f, damages[AttackType.All] * 0.03f);
-            SeManager.Instance.PlaySe("playerAttack");
-            for(var i = 0; i < es.Count; i++)
-            {
-                es[i].Damage(damages[AttackType.All], AttackType.All);
-            }
-            await UniTask.Delay(250);
-        }
-
-        if (GetCurrentEnemyCount() == 0) return;
-        es = GetAllEnemies().ToList();
+            case AttackType.Normal:
+                // 一番前の敵を攻撃、攻撃力が残っていたら次の敵を攻撃
+                var singleDamage = atk;
+                for (var i = 0; i < es.Count; i++)
+                {
+                    var e = es[i];
+                    if (!e) continue;
+                    if (singleDamage <= 0) break;
+                    var actualDamage = singleDamage > e.Health ? e.Health : singleDamage;
+                    if (es.IndexOf(e) == es.Count - 1) actualDamage = singleDamage;
+    
+                    SeManager.Instance.PlaySe("playerAttack");
+                    e.Damage(AttackType.Normal, actualDamage);
+                    singleDamage -= actualDamage;
+    
+                    CameraMove.Instance.ShakeCamera(0.5f, actualDamage * 0.01f);
+                    await UniTask.Delay(200);
+                }
+                break;
+            case AttackType.Last:
+                ParticleManager.Instance.HitParticle(new Vector3(-3.7f, 3.3f, 0));
+                es.Last().Damage(type, atk);
+                break;
+            case AttackType.Random:
+                ParticleManager.Instance.HitParticle(new Vector3(-3.7f, 3.3f, 0));
+                GetRandomEnemy().Damage(type, atk);
+                break;
+            case AttackType.All:
+                ParticleManager.Instance.AllHitParticle(new Vector3(-3.7f, 3.3f, 0));
+                for(var i = 0; i < es.Count; i++) es[i].Damage(type, atk);
+                break;
+        } 
         
-        // 一番後ろの敵を攻撃
-        if (damages[AttackType.Last] > 0)
-        {
-            var lastEnemy = es.Last();
-            SeManager.Instance.PlaySe("playerAttack");
-            lastEnemy.Damage(damages[AttackType.Last], AttackType.Last);
-            CameraMove.Instance.ShakeCamera(0.5f, damages[AttackType.Last] * 0.01f);
-            await UniTask.Delay(250);
-        }
+        SeManager.Instance.PlaySe("playerAttack");
+        CameraMove.Instance.ShakeCamera(0.5f, atk * 0.01f);
         
-        if (GetCurrentEnemyCount() == 0) return;
-        es = GetAllEnemies().ToList();
-
-        // 通常攻撃
-        // 一番前の敵を攻撃、攻撃力が残っていたら次の敵を攻撃
-        if (damages[AttackType.Normal] > 0)
-        {
-            var singleDamage = damages[AttackType.Normal];
-            for (var i = 0; i < es.Count; i++)
-            {
-                var e = es[i];
-                if (!e) continue;
-                if (singleDamage <= 0) break;
-                var actualDamage = singleDamage > e.Health ? e.Health : singleDamage;
-                if (es.IndexOf(e) == es.Count - 1) actualDamage = singleDamage;
-
-                SeManager.Instance.PlaySe("playerAttack");
-                e.Damage(actualDamage);
-                singleDamage -= actualDamage;
-
-                CameraMove.Instance.ShakeCamera(0.5f, actualDamage * 0.01f);
-                await UniTask.Delay(200);
-            }
-        }
         await UniTask.Delay(250);
         
-        if (GetCurrentEnemyCount() == 0) return;
-        es = GetAllEnemies().ToList();
-        
-        // ランダム攻撃
-        if (damages[AttackType.Random] > 0)
-        {
-            var randomEnemy = GetRandomEnemy();
-            SeManager.Instance.PlaySe("playerAttack");
-            randomEnemy.Damage(damages[AttackType.Random], AttackType.Random);
-            CameraMove.Instance.ShakeCamera(0.5f, damages[AttackType.Random] * 0.01f);
-            await UniTask.Delay(250);
-        }
     }
     
     public void Action()

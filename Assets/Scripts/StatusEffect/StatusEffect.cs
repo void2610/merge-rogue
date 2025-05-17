@@ -240,7 +240,7 @@ public class BurnEffect : StatusEffectBase
         base.OnTurnEnd(target);
         var damage = StackCount;
         SeManager.Instance.PlaySe("playerAttack");
-        target.Damage(damage);
+        target.Damage(AttackType.Normal, damage);
         SeManager.Instance.PlaySe("burn");
     }
 }

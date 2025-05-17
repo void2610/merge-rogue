@@ -4,7 +4,7 @@ using Cysharp.Threading.Tasks;
 public interface IEntity
 {
     public List<StatusEffectBase> StatusEffects { get; }
-    public void Damage(int damage, AttackType type = AttackType.Normal); 
+    public void Damage(AttackType type, int damage); 
     public void Heal(int healAmount);
     public void AddStatusEffect(StatusEffectBase effect);
     public void RemoveStatusEffect(StatusEffectType type, int stack);

@@ -80,7 +80,7 @@ public class Player : MonoBehaviour, IEntity
         statusEffectUI.UpdateUI(StatusEffects);
     }
     
-    public void Damage(int d, AttackType type = AttackType.Normal)
+    public void Damage(AttackType type, int d)
     {
         if(Health.Value <= 0) return;
         

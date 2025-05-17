@@ -16,7 +16,6 @@ public class GameManager : MonoBehaviour
     public enum GameState
     {
         Merge,
-        PlayerAttack,
         EnemyAttack,
         AfterBattle,
         LevelUp,
@@ -121,9 +120,6 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Merge:
                 MergeManager.Instance.StartMerge();
-                break;
-            case GameState.PlayerAttack:
-                MergeManager.Instance.Attack().Forget();
                 break;
             case GameState.EnemyAttack:
                 EnemyContainer.Action();

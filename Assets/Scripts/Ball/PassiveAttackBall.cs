@@ -15,7 +15,7 @@ public class PassiveAttackBall : BallBase
         var enemies = EnemyContainer.Instance.GetAllEnemies();
         if (enemies == null || enemies.Count == 0) return;
         
-        enemies[0].Damage((int)(Attack * Rank));
+        enemies[0].Damage(AttackType.Normal, (int)(Attack * Rank));
         ParticleManager.Instance.MergeBallIconParticle(this.transform.position, this.Size, this.Data.sprite);
     } 
 }

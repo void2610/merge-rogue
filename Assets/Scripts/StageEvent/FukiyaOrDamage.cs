@@ -25,7 +25,7 @@ public class FukiyaOrDamage : StageEventBase
                 resultDescription = "膝に矢を受けてしまった...!\n(20ダメージ!)",
                 Action = () =>
                 {
-                    GameManager.Instance.Player.Damage(20);
+                    GameManager.Instance.Player.Damage(AttackType.Normal, 20);
                 }
             }
         };

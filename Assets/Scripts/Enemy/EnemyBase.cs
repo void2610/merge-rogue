@@ -9,8 +9,6 @@ using DG.Tweening;
 
 public class EnemyBase : MonoBehaviour, IEntity
 {
-
-
     public EnemyData Data { get; private set; }
     public string EnemyName => Data.displayName;
     public EnemyType EnemyType => Data.enemyType;
@@ -95,7 +93,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         _statusEffectUI.UpdateUI(StatusEffects);
     }
     
-    public void Damage(int damage, AttackType type = AttackType.Normal)
+    public void Damage(AttackType type, int damage)
     {
         if(!this) return;
                 
@@ -165,7 +163,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         // 状態異常で攻撃力を更新
         var dic = new Dictionary<AttackType, int> {{AttackType.Normal, Attack}};
         var damage = ModifyOutgoingAttack(dic)[AttackType.Normal];
-        GameManager.Instance.Player.Damage(Mathf.Max(1, damage));
+        GameManager.Instance.Player.Damage(AttackType.Normal, Mathf.Max(1, damage));
         this.transform.DOMoveX(-0.75f, 0.02f).SetRelative(true).OnComplete(() =>
                 {
                     this.transform.DOMoveX(0.75f, 0.2f).SetRelative(true).SetEase(Ease.OutExpo).SetLink(gameObject);
