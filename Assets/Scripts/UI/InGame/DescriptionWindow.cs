@@ -395,7 +395,7 @@ public class DescriptionWindow : MonoBehaviour
         finally
         {
             // タスク終了後はトークンをリセット
-            _hideTokenSource = null;
+            if (this) _hideTokenSource = null;
         }
     }
     
