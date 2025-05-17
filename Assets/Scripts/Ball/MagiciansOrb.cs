@@ -14,6 +14,6 @@ public class MagiciansOrb : BallBase
     {
         base.Effect(other);
         DefaultMergeParticle();
-        MergeManager.Instance.AddAttackCount(AttackType.Random, Attack * Rank, this.transform.position);
+        MergeManager.Instance.Attack(AttackType.Random, Attack * Rank, this.transform.position);
     }
 }

@@ -7,6 +7,6 @@ public class SmallBall : BallBase
         
         // レベル3だけ後ろを攻撃
         var type = Level < 2 ? AttackType.Normal : AttackType.Last;
-        MergeManager.Instance.AddAttackCount(type, Attack * Rank, this.transform.position);
+        MergeManager.Instance.Attack(type, Attack * Rank, this.transform.position);
     }
 }

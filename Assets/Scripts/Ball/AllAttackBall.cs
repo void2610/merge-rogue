@@ -4,6 +4,6 @@ public class AllAttackBall : BallBase
     {
         base.Effect(other);
         DefaultMergeParticle();
-        MergeManager.Instance.AddAttackCount(AttackType.All, Attack * Rank, this.transform.position);
+        MergeManager.Instance.Attack(AttackType.All, Attack * Rank, this.transform.position);
     }
 }

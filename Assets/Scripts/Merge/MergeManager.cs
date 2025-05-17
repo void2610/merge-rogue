@@ -197,9 +197,9 @@ public class MergeManager : MonoBehaviour
         arrow.DOFade(1, 0.5f).Forget();
     }
 
-    public void AddAttackCount(AttackType type, float atk, Vector3 p) => AddAttackCountAsync(type, atk, p).Forget();
+    public void Attack(AttackType type, float atk, Vector3 p) => AttackInternal(type, atk, p).Forget();
     
-    private async UniTaskVoid AddAttackCountAsync(AttackType type, float atk, Vector3 p)
+    private async UniTaskVoid AttackInternal(AttackType type, float atk, Vector3 p)
     {
         // プレイヤー攻撃力を適用
         atk *= attackMagnification;

@@ -18,7 +18,7 @@ public class BombBall : BallBase
         // 全体攻撃しつつ、周りのボールを消す
         base.Effect(other);
         
-        MergeManager.Instance.AddAttackCount(AttackType.All, Attack * Rank, this.transform.position);
+        MergeManager.Instance.Attack(AttackType.All, Attack * Rank, this.transform.position);
 
         var hitBalls = Utils.GetNearbyBalls(this.gameObject, other.gameObject, Size);
 

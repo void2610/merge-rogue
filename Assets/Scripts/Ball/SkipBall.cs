@@ -14,6 +14,6 @@ public class SkipBall : BallBase
         base.Effect(other);
         // レベル1では攻撃力0
         if(Attack > 0) DefaultMergeParticle();
-        MergeManager.Instance.AddAttackCount(AttackType.Normal, Attack * Rank, this.transform.position);
+        MergeManager.Instance.Attack(AttackType.Normal, Attack * Rank, this.transform.position);
     }
 }

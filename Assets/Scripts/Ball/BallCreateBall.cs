@@ -9,6 +9,6 @@ public class BallCreateBall : BallBase
         // レベル2以上なら2つ生成する。
         if (Level > 0) MergeManager.Instance.CreateRandomBall();
         
-        MergeManager.Instance.AddAttackCount(AttackType.Normal, Attack * Rank, this.transform.position);
+        MergeManager.Instance.Attack(AttackType.Normal, Attack * Rank, this.transform.position);
     }
 }

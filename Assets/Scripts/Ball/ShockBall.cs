@@ -5,7 +5,7 @@ public class ShockBall : BallBase
         base.Effect(other);
         DefaultMergeParticle();
         var type = Level < 2 ? AttackType.Normal : AttackType.All;
-        MergeManager.Instance.AddAttackCount(type, Attack * Rank, this.transform.position);
+        MergeManager.Instance.Attack(type, Attack * Rank, this.transform.position);
         
         var max = Level < 2 ? 2 : 4;
         var count = 0;

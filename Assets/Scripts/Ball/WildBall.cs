@@ -6,7 +6,7 @@ public class WildBall : BallBase
     {
         base.Effect(other);
         if(Attack > 0) DefaultMergeParticle();
-        MergeManager.Instance.AddAttackCount(AttackType.Normal, Attack * Rank, this.transform.position);
+        MergeManager.Instance.Attack(AttackType.Normal, Attack * Rank, this.transform.position);
     }
     
     protected override void HandleCollision(BallBase b)

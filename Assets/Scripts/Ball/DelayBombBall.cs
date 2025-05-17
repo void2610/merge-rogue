@@ -16,7 +16,7 @@ public class DelayBombBall : BallBase
     {
         base.Effect(other);
         DefaultMergeParticle();
-        MergeManager.Instance.AddAttackCount(AttackType.Normal, Attack * Rank, this.transform.position);
+        MergeManager.Instance.Attack(AttackType.Normal, Attack * Rank, this.transform.position);
     }
     
     protected override void TurnEndEffect()
@@ -25,7 +25,7 @@ public class DelayBombBall : BallBase
         if (elapsedTurns < 3) return;
         
         // 全体攻撃しつつ、周りのボールを消す
-        MergeManager.Instance.AddAttackCount(AttackType.All, Attack * Rank, this.transform.position);
+        MergeManager.Instance.Attack(AttackType.All, Attack * Rank, this.transform.position);
 
         var hitBalls = Utils.GetNearbyBalls(this.gameObject, Size);
         // 取得したボールを破壊
