@@ -8,7 +8,7 @@ public enum CursorIconType
     Help,
 }
 
-public enum CursorStateType
+public enum CursorPositionType
 {
     Merge,
     Ball,

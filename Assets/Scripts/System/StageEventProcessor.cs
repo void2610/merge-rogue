@@ -65,7 +65,7 @@ public class StageEventProcessor : MonoBehaviour
 
                 EventManager.OnStageEventEnter.Trigger(_currentEvent);
             }
-            SelectionMarker.SetSelectedGameObjectSafe(options[0]);
+            SelectionCursor.SetSelectedGameObjectSafe(options[0]);
         }
     }
 

@@ -41,8 +41,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform relicContainer;
     [SerializeField] private Transform playerStatusUI;
     [SerializeField] private Transform enemyStatusUIContainer;
+    [SerializeField] private UIHoverSelection hoverSelection;
+    [SerializeField] private GameObject inventoryCanvasBlocker;
     
-    private static CursorStateType _cursorState = CursorStateType.Merge;
+    private static CursorPositionType _cursorPosition = CursorPositionType.Merge;
+    
     private Selectable _firstStatusEffectUI;
 
     public bool IsPaused { get; private set; } = false;
@@ -72,14 +75,24 @@ public class UIManager : MonoBehaviour
     
     public void ToggleCursorState()
     {
-        _cursorState = _cursorState.Toggle();
+        _cursorPosition = _cursorPosition.Toggle();
         ResetSelectedGameObject();
     }
 
-    public void ToggleCursorState(CursorStateType state)
+    private void SetCursorState(CursorPositionType position)
     {
-        _cursorState = state;
+        _cursorPosition = position;
         ResetSelectedGameObject(true);
+    }
+    
+    public void LockCursorToInventory(bool b)
+    {
+        if (b) SetCursorState(CursorPositionType.Ball);
+        else SetCursorState(CursorPositionType.Merge);
+        
+        SelectionCursor.LockCursorToInventory(b);
+        hoverSelection.LockCursorToInventory(b);
+        inventoryCanvasBlocker.SetActive(b);
     }
     
     public void EnableCanvasGroup(string canvasName, bool e) => EnableCanvasGroupAsync(canvasName, e).Forget();
@@ -107,32 +120,33 @@ public class UIManager : MonoBehaviour
     public void ResetSelectedGameObject(bool isToggle = false)
     {
         var topCanvasGroup = GetTopCanvasGroup();
-        if (topCanvasGroup && !isToggle && _cursorState == CursorStateType.Merge)
+        // もしウィンドウが開いている場合は、そちらを優先して選択
+        if (topCanvasGroup && !isToggle && _cursorPosition == CursorPositionType.Merge)
         {
             var focusSelectable = topCanvasGroup.GetComponentInChildren<FocusSelectable>();
             if (!focusSelectable) return;
-            SelectionMarker.SetSelectedGameObjectSafe(focusSelectable.gameObject);
+            SelectionCursor.SetSelectedGameObjectSafe(focusSelectable.gameObject);
         }
         else
         {
             // ウィンドウがない時はcursorStateに従って選択をリセット
-            if (_cursorState == CursorStateType.StatusEffect && !_firstStatusEffectUI)
+            if (_cursorPosition == CursorPositionType.StatusEffect && !_firstStatusEffectUI)
             {
-                ToggleCursorState(CursorStateType.Merge);
+                SetCursorState(CursorPositionType.Merge);
                 ResetSelectedGameObject();
                 return;
             }
             
-            var target = _cursorState switch
+            var target = _cursorPosition switch
             {
-                CursorStateType.Merge => mergeArea,
-                CursorStateType.Ball => ballUIContainer.GetChild(0).gameObject,
-                CursorStateType.Relic => relicContainer.GetChild(0).gameObject,
-                CursorStateType.StatusEffect => _firstStatusEffectUI.gameObject,
+                CursorPositionType.Merge => mergeArea,
+                CursorPositionType.Ball => ballUIContainer.GetChild(0).gameObject,
+                CursorPositionType.Relic => relicContainer.GetChild(0).gameObject,
+                CursorPositionType.StatusEffect => _firstStatusEffectUI.gameObject,
                 _ => null,
             };
 
-            SelectionMarker.SetSelectedGameObjectSafe(target);
+            SelectionCursor.SetSelectedGameObjectSafe(target);
         }
     }
     
@@ -204,7 +218,7 @@ public class UIManager : MonoBehaviour
         cg.blocksRaycasts = e;
         
         // FocusSelectableがアタッチされているオブジェクトがあればフォーカス
-        SelectionMarker.SetSelectedGameObjectSafe(null);
+        SelectionCursor.SetSelectedGameObjectSafe(null);
         ResetSelectedGameObject();
         descriptionWindow.HideWindowFromNavigation();
     }
@@ -307,7 +321,9 @@ public class UIManager : MonoBehaviour
             if(canvasGroup.name != "Treasure")
                 EnableCanvasGroup(canvasGroup.name, false);
         }
-        _cursorState = CursorStateType.Merge;
+        _cursorPosition = CursorPositionType.Merge;
+        
+        inventoryCanvasBlocker.SetActive(false);
     }
 
     private void Start()

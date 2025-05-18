@@ -86,14 +86,14 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
     {
         if (s == InventoryUIState.Replace) throw new System.ArgumentException("Replace state should be set with StartEditReplace");
         _state = s;
-        UIManager.Instance.ToggleCursorState(CursorStateType.Ball);
+        UIManager.Instance.LockCursorToInventory(true);
     }
     
     public void StartEditReplace(BallData ballData)
     {
         _state = InventoryUIState.Replace;
         _replaceBallData = ballData;
-        UIManager.Instance.ToggleCursorState(CursorStateType.Merge);
+        UIManager.Instance.LockCursorToInventory(true);
     }
     
     private void SetEvent(GameObject g, int index, BallBase ballBase)
@@ -117,7 +117,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
     public void CancelEdit()
     {
         _state = InventoryUIState.Disabled;
-        UIManager.Instance.ToggleCursorState(CursorStateType.Merge);
+        UIManager.Instance.LockCursorToInventory(false);
     }
 
     private async UniTaskVoid OnClickBall(int index)

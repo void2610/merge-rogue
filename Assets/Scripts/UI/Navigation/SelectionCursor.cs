@@ -5,10 +5,10 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.Serialization;
 
-public class SelectionMarker : MonoBehaviour
+public class SelectionCursor : MonoBehaviour
 {
-    [SerializeField] private RectTransform marker;
-    [SerializeField] private Image markerImage;
+    [SerializeField] private RectTransform cursor;
+    [SerializeField] private Image cursorImage;
     [SerializeField] private Camera uiCamera;
     [SerializeField] private float magnification = 4f;
     [SerializeField] private Vector2 offset;
@@ -18,6 +18,9 @@ public class SelectionMarker : MonoBehaviour
     private RectTransform _canvasRect;
     private GameObject _previousSelected;
     private static bool _allowProgrammaticChange = false;
+    private static bool _isLockToInventory = false;
+    
+    public static void LockCursorToInventory(bool b) => _isLockToInventory = b;
 
     public static void SetSelectedGameObjectSafe(GameObject go)
     {
@@ -45,11 +48,19 @@ public class SelectionMarker : MonoBehaviour
         }
         return result;
     }
+    
+    private bool IsInInventoryCanvasGroup(GameObject currentSelected)
+    {
+        var currentGroup = currentSelected.GetComponentInParent<CanvasGroup>();
+        if (!currentGroup) return false;
+        if (currentGroup.name == "InventoryUIContainer") return true;
+        return false;
+    }
 
     private void Awake()
     {
         // CanvasとそのRectTransformを取得
-        _canvas = marker.GetComponentInParent<Canvas>();
+        _canvas = cursor.GetComponentInParent<Canvas>();
         _canvasRect = _canvas.GetComponent<RectTransform>();
     }
 
@@ -76,6 +87,13 @@ public class SelectionMarker : MonoBehaviour
         {
             if (!_allowProgrammaticChange)
             {
+                // ロック状態なら移動をキャンセル
+                if (_isLockToInventory && !IsInInventoryCanvasGroup(currentSelected))
+                {
+                    EventSystem.current.SetSelectedGameObject(_previousSelected);
+                    return;
+                }
+                
                 // グループが異なる場合は選択をキャンセル
                 if (!IsSameCanvasGroup(currentSelected, _previousSelected) || !currentSelected.GetComponent<Selectable>().interactable)
                 {
@@ -138,9 +156,9 @@ public class SelectionMarker : MonoBehaviour
 
             // 中心とサイズを算出
             var localCenter = ((localMin + localMax) / 2f) + offset;
-            marker.localPosition = localCenter;
-            marker.sizeDelta = new Vector2(localMax.x - localMin.x, localMax.y - localMin.y) * magnification;
-            markerImage.color = new Color(1, 1, 1, 1);
+            cursor.localPosition = localCenter;
+            cursor.sizeDelta = new Vector2(localMax.x - localMin.x, localMax.y - localMin.y) * magnification;
+            cursorImage.color = new Color(1, 1, 1, 1);
         }
     }
 
@@ -165,11 +183,11 @@ public class SelectionMarker : MonoBehaviour
             var targetSize = new Vector2(localMax.x - localMin.x, localMax.y - localMin.y) * magnification;
 
             // ここでは、DOMoveではなくDOAnchorPosを使用して、アンカー座標をTweenします
-            marker.DOAnchorPos(targetCenter, tweenDuration).SetEase(Ease.OutQuad).SetUpdate(true);
-            marker.DOSizeDelta(targetSize, tweenDuration).SetEase(Ease.OutQuad).SetUpdate(true);
-            if (markerImage.color.a <= 0)
+            cursor.DOAnchorPos(targetCenter, tweenDuration).SetEase(Ease.OutQuad).SetUpdate(true);
+            cursor.DOSizeDelta(targetSize, tweenDuration).SetEase(Ease.OutQuad).SetUpdate(true);
+            if (cursorImage.color.a <= 0)
             {
-                markerImage.DOFade(1, tweenDuration).SetUpdate(true);
+                cursorImage.DOFade(1, tweenDuration).SetUpdate(true);
             }
         }
     }

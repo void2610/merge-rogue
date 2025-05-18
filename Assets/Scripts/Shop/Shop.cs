@@ -125,7 +125,7 @@ public class Shop : MonoBehaviour
                 {
                     NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
                     SeManager.Instance.PlaySe("error");
-                    SelectionMarker.SetSelectedGameObjectSafe(g);
+                    SelectionCursor.SetSelectedGameObjectSafe(g);
                 }
             });
         }
@@ -159,7 +159,7 @@ public class Shop : MonoBehaviour
                 {
                     NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
                     SeManager.Instance.PlaySe("error");
-                    SelectionMarker.SetSelectedGameObjectSafe(g);
+                    SelectionCursor.SetSelectedGameObjectSafe(g);
                 }
             });
         }
@@ -174,7 +174,7 @@ public class Shop : MonoBehaviour
         {
             NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
             SeManager.Instance.PlaySe("error");
-            SelectionMarker.SetSelectedGameObjectSafe(removeButton);
+            SelectionCursor.SetSelectedGameObjectSafe(removeButton);
             return;
         }
         

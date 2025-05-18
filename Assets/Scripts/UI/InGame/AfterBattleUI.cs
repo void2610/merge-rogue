@@ -46,8 +46,6 @@ public class AfterBattleUI : MonoBehaviour
         InventoryUI.Instance.StartEditReplace(ball);
         _itemObjects[index].GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
-        
-        UIManager.Instance.ResetSelectedGameObject();
     }
     
     private void SetBallEvent(GameObject g, BallData ball, int index)
