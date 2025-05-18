@@ -275,14 +275,19 @@ public class MergeManager : MonoBehaviour
         
         fallAnchor.GetComponent<HingeJoint2D>().connectedBody = null;
 
+        RemainingBalls--;
         // リロードするかどうか
-        if (--RemainingBalls > 0)
+        if (RemainingBalls > 0)
         {
             await UniTask.Delay((int)(COOL_TIME * 500));
-            CurrentBall = NextBall;
-            CurrentBall.transform.position = fallAnchor.transform.position;
-            CurrentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-            fallAnchor.GetComponent<HingeJoint2D>().connectedBody = CurrentBall.GetComponent<Rigidbody2D>();
+            if (NextBall)
+            {
+                CurrentBall = NextBall;
+                CurrentBall.transform.position = fallAnchor.transform.position;
+                CurrentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+                fallAnchor.GetComponent<HingeJoint2D>().connectedBody = CurrentBall.GetComponent<Rigidbody2D>();
+            }
+
             if (RemainingBalls > 1)
             {
                 NextBall = InventoryManager.Instance.GetRandomBall();
