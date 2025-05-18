@@ -65,7 +65,7 @@ public class StageEventProcessor : MonoBehaviour
 
                 EventManager.OnStageEventEnter.Trigger(_currentEvent);
             }
-            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(options[0]);
+            SelectionMarker.SetSelectedGameObjectSafe(options[0]);
         }
     }
 

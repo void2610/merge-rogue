@@ -35,11 +35,11 @@ public class TitleMenu : MonoBehaviour
         {
             var focusSelectable = topCanvas.GetComponentInChildren<FocusSelectable>();
             if (focusSelectable.GetComponent<Selectable>().interactable == true)
-                CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(focusSelectable.gameObject);
+                SelectionMarker.SetSelectedGameObjectSafe(focusSelectable.gameObject);
         }
         else
         {
-            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(startButton.gameObject);
+            SelectionMarker.SetSelectedGameObjectSafe(startButton.gameObject);
         }
     }
     
@@ -111,7 +111,7 @@ public class TitleMenu : MonoBehaviour
         }
         
         _canvasGroupTween[canvasName] = seq;
-        CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(null);
+        SelectionMarker.SetSelectedGameObjectSafe(null);
         
         await seq.AsyncWaitForCompletion();
         

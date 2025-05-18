@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using UnityEngine.Serialization;
 
-public class CanvasGroupNavigationLimiter : MonoBehaviour
+public class SelectionMarker : MonoBehaviour
 {
     [SerializeField] private RectTransform marker;
     [SerializeField] private Image markerImage;
@@ -61,7 +61,6 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
         {
             _previousSelected = null;
             if(UIManager.Instance) UIManager.Instance.ResetSelectedGameObject();
-            // if (markerImage.color.a >= 1) markerImage.DOFade(0, tweenDuration).SetUpdate(true);
             return;
         }
 
@@ -125,7 +124,7 @@ public class CanvasGroupNavigationLimiter : MonoBehaviour
     private void UpdateMarkerImmediate(GameObject selectedObject)
     {
         var corners = new Vector3[4];
-        if (selectedObject.TryGetComponent<RectTransform>(out RectTransform selectedRect))
+        if (selectedObject.TryGetComponent<RectTransform>(out var selectedRect))
         {
             selectedRect.GetWorldCorners(corners);
             

@@ -111,7 +111,7 @@ public class UIManager : MonoBehaviour
         {
             var focusSelectable = topCanvasGroup.GetComponentInChildren<FocusSelectable>();
             if (!focusSelectable) return;
-            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(focusSelectable.gameObject);
+            SelectionMarker.SetSelectedGameObjectSafe(focusSelectable.gameObject);
         }
         else
         {
@@ -132,7 +132,7 @@ public class UIManager : MonoBehaviour
                 _ => null,
             };
 
-            CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(target);
+            SelectionMarker.SetSelectedGameObjectSafe(target);
         }
     }
     
@@ -204,7 +204,7 @@ public class UIManager : MonoBehaviour
         cg.blocksRaycasts = e;
         
         // FocusSelectableがアタッチされているオブジェクトがあればフォーカス
-        CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(null);
+        SelectionMarker.SetSelectedGameObjectSafe(null);
         ResetSelectedGameObject();
         descriptionWindow.HideWindowFromNavigation();
     }

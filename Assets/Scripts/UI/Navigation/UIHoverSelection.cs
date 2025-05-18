@@ -35,7 +35,7 @@ public class UIHoverSelection : MonoBehaviour
             // 最初に適切なUIを見つけたら、それを選択
             if (EventSystem.current.currentSelectedGameObject != hoveredObject)
             {
-                CanvasGroupNavigationLimiter.SetSelectedGameObjectSafe(hoveredObject);
+                SelectionMarker.SetSelectedGameObjectSafe(hoveredObject);
                 currentSelectedGameObject = hoveredObject;
             }
             break; // 最初の適切なUIだけを選択する
