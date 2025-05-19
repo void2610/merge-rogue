@@ -18,9 +18,7 @@ public class UIHoverSelection : MonoBehaviour
         var currentGroup = currentSelected.GetComponentInParent<CanvasGroup>();
         if (!currentGroup) return false;
         // PauseとTutorialは例外的に許可
-        if (currentGroup.name == "Pause" || currentGroup.name == "Tutorial")
-            return true;
-        
+        if (currentGroup.name == "Pause" || currentGroup.name == "Tutorial") return true;
         if (currentGroup.name == "InventoryUIContainer") return true;
         return false;
     }

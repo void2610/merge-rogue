@@ -40,28 +40,29 @@ public class TutorialPanel : MonoBehaviour
         // ハイライトからウィンドウ表示できるように
         DescriptionWindow.Instance.AddTextToObservation(_currentActivePage);
         
-        previousButton.interactable = _currentPage > 0;
-        nextButton.interactable = _currentPage < pages.Count - 1;
+        // previousButton.interactable = _currentPage > 0;
+        // nextButton.interactable = _currentPage < pages.Count - 1;
     }
 
-    private void Start(){
+    private void Start()
+    {
         ChangePage(0);
         
         nextButton.onClick.AddListener(NextPage);
         previousButton.onClick.AddListener(PreviousPage);
     }
 
-    private void Update()
-    {
-        if(!UIManager.Instance.IsEnableCanvasGroup("Tutorial")) return;
-        
-        if (InputProvider.Instance.Gameplay.RightMove.triggered)
-        {
-            NextPage();
-        }
-        else if (InputProvider.Instance.Gameplay.LeftMove.triggered)
-        {
-            PreviousPage();
-        }
-    }
+    // private void Update()
+    // {
+    //     if(!UIManager.Instance.IsEnableCanvasGroup("Tutorial")) return;
+    //     
+    //     if (InputProvider.Instance.Gameplay.RightMove.triggered)
+    //     {
+    //         NextPage();
+    //     }
+    //     else if (InputProvider.Instance.Gameplay.LeftMove.triggered)
+    //     {
+    //         PreviousPage();
+    //     }
+    // }
 }

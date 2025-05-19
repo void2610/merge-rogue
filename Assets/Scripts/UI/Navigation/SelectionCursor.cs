@@ -53,6 +53,8 @@ public class SelectionCursor : MonoBehaviour
     {
         var currentGroup = currentSelected.GetComponentInParent<CanvasGroup>();
         if (!currentGroup) return false;
+        // PauseとTutorialは例外的に許可
+        if (currentGroup.name == "Pause" || currentGroup.name == "Tutorial") return true;
         if (currentGroup.name == "InventoryUIContainer") return true;
         return false;
     }
@@ -62,6 +64,7 @@ public class SelectionCursor : MonoBehaviour
         // CanvasとそのRectTransformを取得
         _canvas = cursor.GetComponentInParent<Canvas>();
         _canvasRect = _canvas.GetComponent<RectTransform>();
+        _isLockToInventory = false;
     }
 
     private void Update()
@@ -91,6 +94,7 @@ public class SelectionCursor : MonoBehaviour
                 if (_isLockToInventory && !IsInInventoryCanvasGroup(currentSelected))
                 {
                     EventSystem.current.SetSelectedGameObject(_previousSelected);
+                    Debug.Log("ロック中のため");
                     return;
                 }
                 
@@ -98,6 +102,7 @@ public class SelectionCursor : MonoBehaviour
                 if (!IsSameCanvasGroup(currentSelected, _previousSelected) || !currentSelected.GetComponent<Selectable>().interactable)
                 {
                     EventSystem.current.SetSelectedGameObject(_previousSelected);
+                    Debug.Log("グループが異なるため");
                     return;
                 }
             }

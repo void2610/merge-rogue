@@ -75,6 +75,8 @@ public class UIManager : MonoBehaviour
     
     public void ToggleCursorState()
     {
+        if (inventoryCanvasBlocker.activeSelf) return;
+        
         _cursorPosition = _cursorPosition.Toggle();
         ResetSelectedGameObject();
     }
@@ -114,6 +116,7 @@ public class UIManager : MonoBehaviour
         if (!IsAnyCanvasGroupEnabled()) return null;
         return canvasGroups.Find(c => c.alpha > 0)?.gameObject;  
     }
+    
     private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
     private void UpdateCoinText(System.Numerics.BigInteger amount) => coinText.text = "coin: " + amount;
 
@@ -121,7 +124,28 @@ public class UIManager : MonoBehaviour
     {
         var topCanvasGroup = GetTopCanvasGroup();
         // もしウィンドウが開いている場合は、そちらを優先して選択
-        if (topCanvasGroup && !isToggle && _cursorPosition == CursorPositionType.Merge)
+        if (topCanvasGroup && !isToggle && _cursorPosition != CursorPositionType.Merge)
+        {
+            if (topCanvasGroup.name == "Pause" || topCanvasGroup.name == "Tutorial")
+            {
+                var focusSelectable = topCanvasGroup.GetComponentInChildren<FocusSelectable>();
+                if (!focusSelectable) return;
+                SelectionCursor.SetSelectedGameObjectSafe(focusSelectable.gameObject);
+            }
+            else
+            {
+                var target = _cursorPosition switch
+                {
+                    CursorPositionType.Merge => mergeArea,
+                    CursorPositionType.Ball => ballUIContainer.GetChild(0).gameObject,
+                    CursorPositionType.Relic => relicContainer.GetChild(0).gameObject,
+                    CursorPositionType.StatusEffect => _firstStatusEffectUI.gameObject,
+                    _ => null,
+                };
+                SelectionCursor.SetSelectedGameObjectSafe(target);
+            }
+        }
+        else if (topCanvasGroup && !isToggle && _cursorPosition == CursorPositionType.Merge)
         {
             var focusSelectable = topCanvasGroup.GetComponentInChildren<FocusSelectable>();
             if (!focusSelectable) return;
@@ -129,7 +153,6 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            // ウィンドウがない時はcursorStateに従って選択をリセット
             if (_cursorPosition == CursorPositionType.StatusEffect && !_firstStatusEffectUI)
             {
                 SetCursorState(CursorPositionType.Merge);
@@ -137,6 +160,7 @@ public class UIManager : MonoBehaviour
                 return;
             }
             
+            // ウィンドウがない時はcursorStateに従って選択をリセット
             var target = _cursorPosition switch
             {
                 CursorPositionType.Merge => mergeArea,
@@ -218,7 +242,6 @@ public class UIManager : MonoBehaviour
         cg.blocksRaycasts = e;
         
         // FocusSelectableがアタッチされているオブジェクトがあればフォーカス
-        SelectionCursor.SetSelectedGameObjectSafe(null);
         ResetSelectedGameObject();
         descriptionWindow.HideWindowFromNavigation();
     }
