@@ -86,7 +86,9 @@ public class FillingRateManager : MonoBehaviour
         fillImage.fillAmount = 0f;
         fillingRate = FillingRateType.Lower;
         
-		_gaugeMaterial = fillImage.material;
+		_gaugeMaterial = new Material(fillImage.material);
+        fillImage.material = _gaugeMaterial;
+        
         _currentIntensity = 0.5f;
         _gaugeMaterial.SetColor("_EmissionColor", _baseColor * _currentIntensity);
         DOTween.To(() => _currentIntensity, x => {

@@ -38,10 +38,11 @@ public class StageManager : MonoBehaviour
     }
 
     [Header("背景")]
-    [SerializeField] private Material m;
+    [SerializeField] private SpriteRenderer bgSpriteRenderer;
     [SerializeField] private List<GameObject> torches = new();
     [SerializeField] private Vector3 defaultTorchPosition;
     [SerializeField] private float torchInterval = 5;
+    private Material _bgMaterial;
     
     [Header("マップ描画")]
     [SerializeField] private Canvas canvas;
@@ -282,10 +283,10 @@ public class StageManager : MonoBehaviour
         SetAllNodeInactive();
         UIManager.Instance.OnClickMapButtonForce(false);
         SeManager.Instance.WaitAndPlaySe("footsteps", 0.2f);
-        DOTween.To(() => m.GetTextureOffset(_mainTex), x => m.SetTextureOffset(_mainTex, x), new Vector2(1, 0), 2.0f)
+        DOTween.To(() => _bgMaterial.GetTextureOffset(_mainTex), x => _bgMaterial.SetTextureOffset(_mainTex, x), new Vector2(1, 0), 2.0f)
             .SetEase(Ease.InOutSine).OnComplete(() =>
             {
-                m.SetTextureOffset(_mainTex, new Vector2(0, 0));
+                _bgMaterial.SetTextureOffset(_mainTex, new Vector2(0, 0));
                 
                 var tmp = torches[0];
                 torches.RemoveAt(0);
@@ -391,6 +392,9 @@ public class StageManager : MonoBehaviour
 
     public void Awake()
     {
+        _bgMaterial = new Material(bgSpriteRenderer.material);
+        bgSpriteRenderer.material = _bgMaterial;
+        
         GenerateMap();
         _mapNodes[0][0].Type = startStage;
         CurrentStage = null;
@@ -401,7 +405,7 @@ public class StageManager : MonoBehaviour
         
         _playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
         
-        m.SetTextureOffset(_mainTex, new Vector2(0, 0)); 
+        _bgMaterial.SetTextureOffset(_mainTex, new Vector2(0, 0)); 
         
         // カーソルの初期位置を設定
         ChangeFocusNode(_mapNodes[0][0]);

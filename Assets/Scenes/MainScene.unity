@@ -11371,7 +11371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb1e6ec0bc7b1480bbeb409014459446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m: {fileID: 2100000, guid: 6aad917c3f80a415a968f0360490f297, type: 2}
+  bgSpriteRenderer: {fileID: 1291382173}
   torches:
   - {fileID: 127237020}
   - {fileID: 1433748715}
@@ -17965,7 +17965,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1168070099}
   - component: {fileID: 1168070100}
-  - component: {fileID: 1168070101}
   - component: {fileID: 1168070102}
   m_Layer: 0
   m_Name: Utils
@@ -18002,20 +18001,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wordDictionary: {fileID: 11400000, guid: ef9676c90c67f4de092cd50dd36e2b02, type: 2}
---- !u!114 &1168070101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1168070097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5667030854b004922a253dcb5311ab3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  backgroundMaterial: {fileID: 2100000, guid: 6aad917c3f80a415a968f0360490f297, type: 2}
-  fillingRateGaugeMaterial: {fileID: 2100000, guid: d624ddc841733423f94649adb5e42431, type: 2}
 --- !u!114 &1168070102
 MonoBehaviour:
   m_ObjectHideFlags: 0
