@@ -13,6 +13,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using TMPro;
 using DG.Tweening;
+using JetBrains.Annotations;
 using R3;
 
 public class UIManager : MonoBehaviour
@@ -45,8 +46,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject inventoryCanvasBlocker;
     
     private static CursorPositionType _cursorPosition = CursorPositionType.Merge;
-    
-    private Selectable _firstStatusEffectUI;
 
     public bool IsPaused { get; private set; } = false;
     public bool IsMapOpened { get; private set; } = false;
@@ -78,7 +77,25 @@ public class UIManager : MonoBehaviour
         if (inventoryCanvasBlocker.activeSelf) return;
         
         _cursorPosition = _cursorPosition.Toggle();
+        
+        // 状態異常がない時はスキップする
+        if (_cursorPosition == CursorPositionType.StatusEffect && !GetFirstSelectableStatusEffectUI())
+            _cursorPosition = _cursorPosition.Toggle();
+        
         ResetSelectedGameObject();
+    }
+
+    [CanBeNull]
+    private GameObject GetFirstSelectableStatusEffectUI()
+    {
+        var statusEffectUIs = new List<StatusEffectUI>(){playerStatusUI.GetComponent<StatusEffectUI>()};
+        statusEffectUIs.AddRange(enemyStatusUIContainer.GetComponentsInChildren<StatusEffectUI>().ToList());
+        foreach (var seUI in statusEffectUIs)
+        {
+            var selectables = seUI.GetStatusEffectIcons();
+            if (selectables.Count > 0) return selectables[0].gameObject;
+        }
+        return null;
     }
 
     private void SetCursorState(CursorPositionType position)
@@ -139,7 +156,7 @@ public class UIManager : MonoBehaviour
                     CursorPositionType.Merge => mergeArea,
                     CursorPositionType.Ball => ballUIContainer.GetChild(0).gameObject,
                     CursorPositionType.Relic => relicContainer.GetChild(0).gameObject,
-                    CursorPositionType.StatusEffect => _firstStatusEffectUI.gameObject,
+                    CursorPositionType.StatusEffect => GetFirstSelectableStatusEffectUI(),
                     _ => null,
                 };
                 SelectionCursor.SetSelectedGameObjectSafe(target);
@@ -153,7 +170,7 @@ public class UIManager : MonoBehaviour
         }
         else
         {
-            if (_cursorPosition == CursorPositionType.StatusEffect && !_firstStatusEffectUI)
+            if (_cursorPosition == CursorPositionType.StatusEffect && !GetFirstSelectableStatusEffectUI())
             {
                 SetCursorState(CursorPositionType.Merge);
                 ResetSelectedGameObject();
@@ -166,7 +183,7 @@ public class UIManager : MonoBehaviour
                 CursorPositionType.Merge => mergeArea,
                 CursorPositionType.Ball => ballUIContainer.GetChild(0).gameObject,
                 CursorPositionType.Relic => relicContainer.GetChild(0).gameObject,
-                CursorPositionType.StatusEffect => _firstStatusEffectUI.gameObject,
+                CursorPositionType.StatusEffect => GetFirstSelectableStatusEffectUI(),
                 _ => null,
             };
 
@@ -315,7 +332,6 @@ public class UIManager : MonoBehaviour
         }
         if (selectables.Count == 0) return;
         selectables.SetNavigation();
-        _firstStatusEffectUI = selectables[0];
     }
     
     private void Fade(bool e)
