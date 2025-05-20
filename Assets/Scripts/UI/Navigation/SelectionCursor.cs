@@ -19,13 +19,14 @@ public class SelectionCursor : MonoBehaviour
     private GameObject _previousSelected;
     private static bool _allowProgrammaticChange = false;
     private static bool _isLockToInventory = false;
+    private static EventSystem _eventSystem;
     
     public static void LockCursorToInventory(bool b) => _isLockToInventory = b;
 
     public static void SetSelectedGameObjectSafe(GameObject go)
     {
         _allowProgrammaticChange = true;
-        EventSystem.current.SetSelectedGameObject(go);
+        _eventSystem.SetSelectedGameObject(go);
     }
     
     // ナビゲーション移動がCanvasGroupを跨いでいるかどうかを判定する
@@ -65,11 +66,12 @@ public class SelectionCursor : MonoBehaviour
         _canvas = cursor.GetComponentInParent<Canvas>();
         _canvasRect = _canvas.GetComponent<RectTransform>();
         _isLockToInventory = false;
+        _eventSystem = EventSystem.current;
     }
 
     private void Update()
     {
-        var currentSelected = EventSystem.current.currentSelectedGameObject;
+        var currentSelected = _eventSystem.currentSelectedGameObject;
 
         if (!currentSelected)
         {
@@ -93,7 +95,7 @@ public class SelectionCursor : MonoBehaviour
                 // ロック状態なら移動をキャンセル
                 if (_isLockToInventory && !IsInInventoryCanvasGroup(currentSelected))
                 {
-                    EventSystem.current.SetSelectedGameObject(_previousSelected);
+                    _eventSystem.SetSelectedGameObject(_previousSelected);
                     Debug.Log("ロック中のため");
                     return;
                 }
@@ -101,7 +103,7 @@ public class SelectionCursor : MonoBehaviour
                 // グループが異なる場合は選択をキャンセル
                 if (!IsSameCanvasGroup(currentSelected, _previousSelected) || !currentSelected.GetComponent<Selectable>().interactable)
                 {
-                    EventSystem.current.SetSelectedGameObject(_previousSelected);
+                    _eventSystem.SetSelectedGameObject(_previousSelected);
                     Debug.Log("グループが異なるため");
                     return;
                 }

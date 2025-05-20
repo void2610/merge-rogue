@@ -24,7 +24,7 @@ public class ReselectOnDeselect : MonoBehaviour, IDeselectHandler
 
     private IEnumerator Reselect()
     {
-        // 一度フレーム待機して、他の処理が終わるのを待つ
+        // 少し待機して、他の処理が終わるのを待つ
         yield return new WaitForSeconds(reselectDelay);
         EventSystem.current.SetSelectedGameObject(gameObject);
     }

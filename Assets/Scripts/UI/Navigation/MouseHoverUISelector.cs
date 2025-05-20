@@ -3,15 +3,17 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
-public class UIHoverSelection : MonoBehaviour
+public class MouseHoverUISelector : MonoBehaviour
 {
-    [SerializeField] private GameObject currentSelectedGameObject;
+    [SerializeField] private GameObject currentSelected;
     [SerializeField] private List<string> ignoreTags = new();
 
-    private bool _isLockToInventory;
+    private static bool _isLockToInventory;
+    private EventSystem _eventSystem;
     
-    public void LockCursorToInventory(bool b) => _isLockToInventory = b;
+    public static void LockCursorToInventory(bool b) => _isLockToInventory = b;
     
     private bool IsInventoryCanvasGroup(GameObject currentSelected)
     {
@@ -22,10 +24,14 @@ public class UIHoverSelection : MonoBehaviour
         if (currentGroup.name == "InventoryUIContainer") return true;
         return false;
     }
+
+    private void Awake()
+    {
+        _eventSystem = EventSystem.current;
+    }
     
     private void Update()
     {
-        if (!EventSystem.current) return;
 
         // 仮想マウスがあればそれを優先して使用、なければ物理マウス
         var pointerPosition = InputProvider.Instance.GetMousePosition();
@@ -36,7 +42,7 @@ public class UIHoverSelection : MonoBehaviour
         };
 
         var results = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(pointerData, results);
+        _eventSystem.RaycastAll(pointerData, results);
 
         foreach (var result in results)
         {
@@ -50,10 +56,10 @@ public class UIHoverSelection : MonoBehaviour
                 break;
 
             // 最初に適切なUIを見つけたら、それを選択
-            if (EventSystem.current.currentSelectedGameObject != hoveredObject)
+            if (_eventSystem.currentSelectedGameObject != hoveredObject)
             {
                 SelectionCursor.SetSelectedGameObjectSafe(hoveredObject);
-                currentSelectedGameObject = hoveredObject;
+                currentSelected = hoveredObject;
             }
             break; // 最初の適切なUIだけを選択する
         }

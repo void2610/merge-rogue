@@ -15,6 +15,7 @@ using TMPro;
 using DG.Tweening;
 using JetBrains.Annotations;
 using R3;
+using UnityEngine.Serialization;
 
 public class UIManager : MonoBehaviour
 {
@@ -42,7 +43,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Transform relicContainer;
     [SerializeField] private Transform playerStatusUI;
     [SerializeField] private Transform enemyStatusUIContainer;
-    [SerializeField] private UIHoverSelection hoverSelection;
     [SerializeField] private GameObject inventoryCanvasBlocker;
     
     private static CursorPositionType _cursorPosition = CursorPositionType.Merge;
@@ -110,7 +110,7 @@ public class UIManager : MonoBehaviour
         else SetCursorState(CursorPositionType.Merge);
         
         SelectionCursor.LockCursorToInventory(b);
-        hoverSelection.LockCursorToInventory(b);
+        MouseHoverUISelector.LockCursorToInventory(b);
         inventoryCanvasBlocker.SetActive(b);
     }
     
