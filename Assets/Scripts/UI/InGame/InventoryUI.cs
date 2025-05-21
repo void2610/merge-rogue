@@ -170,7 +170,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 CancelEdit();
                 break;
             case InventoryUIState.Swap when _swapIndex == -1:
-                // 交換元のボールを選択するので、これだけ
+                // 交換元のボール選択なので、これだけ
                 _swapIndex = index;
                 subCursor.GetComponent<Image>().enabled = true;
                 SetSubCursor(index);
@@ -200,7 +200,9 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 if (res)
                 {
                     InventoryManager.Instance.RemoveAndShiftBall(_selectedIndex);
+                    GameManager.Instance.SubCoin(ContentProvider.GetBallRemovePrice());
                     UIManager.Instance.ResetSelectedGameObject();
+                    shop.SetRemoveButtonInteractable(false);
                 }
                 CancelEdit();
                 break;

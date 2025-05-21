@@ -24,6 +24,8 @@ public class Shop : MonoBehaviour
     private const int ITEM_NUM = 6;
     private List<GameObject> _itemObjects;
     
+    public void SetRemoveButtonInteractable(bool b) => removeButton.GetComponent<Button>().interactable = b;
+    
     public void OpenShop(int count = 6)
     {
         if (count > ITEM_NUM) throw new System.Exception("Invalid count");
@@ -174,7 +176,6 @@ public class Shop : MonoBehaviour
         }
         
         EventManager.OnBallRemove.Trigger(0);
-        removeButton.GetComponent<Button>().interactable = false;
         InventoryUI.Instance.StartEdit(InventoryUI.InventoryUIState.Remove);
     }
     
