@@ -34,7 +34,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
         var g = Instantiate(ballUIPrefab, inventoryUIContainer.transform);
         
         g.transform.position = CalcInventoryPosition(rank);
-        g.transform.localScale = new Vector3(BallSizes[rank], BallSizes[rank], 1) * 0.5f;
+        g.transform.localScale = GetBallScale(rank);
         
         g.GetComponent<Image>().sprite = ballBase.Data.sprite;
         
@@ -55,7 +55,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
         var g = Instantiate(ballUIPrefab, inventoryUIContainer.transform);
         
         g.transform.position = CalcInventoryPosition(startRank);
-        g.transform.localScale = new Vector3(BallSizes[startRank], BallSizes[startRank], 1);
+        g.transform.localScale = GetBallScale(startRank);
         
         g.GetComponent<Image>().sprite = ballBase.Data.sprite;
         
@@ -64,7 +64,12 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
         _items[endRank] = g;
 
         g.transform.DOMove(CalcInventoryPosition(endRank), 2.0f).SetEase(Ease.OutQuint).Forget();
-        await g.transform.DOScale(new Vector3(BallSizes[endRank], BallSizes[endRank], 1), 2.0f).SetEase(Ease.OutQuint);
+        await g.transform.DOScale(GetBallScale(endRank), 2.0f).SetEase(Ease.OutQuint);
+    }
+    
+    private Vector3 GetBallScale(int index)
+    {
+        return new Vector3(BallSizes[index], BallSizes[index], 1) * 0.5f;
     }
     
     public void RemoveBallUI(int level)
