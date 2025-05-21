@@ -126,6 +126,8 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
     {
         _state = InventoryUIState.Disabled;
         UIManager.Instance.LockCursorToInventory(false);
+        _swapIndex = -1;
+        subCursor.GetComponent<Image>().enabled = false;
     }
 
     private async UniTaskVoid OnClickBall(int index)
@@ -174,13 +176,19 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 SetSubCursor(index);
                 break;
             case InventoryUIState.Swap:
+                if (_swapIndex == index)
+                {
+                    CancelEdit();
+                    NotifyWindow.Instance.Notify("同じボールを選択できません", NotifyWindow.NotifyIconType.Error);
+                    return;
+                }
+                
                 res = await dialog.OpenDialog(InventoryUIState.Swap, InventoryManager.Instance.GetBallData(index), InventoryManager.Instance.GetBallData(_selectedIndex));
                 if (res)
                 { 
                     subCursor.GetComponent<Image>().enabled = false;
                     GameManager.Instance.SubCoin(ContentProvider.GetBallRemovePrice());
                     await InventoryManager.Instance.SwapBall(_selectedIndex, _swapIndex);
-                    _swapIndex = -1;
                     UIManager.Instance.EnableCanvasGroup("Rest", false);
                     EventManager.OnOrganise.Trigger(0);
                     GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
