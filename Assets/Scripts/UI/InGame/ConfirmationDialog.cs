@@ -1,9 +1,11 @@
 using System.Text;
+using System.Threading;
 using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
+using R3;
 
 public class ConfirmationDialog : MonoBehaviour
 {
@@ -18,11 +20,14 @@ public class ConfirmationDialog : MonoBehaviour
     
     private int _currentBallIndex;
     private Color _defaultTextColor;
-    private InventoryUI.InventoryUIState _state;
+    private CancellationTokenSource _cancellationTokenSource;
 
-    public void OpenDialog(InventoryUI.InventoryUIState state, BallData ball1, [CanBeNull] BallData ball2)
+    public async UniTask<bool> OpenDialog(InventoryUI.InventoryUIState state, BallData ball1, [CanBeNull] BallData ball2)
     {
-        _state = state;
+        // 前回のキャンセルトークンがあれば破棄
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource?.Dispose();
+        _cancellationTokenSource = new CancellationTokenSource();
         
         var text = state switch
         {
@@ -55,6 +60,22 @@ public class ConfirmationDialog : MonoBehaviour
         }
         
         UIManager.Instance.EnableCanvasGroup("Confirm", true);
+        
+        // どちらかのボタンが押されるまで待機
+        var confirmResult = await Observable.Merge(
+            confirmButton.OnClickAsObservable().Select(_ => true),
+            cancelButton.OnClickAsObservable().Select(_ => false)
+        ).FirstAsync(cancellationToken: _cancellationTokenSource.Token);
+        
+        // ダイアログを閉じる
+        UIManager.Instance.EnableCanvasGroup("Confirm", false);
+        Debug.Log($"Confirm result: {confirmResult}");
+        
+        // if (confirmResult)
+        // {
+        //     
+        
+        return confirmResult;
     }
 
     public void OpenUpgradeConfirmPanel(int index)
@@ -146,42 +167,14 @@ public class ConfirmationDialog : MonoBehaviour
         return result.ToString();
     }
     
-    private async UniTaskVoid Confirm()
-    {
-        GameManager.Instance.SubCoin(ContentProvider.GetBallUpgradePrice());
-
-        // stateに応じた処理を実行
-        switch (_state)
-        {
-            case InventoryUI.InventoryUIState.Replace:
-                InventoryUI.Instance.ConductRelace();
-                break;
-            case InventoryUI.InventoryUIState.Swap:
-                await InventoryUI.Instance.ConductSwap();
-                GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
-                break;
-            case InventoryUI.InventoryUIState.Remove:
-                InventoryUI.Instance.ConductRemove();
-                UIManager.Instance.ResetSelectedGameObject();
-                break;
-            case InventoryUI.InventoryUIState.Upgrade:
-                InventoryUI.Instance.ConductUpgrade();
-                SeManager.Instance.PlaySe("levelUp");
-                afterBattleUI.SetInteractable(false);
-                UIManager.Instance.EnableCanvasGroup("Confirm", false);
-                break;
-        }
-    }
-    
-    private void Cancel()
-    {
-        UIManager.Instance.EnableCanvasGroup("Confirm", false);
-    }
-
     private void Awake()
     {
         _defaultTextColor = leftWindow.transform.Find("Status").Find("Status1").GetComponent<TextMeshProUGUI>().color;
-        cancelButton.onClick.AddListener(Cancel);
-        confirmButton.onClick.AddListener(() => Confirm().Forget());
+    }
+    
+    private void OnDestroy()
+    {
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource?.Dispose();
     }
 }

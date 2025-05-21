@@ -29,18 +29,6 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
     private int _swapIndex = -1;
     private InventoryUIState _state = InventoryUIState.Disabled;
     private BallData _replaceBallData;
-    
-    public void ConductRelace() => InventoryManager.Instance.ReplaceBall(_replaceBallData, _selectedIndex);
-    
-    public async UniTask ConductSwap() => await InventoryManager.Instance.SwapBall(_selectedIndex, _swapIndex);
-    
-    public void ConductRemove()
-    {
-        InventoryManager.Instance.RemoveAndShiftBall(_selectedIndex);
-        shop.EnableSkipButton(true);
-    }
-
-    public void ConductUpgrade() => InventoryManager.Instance.UpgradeBall(_selectedIndex);
 
     public void CreateBallUI(GameObject ball, int rank, BallBase ballBase)
     {
@@ -117,7 +105,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
     private void SetEvent(GameObject g, int index, BallBase ballBase)
     {
         // クリックでボールの選択、入れ替え、削除
-        g.GetComponent<Button>().onClick.AddListener(() => OnClickBall(index));
+        g.GetComponent<Button>().onClick.AddListener(() => OnClickBall(index).Forget());
         g.RemoveAllEventTrigger();
         g.AddDescriptionWindowEvent(ballBase.Data, ballBase.Level);
         
@@ -138,42 +126,79 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
         UIManager.Instance.LockCursorToInventory(false);
     }
 
-    private void OnClickBall(int index)
+    private async UniTaskVoid OnClickBall(int index)
     {
         _selectedIndex = index;
         SeManager.Instance.PlaySe("button");
+        var res = false;
         switch (_state)
         {
             case InventoryUIState.Disabled:
                 break;
             case InventoryUIState.Replace:
                 CancelEdit();
-                dialog.OpenDialog(InventoryUIState.Replace, InventoryManager.Instance.GetBallData(index), _replaceBallData);
+                res = await dialog.OpenDialog(InventoryUIState.Replace, InventoryManager.Instance.GetBallData(index), _replaceBallData);
+                if (res)
+                {
+                    InventoryManager.Instance.ReplaceBall(_replaceBallData, _selectedIndex);
+                }
                 break;
             case InventoryUIState.Upgrade:
-                CancelEdit();
                 if (InventoryManager.Instance.GetBallLevel(index) >= 2)
                 {
                     SeManager.Instance.PlaySe("error");
                     NotifyWindow.Instance.Notify("これ以上ボールを強化できません", NotifyWindow.NotifyIconType.Error);
                     return;
                 }
-                dialog.OpenDialog(InventoryUIState.Upgrade, InventoryManager.Instance.GetBallData(index), null);
+                
+                res = await dialog.OpenDialog(InventoryUIState.Upgrade, InventoryManager.Instance.GetBallData(index), null);
+
+                if (res)
+                { 
+                    InventoryManager.Instance.UpgradeBall(_selectedIndex);
+                    SeManager.Instance.PlaySe("levelUp");
+                    // afterBattleUI.SetInteractable(false);
+                    GameManager.Instance.SubCoin(ContentProvider.GetBallUpgradePrice());
+                }
+                else
+                {
+                    CancelEdit();
+                }
                 break;
             case InventoryUIState.Swap when _swapIndex == -1:
+                // 交換元のボールを選択するので、これだけ
                 _swapIndex = index;
                 subCursor.GetComponent<Image>().enabled = true;
                 SetSubCursor(index);
                 break;
             case InventoryUIState.Swap:
-                CancelEdit();
-                dialog.OpenDialog(InventoryUIState.Swap, InventoryManager.Instance.GetBallData(index), InventoryManager.Instance.GetBallData(_swapIndex));
-                _swapIndex = -1;
-                subCursor.GetComponent<Image>().enabled = false;
+                res = await dialog.OpenDialog(InventoryUIState.Swap, InventoryManager.Instance.GetBallData(index), InventoryManager.Instance.GetBallData(_selectedIndex));
+
+                if (res)
+                { 
+                    subCursor.GetComponent<Image>().enabled = false;
+                    await InventoryManager.Instance.SwapBall(_selectedIndex, _swapIndex);
+                    _swapIndex = -1;
+                    GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+                }
+                else
+                {
+                    CancelEdit();
+                }
                 break;
             case InventoryUIState.Remove:
-                dialog.OpenDialog(InventoryUIState.Remove, InventoryManager.Instance.GetBallData(index), null);
-                CancelEdit();
+                res = await dialog.OpenDialog(InventoryUIState.Remove, InventoryManager.Instance.GetBallData(index), null);
+
+                if (res)
+                {
+                    InventoryManager.Instance.RemoveAndShiftBall(_selectedIndex);
+                    shop.EnableSkipButton(true);
+                    UIManager.Instance.ResetSelectedGameObject();
+                }
+                else
+                {
+                    CancelEdit();
+                }
                 break;
         }
     }
