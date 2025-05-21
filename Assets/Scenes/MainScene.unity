@@ -2478,7 +2478,7 @@ GameObject:
   - component: {fileID: 233792613}
   - component: {fileID: 233792612}
   m_Layer: 6
-  m_Name: UpgradeText
+  m_Name: DescriptionText
   m_TagString: IgnoreSelection
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2501,7 +2501,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 96.5}
-  m_SizeDelta: {x: 350, y: 60}
+  m_SizeDelta: {x: 600, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &233792612
 MonoBehaviour:
@@ -2538,10 +2538,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Upgrade
+  m_text: "\u30DC\u30FC\u30EB\u3092\u5165\u308C\u66FF\u3048\u307E\u3059\u304B\uFF1F"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 51b066cd8e0b7476c94d04d3a90a0709, type: 2}
-  m_sharedMaterial: {fileID: 322069558015029290, guid: 51b066cd8e0b7476c94d04d3a90a0709, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e590b3c4824bb42dd9e386cc2f940d18, type: 2}
+  m_sharedMaterial: {fileID: 8992585608633973963, guid: e590b3c4824bb42dd9e386cc2f940d18, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -2565,15 +2565,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
-  m_fontSizeBase: 50
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -4113,8 +4113,8 @@ RectTransform:
   - {fileID: 605675522}
   - {fileID: 849968416}
   - {fileID: 225990488}
-  - {fileID: 1955426628}
   - {fileID: 2057808263}
+  - {fileID: 1955426628}
   - {fileID: 1868987099}
   - {fileID: 403790022}
   - {fileID: 1477400321}
@@ -18443,7 +18443,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
-      value: Upgrade
+      value: Confirm
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -18527,7 +18527,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5528164159451888881, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Name
-      value: UpgradeButton
+      value: ConfirmButton
       objectReference: {fileID: 0}
     - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_SizeDelta.y
@@ -24562,7 +24562,7 @@ MonoBehaviour:
   inventoryPosition: {x: -0.4, y: 1.95, z: 0}
   inventoryUIContainer: {fileID: 725906728}
   subCursor: {fileID: 240537029}
-  upgradeConfirmPanel: {fileID: 2057808266}
+  dialog: {fileID: 2057808266}
 --- !u!1001 &1888057321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26127,7 +26127,7 @@ GameObject:
   - component: {fileID: 2057808265}
   - component: {fileID: 2057808266}
   m_Layer: 6
-  m_Name: Upgrade
+  m_Name: Confirm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26164,7 +26164,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2057808262}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -26185,8 +26185,9 @@ MonoBehaviour:
   rightWindow: {fileID: 1742018038}
   ballBaseImage: {fileID: 31443767}
   ballImage: {fileID: 759820792}
+  descriptionText: {fileID: 233792613}
   cancelButton: {fileID: 864484085}
-  upgradeButton: {fileID: 1337107089}
+  confirmButton: {fileID: 1337107089}
 --- !u!114 &2060733894 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8724471961296811237, guid: a1475db9d2af44954959b5f79f5943fb, type: 3}

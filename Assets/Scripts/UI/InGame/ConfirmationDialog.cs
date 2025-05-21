@@ -1,20 +1,61 @@
 using System.Text;
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Cysharp.Threading.Tasks;
 
-public class UpgradeConfirmPanel : MonoBehaviour
+public class ConfirmationDialog : MonoBehaviour
 {
     [SerializeField] private AfterBattleUI afterBattleUI;
     [SerializeField] private GameObject leftWindow;
     [SerializeField] private GameObject rightWindow;
     [SerializeField] private Image ballBaseImage;
     [SerializeField] private Image ballImage;
+    [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private Button cancelButton;
-    [SerializeField] private Button upgradeButton;
+    [SerializeField] private Button confirmButton;
     
     private int _currentBallIndex;
     private Color _defaultTextColor;
+    private InventoryUI.InventoryUIState _state;
+
+    public void OpenDialog(InventoryUI.InventoryUIState state, BallData ball1, [CanBeNull] BallData ball2)
+    {
+        _state = state;
+        
+        var text = state switch
+        {
+            InventoryUI.InventoryUIState.Replace => "ボールの置き換えを行いますか？",
+            InventoryUI.InventoryUIState.Swap => "ボール位置の入れ替えを行いますか？",
+            InventoryUI.InventoryUIState.Remove => "ボールを削除しますか？",
+            InventoryUI.InventoryUIState.Upgrade => "ボールの強化を行いますか？",
+            _ => ""
+        };
+        descriptionText.text = text;
+        
+        // ボールのプレビューを表示
+        switch(state)
+        {
+            case InventoryUI.InventoryUIState.Replace:
+                SetBallTexts(leftWindow, ball1, 0);
+                SetBallTexts(rightWindow, ball2, 0);
+                break;
+            case InventoryUI.InventoryUIState.Swap:
+                SetBallTexts(leftWindow, ball1, 0);
+                SetBallTexts(rightWindow, ball2, 0);
+                break;
+            case InventoryUI.InventoryUIState.Remove:
+                SetBallTexts(leftWindow, ball1, 0);
+                break;
+            case InventoryUI.InventoryUIState.Upgrade:
+                SetBallTexts(leftWindow, ball1, 0);
+                SetBallTexts(leftWindow, ball1, 1, true);
+                break;
+        }
+        
+        UIManager.Instance.EnableCanvasGroup("Confirm", true);
+    }
 
     public void OpenUpgradeConfirmPanel(int index)
     {
@@ -74,7 +115,7 @@ public class UpgradeConfirmPanel : MonoBehaviour
         }
     }
     
-    public static string GetColoredDifference(string beforeText, string afterText)
+    private static string GetColoredDifference(string beforeText, string afterText)
     {
         if (string.IsNullOrEmpty(beforeText)) return $"<color=green>{afterText}</color>";
         if (string.IsNullOrEmpty(afterText)) return beforeText;
@@ -105,24 +146,42 @@ public class UpgradeConfirmPanel : MonoBehaviour
         return result.ToString();
     }
     
-    private void Upgrade()
+    private async UniTaskVoid Confirm()
     {
-        InventoryManager.Instance.UpgradeBall(_currentBallIndex);
         GameManager.Instance.SubCoin(ContentProvider.GetBallUpgradePrice());
-        afterBattleUI.SetInteractable(false);
-        SeManager.Instance.PlaySe("levelUp");
-        UIManager.Instance.EnableCanvasGroup("Upgrade", false);
+
+        // stateに応じた処理を実行
+        switch (_state)
+        {
+            case InventoryUI.InventoryUIState.Replace:
+                InventoryUI.Instance.ConductRelace();
+                break;
+            case InventoryUI.InventoryUIState.Swap:
+                await InventoryUI.Instance.ConductSwap();
+                GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
+                break;
+            case InventoryUI.InventoryUIState.Remove:
+                InventoryUI.Instance.ConductRemove();
+                UIManager.Instance.ResetSelectedGameObject();
+                break;
+            case InventoryUI.InventoryUIState.Upgrade:
+                InventoryUI.Instance.ConductUpgrade();
+                SeManager.Instance.PlaySe("levelUp");
+                afterBattleUI.SetInteractable(false);
+                UIManager.Instance.EnableCanvasGroup("Confirm", false);
+                break;
+        }
     }
     
     private void Cancel()
     {
-        UIManager.Instance.EnableCanvasGroup("Upgrade", false);
+        UIManager.Instance.EnableCanvasGroup("Confirm", false);
     }
 
     private void Awake()
     {
         _defaultTextColor = leftWindow.transform.Find("Status").Find("Status1").GetComponent<TextMeshProUGUI>().color;
         cancelButton.onClick.AddListener(Cancel);
-        upgradeButton.onClick.AddListener(Upgrade);
+        confirmButton.onClick.AddListener(() => Confirm().Forget());
     }
 }
