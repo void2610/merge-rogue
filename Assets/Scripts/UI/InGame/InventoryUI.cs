@@ -150,9 +150,9 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                     GameManager.Instance.SubCoin(ContentProvider.GetSHopPrice(Shop.ShopItemType.Ball, _replaceBallData.rarity));
                     
                     if (GameManager.Instance.state == GameManager.GameState.AfterBattle)
-                        afterBattleUI.UnInteractableItem(_replaceBallData);
+                        afterBattleUI.UnInteractableSelectedItem();
                     else
-                        shop.UnInteractableItem(_replaceBallData);
+                        shop.UnInteractableSelectedItem();
                 }
                 CancelEdit();
                 break;

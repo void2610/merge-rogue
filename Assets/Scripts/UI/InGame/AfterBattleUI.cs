@@ -16,25 +16,18 @@ public class AfterBattleUI : MonoBehaviour
     private readonly List<BallData> _currentItems = new();
     private readonly List<int> _currentItemPrices = new();
     private List<GameObject> _itemObjects;
+    private int _selectedIndex = -1;
     private static BallDataList AllBalls => InventoryManager.Instance.allBallDataList;
     
+    public void UnInteractableSelectedItem() => _itemObjects[_selectedIndex].GetComponent<Button>().interactable = false;
     public void SetUpgradeButtonInteractable(bool b) => ballUpgradeButton.interactable = b;
-    
-    /// <summary>
-    /// 指定したBallDataに対応するショップアイテムのinteractableを設定します
-    /// </summary>
-    /// <param name="ball">対象のボールデータ</param>
-    public void UnInteractableItem(BallData ball)
-    {
-        var index = _currentItems.FindIndex(item => item == ball);
-        if (index >= 0 && index < _itemObjects.Count)
-            _itemObjects[index].GetComponent<Button>().interactable = false;
-    }
     
     private void BuyBall(int index)
     {
         var ball = _currentItems[index] as BallData;
         if (!ball) return;
+        
+        _selectedIndex = index;
         InventoryUI.Instance.StartEditReplace(ball);
     }
     
@@ -81,6 +74,7 @@ public class AfterBattleUI : MonoBehaviour
     
     private void OnClickSkipAfterBattle()
     {
+        _selectedIndex = -1;
         UIManager.Instance.EnableCanvasGroup("AfterBattle", false);
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
     }

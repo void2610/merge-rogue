@@ -23,25 +23,16 @@ public class Shop : MonoBehaviour
     private readonly List<int> _currentItemPrices = new();
     private const int ITEM_NUM = 6;
     private List<GameObject> _itemObjects;
+    private int _selectedIndex = -1;
     
+    public void UnInteractableSelectedItem() => _itemObjects[_selectedIndex].GetComponent<Button>().interactable = false;
     public void SetRemoveButtonInteractable(bool b) => removeButton.GetComponent<Button>().interactable = b;
-    
-    public void UnInteractableItem(BallData ball)
-    {
-        var index = _currentItems.FindIndex(item => item == ball);
-        if (index >= 0 && index < _itemObjects.Count)
-            _itemObjects[index].GetComponent<Button>().interactable = false;
-    }
-    
     
     public void OpenShop(int count = 6)
     {
         if (count > ITEM_NUM) throw new System.Exception("Invalid count");
         
-        for (var i = 0; i < ITEM_NUM; i++)
-        {
-            _itemObjects[i].GetComponent<Button>().interactable = true;
-        }
+        for (var i = 0; i < ITEM_NUM; i++) _itemObjects[i].GetComponent<Button>().interactable = true;
 
         removeButton.GetComponent<Button>().interactable = true;
         removeButton.transform.Find("Price").GetComponent<TextMeshProUGUI>().text = ContentProvider.GetBallRemovePrice().ToString();
@@ -75,6 +66,7 @@ public class Shop : MonoBehaviour
         {
             _itemObjects[i].transform.DOScale(3, 0.1f).SetUpdate(true);
         }
+        _selectedIndex = -1;
         
         UIManager.Instance.EnableCanvasGroup("Shop", false);
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
@@ -84,6 +76,8 @@ public class Shop : MonoBehaviour
     {
         var ball = _currentItems[index] as BallData;
         if (!ball) return;
+        
+        _selectedIndex = index;
         InventoryUI.Instance.StartEditReplace(ball);
         UIManager.Instance.ResetSelectedGameObject();
     }
