@@ -148,6 +148,11 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 {
                     InventoryManager.Instance.ReplaceBall(_replaceBallData, _selectedIndex);
                     GameManager.Instance.SubCoin(ContentProvider.GetSHopPrice(Shop.ShopItemType.Ball, _replaceBallData.rarity));
+                    
+                    if (GameManager.Instance.state == GameManager.GameState.AfterBattle)
+                        afterBattleUI.UnInteractableItem(_replaceBallData);
+                    else
+                        shop.UnInteractableItem(_replaceBallData);
                 }
                 CancelEdit();
                 break;
@@ -164,7 +169,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 { 
                     InventoryManager.Instance.UpgradeBall(_selectedIndex);
                     SeManager.Instance.PlaySe("levelUp");
-                    afterBattleUI.SetInteractable(false);
+                    afterBattleUI.SetUpgradeButtonInteractable(false);
                     GameManager.Instance.SubCoin(ContentProvider.GetBallUpgradePrice());
                 }
                 CancelEdit();

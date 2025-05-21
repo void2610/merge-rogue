@@ -18,24 +18,17 @@ public class AfterBattleUI : MonoBehaviour
     private List<GameObject> _itemObjects;
     private static BallDataList AllBalls => InventoryManager.Instance.allBallDataList;
     
-    public void SetInteractable(bool b) => ballUpgradeButton.interactable = b;
+    public void SetUpgradeButtonInteractable(bool b) => ballUpgradeButton.interactable = b;
     
-    private void OpenShop(int count = 3)
+    /// <summary>
+    /// 指定したBallDataに対応するショップアイテムのinteractableを設定します
+    /// </summary>
+    /// <param name="ball">対象のボールデータ</param>
+    public void UnInteractableItem(BallData ball)
     {
-        if (count > ITEM_NUM) throw new System.Exception("Invalid count");
-        
-        _currentItems.Clear();
-        _currentItemPrices.Clear();
-        _currentItemPrices.AddRange(Enumerable.Repeat(0, ITEM_NUM));
-        
-        for(var i = 0; i < ITEM_NUM; i++)
-        {
-            var balls = ContentProvider.Instance.GetBallListExceptNormal();
-            var index = GameManager.Instance.RandomRange(0, balls.Count);
-            _currentItems.Add(balls[index]);
-            SetBallEvent(_itemObjects[i].transform.gameObject, balls[index], i);
-            _itemObjects[i].GetComponent<Button>().interactable = true;
-        }
+        var index = _currentItems.FindIndex(item => item == ball);
+        if (index >= 0 && index < _itemObjects.Count)
+            _itemObjects[index].GetComponent<Button>().interactable = false;
     }
     
     private void BuyBall(int index)
@@ -43,7 +36,6 @@ public class AfterBattleUI : MonoBehaviour
         var ball = _currentItems[index] as BallData;
         if (!ball) return;
         InventoryUI.Instance.StartEditReplace(ball);
-        _itemObjects[index].GetComponent<Button>().interactable = false;
     }
     
     private void SetBallEvent(GameObject g, BallData ball, int index)
@@ -99,7 +91,23 @@ public class AfterBattleUI : MonoBehaviour
         ballUpgradePriceText.text = price.ToString();
         var interactable = GameManager.Instance.Coin.Value >= price;
         ballUpgradeButton.interactable = interactable;
-        OpenShop();
+
+        var count = 3;
+        
+        if (count > ITEM_NUM) throw new System.Exception("Invalid count");
+        
+        _currentItems.Clear();
+        _currentItemPrices.Clear();
+        _currentItemPrices.AddRange(Enumerable.Repeat(0, ITEM_NUM));
+        
+        for(var i = 0; i < ITEM_NUM; i++)
+        {
+            var balls = ContentProvider.Instance.GetBallListExceptNormal();
+            var index = GameManager.Instance.RandomRange(0, balls.Count);
+            _currentItems.Add(balls[index]);
+            SetBallEvent(_itemObjects[i].transform.gameObject, balls[index], i);
+            _itemObjects[i].GetComponent<Button>().interactable = true;
+        }
     }
 
     private void Awake()

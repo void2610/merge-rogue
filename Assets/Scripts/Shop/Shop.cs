@@ -26,6 +26,14 @@ public class Shop : MonoBehaviour
     
     public void SetRemoveButtonInteractable(bool b) => removeButton.GetComponent<Button>().interactable = b;
     
+    public void UnInteractableItem(BallData ball)
+    {
+        var index = _currentItems.FindIndex(item => item == ball);
+        if (index >= 0 && index < _itemObjects.Count)
+            _itemObjects[index].GetComponent<Button>().interactable = false;
+    }
+    
+    
     public void OpenShop(int count = 6)
     {
         if (count > ITEM_NUM) throw new System.Exception("Invalid count");
@@ -77,8 +85,6 @@ public class Shop : MonoBehaviour
         var ball = _currentItems[index] as BallData;
         if (!ball) return;
         InventoryUI.Instance.StartEditReplace(ball);
-        _itemObjects[index].GetComponent<Button>().interactable = false;
-        
         UIManager.Instance.ResetSelectedGameObject();
     }
 
@@ -89,7 +95,6 @@ public class Shop : MonoBehaviour
         RelicManager.Instance.AddRelic(relic);
         _itemObjects[index].GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
-        
         UIManager.Instance.ResetSelectedGameObject();
     }
 
