@@ -130,7 +130,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
 
     private async UniTaskVoid OnClickBall(int index)
     {
-        if (_state != InventoryUIState.Swap || _swapIndex == -1)
+        if (_state != InventoryUIState.Swap || _swapIndex != -1)
             UIManager.Instance.LockCursorToInventory(false);
             
         _selectedIndex = index;
@@ -145,6 +145,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 if (res)
                 {
                     InventoryManager.Instance.ReplaceBall(_replaceBallData, _selectedIndex);
+                    GameManager.Instance.SubCoin(ContentProvider.GetSHopPrice(Shop.ShopItemType.Ball, _replaceBallData.rarity));
                 }
                 CancelEdit();
                 break;
@@ -157,7 +158,6 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 }
                 
                 res = await dialog.OpenDialog(InventoryUIState.Upgrade, InventoryManager.Instance.GetBallData(index), null);
-
                 if (res)
                 { 
                     InventoryManager.Instance.UpgradeBall(_selectedIndex);
@@ -175,23 +175,23 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 break;
             case InventoryUIState.Swap:
                 res = await dialog.OpenDialog(InventoryUIState.Swap, InventoryManager.Instance.GetBallData(index), InventoryManager.Instance.GetBallData(_selectedIndex));
-
                 if (res)
                 { 
                     subCursor.GetComponent<Image>().enabled = false;
+                    GameManager.Instance.SubCoin(ContentProvider.GetBallRemovePrice());
                     await InventoryManager.Instance.SwapBall(_selectedIndex, _swapIndex);
                     _swapIndex = -1;
+                    UIManager.Instance.EnableCanvasGroup("Rest", false);
+                    EventManager.OnOrganise.Trigger(0);
                     GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
                 }
                 CancelEdit();
                 break;
             case InventoryUIState.Remove:
                 res = await dialog.OpenDialog(InventoryUIState.Remove, InventoryManager.Instance.GetBallData(index), null);
-
                 if (res)
                 {
                     InventoryManager.Instance.RemoveAndShiftBall(_selectedIndex);
-                    shop.EnableSkipButton(true);
                     UIManager.Instance.ResetSelectedGameObject();
                 }
                 CancelEdit();

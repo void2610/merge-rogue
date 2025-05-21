@@ -20,9 +20,7 @@ public class Rest : MonoBehaviour
     
     private static void OnClickOrganise()
     {
-        EventManager.OnOrganise.Trigger(0);
         InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Swap);
-        UIManager.Instance.EnableCanvasGroup("Rest", false);
     }
     
     private static void OnClickSkip()
