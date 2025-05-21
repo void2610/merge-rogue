@@ -71,10 +71,6 @@ public class ConfirmationDialog : MonoBehaviour
         UIManager.Instance.EnableCanvasGroup("Confirm", false);
         Debug.Log($"Confirm result: {confirmResult}");
         
-        // if (confirmResult)
-        // {
-        //     
-        
         return confirmResult;
     }
 

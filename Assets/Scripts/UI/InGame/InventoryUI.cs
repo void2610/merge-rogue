@@ -22,6 +22,8 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
     [SerializeField] private GameObject inventoryUIContainer;
     [SerializeField] private GameObject subCursor;
     [SerializeField] private ConfirmationDialog dialog;
+    [SerializeField] private AfterBattleUI afterBattleUI;
+    
     private const float SIZE_COEFFICIENT = 8f;
     private static List<float> BallSizes => InventoryManager.Instance.Sizes;
     private readonly List<GameObject> _items = new();
@@ -160,7 +162,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 { 
                     InventoryManager.Instance.UpgradeBall(_selectedIndex);
                     SeManager.Instance.PlaySe("levelUp");
-                    // afterBattleUI.SetInteractable(false);
+                    afterBattleUI.SetInteractable(false);
                     GameManager.Instance.SubCoin(ContentProvider.GetBallUpgradePrice());
                 }
                 CancelEdit();

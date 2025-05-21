@@ -42,7 +42,6 @@ public class AfterBattleUI : MonoBehaviour
     {
         var ball = _currentItems[index] as BallData;
         if (!ball) return;
-        SeManager.Instance.PlaySe("coin");
         InventoryUI.Instance.StartEditReplace(ball);
         _itemObjects[index].GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);

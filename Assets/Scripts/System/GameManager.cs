@@ -73,6 +73,10 @@ public class GameManager : MonoBehaviour
     {
         EventManager.OnCoinConsume.Trigger(amount);
         var c = EventManager.OnCoinConsume.GetAndResetValue();
+        
+        if (c < 0　|| Coin.Value < c) return;
+        
+        SeManager.Instance.PlaySe("coin");
         Coin.Value -= c;
     }
 

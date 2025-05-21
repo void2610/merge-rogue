@@ -24563,6 +24563,7 @@ MonoBehaviour:
   inventoryUIContainer: {fileID: 725906728}
   subCursor: {fileID: 240537029}
   dialog: {fileID: 2057808266}
+  afterBattleUI: {fileID: 109174368}
 --- !u!1001 &1888057321
 PrefabInstance:
   m_ObjectHideFlags: 0
