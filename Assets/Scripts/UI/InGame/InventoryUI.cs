@@ -128,6 +128,9 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
 
     private async UniTaskVoid OnClickBall(int index)
     {
+        if (_state != InventoryUIState.Swap || _swapIndex == -1)
+            UIManager.Instance.LockCursorToInventory(false);
+            
         _selectedIndex = index;
         SeManager.Instance.PlaySe("button");
         var res = false;
@@ -136,12 +139,12 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
             case InventoryUIState.Disabled:
                 break;
             case InventoryUIState.Replace:
-                CancelEdit();
                 res = await dialog.OpenDialog(InventoryUIState.Replace, InventoryManager.Instance.GetBallData(index), _replaceBallData);
                 if (res)
                 {
                     InventoryManager.Instance.ReplaceBall(_replaceBallData, _selectedIndex);
                 }
+                CancelEdit();
                 break;
             case InventoryUIState.Upgrade:
                 if (InventoryManager.Instance.GetBallLevel(index) >= 2)
@@ -160,10 +163,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                     // afterBattleUI.SetInteractable(false);
                     GameManager.Instance.SubCoin(ContentProvider.GetBallUpgradePrice());
                 }
-                else
-                {
-                    CancelEdit();
-                }
+                CancelEdit();
                 break;
             case InventoryUIState.Swap when _swapIndex == -1:
                 // 交換元のボールを選択するので、これだけ
@@ -181,10 +181,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                     _swapIndex = -1;
                     GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
                 }
-                else
-                {
-                    CancelEdit();
-                }
+                CancelEdit();
                 break;
             case InventoryUIState.Remove:
                 res = await dialog.OpenDialog(InventoryUIState.Remove, InventoryManager.Instance.GetBallData(index), null);
@@ -195,10 +192,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                     shop.EnableSkipButton(true);
                     UIManager.Instance.ResetSelectedGameObject();
                 }
-                else
-                {
-                    CancelEdit();
-                }
+                CancelEdit();
                 break;
         }
     }

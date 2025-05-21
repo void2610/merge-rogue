@@ -181,8 +181,7 @@ public class Shop : MonoBehaviour
         EventManager.OnBallRemove.Trigger(0);
         removeButton.GetComponent<Button>().interactable = false;
         EnableSkipButton(false);
-        GameManager.Instance.SubCoin(price);
-        InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Remove);
+        InventoryUI.Instance.StartEdit(InventoryUI.InventoryUIState.Remove);
     }
     
     private void OnClickSkipButton() => CloseShop();
