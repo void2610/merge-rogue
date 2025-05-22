@@ -8,7 +8,7 @@ using System.Linq;
 public class AfterBattleUI : MonoBehaviour
 {
     [SerializeField] private GameObject itemContainer;
-    [SerializeField] private Button ballUpgradeButton;
+    [SerializeField] private MyButton ballUpgradeButton;
     [SerializeField] private TextMeshProUGUI ballUpgradePriceText;
     [SerializeField] private Button skipButton;
     
@@ -20,7 +20,7 @@ public class AfterBattleUI : MonoBehaviour
     private static BallDataList AllBalls => InventoryManager.Instance.allBallDataList;
     
     public void UnInteractableSelectedItem() => _itemObjects[_selectedIndex].GetComponent<Button>().interactable = false;
-    public void SetUpgradeButtonInteractable(bool b) => ballUpgradeButton.interactable = b;
+    public void SetUpgradeButtonInteractable(bool b) => ballUpgradeButton.IsAvailable = b;
     
     private void BuyBall(int index)
     {
@@ -84,7 +84,7 @@ public class AfterBattleUI : MonoBehaviour
         var price = ContentProvider.GetBallUpgradePrice();
         ballUpgradePriceText.text = price.ToString();
         var interactable = GameManager.Instance.Coin.Value >= price;
-        ballUpgradeButton.interactable = interactable;
+        ballUpgradeButton.IsAvailable = interactable;
 
         var count = 3;
         
