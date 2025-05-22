@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class MyButton : Button
 {
     private bool _isAvailable = true;
+    private bool _forceDisabledVisual = false;
 
     /// <summary>
     /// 独自の使用可否（interactableとは別に制御）
@@ -51,17 +52,22 @@ public class MyButton : Button
     /// </summary>
     private void UpdateVisualState()
     {
-        // interactable は true にしておく（ナビゲーションのため）
         base.interactable = true;
 
-        if (IsAvailable)
+        _forceDisabledVisual = !IsAvailable;
+        var state = _forceDisabledVisual ? SelectionState.Disabled : SelectionState.Normal;
+        DoStateTransition(state, true);
+    }
+
+    protected override void DoStateTransition(SelectionState state, bool instant)
+    {
+        if (_forceDisabledVisual)
         {
-            DoStateTransition(SelectionState.Normal, true);
+            base.DoStateTransition(SelectionState.Disabled, instant);
+            return;
         }
-        else
-        {
-            DoStateTransition(SelectionState.Disabled, true);
-        }
+
+        base.DoStateTransition(state, instant);
     }
 
     // 外部からは Button.onClick をそのまま使える
