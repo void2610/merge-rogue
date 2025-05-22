@@ -45,13 +45,13 @@ public class ConfirmationDialog : MonoBehaviour
             case InventoryUI.InventoryUIState.Replace:
                 SetBallTexts(leftWindow, ball1, 0);
                 leftBallImage.sprite = ball1.sprite;
-                SetBallTexts(rightWindow, ball2, 0, true);
+                SetBallTexts(rightWindow, ball2, 0, true, ball1, 0);
                 rightBallImage.sprite = ball2.sprite;
                 break;
             case InventoryUI.InventoryUIState.Swap:
                 SetBallTexts(leftWindow, ball1, 0);
                 leftBallImage.sprite = ball1.sprite;
-                SetBallTexts(rightWindow, ball2, 0, true);
+                SetBallTexts(rightWindow, ball2, 0, true, ball1, 0);
                 rightBallImage.sprite = ball2.sprite;
                 break;
             case InventoryUI.InventoryUIState.Remove:
@@ -80,13 +80,35 @@ public class ConfirmationDialog : MonoBehaviour
         return confirmResult;
     }
 
-    private void SetBallTexts(GameObject g, BallData b, int level, bool highlightDifferences = false)
+    private void SetBallTexts(GameObject g, BallData b, int level, bool highlightDifferences = false, BallData comparisonBall = null, int comparisonLevel = 0)
     {
         var nameText = g.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
         nameText.text = b.displayName;
         nameText.color = b.rarity.GetColor();
 
-        var description = highlightDifferences ? GetColoredDifference(b.descriptions[level - 1], b.descriptions[level]) : b.descriptions[level];
+        // ボールの説明文に関する処理
+        string description;
+        if (highlightDifferences)
+        {
+            // 同じボールのレベル差分を表示する場合（アップグレード時）
+            if (comparisonBall == null && level > 0)
+            {
+                description = GetColoredDifference(b.descriptions[level - 1], b.descriptions[level]);
+            }
+            // 異なるボール間の差分を表示する場合（スワップ、リプレイス時）
+            else if (comparisonBall != null)
+            {
+                description = GetColoredDifference(comparisonBall.descriptions[comparisonLevel], b.descriptions[level]);
+            }
+            else
+            {
+                description = b.descriptions[level];
+            }
+        }
+        else
+        {
+            description = b.descriptions[level];
+        }
         g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = description;
         g.transform.Find("FlavorText").GetComponent<TextMeshProUGUI>().text = b.flavorText;
 
@@ -102,25 +124,46 @@ public class ConfirmationDialog : MonoBehaviour
 
         attackText.alpha = 1;
         sizeText.alpha = 1;
+        
+        // デフォルトカラーに戻す
+        attackText.color = _defaultTextColor;
+        sizeText.color = _defaultTextColor;
 
         // **フラグに基づく比較処理**
-        if (highlightDifferences && level > 0)
+        if (highlightDifferences)
         {
+            float compareAttack = 0;
+            float compareSize = 0;
+            
+            // 同じボールのレベル差分を比較する場合（アップグレード時）
+            if (comparisonBall == null && level > 0)
+            {
+                compareAttack = b.attacks[level - 1];
+                compareSize = b.sizes[level - 1];
+            }
+            // 異な��ボール間の差分を比較する場合（スワップ、リプレイス時）
+            else if (comparisonBall != null)
+            {
+                compareAttack = comparisonBall.attacks[comparisonLevel];
+                compareSize = comparisonBall.sizes[comparisonLevel];
+            }
+            // 比較対象がない場合は処理しない
+            else
+            {
+                return;
+            }
+            
             // 攻撃力: 上昇 → 緑色、低下 → 赤色、変化なし → 白色
-            if (b.attacks[level] > b.attacks[level - 1])
+            if (b.attacks[level] > compareAttack)
                 attackText.color = Color.green;
-            else if (b.attacks[level] < b.attacks[level - 1])
+            else if (b.attacks[level] < compareAttack)
                 attackText.color = Color.red;
-            else
-                attackText.color = _defaultTextColor;
-
+            
             // サイズ: 上昇 → 赤色、低下 → 緑色、変化なし → 白色
-            if (b.sizes[level] > b.sizes[level - 1])
+            if (b.sizes[level] > compareSize)
                 sizeText.color = Color.red;
-            else if (b.sizes[level] < b.sizes[level - 1])
+            else if (b.sizes[level] < compareSize)
                 sizeText.color = Color.green;
-            else
-                sizeText.color = _defaultTextColor;
         }
     }
     
