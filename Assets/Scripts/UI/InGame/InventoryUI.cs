@@ -143,7 +143,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
             case InventoryUIState.Disabled:
                 break;
             case InventoryUIState.Replace:
-                res = await dialog.OpenDialog(InventoryUIState.Replace, InventoryManager.Instance.GetBallData(index), _replaceBallData);
+                res = await dialog.OpenDialog(InventoryUIState.Replace, InventoryManager.Instance.GetBallData(index), InventoryManager.Instance.GetBallLevel(index), _replaceBallData);
                 if (res)
                 {
                     InventoryManager.Instance.ReplaceBall(_replaceBallData, _selectedIndex);
@@ -164,7 +164,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                     return;
                 }
                 
-                res = await dialog.OpenDialog(InventoryUIState.Upgrade, InventoryManager.Instance.GetBallData(index), null);
+                res = await dialog.OpenDialog(InventoryUIState.Upgrade, InventoryManager.Instance.GetBallData(index), InventoryManager.Instance.GetBallLevel(index), null);
                 if (res)
                 { 
                     InventoryManager.Instance.UpgradeBall(_selectedIndex);
@@ -188,7 +188,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                     return;
                 }
                 
-                res = await dialog.OpenDialog(InventoryUIState.Swap, InventoryManager.Instance.GetBallData(index), InventoryManager.Instance.GetBallData(_selectedIndex));
+                res = await dialog.OpenDialog(InventoryUIState.Swap, InventoryManager.Instance.GetBallData(index), InventoryManager.Instance.GetBallLevel(index), InventoryManager.Instance.GetBallData(_selectedIndex));
                 if (res)
                 { 
                     subCursor.GetComponent<Image>().enabled = false;
@@ -201,7 +201,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 CancelEdit();
                 break;
             case InventoryUIState.Remove:
-                res = await dialog.OpenDialog(InventoryUIState.Remove, InventoryManager.Instance.GetBallData(index), null);
+                res = await dialog.OpenDialog(InventoryUIState.Remove, InventoryManager.Instance.GetBallData(index), InventoryManager.Instance.GetBallLevel(index), null);
                 if (res)
                 {
                     InventoryManager.Instance.RemoveAndShiftBall(_selectedIndex);

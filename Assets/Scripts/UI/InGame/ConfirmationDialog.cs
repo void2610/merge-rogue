@@ -22,7 +22,7 @@ public class ConfirmationDialog : MonoBehaviour
     private Color _defaultTextColor;
     private CancellationTokenSource _cancellationTokenSource;
 
-    public async UniTask<bool> OpenDialog(InventoryUI.InventoryUIState state, BallData ball1, [CanBeNull] BallData ball2)
+    public async UniTask<bool> OpenDialog(InventoryUI.InventoryUIState state, BallData ball1, int level, [CanBeNull] BallData ball2)
     {
         // 前回のキャンセルトークンがあれば破棄
         _cancellationTokenSource?.Cancel();
@@ -43,24 +43,24 @@ public class ConfirmationDialog : MonoBehaviour
         switch(state)
         {
             case InventoryUI.InventoryUIState.Replace:
-                SetBallTexts(leftWindow, ball1, 0);
+                SetBallTexts(leftWindow, ball1, level);
                 leftBallImage.sprite = ball1.sprite;
-                SetBallTexts(rightWindow, ball2, 0, true, ball1, 0);
+                SetBallTexts(rightWindow, ball2, 0, true, ball1, level);
                 rightBallImage.sprite = ball2.sprite;
                 break;
             case InventoryUI.InventoryUIState.Swap:
-                SetBallTexts(leftWindow, ball1, 0);
+                SetBallTexts(leftWindow, ball1, level);
                 leftBallImage.sprite = ball1.sprite;
-                SetBallTexts(rightWindow, ball2, 0, true, ball1, 0);
+                SetBallTexts(rightWindow, ball2, 0, true, ball1, level);
                 rightBallImage.sprite = ball2.sprite;
                 break;
             case InventoryUI.InventoryUIState.Remove:
-                SetBallTexts(leftWindow, ball1, 0);
+                SetBallTexts(leftWindow, ball1, level);
                 break;
             case InventoryUI.InventoryUIState.Upgrade:
-                SetBallTexts(leftWindow, ball1, 0);
+                SetBallTexts(leftWindow, ball1, level);
                 leftBallImage.sprite = ball1.sprite;
-                SetBallTexts(rightWindow, ball1, 1, true);
+                SetBallTexts(rightWindow, ball1, level+1, true, ball1, level);
                 rightBallImage.sprite = ball1.sprite;
                 break;
         }
@@ -109,17 +109,17 @@ public class ConfirmationDialog : MonoBehaviour
         // **フラグに基づく比較処理**
         if (highlightDifferences)
         {
-            float compareAttack = 0;
-            float compareSize = 0;
+            var compareAttack = 1f;
+            var compareSize = 1f;
             
             // 同じボールのレベル差分を比較する場合（アップグレード時）
-            if (comparisonBall == null && level > 0)
+            if (!comparisonBall && level > 0)
             {
                 compareAttack = b.attacks[level - 1];
                 compareSize = b.sizes[level - 1];
             }
             // 異なるボール間の差分を比較する場合（スワップ、リプレイス時）
-            else if (comparisonBall != null)
+            else if (comparisonBall)
             {
                 compareAttack = comparisonBall.attacks[comparisonLevel];
                 compareSize = comparisonBall.sizes[comparisonLevel];
