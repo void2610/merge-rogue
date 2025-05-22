@@ -12,8 +12,8 @@ public class ConfirmationDialog : MonoBehaviour
     [SerializeField] private AfterBattleUI afterBattleUI;
     [SerializeField] private GameObject leftWindow;
     [SerializeField] private GameObject rightWindow;
-    [SerializeField] private Image ballBaseImage;
-    [SerializeField] private Image ballImage;
+    [SerializeField] private Image rightBallImage;
+    [SerializeField] private Image leftBallImage;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private Button cancelButton;
     [SerializeField] private Button confirmButton;
@@ -44,18 +44,24 @@ public class ConfirmationDialog : MonoBehaviour
         {
             case InventoryUI.InventoryUIState.Replace:
                 SetBallTexts(leftWindow, ball1, 0);
-                SetBallTexts(rightWindow, ball2, 0);
+                leftBallImage.sprite = ball1.sprite;
+                SetBallTexts(rightWindow, ball2, 0, true);
+                rightBallImage.sprite = ball2.sprite;
                 break;
             case InventoryUI.InventoryUIState.Swap:
                 SetBallTexts(leftWindow, ball1, 0);
-                SetBallTexts(rightWindow, ball2, 0);
+                leftBallImage.sprite = ball1.sprite;
+                SetBallTexts(rightWindow, ball2, 0, true);
+                rightBallImage.sprite = ball2.sprite;
                 break;
             case InventoryUI.InventoryUIState.Remove:
                 SetBallTexts(leftWindow, ball1, 0);
                 break;
             case InventoryUI.InventoryUIState.Upgrade:
                 SetBallTexts(leftWindow, ball1, 0);
-                SetBallTexts(leftWindow, ball1, 1, true);
+                leftBallImage.sprite = ball1.sprite;
+                SetBallTexts(rightWindow, ball1, 1, true);
+                rightBallImage.sprite = ball1.sprite;
                 break;
         }
         
@@ -74,20 +80,6 @@ public class ConfirmationDialog : MonoBehaviour
         return confirmResult;
     }
 
-    public void OpenUpgradeConfirmPanel(int index)
-    {
-        _currentBallIndex = index;
-        var ball = InventoryManager.Instance.GetBallData(index);
-        var rank = InventoryManager.Instance.GetBallLevel(index);
-        
-        SetBallTexts(leftWindow, ball, rank);
-        SetBallTexts(rightWindow, ball, rank + 1, true);
-        ballImage.sprite = ball.sprite;
-        if(!ball.sprite) ballImage.color = new Color(0, 0, 0, 0);
-        ballBaseImage.sprite = ContentProvider.Instance.GetBallBaseImage(ball.shapeType);
-        UIManager.Instance.EnableCanvasGroup("Upgrade", true);
-    }
-    
     private void SetBallTexts(GameObject g, BallData b, int level, bool highlightDifferences = false)
     {
         var nameText = g.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
