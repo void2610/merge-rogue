@@ -86,30 +86,7 @@ public class ConfirmationDialog : MonoBehaviour
         nameText.text = b.displayName;
         nameText.color = b.rarity.GetColor();
 
-        // ボールの説明文に関する処理
-        string description;
-        if (highlightDifferences)
-        {
-            // 同じボールのレベル差分を表示する場合（アップグレード時）
-            if (comparisonBall == null && level > 0)
-            {
-                description = GetColoredDifference(b.descriptions[level - 1], b.descriptions[level]);
-            }
-            // 異なるボール間の差分を表示する場合（スワップ、リプレイス時）
-            else if (comparisonBall != null)
-            {
-                description = GetColoredDifference(comparisonBall.descriptions[comparisonLevel], b.descriptions[level]);
-            }
-            else
-            {
-                description = b.descriptions[level];
-            }
-        }
-        else
-        {
-            description = b.descriptions[level];
-        }
-        g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = description;
+        g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = b.descriptions[level];
         g.transform.Find("FlavorText").GetComponent<TextMeshProUGUI>().text = b.flavorText;
 
         var levelText = g.transform.Find("Status").Find("Status1").GetComponent<TextMeshProUGUI>();
@@ -141,7 +118,7 @@ public class ConfirmationDialog : MonoBehaviour
                 compareAttack = b.attacks[level - 1];
                 compareSize = b.sizes[level - 1];
             }
-            // 異な��ボール間の差分を比較する場合（スワップ、リプレイス時）
+            // 異なるボール間の差分を比較する場合（スワップ、リプレイス時）
             else if (comparisonBall != null)
             {
                 compareAttack = comparisonBall.attacks[comparisonLevel];
