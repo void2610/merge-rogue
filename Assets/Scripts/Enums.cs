@@ -118,9 +118,9 @@ public static class MyEnumUtil
     /// <summary>
     /// レアリティに対応する色を取得する
     /// </summary>
-    public static Color GetColor(this Rarity rarity)
+    public static Color GetColor(this Rarity rarity, bool isHDR = false)
     {
-        return rarity switch
+        var color = rarity switch
         {
             Rarity.Common => new Color(0.8f, 0.8f, 0.8f),      // グレー
             Rarity.Uncommon => new Color(0.3f, 1f, 0.3f),      // 緑
@@ -130,6 +130,7 @@ public static class MyEnumUtil
             Rarity.Boss => new Color(1f, 0.1f, 0.1f),           // 赤
             _ => Color.white
         };
+        return isHDR ? color * 1.4f : color;
     }
     
     /// <summary>

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Linq;
+using Coffee.UIEffects;
 
 public class AfterBattleUI : MonoBehaviour
 {
@@ -37,15 +38,10 @@ public class AfterBattleUI : MonoBehaviour
         _currentItemPrices[index] = price;
         var priceText = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
         priceText.text = price.ToString();
-        var image = g.transform.Find("Icon").GetComponent<Image>();
-        if (ball.sprite)
-        {
-            image.color = new Color(1, 1, 1, 1);
-            image.sprite = ball.sprite;
-        }
-        else image.color = new Color(0, 0, 0, 0);
-        var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
-        ballImage.color = new Color(0.6f, 0.6f, 0.6f, 1);
+        var icon = g.transform.Find("Icon").GetComponent<Image>();
+        icon.sprite = ball.sprite;
+        icon.GetComponent<UIEffect>().transitionColor = ball.rarity.GetColor(true);
+        
         var button = g.GetComponent<MyButton>();
         if (button)
         {

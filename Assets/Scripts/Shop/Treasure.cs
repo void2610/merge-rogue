@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using Coffee.UIEffects;
 
 public class Treasure : MonoBehaviour
 {
@@ -103,6 +104,9 @@ public class Treasure : MonoBehaviour
         Utils.RemoveAllEventFromObject(g);
         var image = g.transform.Find("Icon").GetComponent<Image>();
         image.sprite = relic.sprite;
+        // UIEffectの色を変更
+        var uiEffect = g.transform.Find("Icon").GetComponent<UIEffect>();
+        uiEffect.transitionColor = relic.rarity.GetColor(true);
         var button = g.GetComponent<Button>();
         if (button)
         {

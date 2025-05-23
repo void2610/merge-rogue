@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.EventSystems;
+using Coffee.UIEffects;
 
 public class Shop : MonoBehaviour
 {
@@ -98,13 +99,9 @@ public class Shop : MonoBehaviour
         _currentItemPrices[index] = price;
         var priceText = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
         priceText.text = price.ToString();
-        var image = g.transform.Find("Icon").GetComponent<Image>();
-        if (ball.sprite)
-        {
-            image.color = new Color(1, 1, 1, 1);
-            image.sprite = ball.sprite;
-        }
-        else image.color = new Color(0, 0, 0, 0);
+        var icon = g.transform.Find("Icon").GetComponent<Image>();
+        icon.sprite = ball.sprite;
+        icon.GetComponent<UIEffect>().transitionColor = ball.rarity.GetColor(true);
         var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
         ballImage.color = new Color(0.6f, 0.6f, 0.6f, 1);
         var button = g.GetComponent<Button>();
@@ -136,9 +133,9 @@ public class Shop : MonoBehaviour
         var priceText = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
         priceText.text = price.ToString();
         
-        var image = g.transform.Find("Icon").GetComponent<Image>();
-        image.sprite = relic.sprite;
-        image.color = new Color(1, 1, 1, 1);
+        var icon = g.transform.Find("Icon").GetComponent<Image>();
+        icon.sprite = relic.sprite;
+        icon.GetComponent<UIEffect>().transitionColor = relic.rarity.GetColor(true);
         // ボールの画像を透明にする
         var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
         ballImage.color = new Color(1, 1, 1, 0);
