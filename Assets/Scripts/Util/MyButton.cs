@@ -44,7 +44,6 @@ public class MyButton : Button
     public override void OnSelect(BaseEventData eventData)
     {
         base.OnSelect(eventData);
-        // 選択は常に許可（interactable=false とは違う）
     }
 
     /// <summary>
@@ -69,6 +68,4 @@ public class MyButton : Button
 
         base.DoStateTransition(state, instant);
     }
-
-    // 外部からは Button.onClick をそのまま使える
 }

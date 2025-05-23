@@ -146,4 +146,15 @@ public static class EnemyActionFactory
         };
     }
     
+    [EnemyAction]
+    public static EnemyActionData RedBombBallAction(EnemyBase self, int count)
+    {
+        return new EnemyActionData
+        {
+            name = "赤爆弾",
+            type = ActionType.Debuff,
+            Action = () => { MergeManager.Instance.CreateRedBomb(count); }
+        };
+    }
+    
 }

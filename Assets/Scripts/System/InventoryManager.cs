@@ -111,19 +111,11 @@ public class InventoryManager : MonoBehaviour
         InventorySize--;
     }
     
-    public GameObject GetBombBall()
+    // ボールタイプを指定して取得する共通メソッド
+    public GameObject GetSpecialBallByClassName(string ballClassName, int rank)
     {
-        var bd = allBallDataList.GetBallDataFromClassName("BombBall");
-        var ball = CreateBallInstanceFromBallData(bd, 3);
-        ball.GetComponent<BallBase>().Unfreeze();
-        ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
-        return ball;
-    }
-
-    public GameObject GetDisturbBall()
-    {
-        var bd = allBallDataList.GetBallDataFromClassName("DisturbBall");
-        var ball = CreateBallInstanceFromBallData(bd, 1);
+        var bd = allBallDataList.GetBallDataFromClassName(ballClassName);
+        var ball = CreateBallInstanceFromBallData(bd, rank);
         ball.GetComponent<BallBase>().Unfreeze();
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         return ball;

@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e20d261e1bba4e309354d2a524b6d0d, type: 3}
+  m_Name: RedBombBall
+  m_EditorClassIdentifier: 
+  className: RedBombBall
+  displayName: "\u8D64\u7206\u5F3E"
+  descriptions:
+  - "3\u30BF\u30FC\u30F3\u5F8C\u306B\u7206\u767A\u3059\u308B"
+  - "3\u30BF\u30FC\u30F3\u5F8C\u306B\u7206\u767A\u3059\u308B"
+  - "3\u30BF\u30FC\u30F3\u5F8C\u306B\u7206\u767A\u3059\u308B"
+  flavorText: 
+  sprite: {fileID: 21300000, guid: 1afe2be6eb5754a8791a44180c9f105e, type: 3}
+  rarity: 0
+  shapeType: 0
+  attacks:
+  - 2
+  - 2
+  - 2
+  sizes:
+  - 1
+  - 1
+  - 1
+  weights:
+  - 2
+  - 2
+  - 2
+  availableDemo: 1

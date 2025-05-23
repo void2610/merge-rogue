@@ -100,7 +100,21 @@ public class MergeManager : MonoBehaviour
     
     public void CreateBombBall()
     {
-        var bomb = InventoryManager.Instance.GetBombBall();
+        var bomb = InventoryManager.Instance.GetSpecialBallByClassName("BombBall", 3);
+        bomb.transform.position = GetValidRandomPosition();
+        bomb.transform.SetParent(_ballContainer.transform);
+        bomb.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
+    }
+
+    public void CreateRedBomb(int count = 1)
+    {
+        for (var i = 0; i < count; i++)
+            CreateRedBombInternal();
+    }
+    
+    private void CreateRedBombInternal()
+    {
+        var bomb = InventoryManager.Instance.GetSpecialBallByClassName("RedBombBall", 3);
         bomb.transform.position = GetValidRandomPosition();
         bomb.transform.SetParent(_ballContainer.transform);
         bomb.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
@@ -114,7 +128,7 @@ public class MergeManager : MonoBehaviour
     
     private void CreateDisturbBallInternal()
     {
-        var disturb = InventoryManager.Instance.GetDisturbBall();
+        var disturb = InventoryManager.Instance.GetSpecialBallByClassName("DisturbBall", 1);
         disturb.transform.position = GetValidRandomPosition();
         disturb.transform.SetParent(_ballContainer.transform);
         disturb.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
