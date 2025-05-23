@@ -23,8 +23,6 @@ public class Encyclopedia : MonoBehaviour
 
     private void SetBallData(GameObject g, BallData b)
     {
-        var ballBase = g.transform.Find("BallBase").GetComponent<Image>();
-        ballBase.sprite = ballBaseImages[b.shapeType];
         var image = g.transform.Find("Icon").GetComponent<Image>();
         image.sprite = b.sprite;
         if (b.sprite == null) image.color = new Color(0, 0, 0, 0);

@@ -37,8 +37,6 @@ public class AfterBattleUI : MonoBehaviour
         _currentItemPrices[index] = price;
         var priceText = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
         priceText.text = price.ToString();
-        var baseImage = g.transform.Find("BallBase").GetComponent<Image>();
-        baseImage.sprite = ContentProvider.Instance.GetBallBaseImage(ball.shapeType);
         var image = g.transform.Find("Icon").GetComponent<Image>();
         if (ball.sprite)
         {
