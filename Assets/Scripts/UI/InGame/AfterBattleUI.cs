@@ -46,7 +46,7 @@ public class AfterBattleUI : MonoBehaviour
         else image.color = new Color(0, 0, 0, 0);
         var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
         ballImage.color = new Color(0.6f, 0.6f, 0.6f, 1);
-        var button = g.GetComponent<Button>();
+        var button = g.GetComponent<MyButton>();
         if (button)
         {
             Utils.RemoveAllEventFromObject(g);
@@ -98,7 +98,7 @@ public class AfterBattleUI : MonoBehaviour
             var index = GameManager.Instance.RandomRange(0, balls.Count);
             _currentItems.Add(balls[index]);
             SetBallEvent(_itemObjects[i].transform.gameObject, balls[index], i);
-            _itemObjects[i].GetComponent<Button>().interactable = true;
+            _itemObjects[i].GetComponent<MyButton>().IsAvailable = true;
         }
     }
 

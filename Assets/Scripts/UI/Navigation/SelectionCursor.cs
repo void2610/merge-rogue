@@ -101,7 +101,7 @@ public class SelectionCursor : MonoBehaviour
                 }
                 
                 // グループが異なる場合は選択をキャンセル
-                if (!IsSameCanvasGroup(currentSelected, _previousSelected) || !currentSelected.GetComponent<Selectable>().interactable)
+                if (!IsSameCanvasGroup(currentSelected, _previousSelected))
                 {
                     _eventSystem.SetSelectedGameObject(_previousSelected);
                     Debug.Log("グループが異なるため");
