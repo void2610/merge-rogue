@@ -16,28 +16,28 @@ public class RedBombBall : BallBase
     {
         base.Effect(other);
         DefaultMergeParticle();
-        MergeManager.Instance.Attack(AttackType.Normal, Attack * Rank, this.transform.position);
+        // マージさせると全体攻撃できる
+        MergeManager.Instance.Attack(AttackType.All, Attack * Rank, this.transform.position);
     }
     
     protected override void TurnEndEffect()
     {
         base.TurnEndEffect();
+        ParticleManager.Instance.MergeBallIconParticle(this.transform.position, this.Size, this.Data.sprite);
         if (elapsedTurns < 3) return;
         
-        // 全体攻撃しつつ、周りのボールを消す
-        MergeManager.Instance.Attack(AttackType.All, Attack * Rank, this.transform.position);
-
+        // 周りのボールを消して、プレイヤーにダメージ
         var hitBalls = Utils.GetNearbyBalls(this.gameObject, Size);
-        // 取得したボールを破壊
         foreach (var ball in hitBalls)
         {
-            ball.isDestroyed = true;
-            ball.EffectAndDestroy(this);
+            ball.DestroyWithNoEffect();
         }
         SeManager.Instance.PlaySe("bomb");
         
-        // 自分だけでマージ
-        this.EffectAndDestroy(null);
-        ParticleManager.Instance.MergeBallIconParticle(this.transform.position, this.Size, this.Data.sprite);
+        // プレイヤーにダメージ
+        GameManager.Instance.Player.Damage(AttackType.Normal, (int)(Attack * Rank));
+        // 自分を消す
+        isDestroyed = true;
+        this.DestroyWithNoEffect();
     }
 }

@@ -75,7 +75,6 @@ public class ConfirmationDialog : MonoBehaviour
         
         // ダイアログを閉じる
         UIManager.Instance.EnableCanvasGroup("Confirm", false);
-        Debug.Log($"Confirm result: {confirmResult}");
         
         return confirmResult;
     }

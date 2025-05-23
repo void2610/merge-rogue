@@ -159,10 +159,19 @@ public class BallBase : MonoBehaviour
         }).SetLink(gameObject);
     }
     
+    public void DestroyWithNoEffect()
+    {
+        this.isDestroyed = true;
+        transform.DOScale(0, 0.2f).SetEase(Ease.InBack).OnComplete(() =>
+        {
+            Destroy(this.gameObject);
+        }).SetLink(gameObject);
+    }
+    
     protected void DefaultMergeParticle()
     {
         ParticleManager.Instance.MergeParticle(this.transform.position);
-        ParticleManager.Instance.MergePowerParticle(this.transform.position, MyEnumUtil.GetBallColor(Rank-1));
+        // ParticleManager.Instance.MergePowerParticle(this.transform.position, MyEnumUtil.GetBallColor(Rank-1));
         
         
         var i = Random.Range(0, 5);
