@@ -107,7 +107,12 @@ public class DescriptionWindow : MonoBehaviour
         this.transform.Find("Window").GetComponent<Image>().raycastTarget = true;
     }
 
-    public void ShowWindowFromNavigation(object data, GameObject rootTriggerObject, int ballLevel = 0) => ShowWindow(data, rootTriggerObject, ballLevel);
+    public void ShowWindowFromNavigation(object data, GameObject rootTriggerObject, int ballLevel = 0)
+    {
+        _isWindowLocked = false;
+        this.transform.Find("Window").GetComponent<Image>().raycastTarget = false;
+        ShowWindow(data, rootTriggerObject, ballLevel);
+    }
     public void HideWindowFromNavigation() => HideWindow();
     public void HideSubWindowFromNavigation(GameObject parent, string word) => HideSubWindow(parent, word);
 
@@ -485,3 +490,4 @@ public class DescriptionWindow : MonoBehaviour
         ShowSubWindowImpl(parent, linkInfo.GetLinkID(), localLinkPos);
     }
 }
+

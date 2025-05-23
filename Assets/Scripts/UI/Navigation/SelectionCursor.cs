@@ -144,7 +144,7 @@ public class SelectionCursor : MonoBehaviour
     }
 
     /// <summary>
-    /// 選択対象のRectTransformからマーカーの位置とサイズをキャンバスのローカル座標で即時反映します。
+    /// 選択対象のRectTransformからマーカーの位置とサイズをキャンバスのローカル座標で即時反映します
     /// </summary>
     private void UpdateMarkerImmediate(GameObject selectedObject)
     {
@@ -170,7 +170,7 @@ public class SelectionCursor : MonoBehaviour
     }
 
     /// <summary>
-    /// Tweenを利用してマーカーを滑らかに移動・サイズ変更します（キャンバスローカル座標で計算）。
+    /// Tweenを利用してマーカーを滑らかに移動・サイズ変更します（キャンバスローカル座標で計算）
     /// </summary>
     private void TweenMarker(GameObject selectedObject)
     {
