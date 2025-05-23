@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b76f0aa177eb41caa56a14d710e0d751, type: 3}
-  m_Name: UnmaskForUGUI
+  m_Name: UIEffect
   m_EditorClassIdentifier: 
-  _libraryName: Unmask For UGUI
+  _libraryName: UI Effect
   _memo1: 
   _libversion: None
-  _webURL1: https://github.com/mob-sakai/UnmaskForUGUI
+  _webURL1: https://github.com/mob-sakai/UIEffect
   _webURL2: 
   _useLicenseList: []
   _createdTimeText: 2024/12/06_11:53:34
@@ -25,7 +25,7 @@ MonoBehaviour:
   _isNeedAboutThisLibForEachMember: 0
   _isMustShowLicense: 1
   showLicenseOrder: 500
-  _licenseShowText: 'Copyright 2018 mob-sakai
+  _licenseShowText: 'Copyright 2017-2024 mob-sakai
 
 
     Permission is hereby granted,
