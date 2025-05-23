@@ -276,8 +276,7 @@ public class DescriptionWindow : MonoBehaviour
         {
             this.transform.position = _disablePos;
         }).SetLink(this.gameObject);
-        foreach (var window in _subWindows.Values)
-            Destroy(window);
+        foreach (var window in _subWindows.Values) Destroy(window);
         _subWindows.Clear();
         
         this.transform.Find("Window").GetComponent<Image>().raycastTarget = false;

@@ -19,7 +19,7 @@ public class AfterBattleUI : MonoBehaviour
     private int _selectedIndex = -1;
     private static BallDataList AllBalls => InventoryManager.Instance.allBallDataList;
     
-    public void UnInteractableSelectedItem() => _itemObjects[_selectedIndex].GetComponent<Button>().interactable = false;
+    public void UnInteractableSelectedItem() => _itemObjects[_selectedIndex].GetComponent<MyButton>().IsAvailable = false;
     public void SetUpgradeButtonInteractable(bool b) => ballUpgradeButton.IsAvailable = b;
     
     private void BuyBall(int index)
