@@ -77,3 +77,4 @@ Assets/Materials/BGMaterial.mat
 /Packages/packages-lock.json
 
 .DS_Store
+Assets/Localization/MyGoogleSheetsService.asset
