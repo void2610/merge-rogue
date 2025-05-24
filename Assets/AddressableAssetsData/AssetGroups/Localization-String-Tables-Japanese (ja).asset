@@ -15,8 +15,20 @@ MonoBehaviour:
   m_GroupName: Localization-String-Tables-Japanese (ja)
   m_GUID: 9ef09b1d9761b4aef8e4ed31554716e0
   m_SerializeEntries:
+  - m_GUID: 1c288b4f3313c40dfbcd765ee48a4e28
+    m_Address: Relic_ja
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ja
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7a0aeabc327254d9393cdf112cec13a2
     m_Address: UI_ja
+    m_ReadOnly: 1
+    m_SerializedLabels:
+    - Locale-ja
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d091b7fa5ab7a4a7ba13b64a9fd81928
+    m_Address: Ball_ja
     m_ReadOnly: 1
     m_SerializedLabels:
     - Locale-ja

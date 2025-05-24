@@ -10,42 +10,42 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
-  m_Name: UI
+  m_Name: Relic
   m_EditorClassIdentifier: 
-  m_SharedTableData: {fileID: 11400000, guid: 7fa29c7d37b40404d85e0afeb5581314, type: 2}
+  m_SharedTableData: {fileID: 11400000, guid: e9771d71674dc4b10b0e4dba0a8939bc, type: 2}
   m_Tables:
-  - {fileID: 11400000, guid: f3097a4a9571c4023b7b8840bf0c6605, type: 2}
-  - {fileID: 11400000, guid: 7a0aeabc327254d9393cdf112cec13a2, type: 2}
+  - {fileID: 11400000, guid: 67f895b98450b49c694c4a7b35edd7cf, type: 2}
+  - {fileID: 11400000, guid: 1c288b4f3313c40dfbcd765ee48a4e28, type: 2}
   m_Extensions:
-  - rid: 6341671361707507947
+  - rid: 6341671361707507959
   m_Group: String Table
   references:
     version: 2
     RefIds:
-    - rid: 6341671361707507947
+    - rid: 6341671361707507959
       type: {class: GoogleSheetsExtension, ns: UnityEditor.Localization.Plugins.Google, asm: Unity.Localization.Editor}
       data:
         m_Collection: {fileID: 11400000}
         m_SheetsServiceProvider: {fileID: 11400000, guid: 22fecd69b1d224dc1af20138bc2be6d7, type: 2}
         m_SpreadsheetId: 1Ca0frHbyjuPpucqHPTSaIsCCQG1GhFJEvSnNqwPVi_U
-        m_SheetId: 1206934604
+        m_SheetId: 665168419
         m_Columns:
-        - rid: 6341671361707507949
-        - rid: 6341671361707507950
-        - rid: 6341671361707507951
+        - rid: 6341671361707507961
+        - rid: 6341671361707507962
+        - rid: 6341671361707507963
         m_RemoveMissingPulledKeys: 1
-    - rid: 6341671361707507949
+    - rid: 6341671361707507961
       type: {class: KeyColumn, ns: UnityEditor.Localization.Plugins.Google.Columns, asm: Unity.Localization.Editor}
       data:
         m_Column: A
-    - rid: 6341671361707507950
+    - rid: 6341671361707507962
       type: {class: LocaleColumn, ns: UnityEditor.Localization.Plugins.Google.Columns, asm: Unity.Localization.Editor}
       data:
         m_Column: B
         m_LocaleIdentifier:
           m_Code: en
         m_IncludeComments: 0
-    - rid: 6341671361707507951
+    - rid: 6341671361707507963
       type: {class: LocaleColumn, ns: UnityEditor.Localization.Plugins.Google.Columns, asm: Unity.Localization.Editor}
       data:
         m_Column: C

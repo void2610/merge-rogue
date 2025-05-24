@@ -3103,7 +3103,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1870222279}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.6166363
+  m_Size: 0.6166667
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5168,7 +5168,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 465917897}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.26665345
+  m_Size: 0.26666668
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5673,9 +5673,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_StringReference:
     m_TableReference:
-      m_TableCollectionName: GUID:7fa29c7d37b40404d85e0afeb5581314
+      m_TableCollectionName: 
     m_TableEntryReference:
-      m_KeyId: 1991987159040
+      m_KeyId: 0
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
