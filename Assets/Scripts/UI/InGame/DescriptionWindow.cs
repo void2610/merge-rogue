@@ -250,7 +250,7 @@ public class DescriptionWindow : MonoBehaviour
 
     private void SetRelicTexts(RelicData r)
     {
-        nameText.text = r.displayName;
+        nameText.text = r.GetDisplayName();
         nameText.color = r.rarity.GetColor();
         
         #if DEMO_PLAY
@@ -266,7 +266,7 @@ public class DescriptionWindow : MonoBehaviour
         #endif
 
         descriptionText.text = r.GetDescription();
-        flavorText.text = r.flavorText;
+        flavorText.text = r.GetFlavorText();
         statusTexts[0].text = "price: " + ContentProvider.GetSHopPrice(Shop.ShopItemType.Ball, r.rarity);
         statusTexts[1].alpha = 0;
         statusTexts[2].alpha = 0;

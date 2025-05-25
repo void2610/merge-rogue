@@ -19,7 +19,8 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 18063810560
-    m_Localized: Ring of Fire
+    m_Localized: A ring made with a gemstone that holds burning power. It gets a
+      little hot when you wear it for a long time.
     m_Metadata:
       m_Items: []
   - m_Id: 320964897267712
