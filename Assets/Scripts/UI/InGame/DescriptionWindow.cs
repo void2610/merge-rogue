@@ -256,7 +256,7 @@ public class DescriptionWindow : MonoBehaviour
         #if DEMO_PLAY
             if (!r.availableDemo)
             {
-                descriptionText.text = r.description　+ "\n" + "(デモ版ではロック中)";
+                descriptionText.text = r.GetDescription()　+ "\n" + "(デモ版ではロック中)";
                 flavorText.text = "?????";
                 statusTexts[0].text = "?????";
                 statusTexts[1].text = "?????";
@@ -264,8 +264,8 @@ public class DescriptionWindow : MonoBehaviour
                 return;
             }
         #endif
-        
-        descriptionText.text = r.description;
+
+        descriptionText.text = r.GetDescription();
         flavorText.text = r.flavorText;
         statusTexts[0].text = "price: " + ContentProvider.GetSHopPrice(Shop.ShopItemType.Ball, r.rarity);
         statusTexts[1].alpha = 0;
