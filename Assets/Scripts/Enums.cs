@@ -1,6 +1,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum LocalizationTableType
+{
+    UI,
+    Ball,
+    Relic,
+}
+
 public enum CursorIconType
 {
     Default,

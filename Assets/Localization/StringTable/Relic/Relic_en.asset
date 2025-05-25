@@ -96,6 +96,14 @@ MonoBehaviour:
     m_Localized: Do not take any items you find on the street.
     m_Metadata:
       m_Items: []
+  - m_Id: 329262220435456
+    m_Localized: Ring of Fire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 329197359718400
+    m_Localized: When attacking, inflict 1 stack of Burn on the first enemy.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
