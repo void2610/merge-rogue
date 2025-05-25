@@ -43,6 +43,66 @@ MonoBehaviour:
     m_Key: CLOSE
     m_Metadata:
       m_Items: []
+  - m_Id: 295938882002944
+    m_Key: SKIP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002945
+    m_Key: PRICE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002946
+    m_Key: ATTACK
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002947
+    m_Key: SIZE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002948
+    m_Key: SELECT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002949
+    m_Key: SUBMIT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002950
+    m_Key: RESET_CURSOR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002951
+    m_Key: TOGGLE_CURSOR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002952
+    m_Key: TOGGLE_VIRTUAL_MOUSE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002953
+    m_Key: TUTORIAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002954
+    m_Key: MAP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002955
+    m_Key: DOUBLE_SPEED
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002956
+    m_Key: PAUSE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002957
+    m_Key: RESUME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002958
+    m_Key: TITLE
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

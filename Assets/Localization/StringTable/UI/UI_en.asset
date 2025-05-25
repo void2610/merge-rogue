@@ -46,6 +46,66 @@ MonoBehaviour:
     m_Localized: Close
     m_Metadata:
       m_Items: []
+  - m_Id: 295938882002944
+    m_Localized: Skip
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002945
+    m_Localized: Price
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002946
+    m_Localized: Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002947
+    m_Localized: Size
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002948
+    m_Localized: Select
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002949
+    m_Localized: Submit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002950
+    m_Localized: Reset cursor
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002951
+    m_Localized: Toggle curosr
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002952
+    m_Localized: Tgoole virtual mouse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002953
+    m_Localized: Tutorial
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002954
+    m_Localized: Map
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002955
+    m_Localized: Double speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002956
+    m_Localized: Pause
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002957
+    m_Localized: Resume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 295938882002958
+    m_Localized: Title
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
