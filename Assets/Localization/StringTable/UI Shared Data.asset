@@ -23,6 +23,22 @@ MonoBehaviour:
     m_Key: ADD_TO_WISHLIST
     m_Metadata:
       m_Items: []
+  - m_Id: 283373745463296
+    m_Key: ENCYCLOPEDIA
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283596425256960
+    m_Key: BGM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283638863224832
+    m_Key: SE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283707754668032
+    m_Key: SEED
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -26,6 +26,22 @@ MonoBehaviour:
     m_Localized: "Don\u2019t forget to wishlist it!"
     m_Metadata:
       m_Items: []
+  - m_Id: 283373745463296
+    m_Localized: Encyclopedia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283596425256960
+    m_Localized: BGM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283638863224832
+    m_Localized: SE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283707754668032
+    m_Localized: SEED
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
