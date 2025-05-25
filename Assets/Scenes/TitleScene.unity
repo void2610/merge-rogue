@@ -202,6 +202,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1355233665}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 292190570930176
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Close
@@ -327,6 +331,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 381134786}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 292190570930176
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Close
@@ -813,7 +821,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 880.0001}
+  m_AnchoredPosition: {x: 0, y: 880.0009}
   m_SizeDelta: {x: 0, y: 1200}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &191197720
@@ -1554,6 +1562,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 304764103}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 292190570930176
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Close
@@ -3496,8 +3508,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1870222280}
   m_HandleRect: {fileID: 1870222279}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.6166642
+  m_Value: -0.0000015922215
+  m_Size: 0.61666495
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4430,7 +4442,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 230}
+  m_AnchoredPosition: {x: 0, y: 230.00037}
   m_SizeDelta: {x: 863, y: 600}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1181778950
@@ -6024,8 +6036,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 465917899}
   m_HandleRect: {fileID: 465917897}
   m_Direction: 2
-  m_Value: -0.0000001040372
-  m_Size: 0.26666564
+  m_Value: -0.000001075051
+  m_Size: 0.26490256
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:

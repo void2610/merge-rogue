@@ -39,6 +39,10 @@ MonoBehaviour:
     m_Key: SEED
     m_Metadata:
       m_Items: []
+  - m_Id: 292190570930176
+    m_Key: CLOSE
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

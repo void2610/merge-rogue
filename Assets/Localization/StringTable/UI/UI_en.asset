@@ -31,15 +31,19 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 283596425256960
-    m_Localized: BGM
+    m_Localized: Bgm
     m_Metadata:
       m_Items: []
   - m_Id: 283638863224832
-    m_Localized: SE
+    m_Localized: Se
     m_Metadata:
       m_Items: []
   - m_Id: 283707754668032
-    m_Localized: SEED
+    m_Localized: Seed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 292190570930176
+    m_Localized: Close
     m_Metadata:
       m_Items: []
   references:
