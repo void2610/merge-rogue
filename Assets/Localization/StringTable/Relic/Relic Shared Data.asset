@@ -16,7 +16,79 @@ MonoBehaviour:
   m_TableCollectionNameGuidString: e9771d71674dc4b10b0e4dba0a8939bc
   m_Entries:
   - m_Id: 18063810560
-    m_Key: TEST2
+    m_Key: FireRing_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964897267712
+    m_Key: Fukiya_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964905656320
+    m_Key: Fukiya_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964905656321
+    m_Key: Fukiya_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850624
+    m_Key: CreateBombWhenDamage_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850625
+    m_Key: CreateBombWhenDamage_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850626
+    m_Key: CreateBombWhenDamage_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850627
+    m_Key: AddElasticityToWall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850628
+    m_Key: AddElasticityToWall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850629
+    m_Key: AddElasticityToWall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850630
+    m_Key: AddMaxHealth_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850631
+    m_Key: AddMaxHealth_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850632
+    m_Key: AddMaxHealth_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850633
+    m_Key: AddMaxHealthWhenEnterStageEvent_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850634
+    m_Key: AddMaxHealthWhenEnterStageEvent_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850635
+    m_Key: AddMaxHealthWhenEnterStageEvent_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850636
+    m_Key: AddMaxHealthWhenSkipTreasure_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850637
+    m_Key: AddMaxHealthWhenSkipTreasure_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850638
+    m_Key: AddMaxHealthWhenSkipTreasure_F
     m_Metadata:
       m_Items: []
   m_Metadata:

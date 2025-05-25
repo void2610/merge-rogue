@@ -19,7 +19,81 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 18063810560
-    m_Localized: test_2
+    m_Localized: Ring of Fire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964897267712
+    m_Localized: Cursed Blow Dart
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964905656320
+    m_Localized: Take 10 damage when sorting the balls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964905656321
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850624
+    m_Localized: Unstable fuse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850625
+    m_Localized: Generates a bomb every time 20 damage is taken
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850626
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850627
+    m_Localized: Slime Wall
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850628
+    m_Localized: Walls and floors become bouncy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850629
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850630
+    m_Localized: Slime Piece
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850631
+    m_Localized: Increase maximum HP by 10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850632
+    m_Localized: Pieces that fall off when hitting slime. Apparently they can be
+      used as ingredients for medicine.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850633
+    m_Localized: Adventurer's Straight Sword
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850634
+    m_Localized: Increases max HP by 5 when entering an event space
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850635
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850636
+    m_Localized: Report of lost property
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850637
+    m_Localized: When skipping a treasure chest, increases the player's maximum HP
+      by 10.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 320964909850638
+    m_Localized: Do not take any items you find on the street.
     m_Metadata:
       m_Items: []
   references:
