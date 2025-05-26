@@ -34,17 +34,15 @@ public class StringTableCollectionList : ScriptableObject
                 collection,
                 sheetsExtension.Columns,
                 createUndo: true);
-
-            //後で実装するやつ
-            //StringTableCollection col = collection;
-            //LocalizeUtil.SetSmart(ref col, false);
         }
+        Debug.Log("Pull All completed.");
     }
 
     //シートを開くやつ
     public void OpenSheet()
     {
         GoogleSheets.OpenSheetInBrowser(spreadSheetID);
+        Debug.Log("Opened Google Sheets in browser.");
     }
 }
 

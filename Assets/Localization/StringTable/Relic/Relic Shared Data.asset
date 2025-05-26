@@ -99,6 +99,294 @@ MonoBehaviour:
     m_Key: AddMaxHealthWhenSkipTreasure_F
     m_Metadata:
       m_Items: []
+  - m_Id: 538573563486208
+    m_Key: AddOneToAllAttack_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 538573563486209
+    m_Key: AddOneToAllAttack_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 538573563486210
+    m_Key: AddOneToAllAttack_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 538573567680512
+    m_Key: AllAttackByTenCoin_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 538573567680513
+    m_Key: AllAttackByTenCoin_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 538573567680514
+    m_Key: AllAttackByTenCoin_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 538573567680515
+    m_Key: AllAttackWhenWeakAttack_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 538573567680516
+    m_Key: AllAttackWhenWeakAttack_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 538573567680517
+    m_Key: AllAttackWhenWeakAttack_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452210126848
+    m_Key: AttackWhenShield_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452210126849
+    m_Key: AttackWhenShield_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452210126850
+    m_Key: AttackWhenShield_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452210126851
+    m_Key: CreateBallWhenStatusEffect_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452210126852
+    m_Key: CreateBallWhenStatusEffect_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452210126853
+    m_Key: CreateBallWhenStatusEffect_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452210126854
+    m_Key: CreateTwoBallWhenSkip_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452210126855
+    m_Key: CreateTwoBallWhenSkip_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321152
+    m_Key: CreateTwoBallWhenSkip_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321153
+    m_Key: DoubleAttackWhenLowHealth_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321154
+    m_Key: DoubleAttackWhenLowHealth_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321155
+    m_Key: DoubleAttackWhenLowHealth_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321156
+    m_Key: DoubleCoinsWhenNearFullHealth_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321157
+    m_Key: DoubleCoinsWhenNearFullHealth_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321158
+    m_Key: DoubleCoinsWhenNearFullHealth_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321159
+    m_Key: HaisuiNoJin_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321160
+    m_Key: HaisuiNoJin_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321161
+    m_Key: HaisuiNoJin_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321162
+    m_Key: HealWhenDefeatEnemy_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321163
+    m_Key: HealWhenDefeatEnemy_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321164
+    m_Key: HealWhenDefeatEnemy_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321165
+    m_Key: HealWhenMergeLastBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321166
+    m_Key: HealWhenMergeLastBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321167
+    m_Key: HealWhenMergeLastBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321168
+    m_Key: HealWhenStatusEffect_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321169
+    m_Key: HealWhenStatusEffect_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321170
+    m_Key: HealWhenStatusEffect_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321171
+    m_Key: IceRing_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321172
+    m_Key: IceRing_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321173
+    m_Key: IceRing_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321174
+    m_Key: MergeAllWhenLowHealth_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321175
+    m_Key: MergeAllWhenLowHealth_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321176
+    m_Key: MergeAllWhenLowHealth_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321177
+    m_Key: MonsterEnergy_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321178
+    m_Key: MonsterEnergy_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321179
+    m_Key: MonsterEnergy_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321180
+    m_Key: NoConsumeCoinDuringBattle_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321181
+    m_Key: NoConsumeCoinDuringBattle_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 543452214321182
+    m_Key: NoConsumeCoinDuringBattle_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167040
+    m_Key: PerfectParfait_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167041
+    m_Key: PerfectParfait_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167042
+    m_Key: PerfectParfait_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167043
+    m_Key: PocketMoney_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167044
+    m_Key: PocketMoney_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167045
+    m_Key: PocketMoney_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167046
+    m_Key: ReverseAlchemy_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167047
+    m_Key: ReverseAlchemy_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167048
+    m_Key: ReverseAlchemy_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167049
+    m_Key: Santa_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167050
+    m_Key: Santa_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167051
+    m_Key: Santa_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167052
+    m_Key: ShockRing_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167053
+    m_Key: ShockRing_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167054
+    m_Key: ShockRing_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167055
+    m_Key: ShockTherapy_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167056
+    m_Key: ShockTherapy_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167057
+    m_Key: ShockTherapy_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167058
+    m_Key: SometimeCopyDropBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167059
+    m_Key: SometimeCopyDropBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167060
+    m_Key: SometimeCopyDropBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167061
+    m_Key: StrongBurnWhenManyBalls_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167062
+    m_Key: StrongBurnWhenManyBalls_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926818361344
+    m_Key: StrongBurnWhenManyBalls_F
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
