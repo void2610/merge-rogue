@@ -26,20 +26,7 @@ public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
         };
         return await task;
     }
-
-    protected override void Awake()
-    {
-        DontDestroyOnLoad(this.gameObject);
-        
-        // ロケールが変更されたらキャッシュを作り直す
-        LocalizationSettings.SelectedLocaleChanged += _ => PreloadAsync().Forget();
-    }
-
-    private void Start()
-    { 
-        PreloadAsync().Forget();
-    }
-
+    
     private async UniTask PreloadAsync()
     {
         _cache.Clear();
@@ -57,5 +44,16 @@ public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
         {
             _cache[entry.Key] = entry.GetLocalizedString();
         }
+    }
+
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(this.gameObject);
+        
+        // ロケールが変更されたらキャッシュを作り直す
+        LocalizationSettings.SelectedLocaleChanged += _ => PreloadAsync().Forget();
+        
+        PreloadAsync().Forget();
     }
 }
