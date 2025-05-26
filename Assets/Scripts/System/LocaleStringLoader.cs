@@ -12,7 +12,6 @@ public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
     /// <summary>キャッシュからキーに対応する文字列を返す。見つからなければ [key] を返す。</summary>
     public string Get(string key) => _cache.TryGetValue(key, out var val) ? val : $"[{key}]";
     
-    
     /// <summary>
     /// 非同期でLocalizationTableを取得する
     /// </summary>
@@ -56,10 +55,7 @@ public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
         var t = await GetLocalizationTable(tableType);
         foreach (var entry in t.Values)
         {
-            Debug.Log($"Adding entry: {entry.Key} = {entry.GetLocalizedString()}");
             _cache[entry.Key] = entry.GetLocalizedString();
         }
     }
-
-
 }
