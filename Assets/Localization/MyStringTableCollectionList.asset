@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b85b67dc899fd4d81a9206c4144976e4, type: 3}
   m_Name: MyStringTableCollectionList
   m_EditorClassIdentifier: 
-  spreadSheetID: "\u4EFB\u610F\u306ESpreadSheetID"
+  spreadSheetID: 1Ca0frHbyjuPpucqHPTSaIsCCQG1GhFJEvSnNqwPVi_U
   ssp: {fileID: 11400000, guid: 22fecd69b1d224dc1af20138bc2be6d7, type: 2}
   collections:
   - {fileID: 11400000, guid: c74766694046b445bb8fb077d528a53c, type: 2}

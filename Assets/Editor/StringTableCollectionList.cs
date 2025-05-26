@@ -6,6 +6,7 @@ using Sirenix.OdinInspector;
 #endif
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEditor.Localization;
 using UnityEditor.Localization.Plugins.Google;
 using UnityEngine;
@@ -14,15 +15,12 @@ using UnityEngine.Serialization;
 [CreateAssetMenu(menuName = "Localization拡張/StringCollectionList")]
 public class StringTableCollectionList : ScriptableObject
 {
-
     public string spreadSheetID = "任意のSpreadSheetID";
     public SheetsServiceProvider ssp;
     public List<StringTableCollection> collections = new List<StringTableCollection>();
 
-#if ODIN_INSPECTOR
-	[Button]
-#endif
-//シートをPullするやつ
+    // OdinのButtonアトリビュートは標準Editorでは使用しない
+    //シートをPullするやつ
     public void PullAll()
     {
         var gss = new GoogleSheets(ssp);
@@ -42,12 +40,39 @@ public class StringTableCollectionList : ScriptableObject
             //LocalizeUtil.SetSmart(ref col, false);
         }
     }
-#if ODIN_INSPECTOR
-	[Button]
-#endif
-//シートを開くやつ
+
+    //シートを開くやつ
     public void OpenSheet()
     {
         GoogleSheets.OpenSheetInBrowser(spreadSheetID);
     }
 }
+
+// カスタムエディタを作成し、標準のボタンを実装
+[CustomEditor(typeof(StringTableCollectionList))]
+public class StringTableCollectionListEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        // 元のInspectorを描画
+        DrawDefaultInspector();
+        
+        // ターゲットとなるScriptableObjectを取得
+        var myTarget = (StringTableCollectionList)target;
+        
+        // スペースを追加
+        EditorGUILayout.Space();
+        
+        // ボタンを表示
+        if (GUILayout.Button("Pull All"))
+        {
+            myTarget.PullAll();
+        }
+        
+        if (GUILayout.Button("Open Sheet"))
+        {
+            myTarget.OpenSheet();
+        }
+    }
+}
+
