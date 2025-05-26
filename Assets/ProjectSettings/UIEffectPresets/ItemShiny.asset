@@ -22,7 +22,7 @@ MonoBehaviour:
   m_SamplingIntensity: 0.5
   m_SamplingWidth: 1
   m_TransitionFilter: 4
-  m_TransitionRate: 0.27375597
+  m_TransitionRate: 0
   m_TransitionReverse: 0
   m_TransitionTex: {fileID: 2800000, guid: 944c3fa29663042a1bdc35546c2eda58, type: 3}
   m_TransitionTexScale: {x: 1, y: 1}
@@ -37,7 +37,7 @@ MonoBehaviour:
     m_Max: 1
   m_TransitionColorFilter: 2
   m_TransitionColor: {r: 1, g: 1, b: 1, a: 0.19607843}
-  m_TransitionColorGlow: 0
+  m_TransitionColorGlow: 1
   m_TransitionPatternReverse: 0
   m_TransitionAutoPlaySpeed: 0
   m_TargetMode: 0

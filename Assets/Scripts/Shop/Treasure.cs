@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
-using Coffee.UIEffects;
 
 public class Treasure : MonoBehaviour
 {
@@ -104,9 +104,8 @@ public class Treasure : MonoBehaviour
         Utils.RemoveAllEventFromObject(g);
         var image = g.transform.Find("Icon").GetComponent<Image>();
         image.sprite = relic.sprite;
-        // UIEffectの色を変更
-        var uiEffect = g.transform.Find("Icon").GetComponent<UIEffect>();
-        uiEffect.transitionColor = relic.rarity.GetColor(true);
+        // UIEffectを適用
+        image.GetComponent<ImageShinyEffect>().SetColor(relic.rarity);
         var button = g.GetComponent<Button>();
         if (button)
         {

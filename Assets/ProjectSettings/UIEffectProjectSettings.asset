@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: UIEffectProjectSettings
   m_EditorClassIdentifier: 
   m_RuntimePresets: []
-  m_RuntimePresetsV2: []
+  m_RuntimePresetsV2:
+  - {fileID: 11400000, guid: 1c7731fe8c42e47a392060b702a20980, type: 2}
   m_UseHDRColorPicker: 1
   m_ShaderVariantCollection: {fileID: 0}
   m_ShaderVariantRegistry:
