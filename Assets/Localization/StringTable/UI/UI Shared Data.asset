@@ -127,6 +127,10 @@ MonoBehaviour:
     m_Key: CONFIRM_UPGRADE
     m_Metadata:
       m_Items: []
+  - m_Id: 946912126558208
+    m_Key: LOCKED_IN_DEMO
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

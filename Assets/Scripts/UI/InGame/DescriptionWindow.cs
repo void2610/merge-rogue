@@ -223,13 +223,13 @@ public class DescriptionWindow : MonoBehaviour
     
     private void SetBallTexts(BallData b, int level)
     {
-        nameText.text = b.displayName;
+        nameText.text = b.GetDisplayName();
         nameText.color = b.rarity.GetColor();
         
         #if DEMO_PLAY
             if (!b.availableDemo)
             {
-                descriptionText.text = b.descriptions[level] + "\n" + "(デモ版ではロック中)";
+                descriptionText.text = $"{b.GetDescription()} \n ({LocalizeStringLoader.Instance.Get("LOCKED_IN_DEMO")})"; 
                 flavorText.text = "?????";
                 statusTexts[0].text = "?????";
                 statusTexts[1].text = "?????";
@@ -238,8 +238,8 @@ public class DescriptionWindow : MonoBehaviour
             }
         #endif
         
-        descriptionText.text = b.descriptions[level];
-        flavorText.text = b.flavorText;
+        descriptionText.text = b.GetDescription();
+        flavorText.text = b.GetFlavorText();
         statusTexts[0].text = "level: " + (level + 1);
         statusTexts[0].alpha = 1;
         statusTexts[1].text = "attack: " + b.attacks[level];
@@ -256,7 +256,7 @@ public class DescriptionWindow : MonoBehaviour
         #if DEMO_PLAY
             if (!r.availableDemo)
             {
-                descriptionText.text = r.GetDescription()　+ "\n" + "(デモ版ではロック中)";
+                descriptionText.text = $"{r.GetDescription()} \n ({LocalizeStringLoader.Instance.Get("LOCKED_IN_DEMO")})";
                 flavorText.text = "?????";
                 statusTexts[0].text = "?????";
                 statusTexts[1].text = "?????";

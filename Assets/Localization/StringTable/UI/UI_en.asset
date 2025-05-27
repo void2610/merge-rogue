@@ -131,6 +131,10 @@ MonoBehaviour:
     m_Localized: Do you want to upgrade your ball?
     m_Metadata:
       m_Items: []
+  - m_Id: 946912126558208
+    m_Localized: Locked in the demo version.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
