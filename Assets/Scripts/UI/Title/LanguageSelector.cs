@@ -1,36 +1,31 @@
 using UnityEngine;
 using UnityEngine.Localization.Settings;
-using UnityEngine.UI;
 using TMPro;
+using Cysharp.Threading.Tasks;
 
 public class LanguageSelector : MonoBehaviour
 {
     [SerializeField] private TMP_Dropdown languageDropdown;
 
-    private void Start()
+    private async void Start()
     {
-        // ドロップダウンに言語名を追加
+        // ローカライズシステムの初期化を待つ
+        await LocalizationSettings.InitializationOperation.Task;
+
+        // UIを構築
         languageDropdown.ClearOptions();
         var options = new System.Collections.Generic.List<string>();
 
         foreach (var locale in LocalizationSettings.AvailableLocales.Locales)
-        {
-            options.Add(locale.Identifier.CultureInfo.NativeName); // ex: 日本語, English
-        }
+            options.Add(locale.Identifier.CultureInfo.NativeName);
 
         languageDropdown.AddOptions(options);
-
-        // 現在の言語を初期値に設定
-        var currentLocale = LocalizationSettings.SelectedLocale;
-        int index = LocalizationSettings.AvailableLocales.Locales.IndexOf(currentLocale);
-        languageDropdown.value = index;
-
-        languageDropdown.onValueChanged.AddListener(OnLanguageChanged);
+        languageDropdown.value = LocalizationSettings.AvailableLocales.Locales.IndexOf(LocalizationSettings.SelectedLocale);
+        languageDropdown.onValueChanged.AddListener(OnChanged);
     }
 
-    private void OnLanguageChanged(int index)
+    private void OnChanged(int idx)
     {
-        var selectedLocale = LocalizationSettings.AvailableLocales.Locales[index];
-        LocalizationSettings.SelectedLocale = selectedLocale;
+        LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[idx];
     }
 }

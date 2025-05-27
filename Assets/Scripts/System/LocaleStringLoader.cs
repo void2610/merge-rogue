@@ -40,9 +40,13 @@ public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
     private async UniTask AddTable(LocalizationTableType tableType)
     {
         var t = await GetLocalizationTable(tableType);
+        // StringDatabase を介せば WaitForCompletion を回避できる
+        var db = LocalizationSettings.StringDatabase;
         foreach (var entry in t.Values)
         {
-            _cache[entry.Key] = entry.GetLocalizedString();
+            // 非同期で評価
+            var str = await db.GetLocalizedStringAsync(t.TableCollectionName, entry.Key).Task;
+            _cache[entry.Key] = string.IsNullOrEmpty(str) ? $"[{entry.Key}]" : str;
         }
     }
 
