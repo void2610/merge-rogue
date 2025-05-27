@@ -46,14 +46,11 @@ public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
         }
     }
 
-    protected override void Awake()
+    private void Start()
     {
-        base.Awake();
         DontDestroyOnLoad(this.gameObject);
-        
         // ロケールが変更されたらキャッシュを作り直す
         LocalizationSettings.SelectedLocaleChanged += _ => PreloadAsync().Forget();
-        
         PreloadAsync().Forget();
     }
 }

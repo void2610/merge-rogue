@@ -31,10 +31,10 @@ public class ConfirmationDialog : MonoBehaviour
         
         var text = state switch
         {
-            InventoryUI.InventoryUIState.Replace => "ボールの置き換えを行いますか？",
-            InventoryUI.InventoryUIState.Swap => "ボール位置の入れ替えを行いますか？",
-            InventoryUI.InventoryUIState.Remove => "ボールを削除しますか？",
-            InventoryUI.InventoryUIState.Upgrade => "ボールの強化を行いますか？",
+            InventoryUI.InventoryUIState.Replace => LocalizeStringLoader.Instance.Get("COMFIRM_REPLACE"),
+            InventoryUI.InventoryUIState.Swap => LocalizeStringLoader.Instance.Get("COMFIRM_SWAP"),
+            InventoryUI.InventoryUIState.Remove => LocalizeStringLoader.Instance.Get("COMFIRM_REMOVE"),
+            InventoryUI.InventoryUIState.Upgrade => LocalizeStringLoader.Instance.Get("CONFIRM_UPGRADE"),
             _ => ""
         };
         descriptionText.text = text;
@@ -82,11 +82,11 @@ public class ConfirmationDialog : MonoBehaviour
     private void SetBallTexts(GameObject g, BallData b, int level, bool highlightDifferences = false, BallData comparisonBall = null, int comparisonLevel = 0)
     {
         var nameText = g.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
-        nameText.text = b.displayName;
+        nameText.text = b.GetDisplayName();
         nameText.color = b.rarity.GetColor();
 
-        g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = b.descriptions[level];
-        g.transform.Find("FlavorText").GetComponent<TextMeshProUGUI>().text = b.flavorText;
+        g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = b.GetDescription();
+        g.transform.Find("FlavorText").GetComponent<TextMeshProUGUI>().text = b.GetFlavorText();
 
         var levelText = g.transform.Find("Status").Find("Status1").GetComponent<TextMeshProUGUI>();
         var attackText = g.transform.Find("Status").Find("Status2").GetComponent<TextMeshProUGUI>();

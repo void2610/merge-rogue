@@ -16,4 +16,11 @@ public class BallData : ScriptableObject
     public List<float> sizes = new (){1, 1, 1};
     public List<float> weights = new (){1, 1, 1};
     public bool availableDemo = false;
+    
+    // ローカライズされた名前を取得
+    public string GetDisplayName() => LocalizeStringLoader.Instance.Get($"{className}_N");
+
+    public string GetDescription() => LocalizeStringLoader.Instance.Get($"{className}_D");
+
+    public string GetFlavorText() => LocalizeStringLoader.Instance.Get($"{className}_F");
 }
