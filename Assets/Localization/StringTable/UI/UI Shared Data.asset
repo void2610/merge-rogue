@@ -103,6 +103,30 @@ MonoBehaviour:
     m_Key: TITLE
     m_Metadata:
       m_Items: []
+  - m_Id: 936249484369920
+    m_Key: RETRY
+    m_Metadata:
+      m_Items: []
+  - m_Id: 936893494583296
+    m_Key: THANKS_FOR_PLAYING
+    m_Metadata:
+      m_Items: []
+  - m_Id: 937891025903616
+    m_Key: COMFIRM_REPLACE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 937891025903617
+    m_Key: COMFIRM_SWAP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 937891025903618
+    m_Key: CONFIRM_REMOVE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 937891025903619
+    m_Key: CONFIRM_UPGRADE
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

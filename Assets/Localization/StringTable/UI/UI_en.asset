@@ -106,6 +106,31 @@ MonoBehaviour:
     m_Localized: Title
     m_Metadata:
       m_Items: []
+  - m_Id: 936249484369920
+    m_Localized: Retry
+    m_Metadata:
+      m_Items: []
+  - m_Id: 936893494583296
+    m_Localized: Thank you for playing this far! Please wait for the release of the
+      full version to continue!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 937891025903616
+    m_Localized: Do you want to switch balls?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 937891025903617
+    m_Localized: Should you switch ball positions?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 937891025903618
+    m_Localized: Do you want to remove the ball?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 937891025903619
+    m_Localized: Do you want to upgrade your ball?
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

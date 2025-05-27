@@ -691,13 +691,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 403790022}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 295938882002957
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Resume
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 12
+      value: 14.75
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -786,14 +790,6 @@ PrefabInstance:
     - target: {fileID: 5528164159451888881, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Name
       value: ResumeButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -4285,13 +4281,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1897929368}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 295938882002958
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Title
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 12
+      value: 14.75
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -4380,14 +4380,6 @@ PrefabInstance:
     - target: {fileID: 5528164159451888881, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Name
       value: TitleButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -5645,13 +5637,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 403790022}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 295938882002958
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Title
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 12
+      value: 14.75
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -5740,14 +5736,6 @@ PrefabInstance:
     - target: {fileID: 5528164159451888881, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Name
       value: TitleButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -17204,13 +17192,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1477400321}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 936249484369920
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Retry
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 12
+      value: 14.75
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -17299,14 +17291,6 @@ PrefabInstance:
     - target: {fileID: 5528164159451888881, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Name
       value: RetryButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -22117,13 +22101,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1477400321}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 295938882002958
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Title
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 12
+      value: 14.75
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -22212,14 +22200,6 @@ PrefabInstance:
     - target: {fileID: 5528164159451888881, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Name
       value: TitleButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -25156,7 +25136,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1897929367}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -25177,6 +25157,7 @@ GameObject:
   - component: {fileID: 1903057848}
   - component: {fileID: 1903057847}
   - component: {fileID: 1903057846}
+  - component: {fileID: 1903057849}
   m_Layer: 6
   m_Name: Text
   m_TagString: Untagged
@@ -25201,7 +25182,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 15}
-  m_SizeDelta: {x: 700, y: 100}
+  m_SizeDelta: {x: 700, y: 170}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1903057846
 MonoBehaviour:
@@ -25265,12 +25246,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30
+  m_fontSize: 39.2
   m_fontSizeBase: 30
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 15
+  m_fontSizeMax: 50
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -25317,6 +25298,46 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1903057844}
   m_CullTransparentMesh: 1
+--- !u!114 &1903057849
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1903057844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:7fa29c7d37b40404d85e0afeb5581314
+    m_TableEntryReference:
+      m_KeyId: 936893494583296
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1903057847}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &1903482897 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5528164159451888881, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
