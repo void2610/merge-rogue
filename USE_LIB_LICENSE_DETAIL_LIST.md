@@ -1,7 +1,7 @@
 このUnityプロジェクトが利用しているライブラリ一覧(詳細)です。
 
 
-更新日時：2025/05/23_14:17:46
+更新日時：2025/05/27_12:38:48
 
 
 -------
@@ -323,6 +323,68 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 The MIT License (MIT)
 
 Copyright (c) 2019 Yoshifumi Kawai / Cysharp, Inc.
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+```
+
+---------------------------------------
+---------------------------------------
+---------------------------------------
+
+
+-------
+## unity-toolbar-extender
+### メモ１：
+
+```
+
+```
+
+
+
+* 追加日：2024/12/06_11:53:34
+* ライセンス：MIT
+* 料金タイプ：Free
+* ライセンス表記が必要？：True
+* チームメンバーごとにライセンス購入が必要か？：False
+* チームメンバー全員が把握する必要があるライブラリか？：False
+
+
+* バージョン：None
+
+
+* WebURL1：https://github.com/marijnz/unity-toolbar-extender
+* WebURL2：
+* 使用しているライブラリ
+
+
+* カスタム１：
+* カスタム2：
+
+### ライセンス表記内容：
+
+```
+
+MIT License
+
+Copyright (c) 2018 Marijn Zwemmer
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

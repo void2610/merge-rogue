@@ -1,7 +1,7 @@
 このUnityプロジェクトが利用しているライブラリ一覧です。
 
 
-更新日時：2025/05/23_14:17:46
+更新日時：2025/05/27_12:38:48
 
 | Name  | License Type | Charge Type | URL1 | URL2 | Memo1 | Use Lib | Add Date |
 | -------------  | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
@@ -11,6 +11,7 @@
 | R3 | MIT | Free | https://github.com/Cysharp/R3 |  |  |  | 2024/12/06_10:05:44 |
 | UI Effect | MIT | Free | https://github.com/mob-sakai/UIEffect |  |  |  | 2024/12/06_11:53:34 |
 | UniTask | MIT | Unknown |  |  |  |  | 2025/01/05_22:01:14 |
+| unity-toolbar-extender | MIT | Free | https://github.com/marijnz/unity-toolbar-extender |  |  |  | 2024/12/06_11:53:34 |
 | unityroom-client-library | MIT | Free | https://github.com/naichilab/unityroom-client-library |  |  |  | 2024/12/06_10:05:44 |
 | Unmask For UGUI | MIT | Free | https://github.com/mob-sakai/UnmaskForUGUI |  |  |  | 2024/12/06_11:53:34 |
 | uPalette | MIT | Free | https://github.com/Haruma-K/uPalette |  |  |  | 2024/12/06_11:53:34 |
