@@ -55,7 +55,10 @@ public class ConfirmationDialog : MonoBehaviour
                 rightBallImage.sprite = ball2.sprite;
                 break;
             case InventoryUI.InventoryUIState.Remove:
+                ResetBallTexts(rightWindow);
                 SetBallTexts(leftWindow, ball1, level);
+                leftBallImage.sprite = ball1.sprite;
+                rightBallImage.sprite = null; // 右側のボールは表示しない
                 break;
             case InventoryUI.InventoryUIState.Upgrade:
                 SetBallTexts(leftWindow, ball1, level);
@@ -141,6 +144,24 @@ public class ConfirmationDialog : MonoBehaviour
             else if (b.sizes[level] < compareSize)
                 sizeText.color = Color.green;
         }
+    }
+    
+    private void ResetBallTexts(GameObject g)
+    {
+        var nameText = g.transform.Find("NameText").GetComponent<TextMeshProUGUI>();
+        nameText.text = " ";
+        nameText.color = _defaultTextColor;
+
+        g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = " ";
+        g.transform.Find("FlavorText").GetComponent<TextMeshProUGUI>().text = " ";
+
+        var levelText = g.transform.Find("Status").Find("Status1").GetComponent<TextMeshProUGUI>();
+        var attackText = g.transform.Find("Status").Find("Status2").GetComponent<TextMeshProUGUI>();
+        var sizeText = g.transform.Find("Status").Find("Status3").GetComponent<TextMeshProUGUI>();
+
+        levelText.text = "level: ";
+        attackText.text = "attack: ";
+        sizeText.text = "size: ";
     }
     
     private static string GetColoredDifference(string beforeText, string afterText)
