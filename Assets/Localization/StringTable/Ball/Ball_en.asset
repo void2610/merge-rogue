@@ -19,7 +19,233 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 13307469824
-    m_Localized: test
+    m_Localized: Whole ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785637416960
+    m_Localized: All-out attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777088
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777089
+    m_Localized: Split Ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777090
+    m_Localized: Generate random balls when merging.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777091
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777092
+    m_Localized: Big Ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777093
+    m_Localized: Normal Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777094
+    m_Localized: huge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777095
+    m_Localized: Bomb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777096
+    m_Localized: When merging, it attacks by destroying nearby balls.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777097
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777098
+    m_Localized: Clear Ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777099
+    m_Localized: Reduces all abnormal conditions inflicted on the player.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777100
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777101
+    m_Localized: Critical Ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777102
+    m_Localized: Occasionally doubles attack power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777103
+    m_Localized: gambler
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971392
+    m_Localized: Delay Bomb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971393
+    m_Localized: Explodes after 3 turns
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971394
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971395
+    m_Localized: Delayed growth ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971396
+    m_Localized: After 2 turns, it will change into a ball of a higher rank.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971397
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971398
+    m_Localized: The nuisance ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971399
+    m_Localized: They disappear if a merge occurs nearby.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971400
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971401
+    m_Localized: Heal Ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971402
+    m_Localized: Recovers player's HP by attack power * ball level * ball rank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971403
+    m_Localized: Don't use the Red Cross in games either.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971404
+    m_Localized: Sorcerer's Orb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971405
+    m_Localized: Balls of the same rank will not merge even if they come into contact
+      with each other. Deals heavy damage to random enemies!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971406
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971407
+    m_Localized: Normal ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971408
+    m_Localized: Normal Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971409
+    m_Localized: It's a ball!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971410
+    m_Localized: Passive Attack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971411
+    m_Localized: Attack one enemy when merge ends
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971412
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971413
+    m_Localized: Red Bomb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971414
+    m_Localized: Explodes after 3 turns
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971415
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971416
+    m_Localized: Shield Ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971417
+    m_Localized: Gives the player a stack of shields equal to attack power * ball
+      level * ball rank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971418
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971419
+    m_Localized: Thunderball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971420
+    m_Localized: Normal attack. When merging, merges up to two nearby balls.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971421
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971422
+    m_Localized: Skip Ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971423
+    m_Localized: When merging, it generates a ball two ranks higher.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971424
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971425
+    m_Localized: Chibi Ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971426
+    m_Localized: Attack the rearmost enemy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971427
+    m_Localized: Small body, big power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971428
+    m_Localized: Wild Ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971429
+    m_Localized: You can merge with any rank of ball.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971430
+    m_Localized: ---
     m_Metadata:
       m_Items: []
   references:

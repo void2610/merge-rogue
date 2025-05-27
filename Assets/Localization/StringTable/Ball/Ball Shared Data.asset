@@ -16,7 +16,231 @@ MonoBehaviour:
   m_TableCollectionNameGuidString: 06b8519214cdb461b98757bb98e6d786
   m_Entries:
   - m_Id: 13307469824
-    m_Key: TEST
+    m_Key: AllAttackBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785637416960
+    m_Key: AllAttackBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777088
+    m_Key: AllAttackBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777089
+    m_Key: BallCreateBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777090
+    m_Key: BallCreateBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777091
+    m_Key: BallCreateBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777092
+    m_Key: BigBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777093
+    m_Key: BigBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777094
+    m_Key: BigBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777095
+    m_Key: BombBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777096
+    m_Key: BombBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777097
+    m_Key: BombBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777098
+    m_Key: ClearBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777099
+    m_Key: ClearBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777100
+    m_Key: ClearBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777101
+    m_Key: CriticalBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777102
+    m_Key: CriticalBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785666777103
+    m_Key: CriticalBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971392
+    m_Key: DelayBombBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971393
+    m_Key: DelayBombBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971394
+    m_Key: DelayBombBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971395
+    m_Key: DelayGrowBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971396
+    m_Key: DelayGrowBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971397
+    m_Key: DelayGrowBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971398
+    m_Key: DisturbBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971399
+    m_Key: DisturbBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971400
+    m_Key: DisturbBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971401
+    m_Key: HealBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971402
+    m_Key: HealBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971403
+    m_Key: HealBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971404
+    m_Key: MagiciansOrb_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971405
+    m_Key: MagiciansOrb_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971406
+    m_Key: MagiciansOrb_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971407
+    m_Key: NormalBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971408
+    m_Key: NormalBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971409
+    m_Key: NormalBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971410
+    m_Key: PassiveAttackBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971411
+    m_Key: PassiveAttackBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971412
+    m_Key: PassiveAttackBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971413
+    m_Key: RedBombBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971414
+    m_Key: RedBombBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971415
+    m_Key: RedBombBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971416
+    m_Key: ShieldBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971417
+    m_Key: ShieldBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971418
+    m_Key: ShieldBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971419
+    m_Key: ShockBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971420
+    m_Key: ShockBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971421
+    m_Key: ShockBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971422
+    m_Key: SkipBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971423
+    m_Key: SkipBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971424
+    m_Key: SkipBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971425
+    m_Key: SmallBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971426
+    m_Key: SmallBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971427
+    m_Key: SmallBall_F
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971428
+    m_Key: WildBall_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971429
+    m_Key: WildBall_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 900785670971430
+    m_Key: WildBall_F
     m_Metadata:
       m_Items: []
   m_Metadata:
