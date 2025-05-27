@@ -2526,7 +2526,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 225990486}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -2936,13 +2936,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 425950019}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 960443978866688
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Rest
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 20
+      value: 23.95
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -3036,14 +3040,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0.5999999
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 4.7
-      objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_Mode
       value: 4
@@ -3102,6 +3098,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 109174366}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 295938882002944
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Skip
@@ -11279,6 +11279,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1607858723}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 295938882002944
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Skip
@@ -13221,6 +13225,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 425950019}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 295938882002944
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Skip
@@ -15888,13 +15896,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 425950019}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 960443983060992
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Organise
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 17
+      value: 23.5
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -15987,14 +15999,6 @@ PrefabInstance:
     - target: {fileID: 5528164159451888881, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_IsActive
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: -2.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 3.1999998
       objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -17375,10 +17379,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1778138145}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -3.75}
-  m_SizeDelta: {x: 0, y: -7.5}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -13}
+  m_SizeDelta: {x: 150, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1112862861
 MonoBehaviour:
@@ -17442,15 +17446,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 13
-  m_fontSizeBase: 13
+  m_fontSize: 10
+  m_fontSizeBase: 10
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
   m_HorizontalAlignment: 2
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -17654,9 +17658,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1941433900}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 961212807372800
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Remove
+      objectReference: {fileID: 0}
+    - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_fontSize
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_fontSizeMax
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -17748,7 +17764,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 0.00000047683716
+      value: -7
       objectReference: {fileID: 0}
     - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -17756,7 +17772,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 6.5
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -20314,10 +20330,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1118484181}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -1.5}
-  m_SizeDelta: {x: 0, y: -3}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -1}
+  m_SizeDelta: {x: 50, y: 12}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1369198028
 MonoBehaviour:
@@ -20381,8 +20397,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 8
-  m_fontSizeBase: 8
+  m_fontSize: 7
+  m_fontSizeBase: 7
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -23899,6 +23915,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 109174366}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 961162203095040
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Upgrade Ball
@@ -23997,11 +24017,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 7
+      value: -12
       objectReference: {fileID: 0}
     - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 3.5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6280535793652605157, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Enabled
@@ -25266,7 +25286,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45.15
+  m_fontSize: 46.65
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -25692,7 +25712,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1941433899}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -33056,6 +33076,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1941433900}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 295938882002944
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Skip

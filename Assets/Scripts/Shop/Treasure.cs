@@ -38,9 +38,9 @@ public class Treasure : MonoBehaviour
         
         descriptionText.text = type switch
         {
-            TreasureType.Normal => "宝箱を見つけた！",
-            TreasureType.Initial => "「力を与えよう...」",
-            TreasureType.Boss => "ボスを撃破した！",
+            TreasureType.Normal => LocalizeStringLoader.Instance.Get("TREASURE_NORMAL"),
+            TreasureType.Initial => LocalizeStringLoader.Instance.Get("TREASURE_INITIAL"),
+            TreasureType.Boss => LocalizeStringLoader.Instance.Get("TREASURE_BOSS"),
             _ => "Treasure"
         };
         descriptionText.ShowTextTween().Forget();

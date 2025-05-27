@@ -155,6 +155,34 @@ MonoBehaviour:
     m_Localized: Ball count
     m_Metadata:
       m_Items: []
+  - m_Id: 959732146757632
+    m_Localized: You found a treasure chest!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 959732146757633
+    m_Localized: '"Let me give you power..."'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 959732146757634
+    m_Localized: Defeated the boss!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 960443978866688
+    m_Localized: Rest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 960443983060992
+    m_Localized: Organise
+    m_Metadata:
+      m_Items: []
+  - m_Id: 961162203095040
+    m_Localized: Upgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 961212807372800
+    m_Localized: Remove
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

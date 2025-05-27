@@ -151,6 +151,34 @@ MonoBehaviour:
     m_Key: BALL_COUNT
     m_Metadata:
       m_Items: []
+  - m_Id: 959732146757632
+    m_Key: TREASURE_NORMAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 959732146757633
+    m_Key: TREASURE_INITIAL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 959732146757634
+    m_Key: TREASURE_BOSS
+    m_Metadata:
+      m_Items: []
+  - m_Id: 960443978866688
+    m_Key: REST
+    m_Metadata:
+      m_Items: []
+  - m_Id: 960443983060992
+    m_Key: ORGANISE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 961162203095040
+    m_Key: UPGRADE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 961212807372800
+    m_Key: REMOVE
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
