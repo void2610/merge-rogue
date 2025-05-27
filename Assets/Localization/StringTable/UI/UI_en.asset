@@ -135,6 +135,26 @@ MonoBehaviour:
     m_Localized: Locked in the demo version.
     m_Metadata:
       m_Items: []
+  - m_Id: 950461690535936
+    m_Localized: Confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 950461694730240
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 950969335537664
+    m_Localized: Level up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 950969335537665
+    m_Localized: Width
+    m_Metadata:
+      m_Items: []
+  - m_Id: 950969335537666
+    m_Localized: Ball count
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

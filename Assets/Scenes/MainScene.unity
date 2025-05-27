@@ -1681,6 +1681,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 225990488}
     m_Modifications:
+    - target: {fileID: 995279437564181115, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 950969335537666
+      objectReference: {fileID: 0}
+    - target: {fileID: 995279437564181115, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:7fa29c7d37b40404d85e0afeb5581314
+      objectReference: {fileID: 0}
     - target: {fileID: 1298476364234382044, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
       propertyPath: m_Navigation.m_Mode
       value: 4
@@ -2518,7 +2526,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 225990486}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -13942,9 +13950,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2057808263}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 950461694730240
+      objectReference: {fileID: 0}
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:7fa29c7d37b40404d85e0afeb5581314
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Cencel
+      objectReference: {fileID: 0}
+    - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_fontSize
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -14029,14 +14049,6 @@ PrefabInstance:
     - target: {fileID: 5528164159451888881, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Name
       value: CancelButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -18578,9 +18590,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 2057808263}
     m_Modifications:
+    - target: {fileID: 132237709803143133, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 950461690535936
+      objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_text
       value: Confirm
+      objectReference: {fileID: 0}
+    - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
+      propertyPath: m_fontSize
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -18665,14 +18685,6 @@ PrefabInstance:
     - target: {fileID: 5528164159451888881, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Name
       value: ConfirmButton
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5584106553340269856, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Navigation.m_Mode
@@ -23802,6 +23814,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 225990488}
     m_Modifications:
+    - target: {fileID: 995279437564181115, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 950969335537665
+      objectReference: {fileID: 0}
+    - target: {fileID: 995279437564181115, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:7fa29c7d37b40404d85e0afeb5581314
+      objectReference: {fileID: 0}
     - target: {fileID: 1298476364234382044, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
       propertyPath: m_Navigation.m_Mode
       value: 4
@@ -25246,7 +25266,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 39.2
+  m_fontSize: 45.15
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -26656,7 +26676,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2057808262}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
@@ -33512,6 +33532,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 225990488}
     m_Modifications:
+    - target: {fileID: 995279437564181115, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
+      propertyPath: m_StringReference.m_TableEntryReference.m_KeyId
+      value: 295938882002946
+      objectReference: {fileID: 0}
+    - target: {fileID: 995279437564181115, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
+      propertyPath: m_StringReference.m_TableReference.m_TableCollectionName
+      value: GUID:7fa29c7d37b40404d85e0afeb5581314
+      objectReference: {fileID: 0}
     - target: {fileID: 1298476364234382044, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
       propertyPath: m_Navigation.m_Mode
       value: 4

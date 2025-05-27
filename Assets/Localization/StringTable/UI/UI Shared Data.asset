@@ -131,6 +131,26 @@ MonoBehaviour:
     m_Key: LOCKED_IN_DEMO
     m_Metadata:
       m_Items: []
+  - m_Id: 950461690535936
+    m_Key: COMFIRM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 950461694730240
+    m_Key: CANCEL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 950969335537664
+    m_Key: LEVEL_UP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 950969335537665
+    m_Key: WIDTH
+    m_Metadata:
+      m_Items: []
+  - m_Id: 950969335537666
+    m_Key: BALL_COUNT
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
