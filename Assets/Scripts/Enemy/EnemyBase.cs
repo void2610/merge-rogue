@@ -188,6 +188,7 @@ public class EnemyBase : MonoBehaviour, IEntity
             var c = Instantiate(coinPrefab).GetComponent<Coin>();
             c?.SetUp(this.transform.position.x);
         }
+        GameManager.Instance.AddCoin(Coin);
         
         _hpSliderCanvasGroup.DOFade(0, 0.5f).SetLink(gameObject);
         
@@ -226,6 +227,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         Health = MaxHealth;
         Attack = (int)(d.attack * (Magnification * 0.3f));
         Exp = d.exp + (int)(Magnification);
+        Coin = d.coin + (int)(Magnification);
         ActionInterval = d.interval;
         
         // スプライトアニメーションを設定
