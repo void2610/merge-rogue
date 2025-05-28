@@ -105,7 +105,7 @@ public class Treasure : MonoBehaviour
         var image = g.transform.Find("Icon").GetComponent<Image>();
         image.sprite = relic.sprite;
         // UIEffectを適用
-        image.GetComponent<ImageShinyEffect>().SetColor(relic.rarity);
+        image.GetComponent<ItemUIEffect>().SetColor(relic.rarity);
         var button = g.GetComponent<Button>();
         if (button)
         {

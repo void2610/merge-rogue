@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 4627845207379264304}
   - component: {fileID: 2389304837437767855}
   - component: {fileID: 2661135996180056824}
-  - component: {fileID: 3626595004549541383}
+  - component: {fileID: 3008553475774100759}
   m_Layer: 5
   m_Name: RelicImage
   m_TagString: Untagged
@@ -303,7 +303,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3626595004549541383
+--- !u!114 &3008553475774100759
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -312,12 +312,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 2516330493889282034}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
+  m_Script: {fileID: 11500000, guid: c447a82d1fd4c41d18ac4886865a2e02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 5, y: -5}
-  m_UseGraphicAlpha: 1
 --- !u!1 &3951835470337289908
 GameObject:
   m_ObjectHideFlags: 0

@@ -39,7 +39,7 @@ MonoBehaviour:
   m_TransitionColor: {r: 1, g: 1, b: 1, a: 0.19607843}
   m_TransitionColorGlow: 1
   m_TransitionPatternReverse: 0
-  m_TransitionAutoPlaySpeed: 0
+  m_TransitionAutoPlaySpeed: 1
   m_TargetMode: 0
   m_TargetColor: {r: 1, g: 1, b: 1, a: 1}
   m_TargetRange: 1
@@ -47,14 +47,14 @@ MonoBehaviour:
   m_BlendType: 1
   m_SrcBlendMode: 1
   m_DstBlendMode: 10
-  m_ShadowMode: 0
-  m_ShadowDistance: {x: 1, y: -1}
+  m_ShadowMode: 1
+  m_ShadowDistance: {x: 3, y: -3}
   m_ShadowIteration: 1
-  m_ShadowFade: 0.9
+  m_ShadowFade: 1
   m_ShadowMirrorScale: 0.5
   m_ShadowBlurIntensity: 1
   m_ShadowColorFilter: 4
-  m_ShadowColor: {r: 1, g: 1, b: 1, a: 1}
+  m_ShadowColor: {r: 0.05882353, g: 0.05882353, b: 0.05882353, a: 1}
   m_ShadowColorGlow: 0
   m_GradationMode: 0
   m_GradationIntensity: 1
@@ -97,9 +97,9 @@ MonoBehaviour:
   m_GradationScale: 1
   m_GradationRotation: 0
   m_EdgeMode: 0
-  m_EdgeWidth: 0.5
-  m_EdgeColorFilter: 4
-  m_EdgeColor: {r: 1, g: 1, b: 1, a: 1}
+  m_EdgeWidth: 0.001
+  m_EdgeColorFilter: 1
+  m_EdgeColor: {r: 0, g: 0, b: 0, a: 1}
   m_EdgeColorGlow: 0
   m_EdgeShinyRate: 0.5
   m_EdgeShinyWidth: 0.5

@@ -101,7 +101,7 @@ public class Shop : MonoBehaviour
         priceText.text = price.ToString();
         var icon = g.transform.Find("Icon").GetComponent<Image>();
         icon.sprite = ball.sprite;
-        icon.GetComponent<ImageShinyEffect>().SetColor(ball.rarity);
+        icon.GetComponent<ItemUIEffect>().SetColor(ball.rarity);
         var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
         ballImage.color = new Color(0.6f, 0.6f, 0.6f, 1);
         var button = g.GetComponent<Button>();
@@ -135,7 +135,7 @@ public class Shop : MonoBehaviour
         
         var icon = g.transform.Find("Icon").GetComponent<Image>();
         icon.sprite = relic.sprite;
-        icon.GetComponent<ImageShinyEffect>().SetColor(relic.rarity);
+        icon.GetComponent<ItemUIEffect>().SetColor(relic.rarity);
         // ボールの画像を透明にする
         var ballImage = g.transform.Find("BallBase").GetComponent<Image>();
         ballImage.color = new Color(1, 1, 1, 0);

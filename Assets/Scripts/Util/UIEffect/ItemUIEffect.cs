@@ -3,10 +3,9 @@ using Coffee.UIEffects;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Image))]
-public class ImageShinyEffect : MonoBehaviour
+public class ItemUIEffect : MonoBehaviour
 {
     private UIEffect _uiEffect;
-    private UIEffectTweener _tweener;
 
     public void SetColor(Rarity rarity)
     {
@@ -20,7 +19,5 @@ public class ImageShinyEffect : MonoBehaviour
     {
         _uiEffect = this.gameObject.AddComponent<UIEffect>();
         _uiEffect.LoadPreset("ItemShiny");
-        
-        _tweener = this.gameObject.AddComponent<UIEffectTweener>();
     }
 }

@@ -83,7 +83,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2516330493889282034}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
   m_Name: 
@@ -102,7 +102,6 @@ GameObject:
   - component: {fileID: 8596943143664144656}
   - component: {fileID: 592091579522394214}
   - component: {fileID: 825764245170235419}
-  - component: {fileID: 132284711321132538}
   m_Layer: 5
   m_Name: LockIcon
   m_TagString: IgnoreSelection
@@ -167,21 +166,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &132284711321132538
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5240810096793202600}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cfabb0440166ab443bba8876756fdfa9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
-  m_EffectDistance: {x: 1, y: -1}
-  m_UseGraphicAlpha: 1
 --- !u!1 &6729976926087826395
 GameObject:
   m_ObjectHideFlags: 0
@@ -331,7 +315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cfd2797a89f44139de4718491154f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorType: 2
+  cursorIconType: 2
 --- !u!114 &6382664951885380384
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -25,7 +25,7 @@ public class Encyclopedia : MonoBehaviour
     {
         var image = g.transform.Find("Icon").GetComponent<Image>();
         image.sprite = b.sprite;
-        image.gameObject.AddComponent<ImageShinyEffect>().SetColor(b.rarity);
+        image.gameObject.AddComponent<ItemUIEffect>().SetColor(b.rarity);
         
         // イベントを登録
         Utils.AddEventToObject(g,  () =>
@@ -42,7 +42,7 @@ public class Encyclopedia : MonoBehaviour
     {
         var image = g.transform.Find("Icon").GetComponent<Image>();
         image.sprite = r.sprite;
-        image.gameObject.AddComponent<ImageShinyEffect>().SetColor(r.rarity);
+        image.gameObject.AddComponent<ItemUIEffect>().SetColor(r.rarity);
         
         // イベントを登録
         Utils.AddEventToObject(g,  () =>

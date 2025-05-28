@@ -40,7 +40,7 @@ public class AfterBattleUI : MonoBehaviour
         priceText.text = price.ToString();
         var icon = g.transform.Find("Icon").GetComponent<Image>();
         icon.sprite = ball.sprite;
-        icon.GetComponent<ImageShinyEffect>().SetColor(ball.rarity);
+        icon.GetComponent<ItemUIEffect>().SetColor(ball.rarity);
         var button = g.GetComponent<MyButton>();
         if (button)
         {
