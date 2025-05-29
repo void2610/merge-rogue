@@ -3,7 +3,6 @@ using UnityEngine.UI;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-[RequireComponent(typeof(Image))]
 public class MyButton : Button
 {
     private bool _isAvailable = true;
