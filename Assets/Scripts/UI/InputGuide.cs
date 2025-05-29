@@ -12,6 +12,8 @@ using UnityEngine.InputSystem.DualShock;
 // using UnityEngine.InputSystem.Switch;
 using UnityEngine.InputSystem.XInput;
 using UnityEngine.Serialization;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 
 public class InputGuide : MonoBehaviour
 {
@@ -30,7 +32,7 @@ public class InputGuide : MonoBehaviour
     [Serializable]
     public class InputGuideData
     {
-        public string name;
+        public LocalizedString localizedName;
         public InputActionReference action;
     }
 
@@ -188,8 +190,7 @@ public class InputGuide : MonoBehaviour
                     break;
                 }
             }
-            // 見つからなければ空文字のまま
-            shortcutTexts.Add($"{data.name}: {displaySprite}");
+            shortcutTexts.Add($"{data.localizedName.GetLocalizedString()}: {displaySprite}");
         }
         return shortcutTexts;
     }
@@ -269,3 +270,4 @@ public class InputGuide : MonoBehaviour
         return list;
     }
 }
+

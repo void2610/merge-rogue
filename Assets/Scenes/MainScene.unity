@@ -27899,6 +27899,70 @@ PrefabInstance:
       propertyPath: m_Name
       value: InputGuides
       objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: mergeGuides.Array.data[0].localizedName.m_TableEntryReference.m_KeyId
+      value: 295938882002944
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[0].localizedName.m_TableEntryReference.m_KeyId
+      value: 295938882002950
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[1].localizedName.m_TableEntryReference.m_KeyId
+      value: 295938882002951
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[2].localizedName.m_TableEntryReference.m_KeyId
+      value: 295938882002952
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[3].localizedName.m_TableEntryReference.m_KeyId
+      value: 295938882002953
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[4].localizedName.m_TableEntryReference.m_KeyId
+      value: 295938882002954
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[5].localizedName.m_TableEntryReference.m_KeyId
+      value: 295938882002955
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[6].localizedName.m_TableEntryReference.m_KeyId
+      value: 295938882002956
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: mergeGuides.Array.data[0].localizedName.m_TableReference.m_TableCollectionName
+      value: GUID:7fa29c7d37b40404d85e0afeb5581314
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[0].localizedName.m_TableReference.m_TableCollectionName
+      value: GUID:7fa29c7d37b40404d85e0afeb5581314
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[1].localizedName.m_TableReference.m_TableCollectionName
+      value: GUID:7fa29c7d37b40404d85e0afeb5581314
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[2].localizedName.m_TableReference.m_TableCollectionName
+      value: GUID:7fa29c7d37b40404d85e0afeb5581314
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[3].localizedName.m_TableReference.m_TableCollectionName
+      value: GUID:7fa29c7d37b40404d85e0afeb5581314
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[4].localizedName.m_TableReference.m_TableCollectionName
+      value: GUID:7fa29c7d37b40404d85e0afeb5581314
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[5].localizedName.m_TableReference.m_TableCollectionName
+      value: GUID:7fa29c7d37b40404d85e0afeb5581314
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: shortcutGuides.Array.data[6].localizedName.m_TableReference.m_TableCollectionName
+      value: GUID:7fa29c7d37b40404d85e0afeb5581314
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
