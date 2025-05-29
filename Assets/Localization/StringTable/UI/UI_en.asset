@@ -183,6 +183,18 @@ MonoBehaviour:
     m_Localized: Remove
     m_Metadata:
       m_Items: []
+  - m_Id: 1655335235346432
+    m_Localized: Drop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1655335239540736
+    m_Localized: Move
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1655335239540737
+    m_Localized: Scroll
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

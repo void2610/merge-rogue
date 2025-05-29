@@ -121,26 +121,138 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mergeGuides:
-  - name: "\u30B9\u30AD\u30C3\u30D7"
+  - localizedName:
+      m_TableReference:
+        m_TableCollectionName: GUID:7fa29c7d37b40404d85e0afeb5581314
+      m_TableEntryReference:
+        m_KeyId: 295938882002949
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: {fileID: 9033324786063241920, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
   navigationGuides: []
   shortcutGuides:
-  - name: "\u30AB\u30FC\u30BD\u30EB\u3092\u30EA\u30BB\u30C3\u30C8"
+  - localizedName:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: {fileID: 4373192305444842450, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-  - name: "\u30AB\u30FC\u30BD\u30EB\u4F4D\u7F6E\u5207\u308A\u66FF\u3048"
+  - localizedName:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: {fileID: 6977238633748583719, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-  - name: "\u4EEE\u60F3\u30DE\u30A6\u30B9\u5207\u308A\u66FF\u3048"
+  - localizedName:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: {fileID: -6704409545524244513, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-  - name: "\u30C1\u30E5\u30FC\u30C8\u30EA\u30A2\u30EB"
+  - localizedName:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: {fileID: 395453771764169163, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-  - name: "\u30DE\u30C3\u30D7"
+  - localizedName:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: {fileID: -3610997454309488152, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-  - name: "\u500D\u901F"
+  - localizedName:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: {fileID: 3978082133985793858, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
-  - name: "\u30DD\u30FC\u30BA"
+  - localizedName:
+      m_TableReference:
+        m_TableCollectionName: 
+      m_TableEntryReference:
+        m_KeyId: 0
+        m_Key: 
+      m_FallbackState: 0
+      m_WaitForCompletion: 0
+      m_LocalVariables: []
     action: {fileID: -1500263598598297771, guid: 340d8b647a8264c33abcea670e0d1116, type: 3}
+  dropText:
+    m_TableReference:
+      m_TableCollectionName: GUID:7fa29c7d37b40404d85e0afeb5581314
+    m_TableEntryReference:
+      m_KeyId: 1655335235346432
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  submitText:
+    m_TableReference:
+      m_TableCollectionName: GUID:7fa29c7d37b40404d85e0afeb5581314
+    m_TableEntryReference:
+      m_KeyId: 295938882002949
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  moveText:
+    m_TableReference:
+      m_TableCollectionName: GUID:7fa29c7d37b40404d85e0afeb5581314
+    m_TableEntryReference:
+      m_KeyId: 1655335239540736
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  selectText:
+    m_TableReference:
+      m_TableCollectionName: GUID:7fa29c7d37b40404d85e0afeb5581314
+    m_TableEntryReference:
+      m_KeyId: 295938882002948
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  scrollText:
+    m_TableReference:
+      m_TableCollectionName: GUID:7fa29c7d37b40404d85e0afeb5581314
+    m_TableEntryReference:
+      m_KeyId: 1655335239540737
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   inputGuidePrefab: {fileID: 2972133348279723198, guid: 4d70e7b4c71b249a6ab518715295b517, type: 3}
-  leftPos: {x: -315, y: -257}
-  rightPos: {x: 30, y: -257}
+  leftPos: {x: -380, y: -267}
+  rightPos: {x: 300, y: -267}
   alignment: 1.2
-  showShortcut: 1
+  isTitleMenu: 0
+  references:
+    version: 2
+    RefIds: []

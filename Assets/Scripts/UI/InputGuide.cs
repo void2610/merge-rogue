@@ -39,6 +39,11 @@ public class InputGuide : MonoBehaviour
     [SerializeField] private List<InputGuideData> mergeGuides = new();
     [SerializeField] private List<InputGuideData> navigationGuides = new();
     [SerializeField] private List<InputGuideData> shortcutGuides = new();
+    [SerializeField] private LocalizedString dropText;
+    [SerializeField] private LocalizedString submitText;
+    [SerializeField] private LocalizedString moveText;
+    [SerializeField] private LocalizedString selectText;
+    [SerializeField] private LocalizedString scrollText;
     [SerializeField] private GameObject inputGuidePrefab;
     [SerializeField] private Vector2 leftPos;
     [SerializeField] private Vector2 rightPos;
@@ -103,6 +108,9 @@ public class InputGuide : MonoBehaviour
         OnSchemeChanged += _onSchemeChanged = _ => UpdateText(_currentType);
         
         InputSystem.onEvent += OnEvent;
+        
+        // ロケール変更時のイベントを購読
+        LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
     }
 
     private void OnDisable()
@@ -114,6 +122,15 @@ public class InputGuide : MonoBehaviour
         }
         
         InputSystem.onEvent -= OnEvent;
+        
+        // ロケール変更時のイベントの購読解除
+        LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
+    }
+    
+    // ロケールが変わった時にガイドを再構成する
+    private void OnLocaleChanged(Locale locale)
+    {
+        UpdateText(_currentType);
     }
 
     private void Start()
@@ -249,9 +266,9 @@ public class InputGuide : MonoBehaviour
 
     private List<string> GetOperationDisplay(InputGuideType type)
     {
-        var t1 = type == InputGuideType.Merge ? "移動" : "選択";
-        var t2 = type == InputGuideType.Merge ? "ドロップ" : "決定";
-        var t3 = "スクロール";
+        var t1 = type == InputGuideType.Merge ? moveText.GetLocalizedString() : selectText.GetLocalizedString();
+        var t2 = type == InputGuideType.Merge ? dropText.GetLocalizedString() : submitText.GetLocalizedString();
+        var t3 = scrollText.GetLocalizedString();
         var list = new List<string>();
         if (_scheme == InputSchemeType.KeyboardAndMouse)
         {

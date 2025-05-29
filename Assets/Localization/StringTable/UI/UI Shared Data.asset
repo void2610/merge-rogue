@@ -59,12 +59,24 @@ MonoBehaviour:
     m_Key: SIZE
     m_Metadata:
       m_Items: []
+  - m_Id: 1655335235346432
+    m_Key: DROP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1655335239540736
+    m_Key: MOVE
+    m_Metadata:
+      m_Items: []
   - m_Id: 295938882002948
     m_Key: SELECT
     m_Metadata:
       m_Items: []
   - m_Id: 295938882002949
     m_Key: SUBMIT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1655335239540737
+    m_Key: SCROLL
     m_Metadata:
       m_Items: []
   - m_Id: 295938882002950

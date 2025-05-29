@@ -2661,9 +2661,9 @@ MonoBehaviour:
   m_fontSize: 35
   m_fontSizeBase: 35
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 20
+  m_fontSizeMax: 35
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -27898,6 +27898,18 @@ PrefabInstance:
     - target: {fileID: 5304364788019312319, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: m_Name
       value: InputGuides
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: leftPos.y
+      value: -261
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: rightPos.x
+      value: 260
+      objectReference: {fileID: 0}
+    - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
+      propertyPath: rightPos.y
+      value: -261
       objectReference: {fileID: 0}
     - target: {fileID: 9014372944810009532, guid: ee29e85a07940430fb795a1d6e8cd74c, type: 3}
       propertyPath: mergeGuides.Array.data[0].localizedName.m_TableEntryReference.m_KeyId
