@@ -51,7 +51,7 @@ public class AfterBattleUI : MonoBehaviour
                 if (GameManager.Instance.Coin.Value >= price) BuyBall(index);
                 else
                 {
-                    NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
+                    NotifyWindow.Instance.Notify(NotifyWindow.NotifyType.NotEnoughCoin);
                     SeManager.Instance.PlaySe("error");
                 }
             });

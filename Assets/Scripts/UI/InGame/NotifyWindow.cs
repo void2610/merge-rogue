@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
@@ -7,11 +8,13 @@ using UnityEngine.UI;
 
 public class NotifyWindow : MonoBehaviour
 {
-    public enum NotifyIconType
+    public enum NotifyType
     {
-        Setting,
-        Error,
-        Achievement,
+        NotEnoughCoin,
+        SeedCopied,
+        CantUpgradeBall,
+        CantSwapSameBall,
+        CantHoldAnyMoreRelics,
         Other
     }
     
@@ -23,20 +26,23 @@ public class NotifyWindow : MonoBehaviour
     [SerializeField] private float closeDuration = 1f;
     [SerializeField] private float rightMoveDistance = 100f;
     [SerializeField] private float shiftUpDistance = 100f; // 通知1件分の高さ
-    [SerializeField] private SerializableDictionary<NotifyIconType, Sprite> iconSprites;
+    [SerializeField] private SerializableDictionary<NotifyType, Sprite> iconSprites;
 
     // 現在表示中の通知を管理するリスト（最新の通知をリスト先頭に配置）
     private readonly List<GameObject> _activeNotifications = new ();
 
-    public void Notify(string message, NotifyIconType iconType = NotifyIconType.Other)
+    public void Notify(NotifyType type)
     {
+        var key = $"NOTIFY_{ConvertToUpperSnakeCase(type.ToString())}";
+        var text = LocalizeStringLoader.Instance.Get(key);
+        
         // 新しい通知ウィンドウの生成
         var window = Instantiate(windowPrefab, this.transform, false);
         var rectTransform = window.GetComponent<RectTransform>();
         // 初期位置を(0,0)に設定
         rectTransform.anchoredPosition = Vector2.zero;
-        window.transform.Find("Icon").GetComponent<Image>().sprite = iconSprites[iconType];
-        window.transform.Find("Message").GetComponent<TextMeshProUGUI>().text = message;
+        window.transform.Find("Icon").GetComponent<Image>().sprite = iconSprites[type];
+        window.transform.Find("Message").GetComponent<TextMeshProUGUI>().text = text;
         window.transform.Find("Gauge").GetComponent<Image>().fillAmount = 0;
 
         // 新しい通知をリストの先頭に追加（これにより、既存の通知は上にずれる）
@@ -47,6 +53,15 @@ public class NotifyWindow : MonoBehaviour
 
         // 非同期で通知の表示・終了アニメーションを開始
         ShowNotificationAsync(window).Forget();
+    }
+
+    // enumの文字列をUPPER_SNAKE_CASEに変換するメソッド
+    private string ConvertToUpperSnakeCase(string input)
+    {
+        // キャメルケースやパスカルケースをスネークケースに変換
+        var result = Regex.Replace(input, "([a-z])([A-Z])", "$1_$2");
+        // 全て大文字に変換
+        return result.ToUpper();
     }
 
     // 各通知の位置を、リストのインデックスに応じた位置にアニメーションで更新する

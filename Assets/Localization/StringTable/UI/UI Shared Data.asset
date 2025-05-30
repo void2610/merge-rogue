@@ -223,6 +223,26 @@ MonoBehaviour:
     m_Key: SHOP
     m_Metadata:
       m_Items: []
+  - m_Id: 2115868753387520
+    m_Key: NOTIFY_NOT_ENOUGH_COIN
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2115868761776128
+    m_Key: NOTIFY_SEED_COPIED
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2115868761776129
+    m_Key: NOTIFY_CANT_UPGRADE_BALL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2115868761776130
+    m_Key: NOTIFY_CANT_SWAP _SAME_BALL
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2115868761776131
+    m_Key: NOTIFY_CANT_HOLD_ANY_MORE_RELICS
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

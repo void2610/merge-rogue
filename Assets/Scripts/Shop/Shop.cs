@@ -114,7 +114,7 @@ public class Shop : MonoBehaviour
                 if (GameManager.Instance.Coin.Value >= price) BuyBall(index);
                 else
                 {
-                    NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
+                    NotifyWindow.Instance.Notify(NotifyWindow.NotifyType.NotEnoughCoin);
                     SeManager.Instance.PlaySe("error");
                     SelectionCursor.SetSelectedGameObjectSafe(g);
                 }
@@ -148,7 +148,7 @@ public class Shop : MonoBehaviour
                 if (GameManager.Instance.Coin.Value >= price) BuyRelic(index);
                 else
                 {
-                    NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
+                    NotifyWindow.Instance.Notify(NotifyWindow.NotifyType.NotEnoughCoin);
                     SeManager.Instance.PlaySe("error");
                     SelectionCursor.SetSelectedGameObjectSafe(g);
                 }
@@ -163,7 +163,7 @@ public class Shop : MonoBehaviour
         var price = ContentProvider.GetBallRemovePrice();
         if (GameManager.Instance.Coin.Value < price)
         {
-            NotifyWindow.Instance.Notify("コインが足りません！", NotifyWindow.NotifyIconType.Error);
+            NotifyWindow.Instance.Notify(NotifyWindow.NotifyType.NotEnoughCoin);
             SeManager.Instance.PlaySe("error");
             SelectionCursor.SetSelectedGameObjectSafe(removeButton);
             return;

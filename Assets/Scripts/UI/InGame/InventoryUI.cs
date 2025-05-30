@@ -160,7 +160,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 if (InventoryManager.Instance.GetBallLevel(index) >= 2)
                 {
                     SeManager.Instance.PlaySe("error");
-                    NotifyWindow.Instance.Notify("これ以上ボールを強化できません", NotifyWindow.NotifyIconType.Error);
+                    NotifyWindow.Instance.Notify(NotifyWindow.NotifyType.CantUpgradeBall);
                     return;
                 }
                 
@@ -184,7 +184,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 if (_swapIndex == index)
                 {
                     CancelEdit();
-                    NotifyWindow.Instance.Notify("同じボールを選択できません", NotifyWindow.NotifyIconType.Error);
+                    NotifyWindow.Instance.Notify(NotifyWindow.NotifyType.CantSwapSameBall);
                     return;
                 }
                 

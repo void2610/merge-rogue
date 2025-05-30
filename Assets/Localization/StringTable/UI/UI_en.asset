@@ -227,6 +227,26 @@ MonoBehaviour:
     m_Localized: Shop
     m_Metadata:
       m_Items: []
+  - m_Id: 2115868753387520
+    m_Localized: Not enough coins
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2115868761776128
+    m_Localized: Seed value copied
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2115868761776129
+    m_Localized: I can't upgrade my ball any further
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2115868761776130
+    m_Localized: You can't replace the same ball.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2115868761776131
+    m_Localized: I can't have any more relics
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

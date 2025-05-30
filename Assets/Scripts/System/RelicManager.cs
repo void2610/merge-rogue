@@ -29,7 +29,7 @@ public class RelicManager : MonoBehaviour
     {
         if(_relics.Count >= MAX_RELICS)
         {
-            NotifyWindow.Instance.Notify("これ以上レリックを持てません", NotifyWindow.NotifyIconType.Error);
+            NotifyWindow.Instance.Notify(NotifyWindow.NotifyType.CantHoldAnyMoreRelics);
             return;
         }
         
