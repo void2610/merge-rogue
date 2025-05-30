@@ -222,7 +222,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         // 敵のデータを設定
         Data = d;
         Stage = stage;
-        Magnification = ((stage + 1) * 0.6f);
+        Magnification = (stage + 1);
         MaxHealth = (int)(GameManager.Instance.RandomRange(d.maxHealthMin, d.maxHealthMax) * Magnification);
         Health = MaxHealth;
         Attack = (int)(d.attack * (Magnification * 0.3f));

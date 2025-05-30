@@ -28,7 +28,7 @@ public class RedBombBall : BallBase
         if (elapsedTurns < 3) return;
         
         // 周りのボールを消して、プレイヤーにダメージ
-        var hitBalls = Utils.GetNearbyBalls(this.gameObject, Size);
+        var hitBalls = Utils.GetNearbyBalls(this.gameObject, 0.5f);
         foreach (var ball in hitBalls)
         {
             ball.DestroyWithNoEffect();
