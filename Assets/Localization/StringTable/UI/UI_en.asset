@@ -195,6 +195,38 @@ MonoBehaviour:
     m_Localized: Scroll
     m_Metadata:
       m_Items: []
+  - m_Id: 2100581886844928
+    m_Localized: License
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2100581903622144
+    m_Localized: Credit
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2102627012698112
+    m_Localized: Clear!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2103770233167872
+    m_Localized: Game Over...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2104675485605888
+    m_Localized: Stage event
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2105073915125760
+    m_Localized: You won!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2105704461623296
+    m_Localized: Treasure
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2105865506119680
+    m_Localized: Shop
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

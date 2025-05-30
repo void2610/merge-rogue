@@ -191,6 +191,38 @@ MonoBehaviour:
     m_Key: REMOVE
     m_Metadata:
       m_Items: []
+  - m_Id: 2100581886844928
+    m_Key: LICENSE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2100581903622144
+    m_Key: CREDIT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2102627012698112
+    m_Key: CLEAR
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2103770233167872
+    m_Key: GAMEOVER
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2104675485605888
+    m_Key: STAGE_EVENT
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2105073915125760
+    m_Key: YOU_WON
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2105704461623296
+    m_Key: TREASURE
+    m_Metadata:
+      m_Items: []
+  - m_Id: 2105865506119680
+    m_Key: SHOP
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
