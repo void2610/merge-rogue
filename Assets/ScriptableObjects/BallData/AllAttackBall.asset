@@ -21,7 +21,6 @@ MonoBehaviour:
   flavorText: 
   sprite: {fileID: 21300000, guid: 35ab7ca20e1a14c47877a8b88444a8b3, type: 3}
   rarity: 2
-  shapeType: 0
   attacks:
   - 0.5
   - 1
@@ -31,7 +30,7 @@ MonoBehaviour:
   - 1.25
   - 1
   weights:
-  - 10
+  - 1
   - 1
   - 1
   availableDemo: 1

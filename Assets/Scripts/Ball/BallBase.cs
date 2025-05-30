@@ -31,7 +31,7 @@ public class BallBase : MonoBehaviour
 
     private async UniTask UnfreezeAsync()
     {
-        await UniTask.Delay(1000);
+        await UniTask.Delay(500);
         if (!this || isDestroyed) return;
             
         IsFrozen = false;
@@ -69,7 +69,6 @@ public class BallBase : MonoBehaviour
             Attack = _attacks[Level];
             Size = _sizes[Level];
             Weight = _weights[Level];
-            this.GetComponent<Rigidbody2D>().mass = Weight;
         }
     }
     
@@ -87,15 +86,13 @@ public class BallBase : MonoBehaviour
         this.Data = d;
         this.Rank = rank;
         this.NextRank = rank + 1;
-        this._sizes = d.sizes.Select(x => x * 1.2f).ToList();
+        this._sizes = d.sizes;
         this._attacks = d.attacks;
         this._weights = d.weights;
         this.Level = level;
         this.Attack = _attacks[level];
         this.Size = _sizes[level];
         this.Weight = d.weights[level];
-        
-        this.GetComponent<Rigidbody2D>().mass = Weight;
         
         // コライダーの設定
         var polygonCollider2D = this.GetComponent<PolygonCollider2D>();

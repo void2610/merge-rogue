@@ -5,6 +5,7 @@ public class RedBombBall : BallBase
     private GameObject _fireParticle;
     public override void InitBall(BallData d, int rank, int level = 0)
     {
+        isMergable = false; // 通常ではマージ不可
         base.InitBall(d, rank, level);
 
         _fireParticle = ParticleManager.Instance.GetBombFireParticle();
