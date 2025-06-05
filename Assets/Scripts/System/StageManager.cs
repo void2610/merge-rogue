@@ -351,19 +351,37 @@ public class StageManager : MonoBehaviour
                 // 敵の出現量と強さを設定
                 GameManager.Instance.EnemyContainer.SpawnEnemy(CurrentStageCount.Value + 1, CurrentStageCount.Value);
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
+                
+                // 新しい安全なイベントシステムを使用
+                SafeEventManager.TriggerBattleStart();
+                
+                // 古いシステムとの互換性のため（段階的移行中）
                 EventManager.OnBattleStart.Trigger(0);
                 break;
             case StageType.Boss:
                 GameManager.Instance.EnemyContainer.SpawnBoss(CurrentStageCount.Value);
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
+                
+                // ボス戦もバトル開始として扱う
+                SafeEventManager.TriggerBattleStart();
                 break;
             case StageType.Shop:
+                // 新しい安全なイベントシステムを使用
+                SafeEventManager.TriggerShopEnter();
+                
+                // 古いシステムとの互換性のため（段階的移行中）
                 EventManager.OnShopEnter.Trigger(0);
+                
                 shop.OpenShop();
                 UIManager.Instance.EnableCanvasGroup("Shop", true);
                 break;
             case StageType.Rest:
+                // 新しい安全なイベントシステムを使用
+                SafeEventManager.TriggerRestEnter();
+                
+                // 古いシステムとの互換性のため（段階的移行中）
                 EventManager.OnRestEnter.Trigger(0);
+                
                 UIManager.Instance.EnableCanvasGroup("Rest", true);
                 break;
             case StageType.Treasure:

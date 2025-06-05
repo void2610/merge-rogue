@@ -219,11 +219,20 @@ public class MergeManager : MonoBehaviour
         atk *= attackMagnification;
         // 充填率のバフを適用
         atk *= _fillingRateMagnification;
+        
+        // 攻撃辞書を初期化
+        if (!_attackCounts.ContainsKey(type)) _attackCounts[type] = 0;
+        _attackCounts[type] += (int)atk;
+        
         // 状態異常を適用
         _attackCounts = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts);
-        // イベントを適用
+        
+        // 新しい安全なイベントシステムを適用
+        _attackCounts = SafeEventManager.TriggerPlayerAttack(_attackCounts);
+        
+        // 古いシステムとの互換性のため（段階的移行中）
         EventManager.OnPlayerAttack.Trigger(_attackCounts);
-        _attackCounts = EventManager.OnPlayerAttack.GetValue();
+        EventManager.OnPlayerAttack.GetAndResetValue(); // 値をリセット
         
         GameManager.Instance.EnemyContainer.AttackEnemy(type, (int)atk).Forget();
         

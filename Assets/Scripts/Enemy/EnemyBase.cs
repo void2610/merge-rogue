@@ -201,7 +201,12 @@ public class EnemyBase : MonoBehaviour, IEntity
 
     private void Death()
     {
+        // 新しい安全なイベントシステムを使用
+        SafeEventManager.TriggerEnemyDefeated(this);
+        
+        // 古いシステムとの互換性のため（段階的移行中）
         EventManager.OnEnemyDefeated.Trigger(this);
+        
         this.transform.parent.GetComponent<EnemyContainer>().RemoveEnemy(this.gameObject);
     }
 

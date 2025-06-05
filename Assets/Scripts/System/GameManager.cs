@@ -64,20 +64,28 @@ public class GameManager : MonoBehaviour
     
     public void AddCoin(int amount)
     {
+        // 新しい安全なイベントシステムを使用
+        var finalAmount = SafeEventManager.TriggerCoinGain(amount);
+        Coin.Value += finalAmount;
+        
+        // 古いシステムとの互換性のため（段階的移行中）
         EventManager.OnCoinGain.Trigger(amount);
-        var c = EventManager.OnCoinGain.GetAndResetValue();
-        Coin.Value += c; 
+        EventManager.OnCoinGain.GetAndResetValue(); // 値をリセット
     }
     
     public void SubCoin(int amount)
     {
-        EventManager.OnCoinConsume.Trigger(amount);
-        var c = EventManager.OnCoinConsume.GetAndResetValue();
+        // 新しい安全なイベントシステムを使用
+        var finalAmount = SafeEventManager.TriggerCoinConsume(amount);
         
-        if (c < 0　|| Coin.Value < c) return;
+        if (finalAmount < 0 || Coin.Value < finalAmount) return;
         
         SeManager.Instance.PlaySe("coin");
-        Coin.Value -= c;
+        Coin.Value -= finalAmount;
+        
+        // 古いシステムとの互換性のため（段階的移行中）
+        EventManager.OnCoinConsume.Trigger(amount);
+        EventManager.OnCoinConsume.GetAndResetValue(); // 値をリセット
     }
 
     public void ChangeTimeScale()

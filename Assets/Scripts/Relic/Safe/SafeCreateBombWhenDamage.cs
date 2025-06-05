@@ -1,0 +1,23 @@
+using UnityEngine;
+
+/// <summary>
+/// プレイヤーが受けたダメージを蓄積し、20ダメージ毎にボムボールを生成する
+/// 新しい安全なイベントシステムを使用したバージョン
+/// </summary>
+public class SafeCreateBombWhenDamage : SafeRelicBase
+{
+    public override void Init(RelicUI relicUI)
+    {
+        IsCountable = true; // カウント表示を有効化
+        base.Init(relicUI);
+    }
+
+    protected override void RegisterEffects()
+    {
+        // ダメージ20毎にボム生成
+        RegisterDamageAccumulator(
+            threshold: 20,
+            onThresholdReached: () => MergeManager.Instance.CreateBombBall()
+        );
+    }
+}
