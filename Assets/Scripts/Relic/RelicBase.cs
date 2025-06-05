@@ -5,10 +5,11 @@ using R3;
 using SafeEventSystem;
 
 /// <summary>
-/// 新しい安全なレリックベースクラス
+/// ピュアC#版レリックベースクラス
 /// パイプライン型修正システムを使用して、競合状態を防ぐ
+/// IDisposableパターンでリソース管理を行う
 /// </summary>
-public abstract class RelicBase : MonoBehaviour
+public abstract class RelicBase : IDisposable
 {
     // UI関連
     protected RelicUI UI;
@@ -21,18 +22,27 @@ public abstract class RelicBase : MonoBehaviour
     protected readonly List<IModifier<BallData>> _ballDataModifiers = new();
     protected readonly List<IDisposable> _simpleSubscriptions = new();
 
+    // ライフサイクル管理
+    private bool _isInitialized = false;
+    private bool _isDisposed = false;
+
     // 初期化
     public virtual void Init(RelicUI relicUI)
     {
+        if (_isInitialized)
+        {
+            Debug.LogWarning($"[Relic] {GetType().Name} is already initialized");
+            return;
+        }
+
         UI = relicUI;
-        UI.EnableCount(IsCountable);
-        UI.SubscribeCount(Count);
+        UI?.EnableCount(IsCountable);
+        UI?.SubscribeCount(Count);
         
         // レリック固有の効果を登録
         RegisterEffects();
         
-        // ゲームオブジェクト破棄時の自動クリーンアップは手動で行う
-        
+        _isInitialized = true;
         Debug.Log($"[Relic] {GetType().Name} initialized");
     }
 
@@ -42,6 +52,8 @@ public abstract class RelicBase : MonoBehaviour
     // 全ての効果を削除
     public virtual void RemoveAllEffects()
     {
+        if (_isDisposed) return;
+
         // 登録されたモディファイアを全て削除
         SafeEventManager.RemoveModifiersFor(this);
         
@@ -58,6 +70,20 @@ public abstract class RelicBase : MonoBehaviour
         _ballDataModifiers.Clear();
         
         Debug.Log($"[Relic] {GetType().Name} effects removed");
+    }
+
+    // IDisposable実装
+    public void Dispose()
+    {
+        if (_isDisposed) return;
+        
+        RemoveAllEffects();
+        
+        // ReactivePropertyも解放
+        Count?.Dispose();
+        
+        _isDisposed = true;
+        Debug.Log($"[Relic] {GetType().Name} disposed");
     }
 
     // ===== コイン関連のヘルパーメソッド =====

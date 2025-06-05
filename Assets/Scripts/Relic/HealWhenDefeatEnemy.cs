@@ -1,4 +1,4 @@
-using UnityEngine;
+using System;
 
 /// <summary>
 /// 敵撃破時にHPを回復するレリック
@@ -17,7 +17,7 @@ public class HealWhenDefeatEnemy : RelicBase
         if (enemy == null) return;
         
         var heal = enemy.MaxHealth * 0.1f;
-        GameManager.Instance?.Player?.Heal(Mathf.CeilToInt(heal));
+        GameManager.Instance?.Player?.Heal((int)Math.Ceiling(heal));
         UI?.ActivateUI();
     }
 }
