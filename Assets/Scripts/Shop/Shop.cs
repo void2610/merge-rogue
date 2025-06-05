@@ -169,7 +169,7 @@ public class Shop : MonoBehaviour
             return;
         }
         
-        SafeEventManager.TriggerBallRemove();
+        // ボール削除イベント（現在は未実装）
         InventoryUI.Instance.StartEdit(InventoryUI.InventoryUIState.Remove);
     }
     

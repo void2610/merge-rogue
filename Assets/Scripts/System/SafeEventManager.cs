@@ -53,159 +53,46 @@ public static class SafeEventManager
         Debug.Log("[SafeEventManager] Initialized successfully");
     }
 
-    // ===== メインイベント発行メソッド =====
+    // ===== 直接アクセス可能なイベントプロセッサー =====
+    // 使用例：
+    // var modifiedValue = SafeEventManager.OnCoinGain.Process(originalValue);
+    // SafeEventManager.OnBattleStartSimple.OnNext(Unit.Default);
 
-    public static int TriggerCoinGain(int baseAmount)
-    {
-        var result = OnCoinGain.Process(baseAmount);
-        #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
-        Debug.Log($"[SafeEvent] CoinGain: {baseAmount} → {result}");
-        #endif
-        return result;
-    }
-
-    public static int TriggerCoinConsume(int baseAmount)
-    {
-        var result = OnCoinConsume.Process(baseAmount);
-        #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
-        Debug.Log($"[SafeEvent] CoinConsume: {baseAmount} → {result}");
-        #endif
-        return result;
-    }
-
-    public static AttackData TriggerPlayerAttack(AttackData baseAttack)
-    {
-        var result = OnPlayerAttack.Process(baseAttack);
-        #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
-        Debug.Log($"[SafeEvent] PlayerAttack: {baseAttack} → {result}");
-        #endif
-        return result;
-    }
-
-    public static int TriggerPlayerDamage(int baseDamage)
-    {
-        var result = OnPlayerDamage.Process(baseDamage);
-        #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
-        Debug.Log($"[SafeEvent] PlayerDamage: {baseDamage} → {result}");
-        #endif
-        return result;
-    }
-
-    public static int TriggerPlayerHeal(int baseHeal)
-    {
-        var result = OnPlayerHeal.Process(baseHeal);
-        #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
-        Debug.Log($"[SafeEvent] PlayerHeal: {baseHeal} → {result}");
-        #endif
-        return result;
-    }
-
-    public static int TriggerRest(int baseRest)
-    {
-        var result = OnRest.Process(baseRest);
-        #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
-        Debug.Log($"[SafeEvent] Rest: {baseRest} → {result}");
-        #endif
-        return result;
-    }
-
-    // ===== 追加のトリガーメソッド =====
-
-    public static void TriggerBallMerged(BallBase ball1, BallBase ball2)
-    {
-        OnBallMerged.OnNext((ball1, ball2));
-        OnBallMergedSimple.OnNext((ball1, ball2));
-    }
-
-    public static void TriggerEnemyDefeated(EnemyBase enemy)
-    {
-        OnEnemyDefeatedSimple.OnNext(enemy);
-    }
-
-    public static void TriggerBallDrop()
-    {
-        OnBallDropSimple.OnNext(Unit.Default);
-    }
-
-    public static void TriggerBallSkip()
-    {
-        OnBallSkip.OnNext(Unit.Default);
-    }
-
-    public static void TriggerBallRemove()
-    {
-        // ボール削除イベント（新規）
-    }
-
-    public static void TriggerTreasureSkipped()
-    {
-        OnTreasureSkipped.OnNext(Unit.Default);
-    }
-
-    public static void TriggerBallCreate()
-    {
-        // ボール作成イベント（新規）
-    }
-
-    public static void TriggerBattleStart()
-    {
-        OnBattleStartSimple.OnNext(Unit.Default);
-    }
-
-    public static void TriggerShopEnter()
-    {
-        OnShopEnterSimple.OnNext(Unit.Default);
-    }
-
-    public static void TriggerRestEnter()
-    {
-        OnRestEnterSimple.OnNext(Unit.Default);
-    }
-
-    // ===== 簡易登録メソッド =====
+    // ===== レガシー互換性のための簡易登録メソッド =====
+    // 注意: 直接 OnXXX.AddProcessor() を使用することを推奨
 
     /// <summary>
-    /// コイン獲得修正を登録
+    /// コイン獲得修正を登録 - 直接 OnCoinGain.AddProcessor() を使用することを推奨
     /// </summary>
     public static void RegisterCoinGainModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
-    {
-        OnCoinGain.AddProcessor(owner, processor, condition);
-    }
+        => OnCoinGain.AddProcessor(owner, processor, condition);
 
     /// <summary>
-    /// コイン消費修正を登録
+    /// コイン消費修正を登録 - 直接 OnCoinConsume.AddProcessor() を使用することを推奨
     /// </summary>
     public static void RegisterCoinConsumeModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
-    {
-        OnCoinConsume.AddProcessor(owner, processor, condition);
-    }
+        => OnCoinConsume.AddProcessor(owner, processor, condition);
 
     /// <summary>
-    /// プレイヤー攻撃修正を登録
+    /// プレイヤー攻撃修正を登録 - 直接 OnPlayerAttack.AddProcessor() を使用することを推奨
     /// </summary>
     public static void RegisterPlayerAttackModifier(object owner, Func<AttackData, AttackData> processor, Func<bool> condition = null)
-    {
-        OnPlayerAttack.AddProcessor(owner, processor, condition);
-    }
+        => OnPlayerAttack.AddProcessor(owner, processor, condition);
 
     /// <summary>
-    /// プレイヤーダメージ修正を登録
+    /// プレイヤーダメージ修正を登録 - 直接 OnPlayerDamage.AddProcessor() を使用することを推奨
     /// </summary>
     public static void RegisterPlayerDamageModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
-    {
-        OnPlayerDamage.AddProcessor(owner, processor, condition);
-    }
+        => OnPlayerDamage.AddProcessor(owner, processor, condition);
 
     /// <summary>
-    /// 休憩修正を登録
+    /// 休憩修正を登録 - 直接 OnRest.AddProcessor() を使用することを推奨
     /// </summary>
     public static void RegisterRestModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
-    {
-        OnRest.AddProcessor(owner, processor, condition);
-    }
+        => OnRest.AddProcessor(owner, processor, condition);
 
     /// <summary>
-    /// 特定のオーナーの全修正を削除
+    /// 特定のオーナーの全修正を削除 - 各プロセッサーで直接 RemoveProcessorsFor() を呼ぶことも可能
     /// </summary>
     public static void RemoveProcessorsFor(object owner)
     {

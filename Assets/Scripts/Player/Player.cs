@@ -89,7 +89,7 @@ public class Player : MonoBehaviour, IEntity
         var damage = ModifyIncomingDamage(d);
         
         // イベントでダメージを更新
-        damage = SafeEventManager.TriggerPlayerDamage(damage);
+        damage = SafeEventManager.OnPlayerDamage.Process(damage);
         
         if (Health.Value <= 0) return;
         
@@ -115,7 +115,7 @@ public class Player : MonoBehaviour, IEntity
         if (Health.Value >= MaxHealth.Value) return;
         
         // イベントでヒール量を更新
-        var finalAmount = SafeEventManager.TriggerPlayerHeal(amount);
+        var finalAmount = SafeEventManager.OnPlayerHeal.Process(amount);
         
         ParticleManager.Instance.HealParticleToPlayer();
         SeManager.Instance.PlaySe("heal");

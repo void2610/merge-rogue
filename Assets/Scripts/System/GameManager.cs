@@ -65,13 +65,13 @@ public class GameManager : MonoBehaviour
     
     public void AddCoin(int amount)
     {
-        var finalAmount = SafeEventManager.TriggerCoinGain(amount);
+        var finalAmount = SafeEventManager.OnCoinGain.Process(amount);
         Coin.Value += finalAmount;
     }
     
     public void SubCoin(int amount)
     {
-        var finalAmount = SafeEventManager.TriggerCoinConsume(amount);
+        var finalAmount = SafeEventManager.OnCoinConsume.Process(amount);
         
         if (finalAmount < 0 || Coin.Value < finalAmount) return;
         

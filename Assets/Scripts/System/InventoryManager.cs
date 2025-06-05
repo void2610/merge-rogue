@@ -202,7 +202,7 @@ public class InventoryManager : MonoBehaviour
         var rank = ball.GetComponent<BallBase>().Rank;
 
         var data = ball.GetComponent<BallBase>().Data;
-        SafeEventManager.TriggerBallCreate();
+        // ボール作成イベント（現在は未実装）
         
         var level = ball.GetComponent<BallBase>().Level;
         newBall.GetComponent<BallBase>().InitBall(data, rank, level);

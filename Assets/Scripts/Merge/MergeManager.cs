@@ -230,7 +230,7 @@ public class MergeManager : MonoBehaviour
         
         // SafeEventManagerを適用
         var attackData = AttackData.FromDictionary(_attackCounts);
-        attackData = SafeEventManager.TriggerPlayerAttack(attackData);
+        attackData = SafeEventManager.OnPlayerAttack.Process(attackData);
         _attackCounts = attackData.ToDictionary();
         
         GameManager.Instance.EnemyContainer.AttackEnemy(type, (int)atk).Forget();
@@ -284,13 +284,13 @@ public class MergeManager : MonoBehaviour
         CurrentBall.transform.SetParent(_ballContainer.transform);
         
         // ボールドロップイベントを発火
-        SafeEventManager.TriggerBallDrop();
+        SafeEventManager.OnBallDropSimple.OnNext(R3.Unit.Default);
     }
 
     private void SkipBall()
     {
         // ボールスキップイベントを発火
-        SafeEventManager.TriggerBallSkip();
+        SafeEventManager.OnBallSkip.OnNext(R3.Unit.Default);
         Destroy(CurrentBall);
     }
 

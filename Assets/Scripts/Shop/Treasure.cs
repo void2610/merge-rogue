@@ -127,7 +127,7 @@ public class Treasure : MonoBehaviour
     
     private void OnClickSkip()
     {
-        SafeEventManager.TriggerTreasureSkipped();
+        SafeEventManager.OnTreasureSkipped.OnNext(R3.Unit.Default);
         CloseTreasure();
     }
     
