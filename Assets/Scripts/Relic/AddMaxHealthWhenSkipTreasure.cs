@@ -11,11 +11,11 @@ public class AddMaxHealthWhenSkipTreasure : RelicBase
     protected override void RegisterEffects()
     {
         // 宝物スキップ時のイベント購読
-        var subscription = SafeEventManager.OnTreasureSkipped.OnProcessed.Subscribe(OnTreasureSkipped);
+        var subscription = SafeEventManager.OnTreasureSkipped.Subscribe(OnTreasureSkipped);
         _simpleSubscriptions.Add(subscription);
     }
 
-    private void OnTreasureSkipped((int original, int modified) data)
+    private void OnTreasureSkipped(Unit _)
     {
         if (GameManager.Instance?.Player != null)
         {

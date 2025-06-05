@@ -1,233 +1,239 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 using R3;
+using UnityEngine;
 
 namespace SafeEventSystem
 {
-    // モディファイアインターフェース（シンプル版）
-    public interface IModifier<T>
+    /// <summary>
+    /// シンプルなイベントシステム - Modifierなしのバージョン
+    /// 関数チェーンによる値変更を直接処理
+    /// </summary>
+    
+    // 基本的なイベント発行・購読システム
+    public interface IEventPublisher<T>
     {
-        object Owner { get; }
-        bool CanApply(T originalValue, T currentValue);
-        T Apply(T originalValue, T currentValue);
-        void OnApplied(T originalValue, T resultValue); // 適用後のコールバック
+        void Trigger(T value);
+        IDisposable Subscribe(Action<T> callback);
     }
 
-    // 基本モディファイア抽象クラス（シンプル版）
-    public abstract class ModifierBase<T> : IModifier<T>
+    // イベント管理クラス
+    public class GameEvent<T> : IEventPublisher<T>
     {
-        public object Owner { get; protected set; }
+        private readonly List<Action<T>> _callbacks = new();
+        private readonly object _lock = new();
 
-        protected ModifierBase(object owner)
+        public void Trigger(T value)
         {
-            Owner = owner;
+            List<Action<T>> callbacksCopy;
+            lock (_lock)
+            {
+                callbacksCopy = new List<Action<T>>(_callbacks);
+            }
+
+            foreach (var callback in callbacksCopy)
+            {
+                try
+                {
+                    callback?.Invoke(value);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogError($"Error in event callback: {e}");
+                }
+            }
         }
 
-        public virtual bool CanApply(T originalValue, T currentValue) => true;
-        public abstract T Apply(T originalValue, T currentValue);
-        public virtual void OnApplied(T originalValue, T resultValue) { }
+        public IDisposable Subscribe(Action<T> callback)
+        {
+            if (callback == null) return null;
+
+            lock (_lock)
+            {
+                _callbacks.Add(callback);
+            }
+
+            return new EventSubscription<T>(this, callback);
+        }
+
+        internal void Unsubscribe(Action<T> callback)
+        {
+            lock (_lock)
+            {
+                _callbacks.Remove(callback);
+            }
+        }
     }
 
-    // 修正可能なイベントデータ
-    public class ModifiableEvent<T>
+    // 購読管理クラス
+    public class EventSubscription<T> : IDisposable
     {
-        private readonly List<IModifier<T>> _modifiers = new();
-        private readonly Subject<(T original, T modified)> _onProcessed = new();
-        private bool _isProcessing;
+        private readonly GameEvent<T> _gameEvent;
+        private readonly Action<T> _callback;
+        private bool _disposed = false;
 
-        public Observable<(T original, T modified)> OnProcessed => _onProcessed.AsObservable();
-
-        // 修正処理を安全に実行（追加順での処理）
-        public T ProcessModifications(T baseValue)
+        public EventSubscription(GameEvent<T> gameEvent, Action<T> callback)
         {
-            if (_isProcessing)
+            _gameEvent = gameEvent;
+            _callback = callback;
+        }
+
+        public void Dispose()
+        {
+            if (!_disposed)
             {
-                Debug.LogError($"Recursive modification detected for event type {typeof(T)}");
-                return baseValue;
+                _gameEvent?.Unsubscribe(_callback);
+                _disposed = true;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 関数チェーンによる値変更システム
+    /// Modifierクラスを使わずに、関数を直接チェーンして値を変更
+    /// </summary>
+    public class ValueProcessor<T>
+    {
+        private readonly List<(object owner, Func<T, T> processor, Func<bool> condition)> _processors = new();
+        private readonly object _lock = new();
+
+        /// <summary>
+        /// 値を処理して結果を返す
+        /// </summary>
+        public T Process(T originalValue)
+        {
+            List<(object owner, Func<T, T> processor, Func<bool> condition)> processorsCopy;
+            lock (_lock)
+            {
+                processorsCopy = new List<(object, Func<T, T>, Func<bool>)>(_processors);
             }
 
-            _isProcessing = true;
-            var originalValue = baseValue;
-            var currentValue = baseValue;
-
-            try
+            var currentValue = originalValue;
+            foreach (var (owner, processor, condition) in processorsCopy)
             {
-                // 追加順でモディファイアを適用
-                var applicableModifiers = _modifiers
-                    .Where(m => m.CanApply(originalValue, currentValue))
-                    .ToList();
-
-                foreach (var modifier in applicableModifiers)
+                try
                 {
-                    #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
-                    var beforeValue = currentValue;
-                    #endif
-                    
-                    currentValue = modifier.Apply(originalValue, currentValue);
-                    
-                    // デバッグログ（エディタでのみ）
-                    #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
-                    Debug.Log($"[SafeEvent] {modifier.Owner?.GetType().Name}: {beforeValue} → {currentValue}");
-                    #endif
+                    if (condition?.Invoke() ?? true)
+                    {
+                        currentValue = processor(currentValue);
+                    }
                 }
-
-                // 適用後のコールバック実行
-                foreach (var modifier in applicableModifiers)
+                catch (Exception e)
                 {
-                    modifier.OnApplied(originalValue, currentValue);
+                    Debug.LogError($"Error in value processor for {owner}: {e}");
                 }
-
-                _onProcessed.OnNext((originalValue, currentValue));
-                return currentValue;
             }
-            finally
+
+            return currentValue;
+        }
+
+        /// <summary>
+        /// 値処理関数を追加
+        /// </summary>
+        public void AddProcessor(object owner, Func<T, T> processor, Func<bool> condition = null)
+        {
+            if (owner == null || processor == null) return;
+
+            lock (_lock)
             {
-                _isProcessing = false;
+                _processors.Add((owner, processor, condition));
             }
         }
 
-        public void AddModifier(IModifier<T> modifier)
+        /// <summary>
+        /// 特定のオーナーの処理関数をすべて削除
+        /// </summary>
+        public void RemoveProcessorsFor(object owner)
         {
-            if (_modifiers.Any(m => m.Owner == modifier.Owner && m.GetType() == modifier.GetType()))
+            lock (_lock)
             {
-                Debug.LogWarning($"Modifier {modifier.GetType().Name} already exists for owner {modifier.Owner}");
-                return;
+                _processors.RemoveAll(p => p.owner == owner);
             }
-            _modifiers.Add(modifier);
         }
 
-        public void RemoveModifier(IModifier<T> modifier)
-        {
-            _modifiers.Remove(modifier);
-        }
-
-        public void RemoveModifiersFor(object owner)
-        {
-            _modifiers.RemoveAll(m => m.Owner == owner);
-        }
-
+        /// <summary>
+        /// すべての処理関数をクリア
+        /// </summary>
         public void Clear()
         {
-            _modifiers.Clear();
+            lock (_lock)
+            {
+                _processors.Clear();
+            }
         }
 
-        // デバッグ用：現在のモディファイア一覧
-        public List<IModifier<T>> GetModifiers() => new(_modifiers);
-    }
-
-    // 特定の型用のモディファイア実装
-
-    // int型用の加算モディファイア
-    public class AdditionModifier : ModifierBase<int>
-    {
-        private readonly int _amount;
-        private readonly Func<bool> _condition;
-
-        public AdditionModifier(int amount, object owner, Func<bool> condition = null)
-            : base(owner)
+        /// <summary>
+        /// デバッグ用：現在の処理関数数を取得
+        /// </summary>
+        public int ProcessorCount
         {
-            _amount = amount;
-            _condition = condition ?? (() => true);
-        }
-
-        public override bool CanApply(int originalValue, int currentValue) => _condition();
-        public override int Apply(int originalValue, int currentValue) => currentValue + _amount;
-    }
-
-    // int型用の乗算モディファイア
-    public class MultiplicationModifier : ModifierBase<int>
-    {
-        private readonly float _multiplier;
-        private readonly Func<bool> _condition;
-
-        public MultiplicationModifier(float multiplier, object owner, Func<bool> condition = null)
-            : base(owner)
-        {
-            _multiplier = multiplier;
-            _condition = condition ?? (() => true);
-        }
-
-        public override bool CanApply(int originalValue, int currentValue) => _condition();
-        public override int Apply(int originalValue, int currentValue) => (int)(currentValue * _multiplier);
-    }
-
-    // int型用の上書きモディファイア
-    public class OverrideModifier : ModifierBase<int>
-    {
-        private readonly int _value;
-        private readonly Func<bool> _condition;
-
-        public OverrideModifier(int value, object owner, Func<bool> condition = null)
-            : base(owner)
-        {
-            _value = value;
-            _condition = condition ?? (() => true);
-        }
-
-        public override bool CanApply(int originalValue, int currentValue) => _condition();
-        public override int Apply(int originalValue, int currentValue) => _value;
-    }
-
-    // Dictionary<AttackType, int>用の攻撃修正モディファイア
-    public class AttackModifier : ModifierBase<Dictionary<AttackType, int>>
-    {
-        private readonly Action<Dictionary<AttackType, int>, Dictionary<AttackType, int>> _modifier;
-        private readonly Func<bool> _condition;
-
-        public AttackModifier(
-            Action<Dictionary<AttackType, int>, Dictionary<AttackType, int>> modifier,
-            object owner,
-            Func<bool> condition = null) : base(owner)
-        {
-            _modifier = modifier;
-            _condition = condition ?? (() => true);
-        }
-
-        public override bool CanApply(Dictionary<AttackType, int> originalValue, Dictionary<AttackType, int> currentValue)
-            => _condition();
-
-        public override Dictionary<AttackType, int> Apply(Dictionary<AttackType, int> originalValue, Dictionary<AttackType, int> currentValue)
-        {
-            var result = new Dictionary<AttackType, int>(currentValue);
-            _modifier(originalValue, result);
-            return result;
+            get
+            {
+                lock (_lock)
+                {
+                    return _processors.Count;
+                }
+            }
         }
     }
 
-    // コールバック専用モディファイア（値は変更せずにイベント発生を監視）
-    public class CallbackModifier<T> : ModifierBase<T>
+    /// <summary>
+    /// よく使用される値処理のヘルパー関数
+    /// </summary>
+    public static class ValueProcessors
     {
-        private readonly Action<T, T> _callback;
-        private readonly Func<T, T, bool> _condition;
+        // int型用の処理関数
 
-        public CallbackModifier(Action<T, T> callback, object owner, Func<T, T, bool> condition = null)
-            : base(owner)
-        {
-            _callback = callback;
-            _condition = condition ?? ((_, _) => true);
-        }
+        /// <summary>
+        /// 値に指定した数を加算する処理関数
+        /// </summary>
+        public static Func<int, int> Add(int amount) => value => value + amount;
 
-        public override bool CanApply(T originalValue, T currentValue) => _condition(originalValue, currentValue);
-        public override T Apply(T originalValue, T currentValue) => currentValue; // 値は変更しない
-        public override void OnApplied(T originalValue, T resultValue) => _callback(originalValue, resultValue);
-    }
+        /// <summary>
+        /// 値に指定した倍率を掛ける処理関数
+        /// </summary>
+        public static Func<int, int> Multiply(float multiplier) => value => (int)(value * multiplier);
 
-    // 汎用関数型モディファイア
-    public class FunctionalModifier<T> : ModifierBase<T>
-    {
-        private readonly Func<T, T, T> _modifier;
-        private readonly Func<bool> _condition;
+        /// <summary>
+        /// 値を指定した値で上書きする処理関数
+        /// </summary>
+        public static Func<int, int> Override(int newValue) => _ => newValue;
 
-        public FunctionalModifier(object owner, Func<T, T, T> modifier, Func<bool> condition = null)
-            : base(owner)
-        {
-            _modifier = modifier;
-            _condition = condition ?? (() => true);
-        }
+        /// <summary>
+        /// 値を0に設定する処理関数
+        /// </summary>
+        public static Func<int, int> SetZero() => _ => 0;
 
-        public override bool CanApply(T originalValue, T currentValue) => _condition();
-        public override T Apply(T originalValue, T currentValue) => _modifier(originalValue, currentValue);
+        /// <summary>
+        /// 値を2倍にする処理関数
+        /// </summary>
+        public static Func<int, int> Double() => value => value * 2;
+
+        // AttackData型用の処理関数
+
+        /// <summary>
+        /// 特定の攻撃タイプに値を加算する処理関数
+        /// </summary>
+        public static Func<AttackData, AttackData> AddAttack(AttackType type, int amount) =>
+            data => data.AddAttack(type, amount);
+
+        /// <summary>
+        /// 攻撃データ全体に倍率を適用する処理関数
+        /// </summary>
+        public static Func<AttackData, AttackData> MultiplyAttack(float multiplier) =>
+            data => data.Multiply(multiplier);
+
+        /// <summary>
+        /// 攻撃タイプを変換する処理関数
+        /// </summary>
+        public static Func<AttackData, AttackData> ConvertAttackType(AttackType from, AttackType to, float multiplier = 1.0f) =>
+            data =>
+            {
+                var fromValue = data.GetAttack(from);
+                if (fromValue <= 0) return data;
+                
+                var convertedValue = (int)(fromValue * multiplier);
+                return data.SetAttack(from, 0).AddAttack(to, convertedValue);
+            };
     }
 }

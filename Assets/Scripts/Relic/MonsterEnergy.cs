@@ -21,9 +21,7 @@ public class MonsterEnergy : RelicBase
         MergeManager.Instance?.LevelUpBallAmount();
         
         // 休憩量を0にする（カウントが残っている場合）
-        var mod = new OverrideModifier(0, this, () => Count.Value > 0);
-        _intModifiers.Add(mod);
-        SafeEventManager.RegisterRestModifier(mod);
+        SafeEventManager.RegisterRestModifier(this, ValueProcessors.SetZero(), () => Count.Value > 0);
         
         // 休憩時にカウント減少
         SubscribeRestEnter(() =>

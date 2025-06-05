@@ -12,7 +12,7 @@ public class AllAttackByTenCoin : RelicBase
     {
         // 攻撃変換処理
         RegisterPlayerAttackModifier(
-            (original, current) =>
+            current =>
             {
                 // 条件チェック
                 if (!CanConvertAttack(current)) return current;

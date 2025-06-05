@@ -11,11 +11,11 @@ public class AddMaxHealthWhenEnterStageEvent : RelicBase
     protected override void RegisterEffects()
     {
         // イベントステージ入場時のイベント購読
-        var subscription = SafeEventManager.OnEventStageEnter.OnProcessed.Subscribe(OnEventStageEnter);
+        var subscription = SafeEventManager.OnEventStageEnter.Subscribe(OnEventStageEnter);
         _simpleSubscriptions.Add(subscription);
     }
 
-    private void OnEventStageEnter((StageType original, StageType modified) data)
+    private void OnEventStageEnter(StageType stageType)
     {
         if (GameManager.Instance?.Player != null)
         {

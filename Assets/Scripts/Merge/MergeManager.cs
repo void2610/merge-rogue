@@ -229,7 +229,9 @@ public class MergeManager : MonoBehaviour
         _attackCounts = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts);
         
         // SafeEventManagerを適用
-        _attackCounts = SafeEventManager.TriggerPlayerAttack(_attackCounts);
+        var attackData = AttackData.FromDictionary(_attackCounts);
+        attackData = SafeEventManager.TriggerPlayerAttack(attackData);
+        _attackCounts = attackData.ToDictionary();
         
         GameManager.Instance.EnemyContainer.AttackEnemy(type, (int)atk).Forget();
         

@@ -11,11 +11,11 @@ public class CreateTwoBallWhenSkip : RelicBase
     protected override void RegisterEffects()
     {
         // ボールスキップ時のイベント購読
-        var subscription = SafeEventManager.OnBallSkip.OnProcessed.Subscribe(OnBallSkip);
+        var subscription = SafeEventManager.OnBallSkip.Subscribe(OnBallSkip);
         _simpleSubscriptions.Add(subscription);
     }
 
-    private void OnBallSkip((int original, int modified) data)
+    private void OnBallSkip(Unit _)
     {
         MergeManager.Instance?.CreateRandomBall();
         MergeManager.Instance?.CreateRandomBall();

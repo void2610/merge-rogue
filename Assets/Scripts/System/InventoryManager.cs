@@ -201,7 +201,8 @@ public class InventoryManager : MonoBehaviour
         var newBall = Instantiate(ball, position, Quaternion.identity);
         var rank = ball.GetComponent<BallBase>().Rank;
 
-        var data = SafeEventManager.TriggerBallCreate(ball.GetComponent<BallBase>().Data);
+        var data = ball.GetComponent<BallBase>().Data;
+        SafeEventManager.TriggerBallCreate();
         
         var level = ball.GetComponent<BallBase>().Level;
         newBall.GetComponent<BallBase>().InitBall(data, rank, level);

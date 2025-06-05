@@ -10,7 +10,7 @@ public class FireRing : RelicBase
     {
         // 攻撃時に燃焼状態異常を付与
         RegisterPlayerAttackModifier(
-            (original, current) =>
+            current =>
             {
                 var enemies = EnemyContainer.Instance.GetAllEnemies();
                 if (enemies.Count > 0)

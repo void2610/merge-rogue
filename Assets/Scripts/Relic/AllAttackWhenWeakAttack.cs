@@ -19,7 +19,7 @@ public class AllAttackWhenWeakAttack : RelicBase
 
         // より詳細な制御が必要な場合は個別に実装
         RegisterPlayerAttackModifier(
-            (original, current) =>
+            current =>
             {
                 var normalAttack = current.GetAttack(AttackType.Normal);
                 if (normalAttack > 0 && normalAttack <= WEAK_ATTACK_THRESHOLD)

@@ -11,13 +11,12 @@ public class HealWhenMergeLastBall : RelicBase
     protected override void RegisterEffects()
     {
         // ボール合成時のイベント購読
-        var subscription = SafeEventManager.OnBallMerged.OnProcessed.Subscribe(OnBallMerged);
+        var subscription = SafeEventManager.OnBallMerged.Subscribe(OnBallMerged);
         _simpleSubscriptions.Add(subscription);
     }
     
-    private void OnBallMerged(((BallBase ball1, BallBase ball2) original, (BallBase ball1, BallBase ball2) modified) data)
+    private void OnBallMerged((BallBase ball1, BallBase ball2) mergeData)
     {
-        var mergeData = data.modified;
         var maxRank = InventoryManager.Instance?.InventorySize ?? 0;
         
         if (mergeData.ball1?.Rank == maxRank)

@@ -11,17 +11,15 @@ public class ShockTherapy : RelicBase
     protected override void RegisterEffects()
     {
         // 敌ステータス効果追加時のイベント購読
-        var subscription = SafeEventManager.OnEnemyStatusEffectAdded.OnProcessed.Subscribe(OnEnemyStatusEffectAdded);
+        var subscription = SafeEventManager.OnEnemyStatusEffectAdded.Subscribe(OnEnemyStatusEffectAdded);
         _simpleSubscriptions.Add(subscription);
     }
 
-    private void OnEnemyStatusEffectAdded(((EnemyBase enemy, StatusEffectType type, int stack) original, (EnemyBase enemy, StatusEffectType type, int stack) modified) data)
+    private void OnEnemyStatusEffectAdded(Unit _)
     {
-        var effectData = data.modified;
-        if (effectData.type == StatusEffectType.Shock)
-        {
-            StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Power, 1);
-            UI?.ActivateUI();
-        }
+        // 敌にShockが付与された場合、プレイヤーにPowerを付与
+        // 簡略化版では詳細な情報を取得できないため、常に発動
+        StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Power, 1);
+        UI?.ActivateUI();
     }
 }

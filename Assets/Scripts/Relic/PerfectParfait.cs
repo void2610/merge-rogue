@@ -8,7 +8,7 @@ public class PerfectParfait : RelicBase
     {
         // プレイヤー攻撃時の修正を登録
         RegisterPlayerAttackModifier(
-            (_, current) =>
+            current =>
             {
                 var ballCount = MergeManager.Instance?.GetBallCount() ?? 0;
                 if (ballCount == 0)

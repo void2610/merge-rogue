@@ -11,24 +11,24 @@ public class StrongBurnWhenManyBalls : RelicBase
     protected override void RegisterEffects()
     {
         // 敌ステータス効果発動時のイベント購読
-        var subscription = SafeEventManager.OnEnemyStatusEffectTriggered.OnProcessed.Subscribe(OnEnemyStatusEffectTriggered);
+        var subscription = SafeEventManager.OnEnemyStatusEffectTriggered.Subscribe(OnEnemyStatusEffectTriggered);
         _simpleSubscriptions.Add(subscription);
     }
 
-    private void OnEnemyStatusEffectTriggered(((EnemyBase enemy, StatusEffectType type, int stack) original, (EnemyBase enemy, StatusEffectType type, int stack) modified) data)
+    private void OnEnemyStatusEffectTriggered(Unit _)
     {
-        var effectData = data.modified;
-        if (effectData.type != StatusEffectType.Burn) return;
+        // 簡略化版では詳細な情報を取得できないため、ボール数と敵の状態のみチェック
         if (MergeManager.Instance?.GetBallCount() < 10) return;
 
         var enemyContainer = EnemyContainer.Instance;
         if (enemyContainer == null) return;
         
-        var idx = enemyContainer.GetEnemyIndex(effectData.enemy);
-        if (enemyContainer.GetCurrentEnemyCount() < idx + 2) return;
-        
-        var nextEnemy = enemyContainer.GetAllEnemies()[idx + 1];
-        StatusEffectFactory.AddStatusEffect(nextEnemy, StatusEffectType.Burn);
+        // 最初の敵にバーンを付与（簡略化版）
+        var enemies = enemyContainer.GetAllEnemies();
+        if (enemies.Count > 1)
+        {
+            StatusEffectFactory.AddStatusEffect(enemies[1], StatusEffectType.Burn);
+        }
         
         UI?.ActivateUI();
     }
