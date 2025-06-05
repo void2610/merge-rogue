@@ -1,32 +1,23 @@
-using R3;
+using UnityEngine;
 
+/// <summary>
+/// プレイヤーが受けたダメージを蓄積し、5ダメージ毎にコイン1枚を獲得する
+/// 新しい安全なイベントシステムを使用したバージョン
+/// </summary>
 public class ReverseAlchemy : RelicBase
 {
     public override void Init(RelicUI relicUI)
     {
-        IsCountable = true;
+        IsCountable = true; // カウント表示を有効化
         base.Init(relicUI);
     }
-    
-    protected override void SubscribeEffect()
-    {
-        var disposable = EventManager.OnPlayerDamage.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
-    }
-        
-    protected override void EffectImpl(Unit _)    
-    {
-        var x = EventManager.OnPlayerDamage.GetValue();
-        Count.Value += x;
 
-        var isActivated = false;
-        while (Count.Value >= 5)
-        {
-            Count.Value -= 5;
-            GameManager.Instance.AddCoin(1);
-            isActivated = true;
-        }
-        
-        if (isActivated) UI?.ActivateUI();
+    protected override void RegisterEffects()
+    {
+        // ダメージ5毎にコイン1枚獲得
+        RegisterDamageAccumulator(
+            threshold: 5,
+            onThresholdReached: () => GameManager.Instance.AddCoin(1)
+        );
     }
 }

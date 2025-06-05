@@ -1,6 +1,10 @@
 using UnityEngine;
 using R3;
 
+/// <summary>
+/// 休憩を3回キャンセルできる、ボールレベルアップ量を増加するレリック
+/// 新しい安全なイベントシステムを使用したバージョン
+/// </summary>
 public class MonsterEnergy : RelicBase
 {
     public override void Init(RelicUI relicUI)
@@ -9,16 +13,19 @@ public class MonsterEnergy : RelicBase
         Count.Value = 3;
         base.Init(relicUI);
     }
-    protected override void SubscribeEffect()
+
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnRest.Subscribe(EffectImpl).AddTo(this);
-        MergeManager.Instance.LevelUpBallAmount();
-        Disposables.Add(disposable);
+        // ボールレベルアップ量を増加
+        MergeManager.Instance?.LevelUpBallAmount();
+        
+        // 休憩時のイベント購読
+        SubscribeRestEnter(OnRestEnter);
     }
 
-    protected override void EffectImpl(Unit _)
-    {   
-        if(Count.Value <= 0) return;
+    private void OnRestEnter()
+    {
+        if (Count.Value <= 0) return;
         
         EventManager.OnRest.SetValue(0);
         Count.Value--;

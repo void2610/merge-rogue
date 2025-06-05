@@ -1,16 +1,18 @@
-using R3;
+using UnityEngine;
 
+/// <summary>
+/// ショップに入店した時にコイン10枚を獲得する
+/// 新しい安全なイベントシステムを使用したバージョン
+/// </summary>
 public class PocketMoney : RelicBase
 {
-    protected override void SubscribeEffect()
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnShopEnter.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
-    }
-    
-    protected override void EffectImpl(Unit _)
-    {
-        GameManager.Instance.AddCoin(10);
-        UI?.ActivateUI();
+        // ショップ入店時にコイン10枚獲得
+        SubscribeShopEnter(() =>
+        {
+            GameManager.Instance.AddCoin(10);
+            ActivateUI();
+        });
     }
 }

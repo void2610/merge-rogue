@@ -1,18 +1,27 @@
+using UnityEngine;
 using R3;
 
+/// <summary>
+/// プレイヤーのHPが20以下になったときに全ボールを合成するレリック
+/// 新しい安全なイベントシステムを使用したバージョン
+/// </summary>
 public class MergeAllWhenLowHealth : RelicBase
 {
-    protected override void SubscribeEffect()
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnPlayerDamage.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
-    }
-
-    protected override void EffectImpl(Unit _)
-    {   
-        if(GameManager.Instance.Player.Health.Value > 20) return;
-        
-        MergeManager.Instance.MergeAll();
-        UI?.ActivateUI();
+        // プレイヤーダメージ時の条件付き効果を登録
+        RegisterPlayerDamageModifier(
+            SafeEventSystem.ModificationPhase.PostProcess,
+            (_, current) =>
+            {
+                if (GameManager.Instance?.Player != null && 
+                    GameManager.Instance.Player.Health.Value <= 20)
+                {
+                    MergeManager.Instance?.MergeAll();
+                    UI?.ActivateUI();
+                }
+                return current; // ダメージ値は変更しない
+            }
+        );
     }
 }

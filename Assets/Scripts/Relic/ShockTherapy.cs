@@ -1,18 +1,26 @@
+using UnityEngine;
 using R3;
 
+/// <summary>
+/// 敌にShock付与時にプレイヤーにPowerを付与するレリック
+/// 新しい安全なイベントシステムを使用したバージョン
+/// </summary>
 public class ShockTherapy : RelicBase
 {
-    protected override void SubscribeEffect()
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnEnemyStatusEffectAdded.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
+        // 敌ステータス効果追加時のイベント購読
+        var subscription = EventManager.OnEnemyStatusEffectAdded.Subscribe(OnEnemyStatusEffectAdded);
+        _simpleSubscriptions.Add(subscription);
     }
 
-    protected override void EffectImpl(Unit _)
+    private void OnEnemyStatusEffectAdded(Unit _)
     {
-        if (EventManager.OnEnemyStatusEffectAdded.GetValue().Item2 != StatusEffectType.Shock) return;
-
-        StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Power, 1);
-        UI?.ActivateUI();
+        var effectData = EventManager.OnEnemyStatusEffectAdded.GetValue();
+        if (effectData.Item2 == StatusEffectType.Shock)
+        {
+            StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Power, 1);
+            UI?.ActivateUI();
+        }
     }
 }

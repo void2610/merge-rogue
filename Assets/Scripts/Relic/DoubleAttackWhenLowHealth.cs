@@ -1,19 +1,35 @@
-using R3;
+using UnityEngine;
 
+/// <summary>
+/// HPが20%以下または20以下の時、バトル開始時に怒り状態異常を10スタック付与する
+/// 新しい安全なイベントシステムを使用したバージョン
+/// </summary>
 public class DoubleAttackWhenLowHealth : RelicBase
 {
-    protected override void SubscribeEffect()
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnBattleStart.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
-    }
-    
-    protected override void EffectImpl(Unit _)
-    {
-        if (GameManager.Instance.Player.Health.Value <= GameManager.Instance.Player.MaxHealth.Value * 0.2f　|| GameManager.Instance.Player.Health.Value <= 20)
+        // バトル開始時に低HP条件をチェックして怒り状態異常を付与
+        SubscribeBattleStart(() =>
         {
-            StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Rage, 10);
-            UI?.ActivateUI();
-        }
+            if (IsLowHealth())
+            {
+                StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Rage, 10);
+                ActivateUI();
+            }
+        });
+    }
+
+    /// <summary>
+    /// 低HP条件をチェック
+    /// </summary>
+    private bool IsLowHealth()
+    {
+        if (!GameManager.Instance?.Player) return false;
+        
+        var currentHealth = GameManager.Instance.Player.Health.Value;
+        var maxHealth = GameManager.Instance.Player.MaxHealth.Value;
+        
+        // 最大HPの20%以下 または 絶対値20以下
+        return currentHealth <= maxHealth * 0.2f || currentHealth <= 20;
     }
 }
