@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using R3;
 using UnityEngine.Serialization;
+using SafeEventSystem;
 
 public class Player : MonoBehaviour, IEntity
 {
@@ -88,8 +89,7 @@ public class Player : MonoBehaviour, IEntity
         var damage = ModifyIncomingDamage(d);
         
         // イベントでダメージを更新
-        EventManager.OnPlayerDamage.Trigger(damage);
-        damage = EventManager.OnPlayerDamage.GetValue();
+        damage = SafeEventManager.TriggerPlayerDamage(damage);
         
         if (Health.Value <= 0) return;
         

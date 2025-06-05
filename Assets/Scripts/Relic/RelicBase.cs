@@ -211,6 +211,7 @@ public abstract class RelicBase : IDisposable
             (_, current) =>
             {
                 Count.Value += current;
+                Debug.Log($"[Relic] {GetType().Name} Count updated: {Count.Value}");
                 var activations = Count.Value / threshold;
                 if (activations > 0)
                 {
