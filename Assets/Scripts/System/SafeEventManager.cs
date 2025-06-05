@@ -65,6 +65,7 @@ public static class SafeEventManager
     public static readonly Subject<StageType> OnEventStageEnterSimple = new();
     public static readonly Subject<Unit> OnShopEnterSimple = new();
     public static readonly Subject<Unit> OnRestEnterSimple = new();
+    public static readonly Subject<Unit> OnBallDropSimple = new();
 
     // 初期化メソッド
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
@@ -200,6 +201,14 @@ public static class SafeEventManager
         Debug.Log($"[SafeEvent] Rest: {baseRestAmount} → {result}");
         #endif
         return result;
+    }
+
+    public static void TriggerBallDrop()
+    {
+        OnBallDropSimple.OnNext(Unit.Default);
+        #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
+        Debug.Log("[SafeEvent] BallDrop triggered");
+        #endif
     }
 
     // ===== モディファイア管理メソッド =====

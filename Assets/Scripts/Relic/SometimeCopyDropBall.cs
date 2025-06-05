@@ -11,11 +11,11 @@ public class SometimeCopyDropBall : RelicBase
     protected override void RegisterEffects()
     {
         // ボールドロップ時のイベント購読
-        var subscription = SafeEventManager.OnBallDrop.OnProcessed.Subscribe(OnBallDrop);
+        var subscription = SafeEventManager.OnBallDropSimple.Subscribe(OnBallDrop);
         _simpleSubscriptions.Add(subscription);
     }
     
-    private void OnBallDrop((int original, int modified) data)
+    private void OnBallDrop(Unit _)
     {
         var r = GameManager.Instance?.RandomRange(0.0f, 1.0f) ?? 0f;
         if (r < 0.5f)

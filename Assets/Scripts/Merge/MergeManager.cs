@@ -280,6 +280,9 @@ public class MergeManager : MonoBehaviour
     {
         CurrentBall.GetComponent<BallBase>().Unfreeze();
         CurrentBall.transform.SetParent(_ballContainer.transform);
+        
+        // ボールドロップイベントを発火
+        SafeEventManager.TriggerBallDrop();
     }
 
     private void SkipBall()
