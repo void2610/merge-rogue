@@ -114,9 +114,12 @@ public class Player : MonoBehaviour, IEntity
         if(Health.Value <= 0) return;
         if (Health.Value >= MaxHealth.Value) return;
         
+        // イベントでヒール量を更新
+        var finalAmount = SafeEventManager.TriggerPlayerHeal(amount);
+        
         ParticleManager.Instance.HealParticleToPlayer();
         SeManager.Instance.PlaySe("heal");
-        Health.Value += amount;
+        Health.Value += finalAmount;
         if (Health.Value > MaxHealth.Value)
         {
             Health.Value = MaxHealth.Value;

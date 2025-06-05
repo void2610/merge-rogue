@@ -14365,7 +14365,9 @@ MonoBehaviour:
   relicGridSize: {x: 3, y: 9}
   relicOffset: {x: 40, y: 36}
   relicUISize: 0.75
-  testRelics: []
+  testRelics:
+  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
+  - {fileID: 11400000, guid: b4d15b418337d4e4e9fe297c8314f7fc, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0

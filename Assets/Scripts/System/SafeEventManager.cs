@@ -205,9 +205,42 @@ public static class SafeEventManager
 
     public static void TriggerBallDrop()
     {
+        OnBallDrop.ProcessModifications(0);
         OnBallDropSimple.OnNext(Unit.Default);
         #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
         Debug.Log("[SafeEvent] BallDrop triggered");
+        #endif
+    }
+
+    public static void TriggerBallSkip()
+    {
+        OnBallSkip.ProcessModifications(0);
+        #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
+        Debug.Log("[SafeEvent] BallSkip triggered");
+        #endif
+    }
+
+    public static void TriggerBallRemove()
+    {
+        OnBallRemove.ProcessModifications(0);
+        #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
+        Debug.Log("[SafeEvent] BallRemove triggered");
+        #endif
+    }
+
+    public static void TriggerTreasureSkipped()
+    {
+        OnTreasureSkipped.ProcessModifications(0);
+        #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
+        Debug.Log("[SafeEvent] TreasureSkipped triggered");
+        #endif
+    }
+
+    public static void TriggerPlayerHealProcessed(int baseHeal)
+    {
+        var result = SafeEventManager.TriggerPlayerHeal(baseHeal);
+        #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
+        Debug.Log($"[SafeEvent] PlayerHeal processed: {baseHeal} → {result}");
         #endif
     }
 

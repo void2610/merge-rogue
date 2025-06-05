@@ -11,7 +11,7 @@ public class Rest : MonoBehaviour
     private static void OnClickRest()
     {
         var restAmount = GameManager.Instance.Player.MaxHealth.Value  * 0.2f;
-        var finalAmount = SafeEventManager.OnRest.ProcessModifications((int)restAmount);
+        var finalAmount = SafeEventManager.TriggerRest((int)restAmount);
         if(finalAmount > 0) GameManager.Instance.Player.Heal(finalAmount);
         
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);

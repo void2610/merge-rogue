@@ -169,7 +169,7 @@ public class Shop : MonoBehaviour
             return;
         }
         
-        SafeEventManager.OnBallRemove.ProcessModifications(0);
+        SafeEventManager.TriggerBallRemove();
         InventoryUI.Instance.StartEdit(InventoryUI.InventoryUIState.Remove);
     }
     

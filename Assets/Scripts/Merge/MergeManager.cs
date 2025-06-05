@@ -287,6 +287,8 @@ public class MergeManager : MonoBehaviour
 
     private void SkipBall()
     {
+        // ボールスキップイベントを発火
+        SafeEventManager.TriggerBallSkip();
         Destroy(CurrentBall);
     }
 
