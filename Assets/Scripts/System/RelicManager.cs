@@ -50,7 +50,7 @@ public class RelicManager : MonoBehaviour
         }
 
         var behavior = _behaviors[index];
-        behavior.RemoveEffect();
+        behavior.RemoveAllEffects();
         _behaviors.Remove(behavior);
         _relics.Remove(relic);
         Destroy(_relicUIs[index].gameObject);
