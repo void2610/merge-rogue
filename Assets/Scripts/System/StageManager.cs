@@ -330,9 +330,7 @@ public class StageManager : MonoBehaviour
             else
                 r = GameManager.Instance.RandomRange(0, 4);
 
-            EventManager.OnEventStageEnter.Trigger((StageType)r);
-            // 更新されたステージを処理
-            var stage = EventManager.OnEventStageEnter.GetValue();
+            var stage = (StageType)r;
             ProcessStage(stage);
         }
         else
@@ -352,11 +350,7 @@ public class StageManager : MonoBehaviour
                 GameManager.Instance.EnemyContainer.SpawnEnemy(CurrentStageCount.Value + 1, CurrentStageCount.Value);
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
                 
-                // 新しい安全なイベントシステムを使用
                 SafeEventManager.TriggerBattleStart();
-                
-                // 古いシステムとの互換性のため（段階的移行中）
-                EventManager.OnBattleStart.Trigger(0);
                 break;
             case StageType.Boss:
                 GameManager.Instance.EnemyContainer.SpawnBoss(CurrentStageCount.Value);
@@ -366,21 +360,13 @@ public class StageManager : MonoBehaviour
                 SafeEventManager.TriggerBattleStart();
                 break;
             case StageType.Shop:
-                // 新しい安全なイベントシステムを使用
                 SafeEventManager.TriggerShopEnter();
-                
-                // 古いシステムとの互換性のため（段階的移行中）
-                EventManager.OnShopEnter.Trigger(0);
                 
                 shop.OpenShop();
                 UIManager.Instance.EnableCanvasGroup("Shop", true);
                 break;
             case StageType.Rest:
-                // 新しい安全なイベントシステムを使用
                 SafeEventManager.TriggerRestEnter();
-                
-                // 古いシステムとの互換性のため（段階的移行中）
-                EventManager.OnRestEnter.Trigger(0);
                 
                 UIManager.Instance.EnableCanvasGroup("Rest", true);
                 break;

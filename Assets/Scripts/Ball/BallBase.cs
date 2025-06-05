@@ -128,7 +128,7 @@ public class BallBase : MonoBehaviour
             if (this.Serial < b.Serial)
             {
                 var pos = (this.transform.position + b.transform.position) / 2;
-                EventManager.OnBallMerged.Trigger((this, b));
+                SafeEventManager.TriggerBallMerged(this, b);
                 
                 var center = (this.transform.position + b.transform.position) / 2;
                 var rotation = Quaternion.Lerp(this.transform.rotation, b.transform.rotation, 0.5f);

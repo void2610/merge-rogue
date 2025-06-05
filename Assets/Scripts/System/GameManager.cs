@@ -7,6 +7,7 @@ using R3;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using SafeEventSystem;
 using Vector2 = UnityEngine.Vector2;
 
 public class GameManager : MonoBehaviour
@@ -64,28 +65,18 @@ public class GameManager : MonoBehaviour
     
     public void AddCoin(int amount)
     {
-        // 新しい安全なイベントシステムを使用
         var finalAmount = SafeEventManager.TriggerCoinGain(amount);
         Coin.Value += finalAmount;
-        
-        // 古いシステムとの互換性のため（段階的移行中）
-        EventManager.OnCoinGain.Trigger(amount);
-        EventManager.OnCoinGain.GetAndResetValue(); // 値をリセット
     }
     
     public void SubCoin(int amount)
     {
-        // 新しい安全なイベントシステムを使用
         var finalAmount = SafeEventManager.TriggerCoinConsume(amount);
         
         if (finalAmount < 0 || Coin.Value < finalAmount) return;
         
         SeManager.Instance.PlaySe("coin");
         Coin.Value -= finalAmount;
-        
-        // 古いシステムとの互換性のため（段階的移行中）
-        EventManager.OnCoinConsume.Trigger(amount);
-        EventManager.OnCoinConsume.GetAndResetValue(); // 値をリセット
     }
 
     public void ChangeTimeScale()

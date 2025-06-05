@@ -1,5 +1,6 @@
 using UnityEngine;
 using R3;
+using SafeEventSystem;
 
 /// <summary>
 /// イベントステージ入場時に最大HPを増加するレリック
@@ -10,11 +11,11 @@ public class AddMaxHealthWhenEnterStageEvent : RelicBase
     protected override void RegisterEffects()
     {
         // イベントステージ入場時のイベント購読
-        var subscription = EventManager.OnEventStageEnter.Subscribe(OnEventStageEnter);
+        var subscription = SafeEventManager.OnEventStageEnter.OnProcessed.Subscribe(OnEventStageEnter);
         _simpleSubscriptions.Add(subscription);
     }
 
-    private void OnEventStageEnter(Unit _)
+    private void OnEventStageEnter((StageType original, StageType modified) data)
     {
         if (GameManager.Instance?.Player != null)
         {

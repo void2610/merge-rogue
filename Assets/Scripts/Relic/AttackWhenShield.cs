@@ -1,5 +1,6 @@
 using UnityEngine;
 using R3;
+using SafeEventSystem;
 
 /// <summary>
 /// シールド発動時に敵に攻撃するレリック
@@ -9,22 +10,19 @@ public class AttackWhenShield : RelicBase
 {
     protected override void RegisterEffects()
     {
-        // プレイヤーのステータス効果発動時のイベント購読は
-        // 新システムではより安全な方法で処理する必要があります
-        // ここでは従来のEventManagerを一時的に使用
-        var subscription = EventManager.OnPlayerStatusEffectTriggered.Subscribe(OnStatusEffectTriggered);
+        // プレイヤーのステータス効果発動時のイベント購読
+        var subscription = SafeEventManager.OnPlayerStatusEffectTriggered.OnProcessed.Subscribe(OnStatusEffectTriggered);
         _simpleSubscriptions.Add(subscription);
     }
 
-    private void OnStatusEffectTriggered(Unit _)
+    private void OnStatusEffectTriggered(((StatusEffectType type, int stack) original, (StatusEffectType type, int stack) modified) data)
     {
-        var effectData = EventManager.OnPlayerStatusEffectTriggered.GetValue();
-        if (effectData.Item1 == StatusEffectType.Shield)
+        if (data.modified.type == StatusEffectType.Shield)
         {
             var enemies = EnemyContainer.Instance?.GetAllEnemies();
             if (enemies != null && enemies.Count > 0)
             {
-                enemies[0].Damage(AttackType.Normal, effectData.Item2);
+                enemies[0].Damage(AttackType.Normal, data.modified.stack);
                 UI?.ActivateUI();
             }
         }

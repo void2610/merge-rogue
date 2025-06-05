@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using R3;
 using UnityEngine;
+using SafeEventSystem;
 
 public class Narikin : StageEventBase
 {
@@ -18,7 +19,7 @@ public class Narikin : StageEventBase
                 resultDescription = "おじさんは懐から取り出した100コインに火をつけた\n「どうだ明るくなったろう」\n(次のイベントマスで戦闘が発生しなくなった!)",
                 Action = () =>
                 {
-                    _disposable = EventManager.OnEventStageEnter.Subscribe(RewriteBattleStageToRestStage);
+                    _disposable = SafeEventManager.OnEventStageEnterSimple.Subscribe(RewriteBattleStageToRestStage);
                     // シーン遷移時にDisposeされることを保証する
                     GameManager.Instance.SceneDisposables.Add(_disposable);
                 }
@@ -35,10 +36,11 @@ public class Narikin : StageEventBase
         };
     }
     
-    private void RewriteBattleStageToRestStage(Unit _)
+    private void RewriteBattleStageToRestStage(StageType stageType)
     {
-        // 休憩ステージに変更して購読解除
-        EventManager.OnEventStageEnter.SetValue(StageType.Rest);
+        // TODO: この機能は新しいEventSystemでの実装が必要
+        // 現在は一時的にコメントアウト
+        // Note: Stage rewriting functionality removed with old EventManager
         _disposable.Dispose();
     }
 }

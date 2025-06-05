@@ -6,6 +6,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine.EventSystems;
 using unityroom.Api;
+using SafeEventSystem;
 
 public class MergeManager : MonoBehaviour
 {
@@ -227,12 +228,8 @@ public class MergeManager : MonoBehaviour
         // 状態異常を適用
         _attackCounts = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts);
         
-        // 新しい安全なイベントシステムを適用
+        // SafeEventManagerを適用
         _attackCounts = SafeEventManager.TriggerPlayerAttack(_attackCounts);
-        
-        // 古いシステムとの互換性のため（段階的移行中）
-        EventManager.OnPlayerAttack.Trigger(_attackCounts);
-        EventManager.OnPlayerAttack.GetAndResetValue(); // 値をリセット
         
         GameManager.Instance.EnemyContainer.AttackEnemy(type, (int)atk).Forget();
         
@@ -281,14 +278,12 @@ public class MergeManager : MonoBehaviour
 
     private void DropBall()
     {
-        EventManager.OnBallDrop.Trigger(0);
         CurrentBall.GetComponent<BallBase>().Unfreeze();
         CurrentBall.transform.SetParent(_ballContainer.transform);
     }
 
     private void SkipBall()
     {
-        EventManager.OnBallSkip.Trigger(0);
         Destroy(CurrentBall);
     }
 

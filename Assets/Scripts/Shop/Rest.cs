@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using SafeEventSystem;
 
 public class Rest : MonoBehaviour
 {
@@ -10,9 +11,8 @@ public class Rest : MonoBehaviour
     private static void OnClickRest()
     {
         var restAmount = GameManager.Instance.Player.MaxHealth.Value  * 0.2f;
-        EventManager.OnRest.Trigger((int)restAmount);
-        var v = EventManager.OnRest.GetAndResetValue();
-        if(v > 0) GameManager.Instance.Player.Heal(v);
+        var finalAmount = SafeEventManager.OnRest.ProcessModifications((int)restAmount);
+        if(finalAmount > 0) GameManager.Instance.Player.Heal(finalAmount);
         
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
         UIManager.Instance.EnableCanvasGroup("Rest", false);

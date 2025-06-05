@@ -1,5 +1,6 @@
 using UnityEngine;
 using R3;
+using SafeEventSystem;
 
 /// <summary>
 /// ボールスキップ時にランダムボールを2個生成するレリック
@@ -10,11 +11,11 @@ public class CreateTwoBallWhenSkip : RelicBase
     protected override void RegisterEffects()
     {
         // ボールスキップ時のイベント購読
-        var subscription = EventManager.OnBallSkip.Subscribe(OnBallSkip);
+        var subscription = SafeEventManager.OnBallSkip.OnProcessed.Subscribe(OnBallSkip);
         _simpleSubscriptions.Add(subscription);
     }
 
-    private void OnBallSkip(Unit _)
+    private void OnBallSkip((int original, int modified) data)
     {
         MergeManager.Instance?.CreateRandomBall();
         MergeManager.Instance?.CreateRandomBall();

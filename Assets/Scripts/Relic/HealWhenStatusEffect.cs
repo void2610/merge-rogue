@@ -1,5 +1,6 @@
 using UnityEngine;
 using R3;
+using SafeEventSystem;
 
 /// <summary>
 /// プレイヤーにステータス効果が追加されたときにHPを回復するレリック
@@ -10,11 +11,11 @@ public class HealWhenStatusEffect : RelicBase
     protected override void RegisterEffects()
     {
         // プレイヤーステータス効果追加時のイベント購読
-        var subscription = EventManager.OnPlayerStatusEffectAdded.Subscribe(OnStatusEffectAdded);
+        var subscription = SafeEventManager.OnPlayerStatusEffectAdded.OnProcessed.Subscribe(OnStatusEffectAdded);
         _simpleSubscriptions.Add(subscription);
     }
 
-    private void OnStatusEffectAdded(Unit _)
+    private void OnStatusEffectAdded(((StatusEffectType type, int stack) original, (StatusEffectType type, int stack) modified) data)
     {
         GameManager.Instance?.Player?.Heal(1);
         UI?.ActivateUI();

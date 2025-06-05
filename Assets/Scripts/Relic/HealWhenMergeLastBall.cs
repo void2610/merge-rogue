@@ -1,5 +1,6 @@
 using UnityEngine;
 using R3;
+using SafeEventSystem;
 
 /// <summary>
 /// 最高ランクボール合成時にHPを回復するレリック
@@ -10,16 +11,16 @@ public class HealWhenMergeLastBall : RelicBase
     protected override void RegisterEffects()
     {
         // ボール合成時のイベント購読
-        var subscription = EventManager.OnBallMerged.Subscribe(OnBallMerged);
+        var subscription = SafeEventManager.OnBallMerged.OnProcessed.Subscribe(OnBallMerged);
         _simpleSubscriptions.Add(subscription);
     }
     
-    private void OnBallMerged(Unit _)
+    private void OnBallMerged(((BallBase ball1, BallBase ball2) original, (BallBase ball1, BallBase ball2) modified) data)
     {
-        var mergeData = EventManager.OnBallMerged.GetValue();
+        var mergeData = data.modified;
         var maxRank = InventoryManager.Instance?.InventorySize ?? 0;
         
-        if (mergeData.Item1?.Rank == maxRank)
+        if (mergeData.ball1?.Rank == maxRank)
         {
             if (GameManager.Instance?.Player != null)
             {

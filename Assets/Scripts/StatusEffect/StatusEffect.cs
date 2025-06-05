@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
+using SafeEventSystem;
 
 public enum StatusEffectType
 {
@@ -85,9 +86,9 @@ public abstract class StatusEffectBase
         {
             ShowEffectText();
             if(_isPlayer)
-                EventManager.OnPlayerStatusEffectTriggered.Trigger((Type, StackCount));
+                SafeEventManager.OnPlayerStatusEffectTriggered.ProcessModifications((Type, StackCount));
             else
-                EventManager.OnEnemyStatusEffectTriggered.Trigger((target as EnemyBase, Type, StackCount));
+                SafeEventManager.OnEnemyStatusEffectTriggered.ProcessModifications((target as EnemyBase, Type, StackCount));
         }
     }
     
@@ -97,9 +98,9 @@ public abstract class StatusEffectBase
         {
             ShowEffectText(1);
             if (_isPlayer)
-                EventManager.OnPlayerStatusEffectTriggered.Trigger((Type, StackCount));
+                SafeEventManager.OnPlayerStatusEffectTriggered.ProcessModifications((Type, StackCount));
             else
-                EventManager.OnEnemyStatusEffectTriggered.Trigger((target as EnemyBase, Type, StackCount));
+                SafeEventManager.OnEnemyStatusEffectTriggered.ProcessModifications((target as EnemyBase, Type, StackCount));
         }
         return incomingDamage;
     }
@@ -110,9 +111,9 @@ public abstract class StatusEffectBase
         {
             ShowEffectText();
             if (_isPlayer)
-                EventManager.OnPlayerStatusEffectTriggered.Trigger((Type, StackCount));
+                SafeEventManager.OnPlayerStatusEffectTriggered.ProcessModifications((Type, StackCount));
             else
-                EventManager.OnEnemyStatusEffectTriggered.Trigger((target as EnemyBase, Type, StackCount));
+                SafeEventManager.OnEnemyStatusEffectTriggered.ProcessModifications((target as EnemyBase, Type, StackCount));
         }
         return outgoingAttack;
     }
@@ -124,9 +125,9 @@ public abstract class StatusEffectBase
         {
             ShowEffectText();
             if (_isPlayer)
-                EventManager.OnPlayerStatusEffectTriggered.Trigger((Type, StackCount));
+                SafeEventManager.OnPlayerStatusEffectTriggered.ProcessModifications((Type, StackCount));
             else
-                EventManager.OnEnemyStatusEffectTriggered.Trigger((target as EnemyBase, Type, StackCount));
+                SafeEventManager.OnEnemyStatusEffectTriggered.ProcessModifications((target as EnemyBase, Type, StackCount));
         }
         StackCount = 0;
         return true; 
@@ -147,7 +148,7 @@ public static class StatusEffectFactory
 {
     public static void AddStatusEffectToPlayer(StatusEffectType type, int initialStack = 1)
     {
-        EventManager.OnPlayerStatusEffectAdded.Trigger((type, initialStack));
+        SafeEventManager.OnPlayerStatusEffectAdded.ProcessModifications((type, initialStack));
         AddStatusEffect(GameManager.Instance.Player, type, initialStack);
     }
     
@@ -158,12 +159,16 @@ public static class StatusEffectFactory
         int stack;
         if (target is EnemyBase enemyBase)
         {
-            EventManager.OnEnemyStatusEffectAdded.Trigger((enemyBase, type, initialStack));
-            (tar, ty, stack) = EventManager.OnEnemyStatusEffectAdded.GetValue();
+            SafeEventManager.OnEnemyStatusEffectAdded.ProcessModifications((enemyBase, type, initialStack));
+            // In the new system, the ProcessModifications call above already handled the modification
+            ty = type;
+            stack = initialStack;
         }
         else
         {
-            (ty, stack) = EventManager.OnPlayerStatusEffectAdded.GetValue();
+            // In the new system, the ProcessModifications call above already handled the modification
+            ty = type;
+            stack = initialStack;
         }
 
         StatusEffectBase newEffect = ty switch

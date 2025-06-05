@@ -193,6 +193,15 @@ public static class SafeEventManager
         #endif
     }
 
+    public static int TriggerRest(int baseRestAmount)
+    {
+        var result = OnRest.ProcessModifications(baseRestAmount);
+        #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
+        Debug.Log($"[SafeEvent] Rest: {baseRestAmount} → {result}");
+        #endif
+        return result;
+    }
+
     // ===== モディファイア管理メソッド =====
 
     public static void RegisterCoinGainModifier(IModifier<int> modifier)
@@ -225,6 +234,11 @@ public static class SafeEventManager
         OnBallCreate.AddModifier(modifier);
     }
 
+    public static void RegisterRestModifier(IModifier<int> modifier)
+    {
+        OnRest.AddModifier(modifier);
+    }
+
     // オーナー指定でのモディファイア削除
     public static void RemoveModifiersFor(object owner)
     {
@@ -239,6 +253,7 @@ public static class SafeEventManager
         OnBallMerged.RemoveModifiersFor(owner);
         OnShopEnter.RemoveModifiersFor(owner);
         OnRestEnter.RemoveModifiersFor(owner);
+        OnRest.RemoveModifiersFor(owner);
         
         #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
         Debug.Log($"[SafeEvent] Removed all modifiers for: {owner?.GetType().Name}");
@@ -259,6 +274,7 @@ public static class SafeEventManager
         OnBallMerged.Clear();
         OnShopEnter.Clear();
         OnRestEnter.Clear();
+        OnRest.Clear();
         
         Debug.Log("[SafeEventManager] All events reset");
     }

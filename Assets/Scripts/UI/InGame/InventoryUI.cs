@@ -4,6 +4,7 @@ using DG.Tweening;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
+using SafeEventSystem;
 
 public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
 {
@@ -195,7 +196,8 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                     GameManager.Instance.SubCoin(ContentProvider.GetBallRemovePrice());
                     await InventoryManager.Instance.SwapBall(_selectedIndex, _swapIndex);
                     UIManager.Instance.EnableCanvasGroup("Rest", false);
-                    EventManager.OnOrganise.Trigger(0);
+                    // Trigger organise event - no return value needed
+                    SafeEventManager.OnOrganise.ProcessModifications(0);
                     GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
                 }
                 CancelEdit();
