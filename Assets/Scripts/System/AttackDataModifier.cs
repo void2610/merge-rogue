@@ -11,10 +11,8 @@ public class AttackDataModifier : ModifierBase<AttackData>
 
     public AttackDataModifier(
         Func<AttackData, AttackData, AttackData> modifier,
-        ModificationPhase phase,
         object owner,
-        Func<bool> condition = null,
-        int priority = 0) : base(phase, priority, owner)
+        Func<bool> condition = null) : base(owner)
     {
         _modifier = modifier;
         _condition = condition ?? (() => true);
@@ -38,8 +36,8 @@ public class AttackAdditionModifier : ModifierBase<AttackData>
     private readonly int _amount;
     private readonly Func<bool> _condition;
 
-    public AttackAdditionModifier(AttackType attackType, int amount, object owner, Func<bool> condition = null, int priority = 0)
-        : base(ModificationPhase.Addition, priority, owner)
+    public AttackAdditionModifier(AttackType attackType, int amount, object owner, Func<bool> condition = null)
+        : base(owner)
     {
         _attackType = attackType;
         _amount = amount;
@@ -62,8 +60,8 @@ public class AttackMultiplierModifier : ModifierBase<AttackData>
     private readonly float _multiplier;
     private readonly Func<bool> _condition;
 
-    public AttackMultiplierModifier(float multiplier, object owner, Func<bool> condition = null, int priority = 0)
-        : base(ModificationPhase.Multiplication, priority, owner)
+    public AttackMultiplierModifier(float multiplier, object owner, Func<bool> condition = null)
+        : base(owner)
     {
         _multiplier = multiplier;
         _condition = condition ?? (() => true);
@@ -92,9 +90,8 @@ public class AttackConversionModifier : ModifierBase<AttackData>
         AttackType toType, 
         object owner, 
         float multiplier = 1.0f, 
-        Func<bool> condition = null, 
-        int priority = 0)
-        : base(ModificationPhase.Conversion, priority, owner)
+        Func<bool> condition = null)
+        : base(owner)
     {
         _fromType = fromType;
         _toType = toType;

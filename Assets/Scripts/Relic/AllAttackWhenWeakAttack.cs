@@ -19,7 +19,6 @@ public class AllAttackWhenWeakAttack : RelicBase
 
         // より詳細な制御が必要な場合は個別に実装
         RegisterPlayerAttackModifier(
-            SafeEventSystem.ModificationPhase.Conversion,
             (original, current) =>
             {
                 var normalAttack = current.GetAttack(AttackType.Normal);

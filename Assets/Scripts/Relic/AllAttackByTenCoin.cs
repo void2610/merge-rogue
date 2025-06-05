@@ -12,7 +12,6 @@ public class AllAttackByTenCoin : RelicBase
     {
         // 攻撃変換処理
         RegisterPlayerAttackModifier(
-            SafeEventSystem.ModificationPhase.Conversion,
             (original, current) =>
             {
                 // 条件チェック

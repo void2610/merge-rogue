@@ -10,7 +10,6 @@ public class ShockRing : RelicBase
     {
         // 攻撃時に感電状態異常を付与
         RegisterPlayerAttackModifier(
-            SafeEventSystem.ModificationPhase.PostProcess, // 攻撃処理後に状態異常付与
             (original, current) =>
             {
                 var enemies = EnemyContainer.Instance.GetAllEnemies();

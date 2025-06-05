@@ -11,7 +11,6 @@ public class MergeAllWhenLowHealth : RelicBase
     {
         // プレイヤーダメージ時の条件付き効果を登録
         RegisterPlayerDamageModifier(
-            SafeEventSystem.ModificationPhase.PostProcess,
             (_, current) =>
             {
                 if (GameManager.Instance?.Player != null && 

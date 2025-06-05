@@ -92,12 +92,10 @@ public abstract class RelicBase : IDisposable
     /// コイン獲得時の修正を登録
     /// </summary>
     protected void RegisterCoinGainModifier(
-        ModificationPhase phase,
         Func<int, int, int> modifier,
-        Func<bool> condition = null,
-        int priority = 0)
+        Func<bool> condition = null)
     {
-        var mod = new FunctionalModifier<int>(phase, priority, this, 
+        var mod = new FunctionalModifier<int>(this, 
             (original, current) => modifier(original, current), condition);
         _intModifiers.Add(mod);
         SafeEventManager.RegisterCoinGainModifier(mod);
@@ -106,9 +104,9 @@ public abstract class RelicBase : IDisposable
     /// <summary>
     /// コイン獲得倍率修正を登録
     /// </summary>
-    protected void RegisterCoinGainMultiplier(float multiplier, Func<bool> condition = null, int priority = 0)
+    protected void RegisterCoinGainMultiplier(float multiplier, Func<bool> condition = null)
     {
-        var mod = new MultiplicationModifier(multiplier, this, condition, priority);
+        var mod = new MultiplicationModifier(multiplier, this, condition);
         _intModifiers.Add(mod);
         SafeEventManager.RegisterCoinGainModifier(mod);
     }
@@ -116,9 +114,9 @@ public abstract class RelicBase : IDisposable
     /// <summary>
     /// コイン獲得加算修正を登録
     /// </summary>
-    protected void RegisterCoinGainAddition(int amount, Func<bool> condition = null, int priority = 0)
+    protected void RegisterCoinGainAddition(int amount, Func<bool> condition = null)
     {
-        var mod = new AdditionModifier(amount, this, condition, priority);
+        var mod = new AdditionModifier(amount, this, condition);
         _intModifiers.Add(mod);
         SafeEventManager.RegisterCoinGainModifier(mod);
     }
@@ -127,12 +125,10 @@ public abstract class RelicBase : IDisposable
     /// コイン消費の修正を登録
     /// </summary>
     protected void RegisterCoinConsumeModifier(
-        ModificationPhase phase,
         Func<int, int, int> modifier,
-        Func<bool> condition = null,
-        int priority = 0)
+        Func<bool> condition = null)
     {
-        var mod = new FunctionalModifier<int>(phase, priority, this,
+        var mod = new FunctionalModifier<int>(this,
             (original, current) => modifier(original, current), condition);
         _intModifiers.Add(mod);
         SafeEventManager.RegisterCoinConsumeModifier(mod);
@@ -141,9 +137,9 @@ public abstract class RelicBase : IDisposable
     /// <summary>
     /// コイン消費を0にする修正を登録
     /// </summary>
-    protected void RegisterCoinConsumeBlock(Func<bool> condition = null, int priority = 0)
+    protected void RegisterCoinConsumeBlock(Func<bool> condition = null)
     {
-        var mod = new OverrideModifier(0, this, condition, priority);
+        var mod = new OverrideModifier(0, this, condition);
         _intModifiers.Add(mod);
         SafeEventManager.RegisterCoinConsumeModifier(mod);
     }
@@ -154,12 +150,10 @@ public abstract class RelicBase : IDisposable
     /// プレイヤー攻撃の修正を登録
     /// </summary>
     protected void RegisterPlayerAttackModifier(
-        ModificationPhase phase,
         Func<AttackData, AttackData, AttackData> modifier,
-        Func<bool> condition = null,
-        int priority = 0)
+        Func<bool> condition = null)
     {
-        var mod = new AttackDataModifier(modifier, phase, this, condition, priority);
+        var mod = new AttackDataModifier(modifier, this, condition);
         _attackModifiers.Add(mod);
         SafeEventManager.RegisterPlayerAttackModifier(mod);
     }
@@ -167,9 +161,9 @@ public abstract class RelicBase : IDisposable
     /// <summary>
     /// 攻撃力加算修正を登録
     /// </summary>
-    protected void RegisterAttackAddition(AttackType attackType, int amount, Func<bool> condition = null, int priority = 0)
+    protected void RegisterAttackAddition(AttackType attackType, int amount, Func<bool> condition = null)
     {
-        var mod = new AttackAdditionModifier(attackType, amount, this, condition, priority);
+        var mod = new AttackAdditionModifier(attackType, amount, this, condition);
         _attackModifiers.Add(mod);
         SafeEventManager.RegisterPlayerAttackModifier(mod);
     }
@@ -177,9 +171,9 @@ public abstract class RelicBase : IDisposable
     /// <summary>
     /// 単体攻撃を全体攻撃に変換する修正を登録
     /// </summary>
-    protected void RegisterNormalToAllAttackConversion(Func<bool> condition = null, float multiplier = 1.0f, int priority = 0)
+    protected void RegisterNormalToAllAttackConversion(Func<bool> condition = null, float multiplier = 1.0f)
     {
-        var mod = new AttackConversionModifier(AttackType.Normal, AttackType.All, this, multiplier, condition, priority);
+        var mod = new AttackConversionModifier(AttackType.Normal, AttackType.All, this, multiplier, condition);
         _attackModifiers.Add(mod);
         SafeEventManager.RegisterPlayerAttackModifier(mod);
     }
@@ -190,12 +184,10 @@ public abstract class RelicBase : IDisposable
     /// プレイヤーダメージの修正を登録
     /// </summary>
     protected void RegisterPlayerDamageModifier(
-        ModificationPhase phase,
         Func<int, int, int> modifier,
-        Func<bool> condition = null,
-        int priority = 0)
+        Func<bool> condition = null)
     {
-        var mod = new FunctionalModifier<int>(phase, priority, this,
+        var mod = new FunctionalModifier<int>(this,
             (original, current) => modifier(original, current), condition);
         _intModifiers.Add(mod);
         SafeEventManager.RegisterPlayerDamageModifier(mod);
@@ -207,7 +199,6 @@ public abstract class RelicBase : IDisposable
     protected void RegisterDamageAccumulator(int threshold, Action onThresholdReached)
     {
         RegisterPlayerDamageModifier(
-            ModificationPhase.PostProcess,
             (_, current) =>
             {
                 Count.Value += current;

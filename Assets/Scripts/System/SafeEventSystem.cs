@@ -6,39 +6,22 @@ using R3;
 
 namespace SafeEventSystem
 {
-    // 修正フェーズの定義（処理順序の制御）
-    public enum ModificationPhase
-    {
-        PreProcess = 0,      // 前処理（条件チェックなど）
-        Addition = 100,      // 加算修正 (+5攻撃力)
-        Multiplication = 200, // 乗算修正 (x2コイン)
-        Conversion = 300,    // 変換修正 (単体→全体攻撃)
-        Override = 400,      // 上書き修正 (コイン消費→0)
-        PostProcess = 500    // 後処理（状態異常付与など）
-    }
-
-    // モディファイアインターフェース
+    // モディファイアインターフェース（シンプル版）
     public interface IModifier<T>
     {
-        ModificationPhase Phase { get; }
-        int Priority { get; } // 同フェーズ内での順序（低い値ほど優先）
         object Owner { get; }
         bool CanApply(T originalValue, T currentValue);
         T Apply(T originalValue, T currentValue);
         void OnApplied(T originalValue, T resultValue); // 適用後のコールバック
     }
 
-    // 基本モディファイア抽象クラス
+    // 基本モディファイア抽象クラス（シンプル版）
     public abstract class ModifierBase<T> : IModifier<T>
     {
-        public ModificationPhase Phase { get; protected set; }
-        public int Priority { get; protected set; }
         public object Owner { get; protected set; }
 
-        protected ModifierBase(ModificationPhase phase, int priority, object owner)
+        protected ModifierBase(object owner)
         {
-            Phase = phase;
-            Priority = priority;
             Owner = owner;
         }
 
@@ -56,7 +39,7 @@ namespace SafeEventSystem
 
         public Observable<(T original, T modified)> OnProcessed => _onProcessed.AsObservable();
 
-        // 修正処理を安全に実行
+        // 修正処理を安全に実行（追加順での処理）
         public T ProcessModifications(T baseValue)
         {
             if (_isProcessing)
@@ -71,14 +54,12 @@ namespace SafeEventSystem
 
             try
             {
-                // フェーズ順、優先度順でモディファイアを適用
-                var sortedModifiers = _modifiers
+                // 追加順でモディファイアを適用
+                var applicableModifiers = _modifiers
                     .Where(m => m.CanApply(originalValue, currentValue))
-                    .OrderBy(m => (int)m.Phase)
-                    .ThenBy(m => m.Priority)
                     .ToList();
 
-                foreach (var modifier in sortedModifiers)
+                foreach (var modifier in applicableModifiers)
                 {
                     #if UNITY_EDITOR && DEBUG_SAFE_EVENTS
                     var beforeValue = currentValue;
@@ -93,7 +74,7 @@ namespace SafeEventSystem
                 }
 
                 // 適用後のコールバック実行
-                foreach (var modifier in sortedModifiers)
+                foreach (var modifier in applicableModifiers)
                 {
                     modifier.OnApplied(originalValue, currentValue);
                 }
@@ -144,8 +125,8 @@ namespace SafeEventSystem
         private readonly int _amount;
         private readonly Func<bool> _condition;
 
-        public AdditionModifier(int amount, object owner, Func<bool> condition = null, int priority = 0)
-            : base(ModificationPhase.Addition, priority, owner)
+        public AdditionModifier(int amount, object owner, Func<bool> condition = null)
+            : base(owner)
         {
             _amount = amount;
             _condition = condition ?? (() => true);
@@ -161,8 +142,8 @@ namespace SafeEventSystem
         private readonly float _multiplier;
         private readonly Func<bool> _condition;
 
-        public MultiplicationModifier(float multiplier, object owner, Func<bool> condition = null, int priority = 0)
-            : base(ModificationPhase.Multiplication, priority, owner)
+        public MultiplicationModifier(float multiplier, object owner, Func<bool> condition = null)
+            : base(owner)
         {
             _multiplier = multiplier;
             _condition = condition ?? (() => true);
@@ -178,8 +159,8 @@ namespace SafeEventSystem
         private readonly int _value;
         private readonly Func<bool> _condition;
 
-        public OverrideModifier(int value, object owner, Func<bool> condition = null, int priority = 0)
-            : base(ModificationPhase.Override, priority, owner)
+        public OverrideModifier(int value, object owner, Func<bool> condition = null)
+            : base(owner)
         {
             _value = value;
             _condition = condition ?? (() => true);
@@ -197,10 +178,8 @@ namespace SafeEventSystem
 
         public AttackModifier(
             Action<Dictionary<AttackType, int>, Dictionary<AttackType, int>> modifier,
-            ModificationPhase phase,
             object owner,
-            Func<bool> condition = null,
-            int priority = 0) : base(phase, priority, owner)
+            Func<bool> condition = null) : base(owner)
         {
             _modifier = modifier;
             _condition = condition ?? (() => true);
@@ -223,8 +202,8 @@ namespace SafeEventSystem
         private readonly Action<T, T> _callback;
         private readonly Func<T, T, bool> _condition;
 
-        public CallbackModifier(Action<T, T> callback, object owner, Func<T, T, bool> condition = null, int priority = 0)
-            : base(ModificationPhase.PostProcess, priority, owner)
+        public CallbackModifier(Action<T, T> callback, object owner, Func<T, T, bool> condition = null)
+            : base(owner)
         {
             _callback = callback;
             _condition = condition ?? ((_, _) => true);
@@ -233,5 +212,22 @@ namespace SafeEventSystem
         public override bool CanApply(T originalValue, T currentValue) => _condition(originalValue, currentValue);
         public override T Apply(T originalValue, T currentValue) => currentValue; // 値は変更しない
         public override void OnApplied(T originalValue, T resultValue) => _callback(originalValue, resultValue);
+    }
+
+    // 汎用関数型モディファイア
+    public class FunctionalModifier<T> : ModifierBase<T>
+    {
+        private readonly Func<T, T, T> _modifier;
+        private readonly Func<bool> _condition;
+
+        public FunctionalModifier(object owner, Func<T, T, T> modifier, Func<bool> condition = null)
+            : base(owner)
+        {
+            _modifier = modifier;
+            _condition = condition ?? (() => true);
+        }
+
+        public override bool CanApply(T originalValue, T currentValue) => _condition();
+        public override T Apply(T originalValue, T currentValue) => _modifier(originalValue, currentValue);
     }
 }
