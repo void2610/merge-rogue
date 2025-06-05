@@ -6,8 +6,8 @@ using UnityEngine;
 namespace SafeEventSystem
 {
     /// <summary>
-    /// シンプルなイベントシステム - Modifierなしのバージョン
-    /// 関数チェーンによる値変更を直接処理
+    /// 安全なイベント発行・購読システム
+    /// スレッドセーフな実装でゲーム内イベントを管理
     /// </summary>
     
     // 基本的なイベント発行・購読システム
@@ -90,7 +90,7 @@ namespace SafeEventSystem
 
     /// <summary>
     /// 関数チェーンによる値変更システム
-    /// Modifierクラスを使わずに、関数を直接チェーンして値を変更
+    /// 複数の処理関数を順次適用して値を変換する
     /// </summary>
     public class ValueProcessor<T>
     {

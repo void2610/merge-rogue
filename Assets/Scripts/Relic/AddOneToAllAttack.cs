@@ -1,6 +1,5 @@
 /// <summary>
 /// プレイヤーの攻撃時に通常攻撃力に+5する
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class AddOneToAllAttack : RelicBase
 {

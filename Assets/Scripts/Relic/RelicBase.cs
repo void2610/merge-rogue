@@ -5,8 +5,8 @@ using R3;
 using SafeEventSystem;
 
 /// <summary>
-/// ピュアC#版レリックベースクラス
-/// パイプライン型修正システムを使用して、競合状態を防ぐ
+/// レリックベースクラス
+/// イベントプロセッサーを使用してゲーム値を変更
 /// IDisposableパターンでリソース管理を行う
 /// </summary>
 public abstract class RelicBase : IDisposable

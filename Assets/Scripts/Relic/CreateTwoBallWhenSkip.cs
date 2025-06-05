@@ -4,7 +4,6 @@ using SafeEventSystem;
 
 /// <summary>
 /// ボールスキップ時にランダムボールを2個生成するレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class CreateTwoBallWhenSkip : RelicBase
 {

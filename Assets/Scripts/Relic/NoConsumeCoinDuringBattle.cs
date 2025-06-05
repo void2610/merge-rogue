@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// バトル中（MergeとEnemyAttack状態）はコイン消費が0になる
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class NoConsumeCoinDuringBattle : RelicBase
 {

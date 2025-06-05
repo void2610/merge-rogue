@@ -4,7 +4,6 @@ using System.Collections.Generic;
 /// <summary>
 /// コイン10枚で単体攻撃を1.5倍の全体攻撃に変換する
 /// 賢者の石（NoConsumeCoinDuringBattle）がある場合はコイン消費なし
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class AllAttackByTenCoin : RelicBase
 {

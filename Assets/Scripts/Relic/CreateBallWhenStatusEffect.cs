@@ -4,7 +4,6 @@ using SafeEventSystem;
 
 /// <summary>
 /// プレイヤーにステータス効果が追加されたときにランダムボールを生成するレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class CreateBallWhenStatusEffect : RelicBase
 {

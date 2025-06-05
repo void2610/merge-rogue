@@ -1,6 +1,5 @@
 /// <summary>
 /// ボールで0個のときに攻撃力を5倍にするレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class PerfectParfait : RelicBase
 {

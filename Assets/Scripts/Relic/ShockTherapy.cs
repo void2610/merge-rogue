@@ -4,7 +4,6 @@ using SafeEventSystem;
 
 /// <summary>
 /// 敌にShock付与時にプレイヤーにPowerを付与するレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class ShockTherapy : RelicBase
 {

@@ -4,7 +4,6 @@ using SafeEventSystem;
 
 /// <summary>
 /// 最高ランクボール合成時にHPを回復するレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class HealWhenMergeLastBall : RelicBase
 {

@@ -4,7 +4,6 @@ using SafeEventSystem;
 
 /// <summary>
 /// ボールドロップ時に50%の確率で同じボールを複製するレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class SometimeCopyDropBall : RelicBase
 {

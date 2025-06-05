@@ -4,7 +4,6 @@ using SafeEventSystem;
 
 /// <summary>
 /// オーガナイズ時にプレイヤーに10ダメージを与えるレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class Fukiya : RelicBase
 {

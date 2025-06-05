@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// プレイヤーの最大HPを10増加させるレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class AddMaxHealth : RelicBase
 {

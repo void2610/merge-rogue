@@ -3,7 +3,6 @@ using R3;
 
 /// <summary>
 /// 休憩時にランダムなレリックを獲得するレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class Santa : RelicBase
 {

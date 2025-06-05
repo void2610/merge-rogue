@@ -4,7 +4,6 @@ using SafeEventSystem;
 
 /// <summary>
 /// 休憩を3回キャンセルできる、ボールレベルアップ量を増加するレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class MonsterEnergy : RelicBase
 {

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 /// <summary>
 /// 通常攻撃力が30以下の時、全体攻撃に変換する
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class AllAttackWhenWeakAttack : RelicBase
 {

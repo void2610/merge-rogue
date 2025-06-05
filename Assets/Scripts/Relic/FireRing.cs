@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// プレイヤーの攻撃時に敵に燃焼状態異常を付与する
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class FireRing : RelicBase
 {

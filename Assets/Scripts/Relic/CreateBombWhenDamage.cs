@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// プレイヤーが受けたダメージを蓄積し、20ダメージ毎にボムボールを生成する
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class CreateBombWhenDamage : RelicBase
 {

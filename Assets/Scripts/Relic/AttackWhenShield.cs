@@ -4,7 +4,6 @@ using SafeEventSystem;
 
 /// <summary>
 /// シールド発動時に敵に攻撃するレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class AttackWhenShield : RelicBase
 {

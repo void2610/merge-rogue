@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// 最大HPを1/4に削減するが、敵撃破時に無敵状態異常を付与する
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class HaisuiNoJin : RelicBase
 {

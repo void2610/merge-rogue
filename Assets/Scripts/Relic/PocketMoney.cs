@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// ショップに入店した時にコイン10枚を獲得する
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class PocketMoney : RelicBase
 {

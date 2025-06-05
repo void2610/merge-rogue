@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// プレイヤーの攻撃時に敵に感電状態異常を付与する
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class ShockRing : RelicBase
 {

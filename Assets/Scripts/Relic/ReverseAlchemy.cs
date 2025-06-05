@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// プレイヤーが受けたダメージを蓄積し、5ダメージ毎にコイン1枚を獲得する
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class ReverseAlchemy : RelicBase
 {

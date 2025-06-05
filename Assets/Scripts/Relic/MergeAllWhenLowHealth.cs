@@ -3,7 +3,6 @@ using R3;
 
 /// <summary>
 /// プレイヤーのHPが20以下になったときに全ボールを合成するレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class MergeAllWhenLowHealth : RelicBase
 {

@@ -4,7 +4,6 @@ using SafeEventSystem;
 
 /// <summary>
 /// ボールが10個以上のとき、敌Burn効果発動時に次の敌にもBurnを付与するレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class StrongBurnWhenManyBalls : RelicBase
 {

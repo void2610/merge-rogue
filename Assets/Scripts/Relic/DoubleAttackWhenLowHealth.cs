@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// HPが20%以下または20以下の時、バトル開始時に怒り状態異常を10スタック付与する
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class DoubleAttackWhenLowHealth : RelicBase
 {

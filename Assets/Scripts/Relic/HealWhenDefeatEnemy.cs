@@ -2,7 +2,6 @@ using System;
 
 /// <summary>
 /// 敵撃破時にHPを回復するレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class HealWhenDefeatEnemy : RelicBase
 {

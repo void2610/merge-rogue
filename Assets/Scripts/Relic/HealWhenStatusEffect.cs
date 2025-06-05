@@ -4,7 +4,6 @@ using SafeEventSystem;
 
 /// <summary>
 /// プレイヤーにステータス効果が追加されたときにHPを回復するレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class HealWhenStatusEffect : RelicBase
 {

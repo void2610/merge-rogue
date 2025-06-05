@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// HPが最大HPの80%以上の時、コイン獲得量が2倍になる
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class DoubleCoinsWhenNearFullHealth : RelicBase
 {

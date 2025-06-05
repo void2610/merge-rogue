@@ -4,7 +4,6 @@ using SafeEventSystem;
 
 /// <summary>
 /// 宝物スキップ時に最大HPを増加するレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class AddMaxHealthWhenSkipTreasure : RelicBase
 {

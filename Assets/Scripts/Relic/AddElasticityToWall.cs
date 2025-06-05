@@ -2,7 +2,6 @@ using UnityEngine;
 
 /// <summary>
 /// 壁の弾性を追加するレリック
-/// 新しい安全なイベントシステムを使用したバージョン
 /// </summary>
 public class AddElasticityToWall : RelicBase
 {

@@ -8,7 +8,7 @@ public static class SafeEventManager
     // イベントシステム初期化フラグ
     private static bool _initialized = false;
     
-    // 主要なゲームイベント - 新しいValueProcessorシステム
+    // 値を変更するゲームイベント（ValueProcessorを使用）
     public static readonly ValueProcessor<int> OnCoinGain = new();
     public static readonly ValueProcessor<int> OnCoinConsume = new();
     public static readonly ValueProcessor<int> OnPlayerExpGain = new();
@@ -21,7 +21,7 @@ public static class SafeEventManager
     public static readonly ValueProcessor<int> OnRest = new();
     public static readonly ValueProcessor<int> OnRestExit = new();
 
-    // 非修正イベント（単純な通知用、R3のSubjectを使用）
+    // 通知専用イベント（R3のSubjectを使用）
     public static readonly Subject<Unit> OnBattleStartSimple = new();
     public static readonly Subject<EnemyBase> OnEnemyDefeatedSimple = new();
     public static readonly Subject<(BallBase, BallBase)> OnBallMergedSimple = new();
@@ -53,46 +53,44 @@ public static class SafeEventManager
         Debug.Log("[SafeEventManager] Initialized successfully");
     }
 
-    // ===== 直接アクセス可能なイベントプロセッサー =====
-    // 使用例：
+    // ===== イベントプロセッサー使用例 =====
     // var modifiedValue = SafeEventManager.OnCoinGain.Process(originalValue);
     // SafeEventManager.OnBattleStartSimple.OnNext(Unit.Default);
 
-    // ===== レガシー互換性のための簡易登録メソッド =====
-    // 注意: 直接 OnXXX.AddProcessor() を使用することを推奨
+    // ===== 値変更プロセッサーの登録メソッド =====
 
     /// <summary>
-    /// コイン獲得修正を登録 - 直接 OnCoinGain.AddProcessor() を使用することを推奨
+    /// コイン獲得値を変更するプロセッサーを登録
     /// </summary>
     public static void RegisterCoinGainModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
         => OnCoinGain.AddProcessor(owner, processor, condition);
 
     /// <summary>
-    /// コイン消費修正を登録 - 直接 OnCoinConsume.AddProcessor() を使用することを推奨
+    /// コイン消費値を変更するプロセッサーを登録
     /// </summary>
     public static void RegisterCoinConsumeModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
         => OnCoinConsume.AddProcessor(owner, processor, condition);
 
     /// <summary>
-    /// プレイヤー攻撃修正を登録 - 直接 OnPlayerAttack.AddProcessor() を使用することを推奨
+    /// プレイヤー攻撃データを変更するプロセッサーを登録
     /// </summary>
     public static void RegisterPlayerAttackModifier(object owner, Func<AttackData, AttackData> processor, Func<bool> condition = null)
         => OnPlayerAttack.AddProcessor(owner, processor, condition);
 
     /// <summary>
-    /// プレイヤーダメージ修正を登録 - 直接 OnPlayerDamage.AddProcessor() を使用することを推奨
+    /// プレイヤーダメージ値を変更するプロセッサーを登録
     /// </summary>
     public static void RegisterPlayerDamageModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
         => OnPlayerDamage.AddProcessor(owner, processor, condition);
 
     /// <summary>
-    /// 休憩修正を登録 - 直接 OnRest.AddProcessor() を使用することを推奨
+    /// 休憩効果値を変更するプロセッサーを登録
     /// </summary>
     public static void RegisterRestModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
         => OnRest.AddProcessor(owner, processor, condition);
 
     /// <summary>
-    /// 特定のオーナーの全修正を削除 - 各プロセッサーで直接 RemoveProcessorsFor() を呼ぶことも可能
+    /// 特定のオーナーのプロセッサーをすべて削除
     /// </summary>
     public static void RemoveProcessorsFor(object owner)
     {
@@ -105,7 +103,7 @@ public static class SafeEventManager
     }
 
     /// <summary>
-    /// すべての修正をクリア
+    /// すべてのプロセッサーとイベントをクリア
     /// </summary>
     public static void Clear()
     {
