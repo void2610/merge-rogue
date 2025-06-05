@@ -147,3 +147,48 @@ UIManager.Instance.EnableCanvasGroup("WindowName", true);
 - Composite Disposables for automatic R3 subscription cleanup
 - Physics-based systems require careful performance monitoring
 - UI uses DOTween for smooth animations without blocking gameplay
+
+## Development Tools
+
+### Unity Compile Check Script
+
+A custom shell script `unity-compile-check.sh` is available for automated compilation error detection:
+
+**Basic Usage:**
+```bash
+# Standard compile check
+./unity-compile-check.sh .
+
+# Check editor logs only (when Unity is running)
+./unity-compile-check.sh -e .
+
+# Force Unity recompile + check editor logs
+./unity-compile-check.sh -ef .
+
+# Quit Unity first, then compile check
+./unity-compile-check.sh -q .
+
+# Verbose output with detailed logs
+./unity-compile-check.sh -v .
+```
+
+**Key Features:**
+- **Editor Log Analysis**: Reads Unity Editor.log directly for real-time error detection
+- **Automatic Unity Detection**: Finds project-specific Unity version automatically
+- **Force Recompile**: Triggers Unity Editor recompilation via AppleScript (macOS)
+- **Multiple Fallback Methods**: File system watching, process signals, keyboard shortcuts
+- **CI/CD Ready**: Suitable for automated build pipelines
+
+**Options:**
+- `-e, --editor-only`: Check editor logs without running Unity (fast)
+- `-f, --force-compile`: Force Unity Editor to recompile before checking
+- `-q, --quit`: Quit Unity Editor before running compile check (reliable)
+- `-v, --verbose`: Show detailed compilation logs and debug information
+
+**Error Detection Patterns:**
+- C# compiler errors (`error CS####:`)
+- Unity-specific compilation failures
+- Script compilation timeouts
+- Assembly loading issues
+
+This tool enables Claude Code to automatically detect and fix compilation errors without manual Unity Editor interaction.
