@@ -42,8 +42,8 @@ public static class EventManager
     public static readonly Subject<Unit> OnPlayerStatusEffectAdded = new();
     public static readonly Subject<Unit> OnBallSkip = new();
     public static readonly Subject<Unit> OnOrganise = new();
-    public static readonly Subject<Unit> OnEnemyStatusEffectAdded = new();
-    public static readonly Subject<Unit> OnEnemyStatusEffectTriggered = new();
+    public static readonly Subject<StatusEffectType> OnEnemyStatusEffectAdded = new();
+    public static readonly Subject<StatusEffectType> OnEnemyStatusEffectTriggered = new();
     public static readonly Subject<Unit> OnRelicObtainedTreasure = new();
     public static readonly Subject<Unit> OnStageEventEnter = new();
 

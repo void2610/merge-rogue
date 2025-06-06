@@ -2,30 +2,36 @@ using R3;
 using UnityEngine;
 
 /// <summary>
-/// ボールが10個以上のとき、敌Burn効果発動時に次の敌にもBurnを付与するレリック
+/// ボールが10個以上のとき、敵Burn効果発動時に次の敵にもBurnを付与するレリック
 /// </summary>
 public class StrongBurnWhenManyBalls : RelicBase
 {
     protected override void RegisterEffects()
     {
-        // 敌ステータス効果発動時のイベント購読
+        // 敵ステータス効果発動時のイベント購読
         var subscription = EventManager.OnEnemyStatusEffectTriggered.Subscribe(OnEnemyStatusEffectTriggered);
         _simpleSubscriptions.Add(subscription);
     }
 
-    private void OnEnemyStatusEffectTriggered(Unit _)
+    private void OnEnemyStatusEffectTriggered(StatusEffectType statusEffectType)
     {
-        // 簡略化版では詳細な情報を取得できないため、ボール数と敵の状態のみチェック
+        // Burn状態異常が発動した場合のみ効果発動
+        if (statusEffectType != StatusEffectType.Burn) return;
+        
+        // ボールが10個以上の場合のみ効果発動
         if (MergeManager.Instance?.GetBallCount() < 10) return;
 
         var enemyContainer = EnemyContainer.Instance;
         if (enemyContainer == null) return;
         
-        // 最初の敵にバーンを付与（簡略化版）
         var enemies = enemyContainer.GetAllEnemies();
-        if (enemies.Count > 1)
+        if (enemies.Count <= 1) return;
+        
+        // 次の敵（インデックス1）にBurnを付与
+        // 敵が複数いる場合は最初の敵以外にBurnを付与
+        for (int i = 1; i < enemies.Count; i++)
         {
-            StatusEffectFactory.AddStatusEffect(enemies[1], StatusEffectType.Burn);
+            StatusEffectFactory.AddStatusEffect(enemies[i], StatusEffectType.Burn, 1);
         }
         
         UI?.ActivateUI();

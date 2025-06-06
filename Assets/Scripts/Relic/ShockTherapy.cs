@@ -13,32 +13,13 @@ public class ShockTherapy : RelicBase
         _simpleSubscriptions.Add(subscription);
     }
 
-    private void OnEnemyStatusEffectAdded(Unit _)
+    private void OnEnemyStatusEffectAdded(StatusEffectType statusEffectType)
     {
-        // 敵にShockが付与されたかどうかをチェック
-        if (HasShockBeenAddedToAnyEnemy())
+        // Shock状態異常が付与された場合のみ効果発動
+        if (statusEffectType == StatusEffectType.Shock)
         {
             StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Power, 1);
             UI?.ActivateUI();
         }
-    }
-    
-    /// <summary>
-    /// いずれかの敵にShock状態異常が付与されているかチェック
-    /// </summary>
-    private bool HasShockBeenAddedToAnyEnemy()
-    {
-        var enemies = EnemyContainer.Instance?.GetAllEnemies();
-        if (enemies == null) return false;
-        
-        foreach (var enemy in enemies)
-        {
-            var shockEffect = enemy.StatusEffects.Find(e => e.Type == StatusEffectType.Shock);
-            if (shockEffect != null)
-            {
-                return true;
-            }
-        }
-        return false;
     }
 }
