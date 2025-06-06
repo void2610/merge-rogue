@@ -12,7 +12,7 @@ public class AllAttackWhenWeakAttack : RelicBase
     protected override void RegisterEffects()
     {
         // 弱い攻撃の場合に攻撃力を2倍にする（簡素化）
-        RegisterAttackMultiplier(2.0f, 
+        RelicHelpers.RegisterAttackMultiplier(this, 2.0f, 
             condition: () => true); // 常に適用（条件チェックは後で実装可能）
     }
 }

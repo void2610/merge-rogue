@@ -8,10 +8,10 @@ public class PocketMoney : RelicBase
     protected override void RegisterEffects()
     {
         // ショップ入店時にコイン10枚獲得
-        SubscribeShopEnter(() =>
+        AddSubscription(RelicHelpers.SubscribeShopEnter(() =>
         {
             GameManager.Instance.AddCoin(10);
             ActivateUI();
-        });
+        }));
     }
 }

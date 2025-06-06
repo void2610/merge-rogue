@@ -11,7 +11,7 @@ public class AllAttackByTenCoin : RelicBase
     protected override void RegisterEffects()
     {
         // 攻撃変換処理（簡素化：単純な1.5倍攻撃力向上として実装）
-        RegisterAttackMultiplier(1.5f, 
+        RelicHelpers.RegisterAttackMultiplier(this, 1.5f, 
             condition: () => CanConvertAttackCondition());
 
         // 初期化時にも一度実行（元実装の EffectImpl(Unit.Default) に相当）
@@ -26,7 +26,7 @@ public class AllAttackByTenCoin : RelicBase
     {
         var coin = GameManager.Instance.Coin.Value;
         var enemyCount = GameManager.Instance.EnemyContainer.GetCurrentEnemyCount();
-        var hasNoConsumeCoin = HasRelicCondition<NoConsumeCoinDuringBattle>()();
+        var hasNoConsumeCoin = RelicHelpers.HasRelicCondition<NoConsumeCoinDuringBattle>()();
 
         // コインが足りるか、賢者の石があるか、かつ敵が2体以上いる場合
         return (coin >= 10 || hasNoConsumeCoin) && enemyCount >= 2;

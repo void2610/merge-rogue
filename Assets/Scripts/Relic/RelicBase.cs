@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using R3;
 
@@ -61,8 +60,6 @@ public abstract class RelicBase : IDisposable
         }
         _simpleSubscriptions.Clear();
         
-        // 修正リストは削除されました
-        
         Debug.Log($"[Relic] {GetType().Name} effects removed");
     }
 
@@ -80,151 +77,7 @@ public abstract class RelicBase : IDisposable
         Debug.Log($"[Relic] {GetType().Name} disposed");
     }
 
-    // ===== コイン関連のヘルパーメソッド =====
-
-
-    /// <summary>
-    /// コイン獲得倍率修正を登録
-    /// </summary>
-    protected void RegisterCoinGainMultiplier(float multiplier, Func<bool> condition = null)
-    {
-        EventManager.RegisterCoinGainModifier(this, ValueProcessors.Multiply(multiplier), condition);
-    }
-
-    /// <summary>
-    /// コイン獲得加算修正を登録
-    /// </summary>
-    protected void RegisterCoinGainAddition(int amount, Func<bool> condition = null)
-    {
-        EventManager.RegisterCoinGainModifier(this, ValueProcessors.Add(amount), condition);
-    }
-
-    /// <summary>
-    /// コイン消費の修正を登録
-    /// </summary>
-    protected void RegisterCoinConsumeModifier(
-        Func<int, int> modifier,
-        Func<bool> condition = null)
-    {
-        EventManager.RegisterCoinConsumeModifier(this, modifier, condition);
-    }
-
-    /// <summary>
-    /// コイン消費を0にする修正を登録
-    /// </summary>
-    protected void RegisterCoinConsumeBlock(Func<bool> condition = null)
-    {
-        EventManager.RegisterCoinConsumeModifier(this, ValueProcessors.SetZero(), condition);
-    }
-
-    // ===== 攻撃関連のヘルパーメソッド =====
-
-    /// <summary>
-    /// プレイヤー攻撃の修正を登録
-    /// </summary>
-    protected void RegisterPlayerAttackModifier(
-        Func<int, int> modifier,
-        Func<bool> condition = null)
-    {
-        EventManager.RegisterPlayerAttackModifier(this, modifier, condition);
-    }
-
-    /// <summary>
-    /// 攻撃力加算修正を登録
-    /// </summary>
-    protected void RegisterAttackAddition(int amount, Func<bool> condition = null)
-    {
-        EventManager.RegisterPlayerAttackModifier(this, 
-            attack => attack + amount, 
-            condition);
-    }
-
-    /// <summary>
-    /// 攻撃力倍率修正を登録
-    /// </summary>
-    protected void RegisterAttackMultiplier(float multiplier, Func<bool> condition = null)
-    {
-        EventManager.RegisterPlayerAttackModifier(this, 
-            attack => (int)(attack * multiplier), 
-            condition);
-    }
-
-    // ===== ダメージ関連のヘルパーメソッド =====
-
-    /// <summary>
-    /// プレイヤーダメージの修正を登録
-    /// </summary>
-    protected void RegisterPlayerDamageModifier(
-        Func<int, int> modifier,
-        Func<bool> condition = null)
-    {
-        EventManager.RegisterPlayerDamageModifier(this, modifier, condition);
-    }
-
-    /// <summary>
-    /// ダメージ蓄積カウンター（ReverseAlchemy、CreateBombWhenDamage用）
-    /// </summary>
-    protected void RegisterDamageAccumulator(int threshold, Action onThresholdReached)
-    {
-        RegisterPlayerDamageModifier(
-            current =>
-            {
-                Count.Value += current;
-                Debug.Log($"[Relic] {GetType().Name} Count updated: {Count.Value}");
-                var activations = Count.Value / threshold;
-                if (activations > 0)
-                {
-                    Count.Value %= threshold;
-                    for (int i = 0; i < activations; i++)
-                    {
-                        onThresholdReached?.Invoke();
-                    }
-                    UI?.ActivateUI();
-                }
-                return current; // 値は変更しない
-            }
-        );
-    }
-
-    // ===== シンプルなイベント購読のヘルパーメソッド =====
-
-    /// <summary>
-    /// バトル開始イベントの購読
-    /// </summary>
-    protected void SubscribeBattleStart(Action onBattleStart)
-    {
-        var subscription = EventManager.OnBattleStart.Subscribe(_ => onBattleStart?.Invoke());
-        _simpleSubscriptions.Add(subscription);
-    }
-
-    /// <summary>
-    /// 敵撃破イベントの購読
-    /// </summary>
-    protected void SubscribeEnemyDefeated(Action<EnemyBase> onEnemyDefeated)
-    {
-        var subscription = EventManager.OnEnemyDefeated.Subscribe(onEnemyDefeated);
-        _simpleSubscriptions.Add(subscription);
-    }
-
-    /// <summary>
-    /// ショップ入店イベントの購読
-    /// </summary>
-    protected void SubscribeShopEnter(Action onShopEnter)
-    {
-        var subscription = EventManager.OnShopEnter.Subscribe(_ => onShopEnter?.Invoke());
-        _simpleSubscriptions.Add(subscription);
-    }
-
-    /// <summary>
-    /// 休憩入室イベントの購読
-    /// </summary>
-    protected void SubscribeRestEnter(Action onRestEnter)
-    {
-        var subscription = EventManager.OnRestEnter.Subscribe(_ => onRestEnter?.Invoke());
-        _simpleSubscriptions.Add(subscription);
-    }
-
-    // ===== UI関連ヘルパーメソッド =====
+    // ===== 便利メソッド =====
 
     /// <summary>
     /// UIをアクティブ化（エフェクト発動時の視覚的フィードバック）
@@ -235,38 +88,34 @@ public abstract class RelicBase : IDisposable
     }
 
     /// <summary>
-    /// 条件チェックのヘルパーメソッド
+    /// ダメージ蓄積カウンター（特殊なパターン用）
     /// </summary>
-    protected Func<bool> PlayerHealthCondition(float healthPercentage)
+    protected void RegisterDamageAccumulator(int threshold, Action onThresholdReached)
     {
-        return () =>
+        RelicHelpers.RegisterPlayerDamageModifier(this, current =>
         {
-            if (!GameManager.Instance?.Player) return false;
-            var currentHealth = GameManager.Instance.Player.Health.Value;
-            var maxHealth = GameManager.Instance.Player.MaxHealth.Value;
-            return currentHealth <= maxHealth * healthPercentage;
-        };
+            Count.Value += current;
+            Debug.Log($"[Relic] {GetType().Name} Count updated: {Count.Value}");
+            var activations = Count.Value / threshold;
+            if (activations > 0)
+            {
+                Count.Value %= threshold;
+                for (int i = 0; i < activations; i++)
+                {
+                    onThresholdReached?.Invoke();
+                }
+                UI?.ActivateUI();
+            }
+            return current; // 値は変更しない
+        });
     }
 
-    protected Func<bool> PlayerHealthConditionAbove(float healthPercentage)
+    /// <summary>
+    /// イベント購読を管理リストに追加
+    /// </summary>
+    protected void AddSubscription(IDisposable subscription)
     {
-        return () =>
-        {
-            if (!GameManager.Instance?.Player) return false;
-            var currentHealth = GameManager.Instance.Player.Health.Value;
-            var maxHealth = GameManager.Instance.Player.MaxHealth.Value;
-            return currentHealth > maxHealth * healthPercentage;
-        };
-    }
-
-    protected Func<bool> GameStateCondition(params GameManager.GameState[] states)
-    {
-        return () => GameManager.Instance && Array.Exists(states, state => GameManager.Instance.state == state);
-    }
-
-    protected Func<bool> HasRelicCondition<T>() where T : RelicBase
-    {
-        return () => RelicManager.Instance.HasRelic(typeof(T));
+        _simpleSubscriptions.Add(subscription);
     }
 }
 

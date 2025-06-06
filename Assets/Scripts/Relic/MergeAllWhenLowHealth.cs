@@ -9,7 +9,7 @@ public class MergeAllWhenLowHealth : RelicBase
     protected override void RegisterEffects()
     {
         // プレイヤーダメージ時の条件付き効果を登録
-        RegisterPlayerDamageModifier(
+        RelicHelpers.RegisterPlayerDamageModifier(this,
             current =>
             {
                 if (GameManager.Instance?.Player != null && 

@@ -8,7 +8,7 @@ public class ShockRing : RelicBase
     protected override void RegisterEffects()
     {
         // 攻撃時に感電状態異常を付与
-        RegisterPlayerAttackModifier(
+        RelicHelpers.RegisterPlayerAttackModifier(this,
             current =>
             {
                 var enemies = EnemyContainer.Instance.GetAllEnemies();

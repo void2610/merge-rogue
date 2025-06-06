@@ -8,14 +8,14 @@ public class DoubleAttackWhenLowHealth : RelicBase
     protected override void RegisterEffects()
     {
         // バトル開始時に低HP条件をチェックして怒り状態異常を付与
-        SubscribeBattleStart(() =>
+        AddSubscription(RelicHelpers.SubscribeBattleStart(() =>
         {
             if (IsLowHealth())
             {
                 StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Rage, 10);
                 ActivateUI();
             }
-        });
+        }));
     }
 
     /// <summary>

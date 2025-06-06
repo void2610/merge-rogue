@@ -22,13 +22,13 @@ public class MonsterEnergy : RelicBase
         EventManager.RegisterRestModifier(this, ValueProcessors.SetZero(), () => Count.Value > 0);
         
         // 休憩時にカウント減少
-        SubscribeRestEnter(() =>
+        AddSubscription(RelicHelpers.SubscribeRestEnter(() =>
         {
             if (Count.Value > 0)
             {
                 Count.Value--;
                 UI?.ActivateUI();
             }
-        });
+        }));
     }
 }

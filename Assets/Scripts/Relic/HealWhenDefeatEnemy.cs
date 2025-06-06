@@ -8,7 +8,7 @@ public class HealWhenDefeatEnemy : RelicBase
     protected override void RegisterEffects()
     {
         // 敵撃破時のイベント購読
-        SubscribeEnemyDefeated(OnEnemyDefeated);
+        AddSubscription(RelicHelpers.SubscribeEnemyDefeated(OnEnemyDefeated));
     }
 
     private void OnEnemyDefeated(EnemyBase enemy)

@@ -13,11 +13,11 @@ public class HaisuiNoJin : RelicBase
         ModifyMaxHealth();
         
         // 敵撃破時に無敵状態異常を付与
-        SubscribeEnemyDefeated(enemy =>
+        AddSubscription(RelicHelpers.SubscribeEnemyDefeated(enemy =>
         {
             StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Invincible, 1);
             ActivateUI();
-        });
+        }));
     }
 
     public override void RemoveAllEffects()

@@ -9,7 +9,7 @@ public class Santa : RelicBase
     protected override void RegisterEffects()
     {
         // 休憩時のイベント購読
-        SubscribeRestEnter(OnRestEnter);
+        AddSubscription(RelicHelpers.SubscribeRestEnter(OnRestEnter));
     }
 
     private void OnRestEnter()

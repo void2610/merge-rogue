@@ -8,8 +8,8 @@ public class NoConsumeCoinDuringBattle : RelicBase
     protected override void RegisterEffects()
     {
         // バトル中のコイン消費を0にブロック
-        RegisterCoinConsumeBlock(
-            condition: GameStateCondition(
+        RelicHelpers.RegisterCoinConsumeBlock(this,
+            condition: RelicHelpers.GameStateCondition(
                 GameManager.GameState.Merge,
                 GameManager.GameState.EnemyAttack
             )
