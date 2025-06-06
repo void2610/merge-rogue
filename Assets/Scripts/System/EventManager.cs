@@ -19,6 +19,9 @@ public static class EventManager
     public static readonly ValueProcessor<int> OnRestEnterProcessor = new();
     public static readonly ValueProcessor<int> OnRest = new();
     public static readonly ValueProcessor<int> OnRestExit = new();
+    
+    // ステージタイプ決定関連
+    public static readonly ValueProcessor<StageType> OnStageTypeDecision = new();
 
     // 通知専用イベント（R3のSubjectを使用）
     public static readonly Subject<Unit> OnBattleStart = new();

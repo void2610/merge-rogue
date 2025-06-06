@@ -322,6 +322,7 @@ public class StageManager : MonoBehaviour
         BgmManager.Instance.PlayRandomBGM(bgmType).Forget();
         
         var r = 0;
+        StageType finalStage;
         if(CurrentStage.Type == StageType.Events)
         {
             // ランダムなステージに移動
@@ -331,12 +332,16 @@ public class StageManager : MonoBehaviour
                 r = GameManager.Instance.RandomRange(0, 4);
 
             var stage = (StageType)r;
-            ProcessStage(stage);
+            // ValueProcessorを通してステージタイプを最終決定
+            finalStage = EventManager.OnStageTypeDecision.Process(stage);
         }
         else
         {
-            ProcessStage(CurrentStage.Type);
+            // ValueProcessorを通してステージタイプを最終決定
+            finalStage = EventManager.OnStageTypeDecision.Process(CurrentStage.Type);
         }
+        
+        ProcessStage(finalStage);
         
         // カーソルの位置を変更
     }
