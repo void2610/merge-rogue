@@ -10,20 +10,16 @@ public class AllAttackByTenCoin : RelicBase
 {
     protected override void RegisterEffects()
     {
-        // 攻撃タイプ変換：Normal → All（条件を満たす場合）
-        EventManager.RegisterAttackTypeConverter(this, attackType =>
+        // 攻撃処理：Normal → All変換 + 1.5倍攻撃力（条件を満たす場合）
+        EventManager.RegisterAttackProcessor(this, attackData =>
         {
-            if (attackType == AttackType.Normal && CanConvertAttackCondition())
+            if (attackData.type == AttackType.Normal && CanConvertAttackCondition())
             {
                 ConsumeCoinsForConversion();
-                return AttackType.All;
+                return (AttackType.All, (int)(attackData.value * 1.5f));
             }
-            return attackType;
+            return attackData;
         });
-        
-        // 攻撃力1.5倍（変換時のみ）
-        RelicHelpers.RegisterAttackMultiplier(this, 1.5f, 
-            condition: () => CanConvertAttackCondition());
     }
 
     /// <summary>
