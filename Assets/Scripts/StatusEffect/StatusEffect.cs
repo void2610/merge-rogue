@@ -86,7 +86,7 @@ public abstract class StatusEffectBase
         {
             ShowEffectText();
             if(_isPlayer)
-                EventManager.OnPlayerStatusEffectTriggered.OnNext(R3.Unit.Default);
+                EventManager.OnPlayerStatusEffectTriggered.OnNext(Type);
             else
                 EventManager.OnEnemyStatusEffectTriggered.OnNext(Type);
         }
@@ -98,7 +98,7 @@ public abstract class StatusEffectBase
         {
             ShowEffectText(1);
             if (_isPlayer)
-                EventManager.OnPlayerStatusEffectTriggered.OnNext(R3.Unit.Default);
+                EventManager.OnPlayerStatusEffectTriggered.OnNext(Type);
             else
                 EventManager.OnEnemyStatusEffectTriggered.OnNext(Type);
         }
@@ -111,7 +111,7 @@ public abstract class StatusEffectBase
         {
             ShowEffectText();
             if (_isPlayer)
-                EventManager.OnPlayerStatusEffectTriggered.OnNext(R3.Unit.Default);
+                EventManager.OnPlayerStatusEffectTriggered.OnNext(Type);
             else
                 EventManager.OnEnemyStatusEffectTriggered.OnNext(Type);
         }
@@ -125,7 +125,7 @@ public abstract class StatusEffectBase
         {
             ShowEffectText();
             if (_isPlayer)
-                EventManager.OnPlayerStatusEffectTriggered.OnNext(R3.Unit.Default);
+                EventManager.OnPlayerStatusEffectTriggered.OnNext(Type);
             else
                 EventManager.OnEnemyStatusEffectTriggered.OnNext(Type);
         }

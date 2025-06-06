@@ -38,7 +38,7 @@ public static class EventManager
     public static readonly Subject<(BallBase, BallBase)> OnBallMerged = new();
     public static readonly Subject<StageType> OnEventStageEnter = new();
     public static readonly Subject<Unit> OnTreasureSkipped = new();
-    public static readonly Subject<Unit> OnPlayerStatusEffectTriggered = new();
+    public static readonly Subject<StatusEffectType> OnPlayerStatusEffectTriggered = new();
     public static readonly Subject<Unit> OnPlayerStatusEffectAdded = new();
     public static readonly Subject<Unit> OnBallSkip = new();
     public static readonly Subject<Unit> OnOrganise = new();

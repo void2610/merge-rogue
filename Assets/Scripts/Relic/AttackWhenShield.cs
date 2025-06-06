@@ -13,10 +13,10 @@ public class AttackWhenShield : RelicBase
         _simpleSubscriptions.Add(subscription);
     }
 
-    private void OnStatusEffectTriggered(Unit _)
+    private void OnStatusEffectTriggered(StatusEffectType statusEffectType)
     {
-        // シールド効果が発動したかどうかをチェック
-        if (HasShieldEffect())
+        // Shield状態異常が発動した場合のみ効果発動
+        if (statusEffectType == StatusEffectType.Shield)
         {
             var enemies = EnemyContainer.Instance?.GetAllEnemies();
             if (enemies != null && enemies.Count > 0)
@@ -25,17 +25,5 @@ public class AttackWhenShield : RelicBase
                 UI?.ActivateUI();
             }
         }
-    }
-    
-    /// <summary>
-    /// プレイヤーがシールド状態異常を持っているかチェック
-    /// </summary>
-    private bool HasShieldEffect()
-    {
-        var player = GameManager.Instance?.Player;
-        if (player == null) return false;
-        
-        var shieldEffect = player.StatusEffects.Find(e => e.Type == StatusEffectType.Shield);
-        return shieldEffect != null;
     }
 }
