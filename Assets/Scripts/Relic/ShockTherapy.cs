@@ -8,16 +8,37 @@ public class ShockTherapy : RelicBase
 {
     protected override void RegisterEffects()
     {
-        // 敌ステータス効果追加時のイベント購読
+        // 敵ステータス効果追加時のイベント購読
         var subscription = EventManager.OnEnemyStatusEffectAdded.Subscribe(OnEnemyStatusEffectAdded);
         _simpleSubscriptions.Add(subscription);
     }
 
     private void OnEnemyStatusEffectAdded(Unit _)
     {
-        // 敌にShockが付与された場合、プレイヤーにPowerを付与
-        // 簡略化版では詳細な情報を取得できないため、常に発動
-        StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Power, 1);
-        UI?.ActivateUI();
+        // 敵にShockが付与されたかどうかをチェック
+        if (HasShockBeenAddedToAnyEnemy())
+        {
+            StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Power, 1);
+            UI?.ActivateUI();
+        }
+    }
+    
+    /// <summary>
+    /// いずれかの敵にShock状態異常が付与されているかチェック
+    /// </summary>
+    private bool HasShockBeenAddedToAnyEnemy()
+    {
+        var enemies = EnemyContainer.Instance?.GetAllEnemies();
+        if (enemies == null) return false;
+        
+        foreach (var enemy in enemies)
+        {
+            var shockEffect = enemy.StatusEffects.Find(e => e.Type == StatusEffectType.Shock);
+            if (shockEffect != null)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
