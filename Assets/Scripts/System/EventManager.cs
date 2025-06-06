@@ -23,7 +23,6 @@ public static class EventManager
     // 通知専用イベント（R3のSubjectを使用）
     public static readonly Subject<Unit> OnBattleStartSimple = new();
     public static readonly Subject<EnemyBase> OnEnemyDefeatedSimple = new();
-    public static readonly Subject<(BallBase, BallBase)> OnBallMergedSimple = new();
     public static readonly Subject<StageType> OnEventStageEnterSimple = new();
     public static readonly Subject<Unit> OnShopEnterSimple = new();
     public static readonly Subject<Unit> OnRestEnterSimple = new();
@@ -116,7 +115,6 @@ public static class EventManager
         // Subjectも必要に応じてクリア
         OnBattleStartSimple?.Dispose();
         OnEnemyDefeatedSimple?.Dispose();
-        OnBallMergedSimple?.Dispose();
         OnEventStageEnterSimple?.Dispose();
         OnShopEnterSimple?.Dispose();
         OnRestEnterSimple?.Dispose();

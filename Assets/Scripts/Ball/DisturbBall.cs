@@ -9,7 +9,7 @@ public class DisturbBall : BallBase
     {
         base.InitBall(d, rank, level);
         this.isMergable = false;
-        _disposable = EventManager.OnBallMergedSimple.Subscribe(CheckNearMerge).AddTo(this);
+        _disposable = EventManager.OnBallMerged.Subscribe(CheckNearMerge).AddTo(this);
     }
     
     private void CheckNearMerge((BallBase ball1, BallBase ball2) mergeData)
