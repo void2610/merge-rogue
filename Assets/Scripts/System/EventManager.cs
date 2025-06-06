@@ -61,43 +61,6 @@ public static class EventManager
     // var modifiedValue = EventManager.OnCoinGain.Process(originalValue);
     // EventManager.OnBattleStart.OnNext(Unit.Default);
 
-    // ===== 値変更プロセッサーの登録メソッド =====
-
-    /// <summary>
-    /// コイン獲得値を変更するプロセッサーを登録
-    /// </summary>
-    public static void RegisterCoinGainModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
-        => OnCoinGain.AddProcessor(owner, processor, condition);
-
-    /// <summary>
-    /// コイン消費値を変更するプロセッサーを登録
-    /// </summary>
-    public static void RegisterCoinConsumeModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
-        => OnCoinConsume.AddProcessor(owner, processor, condition);
-
-    /// <summary>
-    /// プレイヤー攻撃値を変更するプロセッサーを登録
-    /// </summary>
-    public static void RegisterPlayerAttackModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
-        => OnPlayerAttack.AddProcessor(owner, processor, condition);
-
-    /// <summary>
-    /// 攻撃処理プロセッサーを登録（攻撃タイプと攻撃値を一緒に処理）
-    /// </summary>
-    public static void RegisterAttackProcessor(object owner, Func<(AttackType type, int value), (AttackType type, int value)> processor, Func<bool> condition = null)
-        => OnAttackProcess.AddProcessor(owner, processor, condition);
-
-    /// <summary>
-    /// プレイヤーダメージ値を変更するプロセッサーを登録
-    /// </summary>
-    public static void RegisterPlayerDamageModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
-        => OnPlayerDamage.AddProcessor(owner, processor, condition);
-
-    /// <summary>
-    /// 休憩効果値を変更するプロセッサーを登録
-    /// </summary>
-    public static void RegisterRestModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
-        => OnRest.AddProcessor(owner, processor, condition);
 
     /// <summary>
     /// 特定のオーナーのプロセッサーをすべて削除

@@ -12,7 +12,7 @@ public class AllAttackWhenWeakAttack : RelicBase
     protected override void RegisterEffects()
     {
         // 攻撃タイプ変換：Normal → All（攻撃力30以下の場合）
-        EventManager.RegisterAttackProcessor(this, attackData =>
+        EventManager.OnAttackProcess.AddProcessor(this, attackData =>
         {
             if (attackData.type == AttackType.Normal && attackData.value <= WEAK_ATTACK_THRESHOLD)
             {

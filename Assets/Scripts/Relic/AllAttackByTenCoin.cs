@@ -11,7 +11,7 @@ public class AllAttackByTenCoin : RelicBase
     protected override void RegisterEffects()
     {
         // 攻撃処理：Normal → All変換 + 1.5倍攻撃力（条件を満たす場合）
-        EventManager.RegisterAttackProcessor(this, attackData =>
+        EventManager.OnAttackProcess.AddProcessor(this, attackData =>
         {
             if (attackData.type == AttackType.Normal && CanConvertAttackCondition())
             {
