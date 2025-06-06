@@ -1,15 +1,21 @@
 using UnityEngine;
 
 /// <summary>
-/// HPが20%以下または20以下の時、攻撃力を2倍にする
+/// HPが20%以下または20以下の時、バトル開始時に怒り状態異常を10スタック付与する
 /// </summary>
 public class DoubleAttackWhenLowHealth : RelicBase
 {
     protected override void RegisterEffects()
     {
-        // 低HP時に攻撃力2倍
-        RelicHelpers.RegisterAttackMultiplier(this, 2.0f, 
-            condition: () => IsLowHealth());
+        // バトル開始時に低HP条件をチェックして怒り状態異常を付与
+        AddSubscription(RelicHelpers.SubscribeBattleStart(() =>
+        {
+            if (IsLowHealth())
+            {
+                StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Rage, 10);
+                ActivateUI();
+            }
+        }));
     }
 
     /// <summary>
