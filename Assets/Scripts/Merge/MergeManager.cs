@@ -283,7 +283,7 @@ public class MergeManager : MonoBehaviour
         CurrentBall.transform.SetParent(_ballContainer.transform);
         
         // ボールドロップイベントを発火
-        EventManager.OnBallDropSimple.OnNext(R3.Unit.Default);
+        EventManager.OnBallDrop.OnNext(R3.Unit.Default);
     }
 
     private void SkipBall()

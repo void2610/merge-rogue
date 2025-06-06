@@ -9,7 +9,7 @@ public class SometimeCopyDropBall : RelicBase
     protected override void RegisterEffects()
     {
         // ボールドロップ時のイベント購読
-        var subscription = EventManager.OnBallDropSimple.Subscribe(OnBallDrop);
+        var subscription = EventManager.OnBallDrop.Subscribe(OnBallDrop);
         _simpleSubscriptions.Add(subscription);
     }
     

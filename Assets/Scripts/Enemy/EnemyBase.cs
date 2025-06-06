@@ -201,7 +201,7 @@ public class EnemyBase : MonoBehaviour, IEntity
 
     private void Death()
     {
-        EventManager.OnEnemyDefeatedSimple.OnNext(this);
+        EventManager.OnEnemyDefeated.OnNext(this);
         this.transform.parent.GetComponent<EnemyContainer>().RemoveEnemy(this.gameObject);
     }
 

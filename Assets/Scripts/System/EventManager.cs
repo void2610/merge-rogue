@@ -16,17 +16,16 @@ public static class EventManager
     public static readonly ValueProcessor<int> OnPlayerHeal = new();
     
     // 休憩・整理関連
-    public static readonly ValueProcessor<int> OnRestEnter = new();
+    public static readonly ValueProcessor<int> OnRestEnterProcessor = new();
     public static readonly ValueProcessor<int> OnRest = new();
     public static readonly ValueProcessor<int> OnRestExit = new();
 
     // 通知専用イベント（R3のSubjectを使用）
-    public static readonly Subject<Unit> OnBattleStartSimple = new();
-    public static readonly Subject<EnemyBase> OnEnemyDefeatedSimple = new();
-    public static readonly Subject<StageType> OnEventStageEnterSimple = new();
-    public static readonly Subject<Unit> OnShopEnterSimple = new();
-    public static readonly Subject<Unit> OnRestEnterSimple = new();
-    public static readonly Subject<Unit> OnBallDropSimple = new();
+    public static readonly Subject<Unit> OnBattleStart = new();
+    public static readonly Subject<EnemyBase> OnEnemyDefeated = new();
+    public static readonly Subject<Unit> OnShopEnter = new();
+    public static readonly Subject<Unit> OnRestEnter = new();
+    public static readonly Subject<Unit> OnBallDrop = new();
     
     // 追加の簡易イベント
     public static readonly Subject<(BallBase, BallBase)> OnBallMerged = new();
@@ -53,7 +52,7 @@ public static class EventManager
 
     // ===== イベントプロセッサー使用例 =====
     // var modifiedValue = EventManager.OnCoinGain.Process(originalValue);
-    // EventManager.OnBattleStartSimple.OnNext(Unit.Default);
+    // EventManager.OnBattleStart.OnNext(Unit.Default);
 
     // ===== 値変更プロセッサーの登録メソッド =====
 
@@ -113,12 +112,11 @@ public static class EventManager
         OnRest.Clear();
         
         // Subjectも必要に応じてクリア
-        OnBattleStartSimple?.Dispose();
-        OnEnemyDefeatedSimple?.Dispose();
-        OnEventStageEnterSimple?.Dispose();
-        OnShopEnterSimple?.Dispose();
-        OnRestEnterSimple?.Dispose();
-        OnBallDropSimple?.Dispose();
+        OnBattleStart?.Dispose();
+        OnEnemyDefeated?.Dispose();
+        OnShopEnter?.Dispose();
+        OnRestEnter?.Dispose();
+        OnBallDrop?.Dispose();
         
         // 追加のSubject
         OnBallMerged?.Dispose();

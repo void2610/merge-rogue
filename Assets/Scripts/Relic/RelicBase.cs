@@ -188,7 +188,7 @@ public abstract class RelicBase : IDisposable
     /// </summary>
     protected void SubscribeBattleStart(Action onBattleStart)
     {
-        var subscription = EventManager.OnBattleStartSimple.Subscribe(_ => onBattleStart?.Invoke());
+        var subscription = EventManager.OnBattleStart.Subscribe(_ => onBattleStart?.Invoke());
         _simpleSubscriptions.Add(subscription);
     }
 
@@ -197,7 +197,7 @@ public abstract class RelicBase : IDisposable
     /// </summary>
     protected void SubscribeEnemyDefeated(Action<EnemyBase> onEnemyDefeated)
     {
-        var subscription = EventManager.OnEnemyDefeatedSimple.Subscribe(onEnemyDefeated);
+        var subscription = EventManager.OnEnemyDefeated.Subscribe(onEnemyDefeated);
         _simpleSubscriptions.Add(subscription);
     }
 
@@ -206,7 +206,7 @@ public abstract class RelicBase : IDisposable
     /// </summary>
     protected void SubscribeShopEnter(Action onShopEnter)
     {
-        var subscription = EventManager.OnShopEnterSimple.Subscribe(_ => onShopEnter?.Invoke());
+        var subscription = EventManager.OnShopEnter.Subscribe(_ => onShopEnter?.Invoke());
         _simpleSubscriptions.Add(subscription);
     }
 
@@ -215,7 +215,7 @@ public abstract class RelicBase : IDisposable
     /// </summary>
     protected void SubscribeRestEnter(Action onRestEnter)
     {
-        var subscription = EventManager.OnRestEnterSimple.Subscribe(_ => onRestEnter?.Invoke());
+        var subscription = EventManager.OnRestEnter.Subscribe(_ => onRestEnter?.Invoke());
         _simpleSubscriptions.Add(subscription);
     }
 
