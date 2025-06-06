@@ -16,6 +16,9 @@ public static class EventManager
     public static readonly ValueProcessor<int> OnPlayerDamage = new();
     public static readonly ValueProcessor<int> OnPlayerHeal = new();
     
+    // 攻撃タイプ変換用のValueProcessor
+    public static readonly ValueProcessor<AttackType> OnAttackTypeConversion = new();
+    
     // 休憩・整理関連
     public static readonly ValueProcessor<int> OnRestEnterProcessor = new();
     public static readonly ValueProcessor<int> OnRest = new();
@@ -79,6 +82,34 @@ public static class EventManager
         => OnPlayerAttack.AddProcessor(owner, processor, condition);
 
     /// <summary>
+    /// 攻撃タイプ変換プロセッサーを登録
+    /// </summary>
+    public static void RegisterAttackTypeConverter(object owner, Func<AttackType, AttackType> processor, Func<bool> condition = null)
+        => OnAttackTypeConversion.AddProcessor(owner, processor, condition);
+    
+    /// <summary>
+    /// 攻撃タイプ変換プロセッサーを登録（攻撃値を考慮）
+    /// </summary>
+    public static void RegisterAttackTypeConverterWithValue(object owner, Func<AttackType, int, AttackType> processor, Func<bool> condition = null)
+    {
+        OnAttackTypeConversion.AddProcessor(owner, attackType =>
+        {
+            if (condition != null && !condition()) return attackType;
+            return processor(attackType, CurrentAttackValue);
+        }, condition);
+    }
+    
+    /// <summary>
+    /// 現在処理中の攻撃値（攻撃タイプ変換時に参照するため）
+    /// </summary>
+    public static int CurrentAttackValue { get; private set; } = 0;
+    
+    /// <summary>
+    /// 現在の攻撃値を設定
+    /// </summary>
+    public static void SetCurrentAttackValue(int value) => CurrentAttackValue = value;
+
+    /// <summary>
     /// プレイヤーダメージ値を変更するプロセッサーを登録
     /// </summary>
     public static void RegisterPlayerDamageModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
@@ -98,6 +129,7 @@ public static class EventManager
         OnCoinGain.RemoveProcessorsFor(owner);
         OnCoinConsume.RemoveProcessorsFor(owner);
         OnPlayerAttack.RemoveProcessorsFor(owner);
+        OnAttackTypeConversion.RemoveProcessorsFor(owner);
         OnPlayerDamage.RemoveProcessorsFor(owner);
         OnPlayerHeal.RemoveProcessorsFor(owner);
         OnRest.RemoveProcessorsFor(owner);
@@ -111,6 +143,7 @@ public static class EventManager
         OnCoinGain.Clear();
         OnCoinConsume.Clear();
         OnPlayerAttack.Clear();
+        OnAttackTypeConversion.Clear();
         OnPlayerDamage.Clear();
         OnPlayerHeal.Clear();
         OnRest.Clear();

@@ -11,8 +11,14 @@ public class AllAttackWhenWeakAttack : RelicBase
 
     protected override void RegisterEffects()
     {
-        // 弱い攻撃の場合に攻撃力を2倍にする（簡素化）
-        RelicHelpers.RegisterAttackMultiplier(this, 2.0f, 
-            condition: () => true); // 常に適用（条件チェックは後で実装可能）
+        // 攻撃タイプ変換：Normal → All（攻撃力30以下の場合）
+        EventManager.RegisterAttackTypeConverterWithValue(this, (attackType, attackValue) =>
+        {
+            if (attackType == AttackType.Normal && attackValue <= WEAK_ATTACK_THRESHOLD)
+            {
+                return AttackType.All;
+            }
+            return attackType;
+        });
     }
 }

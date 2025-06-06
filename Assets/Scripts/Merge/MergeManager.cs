@@ -222,6 +222,12 @@ public class MergeManager : MonoBehaviour
         // 攻撃値を整数に変換
         var attackAmount = (int)atk;
         
+        // 現在の攻撃値を設定（攻撃タイプ変換で参照するため）
+        EventManager.SetCurrentAttackValue(attackAmount);
+        
+        // 攻撃タイプ変換を適用
+        type = EventManager.OnAttackTypeConversion.Process(type);
+        
         // 状態異常を適用
         attackAmount = GameManager.Instance.Player.ModifyOutgoingAttack(type, attackAmount);
         
