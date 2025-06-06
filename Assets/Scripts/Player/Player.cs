@@ -64,11 +64,11 @@ public class Player : MonoBehaviour, IEntity
         return v;
     }
     
-    public Dictionary<AttackType, int> ModifyOutgoingAttack(Dictionary<AttackType, int> attack)
+    public int ModifyOutgoingAttack(AttackType type, int attack)
     {
-        var v = StatusEffects.Aggregate(attack, (current, effect) => effect.ModifyAttack(this, current));
+        var modifiedAttack = StatusEffects.Aggregate(attack, (current, effect) => effect.ModifyAttack(this, type, current));
         statusEffectUI.UpdateUI(StatusEffects);
-        return v;
+        return modifiedAttack;
     }
     
     public void OnBattleEnd()

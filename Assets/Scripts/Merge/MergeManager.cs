@@ -40,7 +40,6 @@ public class MergeManager : MonoBehaviour
     private float _limit = -2.5f;
     private Vector3 _currentBallPosition = new(0, 1f, 0);
     private int _ballPerOneTurn = 3;
-    private Dictionary<AttackType, int> _attackCounts = new();
     private Dictionary<Rigidbody2D, float> _stopTimers;
     private bool _isMovable = false;
     private Camera _mainCamera;
@@ -220,19 +219,16 @@ public class MergeManager : MonoBehaviour
         // 充填率のバフを適用
         atk *= _fillingRateMagnification;
         
-        // 攻撃辞書を初期化
-        if (!_attackCounts.ContainsKey(type)) _attackCounts[type] = 0;
-        _attackCounts[type] += (int)atk;
+        // 攻撃値を整数に変換
+        var attackAmount = (int)atk;
         
         // 状態異常を適用
-        _attackCounts = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts);
+        attackAmount = GameManager.Instance.Player.ModifyOutgoingAttack(type, attackAmount);
         
-        // SafeEventManagerを適用
-        var attackData = AttackData.FromDictionary(_attackCounts);
-        attackData = EventManager.OnPlayerAttack.Process(attackData);
-        _attackCounts = attackData.ToDictionary();
+        // EventManagerを適用
+        attackAmount = EventManager.OnPlayerAttack.Process(attackAmount);
         
-        GameManager.Instance.EnemyContainer.AttackEnemy(type, (int)atk).Forget();
+        GameManager.Instance.EnemyContainer.AttackEnemy(type, attackAmount).Forget();
         
         // 攻撃アニメーション
         // GameManager.Instance.Player.gameObject.transform.DOMoveX(0.75f, 0.02f).SetRelative(true).OnComplete(() =>

@@ -68,28 +68,41 @@ find_unity() {
 
 # Unity Editor.logファイルのパスを取得
 find_unity_editor_log() {
-    # macOS のデフォルト Editor.log パス
-    local editor_log="$HOME/Library/Logs/Unity/Editor.log"
-    
-    if [[ -f "$editor_log" ]]; then
-        echo "$editor_log"
-        return 0
-    fi
-    
-    # 代替パスも探す
-    local alt_paths=(
-        "$HOME/Library/Logs/Unity Editor.log"
-        "/var/folders/*/*/T/Unity/Editor.log"
+    # 候補となるUnityログパスを順番に確認
+    local log_paths=(
+        "$HOME/Library/Logs/Unity/Editor.log"           # 標準のmacOSパス
+        "$HOME/Library/Logs/Unity Editor.log"           # 古い形式
+        "$HOME/Library/Logs/Unity/Editor-prev.log"      # 前回のログ
+        "/var/folders/*/*/T/Unity/Editor.log"           # 一時フォルダ
+        "$PROJECT/Logs/Editor.log"                       # プロジェクト内ログ
+        "$PROJECT/Library/LastBuild.log"                 # ビルドログ
     )
     
-    for pattern in "${alt_paths[@]}"; do
-        for log in $pattern; do
-            if [[ -f "$log" ]]; then
-                echo "$log"
+    # 既存のログファイルを順番に確認
+    for log_path in "${log_paths[@]}"; do
+        if [[ "$log_path" == *"*"* ]]; then
+            # ワイルドカードを含むパスの場合
+            for expanded_path in $log_path; do
+                if [[ -f "$expanded_path" ]]; then
+                    echo "$expanded_path"
+                    return 0
+                fi
+            done
+        else
+            # 通常のパスの場合
+            if [[ -f "$log_path" ]]; then
+                echo "$log_path"
                 return 0
             fi
-        done
+        fi
     done
+    
+    # 最新のログファイルをタイムスタンプで検索
+    local latest_log=$(find "$HOME/Library/Logs" -name "*Unity*" -name "*Editor*" -type f 2>/dev/null | head -1)
+    if [[ -n "$latest_log" && -f "$latest_log" ]]; then
+        echo "$latest_log"
+        return 0
+    fi
     
     return 1
 }
@@ -203,7 +216,7 @@ output_json_result() {
 EOF
     else
         # エラーメッセージをJSONエスケープ
-        local escaped_errors=$(echo "$error_messages" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | sed ':a;N;$!ba;s/\n/\\n/g')
+        local escaped_errors=$(echo "$error_messages" | sed 's/\\/\\\\/g' | sed 's/"/\\"/g' | tr '\n' ' ' | sed 's/  */ /g')
         cat << EOF
 {
   "success": false,
@@ -541,13 +554,15 @@ fi
 # コンパイルエラーチェック
 HAS_COMPILE_ERRORS=false
 
-# エラーパターンの検出（エディターログとUnity実行ログの両方に対応）
+# エラーパターンの検出（Unity Editor.logの実際の形式に対応）
 if [[ $RET -eq 2 ]] || \
    grep -q "Scripts have compiler errors" "$LOGFILE" 2>/dev/null || \
    grep -q "CompilerOutput:" "$LOGFILE" 2>/dev/null || \
    grep -q "error CS[0-9]\{4\}:" "$LOGFILE" 2>/dev/null || \
-   grep -q "Assets/.*\.cs([0-9]\+,[0-9]\+): error" "$LOGFILE" 2>/dev/null || \
-   grep -q "Compilation failed" "$LOGFILE" 2>/dev/null; then
+   grep -q "Assets/.*\.cs([0-9]\+,[0-9]\+): error CS" "$LOGFILE" 2>/dev/null || \
+   grep -q "Compilation failed" "$LOGFILE" 2>/dev/null || \
+   grep -q "Build failed" "$LOGFILE" 2>/dev/null || \
+   grep -q "Script compilation failed" "$LOGFILE" 2>/dev/null; then
     HAS_COMPILE_ERRORS=true
 fi
 
@@ -559,21 +574,22 @@ if [[ "$HAS_COMPILE_ERRORS" == "true" ]]; then
     # エラーメッセージを収集
     ERROR_MESSAGES=$(
         {
-            # C# コンパイルエラー
+            # Unity Editor.logの実際の形式（Assets/path.cs(line,col): error CS####: message）
+            grep -E "Assets/.*\.cs\([0-9]+,[0-9]+\): error CS[0-9]+:" "$LOGFILE" 2>/dev/null || true
+            # C# コンパイルエラー（一般形式）
             grep -E "error CS[0-9]{4}:" "$LOGFILE" 2>/dev/null || true
-            # ファイル位置付きエラー
-            grep -E "Assets/.*\.cs\([0-9]+,[0-9]+\): error" "$LOGFILE" 2>/dev/null || true
             # CompilerOutput セクション
             grep -A5 -B1 "CompilerOutput:" "$LOGFILE" 2>/dev/null || true
             # 一般的なコンパイルエラーメッセージ
-            grep -E "(Compilation failed|Build failed)" "$LOGFILE" 2>/dev/null || true
+            grep -E "(Compilation failed|Build failed|Script compilation failed)" "$LOGFILE" 2>/dev/null || true
             # Unity エディターログの場合の追加パターン
             if [[ "$EDITOR_ONLY" == "true" ]]; then
-                grep -E "(Script compilation failed|Assembly compilation failed)" "$LOGFILE" 2>/dev/null || true
-                # 最近のエラーのみを表示（最後の100行から）
-                tail -100 "$LOGFILE" | grep -E "error CS[0-9]{4}:" 2>/dev/null || true
+                # 最近のエラーのみを表示（最後の200行から）
+                tail -200 "$LOGFILE" | grep -E "Assets/.*\.cs\([0-9]+,[0-9]+\): error CS[0-9]+:" 2>/dev/null || true
+                # Assembly compilation エラー
+                grep -E "Assembly compilation failed" "$LOGFILE" 2>/dev/null || true
             fi
-        } | sort -u
+        } | sort -u | head -50
     )
     
     ERROR_COUNT=$(echo "$ERROR_MESSAGES" | grep -c "error" 2>/dev/null || echo 0)

@@ -206,30 +206,4 @@ public static class ValueProcessors
     /// </summary>
     public static Func<int, int> Double() => value => value * 2;
 
-    // AttackData型用の処理関数
-
-    /// <summary>
-    /// 特定の攻撃タイプに値を加算する処理関数
-    /// </summary>
-    public static Func<AttackData, AttackData> AddAttack(AttackType type, int amount) =>
-        data => data.AddAttack(type, amount);
-
-    /// <summary>
-    /// 攻撃データ全体に倍率を適用する処理関数
-    /// </summary>
-    public static Func<AttackData, AttackData> MultiplyAttack(float multiplier) =>
-        data => data.Multiply(multiplier);
-
-    /// <summary>
-    /// 攻撃タイプを変換する処理関数
-    /// </summary>
-    public static Func<AttackData, AttackData> ConvertAttackType(AttackType from, AttackType to, float multiplier = 1.0f) =>
-        data =>
-        {
-            var fromValue = data.GetAttack(from);
-            if (fromValue <= 0) return data;
-                
-            var convertedValue = (int)(fromValue * multiplier);
-            return data.SetAttack(from, 0).AddAttack(to, convertedValue);
-        };
 }

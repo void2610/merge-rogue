@@ -105,7 +105,7 @@ public abstract class StatusEffectBase
         return incomingDamage;
     }
     
-    public virtual Dictionary<AttackType, int> ModifyAttack(IEntity target, Dictionary<AttackType, int> outgoingAttack)
+    public virtual int ModifyAttack(IEntity target, AttackType type, int outgoingAttack)
     {
         if (_timing == EffectTiming.OnAttack)
         {
@@ -335,10 +335,13 @@ public class PowerEffect : StatusEffectBase
 {
     public PowerEffect(int initialStack) : base(StatusEffectType.Power, initialStack, EffectTiming.OnAttack, true) { }
 
-    public override Dictionary<AttackType, int> ModifyAttack(IEntity target, Dictionary<AttackType, int> outgoingAttack)
+    public override int ModifyAttack(IEntity target, AttackType type, int outgoingAttack)
     {
-        base.ModifyAttack(target, outgoingAttack);
-        outgoingAttack[AttackType.Normal] += StackCount;
+        base.ModifyAttack(target, type, outgoingAttack);
+        if (type == AttackType.Normal)
+        {
+            return outgoingAttack + StackCount;
+        }
         return outgoingAttack;
     }
 }
@@ -348,12 +351,11 @@ public class RageEffect : StatusEffectBase
 {
     public RageEffect(int initialStack) : base(StatusEffectType.Rage, initialStack, EffectTiming.OnAttack, true) { }
 
-    public override Dictionary<AttackType, int> ModifyAttack(IEntity target, Dictionary<AttackType, int> outgoingAttack)
+    public override int ModifyAttack(IEntity target, AttackType type, int outgoingAttack)
     {
-        base.ModifyAttack(target, outgoingAttack);
+        base.ModifyAttack(target, type, outgoingAttack);
         var multiplier = (1 + StackCount * 0.1f);
-        outgoingAttack.ToList().ForEach(a => outgoingAttack[a.Key] = (int)(a.Value * multiplier));
-        return outgoingAttack;
+        return (int)(outgoingAttack * multiplier);
     }
 }
 

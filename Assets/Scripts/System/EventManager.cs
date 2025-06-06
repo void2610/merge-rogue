@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using R3;
 
@@ -11,7 +12,7 @@ public static class EventManager
     public static readonly ValueProcessor<int> OnCoinGain = new();
     public static readonly ValueProcessor<int> OnCoinConsume = new();
     public static readonly ValueProcessor<int> OnPlayerExpGain = new();
-    public static readonly ValueProcessor<AttackData> OnPlayerAttack = new();
+    public static readonly ValueProcessor<int> OnPlayerAttack = new();
     public static readonly ValueProcessor<int> OnPlayerDamage = new();
     public static readonly ValueProcessor<int> OnPlayerHeal = new();
     
@@ -72,9 +73,9 @@ public static class EventManager
         => OnCoinConsume.AddProcessor(owner, processor, condition);
 
     /// <summary>
-    /// プレイヤー攻撃データを変更するプロセッサーを登録
+    /// プレイヤー攻撃値を変更するプロセッサーを登録
     /// </summary>
-    public static void RegisterPlayerAttackModifier(object owner, Func<AttackData, AttackData> processor, Func<bool> condition = null)
+    public static void RegisterPlayerAttackModifier(object owner, Func<int, int> processor, Func<bool> condition = null)
         => OnPlayerAttack.AddProcessor(owner, processor, condition);
 
     /// <summary>

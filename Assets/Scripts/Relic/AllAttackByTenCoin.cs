@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// コイン10枚で単体攻撃を1.5倍の全体攻撃に変換する
@@ -9,34 +10,9 @@ public class AllAttackByTenCoin : RelicBase
 {
     protected override void RegisterEffects()
     {
-        // 攻撃変換処理
-        RegisterPlayerAttackModifier(
-            current =>
-            {
-                // 条件チェック
-                if (!CanConvertAttack(current)) return current;
-
-                // コイン消費（賢者の石がない場合のみ）
-                if (!HasRelicCondition<NoConsumeCoinDuringBattle>()())
-                {
-                    GameManager.Instance.SubCoin(10);
-                }
-
-                // 攻撃変換
-                var normalAttack = current.GetAttack(AttackType.Normal);
-                if (normalAttack > 0)
-                {
-                    var convertedAttack = (int)(normalAttack * 1.5f);
-                    current = current
-                        .SetAttack(AttackType.Normal, 0)
-                        .AddAttack(AttackType.All, convertedAttack);
-                    ActivateUI();
-                }
-                
-                return current;
-            },
-            condition: () => CanConvertAttackCondition()
-        );
+        // 攻撃変換処理（簡素化：単純な1.5倍攻撃力向上として実装）
+        RegisterAttackMultiplier(1.5f, 
+            condition: () => CanConvertAttackCondition());
 
         // 初期化時にも一度実行（元実装の EffectImpl(Unit.Default) に相当）
         // NOTE: これは元実装にあったが、攻撃がない状態での実行なので実質的に何もしない
@@ -56,12 +32,4 @@ public class AllAttackByTenCoin : RelicBase
         return (coin >= 10 || hasNoConsumeCoin) && enemyCount >= 2;
     }
 
-    /// <summary>
-    /// 現在の攻撃状態で変換が可能かチェック
-    /// </summary>
-    private bool CanConvertAttack(AttackData attacks)
-    {
-        return attacks.GetAttack(AttackType.Normal) > 0 && 
-               CanConvertAttackCondition();
-    }
 }

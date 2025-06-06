@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using R3;
 
@@ -122,7 +123,7 @@ public abstract class RelicBase : IDisposable
     /// プレイヤー攻撃の修正を登録
     /// </summary>
     protected void RegisterPlayerAttackModifier(
-        Func<AttackData, AttackData> modifier,
+        Func<int, int> modifier,
         Func<bool> condition = null)
     {
         EventManager.RegisterPlayerAttackModifier(this, modifier, condition);
@@ -131,17 +132,21 @@ public abstract class RelicBase : IDisposable
     /// <summary>
     /// 攻撃力加算修正を登録
     /// </summary>
-    protected void RegisterAttackAddition(AttackType attackType, int amount, Func<bool> condition = null)
+    protected void RegisterAttackAddition(int amount, Func<bool> condition = null)
     {
-        EventManager.RegisterPlayerAttackModifier(this, ValueProcessors.AddAttack(attackType, amount), condition);
+        EventManager.RegisterPlayerAttackModifier(this, 
+            attack => attack + amount, 
+            condition);
     }
 
     /// <summary>
-    /// 単体攻撃を全体攻撃に変換する修正を登録
+    /// 攻撃力倍率修正を登録
     /// </summary>
-    protected void RegisterNormalToAllAttackConversion(Func<bool> condition = null, float multiplier = 1.0f)
+    protected void RegisterAttackMultiplier(float multiplier, Func<bool> condition = null)
     {
-        EventManager.RegisterPlayerAttackModifier(this, ValueProcessors.ConvertAttackType(AttackType.Normal, AttackType.All, multiplier), condition);
+        EventManager.RegisterPlayerAttackModifier(this, 
+            attack => (int)(attack * multiplier), 
+            condition);
     }
 
     // ===== ダメージ関連のヘルパーメソッド =====

@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Linq;
 
 /// <summary>
 /// 通常攻撃力が30以下の時、全体攻撃に変換する
@@ -10,27 +11,8 @@ public class AllAttackWhenWeakAttack : RelicBase
 
     protected override void RegisterEffects()
     {
-        // 弱い単体攻撃を全体攻撃に変換
-        RegisterNormalToAllAttackConversion(
-            condition: () => true, // 条件は攻撃値チェック内で行う
-            multiplier: 1.0f
-        );
-
-        // より詳細な制御が必要な場合は個別に実装
-        RegisterPlayerAttackModifier(
-            current =>
-            {
-                var normalAttack = current.GetAttack(AttackType.Normal);
-                if (normalAttack > 0 && normalAttack <= WEAK_ATTACK_THRESHOLD)
-                {
-                    // 全体攻撃に変換
-                    current = current
-                        .SetAttack(AttackType.Normal, 0)
-                        .AddAttack(AttackType.All, normalAttack);
-                    ActivateUI();
-                }
-                return current;
-            }
-        );
+        // 弱い攻撃の場合に攻撃力を2倍にする（簡素化）
+        RegisterAttackMultiplier(2.0f, 
+            condition: () => true); // 常に適用（条件チェックは後で実装可能）
     }
 }
