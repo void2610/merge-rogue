@@ -5,22 +5,30 @@ using UnityEngine;
 /// </summary>
 public class HaisuiNoJin : RelicBase
 {
-    public override void Init(RelicUI relicUI)
-    {
-        // 初期化時に最大HPを削減
-        ModifyMaxHealth();
-        
-        base.Init(relicUI);
-    }
+    private int _originalMaxHealth;
 
     protected override void RegisterEffects()
     {
+        // 最大HPを1/4に削減
+        ModifyMaxHealth();
+        
         // 敵撃破時に無敵状態異常を付与
         SubscribeEnemyDefeated(enemy =>
         {
             StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Invincible, 1);
             ActivateUI();
         });
+    }
+
+    public override void RemoveAllEffects()
+    {
+        base.RemoveAllEffects();
+        
+        // 最大HPを元に戻す
+        if (_originalMaxHealth > 0 && GameManager.Instance?.Player != null)
+        {
+            GameManager.Instance.Player.MaxHealth.Value = _originalMaxHealth;
+        }
     }
 
     /// <summary>
@@ -31,6 +39,7 @@ public class HaisuiNoJin : RelicBase
         if (!GameManager.Instance?.Player) return;
 
         var currentMaxHealth = GameManager.Instance.Player.MaxHealth.Value;
+        _originalMaxHealth = currentMaxHealth; // 元の値を保存
         var newMaxHealth = currentMaxHealth / 4;
         
         GameManager.Instance.Player.MaxHealth.Value = newMaxHealth;
