@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.UI;
-using SafeEventSystem;
 
 public class Rest : MonoBehaviour
 {
@@ -11,7 +10,7 @@ public class Rest : MonoBehaviour
     private static void OnClickRest()
     {
         var restAmount = GameManager.Instance.Player.MaxHealth.Value  * 0.2f;
-        var finalAmount = SafeEventManager.OnRest.Process((int)restAmount);
+        var finalAmount = EventManager.OnRest.Process((int)restAmount);
         if(finalAmount > 0) GameManager.Instance.Player.Heal(finalAmount);
         
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);

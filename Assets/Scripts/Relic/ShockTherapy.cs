@@ -1,6 +1,5 @@
 using UnityEngine;
 using R3;
-using SafeEventSystem;
 
 /// <summary>
 /// 敌にShock付与時にプレイヤーにPowerを付与するレリック
@@ -10,7 +9,7 @@ public class ShockTherapy : RelicBase
     protected override void RegisterEffects()
     {
         // 敌ステータス効果追加時のイベント購読
-        var subscription = SafeEventManager.OnEnemyStatusEffectAdded.Subscribe(OnEnemyStatusEffectAdded);
+        var subscription = EventManager.OnEnemyStatusEffectAdded.Subscribe(OnEnemyStatusEffectAdded);
         _simpleSubscriptions.Add(subscription);
     }
 

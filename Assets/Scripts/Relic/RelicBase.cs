@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using R3;
-using SafeEventSystem;
 
 /// <summary>
 /// レリックベースクラス
@@ -52,7 +51,7 @@ public abstract class RelicBase : IDisposable
         if (_isDisposed) return;
 
         // 登録されたモディファイアを全て削除
-        SafeEventManager.RemoveProcessorsFor(this);
+        EventManager.RemoveProcessorsFor(this);
         
         // シンプルなイベント購読も削除
         foreach (var subscription in _simpleSubscriptions)
@@ -88,7 +87,7 @@ public abstract class RelicBase : IDisposable
     /// </summary>
     protected void RegisterCoinGainMultiplier(float multiplier, Func<bool> condition = null)
     {
-        SafeEventManager.RegisterCoinGainModifier(this, ValueProcessors.Multiply(multiplier), condition);
+        EventManager.RegisterCoinGainModifier(this, ValueProcessors.Multiply(multiplier), condition);
     }
 
     /// <summary>
@@ -96,7 +95,7 @@ public abstract class RelicBase : IDisposable
     /// </summary>
     protected void RegisterCoinGainAddition(int amount, Func<bool> condition = null)
     {
-        SafeEventManager.RegisterCoinGainModifier(this, ValueProcessors.Add(amount), condition);
+        EventManager.RegisterCoinGainModifier(this, ValueProcessors.Add(amount), condition);
     }
 
     /// <summary>
@@ -106,7 +105,7 @@ public abstract class RelicBase : IDisposable
         Func<int, int> modifier,
         Func<bool> condition = null)
     {
-        SafeEventManager.RegisterCoinConsumeModifier(this, modifier, condition);
+        EventManager.RegisterCoinConsumeModifier(this, modifier, condition);
     }
 
     /// <summary>
@@ -114,7 +113,7 @@ public abstract class RelicBase : IDisposable
     /// </summary>
     protected void RegisterCoinConsumeBlock(Func<bool> condition = null)
     {
-        SafeEventManager.RegisterCoinConsumeModifier(this, ValueProcessors.SetZero(), condition);
+        EventManager.RegisterCoinConsumeModifier(this, ValueProcessors.SetZero(), condition);
     }
 
     // ===== 攻撃関連のヘルパーメソッド =====
@@ -126,7 +125,7 @@ public abstract class RelicBase : IDisposable
         Func<AttackData, AttackData> modifier,
         Func<bool> condition = null)
     {
-        SafeEventManager.RegisterPlayerAttackModifier(this, modifier, condition);
+        EventManager.RegisterPlayerAttackModifier(this, modifier, condition);
     }
 
     /// <summary>
@@ -134,7 +133,7 @@ public abstract class RelicBase : IDisposable
     /// </summary>
     protected void RegisterAttackAddition(AttackType attackType, int amount, Func<bool> condition = null)
     {
-        SafeEventManager.RegisterPlayerAttackModifier(this, ValueProcessors.AddAttack(attackType, amount), condition);
+        EventManager.RegisterPlayerAttackModifier(this, ValueProcessors.AddAttack(attackType, amount), condition);
     }
 
     /// <summary>
@@ -142,7 +141,7 @@ public abstract class RelicBase : IDisposable
     /// </summary>
     protected void RegisterNormalToAllAttackConversion(Func<bool> condition = null, float multiplier = 1.0f)
     {
-        SafeEventManager.RegisterPlayerAttackModifier(this, ValueProcessors.ConvertAttackType(AttackType.Normal, AttackType.All, multiplier), condition);
+        EventManager.RegisterPlayerAttackModifier(this, ValueProcessors.ConvertAttackType(AttackType.Normal, AttackType.All, multiplier), condition);
     }
 
     // ===== ダメージ関連のヘルパーメソッド =====
@@ -154,7 +153,7 @@ public abstract class RelicBase : IDisposable
         Func<int, int> modifier,
         Func<bool> condition = null)
     {
-        SafeEventManager.RegisterPlayerDamageModifier(this, modifier, condition);
+        EventManager.RegisterPlayerDamageModifier(this, modifier, condition);
     }
 
     /// <summary>
@@ -189,7 +188,7 @@ public abstract class RelicBase : IDisposable
     /// </summary>
     protected void SubscribeBattleStart(Action onBattleStart)
     {
-        var subscription = SafeEventManager.OnBattleStartSimple.Subscribe(_ => onBattleStart?.Invoke());
+        var subscription = EventManager.OnBattleStartSimple.Subscribe(_ => onBattleStart?.Invoke());
         _simpleSubscriptions.Add(subscription);
     }
 
@@ -198,7 +197,7 @@ public abstract class RelicBase : IDisposable
     /// </summary>
     protected void SubscribeEnemyDefeated(Action<EnemyBase> onEnemyDefeated)
     {
-        var subscription = SafeEventManager.OnEnemyDefeatedSimple.Subscribe(onEnemyDefeated);
+        var subscription = EventManager.OnEnemyDefeatedSimple.Subscribe(onEnemyDefeated);
         _simpleSubscriptions.Add(subscription);
     }
 
@@ -207,7 +206,7 @@ public abstract class RelicBase : IDisposable
     /// </summary>
     protected void SubscribeShopEnter(Action onShopEnter)
     {
-        var subscription = SafeEventManager.OnShopEnterSimple.Subscribe(_ => onShopEnter?.Invoke());
+        var subscription = EventManager.OnShopEnterSimple.Subscribe(_ => onShopEnter?.Invoke());
         _simpleSubscriptions.Add(subscription);
     }
 
@@ -216,7 +215,7 @@ public abstract class RelicBase : IDisposable
     /// </summary>
     protected void SubscribeRestEnter(Action onRestEnter)
     {
-        var subscription = SafeEventManager.OnRestEnterSimple.Subscribe(_ => onRestEnter?.Invoke());
+        var subscription = EventManager.OnRestEnterSimple.Subscribe(_ => onRestEnter?.Invoke());
         _simpleSubscriptions.Add(subscription);
     }
 

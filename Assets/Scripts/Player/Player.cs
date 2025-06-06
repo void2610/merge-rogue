@@ -6,7 +6,6 @@ using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using R3;
 using UnityEngine.Serialization;
-using SafeEventSystem;
 
 public class Player : MonoBehaviour, IEntity
 {
@@ -89,7 +88,7 @@ public class Player : MonoBehaviour, IEntity
         var damage = ModifyIncomingDamage(d);
         
         // イベントでダメージを更新
-        damage = SafeEventManager.OnPlayerDamage.Process(damage);
+        damage = EventManager.OnPlayerDamage.Process(damage);
         
         if (Health.Value <= 0) return;
         
@@ -115,7 +114,7 @@ public class Player : MonoBehaviour, IEntity
         if (Health.Value >= MaxHealth.Value) return;
         
         // イベントでヒール量を更新
-        var finalAmount = SafeEventManager.OnPlayerHeal.Process(amount);
+        var finalAmount = EventManager.OnPlayerHeal.Process(amount);
         
         ParticleManager.Instance.HealParticleToPlayer();
         SeManager.Instance.PlaySe("heal");

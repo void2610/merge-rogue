@@ -1,6 +1,5 @@
 using UnityEngine;
 using R3;
-using SafeEventSystem;
 
 /// <summary>
 /// 休憩を3回キャンセルできる、ボールレベルアップ量を増加するレリック
@@ -20,7 +19,7 @@ public class MonsterEnergy : RelicBase
         MergeManager.Instance?.LevelUpBallAmount();
         
         // 休憩量を0にする（カウントが残っている場合）
-        SafeEventManager.RegisterRestModifier(this, ValueProcessors.SetZero(), () => Count.Value > 0);
+        EventManager.RegisterRestModifier(this, ValueProcessors.SetZero(), () => Count.Value > 0);
         
         // 休憩時にカウント減少
         SubscribeRestEnter(() =>

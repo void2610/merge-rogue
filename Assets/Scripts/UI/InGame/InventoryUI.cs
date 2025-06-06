@@ -4,7 +4,6 @@ using DG.Tweening;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
-using SafeEventSystem;
 
 public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
 {
@@ -197,7 +196,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                     await InventoryManager.Instance.SwapBall(_selectedIndex, _swapIndex);
                     UIManager.Instance.EnableCanvasGroup("Rest", false);
                     // Trigger organise event - no return value needed
-                    SafeEventManager.OnOrganise.OnNext(R3.Unit.Default);
+                    EventManager.OnOrganise.OnNext(R3.Unit.Default);
                     GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
                 }
                 CancelEdit();

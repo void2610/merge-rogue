@@ -1,9 +1,8 @@
 using System;
 using UnityEngine;
 using R3;
-using SafeEventSystem;
 
-public static class SafeEventManager
+public static class EventManager
 {
     // イベントシステム初期化フラグ
     private static bool _initialized = false;
@@ -50,12 +49,12 @@ public static class SafeEventManager
         if (_initialized) return;
         _initialized = true;
         
-        Debug.Log("[SafeEventManager] Initialized successfully");
+        Debug.Log("[EventManager] Initialized successfully");
     }
 
     // ===== イベントプロセッサー使用例 =====
-    // var modifiedValue = SafeEventManager.OnCoinGain.Process(originalValue);
-    // SafeEventManager.OnBattleStartSimple.OnNext(Unit.Default);
+    // var modifiedValue = EventManager.OnCoinGain.Process(originalValue);
+    // EventManager.OnBattleStartSimple.OnNext(Unit.Default);
 
     // ===== 値変更プロセッサーの登録メソッド =====
 

@@ -6,7 +6,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
-using SafeEventSystem;
 
 public class EnemyBase : MonoBehaviour, IEntity
 {
@@ -202,7 +201,7 @@ public class EnemyBase : MonoBehaviour, IEntity
 
     private void Death()
     {
-        SafeEventManager.OnEnemyDefeatedSimple.OnNext(this);
+        EventManager.OnEnemyDefeatedSimple.OnNext(this);
         this.transform.parent.GetComponent<EnemyContainer>().RemoveEnemy(this.gameObject);
     }
 

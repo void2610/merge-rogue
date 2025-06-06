@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
-using SafeEventSystem;
 using R3;
 
 public enum StatusEffectType
@@ -87,9 +86,9 @@ public abstract class StatusEffectBase
         {
             ShowEffectText();
             if(_isPlayer)
-                SafeEventManager.OnPlayerStatusEffectTriggered.OnNext(R3.Unit.Default);
+                EventManager.OnPlayerStatusEffectTriggered.OnNext(R3.Unit.Default);
             else
-                SafeEventManager.OnEnemyStatusEffectTriggered.OnNext(R3.Unit.Default);
+                EventManager.OnEnemyStatusEffectTriggered.OnNext(R3.Unit.Default);
         }
     }
     
@@ -99,9 +98,9 @@ public abstract class StatusEffectBase
         {
             ShowEffectText(1);
             if (_isPlayer)
-                SafeEventManager.OnPlayerStatusEffectTriggered.OnNext(R3.Unit.Default);
+                EventManager.OnPlayerStatusEffectTriggered.OnNext(R3.Unit.Default);
             else
-                SafeEventManager.OnEnemyStatusEffectTriggered.OnNext(R3.Unit.Default);
+                EventManager.OnEnemyStatusEffectTriggered.OnNext(R3.Unit.Default);
         }
         return incomingDamage;
     }
@@ -112,9 +111,9 @@ public abstract class StatusEffectBase
         {
             ShowEffectText();
             if (_isPlayer)
-                SafeEventManager.OnPlayerStatusEffectTriggered.OnNext(R3.Unit.Default);
+                EventManager.OnPlayerStatusEffectTriggered.OnNext(R3.Unit.Default);
             else
-                SafeEventManager.OnEnemyStatusEffectTriggered.OnNext(R3.Unit.Default);
+                EventManager.OnEnemyStatusEffectTriggered.OnNext(R3.Unit.Default);
         }
         return outgoingAttack;
     }
@@ -126,9 +125,9 @@ public abstract class StatusEffectBase
         {
             ShowEffectText();
             if (_isPlayer)
-                SafeEventManager.OnPlayerStatusEffectTriggered.OnNext(R3.Unit.Default);
+                EventManager.OnPlayerStatusEffectTriggered.OnNext(R3.Unit.Default);
             else
-                SafeEventManager.OnEnemyStatusEffectTriggered.OnNext(R3.Unit.Default);
+                EventManager.OnEnemyStatusEffectTriggered.OnNext(R3.Unit.Default);
         }
         StackCount = 0;
         return true; 
@@ -149,7 +148,7 @@ public static class StatusEffectFactory
 {
     public static void AddStatusEffectToPlayer(StatusEffectType type, int initialStack = 1)
     {
-        SafeEventManager.OnPlayerStatusEffectAdded.OnNext(R3.Unit.Default);
+        EventManager.OnPlayerStatusEffectAdded.OnNext(R3.Unit.Default);
         AddStatusEffect(GameManager.Instance.Player, type, initialStack);
     }
     
@@ -160,7 +159,7 @@ public static class StatusEffectFactory
         int stack;
         if (target is EnemyBase enemyBase)
         {
-            SafeEventManager.OnEnemyStatusEffectAdded.OnNext(R3.Unit.Default);
+            EventManager.OnEnemyStatusEffectAdded.OnNext(R3.Unit.Default);
             // In the new system, the ProcessModifications call above already handled the modification
             ty = type;
             stack = initialStack;

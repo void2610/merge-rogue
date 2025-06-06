@@ -1,6 +1,5 @@
 using UnityEngine;
 using R3;
-using SafeEventSystem;
 
 /// <summary>
 /// ボールドロップ時に50%の確率で同じボールを複製するレリック
@@ -10,7 +9,7 @@ public class SometimeCopyDropBall : RelicBase
     protected override void RegisterEffects()
     {
         // ボールドロップ時のイベント購読
-        var subscription = SafeEventManager.OnBallDropSimple.Subscribe(OnBallDrop);
+        var subscription = EventManager.OnBallDropSimple.Subscribe(OnBallDrop);
         _simpleSubscriptions.Add(subscription);
     }
     

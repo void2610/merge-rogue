@@ -64,7 +64,7 @@ public class StageEventProcessor : MonoBehaviour
                 await Utils.WaitOrSkipInput(200);
                 options[i].GetComponent<Button>().interactable = _currentEvent.Options[i].IsAvailable();
 
-                SafeEventManager.OnStageEventEnter.OnNext(R3.Unit.Default);
+                EventManager.OnStageEventEnter.OnNext(R3.Unit.Default);
             }
             SelectionCursor.SetSelectedGameObjectSafe(options[0]);
         }

@@ -350,23 +350,23 @@ public class StageManager : MonoBehaviour
                 GameManager.Instance.EnemyContainer.SpawnEnemy(CurrentStageCount.Value + 1, CurrentStageCount.Value);
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
                 
-                SafeEventManager.OnBattleStartSimple.OnNext(R3.Unit.Default);
+                EventManager.OnBattleStartSimple.OnNext(R3.Unit.Default);
                 break;
             case StageType.Boss:
                 GameManager.Instance.EnemyContainer.SpawnBoss(CurrentStageCount.Value);
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
                 
                 // ボス戦もバトル開始として扱う
-                SafeEventManager.OnBattleStartSimple.OnNext(R3.Unit.Default);
+                EventManager.OnBattleStartSimple.OnNext(R3.Unit.Default);
                 break;
             case StageType.Shop:
-                SafeEventManager.OnShopEnterSimple.OnNext(R3.Unit.Default);
+                EventManager.OnShopEnterSimple.OnNext(R3.Unit.Default);
                 
                 shop.OpenShop();
                 UIManager.Instance.EnableCanvasGroup("Shop", true);
                 break;
             case StageType.Rest:
-                SafeEventManager.OnRestEnterSimple.OnNext(R3.Unit.Default);
+                EventManager.OnRestEnterSimple.OnNext(R3.Unit.Default);
                 
                 UIManager.Instance.EnableCanvasGroup("Rest", true);
                 break;

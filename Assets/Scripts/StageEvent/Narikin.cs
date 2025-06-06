@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using R3;
 using UnityEngine;
-using SafeEventSystem;
 
 public class Narikin : StageEventBase
 {
@@ -19,7 +18,7 @@ public class Narikin : StageEventBase
                 resultDescription = "おじさんは懐から取り出した100コインに火をつけた\n「どうだ明るくなったろう」\n(次のイベントマスで戦闘が発生しなくなった!)",
                 Action = () =>
                 {
-                    _disposable = SafeEventManager.OnEventStageEnterSimple.Subscribe(RewriteBattleStageToRestStage);
+                    _disposable = EventManager.OnEventStageEnterSimple.Subscribe(RewriteBattleStageToRestStage);
                     // シーン遷移時にDisposeされることを保証する
                     GameManager.Instance.SceneDisposables.Add(_disposable);
                 }

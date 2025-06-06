@@ -1,6 +1,5 @@
 using R3;
 using UnityEngine;
-using SafeEventSystem;
 
 /// <summary>
 /// ボールが10個以上のとき、敌Burn効果発動時に次の敌にもBurnを付与するレリック
@@ -10,7 +9,7 @@ public class StrongBurnWhenManyBalls : RelicBase
     protected override void RegisterEffects()
     {
         // 敌ステータス効果発動時のイベント購読
-        var subscription = SafeEventManager.OnEnemyStatusEffectTriggered.Subscribe(OnEnemyStatusEffectTriggered);
+        var subscription = EventManager.OnEnemyStatusEffectTriggered.Subscribe(OnEnemyStatusEffectTriggered);
         _simpleSubscriptions.Add(subscription);
     }
 

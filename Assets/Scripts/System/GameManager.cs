@@ -7,7 +7,6 @@ using R3;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
-using SafeEventSystem;
 using Vector2 = UnityEngine.Vector2;
 
 public class GameManager : MonoBehaviour
@@ -65,13 +64,13 @@ public class GameManager : MonoBehaviour
     
     public void AddCoin(int amount)
     {
-        var finalAmount = SafeEventManager.OnCoinGain.Process(amount);
+        var finalAmount = EventManager.OnCoinGain.Process(amount);
         Coin.Value += finalAmount;
     }
     
     public void SubCoin(int amount)
     {
-        var finalAmount = SafeEventManager.OnCoinConsume.Process(amount);
+        var finalAmount = EventManager.OnCoinConsume.Process(amount);
         
         if (finalAmount < 0 || Coin.Value < finalAmount) return;
         

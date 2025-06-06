@@ -117,7 +117,7 @@ public class Treasure : MonoBehaviour
                 RelicManager.Instance.AddRelic(relic);
                 g.transform.position = _disablePosition;
                 // レリック取得イベントを発火（現在は直接ProcessModificationsを使用）
-                SafeEventManager.OnRelicObtainedTreasure.OnNext(R3.Unit.Default);
+                EventManager.OnRelicObtainedTreasure.OnNext(R3.Unit.Default);
                 CloseTreasure();
             });
         }
@@ -127,7 +127,7 @@ public class Treasure : MonoBehaviour
     
     private void OnClickSkip()
     {
-        SafeEventManager.OnTreasureSkipped.OnNext(R3.Unit.Default);
+        EventManager.OnTreasureSkipped.OnNext(R3.Unit.Default);
         CloseTreasure();
     }
     
