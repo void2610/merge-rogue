@@ -150,45 +150,54 @@ UIManager.Instance.EnableCanvasGroup("WindowName", true);
 
 ## Development Tools
 
-### Unity Compile Check Script
+### Unity Tools
 
-A custom shell script `unity-compile-check.sh` is available for automated compilation error detection:
+Located in `unity-tools/` directory, these are simple and focused tools for Unity development workflow:
+
+#### unity-compile.sh
+
+A lightweight script for Unity compilation management with only two essential functions:
 
 **Basic Usage:**
 ```bash
-# Standard compile check
-./unity-compile-check.sh .
+# Check current compilation errors
+./unity-tools/unity-compile.sh check .
 
-# Check editor logs only (when Unity is running)
-./unity-compile-check.sh -e .
-
-# Force Unity recompile + check editor logs
-./unity-compile-check.sh -ef .
-
-# Quit Unity first, then compile check
-./unity-compile-check.sh -q .
-
-# Verbose output with detailed logs
-./unity-compile-check.sh -v .
+# Trigger Unity Editor compilation
+./unity-tools/unity-compile.sh trigger .
 ```
 
 **Key Features:**
-- **Editor Log Analysis**: Reads Unity Editor.log directly for real-time error detection
-- **Automatic Unity Detection**: Finds project-specific Unity version automatically
-- **Force Recompile**: Triggers Unity Editor recompilation via AppleScript (macOS)
-- **Multiple Fallback Methods**: File system watching, process signals, keyboard shortcuts
-- **CI/CD Ready**: Suitable for automated build pipelines
+- **Real-time Error Detection**: Analyzes Unity Editor.log for current compilation errors only
+- **Compilation Triggering**: Sends Cmd+R to Unity Editor via AppleScript to trigger recompile
+- **Recent Log Analysis**: Checks only the latest 100 lines to avoid stale error messages
+- **Simple Interface**: Two commands only - `check` and `trigger`
 
-**Options:**
-- `-e, --editor-only`: Check editor logs without running Unity (fast)
-- `-f, --force-compile`: Force Unity Editor to recompile before checking
-- `-q, --quit`: Quit Unity Editor before running compile check (reliable)
-- `-v, --verbose`: Show detailed compilation logs and debug information
+**Output Examples:**
 
-**Error Detection Patterns:**
-- C# compiler errors (`error CS####:`)
-- Unity-specific compilation failures
-- Script compilation timeouts
-- Assembly loading issues
+Success:
+```
+📋 Checking Unity log: /Users/user/Library/Logs/Unity/Editor.log
+✅ No recent compilation errors detected
+📝 Last compile status: CompileScripts: 1.603ms
+```
 
-This tool enables Claude Code to automatically detect and fix compilation errors without manual Unity Editor interaction.
+Errors detected:
+```
+📋 Checking Unity log: /Users/user/Library/Logs/Unity/Editor.log
+❌ Recent compilation errors found:
+Assets/Scripts/Example.cs(11,9): error CS0103: The name 'NonExistentMethod' does not exist in the current context
+```
+
+**Design Philosophy:**
+- **Simplicity**: 89 lines vs. previous 657 lines (86% reduction)
+- **Accuracy**: Only analyzes recent log entries to avoid false positives
+- **Speed**: Minimal overhead with focused functionality
+- **Reliability**: Robust error detection patterns for Unity Editor logs
+
+**Requirements:**
+- macOS (for AppleScript compilation triggering)
+- Unity Editor must be running for `trigger` command
+- Unity Editor.log must be accessible for `check` command
+
+This tool enables efficient compilation error detection and resolution during development without complex configuration or verbose output.

@@ -1,90 +1,95 @@
 # Unity Tools
 
-このフォルダには、Unityプロジェクトの開発を支援するツール群が含まれています。
+このディレクトリには、Unity開発を効率化するためのシンプルなツール群が含まれています。
 
-## 📋 ツール一覧
+## unity-compile.sh
 
-### 1. Unity Compile Check Script
-- **ファイル**: `unity-compile-check.sh`
-- **目的**: Unityプロジェクトのコンパイルエラーを安全にチェック
-- **特徴**: LLM Agent対応、JSON/Simple出力、非破壊的動作
+Unity エディターのコンパイル状態をチェックし、コンパイルをトリガーするシンプルなツールです。
 
-### 2. Agent API Test Script
-- **ファイル**: `test-agent-api.sh`
-- **目的**: Unity Compile Check ScriptのAgent API機能をテスト
-- **特徴**: 各種出力モードのデモンストレーション
+### 機能
 
-## 🚀 クイックスタート
+1. **リアルタイムコンパイルエラー取得** - Unityで現在発生しているコンパイルエラーを確認
+2. **コンパイルトリガー** - Unityエディターでコンパイルを実行
 
-### 基本的な使用方法
+### 使用方法
 
 ```bash
-# 最も安全なコンパイルチェック
-./unity-tools/unity-compile-check.sh --check .
+# 基本的な使い方
+./unity-compile.sh [command] [project_path]
 
-# JSON形式で結果を取得
-./unity-tools/unity-compile-check.sh --json --check .
+# 現在のコンパイルエラーをチェック
+./unity-compile.sh check .
 
-# シンプルな成功/失敗判定
-./unity-tools/unity-compile-check.sh --simple --check .
+# Unityエディターでコンパイルを実行
+./unity-compile.sh trigger .
 ```
 
-### LLM Agent向け使用例
+### コマンド
+
+- `check` - 現在のUnityコンパイルエラーを取得
+- `trigger` - Unityエディターでコンパイルを実行
+
+### 使用例
 
 ```bash
-# 1. コンパイル状況の確認
-result=$(./unity-tools/unity-compile-check.sh --simple --check . 2>/dev/null)
-if [[ "$result" == "SUCCESS" ]]; then
-    echo "コンパイル成功"
-else
-    echo "エラーあり: $result"
-fi
+# プロジェクトのコンパイルエラーをチェック
+./unity-compile.sh check /path/to/unity/project
 
-# 2. JSON形式でのエラー詳細取得
-./unity-tools/unity-compile-check.sh --json --check . 2>/dev/null | jq '.compilation.error_count'
+# 現在のディレクトリでコンパイルエラーをチェック
+./unity-compile.sh check .
 
-# 3. 戻り値による処理分岐
-./unity-tools/unity-compile-check.sh --check .
-case $? in
-    0) echo "成功" ;;
-    1) echo "コンパイルエラー" ;;
-    2) echo "実行エラー" ;;
-esac
+# コンパイルを実行してからエラーチェック
+./unity-compile.sh trigger .
+./unity-compile.sh check .
 ```
 
-## 🛡️ 安全性機能
+### 出力例
 
-- **Unity終了なし**: スクリプトがUnityエディターを強制終了することはありません
-- **非破壊的**: 実行中の作業を中断しません
-- **フォールバック**: 危険な操作は自動的に安全なモードに切り替わります
-- **予測可能**: すべての操作が一貫した動作を保証します
-
-## 📖 詳細ドキュメント
-
-各ツールの詳細な使用方法については、個別のドキュメントファイルを参照してください：
-
-- [Unity Compile Check Script詳細](./unity-compile-check-guide.md)
-- [LLM Agent API仕様](./llm-agent-api.md)
-
-## 🔧 開発者向け情報
-
-### 要件
-- **OS**: macOS (Linux対応)
-- **Unity**: 任意のバージョン
-- **Shell**: Bash 4.0+
-- **依存ツール**: grep, jq (JSON処理時)
-
-### 設置方法
-```bash
-# スクリプトを実行可能にする
-chmod +x unity-tools/*.sh
-
-# PATHに追加（オプション）
-export PATH="$PATH:$(pwd)/unity-tools"
+**エラーがない場合:**
+```
+📋 Checking Unity log: /Users/user/Library/Logs/Unity/Editor.log
+✅ No recent compilation errors detected
+📝 Last compile status: CompileScripts: 1.603ms
 ```
 
-## 📝 更新履歴
+**エラーがある場合:**
+```
+📋 Checking Unity log: /Users/user/Library/Logs/Unity/Editor.log
+❌ Recent compilation errors found:
+Assets/Scripts/Example.cs(11,9): error CS0103: The name 'NonExistentMethod' does not exist in the current context
+```
 
-- **v2.0**: LLM Agent対応、JSON/Simple出力追加
-- **v1.5**: 安全性向上（quit機能削除）
-- **v1.0**: 基本的なコンパイルチェック機能
+### 技術仕様
+
+- **対応OS**: macOS
+- **依存関係**: Unity Editor（実行中である必要がある）
+- **ログ解析**: Unity Editor.logの最新100行を解析
+- **コンパイルトリガー**: AppleScriptを使用してCmd+Rショートカットを送信
+
+### トラブルシューティング
+
+**Unity Editor.log not found**
+- Unityエディターが起動していることを確認してください
+
+**Unityが実行中でない**
+- `trigger`コマンドを使用する前にUnityエディターを起動してください
+
+**コンパイルアクティビティが検出されない**
+- Unityでファイルを変更してから少し待ってからチェックしてください
+- `trigger`コマンドを使用してコンパイルを明示的に実行してください
+
+### 設計思想
+
+このツールは以下の原則で設計されています：
+
+- **シンプル**: 2つの核心機能のみに集中
+- **高速**: 不要な機能を排除して実行時間を最小化
+- **正確**: 最新のログのみを解析して古いエラーを除外
+- **実用的**: 日常の開発ワークフローに組み込みやすい
+
+### 従来版からの改善
+
+- **コードサイズ**: 657行 → 89行（86%削減）
+- **機能の単純化**: 複雑なオプションとモードを削除
+- **ログ解析の改善**: 最新のログのみをチェックして精度向上
+- **保守性**: 理解しやすく修正しやすいコード構造
