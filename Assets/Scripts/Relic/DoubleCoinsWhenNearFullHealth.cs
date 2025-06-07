@@ -1,22 +1,21 @@
-using R3;
+using UnityEngine;
 
+/// <summary>
+/// HPが最大HPの80%以上の時、コイン獲得量が2倍になる
+/// </summary>
 public class DoubleCoinsWhenNearFullHealth : RelicBase
 {
-    protected override void SubscribeEffect()
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnCoinGain.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
-    }
-    
-    protected override void EffectImpl(Unit _)
-    {
-        var health = GameManager.Instance.Player.Health.Value;
-        var maxHealth = GameManager.Instance.Player.MaxHealth.Value;
-        if(health > maxHealth * 0.8f)
+        // HPが80%以上の時にコイン獲得量を2倍にする
+        EventManager.OnCoinGain.AddProcessor(this, current =>
         {
-            var x = EventManager.OnCoinGain.GetValue();
-            EventManager.OnCoinGain.SetValue(x * 2);
-            UI?.ActivateUI();
-        }
+            if (RelicHelpers.PlayerHealthConditionAbove(0.8f)())
+            {
+                ActivateUI();
+                return (int)(current * 2.0f);
+            }
+            return current;
+        });
     }
 }

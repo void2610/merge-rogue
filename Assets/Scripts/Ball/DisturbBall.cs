@@ -12,10 +12,10 @@ public class DisturbBall : BallBase
         _disposable = EventManager.OnBallMerged.Subscribe(CheckNearMerge).AddTo(this);
     }
     
-    private void CheckNearMerge(Unit _)
+    private void CheckNearMerge((BallBase ball1, BallBase ball2) mergeData)
     {
         // 周りのボールがマージされたら消滅する
-        var (b1, b2) = EventManager.OnBallMerged.GetValue();
+        var (b1, b2) = mergeData;
         var pos = (b2.transform.position - b1.transform.position) / 2;
         var distance = Vector3.Distance(this.transform.position, pos);
         if (distance < 2f)

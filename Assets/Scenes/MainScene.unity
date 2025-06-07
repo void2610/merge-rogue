@@ -1923,7 +1923,7 @@ PrefabInstance:
       objectReference: {fileID: 1311321065}
     - target: {fileID: 4410575661515670091, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
       propertyPath: m_fontSize
-      value: 40
+      value: 46.1
       objectReference: {fileID: 0}
     - target: {fileID: 4410575661515670091, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
       propertyPath: m_fontColor32.rgba
@@ -1987,7 +1987,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8478239314545346535, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
       propertyPath: m_fontSize
-      value: 9
+      value: 8.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3446,7 +3446,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 12.9
+      value: 7.25
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -4489,7 +4489,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 14.75
+      value: 12.25
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -5808,7 +5808,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 14.75
+      value: 12.25
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -11552,7 +11552,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 12.9
+      value: 7.25
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -13444,7 +13444,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 12.9
+      value: 7.25
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -14033,7 +14033,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 14.75
+      value: 9.8
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -14365,7 +14365,8 @@ MonoBehaviour:
   relicGridSize: {x: 3, y: 9}
   relicOffset: {x: 40, y: 36}
   relicUISize: 0.75
-  testRelics: []
+  testRelics:
+  - {fileID: 0}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -15815,7 +15816,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 23.5
+      value: 23.95
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -17237,7 +17238,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 14.75
+      value: 12.25
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -18483,7 +18484,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 14
+      value: 14.75
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -21715,7 +21716,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 14.75
+      value: 12.25
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -23332,7 +23333,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8478239314545346535, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
       propertyPath: m_fontSize
-      value: 9
+      value: 8.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -24256,7 +24257,7 @@ MonoBehaviour:
   ballBasePrefab: {fileID: 5528515049713681562, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
   inventoryPosition: {x: 0, y: -7, z: 0}
   testBalls:
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
+  - {fileID: 11400000, guid: 988658c93269b4a7aa2905750b6622a2, type: 2}
   - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   - {fileID: 11400000, guid: 282f2e804c8cc447982a8e7498d5cdb4, type: 2}
@@ -24566,7 +24567,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 39.2
+  m_fontSize: 46.65
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -32624,7 +32625,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 12.9
+      value: 7.25
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -33285,7 +33286,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8478239314545346535, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
       propertyPath: m_fontSize
-      value: 9
+      value: 8.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

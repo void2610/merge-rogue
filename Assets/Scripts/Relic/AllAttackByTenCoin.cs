@@ -1,30 +1,51 @@
-using R3;
+using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
+/// <summary>
+/// コイン10枚で単体攻撃を1.5倍の全体攻撃に変換する
+/// 賢者の石（NoConsumeCoinDuringBattle）がある場合はコイン消費なし
+/// </summary>
 public class AllAttackByTenCoin : RelicBase
 {
-    protected override void SubscribeEffect()
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnPlayerAttack.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
-
-        EffectImpl(Unit.Default);
+        // 攻撃処理：Normal → All変換 + 1.5倍攻撃力（条件を満たす場合）
+        EventManager.OnAttackProcess.AddProcessor(this, attackData =>
+        {
+            if (attackData.type == AttackType.Normal && CanConvertAttackCondition())
+            {
+                ConsumeCoinsForConversion();
+                ActivateUI();
+                return (AttackType.All, (int)(attackData.value * 1.5f));
+            }
+            return attackData;
+        });
     }
-    
-    protected override void EffectImpl(Unit _)
+
+    /// <summary>
+    /// 攻撃変換が可能な条件をチェック
+    /// </summary>
+    private bool CanConvertAttackCondition()
     {
         var coin = GameManager.Instance.Coin.Value;
-        var e = GameManager.Instance.EnemyContainer.GetCurrentEnemyCount();
-        var dic = EventManager.OnPlayerAttack.GetValue();
+        var enemyCount = GameManager.Instance.EnemyContainer.GetCurrentEnemyCount();
+        var hasNoConsumeCoin = RelicHelpers.HasRelicCondition<NoConsumeCoinDuringBattle>()();
 
-        // 消費するコインが存在し、単体攻撃力が1以上、敵が2体以上いる場合
-        // TODO: 賢者の石に依存している部分を修正する
-        if ((coin >= 10 && dic[AttackType.Normal] > 0 && e >= 2) || RelicManager.Instance.HasRelic(typeof(NoConsumeCoinDuringBattle)))
+        // コインが足りるか、賢者の石があるか、かつ敵が2体以上いる場合
+        return (coin >= 10 || hasNoConsumeCoin) && enemyCount >= 2;
+    }
+    
+    /// <summary>
+    /// 攻撃変換時にコインを消費
+    /// </summary>
+    private void ConsumeCoinsForConversion()
+    {
+        var hasNoConsumeCoin = RelicHelpers.HasRelicCondition<NoConsumeCoinDuringBattle>()();
+        if (!hasNoConsumeCoin)
         {
             GameManager.Instance.SubCoin(10);
-            dic[AttackType.All] += (int)(dic[AttackType.Normal] * 1.5f);
-            dic[AttackType.Normal] = 0;
-            EventManager.OnPlayerAttack.SetValue(dic);
-            UI?.ActivateUI();
         }
     }
+
 }

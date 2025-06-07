@@ -1,16 +1,22 @@
+using UnityEngine;
 using R3;
 
+/// <summary>
+/// 宝物スキップ時に最大HPを増加するレリック
+/// </summary>
 public class AddMaxHealthWhenSkipTreasure : RelicBase
 {
-    protected override void SubscribeEffect()
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnTreasureSkipped.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
+        // 宝物スキップ時のイベント購読
+        var subscription = EventManager.OnTreasureSkipped.Subscribe(OnTreasureSkipped);
+        _simpleSubscriptions.Add(subscription);
     }
 
-    protected override void EffectImpl(Unit _)
-    {   
-        GameManager.Instance.Player.MaxHealth.Value += 10;
+    private void OnTreasureSkipped(Unit _)
+    {
+        if (GameManager.Instance?.Player)
+            GameManager.Instance.Player.MaxHealth.Value += 10;
         UI?.ActivateUI();
     }
 }

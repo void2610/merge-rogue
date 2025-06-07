@@ -1,16 +1,21 @@
+using UnityEngine;
 using R3;
 
+/// <summary>
+/// プレイヤーにステータス効果が追加されたときにランダムボールを生成するレリック
+/// </summary>
 public class CreateBallWhenStatusEffect : RelicBase
 {
-    protected override void SubscribeEffect()
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnPlayerStatusEffectAdded.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
+        // プレイヤーステータス効果追加時のイベント購読
+        var subscription = EventManager.OnPlayerStatusEffectAdded.Subscribe(OnStatusEffectAdded);
+        _simpleSubscriptions.Add(subscription);
     }
 
-    protected override void EffectImpl(Unit _)
-    {   
-        MergeManager.Instance.CreateRandomBall();
+    private void OnStatusEffectAdded(Unit _)
+    {
+        MergeManager.Instance?.CreateRandomBall();
         UI?.ActivateUI();
     }
 }

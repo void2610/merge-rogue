@@ -1,23 +1,25 @@
-using R3;
+using UnityEngine;
+using System.Collections.Generic;
+using System.Linq;
 
+/// <summary>
+/// 通常攻撃力が30以下の時、全体攻撃に変換する
+/// </summary>
 public class AllAttackWhenWeakAttack : RelicBase
 {
-    protected override void SubscribeEffect()
+    private const int WEAK_ATTACK_THRESHOLD = 30;
+
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnPlayerAttack.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
-    }
-    
-    protected override void EffectImpl(Unit _)
-    {
-        var dic = EventManager.OnPlayerAttack.GetValue();
-        if (dic[AttackType.Normal] <= 30)
+        // 攻撃タイプ変換：Normal → All（攻撃力30以下の場合）
+        EventManager.OnAttackProcess.AddProcessor(this, attackData =>
         {
-            // 全体攻撃に変換
-            dic[AttackType.All] += dic[AttackType.Normal];
-            dic[AttackType.Normal] = 0;
-            EventManager.OnPlayerAttack.SetValue(dic);
-            UI?.ActivateUI();
-        }
+            if (attackData.type == AttackType.Normal && attackData.value <= WEAK_ATTACK_THRESHOLD)
+            {
+                ActivateUI();
+                return (AttackType.All, attackData.value);
+            }
+            return attackData;
+        });
     }
 }

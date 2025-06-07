@@ -322,6 +322,7 @@ public class StageManager : MonoBehaviour
         BgmManager.Instance.PlayRandomBGM(bgmType).Forget();
         
         var r = 0;
+        StageType finalStage;
         if(CurrentStage.Type == StageType.Events)
         {
             // ランダムなステージに移動
@@ -330,15 +331,17 @@ public class StageManager : MonoBehaviour
             else
                 r = GameManager.Instance.RandomRange(0, 4);
 
-            EventManager.OnEventStageEnter.Trigger((StageType)r);
-            // 更新されたステージを処理
-            var stage = EventManager.OnEventStageEnter.GetValue();
-            ProcessStage(stage);
+            var stage = (StageType)r;
+            // ValueProcessorを通してステージタイプを最終決定
+            finalStage = EventManager.OnStageTypeDecision.Process(stage);
         }
         else
         {
-            ProcessStage(CurrentStage.Type);
+            // ValueProcessorを通してステージタイプを最終決定
+            finalStage = EventManager.OnStageTypeDecision.Process(CurrentStage.Type);
         }
+        
+        ProcessStage(finalStage);
         
         // カーソルの位置を変更
     }
@@ -351,25 +354,32 @@ public class StageManager : MonoBehaviour
                 // 敵の出現量と強さを設定
                 GameManager.Instance.EnemyContainer.SpawnEnemy(CurrentStageCount.Value + 1, CurrentStageCount.Value);
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
-                EventManager.OnBattleStart.Trigger(0);
+                
+                EventManager.OnBattleStart.OnNext(R3.Unit.Default);
                 break;
             case StageType.Boss:
                 GameManager.Instance.EnemyContainer.SpawnBoss(CurrentStageCount.Value);
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
+                
+                // ボス戦もバトル開始として扱う
+                EventManager.OnBattleStart.OnNext(R3.Unit.Default);
                 break;
             case StageType.Shop:
-                EventManager.OnShopEnter.Trigger(0);
+                EventManager.OnShopEnter.OnNext(R3.Unit.Default);
+                
                 shop.OpenShop();
                 UIManager.Instance.EnableCanvasGroup("Shop", true);
                 break;
             case StageType.Rest:
-                EventManager.OnRestEnter.Trigger(0);
+                EventManager.OnRestEnter.OnNext(R3.Unit.Default);
+                
                 UIManager.Instance.EnableCanvasGroup("Rest", true);
                 break;
             case StageType.Treasure:
                 treasure.OpenTreasure(Treasure.TreasureType.Normal);
                 break;
             case StageType.Events:
+                EventManager.OnEventStageEnter.OnNext(StageType.Events);
                 UIManager.Instance.EnableCanvasGroup("Event", true);
                 stageEventProcessor.StartEvent();
                 break;

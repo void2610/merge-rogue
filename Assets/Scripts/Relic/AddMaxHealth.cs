@@ -1,19 +1,28 @@
-using R3;
+using UnityEngine;
 
+/// <summary>
+/// プレイヤーの最大HPを10増加させるレリック
+/// </summary>
 public class AddMaxHealth : RelicBase
 {
-    public override void RemoveEffect()
+    protected override void RegisterEffects()
     {
-        base.RemoveEffect();
-        if (GameManager.Instance.Player == null) return;
-        GameManager.Instance.Player.MaxHealth.Value -= 10;
+        // 最大HP増加
+        if (GameManager.Instance?.Player != null)
+        {
+            GameManager.Instance.Player.MaxHealth.Value += 10;
+            UI?.ActiveAlways();
+        }
     }
-    
-    protected override void SubscribeEffect()
+
+    public override void RemoveAllEffects()
     {
-        GameManager.Instance.Player.MaxHealth.Value += 10;
-        UI?.ActiveAlways();
+        base.RemoveAllEffects();
+        
+        // 最大HP減少
+        if (GameManager.Instance?.Player != null)
+        {
+            GameManager.Instance.Player.MaxHealth.Value -= 10;
+        }
     }
-    
-    protected override void EffectImpl(Unit _) {}
 }

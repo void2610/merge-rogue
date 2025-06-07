@@ -147,3 +147,57 @@ UIManager.Instance.EnableCanvasGroup("WindowName", true);
 - Composite Disposables for automatic R3 subscription cleanup
 - Physics-based systems require careful performance monitoring
 - UI uses DOTween for smooth animations without blocking gameplay
+
+## Development Tools
+
+### Unity Tools
+
+Located in `unity-tools/` directory, these are simple and focused tools for Unity development workflow:
+
+#### unity-compile.sh
+
+A lightweight script for Unity compilation management with only two essential functions:
+
+**Basic Usage:**
+```bash
+# Check current compilation errors
+./unity-tools/unity-compile.sh check .
+
+# Trigger Unity Editor compilation
+./unity-tools/unity-compile.sh trigger .
+```
+
+**Key Features:**
+- **Real-time Error Detection**: Analyzes Unity Editor.log for current compilation errors only
+- **Compilation Triggering**: Sends Cmd+R to Unity Editor via AppleScript to trigger recompile
+- **Recent Log Analysis**: Checks only the latest 100 lines to avoid stale error messages
+- **Simple Interface**: Two commands only - `check` and `trigger`
+
+**Output Examples:**
+
+Success:
+```
+📋 Checking Unity log: /Users/user/Library/Logs/Unity/Editor.log
+✅ No recent compilation errors detected
+📝 Last compile status: CompileScripts: 1.603ms
+```
+
+Errors detected:
+```
+📋 Checking Unity log: /Users/user/Library/Logs/Unity/Editor.log
+❌ Recent compilation errors found:
+Assets/Scripts/Example.cs(11,9): error CS0103: The name 'NonExistentMethod' does not exist in the current context
+```
+
+**Design Philosophy:**
+- **Simplicity**: 89 lines vs. previous 657 lines (86% reduction)
+- **Accuracy**: Only analyzes recent log entries to avoid false positives
+- **Speed**: Minimal overhead with focused functionality
+- **Reliability**: Robust error detection patterns for Unity Editor logs
+
+**Requirements:**
+- macOS (for AppleScript compilation triggering)
+- Unity Editor must be running for `trigger` command
+- Unity Editor.log must be accessible for `check` command
+
+This tool enables efficient compilation error detection and resolution during development without complex configuration or verbose output.

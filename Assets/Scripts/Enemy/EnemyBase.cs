@@ -77,11 +77,11 @@ public class EnemyBase : MonoBehaviour, IEntity
         return v;
     }
     
-    public Dictionary<AttackType, int> ModifyOutgoingAttack(Dictionary<AttackType, int> amount)
+    public int ModifyOutgoingAttack(AttackType type, int amount)
     {
-        var v = StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyAttack(this, current));
+        var modifiedAttack = StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyAttack(this, type, current));
         _statusEffectUI.UpdateUI(StatusEffects);
-        return v;
+        return modifiedAttack;
     }
     
     public void OnBattleEnd()
@@ -161,9 +161,8 @@ public class EnemyBase : MonoBehaviour, IEntity
     private void DoAttack()
     {
         // 状態異常で攻撃力を更新
-        var dic = new Dictionary<AttackType, int> {{AttackType.Normal, Attack}};
-        var damage = ModifyOutgoingAttack(dic)[AttackType.Normal];
-        GameManager.Instance.Player.Damage(AttackType.Normal, Mathf.Max(1, damage));
+        var damage = ModifyOutgoingAttack(AttackType.Normal, Attack);
+        GameManager.Instance.Player.Damage(AttackType.Normal, Math.Max(1, damage));
         this.transform.DOMoveX(-0.75f, 0.02f).SetRelative(true).OnComplete(() =>
                 {
                     this.transform.DOMoveX(0.75f, 0.2f).SetRelative(true).SetEase(Ease.OutExpo).SetLink(gameObject);
@@ -201,7 +200,7 @@ public class EnemyBase : MonoBehaviour, IEntity
 
     private void Death()
     {
-        EventManager.OnEnemyDefeated.Trigger(this);
+        EventManager.OnEnemyDefeated.OnNext(this);
         this.transform.parent.GetComponent<EnemyContainer>().RemoveEnemy(this.gameObject);
     }
 

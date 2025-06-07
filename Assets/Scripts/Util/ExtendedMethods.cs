@@ -232,17 +232,6 @@ public static class ExtendedMethods
         }
     }
     
-    /// <summary>
-    /// 辞書の全ての要素に掛け算を行う
-    /// </summary>
-    public static Dictionary<AttackType, int> MultiplyAll(this Dictionary<AttackType, int> dict, float value)
-    {
-        foreach (var key in dict.Keys.ToList())
-        {
-            dict[key] = (int)(dict[key] * value);
-        }
-        return dict;
-    }
 
     /// <summary>
     /// DOTweenTMPAnimatorの全ての文字のアニメーションをリセットする

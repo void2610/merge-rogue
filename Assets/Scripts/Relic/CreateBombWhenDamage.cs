@@ -1,33 +1,22 @@
 using UnityEngine;
-using R3;
 
+/// <summary>
+/// プレイヤーが受けたダメージを蓄積し、20ダメージ毎にボムボールを生成する
+/// </summary>
 public class CreateBombWhenDamage : RelicBase
 {
     public override void Init(RelicUI relicUI)
     {
-        IsCountable = true;
+        IsCountable = true; // カウント表示を有効化
         base.Init(relicUI);
     }
-    
-    protected override void SubscribeEffect()
-    {
-        var disposable = EventManager.OnPlayerDamage.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
-    }
-    
-    protected override void EffectImpl(Unit _)
-    {
-        var x = EventManager.OnPlayerDamage.GetValue();
-        Count.Value += x;
 
-        var isActivated = false;
-        while (Count.Value >= 20)
-        {
-            Count.Value -= 20;
-            MergeManager.Instance.CreateBombBall();
-            isActivated = true;
-        }
-    
-        if (isActivated) UI?.ActivateUI();
+    protected override void RegisterEffects()
+    {
+        // ダメージ20毎にボム生成
+        RegisterDamageAccumulator(
+            threshold: 20,
+            onThresholdReached: () => MergeManager.Instance.CreateBombBall()
+        );
     }
 }

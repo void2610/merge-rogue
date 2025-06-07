@@ -1,16 +1,21 @@
+using UnityEngine;
 using R3;
 
+/// <summary>
+/// オーガナイズ時にプレイヤーに10ダメージを与えるレリック
+/// </summary>
 public class Fukiya : RelicBase
 {
-    protected override void SubscribeEffect()
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnOrganise.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
+        // オーガナイズ時のイベント購読
+        var subscription = EventManager.OnOrganise.Subscribe(OnOrganise);
+        _simpleSubscriptions.Add(subscription);
     }
     
-    protected override void EffectImpl(Unit _)
+    private void OnOrganise(Unit _)
     {
-        GameManager.Instance.Player.Damage(AttackType.Normal, 10);
+        GameManager.Instance?.Player?.Damage(AttackType.Normal, 10);
         UI?.ActivateUI();
     }
 }

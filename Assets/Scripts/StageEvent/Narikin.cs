@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
-using R3;
-using UnityEngine;
 
 public class Narikin : StageEventBase
 {
-    private IDisposable _disposable;
+    private bool _isProcessorRegistered;
     public override void Init()
     {
         EventName = "Narikin";
@@ -18,9 +15,19 @@ public class Narikin : StageEventBase
                 resultDescription = "おじさんは懐から取り出した100コインに火をつけた\n「どうだ明るくなったろう」\n(次のイベントマスで戦闘が発生しなくなった!)",
                 Action = () =>
                 {
-                    _disposable = EventManager.OnEventStageEnter.Subscribe(RewriteBattleStageToRestStage);
-                    // シーン遷移時にDisposeされることを保証する
-                    GameManager.Instance.SceneDisposables.Add(_disposable);
+                    // ValueProcessorにEnemy→Restの変換を一度だけ実行する処理を登録
+                    var oneTimeUse = false;
+                    EventManager.OnStageTypeDecision.AddProcessor(this, stage =>
+                    {
+                        if (!oneTimeUse && stage == StageType.Enemy)
+                        {
+                            oneTimeUse = true;
+                            return StageType.Rest;
+                        }
+                        return stage;
+                    });
+                    
+                    _isProcessorRegistered = true;
                 }
             },
             new OptionData
@@ -35,10 +42,11 @@ public class Narikin : StageEventBase
         };
     }
     
-    private void RewriteBattleStageToRestStage(Unit _)
+    private void OnDestroy()
     {
-        // 休憩ステージに変更して購読解除
-        EventManager.OnEventStageEnter.SetValue(StageType.Rest);
-        _disposable.Dispose();
+        if (_isProcessorRegistered)
+        {
+            EventManager.OnStageTypeDecision.RemoveProcessorsFor(this);
+        }
     }
 }

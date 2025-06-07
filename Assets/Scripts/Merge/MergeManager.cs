@@ -40,7 +40,6 @@ public class MergeManager : MonoBehaviour
     private float _limit = -2.5f;
     private Vector3 _currentBallPosition = new(0, 1f, 0);
     private int _ballPerOneTurn = 3;
-    private Dictionary<AttackType, int> _attackCounts = new();
     private Dictionary<Rigidbody2D, float> _stopTimers;
     private bool _isMovable = false;
     private Camera _mainCamera;
@@ -219,13 +218,22 @@ public class MergeManager : MonoBehaviour
         atk *= attackMagnification;
         // 充填率のバフを適用
         atk *= _fillingRateMagnification;
-        // 状態異常を適用
-        _attackCounts = GameManager.Instance.Player.ModifyOutgoingAttack(_attackCounts);
-        // イベントを適用
-        EventManager.OnPlayerAttack.Trigger(_attackCounts);
-        _attackCounts = EventManager.OnPlayerAttack.GetValue();
         
-        GameManager.Instance.EnemyContainer.AttackEnemy(type, (int)atk).Forget();
+        // 攻撃値を整数に変換
+        var attackAmount = (int)atk;
+        
+        // 攻撃タイプと攻撃値を一緒に処理
+        var attackData = EventManager.OnAttackProcess.Process((type, attackAmount));
+        type = attackData.type;
+        attackAmount = attackData.value;
+        
+        // 状態異常を適用
+        attackAmount = GameManager.Instance.Player.ModifyOutgoingAttack(type, attackAmount);
+        
+        // EventManagerを適用
+        attackAmount = EventManager.OnPlayerAttack.Process(attackAmount);
+        
+        GameManager.Instance.EnemyContainer.AttackEnemy(type, attackAmount).Forget();
         
         // 攻撃アニメーション
         // GameManager.Instance.Player.gameObject.transform.DOMoveX(0.75f, 0.02f).SetRelative(true).OnComplete(() =>
@@ -272,14 +280,17 @@ public class MergeManager : MonoBehaviour
 
     private void DropBall()
     {
-        EventManager.OnBallDrop.Trigger(0);
         CurrentBall.GetComponent<BallBase>().Unfreeze();
         CurrentBall.transform.SetParent(_ballContainer.transform);
+        
+        // ボールドロップイベントを発火
+        EventManager.OnBallDrop.OnNext(R3.Unit.Default);
     }
 
     private void SkipBall()
     {
-        EventManager.OnBallSkip.Trigger(0);
+        // ボールスキップイベントを発火
+        EventManager.OnBallSkip.OnNext(R3.Unit.Default);
         Destroy(CurrentBall);
     }
 

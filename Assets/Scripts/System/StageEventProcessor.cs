@@ -6,6 +6,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using R3;
 
 public class StageEventProcessor : MonoBehaviour
 {
@@ -63,7 +64,7 @@ public class StageEventProcessor : MonoBehaviour
                 await Utils.WaitOrSkipInput(200);
                 options[i].GetComponent<Button>().interactable = _currentEvent.Options[i].IsAvailable();
 
-                EventManager.OnStageEventEnter.Trigger(_currentEvent);
+                EventManager.OnStageEventEnter.OnNext(R3.Unit.Default);
             }
             SelectionCursor.SetSelectedGameObjectSafe(options[0]);
         }

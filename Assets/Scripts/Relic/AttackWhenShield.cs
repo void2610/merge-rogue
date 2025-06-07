@@ -1,20 +1,29 @@
+using UnityEngine;
 using R3;
 
+/// <summary>
+/// シールド発動時に敵に攻撃するレリック
+/// </summary>
 public class AttackWhenShield : RelicBase
 {
-    protected override void SubscribeEffect()
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnPlayerStatusEffectTriggered.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
+        // プレイヤーのステータス効果発動時のイベント購読
+        var subscription = EventManager.OnPlayerStatusEffectTriggered.Subscribe(OnStatusEffectTriggered);
+        _simpleSubscriptions.Add(subscription);
     }
 
-    protected override void EffectImpl(Unit _)
-    {   
-        var v = EventManager.OnPlayerStatusEffectTriggered.GetValue();
-        if(v.Item1 == StatusEffectType.Shield)
+    private void OnStatusEffectTriggered(StatusEffectType statusEffectType)
+    {
+        // Shield状態異常が発動した場合のみ効果発動
+        if (statusEffectType == StatusEffectType.Shield)
         {
-            EnemyContainer.Instance.GetAllEnemies()[0].Damage(AttackType.Normal, v.Item2);
-            UI?.ActivateUI();
+            var enemies = EnemyContainer.Instance?.GetAllEnemies();
+            if (enemies != null && enemies.Count > 0)
+            {
+                enemies[0].Damage(AttackType.Normal, 3); // 固定ダメージ
+                UI?.ActivateUI();
+            }
         }
     }
 }

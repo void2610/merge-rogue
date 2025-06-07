@@ -195,7 +195,8 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                     GameManager.Instance.SubCoin(ContentProvider.GetBallRemovePrice());
                     await InventoryManager.Instance.SwapBall(_selectedIndex, _swapIndex);
                     UIManager.Instance.EnableCanvasGroup("Rest", false);
-                    EventManager.OnOrganise.Trigger(0);
+                    // Trigger organise event - no return value needed
+                    EventManager.OnOrganise.OnNext(R3.Unit.Default);
                     GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
                 }
                 CancelEdit();

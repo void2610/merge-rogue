@@ -1,19 +1,27 @@
+using UnityEngine;
 using R3;
 
+/// <summary>
+/// 休憩時にランダムなレリックを獲得するレリック
+/// </summary>
 public class Santa : RelicBase
 {
-    protected override void SubscribeEffect()
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnRest.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
+        // 休憩時のイベント購読
+        AddSubscription(RelicHelpers.SubscribeRestEnter(OnRestEnter));
     }
 
-    protected override void EffectImpl(Unit _)
+    private void OnRestEnter()
     {
-        var rarity = GameManager.Instance.RandomRange(0.0f, 1.0f) > 0.5f ? Rarity.Common : Rarity.Uncommon;
-        var relics = ContentProvider.Instance.GetRelicDataByRarity(rarity);
+        var rarity = GameManager.Instance?.RandomRange(0.0f, 1.0f) > 0.5f ? Rarity.Common : Rarity.Uncommon;
+        var relics = ContentProvider.Instance?.GetRelicDataByRarity(rarity);
         
-        RelicManager.Instance.AddRelic(relics[GameManager.Instance.RandomRange(0, relics.Count)]);
+        if (relics != null && relics.Count > 0)
+        {
+            var randomRelic = relics[GameManager.Instance.RandomRange(0, relics.Count)];
+            RelicManager.Instance?.AddRelic(randomRelic);
+        }
         UI?.ActivateUI();
     }
 }

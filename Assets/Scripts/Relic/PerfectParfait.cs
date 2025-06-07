@@ -1,20 +1,19 @@
-using R3;
-
+/// <summary>
+/// ボールで0個のときに攻撃力を5倍にするレリック
+/// </summary>
 public class PerfectParfait : RelicBase
 {
-    protected override void SubscribeEffect()
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnPlayerAttack.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
-    }
-
-    protected override void EffectImpl(Unit _)
-    {
-        var count = MergeManager.Instance.GetBallCount();
-        if(count > 0) return;
-
-        var dic = EventManager.OnPlayerAttack.GetValue();
-        EventManager.OnPlayerAttack.SetValue(dic.MultiplyAll(5.0f));
-        UI?.ActivateUI();
+        // プレイヤー攻撃時の修正を登録
+        EventManager.OnPlayerAttack.AddProcessor(this, current =>
+        {
+            if (MergeManager.Instance?.GetBallCount() == 0)
+            {
+                ActivateUI();
+                return (int)(current * 5.0f);
+            }
+            return current;
+        });
     }
 }

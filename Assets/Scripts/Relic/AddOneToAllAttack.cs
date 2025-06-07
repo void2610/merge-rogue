@@ -1,19 +1,15 @@
-using R3;
-
+/// <summary>
+/// プレイヤーの攻撃時に通常攻撃力に+5する
+/// </summary>
 public class AddOneToAllAttack : RelicBase
 {
-    protected override void SubscribeEffect()
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnPlayerAttack.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
-    }
-    
-    protected override void EffectImpl(Unit _)
-    {
-        var dic = EventManager.OnPlayerAttack.GetValue();
-        if (dic.ContainsKey(AttackType.Normal) == false) dic.Add(AttackType.Normal, 0);
-        dic[AttackType.Normal] += 5;
-        EventManager.OnPlayerAttack.SetValue(dic);
-        UI?.ActivateUI();
+        // 攻撃力に+5する
+        EventManager.OnPlayerAttack.AddProcessor(this, current =>
+        {
+            ActivateUI();
+            return current + 5;
+        });
     }
 }

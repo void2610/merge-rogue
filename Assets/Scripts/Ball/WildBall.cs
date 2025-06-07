@@ -21,7 +21,7 @@ public class WildBall : BallBase
             if (isWild && this.Serial < b.Serial || !isWild)
             {
                 var pos = (this.transform.position + b.transform.position) / 2;
-                EventManager.OnBallMerged.Trigger((this, b));
+                EventManager.OnBallMerged.OnNext((this, b));
                 
                 var center = (this.transform.position + b.transform.position) / 2;
                 var rotation = Quaternion.Lerp(this.transform.rotation, b.transform.rotation, 0.5f);

@@ -64,11 +64,11 @@ public class Player : MonoBehaviour, IEntity
         return v;
     }
     
-    public Dictionary<AttackType, int> ModifyOutgoingAttack(Dictionary<AttackType, int> attack)
+    public int ModifyOutgoingAttack(AttackType type, int attack)
     {
-        var v = StatusEffects.Aggregate(attack, (current, effect) => effect.ModifyAttack(this, current));
+        var modifiedAttack = StatusEffects.Aggregate(attack, (current, effect) => effect.ModifyAttack(this, type, current));
         statusEffectUI.UpdateUI(StatusEffects);
-        return v;
+        return modifiedAttack;
     }
     
     public void OnBattleEnd()
@@ -88,8 +88,7 @@ public class Player : MonoBehaviour, IEntity
         var damage = ModifyIncomingDamage(d);
         
         // イベントでダメージを更新
-        EventManager.OnPlayerDamage.Trigger(damage);
-        damage = EventManager.OnPlayerDamage.GetValue();
+        damage = EventManager.OnPlayerDamage.Process(damage);
         
         if (Health.Value <= 0) return;
         
@@ -114,9 +113,12 @@ public class Player : MonoBehaviour, IEntity
         if(Health.Value <= 0) return;
         if (Health.Value >= MaxHealth.Value) return;
         
+        // イベントでヒール量を更新
+        var finalAmount = EventManager.OnPlayerHeal.Process(amount);
+        
         ParticleManager.Instance.HealParticleToPlayer();
         SeManager.Instance.PlaySe("heal");
-        Health.Value += amount;
+        Health.Value += finalAmount;
         if (Health.Value > MaxHealth.Value)
         {
             Health.Value = MaxHealth.Value;

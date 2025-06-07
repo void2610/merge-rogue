@@ -1,20 +1,22 @@
-using UnityEngine;
-using R3;
+using System;
 
+/// <summary>
+/// 敵撃破時にHPを回復するレリック
+/// </summary>
 public class HealWhenDefeatEnemy : RelicBase
 {
-    protected override void SubscribeEffect()
+    protected override void RegisterEffects()
     {
-        var disposable = EventManager.OnEnemyDefeated.Subscribe(EffectImpl).AddTo(this);
-        Disposables.Add(disposable);
+        // 敵撃破時のイベント購読
+        AddSubscription(RelicHelpers.SubscribeEnemyDefeated(OnEnemyDefeated));
     }
-    
-    protected override void EffectImpl(Unit _)
+
+    private void OnEnemyDefeated(EnemyBase enemy)
     {
-        var enemy = EventManager.OnEnemyDefeated.GetValue();
-        if(!enemy) return;
+        if (enemy == null) return;
         
         var heal = enemy.MaxHealth * 0.1f;
-        GameManager.Instance.Player.Heal(Mathf.CeilToInt(heal));
+        GameManager.Instance?.Player?.Heal((int)Math.Ceiling(heal));
+        UI?.ActivateUI();
     }
 }

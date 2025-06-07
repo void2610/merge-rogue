@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using R3;
 
 public class Treasure : MonoBehaviour
 {
@@ -115,7 +116,8 @@ public class Treasure : MonoBehaviour
                 
                 RelicManager.Instance.AddRelic(relic);
                 g.transform.position = _disablePosition;
-                EventManager.OnRelicObtainedTreasure.Trigger(relic);
+                // レリック取得イベントを発火（現在は直接ProcessModificationsを使用）
+                EventManager.OnRelicObtainedTreasure.OnNext(R3.Unit.Default);
                 CloseTreasure();
             });
         }
@@ -125,7 +127,7 @@ public class Treasure : MonoBehaviour
     
     private void OnClickSkip()
     {
-        EventManager.OnTreasureSkipped.Trigger(0);
+        EventManager.OnTreasureSkipped.OnNext(R3.Unit.Default);
         CloseTreasure();
     }
     

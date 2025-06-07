@@ -50,7 +50,7 @@ public class RelicManager : MonoBehaviour
         }
 
         var behavior = _behaviors[index];
-        behavior.RemoveEffect();
+        behavior.Dispose();
         _behaviors.Remove(behavior);
         _relics.Remove(relic);
         Destroy(_relicUIs[index].gameObject);
@@ -81,15 +81,28 @@ public class RelicManager : MonoBehaviour
     private void ApplyEffect(RelicData r, RelicUI rui)
     {
         var type = System.Type.GetType(r.className);
-        var behaviour = gameObject.AddComponent(type) as RelicBase;
-        if(!behaviour)
+        if (type == null)
         {
-            Debug.LogError("指定されたクラスは存在しません: " + r.className);
+            Debug.LogError("指定されたクラスが見つかりません: " + r.className);
             return;
         }
-        
-        behaviour.Init(rui);
-        _behaviors.Add(behaviour);
+
+        try
+        {
+            var behaviour = System.Activator.CreateInstance(type) as RelicBase;
+            if (behaviour == null)
+            {
+                Debug.LogError("指定されたクラスはRelicBaseを継承していません: " + r.className);
+                return;
+            }
+            
+            behaviour.Init(rui);
+            _behaviors.Add(behaviour);
+        }
+        catch (System.Exception ex)
+        {
+            Debug.LogError($"レリックのインスタンス化に失敗しました: {r.className}\n{ex.Message}");
+        }
     }
     
     // RelicUI のナビゲーション設定を更新するメソッド
@@ -141,5 +154,17 @@ public class RelicManager : MonoBehaviour
         {
             AddRelic(r);
         }
+    }
+
+    private void OnDestroy()
+    {
+        // シーン再読み込みやゲーム終了時にすべてのレリックをクリーンアップ
+        foreach (var behavior in _behaviors)
+        {
+            behavior?.Dispose();
+        }
+        _behaviors.Clear();
+        _relics.Clear();
+        _relicUIs.Clear();
     }
 }

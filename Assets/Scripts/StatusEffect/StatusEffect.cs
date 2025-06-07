@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using UnityEngine;
 using System.Collections.Generic;
+using R3;
 
 public enum StatusEffectType
 {
@@ -85,9 +86,9 @@ public abstract class StatusEffectBase
         {
             ShowEffectText();
             if(_isPlayer)
-                EventManager.OnPlayerStatusEffectTriggered.Trigger((Type, StackCount));
+                EventManager.OnPlayerStatusEffectTriggered.OnNext(Type);
             else
-                EventManager.OnEnemyStatusEffectTriggered.Trigger((target as EnemyBase, Type, StackCount));
+                EventManager.OnEnemyStatusEffectTriggered.OnNext(Type);
         }
     }
     
@@ -97,22 +98,22 @@ public abstract class StatusEffectBase
         {
             ShowEffectText(1);
             if (_isPlayer)
-                EventManager.OnPlayerStatusEffectTriggered.Trigger((Type, StackCount));
+                EventManager.OnPlayerStatusEffectTriggered.OnNext(Type);
             else
-                EventManager.OnEnemyStatusEffectTriggered.Trigger((target as EnemyBase, Type, StackCount));
+                EventManager.OnEnemyStatusEffectTriggered.OnNext(Type);
         }
         return incomingDamage;
     }
     
-    public virtual Dictionary<AttackType, int> ModifyAttack(IEntity target, Dictionary<AttackType, int> outgoingAttack)
+    public virtual int ModifyAttack(IEntity target, AttackType type, int outgoingAttack)
     {
         if (_timing == EffectTiming.OnAttack)
         {
             ShowEffectText();
             if (_isPlayer)
-                EventManager.OnPlayerStatusEffectTriggered.Trigger((Type, StackCount));
+                EventManager.OnPlayerStatusEffectTriggered.OnNext(Type);
             else
-                EventManager.OnEnemyStatusEffectTriggered.Trigger((target as EnemyBase, Type, StackCount));
+                EventManager.OnEnemyStatusEffectTriggered.OnNext(Type);
         }
         return outgoingAttack;
     }
@@ -124,9 +125,9 @@ public abstract class StatusEffectBase
         {
             ShowEffectText();
             if (_isPlayer)
-                EventManager.OnPlayerStatusEffectTriggered.Trigger((Type, StackCount));
+                EventManager.OnPlayerStatusEffectTriggered.OnNext(Type);
             else
-                EventManager.OnEnemyStatusEffectTriggered.Trigger((target as EnemyBase, Type, StackCount));
+                EventManager.OnEnemyStatusEffectTriggered.OnNext(Type);
         }
         StackCount = 0;
         return true; 
@@ -147,7 +148,7 @@ public static class StatusEffectFactory
 {
     public static void AddStatusEffectToPlayer(StatusEffectType type, int initialStack = 1)
     {
-        EventManager.OnPlayerStatusEffectAdded.Trigger((type, initialStack));
+        EventManager.OnPlayerStatusEffectAdded.OnNext(R3.Unit.Default);
         AddStatusEffect(GameManager.Instance.Player, type, initialStack);
     }
     
@@ -158,12 +159,16 @@ public static class StatusEffectFactory
         int stack;
         if (target is EnemyBase enemyBase)
         {
-            EventManager.OnEnemyStatusEffectAdded.Trigger((enemyBase, type, initialStack));
-            (tar, ty, stack) = EventManager.OnEnemyStatusEffectAdded.GetValue();
+            EventManager.OnEnemyStatusEffectAdded.OnNext(type);
+            // In the new system, the ProcessModifications call above already handled the modification
+            ty = type;
+            stack = initialStack;
         }
         else
         {
-            (ty, stack) = EventManager.OnPlayerStatusEffectAdded.GetValue();
+            // In the new system, the ProcessModifications call above already handled the modification
+            ty = type;
+            stack = initialStack;
         }
 
         StatusEffectBase newEffect = ty switch
@@ -330,10 +335,13 @@ public class PowerEffect : StatusEffectBase
 {
     public PowerEffect(int initialStack) : base(StatusEffectType.Power, initialStack, EffectTiming.OnAttack, true) { }
 
-    public override Dictionary<AttackType, int> ModifyAttack(IEntity target, Dictionary<AttackType, int> outgoingAttack)
+    public override int ModifyAttack(IEntity target, AttackType type, int outgoingAttack)
     {
-        base.ModifyAttack(target, outgoingAttack);
-        outgoingAttack[AttackType.Normal] += StackCount;
+        base.ModifyAttack(target, type, outgoingAttack);
+        if (type == AttackType.Normal)
+        {
+            return outgoingAttack + StackCount;
+        }
         return outgoingAttack;
     }
 }
@@ -343,12 +351,11 @@ public class RageEffect : StatusEffectBase
 {
     public RageEffect(int initialStack) : base(StatusEffectType.Rage, initialStack, EffectTiming.OnAttack, true) { }
 
-    public override Dictionary<AttackType, int> ModifyAttack(IEntity target, Dictionary<AttackType, int> outgoingAttack)
+    public override int ModifyAttack(IEntity target, AttackType type, int outgoingAttack)
     {
-        base.ModifyAttack(target, outgoingAttack);
+        base.ModifyAttack(target, type, outgoingAttack);
         var multiplier = (1 + StackCount * 0.1f);
-        outgoingAttack.ToList().ForEach(a => outgoingAttack[a.Key] = (int)(a.Value * multiplier));
-        return outgoingAttack;
+        return (int)(outgoingAttack * multiplier);
     }
 }
 

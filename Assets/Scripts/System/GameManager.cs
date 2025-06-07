@@ -64,20 +64,18 @@ public class GameManager : MonoBehaviour
     
     public void AddCoin(int amount)
     {
-        EventManager.OnCoinGain.Trigger(amount);
-        var c = EventManager.OnCoinGain.GetAndResetValue();
-        Coin.Value += c; 
+        var finalAmount = EventManager.OnCoinGain.Process(amount);
+        Coin.Value += finalAmount;
     }
     
     public void SubCoin(int amount)
     {
-        EventManager.OnCoinConsume.Trigger(amount);
-        var c = EventManager.OnCoinConsume.GetAndResetValue();
+        var finalAmount = EventManager.OnCoinConsume.Process(amount);
         
-        if (c < 0　|| Coin.Value < c) return;
+        if (finalAmount < 0 || Coin.Value < finalAmount) return;
         
         SeManager.Instance.PlaySe("coin");
-        Coin.Value -= c;
+        Coin.Value -= finalAmount;
     }
 
     public void ChangeTimeScale()
