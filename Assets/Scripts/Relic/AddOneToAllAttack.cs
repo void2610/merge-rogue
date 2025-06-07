@@ -6,6 +6,10 @@ public class AddOneToAllAttack : RelicBase
     protected override void RegisterEffects()
     {
         // 攻撃力に+5する
-        RelicHelpers.RegisterAttackAddition(this, 5);
+        EventManager.OnPlayerAttack.AddProcessor(this, current =>
+        {
+            ActivateUI();
+            return current + 5;
+        });
     }
 }

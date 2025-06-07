@@ -16,6 +16,7 @@ public class AllAttackWhenWeakAttack : RelicBase
         {
             if (attackData.type == AttackType.Normal && attackData.value <= WEAK_ATTACK_THRESHOLD)
             {
+                ActivateUI();
                 return (AttackType.All, attackData.value);
             }
             return attackData;

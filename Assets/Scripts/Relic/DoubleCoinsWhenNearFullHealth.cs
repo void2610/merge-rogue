@@ -8,9 +8,14 @@ public class DoubleCoinsWhenNearFullHealth : RelicBase
     protected override void RegisterEffects()
     {
         // HPが80%以上の時にコイン獲得量を2倍にする
-        RelicHelpers.RegisterCoinGainMultiplier(this,
-            multiplier: 2.0f,
-            condition: RelicHelpers.PlayerHealthConditionAbove(0.8f) // HP > 80%
-        );
+        EventManager.OnCoinGain.AddProcessor(this, current =>
+        {
+            if (RelicHelpers.PlayerHealthConditionAbove(0.8f)())
+            {
+                ActivateUI();
+                return (int)(current * 2.0f);
+            }
+            return current;
+        });
     }
 }

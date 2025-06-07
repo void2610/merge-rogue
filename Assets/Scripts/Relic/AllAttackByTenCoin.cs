@@ -16,6 +16,7 @@ public class AllAttackByTenCoin : RelicBase
             if (attackData.type == AttackType.Normal && CanConvertAttackCondition())
             {
                 ConsumeCoinsForConversion();
+                ActivateUI();
                 return (AttackType.All, (int)(attackData.value * 1.5f));
             }
             return attackData;

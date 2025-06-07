@@ -14366,7 +14366,7 @@ MonoBehaviour:
   relicOffset: {x: 40, y: 36}
   relicUISize: 0.75
   testRelics:
-  - {fileID: 11400000, guid: 7a1309fca8cc44bb6aef9ab2281a96fe, type: 2}
+  - {fileID: 0}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -24257,7 +24257,7 @@ MonoBehaviour:
   ballBasePrefab: {fileID: 5528515049713681562, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
   inventoryPosition: {x: 0, y: -7, z: 0}
   testBalls:
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
+  - {fileID: 11400000, guid: 988658c93269b4a7aa2905750b6622a2, type: 2}
   - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
   - {fileID: 11400000, guid: 282f2e804c8cc447982a8e7498d5cdb4, type: 2}
