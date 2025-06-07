@@ -379,6 +379,7 @@ public class StageManager : MonoBehaviour
                 treasure.OpenTreasure(Treasure.TreasureType.Normal);
                 break;
             case StageType.Events:
+                EventManager.OnEventStageEnter.OnNext(StageType.Events);
                 UIManager.Instance.EnableCanvasGroup("Event", true);
                 stageEventProcessor.StartEvent();
                 break;

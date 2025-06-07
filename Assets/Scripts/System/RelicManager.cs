@@ -155,4 +155,16 @@ public class RelicManager : MonoBehaviour
             AddRelic(r);
         }
     }
+
+    private void OnDestroy()
+    {
+        // シーン再読み込みやゲーム終了時にすべてのレリックをクリーンアップ
+        foreach (var behavior in _behaviors)
+        {
+            behavior?.Dispose();
+        }
+        _behaviors.Clear();
+        _relics.Clear();
+        _relicUIs.Clear();
+    }
 }

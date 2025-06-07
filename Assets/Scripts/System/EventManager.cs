@@ -77,7 +77,7 @@ public static class EventManager
     }
 
     /// <summary>
-    /// すべてのプロセッサーとイベントをクリア
+    /// すべてのプロセッサーをクリア
     /// </summary>
     public static void Clear()
     {
@@ -89,24 +89,8 @@ public static class EventManager
         OnPlayerHeal.Clear();
         OnRest.Clear();
         
-        // Subjectも必要に応じてクリア
-        OnBattleStart?.Dispose();
-        OnEnemyDefeated?.Dispose();
-        OnShopEnter?.Dispose();
-        OnRestEnter?.Dispose();
-        OnBallDrop?.Dispose();
-        
-        // 追加のSubject
-        OnBallMerged?.Dispose();
-        OnEventStageEnter?.Dispose();
-        OnTreasureSkipped?.Dispose();
-        OnPlayerStatusEffectTriggered?.Dispose();
-        OnPlayerStatusEffectAdded?.Dispose();
-        OnBallSkip?.Dispose();
-        OnOrganise?.Dispose();
-        OnEnemyStatusEffectAdded?.Dispose();
-        OnEnemyStatusEffectTriggered?.Dispose();
-        OnRelicObtainedTreasure?.Dispose();
-        OnStageEventEnter?.Dispose();
+        // 注意: Subjectはdisposeしません。
+        // これらは静的なreadonly フィールドなので、アプリケーション全体のライフタイムで生き続けます。
+        // 個々のサブスクリプションは、各オブジェクトのDisposeメソッドでクリーンアップされます。
     }
 }

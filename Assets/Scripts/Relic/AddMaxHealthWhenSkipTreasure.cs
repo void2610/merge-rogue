@@ -15,10 +15,8 @@ public class AddMaxHealthWhenSkipTreasure : RelicBase
 
     private void OnTreasureSkipped(Unit _)
     {
-        if (GameManager.Instance?.Player != null)
-        {
+        if (GameManager.Instance?.Player)
             GameManager.Instance.Player.MaxHealth.Value += 10;
-        }
         UI?.ActivateUI();
     }
 }
