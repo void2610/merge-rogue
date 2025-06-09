@@ -1,12 +1,7 @@
 using System;
 using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
 using Cysharp.Threading.Tasks;
-using DG.Tweening;
 using R3;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 public class StageManager : MonoBehaviour
 {
@@ -23,14 +18,9 @@ public class StageManager : MonoBehaviour
     [SerializeField] private StageEventProcessor stageEventProcessor;
     [SerializeField] private StageType startStage;
     public readonly ReactiveProperty<int> CurrentStageCount = new(-1);
-    public static StageNode CurrentStage { get; private set; } = null;
+    public static StageNode CurrentStage { get; private set; }
     
-    public void StartFirstStage() => NextStage(mapGenerator.MapNodes[0][0]).Forget();
-
-    private void OnNodeClick(StageNode node)
-    {
-        NextStage(node).Forget();
-    }
+    public void StartFromFirstStage() => NextStage(mapGenerator.MapNodes[0][0]).Forget();
 
     public void SetNextNodeActive()
     {
@@ -39,16 +29,12 @@ public class StageManager : MonoBehaviour
         {
             mapGenerator.GenerateMap();
             mapRenderer.DrawMap(mapGenerator.MapNodes, mapGenerator.GetStageData());
-            mapRenderer.SetButtonEvents(mapGenerator.MapNodes, OnNodeClick);
+            mapRenderer.SetButtonEvents(mapGenerator.MapNodes, n => NextStage(n).Forget());
             mapRenderer.ChangeFocusNode(mapGenerator.MapNodes[0][0], mapGenerator.MapNodes);
             
-            var playerIcon = mapRenderer.CreatePlayerIcon();
-            var lastNode = mapGenerator.MapNodes[^1][0];
-            if (lastNode.Obj != null)
-            {
-                var pos = lastNode.Obj.GetComponent<RectTransform>().localPosition;
-                mapRenderer.MovePlayerIcon(pos, 0.5f);
-            }
+            mapRenderer.CreatePlayerIcon();
+            var pos = mapGenerator.MapNodes[^1][0].Obj.GetComponent<RectTransform>().localPosition;
+            mapRenderer.MovePlayerIcon(pos, 0.5f);
         }
         
         mapRenderer.SetNextNodeActive(CurrentStage, mapGenerator.MapNodes);
@@ -121,23 +107,23 @@ public class StageManager : MonoBehaviour
                 GameManager.Instance.EnemyContainer.SpawnEnemy(CurrentStageCount.Value + 1, CurrentStageCount.Value);
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
                 
-                EventManager.OnBattleStart.OnNext(R3.Unit.Default);
+                EventManager.OnBattleStart.OnNext(Unit.Default);
                 break;
             case StageType.Boss:
                 GameManager.Instance.EnemyContainer.SpawnBoss(CurrentStageCount.Value);
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
                 
                 // ボス戦もバトル開始として扱う
-                EventManager.OnBattleStart.OnNext(R3.Unit.Default);
+                EventManager.OnBattleStart.OnNext(Unit.Default);
                 break;
             case StageType.Shop:
-                EventManager.OnShopEnter.OnNext(R3.Unit.Default);
+                EventManager.OnShopEnter.OnNext(Unit.Default);
                 
                 shop.OpenShop();
                 UIManager.Instance.EnableCanvasGroup("Shop", true);
                 break;
             case StageType.Rest:
-                EventManager.OnRestEnter.OnNext(R3.Unit.Default);
+                EventManager.OnRestEnter.OnNext(Unit.Default);
                 
                 UIManager.Instance.EnableCanvasGroup("Rest", true);
                 break;
@@ -160,7 +146,7 @@ public class StageManager : MonoBehaviour
         mapRenderer.ChangeFocusNode(node, mapGenerator.MapNodes);
     }
 
-    public void Start()
+    private void Start()
     {
         // MapGeneratorとMapRendererを初期化
         mapRenderer.Initialize(mapGenerator);
@@ -171,7 +157,7 @@ public class StageManager : MonoBehaviour
         CurrentStage = null;
         
         mapRenderer.DrawMap(mapGenerator.MapNodes, mapGenerator.GetStageData());
-        mapRenderer.SetButtonEvents(mapGenerator.MapNodes, OnNodeClick);
+        mapRenderer.SetButtonEvents(mapGenerator.MapNodes, n => NextStage(n).Forget());
         SetAllNodeInactive();
         
         mapRenderer.CreatePlayerIcon();
