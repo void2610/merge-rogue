@@ -16,6 +16,7 @@ public class MapGenerator : MonoBehaviour
 
     public Vector2Int GetMapSize() => mapSize;
     public List<StageData> GetStageData() => stageData;
+    public StageNode GetStartNode() => MapNodes[0][mapSize.y / 2];
     
     public void GenerateMap()
     {
@@ -41,12 +42,12 @@ public class MapGenerator : MonoBehaviour
                 StageData nodeStageData;
                 
                 // スタートノード
-                if (i == 0 && j == 0)
+                if (i == 0 && j == mid)
                 {
                     nodeStageData = stageDataDict.GetValueOrDefault(StageType.Enemy);
                 }
                 // ボスノード
-                else if (i == mapSize.x - 1 && j == 0)
+                else if (i == mapSize.x - 1 && j == mid)
                 {
                     nodeStageData = stageDataDict.GetValueOrDefault(StageType.Boss);
                 }
@@ -68,10 +69,12 @@ public class MapGenerator : MonoBehaviour
     
     private void GeneratePaths()
     {
+        var mid = mapSize.y / 2;
+        
         // スタートからゴールに向かってランダムに接続
         for (var _ = 0; _ < pathCount; _++)
         {
-            var currentNode = MapNodes[0][0];
+            var currentNode = MapNodes[0][mid];
             for (var i = 1; i < mapSize.x; i++)
             {
                 var currentY = MapNodes[i-1].FindIndex(node => node == currentNode);
@@ -79,7 +82,7 @@ public class MapGenerator : MonoBehaviour
                 var nextY = Mathf.Clamp(currentY + randomYOffset, 0, mapSize.y - 1);
                 
                 if (i == 1) nextY = GameManager.Instance.RandomRange(0, mapSize.y);
-                else if (i == mapSize.x - 1) nextY = 0;
+                else if (i == mapSize.x - 1) nextY = mid;
                 
                 var nextNode = MapNodes[i][nextY];
                 
@@ -124,20 +127,21 @@ public class MapGenerator : MonoBehaviour
     
     public void SetStartStageType(StageType type)
     {
-        if (MapNodes.Count > 0 && MapNodes[0].Count > 0)
+        var mid = mapSize.y / 2;
+        if (MapNodes.Count > 0 && MapNodes[0].Count > mid)
         {
-            var oldNode = MapNodes[0][0];
+            var oldNode = MapNodes[0][mid];
             var position = oldNode.Position;
             var connections = new List<StageNode>(oldNode.Connections);
             var newStageData = stageData.FirstOrDefault(s => s.stageType == type);
             
             // 新しいノードを作成
-            MapNodes[0][0] = new StageNode(newStageData, position);
+            MapNodes[0][mid] = new StageNode(newStageData, position);
                 
             // 接続を復元
             foreach (var connection in connections)
             {
-                MapNodes[0][0].Connections.Add(connection);
+                MapNodes[0][mid].Connections.Add(connection);
             }
             
             // 他のノードからの参照を更新
@@ -150,7 +154,7 @@ public class MapGenerator : MonoBehaviour
                     {
                         if (node.Connections[k] == oldNode)
                         {
-                            node.Connections[k] = MapNodes[0][0];
+                            node.Connections[k] = MapNodes[0][mid];
                         }
                     }
                 }

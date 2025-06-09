@@ -20,7 +20,7 @@ public class StageManager : MonoBehaviour
     private MapGenerator _mapGenerator;
     private StageMapRenderer _mapRenderer;
     
-    public void StartFromFirstStage() => NextStage(_mapGenerator.MapNodes[0][0]).Forget();
+    public void StartFromFirstStage() => NextStage(_mapGenerator.GetStartNode()).Forget();
 
     public void SetNextNodeActive()
     {
@@ -30,9 +30,9 @@ public class StageManager : MonoBehaviour
             _mapGenerator.GenerateMap();
             _mapRenderer.DrawMap(_mapGenerator.MapNodes, _mapGenerator.GetStageData());
             _mapRenderer.SetButtonEvents(_mapGenerator.MapNodes, n => NextStage(n).Forget());
-            _mapRenderer.ChangeFocusNode(_mapGenerator.MapNodes[0][0], _mapGenerator.MapNodes);
+            _mapRenderer.ChangeFocusNode(_mapGenerator.GetStartNode(), _mapGenerator.MapNodes);
             
-            var startTransform = _mapGenerator.MapNodes[0][0].Obj.GetComponent<RectTransform>();
+            var startTransform = _mapGenerator.GetStartNode().Obj.GetComponent<RectTransform>();
             _mapRenderer.MovePlayerIcon(startTransform, 0f); // 即座に移動
         }
         
@@ -163,10 +163,10 @@ public class StageManager : MonoBehaviour
         SetAllNodeInactive();
         
         // 実際にレンダリングされたUIオブジェクトのRectTransformを使用
-        var startTransform = _mapGenerator.MapNodes[0][0].Obj.GetComponent<RectTransform>();
+        var startTransform = _mapGenerator.GetStartNode().Obj.GetComponent<RectTransform>();
         _mapRenderer.MovePlayerIcon(startTransform, 0f); // 即座に移動
         
         // カーソルの初期位置を設定
-        ChangeFocusNode(_mapGenerator.MapNodes[0][0]);
+        ChangeFocusNode(_mapGenerator.GetStartNode());
     }
 }

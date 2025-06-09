@@ -15,7 +15,7 @@ public class StageMapRenderer : MonoBehaviour
 
     private GameObject _playerIconObj;
     private MapGenerator _mapGenerator;
-
+    
     public void DrawMap(List<List<StageNode>> mapNodes, List<StageData> stageData)
     {
         ClearMap();
@@ -40,9 +40,10 @@ public class StageMapRenderer : MonoBehaviour
     private void DrawConnections(List<List<StageNode>> mapNodes, Vector2Int mapSize)
     {
         // スタートノードからの接続を描画
-        foreach (var c in mapNodes[0][0].Connections.Where(c => c.Type != StageType.Undefined))
+        var startNode = _mapGenerator.GetStartNode();
+        foreach (var c in startNode.Connections.Where(c => c.Type != StageType.Undefined))
         {
-            DrawLine(mapNodes[0][0], c);
+            DrawLine(startNode, c);
         }
 
         // その他のノード間の接続を描画
@@ -61,7 +62,7 @@ public class StageMapRenderer : MonoBehaviour
 
     private void DrawNodes(List<List<StageNode>> mapNodes, Vector2Int mapSize)
     {
-        DrawSingleNode(mapNodes[0][0]);
+        DrawSingleNode(_mapGenerator.GetStartNode());
 
         for (var i = 1; i < mapSize.x; i++)
         {
@@ -104,11 +105,12 @@ public class StageMapRenderer : MonoBehaviour
     public void SetButtonEvents(List<List<StageNode>> mapNodes, System.Action<StageNode> onNodeClick)
     {
         // スタートノードのボタンイベント
-        if (mapNodes[0][0].Obj)
+        var startNode = _mapGenerator.GetStartNode();
+        if (startNode.Obj)
         {
-            var startButton = mapNodes[0][0].Obj.GetComponent<Button>();
+            var startButton = startNode.Obj.GetComponent<Button>();
             startButton.onClick.RemoveAllListeners();
-            startButton.onClick.AddListener(() => onNodeClick(mapNodes[0][0]));
+            startButton.onClick.AddListener(() => onNodeClick(startNode));
         }
 
         // その他のノードのボタンイベント
@@ -141,7 +143,7 @@ public class StageMapRenderer : MonoBehaviour
 
     public void SetNextNodeActive(StageNode currentStage, List<List<StageNode>> mapNodes)
     {
-        var nextNodes = currentStage != null ? currentStage.Connections : new List<StageNode> { mapNodes[0][0] };
+        var nextNodes = currentStage != null ? currentStage.Connections : new List<StageNode> { _mapGenerator.GetStartNode() };
 
         foreach (var column in mapNodes)
         {
@@ -187,7 +189,7 @@ public class StageMapRenderer : MonoBehaviour
 
     private void Awake()
     {
-        _playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
         _mapGenerator = this.GetComponent<MapGenerator>();
+        _playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
     }
 }

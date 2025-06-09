@@ -13113,8 +13113,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   backgroundController: {fileID: 716147206}
-  mapGenerator: {fileID: 716147205}
-  mapRenderer: {fileID: 716147204}
   shop: {fileID: 1941433902}
   treasure: {fileID: 1607858726}
   stageEventProcessor: {fileID: 605675524}
@@ -13195,8 +13193,8 @@ MonoBehaviour:
   mapSize: {x: 16, y: 7}
   pathCount: 9
   startStage: 0
-  mapOffset: {x: -190, y: 10}
-  mapMargin: {x: 25, y: 20}
+  mapOffset: {x: -200, y: 0}
+  mapMargin: {x: 26.5, y: 22}
 --- !u!114 &716147206
 MonoBehaviour:
   m_ObjectHideFlags: 0
