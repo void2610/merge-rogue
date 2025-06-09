@@ -32,9 +32,8 @@ public class StageManager : MonoBehaviour
             _mapRenderer.SetButtonEvents(_mapGenerator.MapNodes, n => NextStage(n).Forget());
             _mapRenderer.ChangeFocusNode(_mapGenerator.MapNodes[0][0], _mapGenerator.MapNodes);
             
-            // 実際にレンダリングされたUIオブジェクトの位置を使用
-            var startPos = _mapGenerator.MapNodes[0][0].Obj.GetComponent<RectTransform>().localPosition;
-            _mapRenderer.MovePlayerIcon(startPos, 0f); // 即座に移動
+            var startTransform = _mapGenerator.MapNodes[0][0].Obj.GetComponent<RectTransform>();
+            _mapRenderer.MovePlayerIcon(startTransform, 0f); // 即座に移動
         }
         
         _mapRenderer.SetNextNodeActive(CurrentStage, _mapGenerator.MapNodes);
@@ -56,8 +55,8 @@ public class StageManager : MonoBehaviour
         SeManager.Instance.WaitAndPlaySe("footsteps", 0.2f);
         backgroundController.PlayStageTransition();
         
-        var pos = next.Obj.GetComponent<RectTransform>().localPosition;
-        _mapRenderer.MovePlayerIcon(pos, 0.5f);
+        var nextTransform = next.Obj.GetComponent<RectTransform>();
+        _mapRenderer.MovePlayerIcon(nextTransform, 0.5f);
         
         await UniTask.Delay(2000);
         
@@ -163,9 +162,9 @@ public class StageManager : MonoBehaviour
         _mapRenderer.SetButtonEvents(_mapGenerator.MapNodes, n => NextStage(n).Forget());
         SetAllNodeInactive();
         
-        // 実際にレンダリングされたUIオブジェクトの位置を使用
-        var startPos = _mapGenerator.MapNodes[0][0].Obj.GetComponent<RectTransform>().localPosition;
-        _mapRenderer.MovePlayerIcon(startPos, 0f); // 即座に移動
+        // 実際にレンダリングされたUIオブジェクトのRectTransformを使用
+        var startTransform = _mapGenerator.MapNodes[0][0].Obj.GetComponent<RectTransform>();
+        _mapRenderer.MovePlayerIcon(startTransform, 0f); // 即座に移動
         
         // カーソルの初期位置を設定
         ChangeFocusNode(_mapGenerator.MapNodes[0][0]);

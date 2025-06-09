@@ -7,35 +7,36 @@ using Cysharp.Threading.Tasks;
 
 public class StageMapRenderer : MonoBehaviour
 {
-    [Header("マップ描画")]
     [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject playerIconPrefab;
     [SerializeField] private GameObject mapBackground;
     [SerializeField] private GameObject mapNodePrefab;
     [SerializeField] private GameObject mapConnectionPrefab;
-    
+
     private GameObject _playerIconObj;
     private MapGenerator _mapGenerator;
-    
+
     public void DrawMap(List<List<StageNode>> mapNodes, List<StageData> stageData)
     {
         ClearMap();
-        
+
         var mapSize = _mapGenerator.GetMapSize();
-        
+
         // 先にノード間の線を描画
         DrawConnections(mapNodes, mapSize);
-        
+
         // ノードを描画
         DrawNodes(mapNodes, mapSize);
     }
-    
+
     private void ClearMap()
     {
         var icons = mapBackground.GetComponentsInChildren<Transform>().ToList();
-        icons.Where(i => i != mapBackground.transform).ToList().ForEach(i => Destroy(i.gameObject));
+        // プレイヤーアイコンを保護して、他のオブジェクトのみ削除
+        icons.Where(i => i != mapBackground.transform && i.gameObject != _playerIconObj)
+            .ToList().ForEach(i => Destroy(i.gameObject));
     }
-    
+
     private void DrawConnections(List<List<StageNode>> mapNodes, Vector2Int mapSize)
     {
         // スタートノードからの接続を描画
@@ -43,7 +44,7 @@ public class StageMapRenderer : MonoBehaviour
         {
             DrawLine(mapNodes[0][0], c);
         }
-        
+
         // その他のノード間の接続を描画
         for (var i = 1; i < mapSize.x; i++)
         {
@@ -57,11 +58,11 @@ public class StageMapRenderer : MonoBehaviour
             }
         }
     }
-    
+
     private void DrawNodes(List<List<StageNode>> mapNodes, Vector2Int mapSize)
     {
         DrawSingleNode(mapNodes[0][0]);
-        
+
         for (var i = 1; i < mapSize.x; i++)
         {
             for (var j = 0; j < mapSize.y; j++)
@@ -71,7 +72,7 @@ public class StageMapRenderer : MonoBehaviour
             }
         }
     }
-    
+
     /// <summary>
     /// 単一のノードを描画
     /// </summary>
@@ -80,26 +81,26 @@ public class StageMapRenderer : MonoBehaviour
         var nodeObj = Instantiate(mapNodePrefab, mapBackground.transform);
         nodeObj.GetComponent<RectTransform>().localPosition = node.Position;
         nodeObj.name = $"{node.Type}";
-        
+
         var image = nodeObj.GetComponent<Image>();
         image.sprite = node.Icon;
         image.color = node.Color;
-        
+
         node.Obj = nodeObj;
     }
-    
+
     private void DrawLine(StageNode a, StageNode b)
     {
         var g = Instantiate(mapConnectionPrefab, mapBackground.transform);
         g.GetComponent<RectTransform>().localPosition = a.Position;
         g.name = $"{a.Type} -> {b.Type}";
         var line = g.GetComponent<UILineRenderer>();
-        
+
         // UI座標系で直接計算
         var pos = b.Position - a.Position;
-        line.points = new Vector2[] {Vector2.zero, pos};
+        line.points = new Vector2[] { Vector2.zero, pos };
     }
-    
+
     public void SetButtonEvents(List<List<StageNode>> mapNodes, System.Action<StageNode> onNodeClick)
     {
         // スタートノードのボタンイベント
@@ -109,7 +110,7 @@ public class StageMapRenderer : MonoBehaviour
             startButton.onClick.RemoveAllListeners();
             startButton.onClick.AddListener(() => onNodeClick(mapNodes[0][0]));
         }
-        
+
         // その他のノードのボタンイベント
         foreach (var column in mapNodes)
         {
@@ -120,40 +121,40 @@ public class StageMapRenderer : MonoBehaviour
                 {
                     if (!connection.Obj) continue;
                     var button = connection.Obj.GetComponent<Button>();
-                    
+
                     button.onClick.RemoveAllListeners();
                     button.onClick.AddListener(() => onNodeClick(connection));
                 }
             }
         }
     }
-    
+
     public void SetAllNodeInactive(List<List<StageNode>> mapNodes)
     {
-        foreach (var button in mapNodes.SelectMany(column => from node in column 
-                 where node.Obj 
-                 select node.Obj.GetComponent<Button>()))
+        foreach (var button in mapNodes.SelectMany(column => from node in column
+                     where node.Obj
+                     select node.Obj.GetComponent<Button>()))
         {
             button.interactable = false;
         }
     }
-    
+
     public void SetNextNodeActive(StageNode currentStage, List<List<StageNode>> mapNodes)
     {
-        var nextNodes = currentStage != null ? currentStage.Connections : new List<StageNode>{mapNodes[0][0]};
-        
+        var nextNodes = currentStage != null ? currentStage.Connections : new List<StageNode> { mapNodes[0][0] };
+
         foreach (var column in mapNodes)
         {
             foreach (var node in column)
             {
                 if (!node.Obj) continue;
-                
+
                 var button = node.Obj.GetComponent<Button>();
                 button.interactable = nextNodes.Contains(node);
             }
         }
     }
-    
+
     public void ChangeFocusNode(StageNode node, List<List<StageNode>> mapNodes)
     {
         foreach (var n in mapNodes.SelectMany(column => column))
@@ -161,40 +162,32 @@ public class StageMapRenderer : MonoBehaviour
             if (!n.Obj) continue;
             if (n.Obj.TryGetComponent(out FocusSelectable f)) Destroy(f);
         }
-        
+
         if (node?.Obj)
         {
             node.Obj.AddComponent<FocusSelectable>();
         }
     }
-    
-    
-    public void MovePlayerIcon(Vector3 targetPosition, float duration = 0.5f)
+
+
+    public void MovePlayerIcon(RectTransform targetTransform, float duration = 0.5f)
     {
-        // プレイヤーアイコンをノードの上に配置（小さなオフセットで調整）
-        var uiPosition = targetPosition + new Vector3(0, 30, 0);  // ノードの少し上に表示
-        
-        // FloatMoveコンポーネントを取得または追加
+        var targetPosition = targetTransform.localPosition;
         var floatMove = _playerIconObj.GetComponent<FloatMove>();
-        
+
         if (duration <= 0f)
         {
-            // 即座に移動
-            _playerIconObj.GetComponent<RectTransform>().localPosition = uiPosition;
+            _playerIconObj.GetComponent<RectTransform>().localPosition = targetPosition;
         }
         else
         {
-            // アニメーションで移動
-            floatMove.MoveTo(uiPosition, duration);
+            floatMove.MoveTo(targetPosition, duration);
         }
-        
-        Debug.Log($"Moving player icon from {_playerIconObj.GetComponent<RectTransform>().localPosition} to: {uiPosition}");
     }
 
     private void Awake()
     {
         _playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
-        Debug.Log("Player icon instantiated at: " + _playerIconObj.name);
         _mapGenerator = this.GetComponent<MapGenerator>();
     }
 }
