@@ -17,11 +17,6 @@ public class StageMapRenderer : MonoBehaviour
     private GameObject _playerIconObj;
     private MapGenerator _mapGenerator;
     
-    public void Initialize(MapGenerator mapGenerator)
-    {
-        _mapGenerator = mapGenerator;
-    }
-    
     public void DrawMap(List<List<StageNode>> mapNodes, List<StageData> stageData)
     {
         ClearMap();
@@ -65,21 +60,14 @@ public class StageMapRenderer : MonoBehaviour
     
     private void DrawNodes(List<List<StageNode>> mapNodes, Vector2Int mapSize)
     {
-        // デバッグ: ノード位置を確認
-        Debug.Log($"StageMapRenderer - Drawing start node at position: {mapNodes[0][0].Position}");
-        
-        // スタートノードを描画
         DrawSingleNode(mapNodes[0][0]);
-        Debug.Log($"Start node positioned at: {mapNodes[0][0].Position}");
         
-        // その他のノードを描画
         for (var i = 1; i < mapSize.x; i++)
         {
             for (var j = 0; j < mapSize.y; j++)
             {
                 if (mapNodes[i][j].Type == StageType.Undefined) continue;
                 DrawSingleNode(mapNodes[i][j]);
-                Debug.Log($"Node [{i},{j}] positioned at: {mapNodes[i][j].Position}");
             }
         }
     }
@@ -110,7 +98,6 @@ public class StageMapRenderer : MonoBehaviour
         // UI座標系で直接計算
         var pos = b.Position - a.Position;
         line.points = new Vector2[] {Vector2.zero, pos};
-        Debug.Log($"Line from {a.Position} to {b.Position}, relative: {pos}");
     }
     
     public void SetButtonEvents(List<List<StageNode>> mapNodes, System.Action<StageNode> onNodeClick)
@@ -181,20 +168,33 @@ public class StageMapRenderer : MonoBehaviour
         }
     }
     
-    public GameObject CreatePlayerIcon()
-    {
-        _playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
-        return _playerIconObj;
-    }
     
     public void MovePlayerIcon(Vector3 targetPosition, float duration = 0.5f)
     {
-        if (_playerIconObj)
+        // プレイヤーアイコンをノードの上に配置（小さなオフセットで調整）
+        var uiPosition = targetPosition + new Vector3(0, 30, 0);  // ノードの少し上に表示
+        
+        // FloatMoveコンポーネントを取得または追加
+        var floatMove = _playerIconObj.GetComponent<FloatMove>();
+        
+        if (duration <= 0f)
         {
-            // UI座標系での移動
-            var uiPosition = targetPosition + new Vector3(0, 20, 0);  // UIスケールで調整
-            _playerIconObj.GetComponent<FloatMove>().MoveTo(uiPosition, duration);
-            Debug.Log($"Moving player icon to: {uiPosition}");
+            // 即座に移動
+            _playerIconObj.GetComponent<RectTransform>().localPosition = uiPosition;
         }
+        else
+        {
+            // アニメーションで移動
+            floatMove.MoveTo(uiPosition, duration);
+        }
+        
+        Debug.Log($"Moving player icon from {_playerIconObj.GetComponent<RectTransform>().localPosition} to: {uiPosition}");
+    }
+
+    private void Awake()
+    {
+        _playerIconObj = Instantiate(playerIconPrefab, mapBackground.transform);
+        Debug.Log("Player icon instantiated at: " + _playerIconObj.name);
+        _mapGenerator = this.GetComponent<MapGenerator>();
     }
 }

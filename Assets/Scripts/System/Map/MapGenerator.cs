@@ -15,13 +15,11 @@ public class MapGenerator : MonoBehaviour
     public List<List<StageNode>> MapNodes { get; } = new();
 
     public Vector2Int GetMapSize() => mapSize;
+    public List<StageData> GetStageData() => stageData;
     
     public void GenerateMap()
     {
         MapNodes.Clear();
-        
-        // デバッグ: マップパラメータを確認
-        Debug.Log($"MapGenerator - mapSize: {mapSize}, mapOffset: {mapOffset}, mapMargin: {mapMargin}, pathCount: {pathCount}");
         
         // マップグリッドを初期化
         InitializeMapGrid();
@@ -63,7 +61,6 @@ public class MapGenerator : MonoBehaviour
                 var node = new StageNode(nodeStageData, pos);
                 
                 MapNodes[i].Add(node);
-                Debug.Log($"Node [{i},{j}] position set to: {pos}");
             }
         }
     }
@@ -101,7 +98,6 @@ public class MapGenerator : MonoBehaviour
         
         if (eligibleStages.Count == 0)
         {
-            Debug.LogWarning("選択可能なステージがありません。");
             return stageData.FirstOrDefault();
         }
         
@@ -160,18 +156,5 @@ public class MapGenerator : MonoBehaviour
                 }
             }
         }
-    }
-    
-    public List<StageData> GetStageData() => stageData;
-    
-    // デバッグ用: 典型的なマップパラメータを設定
-    [ContextMenu("Set Default Map Parameters")]
-    public void SetDefaultMapParameters()
-    {
-        mapSize = new Vector2Int(6, 5);
-        pathCount = 3;
-        mapOffset = new Vector2(-400, 0);
-        mapMargin = new Vector2(200, 100);
-        Debug.Log("Default map parameters set: mapSize(6,5), pathCount(3), mapOffset(-400,0), mapMargin(200,100)");
     }
 }

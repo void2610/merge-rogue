@@ -8,9 +8,6 @@ public class StageManager : MonoBehaviour
     [Header("背景制御")]
     [SerializeField] private BackgroundController backgroundController;
     
-    [Header("マップシステム")]
-    [SerializeField] private MapGenerator mapGenerator;
-    [SerializeField] private StageMapRenderer mapRenderer;
 
     [Header("ステージ")]
     [SerializeField] private Shop shop;
@@ -20,29 +17,32 @@ public class StageManager : MonoBehaviour
     public readonly ReactiveProperty<int> CurrentStageCount = new(-1);
     public static StageNode CurrentStage { get; private set; }
     
-    public void StartFromFirstStage() => NextStage(mapGenerator.MapNodes[0][0]).Forget();
+    private MapGenerator _mapGenerator;
+    private StageMapRenderer _mapRenderer;
+    
+    public void StartFromFirstStage() => NextStage(_mapGenerator.MapNodes[0][0]).Forget();
 
     public void SetNextNodeActive()
     {
         // ボスを倒したらマップを再生成して次のステージを設定
         if (CurrentStage?.Type == StageType.Boss)
         {
-            mapGenerator.GenerateMap();
-            mapRenderer.DrawMap(mapGenerator.MapNodes, mapGenerator.GetStageData());
-            mapRenderer.SetButtonEvents(mapGenerator.MapNodes, n => NextStage(n).Forget());
-            mapRenderer.ChangeFocusNode(mapGenerator.MapNodes[0][0], mapGenerator.MapNodes);
+            _mapGenerator.GenerateMap();
+            _mapRenderer.DrawMap(_mapGenerator.MapNodes, _mapGenerator.GetStageData());
+            _mapRenderer.SetButtonEvents(_mapGenerator.MapNodes, n => NextStage(n).Forget());
+            _mapRenderer.ChangeFocusNode(_mapGenerator.MapNodes[0][0], _mapGenerator.MapNodes);
             
-            mapRenderer.CreatePlayerIcon();
-            var pos = mapGenerator.MapNodes[^1][0].Obj.GetComponent<RectTransform>().localPosition;
-            mapRenderer.MovePlayerIcon(pos, 0.5f);
+            // 実際にレンダリングされたUIオブジェクトの位置を使用
+            var startPos = _mapGenerator.MapNodes[0][0].Obj.GetComponent<RectTransform>().localPosition;
+            _mapRenderer.MovePlayerIcon(startPos, 0f); // 即座に移動
         }
         
-        mapRenderer.SetNextNodeActive(CurrentStage, mapGenerator.MapNodes);
+        _mapRenderer.SetNextNodeActive(CurrentStage, _mapGenerator.MapNodes);
     }
     
     private void SetAllNodeInactive()
     {
-        mapRenderer.SetAllNodeInactive(mapGenerator.MapNodes);
+        _mapRenderer.SetAllNodeInactive(_mapGenerator.MapNodes);
     }
 
     private async UniTaskVoid NextStage(StageNode next)
@@ -57,7 +57,7 @@ public class StageManager : MonoBehaviour
         backgroundController.PlayStageTransition();
         
         var pos = next.Obj.GetComponent<RectTransform>().localPosition;
-        mapRenderer.MovePlayerIcon(pos, 0.5f);
+        _mapRenderer.MovePlayerIcon(pos, 0.5f);
         
         await UniTask.Delay(2000);
         
@@ -143,26 +143,31 @@ public class StageManager : MonoBehaviour
     
     private void ChangeFocusNode(StageNode node)
     {
-        mapRenderer.ChangeFocusNode(node, mapGenerator.MapNodes);
+        _mapRenderer.ChangeFocusNode(node, _mapGenerator.MapNodes);
+    }
+
+    private void Awake()
+    {
+        _mapGenerator = this.GetComponent<MapGenerator>();
+        _mapRenderer = this.GetComponent<StageMapRenderer>();
     }
 
     private void Start()
     {
-        // MapGeneratorとMapRendererを初期化
-        mapRenderer.Initialize(mapGenerator);
-        
         // マップを生成と描画
-        mapGenerator.GenerateMap();
-        mapGenerator.SetStartStageType(startStage);
+        _mapGenerator.GenerateMap();
+        _mapGenerator.SetStartStageType(startStage);
         CurrentStage = null;
         
-        mapRenderer.DrawMap(mapGenerator.MapNodes, mapGenerator.GetStageData());
-        mapRenderer.SetButtonEvents(mapGenerator.MapNodes, n => NextStage(n).Forget());
+        _mapRenderer.DrawMap(_mapGenerator.MapNodes, _mapGenerator.GetStageData());
+        _mapRenderer.SetButtonEvents(_mapGenerator.MapNodes, n => NextStage(n).Forget());
         SetAllNodeInactive();
         
-        mapRenderer.CreatePlayerIcon();
+        // 実際にレンダリングされたUIオブジェクトの位置を使用
+        var startPos = _mapGenerator.MapNodes[0][0].Obj.GetComponent<RectTransform>().localPosition;
+        _mapRenderer.MovePlayerIcon(startPos, 0f); // 即座に移動
         
         // カーソルの初期位置を設定
-        ChangeFocusNode(mapGenerator.MapNodes[0][0]);
+        ChangeFocusNode(_mapGenerator.MapNodes[0][0]);
     }
 }
