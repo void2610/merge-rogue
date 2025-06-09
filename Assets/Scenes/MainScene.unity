@@ -11694,7 +11694,6 @@ GameObject:
   - component: {fileID: 567445621}
   - component: {fileID: 567445623}
   - component: {fileID: 567445622}
-  - component: {fileID: 567445624}
   - component: {fileID: 567445625}
   - component: {fileID: 567445626}
   m_Layer: 0
@@ -11783,70 +11782,8 @@ MonoBehaviour:
   treasure: {fileID: 1607858726}
   enemyContainer: {fileID: 198190389}
   afterBattleUI: {fileID: 109174368}
+  stageManager: {fileID: 716147202}
   debugCoin: 0
---- !u!114 &567445624
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 567445620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cb1e6ec0bc7b1480bbeb409014459446, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  bgSpriteRenderer: {fileID: 1291382173}
-  torches:
-  - {fileID: 127237020}
-  - {fileID: 1433748715}
-  - {fileID: 1573065562}
-  - {fileID: 581884005}
-  defaultTorchPosition: {x: -5, y: 2.85, z: 0}
-  torchInterval: 5
-  canvas: {fileID: 380910488}
-  playerIconPrefab: {fileID: 2436687720200888964, guid: ee488a72f4e904211a020c9d28cfe6e6, type: 3}
-  mapBackground: {fileID: 2066958733}
-  mapNodePrefab: {fileID: 3540213210033325969, guid: 4386ef4bca5d44721b4062aaebf2be73, type: 3}
-  mapConnectionPrefab: {fileID: 2000249465076816775, guid: 0fe2ec4d5ae3943b6b451329d71a9a0f, type: 3}
-  mapOffset: {x: -7.45, y: -0.75}
-  mapMargin: {x: 0.93, y: 0.9}
-  shop: {fileID: 1941433902}
-  treasure: {fileID: 1607858726}
-  stageEventProcessor: {fileID: 605675524}
-  stageData:
-  - stageType: 0
-    probability: 1
-    icon: {fileID: 21300000, guid: 09d30acee4111476c8de2ee937656084, type: 3}
-    color: {r: 0.8584906, g: 0.14173192, b: 0.14173192, a: 1}
-  - stageType: 1
-    probability: 0.5
-    icon: {fileID: 21300000, guid: 881ab4d8b30e3434bb1ef4684e326371, type: 3}
-    color: {r: 0.5803922, g: 0.8328212, b: 1, a: 1}
-  - stageType: 3
-    probability: 0.3
-    icon: {fileID: 21300000, guid: db174ffa42e864b9887481afa05624d5, type: 3}
-    color: {r: 1, g: 0.45781258, b: 0.1745283, a: 1}
-  - stageType: 2
-    probability: 0.3
-    icon: {fileID: 21300000, guid: f45c0d430ef3a4701aed76dfd762e809, type: 3}
-    color: {r: 0.8867924, g: 0.7707858, b: 0.18823427, a: 1}
-  - stageType: 4
-    probability: 0.5
-    icon: {fileID: 21300000, guid: 141dcd1439a644dbc95eaf535c21d822, type: 3}
-    color: {r: 1, g: 1, b: 1, a: 1}
-  - stageType: 5
-    probability: 0
-    icon: {fileID: 21300000, guid: 1dd6475f82f984568846c15a1033794f, type: 3}
-    color: {r: 0, g: 0, b: 0, a: 1}
-  - stageType: 6
-    probability: 0
-    icon: {fileID: 0}
-    color: {r: 0, g: 0, b: 0, a: 0}
-  stageTypes: 
-  mapSize: {x: 16, y: 7}
-  pathCount: 9
-  startStage: 0
 --- !u!114 &567445625
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13143,6 +13080,129 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 3626916397498700004, guid: 7489b30d21a934c678ecfabbb4f9e6ec, type: 3}
   m_PrefabInstance: {fileID: 1081494931}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &716147201
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 716147203}
+  - component: {fileID: 716147202}
+  - component: {fileID: 716147205}
+  - component: {fileID: 716147204}
+  m_Layer: 0
+  m_Name: StageManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &716147202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716147201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb1e6ec0bc7b1480bbeb409014459446, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgSpriteRenderer: {fileID: 1291382173}
+  torches:
+  - {fileID: 127237020}
+  - {fileID: 1433748715}
+  - {fileID: 1573065562}
+  - {fileID: 581884005}
+  defaultTorchPosition: {x: -5, y: 2.85, z: 0}
+  torchInterval: 5
+  mapGenerator: {fileID: 716147205}
+  mapRenderer: {fileID: 716147204}
+  shop: {fileID: 1941433902}
+  treasure: {fileID: 1607858726}
+  stageEventProcessor: {fileID: 605675524}
+  startStage: 0
+--- !u!4 &716147203
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716147201}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &716147204
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716147201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7d7e356f4eca4c5e904a8123b9eb1a2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvas: {fileID: 380910488}
+  playerIconPrefab: {fileID: 2436687720200888964, guid: ee488a72f4e904211a020c9d28cfe6e6, type: 3}
+  mapBackground: {fileID: 2066958733}
+  mapNodePrefab: {fileID: 3540213210033325969, guid: 4386ef4bca5d44721b4062aaebf2be73, type: 3}
+  mapConnectionPrefab: {fileID: 2000249465076816775, guid: 0fe2ec4d5ae3943b6b451329d71a9a0f, type: 3}
+--- !u!114 &716147205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716147201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69746b193de7f4e75ab2c34056021817, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageData:
+  - stageType: 0
+    probability: 1
+    icon: {fileID: 21300000, guid: 09d30acee4111476c8de2ee937656084, type: 3}
+    color: {r: 1, g: 0, b: 0, a: 1}
+  - stageType: 1
+    probability: 1
+    icon: {fileID: 21300000, guid: 881ab4d8b30e3434bb1ef4684e326371, type: 3}
+    color: {r: 0, g: 0.8124628, b: 1, a: 1}
+  - stageType: 2
+    probability: 1
+    icon: {fileID: 21300000, guid: f45c0d430ef3a4701aed76dfd762e809, type: 3}
+    color: {r: 1, g: 0.90488863, b: 0, a: 1}
+  - stageType: 3
+    probability: 1
+    icon: {fileID: 21300000, guid: db174ffa42e864b9887481afa05624d5, type: 3}
+    color: {r: 1, g: 0.50675887, b: 0, a: 1}
+  - stageType: 4
+    probability: 1
+    icon: {fileID: 21300000, guid: 141dcd1439a644dbc95eaf535c21d822, type: 3}
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - stageType: 5
+    probability: 1
+    icon: {fileID: 21300000, guid: 1dd6475f82f984568846c15a1033794f, type: 3}
+    color: {r: 0.05660379, g: 0.05660379, b: 0.05660379, a: 1}
+  - stageType: 6
+    probability: 1
+    icon: {fileID: 21300000, guid: 1dd6475f82f984568846c15a1033794f, type: 3}
+    color: {r: 0.05660379, g: 0.05660379, b: 0.05660379, a: 0}
+  mapSize: {x: 15, y: 8}
+  pathCount: 10
+  startStage: 0
+  mapOffset: {x: -200, y: 10}
+  mapMargin: {x: 27, y: 20}
 --- !u!1 &723649439 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6729976926087826395, guid: 26253e7ec2d8c4658a7a06091d939505, type: 3}
@@ -22444,7 +22504,7 @@ MonoBehaviour:
   descriptionText: {fileID: 1002847286}
   skipButton: {fileID: 547219146}
   fadeImage: {fileID: 411655230}
-  stageManager: {fileID: 567445624}
+  stageManager: {fileID: 716147202}
   itemPosition: {x: 0, y: -15, z: 0}
   itemOffset: 175
 --- !u!1 &1620129484
@@ -33870,6 +33930,7 @@ SceneRoots:
   - {fileID: 738866163}
   - {fileID: 632287033}
   - {fileID: 567445621}
+  - {fileID: 716147203}
   - {fileID: 1883030246}
   - {fileID: 880282179}
   - {fileID: 1843446103}
