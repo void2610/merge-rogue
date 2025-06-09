@@ -7,16 +7,11 @@ using DG.Tweening;
 using R3;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
 
 public class StageManager : MonoBehaviour
 {
-    [Header("背景")]
-    [SerializeField] private SpriteRenderer bgSpriteRenderer;
-    [SerializeField] private List<GameObject> torches = new();
-    [SerializeField] private Vector3 defaultTorchPosition;
-    [SerializeField] private float torchInterval = 5;
-    private Material _bgMaterial;
+    [Header("背景制御")]
+    [SerializeField] private BackgroundController backgroundController;
     
     [Header("マップシステム")]
     [SerializeField] private MapGenerator mapGenerator;
@@ -29,8 +24,6 @@ public class StageManager : MonoBehaviour
     [SerializeField] private StageType startStage;
     public readonly ReactiveProperty<int> CurrentStageCount = new(-1);
     public static StageNode CurrentStage { get; private set; } = null;
-    private static readonly int _mainTex = Shader.PropertyToID("_MainTex");
-    private Tween _torchTween;
     
     public void StartFirstStage() => NextStage(mapGenerator.MapNodes[0][0]).Forget();
 
@@ -75,26 +68,7 @@ public class StageManager : MonoBehaviour
         SetAllNodeInactive();
         UIManager.Instance.OnClickMapButtonForce(false);
         SeManager.Instance.WaitAndPlaySe("footsteps", 0.2f);
-        DOTween.To(() => _bgMaterial.GetTextureOffset(_mainTex), x => _bgMaterial.SetTextureOffset(_mainTex, x), new Vector2(1, 0), 2.0f)
-            .SetEase(Ease.InOutSine).OnComplete(() =>
-            {
-                _bgMaterial.SetTextureOffset(_mainTex, new Vector2(0, 0));
-                
-                var tmp = torches[0];
-                torches.RemoveAt(0);
-                torches.Add(tmp);
-                _torchTween.Kill();
-                tmp.transform.position = defaultTorchPosition + new Vector3(torchInterval * (torches.Count-1), 0, 0);
-            }).SetLink(gameObject).Forget(); 
-        
-        for(var i = 0; i < torches.Count; i++)
-        {
-            var t = torches[i];
-            var tween = t.transform.DOMove(t.transform.position - new Vector3(torchInterval, 0, 0), 2.0f)
-                .SetEase(Ease.InOutSine).SetLink(gameObject);
-            if (i == 0) _torchTween = tween;
-        }
-        torches[^1].SetActive(Random.Range(0.0f, 1.0f) < 0.5f);
+        backgroundController.PlayStageTransition();
         
         var pos = next.Obj.GetComponent<RectTransform>().localPosition;
         mapRenderer.MovePlayerIcon(pos, 0.5f);
@@ -188,9 +162,6 @@ public class StageManager : MonoBehaviour
 
     public void Start()
     {
-        _bgMaterial = new Material(bgSpriteRenderer.material);
-        bgSpriteRenderer.material = _bgMaterial;
-        
         // MapGeneratorとMapRendererを初期化
         mapRenderer.Initialize(mapGenerator);
         
@@ -204,8 +175,6 @@ public class StageManager : MonoBehaviour
         SetAllNodeInactive();
         
         mapRenderer.CreatePlayerIcon();
-        
-        _bgMaterial.SetTextureOffset(_mainTex, new Vector2(0, 0)); 
         
         // カーソルの初期位置を設定
         ChangeFocusNode(mapGenerator.MapNodes[0][0]);

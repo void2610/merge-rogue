@@ -13092,6 +13092,7 @@ GameObject:
   - component: {fileID: 716147202}
   - component: {fileID: 716147205}
   - component: {fileID: 716147204}
+  - component: {fileID: 716147206}
   m_Layer: 0
   m_Name: StageManager
   m_TagString: Untagged
@@ -13111,14 +13112,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb1e6ec0bc7b1480bbeb409014459446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bgSpriteRenderer: {fileID: 1291382173}
-  torches:
-  - {fileID: 127237020}
-  - {fileID: 1433748715}
-  - {fileID: 1573065562}
-  - {fileID: 581884005}
-  defaultTorchPosition: {x: -5, y: 2.85, z: 0}
-  torchInterval: 5
+  backgroundController: {fileID: 716147206}
   mapGenerator: {fileID: 716147205}
   mapRenderer: {fileID: 716147204}
   shop: {fileID: 1941433902}
@@ -13203,6 +13197,26 @@ MonoBehaviour:
   startStage: 0
   mapOffset: {x: -200, y: 10}
   mapMargin: {x: 27, y: 20}
+--- !u!114 &716147206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 716147201}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ae0c14b8faab402b998efa615caa14b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgSpriteRenderer: {fileID: 1291382173}
+  torches:
+  - {fileID: 127237020}
+  - {fileID: 1433748715}
+  - {fileID: 1573065562}
+  - {fileID: 581884005}
+  defaultTorchPosition: {x: -5, y: 2.85, z: 0}
+  torchInterval: 5
 --- !u!1 &723649439 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6729976926087826395, guid: 26253e7ec2d8c4658a7a06091d939505, type: 3}
@@ -14425,8 +14439,7 @@ MonoBehaviour:
   relicGridSize: {x: 3, y: 9}
   relicOffset: {x: 40, y: 36}
   relicUISize: 0.75
-  testRelics:
-  - {fileID: 0}
+  testRelics: []
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -24627,7 +24640,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46.65
+  m_fontSize: 39.2
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
