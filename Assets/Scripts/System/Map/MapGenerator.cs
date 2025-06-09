@@ -24,19 +24,15 @@ public class MapGenerator : MonoBehaviour
         // デバッグ: マップパラメータを確認
         Debug.Log($"MapGenerator - mapSize: {mapSize}, mapOffset: {mapOffset}, mapMargin: {mapMargin}, pathCount: {pathCount}");
         
-        // マップの初期化（StageDataを使用）
+        // マップグリッドを初期化
         InitializeMapGrid();
         
-        // パスを生成
+        // パスを生成しながらステージタイプを決定
         GeneratePaths();
-        
-        // ステージタイプを割り当て（スタートとボスノードも含む）
-        AssignStageTypes();
     }
     
     private void InitializeMapGrid()
     {
-        // StageDataの辞書を作成
         var stageDataDict = stageData.ToDictionary(s => s.stageType);
         
         for (var i = 0; i < mapSize.x; i++)
@@ -45,29 +41,27 @@ public class MapGenerator : MonoBehaviour
             var mid = mapSize.y / 2;
             for (var j = 0; j < mapSize.y; j++)
             {
-                StageNode node;
+                StageData nodeStageData;
                 
                 // スタートノード
                 if (i == 0 && j == 0)
                 {
-                    var startStageData = stageDataDict.GetValueOrDefault(StageType.Enemy);
-                    node = new StageNode(startStageData);
+                    nodeStageData = stageDataDict.GetValueOrDefault(StageType.Enemy);
                 }
                 // ボスノード
                 else if (i == mapSize.x - 1 && j == 0)
                 {
-                    var bossStageData = stageDataDict.GetValueOrDefault(StageType.Boss);
-                    node = new StageNode(bossStageData);
+                    nodeStageData = stageDataDict.GetValueOrDefault(StageType.Boss);
                 }
-                // その他のノード（後でタイプを割り当てる）
+                // その他のノードはランダムステージ
                 else
                 {
-                    node = new StageNode();
+                    nodeStageData = ChooseStage();
                 }
                 
                 var my = (j - mid) * mapMargin.y;
                 var pos = new Vector2((i * mapMargin.x) + mapOffset.x, my + mapOffset.y);
-                node.Position = pos;
+                var node = new StageNode(nodeStageData, pos);
                 
                 _mapNodes[i].Add(node);
                 Debug.Log($"Node [{i},{j}] position set to: {pos}");
@@ -92,6 +86,7 @@ public class MapGenerator : MonoBehaviour
                 else if (i == mapSize.x - 1) nextY = 0;
                 
                 var nextNode = _mapNodes[i][nextY];
+                
                 if (!currentNode.Connections.Contains(nextNode))
                     currentNode.Connections.Add(nextNode);
                 currentNode = nextNode;
@@ -99,58 +94,6 @@ public class MapGenerator : MonoBehaviour
         }
     }
     
-    private void AssignStageTypes()
-    {
-        // Undefinedのステージタイプを割り当てる
-        for (var i = 0; i < _mapNodes.Count; i++)
-        {
-            for (var j = 0; j < _mapNodes[i].Count; j++)
-            {
-                var node = _mapNodes[i][j];
-                if (node.Connections.Count > 0 && node.Type == StageType.Undefined)
-                {
-                    var chosenStageData = ChooseStage();
-                    var position = node.Position;
-                    var connections = new List<StageNode>(node.Connections);
-                    
-                    // 新しいノードを作成
-                    _mapNodes[i][j] = new StageNode(chosenStageData)
-                    {
-                        Position = position
-                    };
-                    
-                    // 接続を復元
-                    foreach (var connection in connections)
-                    {
-                        _mapNodes[i][j].Connections.Add(connection);
-                    }
-                    
-                    // 他のノードからこのノードへの参照を更新
-                    UpdateReferencesToNode(node, _mapNodes[i][j]);
-                }
-            }
-        }
-    }
-    
-    /// <summary>
-    /// 古いノードへの参照を新しいノードへの参照に更新
-    /// </summary>
-    private void UpdateReferencesToNode(StageNode oldNode, StageNode newNode)
-    {
-        foreach (var column in _mapNodes)
-        {
-            foreach (var node in column)
-            {
-                for (var i = 0; i < node.Connections.Count; i++)
-                {
-                    if (node.Connections[i] == oldNode)
-                    {
-                        node.Connections[i] = newNode;
-                    }
-                }
-            }
-        }
-    }
     
     private StageData ChooseStage()
     {
@@ -185,7 +128,7 @@ public class MapGenerator : MonoBehaviour
             var newStageData = stageData.FirstOrDefault(s => s.stageType == type);
             
             // 新しいノードを作成
-            _mapNodes[0][0] = new StageNode(newStageData) { Position = position };
+            _mapNodes[0][0] = new StageNode(newStageData, position);
                 
             // 接続を復元
             foreach (var connection in connections)
@@ -194,7 +137,20 @@ public class MapGenerator : MonoBehaviour
             }
             
             // 他のノードからの参照を更新
-            UpdateReferencesToNode(oldNode, _mapNodes[0][0]);
+            for (var i = 0; i < _mapNodes.Count; i++)
+            {
+                for (var j = 0; j < _mapNodes[i].Count; j++)
+                {
+                    var node = _mapNodes[i][j];
+                    for (var k = 0; k < node.Connections.Count; k++)
+                    {
+                        if (node.Connections[k] == oldNode)
+                        {
+                            node.Connections[k] = _mapNodes[0][0];
+                        }
+                    }
+                }
+            }
         }
     }
     

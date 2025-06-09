@@ -116,19 +116,22 @@ public class StageMapRenderer : MonoBehaviour
     public void SetButtonEvents(List<List<StageNode>> mapNodes, System.Action<StageNode> onNodeClick)
     {
         // スタートノードのボタンイベント
-        var startButton = mapNodes[0][0].Obj.GetComponent<Button>();
-        startButton.onClick.RemoveAllListeners();
-        startButton.onClick.AddListener(() => onNodeClick(mapNodes[0][0]));
+        if (mapNodes[0][0].Obj)
+        {
+            var startButton = mapNodes[0][0].Obj.GetComponent<Button>();
+            startButton.onClick.RemoveAllListeners();
+            startButton.onClick.AddListener(() => onNodeClick(mapNodes[0][0]));
+        }
         
         // その他のノードのボタンイベント
         foreach (var column in mapNodes)
         {
             foreach (var node in column)
             {
-                if (node.Type == StageType.Undefined) continue;
+                if (!node.Obj) continue;
                 foreach (var connection in node.Connections)
                 {
-                    if (connection.Type == StageType.Undefined) continue;
+                    if (!connection.Obj) continue;
                     var button = connection.Obj.GetComponent<Button>();
                     
                     button.onClick.RemoveAllListeners();
@@ -141,7 +144,7 @@ public class StageMapRenderer : MonoBehaviour
     public void SetAllNodeInactive(List<List<StageNode>> mapNodes)
     {
         foreach (var button in mapNodes.SelectMany(column => from node in column 
-                 where node.Type != StageType.Undefined 
+                 where node.Obj 
                  select node.Obj.GetComponent<Button>()))
         {
             button.interactable = false;
@@ -156,7 +159,7 @@ public class StageMapRenderer : MonoBehaviour
         {
             foreach (var node in column)
             {
-                if (node.Type == StageType.Undefined) continue;
+                if (!node.Obj) continue;
                 
                 var button = node.Obj.GetComponent<Button>();
                 button.interactable = nextNodes.Contains(node);
@@ -172,7 +175,7 @@ public class StageMapRenderer : MonoBehaviour
             if (n.Obj.TryGetComponent(out FocusSelectable f)) Destroy(f);
         }
         
-        if (node.Obj != null)
+        if (node?.Obj)
         {
             node.Obj.AddComponent<FocusSelectable>();
         }
