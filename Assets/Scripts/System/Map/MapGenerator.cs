@@ -11,15 +11,14 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private StageType startStage;
     [SerializeField] private Vector2 mapOffset;
     [SerializeField] private Vector2 mapMargin;
-    
-    private readonly List<List<StageNode>> _mapNodes = new();
-    
-    public List<List<StageNode>> MapNodes => _mapNodes;
+
+    public List<List<StageNode>> MapNodes { get; } = new();
+
     public Vector2Int GetMapSize() => mapSize;
     
     public void GenerateMap()
     {
-        _mapNodes.Clear();
+        MapNodes.Clear();
         
         // デバッグ: マップパラメータを確認
         Debug.Log($"MapGenerator - mapSize: {mapSize}, mapOffset: {mapOffset}, mapMargin: {mapMargin}, pathCount: {pathCount}");
@@ -37,7 +36,7 @@ public class MapGenerator : MonoBehaviour
         
         for (var i = 0; i < mapSize.x; i++)
         {
-            _mapNodes.Add(new List<StageNode>());
+            MapNodes.Add(new List<StageNode>());
             var mid = mapSize.y / 2;
             for (var j = 0; j < mapSize.y; j++)
             {
@@ -63,7 +62,7 @@ public class MapGenerator : MonoBehaviour
                 var pos = new Vector2((i * mapMargin.x) + mapOffset.x, my + mapOffset.y);
                 var node = new StageNode(nodeStageData, pos);
                 
-                _mapNodes[i].Add(node);
+                MapNodes[i].Add(node);
                 Debug.Log($"Node [{i},{j}] position set to: {pos}");
             }
         }
@@ -75,17 +74,17 @@ public class MapGenerator : MonoBehaviour
         // スタートからゴールに向かってランダムに接続
         for (var _ = 0; _ < pathCount; _++)
         {
-            var currentNode = _mapNodes[0][0];
+            var currentNode = MapNodes[0][0];
             for (var i = 1; i < mapSize.x; i++)
             {
-                var currentY = _mapNodes[i-1].FindIndex(node => node == currentNode);
+                var currentY = MapNodes[i-1].FindIndex(node => node == currentNode);
                 var randomYOffset = GameManager.Instance.RandomRange(-1, 2); // -1から1までの値
                 var nextY = Mathf.Clamp(currentY + randomYOffset, 0, mapSize.y - 1);
                 
                 if (i == 1) nextY = GameManager.Instance.RandomRange(0, mapSize.y);
                 else if (i == mapSize.x - 1) nextY = 0;
                 
-                var nextNode = _mapNodes[i][nextY];
+                var nextNode = MapNodes[i][nextY];
                 
                 if (!currentNode.Connections.Contains(nextNode))
                     currentNode.Connections.Add(nextNode);
@@ -97,16 +96,25 @@ public class MapGenerator : MonoBehaviour
     
     private StageData ChooseStage()
     {
-        float sum = 0;
-        foreach (var s in stageData)
+        // ボスステージを除外したリストを作成
+        var eligibleStages = stageData.Where(s => s.stageType != StageType.Boss).ToList();
+        
+        if (eligibleStages.Count == 0)
+        {
+            Debug.LogWarning("選択可能なステージがありません。");
+            return stageData.FirstOrDefault();
+        }
+        
+        var sum = 0f;
+        foreach (var s in eligibleStages)
         {
             sum += s.probability;
         }
         
-        float r = GameManager.Instance.RandomRange(0.0f, sum);
+        var r = GameManager.Instance.RandomRange(0.0f, sum);
         float cumulative = 0;
         
-        foreach (var s in stageData)
+        foreach (var s in eligibleStages)
         {
             cumulative += s.probability;
             if (r < cumulative)
@@ -115,38 +123,38 @@ public class MapGenerator : MonoBehaviour
             }
         }
         
-        return stageData[0];
+        return eligibleStages[0];
     }
     
     public void SetStartStageType(StageType type)
     {
-        if (_mapNodes.Count > 0 && _mapNodes[0].Count > 0)
+        if (MapNodes.Count > 0 && MapNodes[0].Count > 0)
         {
-            var oldNode = _mapNodes[0][0];
+            var oldNode = MapNodes[0][0];
             var position = oldNode.Position;
             var connections = new List<StageNode>(oldNode.Connections);
             var newStageData = stageData.FirstOrDefault(s => s.stageType == type);
             
             // 新しいノードを作成
-            _mapNodes[0][0] = new StageNode(newStageData, position);
+            MapNodes[0][0] = new StageNode(newStageData, position);
                 
             // 接続を復元
             foreach (var connection in connections)
             {
-                _mapNodes[0][0].Connections.Add(connection);
+                MapNodes[0][0].Connections.Add(connection);
             }
             
             // 他のノードからの参照を更新
-            for (var i = 0; i < _mapNodes.Count; i++)
+            for (var i = 0; i < MapNodes.Count; i++)
             {
-                for (var j = 0; j < _mapNodes[i].Count; j++)
+                for (var j = 0; j < MapNodes[i].Count; j++)
                 {
-                    var node = _mapNodes[i][j];
+                    var node = MapNodes[i][j];
                     for (var k = 0; k < node.Connections.Count; k++)
                     {
                         if (node.Connections[k] == oldNode)
                         {
-                            node.Connections[k] = _mapNodes[0][0];
+                            node.Connections[k] = MapNodes[0][0];
                         }
                     }
                 }
