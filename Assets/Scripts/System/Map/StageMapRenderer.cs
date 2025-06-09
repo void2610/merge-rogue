@@ -32,7 +32,7 @@ public class StageMapRenderer : MonoBehaviour
         DrawConnections(mapNodes, mapSize);
         
         // ノードを描画
-        DrawNodes(mapNodes, mapSize, stageData);
+        DrawNodes(mapNodes, mapSize);
     }
     
     private void ClearMap()
@@ -63,18 +63,13 @@ public class StageMapRenderer : MonoBehaviour
         }
     }
     
-    private void DrawNodes(List<List<StageNode>> mapNodes, Vector2Int mapSize, List<StageData> stageData)
+    private void DrawNodes(List<List<StageNode>> mapNodes, Vector2Int mapSize)
     {
         // デバッグ: ノード位置を確認
         Debug.Log($"StageMapRenderer - Drawing start node at position: {mapNodes[0][0].Position}");
         
         // スタートノードを描画
-        var startNode = Instantiate(mapNodePrefab, mapBackground.transform);
-        startNode.GetComponent<RectTransform>().localPosition = mapNodes[0][0].Position;
-        startNode.name = $"{mapNodes[0][0].Type}";
-        startNode.GetComponent<Image>().sprite = mapNodes[0][0].GetIcon(stageData);
-        startNode.GetComponent<Image>().color = mapNodes[0][0].GetColor(stageData);
-        mapNodes[0][0].Obj = startNode;
+        DrawSingleNode(mapNodes[0][0]);
         Debug.Log($"Start node positioned at: {mapNodes[0][0].Position}");
         
         // その他のノードを描画
@@ -83,17 +78,26 @@ public class StageMapRenderer : MonoBehaviour
             for (var j = 0; j < mapSize.y; j++)
             {
                 if (mapNodes[i][j].Type == StageType.Undefined) continue;
-                var nodeObj = Instantiate(mapNodePrefab, mapBackground.transform);
-                nodeObj.GetComponent<RectTransform>().localPosition = mapNodes[i][j].Position;
-                
-                nodeObj.name = $"{mapNodes[i][j].Type}";
-                nodeObj.GetComponent<Image>().sprite = mapNodes[i][j].GetIcon(stageData);
-                nodeObj.GetComponent<Image>().color = mapNodes[i][j].GetColor(stageData);
-                
-                mapNodes[i][j].Obj = nodeObj;
+                DrawSingleNode(mapNodes[i][j]);
                 Debug.Log($"Node [{i},{j}] positioned at: {mapNodes[i][j].Position}");
             }
         }
+    }
+    
+    /// <summary>
+    /// 単一のノードを描画
+    /// </summary>
+    private void DrawSingleNode(StageNode node)
+    {
+        var nodeObj = Instantiate(mapNodePrefab, mapBackground.transform);
+        nodeObj.GetComponent<RectTransform>().localPosition = node.Position;
+        nodeObj.name = $"{node.Type}";
+        
+        var image = nodeObj.GetComponent<Image>();
+        image.sprite = node.Icon;
+        image.color = node.Color;
+        
+        node.Obj = nodeObj;
     }
     
     private void DrawLine(StageNode a, StageNode b)
