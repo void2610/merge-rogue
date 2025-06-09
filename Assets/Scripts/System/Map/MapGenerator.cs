@@ -27,6 +27,9 @@ public class MapGenerator : MonoBehaviour
         
         // パスを生成しながらステージタイプを決定
         GeneratePaths();
+        
+        // 到達不可能なノードを削除
+        RemoveUnreachableNodes();
     }
     
     private void InitializeMapGrid()
@@ -123,6 +126,45 @@ public class MapGenerator : MonoBehaviour
         }
         
         return eligibleStages[0];
+    }
+    
+    private void RemoveUnreachableNodes()
+    {
+        var reachableNodes = new HashSet<StageNode>();
+        var queue = new Queue<StageNode>();
+        
+        // スタートノードから探索開始
+        var startNode = GetStartNode();
+        queue.Enqueue(startNode);
+        reachableNodes.Add(startNode);
+        
+        // BFS で到達可能なノードを全て探索
+        while (queue.Count > 0)
+        {
+            var currentNode = queue.Dequeue();
+            
+            foreach (var connection in currentNode.Connections)
+            {
+                if (!reachableNodes.Contains(connection) && connection.Type != StageType.Undefined)
+                {
+                    reachableNodes.Add(connection);
+                    queue.Enqueue(connection);
+                }
+            }
+        }
+        
+        // 到達不可能なノードのタイプをUndefinedに設定
+        for (var i = 0; i < mapSize.x; i++)
+        {
+            for (var j = 0; j < mapSize.y; j++)
+            {
+                var node = MapNodes[i][j];
+                if (!reachableNodes.Contains(node))
+                {
+                    node.SetType(StageType.Undefined);
+                }
+            }
+        }
     }
     
     public void SetStartStageType(StageType type)

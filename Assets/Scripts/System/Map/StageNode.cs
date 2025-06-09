@@ -30,4 +30,12 @@ public class StageNode
         Position = position;
         Connections = new List<StageNode>();
     }
+    
+    /// <summary>
+    /// ノードのタイプを変更（到達不可能ノード削除等で使用）
+    /// </summary>
+    public void SetType(StageType newType)
+    {
+        Type = newType;
+    }
 }
