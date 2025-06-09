@@ -168,7 +168,10 @@ public class StageMapRenderer : MonoBehaviour
             if (n.Obj.TryGetComponent(out FocusSelectable f)) Destroy(f);
         }
         
-        node.Obj.AddComponent<FocusSelectable>();
+        if (node.Obj != null)
+        {
+            node.Obj.AddComponent<FocusSelectable>();
+        }
     }
     
     public GameObject CreatePlayerIcon()
