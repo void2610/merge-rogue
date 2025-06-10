@@ -74,8 +74,7 @@ public enum StageType
     Treasure,
     Rest,
     Events,
-    Boss,
-    Undefined
+    Boss
 }
 
 public enum AttackType

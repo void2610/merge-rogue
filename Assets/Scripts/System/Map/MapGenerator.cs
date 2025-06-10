@@ -16,7 +16,11 @@ public class MapGenerator : MonoBehaviour
 
     public Vector2Int GetMapSize() => mapSize;
     public List<StageData> GetStageData() => stageData;
-    public StageNode GetStartNode() => MapNodes[0][mapSize.y / 2];
+    public StageNode GetStartNode() 
+    {
+        if (MapNodes.Count == 0 || MapNodes[0].Count <= mapSize.y / 2) return null;
+        return MapNodes[0][mapSize.y / 2];
+    }
     
     public void GenerateMap()
     {
@@ -100,8 +104,8 @@ public class MapGenerator : MonoBehaviour
     
     private StageData ChooseStage()
     {
-        // ボスとUndefinedタイプを除外
-        var eligibleStages = stageData.Where(s => s.stageType != StageType.Boss && s.stageType != StageType.Undefined).ToList();
+        // ボスタイプを除外
+        var eligibleStages = stageData.Where(s => s.stageType != StageType.Boss).ToList();
         
         if (eligibleStages.Count == 0)
         {
@@ -136,6 +140,8 @@ public class MapGenerator : MonoBehaviour
         
         // スタートノードから探索開始
         var startNode = GetStartNode();
+        if (startNode == null) return; // スタートノードが存在しない場合は何もしない
+        
         queue.Enqueue(startNode);
         reachableNodes.Add(startNode);
         
@@ -146,7 +152,7 @@ public class MapGenerator : MonoBehaviour
             
             foreach (var connection in currentNode.Connections)
             {
-                if (!reachableNodes.Contains(connection) && connection.Type != StageType.Undefined)
+                if (!reachableNodes.Contains(connection))
                 {
                     reachableNodes.Add(connection);
                     queue.Enqueue(connection);
@@ -154,7 +160,7 @@ public class MapGenerator : MonoBehaviour
             }
         }
         
-        // 到達不可能なノードのタイプをUndefinedに設定
+        // 到達不可能なノードを削除
         for (var i = 0; i < mapSize.x; i++)
         {
             for (var j = 0; j < mapSize.y; j++)
@@ -162,7 +168,27 @@ public class MapGenerator : MonoBehaviour
                 var node = MapNodes[i][j];
                 if (!reachableNodes.Contains(node))
                 {
-                    node.SetType(StageType.Undefined);
+                    // 既に描画されている場合はオブジェクトを削除
+                    if (node.Obj != null)
+                    {
+                        Destroy(node.Obj);
+                    }
+                    
+                    // ノードをMapNodesから削除
+                    MapNodes[i][j] = null;
+                }
+            }
+        }
+        
+        // 全ノードの接続リストから削除されたノードへの参照を削除
+        for (var i = 0; i < mapSize.x; i++)
+        {
+            for (var j = 0; j < mapSize.y; j++)
+            {
+                var node = MapNodes[i][j];
+                if (node != null)
+                {
+                    node.Connections.RemoveAll(connection => !reachableNodes.Contains(connection));
                 }
             }
         }
@@ -174,6 +200,8 @@ public class MapGenerator : MonoBehaviour
         if (MapNodes.Count > 0 && MapNodes[0].Count > mid)
         {
             var oldNode = MapNodes[0][mid];
+            if (oldNode == null) return; // スタートノードが削除されている場合は何もしない
+            
             var position = oldNode.Position;
             var connections = new List<StageNode>(oldNode.Connections);
             var newStageData = stageData.FirstOrDefault(s => s.stageType == type);
@@ -193,6 +221,8 @@ public class MapGenerator : MonoBehaviour
                 for (var j = 0; j < MapNodes[i].Count; j++)
                 {
                     var node = MapNodes[i][j];
+                    if (node == null) continue; // 削除されたノードはスキップ
+                    
                     for (var k = 0; k < node.Connections.Count; k++)
                     {
                         if (node.Connections[k] == oldNode)

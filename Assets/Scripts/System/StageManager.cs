@@ -134,7 +134,6 @@ public class StageManager : MonoBehaviour
                 UIManager.Instance.EnableCanvasGroup("Event", true);
                 stageEventProcessor.StartEvent();
                 break;
-            case StageType.Undefined:
             default:
                 throw new ArgumentOutOfRangeException(nameof(s), s, null);
         }

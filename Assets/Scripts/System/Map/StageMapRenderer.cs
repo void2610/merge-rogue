@@ -16,6 +16,7 @@ public class StageMapRenderer : MonoBehaviour
     private GameObject _playerIconObj;
     private MapGenerator _mapGenerator;
     
+    
     public void DrawMap(List<List<StageNode>> mapNodes, List<StageData> stageData)
     {
         ClearMap();
@@ -41,7 +42,7 @@ public class StageMapRenderer : MonoBehaviour
     {
         // スタートノードからの接続を描画
         var startNode = _mapGenerator.GetStartNode();
-        foreach (var c in startNode.Connections.Where(c => c.Type != StageType.Undefined))
+        foreach (var c in startNode.Connections)
         {
             DrawLine(startNode, c);
         }
@@ -51,8 +52,8 @@ public class StageMapRenderer : MonoBehaviour
         {
             for (var j = 0; j < mapSize.y; j++)
             {
-                if (mapNodes[i][j].Type == StageType.Undefined) continue;
-                foreach (var c in mapNodes[i][j].Connections.Where(c => c.Type != StageType.Undefined))
+                if (mapNodes[i][j] == null) continue;
+                foreach (var c in mapNodes[i][j].Connections)
                 {
                     DrawLine(mapNodes[i][j], c);
                 }
@@ -68,7 +69,7 @@ public class StageMapRenderer : MonoBehaviour
         {
             for (var j = 0; j < mapSize.y; j++)
             {
-                if (mapNodes[i][j].Type == StageType.Undefined) continue;
+                if (mapNodes[i][j] == null) continue;
                 DrawSingleNode(mapNodes[i][j]);
             }
         }
@@ -99,7 +100,7 @@ public class StageMapRenderer : MonoBehaviour
 
         // UI座標系で直接計算
         var pos = b.Position - a.Position;
-        line.points = new Vector2[] { Vector2.zero, pos };
+        line.points = new[] { Vector2.zero, pos };
     }
 
     public void SetButtonEvents(List<List<StageNode>> mapNodes, System.Action<StageNode> onNodeClick)
@@ -118,10 +119,10 @@ public class StageMapRenderer : MonoBehaviour
         {
             foreach (var node in column)
             {
-                if (!node.Obj) continue;
+                if (node == null || !node.Obj) continue;
                 foreach (var connection in node.Connections)
                 {
-                    if (!connection.Obj) continue;
+                    if (connection == null || !connection.Obj) continue;
                     var button = connection.Obj.GetComponent<Button>();
 
                     button.onClick.RemoveAllListeners();
@@ -134,7 +135,7 @@ public class StageMapRenderer : MonoBehaviour
     public void SetAllNodeInactive(List<List<StageNode>> mapNodes)
     {
         foreach (var button in mapNodes.SelectMany(column => from node in column
-                     where node.Obj
+                     where node != null && node.Obj
                      select node.Obj.GetComponent<Button>()))
         {
             button.interactable = false;
@@ -149,7 +150,7 @@ public class StageMapRenderer : MonoBehaviour
         {
             foreach (var node in column)
             {
-                if (!node.Obj) continue;
+                if (node == null || !node.Obj) continue;
 
                 var button = node.Obj.GetComponent<Button>();
                 button.interactable = nextNodes.Contains(node);
@@ -161,7 +162,7 @@ public class StageMapRenderer : MonoBehaviour
     {
         foreach (var n in mapNodes.SelectMany(column => column))
         {
-            if (!n.Obj) continue;
+            if (n == null || !n.Obj) continue;
             if (n.Obj.TryGetComponent(out FocusSelectable f)) Destroy(f);
         }
 
