@@ -84,6 +84,7 @@ public class MapGenerator : MonoBehaviour
                 var randomYOffset = GameManager.Instance.RandomRange(-1, 2); // -1から1までの値
                 var nextY = Mathf.Clamp(currentY + randomYOffset, 0, mapSize.y - 1);
                 
+                // スタートノードとゴールノードの特別な処理
                 if (i == 1) nextY = GameManager.Instance.RandomRange(0, mapSize.y);
                 else if (i == mapSize.x - 1) nextY = mid;
                 
@@ -99,8 +100,8 @@ public class MapGenerator : MonoBehaviour
     
     private StageData ChooseStage()
     {
-        // ボスステージを除外したリストを作成
-        var eligibleStages = stageData.Where(s => s.stageType != StageType.Boss).ToList();
+        // ボスとUndefinedタイプを除外
+        var eligibleStages = stageData.Where(s => s.stageType != StageType.Boss && s.stageType != StageType.Undefined).ToList();
         
         if (eligibleStages.Count == 0)
         {
