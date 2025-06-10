@@ -34,6 +34,11 @@ public class StageManager : MonoBehaviour
             
             var startTransform = _mapGenerator.GetStartNode().Obj.GetComponent<RectTransform>();
             _mapRenderer.MovePlayerIcon(startTransform, 0f); // 即座に移動
+            
+            // CurrentStageをnullにリセットして、スタートノードをアクティブにする
+            CurrentStage = null;
+            _mapRenderer.SetNextNodeActive(null, _mapGenerator.MapNodes);
+            return;
         }
         
         _mapRenderer.SetNextNodeActive(CurrentStage, _mapGenerator.MapNodes);

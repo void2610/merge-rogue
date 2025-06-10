@@ -25,11 +25,7 @@ public abstract class RelicBase : IDisposable
     // 初期化
     public virtual void Init(RelicUI relicUI)
     {
-        if (_isInitialized)
-        {
-            Debug.LogWarning($"[Relic] {GetType().Name} is already initialized");
-            return;
-        }
+        if (_isInitialized) return;
 
         UI = relicUI;
         UI?.EnableCount(IsCountable);
@@ -39,7 +35,6 @@ public abstract class RelicBase : IDisposable
         RegisterEffects();
         
         _isInitialized = true;
-        Debug.Log($"[Relic] {GetType().Name} initialized");
     }
 
     // レリック固有の効果登録（派生クラスで実装）
@@ -59,8 +54,6 @@ public abstract class RelicBase : IDisposable
             subscription?.Dispose();
         }
         _simpleSubscriptions.Clear();
-        
-        Debug.Log($"[Relic] {GetType().Name} effects removed");
     }
 
     // IDisposable実装
@@ -74,7 +67,6 @@ public abstract class RelicBase : IDisposable
         Count?.Dispose();
         
         _isDisposed = true;
-        Debug.Log($"[Relic] {GetType().Name} disposed");
     }
 
     // ===== 便利メソッド =====
@@ -95,7 +87,6 @@ public abstract class RelicBase : IDisposable
         RelicHelpers.RegisterPlayerDamageModifier(this, current =>
         {
             Count.Value += current;
-            Debug.Log($"[Relic] {GetType().Name} Count updated: {Count.Value}");
             var activations = Count.Value / threshold;
             if (activations > 0)
             {

@@ -16,12 +16,9 @@ public class DisturbBall : BallBase
     {
         // 周りのボールがマージされたら消滅する
         var (b1, b2) = mergeData;
-        var pos = (b2.transform.position - b1.transform.position) / 2;
-        var distance = Vector3.Distance(this.transform.position, pos);
-        if (distance < 1f)
-        {
-            this.EffectAndDestroy(null);
-        }
+        var mergePosition = (b1.transform.position + b2.transform.position) / 2f;
+        var distance = Vector3.Distance(this.transform.position, mergePosition);
+        if (distance < 1f) this.EffectAndDestroy(null);
     }
     
     private void OnDestroy()
