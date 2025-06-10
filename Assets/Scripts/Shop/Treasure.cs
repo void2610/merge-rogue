@@ -87,7 +87,7 @@ public class Treasure : MonoBehaviour
 
         if (_currentType == TreasureType.Initial)
         {
-            stageManager.StartFirstStage();
+            stageManager.StartFromFirstStage();
             fadeImage.DOFade(0, 2f);
         }
         else if(_currentType == TreasureType.Boss)

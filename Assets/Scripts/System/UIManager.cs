@@ -170,6 +170,17 @@ public class UIManager : MonoBehaviour
         }
         else
         {
+            // レリックがない場合は状態異常またはマージにスキップ
+            if (_cursorPosition == CursorPositionType.Relic && relicContainer.childCount == 0)
+            {
+                var nextState = GetFirstSelectableStatusEffectUI() != null 
+                    ? CursorPositionType.StatusEffect 
+                    : CursorPositionType.Merge;
+                SetCursorState(nextState);
+                ResetSelectedGameObject();
+                return;
+            }
+            
             if (_cursorPosition == CursorPositionType.StatusEffect && !GetFirstSelectableStatusEffectUI())
             {
                 SetCursorState(CursorPositionType.Merge);
@@ -181,8 +192,8 @@ public class UIManager : MonoBehaviour
             var target = _cursorPosition switch
             {
                 CursorPositionType.Merge => mergeArea,
-                CursorPositionType.Ball => ballUIContainer.GetChild(0).gameObject,
-                CursorPositionType.Relic => relicContainer.GetChild(0).gameObject,
+                CursorPositionType.Ball => ballUIContainer.childCount > 0 ? ballUIContainer.GetChild(0).gameObject : null,
+                CursorPositionType.Relic => relicContainer.childCount > 0 ? relicContainer.GetChild(0).gameObject : null,
                 CursorPositionType.StatusEffect => GetFirstSelectableStatusEffectUI(),
                 _ => null,
             };

@@ -30,6 +30,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Treasure treasure;
     [SerializeField] private EnemyContainer enemyContainer;
     [SerializeField] private AfterBattleUI afterBattleUI;
+    [SerializeField] private StageManager stageManager;
     
     [Header("デバッグ")]
     [SerializeField] private int debugCoin = 0;
@@ -39,7 +40,7 @@ public class GameManager : MonoBehaviour
     public float TimeScale { get; private set; } = 1.0f;
     public bool IsGameOver { get; private set; } = false;
     public Player Player { get; private set; }
-    public StageManager StageManager => GetComponent<StageManager>();
+    public StageManager StageManager => stageManager;
     public ScoreManager ScoreManager => GetComponent<ScoreManager>();
     public EnemyContainer EnemyContainer => enemyContainer;
     
