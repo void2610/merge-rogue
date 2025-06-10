@@ -18,7 +18,7 @@ public class DisturbBall : BallBase
         var (b1, b2) = mergeData;
         var pos = (b2.transform.position - b1.transform.position) / 2;
         var distance = Vector3.Distance(this.transform.position, pos);
-        if (distance < 2f)
+        if (distance < 1f)
         {
             this.EffectAndDestroy(null);
         }

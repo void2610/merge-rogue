@@ -28,6 +28,12 @@ public class StageMapRenderer : MonoBehaviour
 
         // ノードを描画
         DrawNodes(mapNodes, mapSize);
+        
+        // PlayerIconをノードの上に表示するため最後に移動
+        if (_playerIconObj != null)
+        {
+            _playerIconObj.transform.SetAsLastSibling();
+        }
     }
 
     private void ClearMap()

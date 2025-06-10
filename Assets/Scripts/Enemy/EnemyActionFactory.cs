@@ -136,24 +136,24 @@ public static class EnemyActionFactory
     }
 
     [EnemyAction]
-    public static EnemyActionData DistarbBallAction(EnemyBase self, int count)
+    public static EnemyActionData DisturbBallAction(EnemyBase self, int _)
     {
         return new EnemyActionData
         {
             name = "お邪魔ボール",
             type = ActionType.Debuff,
-            Action = () => { MergeManager.Instance.CreateDisturbBall(count); }
+            Action = () => { MergeManager.Instance.CreateDisturbBall(2); }
         };
     }
     
     [EnemyAction]
-    public static EnemyActionData RedBombBallAction(EnemyBase self, int count)
+    public static EnemyActionData RedBombBallAction(EnemyBase self, int _)
     {
         return new EnemyActionData
         {
             name = "赤爆弾",
             type = ActionType.Debuff,
-            Action = () => { MergeManager.Instance.CreateRedBomb(count); }
+            Action = () => { MergeManager.Instance.CreateRedBomb(1); }
         };
     }
     
