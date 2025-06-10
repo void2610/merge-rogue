@@ -13186,10 +13186,6 @@ MonoBehaviour:
     probability: 1
     icon: {fileID: 21300000, guid: 1dd6475f82f984568846c15a1033794f, type: 3}
     color: {r: 0.05660379, g: 0.05660379, b: 0.05660379, a: 1}
-  - stageType: 6
-    probability: 1
-    icon: {fileID: 21300000, guid: 1dd6475f82f984568846c15a1033794f, type: 3}
-    color: {r: 0.05660379, g: 0.05660379, b: 0.05660379, a: 0}
   mapSize: {x: 16, y: 7}
   pathCount: 9
   startStage: 0
