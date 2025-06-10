@@ -242,29 +242,10 @@ public class MergeManager : MonoBehaviour
         //         .SetEase(Ease.OutExpo);
         // }).Forget();
         
-        // ヒットストップ
-        Time.timeScale = 0.1f;
-        await UniTask.Delay((int)(350 / GameManager.Instance.TimeScale), DelayType.UnscaledDeltaTime);
-        Time.timeScale = GameManager.Instance.TimeScale;
+        // ヒットストップ（Fixed Timestepを動的に変更）
+        await ApplyDynamicHitStop(0.6f);
         
         ParticleManager.Instance.MergeText((int)atk, p, type.GetColor());
-        
-        // TODO: Freeze状態なら行動しない
-        // var freeze = (FreezeEffect)GameManager.Instance.Player.StatusEffects.Find(e => e.Type == StatusEffectType.Freeze);
-        // var isFrozen = freeze != null && freeze.IsFrozen();
-        // if (isFrozen)
-        // {
-        //     GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
-        //     return;
-        // }
-        
-        // TODO: ハイスコア更新
-        // var totalAttack = _attackCounts.Sum(a => a.Value);
-        // if (PlayerPrefs.GetInt("maxAttack", 0) < totalAttack)
-        // {
-        //     UnityroomApiClient.Instance.SendScore(2, totalAttack, ScoreboardWriteMode.HighScoreDesc);
-        //     PlayerPrefs.SetInt("maxAttack", totalAttack);
-        // }
     }
     
     public void SpawnBallFromLevel(int level, Vector3 p, Quaternion q)
@@ -438,5 +419,52 @@ public class MergeManager : MonoBehaviour
             SkipBall();
             DecideNextBall().Forget();
         }
+    }
+    
+    private async UniTask ApplyDynamicHitStop(float duration)
+    {
+        // 元のFixed Timestepを保存
+        var originalFixedTimestep = Time.fixedDeltaTime;
+        var originalTimeScale = GameManager.Instance.TimeScale;
+        
+        // フェーズ1: 完全停止（最初の60%の時間）
+        Time.fixedDeltaTime = originalFixedTimestep * 0.005f; // 物理演算を超高精度に（200倍）
+        Time.timeScale = originalTimeScale * 0.01f; // ほぼ完全停止（1%速度）
+        
+        await UniTask.Delay((int)(duration * 0.6f * 1000), DelayType.UnscaledDeltaTime);
+        
+        // フェーズ2: DOTweenを使って滑らかに加速（次の30%の時間）
+        var phase2Duration = duration * 0.3f;
+        // TimeScale用のDOTween
+        var t1 = DOTween.To(
+            () => Time.timeScale,
+            x => Time.timeScale = x,
+            originalTimeScale * 0.3f,
+            phase2Duration
+        ).SetEase(Ease.OutCubic).SetUpdate(true).ToUniTask();
+        // FixedDeltaTime用のDOTween
+        var t2 = DOTween.To(
+            () => Time.fixedDeltaTime,
+            x => Time.fixedDeltaTime = x,
+            originalFixedTimestep * 0.02f,
+            phase2Duration
+        ).SetEase(Ease.OutCubic).SetUpdate(true).ToUniTask();
+        await UniTask.WhenAll(t1, t2);
+        
+        // フェーズ3: 急速に元に戻る（最後の10%の時間）
+        var phase3Duration = duration * 0.1f;
+        var t3 = DOTween.To(
+            () => Time.timeScale,
+            x => Time.timeScale = x,
+            originalTimeScale,
+            phase3Duration
+        ).SetEase(Ease.OutBack).SetUpdate(true).ToUniTask();
+        var t4 = DOTween.To(
+            () => Time.fixedDeltaTime,
+            x => Time.fixedDeltaTime = x,
+            originalFixedTimestep,
+            phase3Duration
+        ).SetEase(Ease.OutBack).SetUpdate(true).ToUniTask();
+        await UniTask.WhenAll(t3, t4); 
     }
 }
