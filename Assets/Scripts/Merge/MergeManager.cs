@@ -113,7 +113,7 @@ public class MergeManager : MonoBehaviour
     
     private void CreateRedBombInternal()
     {
-        var bomb = InventoryManager.Instance.GetSpecialBallByClassName("RedBombBall", 3);
+        var bomb = InventoryManager.Instance.GetSpecialBallByClassName("RedBombBall", 2);
         bomb.transform.position = GetValidRandomPosition();
         bomb.transform.SetParent(_ballContainer.transform);
         bomb.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
