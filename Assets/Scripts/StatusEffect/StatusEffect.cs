@@ -15,6 +15,7 @@ public enum StatusEffectType
     Power,
     Rage,
     Curse,
+    Confusion,
     // Stun,
     // Weakness,
     // Drain,  
@@ -182,6 +183,7 @@ public static class StatusEffectFactory
             StatusEffectType.Power => new PowerEffect(stack),
             StatusEffectType.Rage => new RageEffect(stack),
             StatusEffectType.Curse => new CurseEffect(stack),
+            StatusEffectType.Confusion => new ConfusionEffect(stack),
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
         
@@ -212,6 +214,7 @@ public static class StatusEffectFactory
             StatusEffectType.Power => new Color(1, 0.3f, 0),
             StatusEffectType.Rage => new Color(1, 0.2f, 0.5f),
             StatusEffectType.Curse => new Color(0.3f, 0.1f, 0.3f),
+            StatusEffectType.Confusion => new Color(1, 0.8f, 0.2f),
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
     }
@@ -230,6 +233,7 @@ public static class StatusEffectFactory
             StatusEffectType.Power => "パワー",
             StatusEffectType.Rage => "怒り",
             StatusEffectType.Curse => "呪い",
+            StatusEffectType.Confusion => "混乱",
             _ => throw new ArgumentException("Invalid StatusEffectType")
         };
     }
@@ -371,4 +375,10 @@ public class CurseEffect : StatusEffectBase
         for (var i = 0; i < count; i++)
             MergeManager.Instance.CreateDisturbBall();
     }
+}
+
+// (プレイヤー専用)マージ時のカーソル操作が勝手に動く
+public class ConfusionEffect : StatusEffectBase
+{
+    public ConfusionEffect(int initialStack) : base(StatusEffectType.Confusion, initialStack, EffectTiming.OnTurnEnd, false) { }
 }

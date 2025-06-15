@@ -220,7 +220,6 @@ public class MergeManager : MonoBehaviour
         var rerollCount = 0;
         while (ballRank == _lastBallRank && rerollCount < maxRerolls)
         {
-            Debug.Log($"Rerolling ball: (Rank: {ballRank}), attempt {rerollCount + 1}");
             Destroy(ball);
             ball = InventoryManager.Instance.GetRandomBall(position);
             ballBase = ball.GetComponent<BallBase>();
@@ -354,6 +353,40 @@ public class MergeManager : MonoBehaviour
         _stopTimers = null;
         return true;
     }
+    
+    private Vector3 ApplyConfusionToPosition(Vector3 originalPosition, float limit, float ballSize)
+    {
+        var player = GameManager.Instance.Player;
+        var confusionEffect = player.StatusEffects.FirstOrDefault(e => e.Type == StatusEffectType.Confusion);
+        if (confusionEffect is not { StackCount: > 0 }) return originalPosition;
+        
+        var confusionIntensity = confusionEffect.StackCount * 0.2f;
+        var waveOffset = Mathf.Sin(Time.time * 2.0f) * confusionIntensity;
+        // プレイヤーの入力方向と逆方向にも少し押し戻す
+        var resistanceOffset = -GetPlayerInputDirection() * confusionIntensity * 0.5f;
+        var confusedPosition = originalPosition;
+        confusedPosition.x += waveOffset + resistanceOffset;
+        // 壁の制限内に収める
+        confusedPosition.x = Mathf.Clamp(confusedPosition.x, -limit + ballSize / 2, limit - ballSize / 2);
+        return confusedPosition;
+
+    }
+    
+    private float GetPlayerInputDirection()
+    {
+        float direction = 0f;
+        
+        if (InputProvider.Instance.Gameplay.LeftMove.IsPressed())
+        {
+            direction = -1f;
+        }
+        else if (InputProvider.Instance.Gameplay.RightMove.IsPressed())
+        {
+            direction = 1f;
+        }
+        
+        return direction;
+    }
 
     private void Awake()
     {
@@ -419,7 +452,9 @@ public class MergeManager : MonoBehaviour
             }
         }
 
-        fallAnchor.transform.position = _currentBallPosition + new Vector3(0, 0, 0);
+        // 混乱状態の場合はランダムなオフセットを適用
+        var finalPosition = ApplyConfusionToPosition(_currentBallPosition, _limit, size);
+        fallAnchor.transform.position = finalPosition;
         
         if (Time.time - _lastFallTime <= COOL_TIME || RemainingBalls < 0) return;
 
