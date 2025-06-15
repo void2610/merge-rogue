@@ -29,6 +29,7 @@ public class MergeManager : MonoBehaviour
     public GameObject NextBall { get; private set; } = null;
     public MergeWall Wall => wall;
     
+    private int _lastBallRank = -1;
     private const float MOVE_SPEED = 1.0f;
     private const float COOL_TIME = 1.0f;
     private readonly List<float> _attacks = new() { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 3.75f, 4.0f};
@@ -79,8 +80,7 @@ public class MergeManager : MonoBehaviour
     
     public void CreateRandomBall()
     {
-        var ball = InventoryManager.Instance.GetRandomBall();
-        ball.transform.position = GetValidRandomPosition();
+        var ball = GetRandomBallWithReroll(GetValidRandomPosition());
         ball.transform.SetParent(_ballContainer.transform);
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         ball.GetComponent<BallBase>().Unfreeze();
@@ -197,17 +197,39 @@ public class MergeManager : MonoBehaviour
     private void Reset()
     {
         RemainingBalls = _ballPerOneTurn;
-        if (_ballPerOneTurn > 1)
-        {
-            NextBall = InventoryManager.Instance.GetRandomBall(nextBallPosition);
-        }
-        CurrentBall = InventoryManager.Instance.GetRandomBall(fallAnchor.transform.position - Vector3.up * 0.2f);
+        
+        CurrentBall = GetRandomBallWithReroll(fallAnchor.transform.position - Vector3.up * 0.2f);
         CurrentBall.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         fallAnchor.GetComponent<HingeJoint2D>().connectedBody = CurrentBall.GetComponent<Rigidbody2D>();
+        
+        if (_ballPerOneTurn > 1)
+            NextBall = GetRandomBallWithReroll(nextBallPosition);
         
         ballCountText.text = RemainingBalls + "/" + _ballPerOneTurn;
         fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = true;
         arrow.DOFade(1, 0.5f).Forget();
+    }
+    
+    private GameObject GetRandomBallWithReroll(Vector3 position)
+    {
+        const int maxRerolls = 3;
+        var ball = InventoryManager.Instance.GetRandomBall(position);
+        var ballBase = ball.GetComponent<BallBase>();
+        var ballRank = ballBase.Rank;
+        
+        var rerollCount = 0;
+        while (ballRank == _lastBallRank && rerollCount < maxRerolls)
+        {
+            Debug.Log($"Rerolling ball: (Rank: {ballRank}), attempt {rerollCount + 1}");
+            Destroy(ball);
+            ball = InventoryManager.Instance.GetRandomBall(position);
+            ballBase = ball.GetComponent<BallBase>();
+            ballRank = ballBase.Rank;
+            rerollCount++;
+        }
+        
+        _lastBallRank = ball.GetComponent<BallBase>().Rank;
+        return ball;
     }
 
     public void Attack(AttackType type, float atk, Vector3 p) => AttackInternal(type, atk, p).Forget();
@@ -296,8 +318,7 @@ public class MergeManager : MonoBehaviour
 
             if (RemainingBalls > 1)
             {
-                NextBall = InventoryManager.Instance.GetRandomBall();
-                NextBall.transform.position = nextBallPosition;
+                NextBall = GetRandomBallWithReroll(nextBallPosition);
             }
             else
             {
