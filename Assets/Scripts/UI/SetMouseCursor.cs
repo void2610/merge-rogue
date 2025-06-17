@@ -3,11 +3,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 using VContainer;
-using VContainer.Unity;
 
 /// <summary>
 /// マウスカーソル設定コンポーネント
-/// UIエレメントにアタッチしてカーソル変更を行います
+/// UIエレメントにアタッチしてカーソル変更を行う
 /// </summary>
 public class SetMouseCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {

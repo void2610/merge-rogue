@@ -34,7 +34,7 @@ public class TitleMenu : MonoBehaviour
     private IVersionService _versionService;
     private IGameSettingsService _gameSettingsService;
     private IVirtualMouseService _virtualMouseService;
-    private InputProvider _inputProvider;
+    private IInputProvider _inputProvider;
     
     [Inject]
     public void InjectDependencies(
@@ -43,7 +43,7 @@ public class TitleMenu : MonoBehaviour
         IVersionService versionService,
         IGameSettingsService gameSettingsService,
         IVirtualMouseService virtualMouseService,
-        InputProvider inputProvider)
+        IInputProvider inputProvider)
     {
         this._creditService = creditService;
         this._licenseService = licenseService;

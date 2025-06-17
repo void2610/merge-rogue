@@ -1,31 +1,29 @@
 using UnityEngine;
+using System;
 
 /// <summary>
-/// MainScene用のInputProvider（シングルトン）
-/// VContainerを使用しないシーンで従来通り動作する
+/// 純粋なC#クラスとして実装された入力プロバイダーサービス
+/// VContainerで管理され、全シーンで共有される
 /// </summary>
-public class InputProvider : MonoBehaviour, IInputProvider
+public class InputProviderService : IInputProvider, IDisposable
 {
-    public static InputProvider Instance { get; private set; }
+    private readonly InputSystem_Actions _inputActions;
+    
     public InputSystem_Actions.GameplayActions Gameplay => _inputActions.Gameplay;
     public InputSystem_Actions.UIActions UI => _inputActions.UI;
-    private InputSystem_Actions _inputActions;
     
-    public Vector2 GetMousePosition () => _inputActions.Gameplay.MousePosition.ReadValue<Vector2>();
+    public Vector2 GetMousePosition() => _inputActions.Gameplay.MousePosition.ReadValue<Vector2>();
     public bool IsSkipButtonPressed() => _inputActions.UI.Skip.triggered;
     public Vector2 GetScrollSpeed() => _inputActions.UI.Scroll.ReadValue<Vector2>();
     
-    private void Awake()
+    public InputProviderService()
     {
-        if (!Instance) Instance = this;
-        else Destroy(this);
-        
         _inputActions = new InputSystem_Actions();
         Gameplay.Enable();
         UI.Enable();
     }
     
-    private void OnDestroy()
+    public void Dispose()
     {
         Gameplay.Disable();
         UI.Disable();
