@@ -23,5 +23,6 @@ public class TitleLifetimeScope : LifetimeScope
         builder.Register<ICreditService, CreditService>(Lifetime.Singleton).WithParameter("textAsset", creditTextAsset);
         builder.Register<ILicenseService, LicenseService>(Lifetime.Singleton).WithParameter("licenseManager", licenseManager);
         builder.Register<IVersionService, VersionService>(Lifetime.Singleton).WithParameter("version", gameVersion);
+        builder.Register<IGameSettingsService, GameSettingsService>(Lifetime.Singleton);
     }
 }
