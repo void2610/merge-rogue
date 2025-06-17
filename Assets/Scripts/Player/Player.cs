@@ -15,7 +15,7 @@ public class Player : MonoBehaviour, IEntity
     public readonly ReactiveProperty<int> MaxHealth = new(100);
     public int MaxExp { get; private set; } = 20;
     public int Level { get; set; } = 1;
-    public List<StatusEffectBase> StatusEffects { get; } = new();
+    public Dictionary<StatusEffectType, int> StatusEffectStacks { get; } = new();
     public const int MAX_LEVEL = 22;
 
     private readonly List<int> _levelUpExp = new() { 20, 40, 80, 100, 150, 200, 250, 300, 350, 400, 500, 600, 700, 800, 900, 1000, 1200, 1400, 1600, 1800, 2000 };
@@ -24,60 +24,34 @@ public class Player : MonoBehaviour, IEntity
     
     public StatusEffectUI StatusEffectUI => statusEffectUI;
     
-    public void AddStatusEffect(StatusEffectBase effect)
+    public void AddStatusEffect(StatusEffectType type, int stacks)
     {
-        var existingEffect = StatusEffects.Find(e => e.Type == effect.Type);
-        if (existingEffect != null)
-            existingEffect.AddStack(effect.StackCount);
-        else
-        {
-            effect.SetEntityPosition(this.transform.position, true);
-            StatusEffects.Add(effect);
-        }
-        statusEffectUI.UpdateUI(StatusEffects);
+        StatusEffectProcessor.AddStatusEffect(this, type, stacks);
     }
     
-    public void RemoveStatusEffect(StatusEffectType type, int stack)
+    public void RemoveStatusEffect(StatusEffectType type, int stacks)
     {
-        var effect = StatusEffects.Find(e => e.Type == type);
-        if (effect == null) return;
-        if (effect.ReduceStack(stack))
-            StatusEffects.Remove(effect);
-        statusEffectUI.UpdateUI(StatusEffects);
+        StatusEffectProcessor.RemoveStatusEffect(this, type, stacks);
     }
     
     public async UniTask UpdateStatusEffects()
     {
-        for (var i = StatusEffects.Count - 1; i >= 0; i--)
-        {
-            StatusEffects[i].OnTurnEnd(this);
-            if (StatusEffects[i].ReduceStack()) StatusEffects.RemoveAt(i);
-            await UniTask.Delay((int)(500 * GameManager.Instance.TimeScale));
-        }
-        statusEffectUI.UpdateUI(StatusEffects);
+        await StatusEffectProcessor.ProcessTurnEnd(this);
     }
     
     public int ModifyIncomingDamage(int amount)
     {
-        var v = StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyDamage(this, current));
-        statusEffectUI.UpdateUI(StatusEffects);
-        return v;
+        return StatusEffectProcessor.ModifyIncomingDamage(this, amount);
     }
     
     public int ModifyOutgoingAttack(AttackType type, int attack)
     {
-        var modifiedAttack = StatusEffects.Aggregate(attack, (current, effect) => effect.ModifyAttack(this, type, current));
-        statusEffectUI.UpdateUI(StatusEffects);
-        return modifiedAttack;
+        return StatusEffectProcessor.ModifyOutgoingAttack(this, type, attack);
     }
     
     public void OnBattleEnd()
     {
-        for (var i = StatusEffects.Count - 1; i >= 0; i--)
-        {
-            if (StatusEffects[i].OnBattleEnd(this)) StatusEffects.RemoveAt(i);
-        }
-        statusEffectUI.UpdateUI(StatusEffects);
+        StatusEffectProcessor.OnBattleEnd(this);
     }
     
     public void Damage(AttackType type, int d)

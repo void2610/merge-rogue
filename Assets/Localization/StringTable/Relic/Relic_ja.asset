@@ -151,11 +151,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 543452210126851
-    m_Localized: "\u4E0D\u5B89\u5B9A\u306A\u5C0E\u706B\u7DDA"
+    m_Localized: "\u5909\u7570\u306E\u970A\u85AC"
     m_Metadata:
       m_Items: []
   - m_Id: 543452210126852
-    m_Localized: "\u30C0\u30E1\u30FC\u30B8\u309220\u53D7\u3051\u308B\u305F\u3073\u306B\u30D0\u30AF\u30C0\u30F3\u3092\u751F\u307F\u51FA\u3059"
+    m_Localized: "\u30D7\u30EC\u30A4\u30E4\u30FC\u306B\u72B6\u614B\u7570\u5E38\u304C\u8FFD\u52A0\u3055\u308C\u305F\u6642\u3001\u30E9\u30F3\u30C0\u30E0\u306A\u30DC\u30FC\u30EB\u3092\u30DE\u30FC\u30B8\u30A8\u30EA\u30A2\u306B\u751F\u6210\u3059\u308B\u3002"
     m_Metadata:
       m_Items: []
   - m_Id: 543452210126853
@@ -331,15 +331,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 544926814167049
-    m_Localized: Santa
-    m_Metadata:
-      m_Items: []
-  - m_Id: 544926814167050
     m_Localized: "\u3054\u6A5F\u5ACC\u306A\u9774\u4E0B"
     m_Metadata:
       m_Items: []
-  - m_Id: 544926814167051
+  - m_Id: 544926814167050
     m_Localized: "\u4F11\u61A9\u6642\u306B\u30E9\u30F3\u30C0\u30E0\u306A\u30EC\u30EA\u30C3\u30AF\u30921\u3064\u5F97\u308B"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167051
+    m_Localized: ---
     m_Metadata:
       m_Items: []
   - m_Id: 544926814167052

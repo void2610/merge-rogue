@@ -357,10 +357,10 @@ public class MergeManager : MonoBehaviour
     private Vector3 ApplyConfusionToPosition(Vector3 originalPosition, float limit, float ballSize)
     {
         var player = GameManager.Instance.Player;
-        var confusionEffect = player.StatusEffects.FirstOrDefault(e => e.Type == StatusEffectType.Confusion);
-        if (confusionEffect is not { StackCount: > 0 }) return originalPosition;
+        if (!StatusEffectProcessor.IsConfused(player)) return originalPosition;
         
-        var confusionIntensity = confusionEffect.StackCount * 0.2f;
+        var confusionStacks = player.StatusEffectStacks.GetValueOrDefault(StatusEffectType.Confusion, 0);
+        var confusionIntensity = confusionStacks * 0.2f;
         var waveOffset = Mathf.Sin(Time.time * 2.0f) * confusionIntensity;
         // プレイヤーの入力方向と逆方向にも少し押し戻す
         var resistanceOffset = -GetPlayerInputDirection() * confusionIntensity * 0.5f;

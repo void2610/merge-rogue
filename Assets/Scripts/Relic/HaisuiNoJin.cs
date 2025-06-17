@@ -15,7 +15,7 @@ public class HaisuiNoJin : RelicBase
         // 敵撃破時に無敵状態異常を付与
         AddSubscription(RelicHelpers.SubscribeEnemyDefeated(enemy =>
         {
-            StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Invincible, 1);
+            StatusEffects.AddToPlayer(StatusEffectType.Invincible, 1);
             ActivateUI();
         }));
     }

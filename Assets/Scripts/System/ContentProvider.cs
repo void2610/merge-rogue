@@ -26,6 +26,9 @@ public class ContentProvider : MonoBehaviour
     [SerializeField] private List<ContentDataList> eventList;
     [SerializeField] private BallDataList ballList;
     [SerializeField] private RelicDataList relicList;
+    [SerializeField] private StatusEffectDataList statusEffectList;
+    
+    public StatusEffectDataList StatusEffectList => statusEffectList;
     [SerializeField] private SerializableDictionary<BallShapeType, Sprite> ballBaseImages;
     
     private int _act = 0;
@@ -222,6 +225,7 @@ public class ContentProvider : MonoBehaviour
         
         ballList.Register();
         relicList.Register();
+        statusEffectList.Register();
         
         #if DEMO_PLAY
             // コピーを作成して使用可能なものだけを残す

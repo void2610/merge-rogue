@@ -31,7 +31,7 @@ public class StrongBurnWhenManyBalls : RelicBase
         // 敵が複数いる場合は最初の敵以外にBurnを付与
         for (int i = 1; i < enemies.Count; i++)
         {
-            StatusEffectFactory.AddStatusEffect(enemies[i], StatusEffectType.Burn, 1);
+            StatusEffects.AddToEntity(enemies[i], StatusEffectType.Burn, 1);
         }
         
         UI?.ActivateUI();

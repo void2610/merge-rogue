@@ -1,21 +1,11 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class StatusEffectUI : MonoBehaviour
 {
-    [Serializable]
-    private class StatusEffectIcon
-    {
-        public StatusEffectType type;
-        public Sprite sprite;
-    }
-    
-    [SerializeField] private List<StatusEffectIcon> statusEffectSprites;
     [SerializeField] private GameObject statusEffectIconPrefab;
     [SerializeField] private float iconSize = 0.0125f;
     [SerializeField] private Vector2 offset = new(-0.68f, 0.23f);
@@ -36,35 +26,43 @@ public class StatusEffectUI : MonoBehaviour
         return icons;
     }
 
-    public void UpdateUI(List<StatusEffectBase> effects)
+    public void UpdateUI(Dictionary<StatusEffectType, int> effectStacks)
     {
         foreach (var icon in _statusEffectIcons.Values)
             if(icon) icon.SetActive(false);
         
-        for (var i = 0; i < effects.Count; i++)
+        var i = 0;
+        foreach (var kvp in effectStacks)
         {
-            var effect = effects[i];
-            var icon = _statusEffectIcons[effect.Type];
+            var type = kvp.Key;
+            var stackCount = kvp.Value;
+            if (!_statusEffectIcons.ContainsKey(type)) continue;
+            
+            var icon = _statusEffectIcons[type];
             if (!icon) continue;
             icon.SetActive(true);
             icon.transform.position = this.transform.position + new Vector3( offset.x + i * margin, offset.y, 0);
-            icon.transform.Find("Stack").GetComponent<TextMeshProUGUI>().text = effect.StackCount.ToString();
+            icon.transform.Find("Stack").GetComponent<TextMeshProUGUI>().text = stackCount.ToString();
+            i++;
         }
     }
 
-    private void Awake()
+    private void Start()
     {
-        foreach (StatusEffectType type in Enum.GetValues(typeof(StatusEffectType)))
+        var statusEffectDataList = ContentProvider.Instance.StatusEffectList;
+        
+        foreach (var statusEffectData in statusEffectDataList.list)
         {
-            var icon = statusEffectSprites.Find(s => s.type == type).sprite;
-            if (icon == null) continue;
+            var type = statusEffectData.type;
+            var icon = statusEffectData.icon;
             var go = Instantiate(statusEffectIconPrefab, transform);
             go.transform.localScale = new Vector3(iconSize, iconSize, 1);
             go.transform.Find("Icon").GetComponent<Image>().sprite = icon;
             go.transform.Find("Stack").GetComponent<TextMeshProUGUI>().text = "";
             _statusEffectIcons[type] = go;
             
-            go.AddSubDescriptionWindowEvent(type.GetStatusEffectWord());
+            var displayName = StatusEffectManager.Instance.GetLocalizedName(type);
+            go.AddSubDescriptionWindowEvent(displayName);
             go.SetActive(false);
         }
     }

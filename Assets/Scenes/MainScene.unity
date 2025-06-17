@@ -14433,7 +14433,8 @@ MonoBehaviour:
   relicGridSize: {x: 3, y: 9}
   relicOffset: {x: 40, y: 36}
   relicUISize: 0.75
-  testRelics: []
+  testRelics:
+  - {fileID: 11400000, guid: 64fe3870994dc4a6f8c7c24742c0f02b, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -17822,6 +17823,50 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1122773976}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1132894746
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1132894748}
+  - component: {fileID: 1132894747}
+  m_Layer: 0
+  m_Name: StatusEffectManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1132894747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132894746}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ecde19f4fadaa444fbc4b306545f89c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1132894748
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1132894746}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -25610,6 +25655,7 @@ MonoBehaviour:
       probability: 1
   ballList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
   relicList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
+  statusEffectList: {fileID: 11400000, guid: b4373a73fdb54e4db1f4000b1989152a, type: 2}
   ballBaseImages:
     _list:
     - key: 0
@@ -33947,3 +33993,4 @@ SceneRoots:
   - {fileID: 507554972}
   - {fileID: 4695971492337070555}
   - {fileID: 291082603}
+  - {fileID: 1132894748}

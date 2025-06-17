@@ -87,6 +87,29 @@ public enum AttackType
     Third,
 }
 
+public enum StatusEffectType
+{
+    Burn,
+    Regeneration,
+    Shield,
+    Freeze,
+    Invincible,
+    Shock,
+    Power,
+    Rage,
+    Curse,
+    Confusion,
+}
+
+public enum StatusEffectTiming
+{
+    OnTurnEnd,
+    OnBattleEnd,
+    OnAttack,
+    OnDamage,
+    Random,
+}
+
 public static class MyEnumUtil
 {
     /// <summary>

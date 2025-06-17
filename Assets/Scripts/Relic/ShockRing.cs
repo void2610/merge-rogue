@@ -14,7 +14,7 @@ public class ShockRing : RelicBase
                 var enemies = EnemyContainer.Instance.GetAllEnemies();
                 if (enemies.Count > 0)
                 {
-                    StatusEffectFactory.AddStatusEffect(enemies[0], StatusEffectType.Shock, 1);
+                    StatusEffects.AddToEntity(enemies[0], StatusEffectType.Shock, 1);
                     ActivateUI();
                 }
                 return current; // 値は変更しない

@@ -158,11 +158,12 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 543452210126851
-    m_Localized: Unstable fuse
+    m_Localized: Elixir of Mutation
     m_Metadata:
       m_Items: []
   - m_Id: 543452210126852
-    m_Localized: Generates a bomb every time 20 damage is taken
+    m_Localized: When a status abnormality is added to the player, a random ball
+      is spawned in the merge area.
     m_Metadata:
       m_Items: []
   - m_Id: 543452210126853
@@ -349,15 +350,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 544926814167049
-    m_Localized: Santa
-    m_Metadata:
-      m_Items: []
-  - m_Id: 544926814167050
     m_Localized: Happy Socks
     m_Metadata:
       m_Items: []
-  - m_Id: 544926814167051
+  - m_Id: 544926814167050
     m_Localized: Gain a random relic when resting
+    m_Metadata:
+      m_Items: []
+  - m_Id: 544926814167051
+    m_Localized: ---
     m_Metadata:
       m_Items: []
   - m_Id: 544926814167052

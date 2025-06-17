@@ -47,6 +47,40 @@ public class DescriptionWindow : MonoBehaviour
     public void RemoveTextFromObservation(GameObject text) => _otherTriggerObjects.Remove(text);
     
     /// <summary>
+    /// 状態異常の説明を取得試行
+    /// </summary>
+    private bool TryGetStatusEffectDescription(string word, out string description, out Color textColor)
+    {
+        description = "";
+        textColor = Color.white;
+        
+        // StatusEffectManagerが初期化されていない場合は失敗
+        if (StatusEffectManager.Instance == null) return false;
+        
+        // 状態異常名から対応するStatusEffectTypeを取得
+        if (System.Enum.TryParse<StatusEffectType>(word, true, out var statusEffectType))
+        {
+            description = StatusEffects.GetDescription(statusEffectType);
+            textColor = StatusEffects.GetColor(statusEffectType);
+            return !string.IsNullOrEmpty(description);
+        }
+        
+        // 日本語名での検索も試行
+        foreach (StatusEffectType type in System.Enum.GetValues(typeof(StatusEffectType)))
+        {
+            var localizedName = StatusEffects.GetLocalizedName(type);
+            if (localizedName.Equals(word, System.StringComparison.OrdinalIgnoreCase))
+            {
+                description = StatusEffects.GetDescription(type);
+                textColor = StatusEffects.GetColor(type);
+                return !string.IsNullOrEmpty(description);
+            }
+        }
+        
+        return false;
+    }
+    
+    /// <summary>
     /// マウスが入った際のウィンドウ表示と、ホバー状態を待つ処理
     /// </summary>
     /// <param name="data">表示するデータオブジェクト（BallData/RelicDataなど）</param>
@@ -181,8 +215,29 @@ public class DescriptionWindow : MonoBehaviour
         if(_subWindows.ContainsKey((parent, word))) return;
         _subWindows.Where(pair => pair.Key.Item1 == parent).ToList().ForEach(pair => HideSubWindow(parent, pair.Key.Item2));
         
-        var description = wordDictionary.GetWordEntry(word).description;
-        var textColor = wordDictionary.GetWordEntry(word).textColor;
+        string description;
+        Color textColor;
+        
+        // 状態異常の説明を試行
+        if (TryGetStatusEffectDescription(word, out description, out textColor))
+        {
+            // StatusEffectDataから取得成功
+        }
+        else
+        {
+            // WordDictionaryから取得
+            var wordEntry = wordDictionary.GetWordEntry(word);
+            if (wordEntry != null)
+            {
+                description = wordEntry.description;
+                textColor = wordEntry.textColor;
+            }
+            else
+            {
+                description = $"説明が見つかりません: {word}";
+                textColor = Color.white;
+            }
+        }
         
         var g = Instantiate(subWindowPrefab, windowContainer.transform);
         g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = $"<color=#{ColorUtility.ToHtmlStringRGB(textColor)}>{word}</color>";
