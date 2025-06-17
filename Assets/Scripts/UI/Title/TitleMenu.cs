@@ -9,11 +9,11 @@ using Cysharp.Threading.Tasks;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.LowLevel;
+using VContainer;
+using SyskenTLib.LicenseMaster;
 
 public class TitleMenu : MonoBehaviour
 {
-    public static TitleMenu Instance { get; private set; }
-    
     [SerializeField] private Image fadeImage;
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider seSlider;
@@ -23,12 +23,37 @@ public class TitleMenu : MonoBehaviour
     [SerializeField] private DescriptionWindow descriptionWindow;
     [SerializeField] private GameObject virtualMouse;
     
-    private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
-
-    public GameObject GetTopCanvasGroup() => canvasGroups.Find(c => c.alpha > 0)?.gameObject;
-    public bool IsVirtualMouseActive() => virtualMouse.GetComponent<MyVirtualMouseInput>().isActive;
+    // Title content UI elements
+    [SerializeField] private TextAsset creditTextAsset;
+    [SerializeField] private TextMeshProUGUI creditText;
+    [SerializeField] private RectTransform creditContent;
+    [SerializeField] private LicenseManager licenseManager;
+    [SerializeField] private TextMeshProUGUI licenseText;
+    [SerializeField] private RectTransform licenseContent;
+    [SerializeField] private TextMeshProUGUI versionText;
     
-    public void ResetSelectedGameObject()
+    private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
+    
+    // Service dependencies
+    private ICreditService _creditService;
+    private ILicenseService _licenseService;
+    private IVersionService _versionService;
+    
+    [Inject]
+    public void InjectDependencies(
+        ICreditService creditService,
+        ILicenseService licenseService,
+        IVersionService versionService)
+    {
+        this._creditService = creditService;
+        this._licenseService = licenseService;
+        this._versionService = versionService;
+    }
+
+    private GameObject GetTopCanvasGroup() => canvasGroups.Find(c => c.alpha > 0)?.gameObject;
+    private bool IsVirtualMouseActive() => virtualMouse.GetComponent<MyVirtualMouseInput>().isActive;
+
+    private void ResetSelectedGameObject()
     {
         var topCanvas = GetTopCanvasGroup();
         if (topCanvas)
@@ -42,8 +67,8 @@ public class TitleMenu : MonoBehaviour
             SelectionCursor.SetSelectedGameObjectSafe(startButton.gameObject);
         }
     }
-    
-    public ScrollRect GetActiveScrollRect()
+
+    private ScrollRect GetActiveScrollRect()
     {
         var topCanvas = GetTopCanvasGroup();
         if (topCanvas)
@@ -61,7 +86,7 @@ public class TitleMenu : MonoBehaviour
     /// 仮想マウスを任意の位置へ移動させるメソッド
     /// </summary>
     /// <param name="newPosition">移動先のスクリーン座標（ピクセル単位）</param>
-    public void MoveVirtualMouseToCenter()
+    private void MoveVirtualMouseToCenter()
     {
         var vm = virtualMouse.GetComponent<MyVirtualMouseInput>();
         var centerPos = new Vector2(Screen.width / 2f, Screen.height / 2f);
@@ -71,7 +96,7 @@ public class TitleMenu : MonoBehaviour
         virtualMouse.transform.position = Vector2.zero;
     }
 
-    public void ToggleVirtualMouse()
+    private void ToggleVirtualMouse()
     {
         if (IsVirtualMouseActive())
         {
@@ -182,14 +207,7 @@ public class TitleMenu : MonoBehaviour
     }
 
     private void Awake()
-    {
-        if (Instance == null) Instance = this;
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-        
+    {        
         // ScrollRectの初期化
         foreach(var scrollRect in FindObjectsByType<ScrollRect>(FindObjectsSortMode.None))
         {
@@ -243,7 +261,10 @@ public class TitleMenu : MonoBehaviour
         fadeImage.DOFade(0.0f, 1.0f);
         
         // 仮想マウスを無効化
-        ToggleVirtualMouse(); 
+        ToggleVirtualMouse();
+        
+        // Initialize title content using services
+        InitializeTitleContent();
         
         Debug.Log("TitleMenu Start");
     }
@@ -266,6 +287,63 @@ public class TitleMenu : MonoBehaviour
             var speed = InputProvider.Instance.GetScrollSpeed();
             var newPos = sr.verticalNormalizedPosition + speed.y * Time.unscaledDeltaTime;
             sr.verticalNormalizedPosition = Mathf.Clamp01(newPos);
+        }
+    }
+    
+    private void InitializeTitleContent()
+    {
+        // バージョンテキストの初期化
+        if (_versionService != null && versionText)
+        {
+            var versionString = _versionService.GetVersionText();
+            versionText.text = versionString;
+            
+            #if DEMO_PLAY
+            Debug.Log("Demo Build");
+            #else
+            Debug.Log("Full Build");
+            #endif
+        }
+        
+        // クレジットテキストの初期化
+        if (_creditService != null && creditTextAsset != null && creditText)
+        {
+            var creditString = _creditService.GetCreditText(creditTextAsset);
+            creditText.text = creditString;
+            UpdateContentSize(creditText, creditContent);
+        }
+        
+        // ライセンステキストの初期化
+        if (_licenseService != null && licenseManager != null && licenseText)
+        {
+            var licenseString = _licenseService.GetLicenseText(licenseManager);
+            licenseText.text = licenseString;
+            UpdateContentSize(licenseText, licenseContent);
+        }
+    }
+    
+    private void UpdateContentSize(TextMeshProUGUI text, RectTransform content)
+    {
+        if (!text || !content) return;
+        
+        var preferredHeight = text.GetPreferredValues().y;
+        content.sizeDelta = new Vector2(content.sizeDelta.x, preferredHeight);
+    }
+    
+    /// <summary>
+    /// クレジットリンククリックハンドラー（UIイベントから呼び出し可能）
+    /// </summary>
+    /// <param name="position">クリック位置</param>
+    public void OnCreditLinkClick(Vector2 position)
+    {
+        if (!creditText) return;
+        
+        var linkIndex = TMP_TextUtilities.FindIntersectingLink(creditText, position, Camera.main);
+        if (linkIndex != -1)
+        {
+            var linkInfo = creditText.textInfo.linkInfo[linkIndex];
+            var url = linkInfo.GetLinkID();
+            Application.OpenURL(url);
         }
     }
 }
