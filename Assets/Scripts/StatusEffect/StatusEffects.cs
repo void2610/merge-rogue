@@ -18,13 +18,7 @@ public static class StatusEffects
     /// </summary>
     public static void AddToEntity(IEntity target, StatusEffectType type, int stackCount = 1)
     {
-        if (StatusEffectManager.Instance == null)
-        {
-            Debug.LogError("StatusEffectManager is not initialized");
-            return;
-        }
-        
-        StatusEffectManager.Instance.AddStatusEffect(target, type, stackCount);
+        StatusEffectManager.Instance?.AddStatusEffect(target, type, stackCount);
     }
     
     /// <summary>
@@ -40,13 +34,7 @@ public static class StatusEffects
     /// </summary>
     public static void RemoveFromEntity(IEntity target, StatusEffectType type, int stackCount = 1)
     {
-        if (StatusEffectManager.Instance == null)
-        {
-            Debug.LogError("StatusEffectManager is not initialized");
-            return;
-        }
-        
-        StatusEffectManager.Instance.RemoveStatusEffect(target, type, stackCount);
+        StatusEffectManager.Instance?.RemoveStatusEffect(target, type, stackCount);
     }
     
     /// <summary>
@@ -54,13 +42,7 @@ public static class StatusEffects
     /// </summary>
     public static Color GetColor(StatusEffectType type)
     {
-        if (StatusEffectManager.Instance == null)
-        {
-            Debug.LogError("StatusEffectManager is not initialized");
-            return Color.white;
-        }
-        
-        return StatusEffectManager.Instance.GetStatusEffectColor(type);
+        return StatusEffectManager.Instance?.GetStatusEffectColor(type) ?? Color.white;
     }
     
     /// <summary>
@@ -68,13 +50,7 @@ public static class StatusEffects
     /// </summary>
     public static string GetLocalizedName(StatusEffectType type)
     {
-        if (StatusEffectManager.Instance == null)
-        {
-            Debug.LogError("StatusEffectManager is not initialized");
-            return type.ToString();
-        }
-        
-        return StatusEffectManager.Instance.GetLocalizedName(type);
+        return StatusEffectManager.Instance?.GetLocalizedName(type) ?? type.ToString();
     }
     
     /// <summary>
@@ -82,40 +58,6 @@ public static class StatusEffects
     /// </summary>
     public static string GetDescription(StatusEffectType type)
     {
-        if (StatusEffectManager.Instance == null)
-        {
-            Debug.LogError("StatusEffectManager is not initialized");
-            return "";
-        }
-        
-        return StatusEffectManager.Instance.GetDescription(type);
-    }
-    
-    /// <summary>
-    /// 状態異常のローカライズされた説明を取得する（後方互換性）
-    /// </summary>
-    public static string GetLocalizedDescription(StatusEffectType type)
-    {
-        if (StatusEffectManager.Instance == null)
-        {
-            Debug.LogError("StatusEffectManager is not initialized");
-            return "";
-        }
-        
-        return StatusEffectManager.Instance.GetLocalizedDescription(type);
-    }
-    
-    /// <summary>
-    /// 状態異常のアイコンを取得する
-    /// </summary>
-    public static Sprite GetIcon(StatusEffectType type)
-    {
-        if (StatusEffectManager.Instance == null)
-        {
-            Debug.LogError("StatusEffectManager is not initialized");
-            return null;
-        }
-        
-        return StatusEffectManager.Instance.GetStatusEffectIcon(type);
+        return StatusEffectManager.Instance?.GetDescription(type) ?? "";
     }
 }

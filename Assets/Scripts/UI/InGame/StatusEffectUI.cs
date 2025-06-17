@@ -56,32 +56,9 @@ public class StatusEffectUI : MonoBehaviour
             go.transform.Find("Stack").GetComponent<TextMeshProUGUI>().text = "";
             _statusEffectIcons[type] = go;
             
-            var displayName = GetStatusEffectDisplayName(statusEffectData);
+            var displayName = StatusEffectManager.Instance.GetLocalizedName(type);
             go.AddSubDescriptionWindowEvent(displayName);
             go.SetActive(false);
         }
-    }
-    
-    private string GetStatusEffectDisplayName(StatusEffectData data)
-    {
-        // TODO: ローカライゼーションシステムと連携時はここを修正
-        // if (!string.IsNullOrEmpty(data.localizationKeyName))
-        //     return LocalizationManager.GetLocalizedValue(data.localizationKeyName);
-        
-        // 暫定的に日本語名を返す
-        return data.type switch
-        {
-            StatusEffectType.Burn => "火傷",
-            StatusEffectType.Regeneration => "再生",
-            StatusEffectType.Shield => "シールド",
-            StatusEffectType.Freeze => "凍結",
-            StatusEffectType.Invincible => "無敵",
-            StatusEffectType.Shock => "感電",
-            StatusEffectType.Power => "パワー",
-            StatusEffectType.Rage => "怒り",
-            StatusEffectType.Curse => "呪い",
-            StatusEffectType.Confusion => "混乱",
-            _ => data.type.ToString()
-        };
     }
 }
