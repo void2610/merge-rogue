@@ -20,11 +20,33 @@ Merge Rogue is a Unity 6 physics-based puzzle roguelike game where players merge
 
 - **R3:** Reactive programming framework (Cysharp/R3)
 - **UniTask:** Async/await support for Unity (Cysharp/UniTask)
+- **VContainer:** Dependency injection framework (hadashiA/VContainer)
 - **DOTween:** Animation and tweening
 - **Unity Localization:** Multi-language support (EN/JP)
 - **NuGet for Unity:** Package management for external libraries
 
+## Common Development Commands
+
+### Unity Compilation Management
+```bash
+# Check current compilation errors
+./unity-tools/unity-compile.sh check .
+
+# Trigger Unity Editor compilation (macOS only)
+./unity-tools/unity-compile.sh trigger .
+```
+
+### Build Commands
+- **WebGL Build:** Unity Editor → File → Build Settings → WebGL → Build
+- **Addressables Build:** Window → Asset Management → Addressables → Groups → Build → New Build → Default Build Script
+
 ## Core Architecture
+
+### Dependency Injection with VContainer
+- **TitleLifetimeScope**: DI configuration for title scene
+- **Service Pattern**: Interface-based services (ICreditService, IGameSettingsService, etc.)
+- **Registration Types**: Components, pure C# services, instances, and manual injection
+- **Note**: Currently only implemented in title scene; main game uses singleton pattern
 
 ### Singleton Manager Pattern
 - `GameManager`: Central state machine (Merge → EnemyAttack → AfterBattle → LevelUp → MapSelect)
@@ -105,6 +127,7 @@ Assets/
 │   ├── StageEvent/     # Map events and encounters
 │   ├── StatusEffect/   # Temporary effect system
 │   ├── System/         # Core managers and utilities
+│   │   └── VContainer/ # Dependency injection setup
 │   └── UI/             # User interface components
 ├── ScriptableObjects/  # Data definitions
 │   ├── BallData/
@@ -138,6 +161,23 @@ Assets/
 4. Add localization entries for effect name and description
 
 ### Code Patterns
+
+**VContainer Service Registration (Title Scene):**
+```csharp
+// In TitleLifetimeScope
+builder.Register<IGameSettingsService, GameSettingsService>(Lifetime.Singleton);
+builder.RegisterComponentInHierarchy<TitleMenu>();
+```
+
+**VContainer Dependency Injection:**
+```csharp
+// Constructor injection for services
+public GameSettingsService(IInputProvider inputProvider)
+
+// Method injection for MonoBehaviours
+[Inject]
+public void InjectDependencies(IGameSettingsService gameSettingsService)
+```
 
 **Event Subscription:**
 ```csharp
@@ -238,6 +278,23 @@ Assets/Scripts/Example.cs(11,9): error CS0103: The name 'NonExistentMethod' does
 This tool enables efficient compilation error detection and resolution during development without complex configuration or verbose output.
 
 ## Recent Major Refactoring
+
+### VContainer Integration (Title Scene)
+The title scene has been refactored to use VContainer for dependency injection:
+
+**Services Implemented**:
+- **ICreditService/CreditService**: Credit text management
+- **ILicenseService/LicenseService**: License information display
+- **IVersionService/VersionService**: Version number display
+- **IGameSettingsService/GameSettingsService**: Audio settings and seed management
+- **IVirtualMouseService/VirtualMouseService**: Virtual mouse for gamepad support
+- **IMouseCursorService/MouseCursorService**: Custom cursor management
+
+**Key Benefits**:
+- Clear separation of concerns between UI and business logic
+- Improved testability through interface-based design
+- Centralized dependency configuration
+- Support for both MonoBehaviour components and pure C# services
 
 ### Status Effect System Overhaul
 The status effect system was completely refactored from an object-oriented to a data-oriented approach:
