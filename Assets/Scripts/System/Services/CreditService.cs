@@ -3,11 +3,15 @@ using TMPro;
 
 public class CreditService : ICreditService
 {
-    public string GetCreditText(TextAsset textAsset)
+    private readonly TextAsset _textAsset;
+    public CreditService(TextAsset textAsset)
     {
-        if (!textAsset) return string.Empty;
-        
-        var textData = textAsset.text;
+        _textAsset = textAsset;
+    }
+    
+    public string GetCreditText()
+    {
+        var textData = _textAsset.text;
         textData = "\n\n\n\n" + textData;
         
         return ConvertUrlsToLinks(textData);

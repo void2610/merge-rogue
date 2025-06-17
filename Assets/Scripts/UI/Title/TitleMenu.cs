@@ -6,11 +6,9 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using Cysharp.Threading.Tasks;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.LowLevel;
 using VContainer;
-using SyskenTLib.LicenseMaster;
 
 public class TitleMenu : MonoBehaviour
 {
@@ -22,12 +20,8 @@ public class TitleMenu : MonoBehaviour
     [SerializeField] private List<CanvasGroup> canvasGroups;
     [SerializeField] private DescriptionWindow descriptionWindow;
     [SerializeField] private GameObject virtualMouse;
-    
-    // Title content UI elements
-    [SerializeField] private TextAsset creditTextAsset;
     [SerializeField] private TextMeshProUGUI creditText;
     [SerializeField] private RectTransform creditContent;
-    [SerializeField] private LicenseManager licenseManager;
     [SerializeField] private TextMeshProUGUI licenseText;
     [SerializeField] private RectTransform licenseContent;
     [SerializeField] private TextMeshProUGUI versionText;
@@ -306,18 +300,16 @@ public class TitleMenu : MonoBehaviour
         }
         
         // クレジットテキストの初期化
-        if (_creditService != null && creditTextAsset != null && creditText)
+        if (_creditService != null && creditText)
         {
-            var creditString = _creditService.GetCreditText(creditTextAsset);
-            creditText.text = creditString;
+            creditText.text = _creditService.GetCreditText();
             UpdateContentSize(creditText, creditContent);
         }
         
         // ライセンステキストの初期化
-        if (_licenseService != null && licenseManager != null && licenseText)
+        if (_licenseService != null && licenseText)
         {
-            var licenseString = _licenseService.GetLicenseText(licenseManager);
-            licenseText.text = licenseString;
+            licenseText.text = _licenseService.GetLicenseText();
             UpdateContentSize(licenseText, licenseContent);
         }
     }

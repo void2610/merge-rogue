@@ -1,29 +1,27 @@
 using VContainer;
 using VContainer.Unity;
 using UnityEngine;
+using SyskenTLib.LicenseMaster;
 
 public class TitleLifetimeScope : LifetimeScope
 {
-    [Header("バージョン設定")]
     [SerializeField] private string gameVersion = "0.0.0";
+    [SerializeField] private TextAsset creditTextAsset;
+    [SerializeField] private LicenseManager licenseManager;
     
     protected override void Configure(IContainerBuilder builder)
     {
-        // TitleMenu専用コンポーネント（プレゼンター機能を含む）
         builder.RegisterComponentInHierarchy<TitleMenu>()
             .AsSelf()
             .AsImplementedInterfaces();
             
-        // Encyclopediaコンポーネント
         builder.RegisterComponentInHierarchy<Encyclopedia>()
             .AsSelf()
             .AsImplementedInterfaces();
             
         // 純粋なC#サービスを登録
-        builder.Register<ICreditService, CreditService>(Lifetime.Singleton);
-        builder.Register<ILicenseService, LicenseService>(Lifetime.Singleton);
-        
-        // 設定されたバージョンでVersionServiceを登録
-        builder.Register<IVersionService>(container => new VersionService(gameVersion), Lifetime.Singleton);
+        builder.Register<ICreditService, CreditService>(Lifetime.Singleton).WithParameter("textAsset", creditTextAsset);
+        builder.Register<ILicenseService, LicenseService>(Lifetime.Singleton).WithParameter("licenseManager", licenseManager);
+        builder.Register<IVersionService, VersionService>(Lifetime.Singleton).WithParameter("version", gameVersion);
     }
 }

@@ -2,11 +2,15 @@ using SyskenTLib.LicenseMaster;
 
 public class LicenseService : ILicenseService
 {
-    public string GetLicenseText(LicenseManager licenseManager)
+    private readonly LicenseManager _licenseManager;
+    public LicenseService(LicenseManager licenseManager)
     {
-        if (licenseManager == null) return string.Empty;
-        
-        var licenses = licenseManager.GetLicenseConfigsTxt();
+        this._licenseManager = licenseManager;
+    }
+    
+    public string GetLicenseText()
+    {
+        var licenses = _licenseManager.GetLicenseConfigsTxt();
         licenses = "\n\n\n\n" + licenses;
         
         return licenses;
