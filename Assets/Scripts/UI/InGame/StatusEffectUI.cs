@@ -26,19 +26,24 @@ public class StatusEffectUI : MonoBehaviour
         return icons;
     }
 
-    public void UpdateUI(List<StatusEffectBase> effects)
+    public void UpdateUI(Dictionary<StatusEffectType, int> effectStacks)
     {
         foreach (var icon in _statusEffectIcons.Values)
             if(icon) icon.SetActive(false);
         
-        for (var i = 0; i < effects.Count; i++)
+        var i = 0;
+        foreach (var kvp in effectStacks)
         {
-            var effect = effects[i];
-            var icon = _statusEffectIcons[effect.Type];
+            var type = kvp.Key;
+            var stackCount = kvp.Value;
+            if (!_statusEffectIcons.ContainsKey(type)) continue;
+            
+            var icon = _statusEffectIcons[type];
             if (!icon) continue;
             icon.SetActive(true);
             icon.transform.position = this.transform.position + new Vector3( offset.x + i * margin, offset.y, 0);
-            icon.transform.Find("Stack").GetComponent<TextMeshProUGUI>().text = effect.StackCount.ToString();
+            icon.transform.Find("Stack").GetComponent<TextMeshProUGUI>().text = stackCount.ToString();
+            i++;
         }
     }
 

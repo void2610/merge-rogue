@@ -18,7 +18,7 @@ public class EnemyBase : MonoBehaviour, IEntity
     public int Exp { get; private set; } = 0;
     public int Health { get; protected set; }
     public int MaxHealth { get; protected set; }
-    public List<StatusEffectBase> StatusEffects { get; } = new();
+    public Dictionary<StatusEffectType, int> StatusEffectStacks { get; } = new();
 
     protected int TurnCount = 0;
     protected int Stage = 0;
@@ -35,62 +35,35 @@ public class EnemyBase : MonoBehaviour, IEntity
     public StatusEffectUI StatusEffectUI => _statusEffectUI;
 
     
-    public void AddStatusEffect(StatusEffectBase effect)
+    public void AddStatusEffect(StatusEffectType type, int stacks)
     {
-        var existingEffect = StatusEffects.Find(e => e.Type == effect.Type);
-        if (existingEffect != null)
-            existingEffect.AddStack(effect.StackCount);
-        else
-        {
-            effect.SetOwner(this);
-            StatusEffects.Add(effect);
-        }
-        _statusEffectUI.UpdateUI(StatusEffects);
+        StatusEffectProcessor.AddStatusEffect(this, type, stacks);
     }
     
-    public void RemoveStatusEffect(StatusEffectType type, int stack)
+    public void RemoveStatusEffect(StatusEffectType type, int stacks)
     {
-        var effect = StatusEffects.Find(e => e.Type == type);
-        if (effect == null) return;
-        if (effect.ReduceStack(stack))
-            StatusEffects.Remove(effect);
-        _statusEffectUI.UpdateUI(StatusEffects);
+        StatusEffectProcessor.RemoveStatusEffect(this, type, stacks);
     }
     
     public async UniTask UpdateStatusEffects()
     {
         if (!this.gameObject) return;
-        for (var i = StatusEffects.Count - 1; i >= 0; i--)
-        {
-            StatusEffects[i].OnTurnEnd(this);
-            if (StatusEffects[i].ReduceStack()) StatusEffects.RemoveAt(i);
-            await UniTask.Delay((int)(500 * GameManager.Instance.TimeScale));
-        }
-        
-        _statusEffectUI.UpdateUI(StatusEffects);
+        await StatusEffectProcessor.ProcessTurnEnd(this);
     }
     
     public int ModifyIncomingDamage(int amount)
     {
-        var v = StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyDamage(this, current));
-        _statusEffectUI.UpdateUI(StatusEffects);
-        return v;
+        return StatusEffectProcessor.ModifyIncomingDamage(this, amount);
     }
     
     public int ModifyOutgoingAttack(AttackType type, int amount)
     {
-        var modifiedAttack = StatusEffects.Aggregate(amount, (current, effect) => effect.ModifyAttack(this, type, current));
-        _statusEffectUI.UpdateUI(StatusEffects);
-        return modifiedAttack;
+        return StatusEffectProcessor.ModifyOutgoingAttack(this, type, amount);
     }
     
     public void OnBattleEnd()
     {
-        foreach (var effect in StatusEffects)
-        {
-            effect.OnBattleEnd(this);
-        }
-        _statusEffectUI.UpdateUI(StatusEffects);
+        StatusEffectProcessor.OnBattleEnd(this);
     }
     
     public void Damage(AttackType type, int damage)
@@ -109,7 +82,6 @@ public class EnemyBase : MonoBehaviour, IEntity
         damage = ModifyIncomingDamage(damage);
         ParticleManager.Instance.DamageText(damage, this.transform.position.x, type.GetColor());
         Health -= damage;
-        _statusEffectUI.UpdateUI(StatusEffects);
         _healthSlider.value = Health;
         _healthText.text = Health + "/" + MaxHealth;
         if (Health > 0) return;
@@ -130,8 +102,7 @@ public class EnemyBase : MonoBehaviour, IEntity
     public void Action()
     {
         // Freeze状態なら行動しない
-        FreezeEffect freeze = (FreezeEffect)StatusEffects.Find(e => e.Type == StatusEffectType.Freeze);
-        if (freeze != null && freeze.IsFrozen()) return;
+        if (StatusEffectProcessor.CheckFreeze(this)) return;
         
         TurnCount++;
         if(TurnCount == ActionInterval)

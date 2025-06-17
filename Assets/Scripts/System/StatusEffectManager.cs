@@ -8,21 +8,6 @@ public class StatusEffectManager : SingletonMonoBehaviour<StatusEffectManager>
     private static StatusEffectDataList StatusEffectDataList => ContentProvider.Instance.StatusEffectList;
     
     /// <summary>
-    /// 状態異常を作成する
-    /// </summary>
-    private StatusEffectBase CreateStatusEffect(StatusEffectType type, int stackCount = 1)
-    {
-        var data = StatusEffectDataList.GetStatusEffectData(type);
-        var effectType = Type.GetType(data.className);
-        if (effectType == null)
-            throw new ArgumentException($"Invalid status effect type: {data.className}");
-        
-        var effect = (StatusEffectBase)Activator.CreateInstance(effectType);
-        effect.Initialize(data, stackCount);
-        return effect;
-    }
-    
-    /// <summary>
     /// エンティティに状態異常を追加する
     /// </summary>
     public void AddStatusEffect(IEntity target, StatusEffectType type, int stackCount = 1)
@@ -33,9 +18,7 @@ public class StatusEffectManager : SingletonMonoBehaviour<StatusEffectManager>
         else if (target is EnemyBase)
             EventManager.OnEnemyStatusEffectAdded.OnNext(type);
         
-        var effect = CreateStatusEffect(type, stackCount); 
-        effect.SetOwner(target); 
-        target.AddStatusEffect(effect);
+        StatusEffectProcessor.AddStatusEffect(target, type, stackCount);
     }
     
     /// <summary>
@@ -43,7 +26,7 @@ public class StatusEffectManager : SingletonMonoBehaviour<StatusEffectManager>
     /// </summary>
     public void RemoveStatusEffect(IEntity target, StatusEffectType type, int stackCount = 1)
     {
-        target.RemoveStatusEffect(type, stackCount);
+        StatusEffectProcessor.RemoveStatusEffect(target, type, stackCount);
     }
     
     /// <summary>

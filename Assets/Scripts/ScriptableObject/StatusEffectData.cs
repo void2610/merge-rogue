@@ -11,7 +11,7 @@ public class StatusEffectData : ScriptableObject
     public Color effectColor = Color.white;
     
     [Header("効果パラメータ")]
-    public StatusEffectBase.EffectTiming timing = StatusEffectBase.EffectTiming.OnTurnEnd;
+    public StatusEffectTiming timing = StatusEffectTiming.OnTurnEnd;
     public bool isPermanent = false;
     public bool stackable = true;
     
