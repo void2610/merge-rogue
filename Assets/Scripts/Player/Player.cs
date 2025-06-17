@@ -31,7 +31,7 @@ public class Player : MonoBehaviour, IEntity
             existingEffect.AddStack(effect.StackCount);
         else
         {
-            effect.SetEntityPosition(this.transform.position, true);
+            effect.SetOwner(this);
             StatusEffects.Add(effect);
         }
         statusEffectUI.UpdateUI(StatusEffects);

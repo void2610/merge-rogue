@@ -18,7 +18,7 @@ public class ShockTherapy : RelicBase
         // Shock状態異常が付与された場合のみ効果発動
         if (statusEffectType == StatusEffectType.Shock)
         {
-            StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Power, 1);
+            StatusEffects.AddToPlayer(StatusEffectType.Power, 1);
             UI?.ActivateUI();
         }
     }

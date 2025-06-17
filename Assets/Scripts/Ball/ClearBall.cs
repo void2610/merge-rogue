@@ -11,7 +11,7 @@ public class ClearBall : BallBase
         {
             foreach(StatusEffectType effect in Enum.GetValues(typeof(StatusEffectType)))
             {
-                StatusEffectFactory.RemoveStatusEffectFromPlayer(effect, 5);
+                StatusEffects.RemoveFromPlayer(effect, 5);
             }
         }
         // 全ての敵に付与された全ての状態異常を5スタック減少させる
@@ -21,7 +21,7 @@ public class ClearBall : BallBase
             {
                 foreach(var enemy in EnemyContainer.Instance.GetAllEnemies())
                 {
-                    StatusEffectFactory.RemoveStatusEffect(enemy, effect, 5);
+                    StatusEffects.RemoveFromEntity(enemy, effect, 5);
                 }
             }
         }
@@ -30,10 +30,10 @@ public class ClearBall : BallBase
         {
             foreach(StatusEffectType effect in Enum.GetValues(typeof(StatusEffectType)))
             {
-                StatusEffectFactory.RemoveStatusEffectFromPlayer(effect, 5);
+                StatusEffects.RemoveFromPlayer(effect, 5);
                 foreach(var enemy in EnemyContainer.Instance.GetAllEnemies())
                 {
-                    StatusEffectFactory.RemoveStatusEffect(enemy, effect, 5);
+                    StatusEffects.RemoveFromEntity(enemy, effect, 5);
                 }
             }
         }

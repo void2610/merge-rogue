@@ -42,7 +42,7 @@ public class EnemyBase : MonoBehaviour, IEntity
             existingEffect.AddStack(effect.StackCount);
         else
         {
-            effect.SetEntityPosition(this.transform.position);
+            effect.SetOwner(this);
             StatusEffects.Add(effect);
         }
         _statusEffectUI.UpdateUI(StatusEffects);

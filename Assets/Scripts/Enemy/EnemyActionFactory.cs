@@ -65,7 +65,7 @@ public static class EnemyActionFactory
         {
             name = "シールド",
             type = ActionType.Buff,
-            Action = () => { StatusEffectFactory.AddStatusEffect(self, StatusEffectType.Shield, stack); }
+            Action = () => { StatusEffects.AddToEntity(self, StatusEffectType.Shield, stack); }
         };
     }
     

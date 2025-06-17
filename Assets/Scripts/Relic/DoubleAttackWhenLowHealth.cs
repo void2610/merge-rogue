@@ -12,7 +12,7 @@ public class DoubleAttackWhenLowHealth : RelicBase
         {
             if (IsLowHealth())
             {
-                StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Rage, 10);
+                StatusEffects.AddToPlayer(StatusEffectType.Rage, 10);
                 ActivateUI();
             }
         }));

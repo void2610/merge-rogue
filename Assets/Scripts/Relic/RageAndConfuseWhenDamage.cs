@@ -15,8 +15,8 @@ public class RageAndConfuseWhenDamage : RelicBase
         if (GameManager.Instance.RandomRange(0f, 1f) < 0.5f) return damage;
         
         // プレイヤーに怒りと混乱を付与
-        StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Rage);
-        StatusEffectFactory.AddStatusEffectToPlayer(StatusEffectType.Confusion, 2);
+        StatusEffects.AddToPlayer(StatusEffectType.Rage);
+        StatusEffects.AddToPlayer(StatusEffectType.Confusion, 2);
         
         UI?.ActivateUI();
         return damage;

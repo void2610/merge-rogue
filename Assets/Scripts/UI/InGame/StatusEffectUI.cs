@@ -1,21 +1,11 @@
-using System;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class StatusEffectUI : MonoBehaviour
 {
-    [Serializable]
-    private class StatusEffectIcon
-    {
-        public StatusEffectType type;
-        public Sprite sprite;
-    }
-    
-    [SerializeField] private List<StatusEffectIcon> statusEffectSprites;
     [SerializeField] private GameObject statusEffectIconPrefab;
     [SerializeField] private float iconSize = 0.0125f;
     [SerializeField] private Vector2 offset = new(-0.68f, 0.23f);
@@ -52,20 +42,46 @@ public class StatusEffectUI : MonoBehaviour
         }
     }
 
-    private void Awake()
+    private void Start()
     {
-        foreach (StatusEffectType type in Enum.GetValues(typeof(StatusEffectType)))
+        var statusEffectDataList = ContentProvider.Instance.StatusEffectList;
+        
+        foreach (var statusEffectData in statusEffectDataList.list)
         {
-            var icon = statusEffectSprites.Find(s => s.type == type).sprite;
-            if (icon == null) continue;
+            var type = statusEffectData.type;
+            var icon = statusEffectData.icon;
             var go = Instantiate(statusEffectIconPrefab, transform);
             go.transform.localScale = new Vector3(iconSize, iconSize, 1);
             go.transform.Find("Icon").GetComponent<Image>().sprite = icon;
             go.transform.Find("Stack").GetComponent<TextMeshProUGUI>().text = "";
             _statusEffectIcons[type] = go;
             
-            go.AddSubDescriptionWindowEvent(type.GetStatusEffectWord());
+            var displayName = GetStatusEffectDisplayName(statusEffectData);
+            go.AddSubDescriptionWindowEvent(displayName);
             go.SetActive(false);
         }
+    }
+    
+    private string GetStatusEffectDisplayName(StatusEffectData data)
+    {
+        // TODO: ローカライゼーションシステムと連携時はここを修正
+        // if (!string.IsNullOrEmpty(data.localizationKeyName))
+        //     return LocalizationManager.GetLocalizedValue(data.localizationKeyName);
+        
+        // 暫定的に日本語名を返す
+        return data.type switch
+        {
+            StatusEffectType.Burn => "火傷",
+            StatusEffectType.Regeneration => "再生",
+            StatusEffectType.Shield => "シールド",
+            StatusEffectType.Freeze => "凍結",
+            StatusEffectType.Invincible => "無敵",
+            StatusEffectType.Shock => "感電",
+            StatusEffectType.Power => "パワー",
+            StatusEffectType.Rage => "怒り",
+            StatusEffectType.Curse => "呪い",
+            StatusEffectType.Confusion => "混乱",
+            _ => data.type.ToString()
+        };
     }
 }
