@@ -200,19 +200,14 @@ public static class StatusEffectProcessor
                 entity.Heal(healAmount);
                 break;
                 
-            // 【Shock】敵専用 - 毎ターン終了時に他の全ての敵にスタック数分のダメージを与える
+            // 【Shock】敵専用 - 毎ターン終了時に全ての敵にスタック数分のダメージを与える
             // 効果: 感電した敵が他の敵にもダメージを連鎖させる、プレイヤーには無効
             case StatusEffectType.Shock:
                 if (entity is EnemyBase)
                 {
-                    var allEnemies = EnemyContainer.Instance.GetAllEnemies();
-                    var shockDamage = stacks;
-                    foreach (var enemy in allEnemies)
+                    foreach (var enemy in EnemyContainer.Instance.GetAllEnemies())
                     {
-                        if (enemy != null && enemy != entity)
-                        {
-                            enemy.GetComponent<EnemyBase>()?.Damage(AttackType.Normal, shockDamage);
-                        }
+                        enemy?.GetComponent<EnemyBase>()?.Damage(AttackType.Normal, stacks);
                     }
                 }
                 break;
