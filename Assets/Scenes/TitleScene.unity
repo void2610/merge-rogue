@@ -865,7 +865,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 880.00006}
+  m_AnchoredPosition: {x: 0, y: 880.0003}
   m_SizeDelta: {x: 0, y: 1200}
   m_Pivot: {x: 0, y: 1}
 --- !u!1001 &191197720
@@ -3625,8 +3625,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1870222280}
   m_HandleRect: {fileID: 1870222279}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.57205445
+  m_Value: -0.0000009287958
+  m_Size: 0.6166524
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4545,7 +4545,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 230}
+  m_AnchoredPosition: {x: 0, y: 230.00021}
   m_SizeDelta: {x: 863, y: 600}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1181778950
@@ -4572,66 +4572,6 @@ MonoBehaviour:
   m_Spacing: {x: 5, y: 5}
   m_Constraint: 1
   m_ConstraintCount: 15
---- !u!1 &1218410360
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1218410362}
-  - component: {fileID: 1218410361}
-  m_Layer: 0
-  m_Name: MouseCursorManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1218410361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1218410360}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ee65455d8f43404c93a4046e3a9c769, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cursorTextures:
-    _list:
-    - key: 0
-      value: {fileID: 2800000, guid: 946d81eb134754daf8ff5cc6e69c926d, type: 3}
-    - key: 1
-      value: {fileID: 2800000, guid: 68c6cf710486844679a948fa53505576, type: 3}
-    - key: 2
-      value: {fileID: 2800000, guid: 8f65eb92b13884d659974e2b20c31fe2, type: 3}
-  cursorSprites:
-    _list:
-    - key: 0
-      value: {fileID: 21300000, guid: 008485198b527421dad935dea5676b09, type: 3}
-    - key: 1
-      value: {fileID: 21300000, guid: 75e928028a63c402c8d503cedee466d6, type: 3}
-    - key: 2
-      value: {fileID: 21300000, guid: 40cffb77d21e14e9fbb40d7bf128e971, type: 3}
---- !u!4 &1218410362
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1218410360}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &1336062910 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8883364435546100084, guid: 2e84d13fb01de4fac99be4b85f02b97c, type: 3}
@@ -6180,8 +6120,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 465917899}
   m_HandleRect: {fileID: 465917897}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.24737492
+  m_Value: -0.00000024275346
+  m_Size: 0.2666606
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6508,6 +6448,20 @@ MonoBehaviour:
   gameVersion: 0.1.0
   creditTextAsset: {fileID: 4900000, guid: 3eaa4e2cf026f47fe9391575a8ceeabd, type: 3}
   licenseManager: {fileID: 541858113}
+  cursorConfiguration:
+    cursorIcons:
+    - iconType: 0
+      texture: {fileID: 2800000, guid: 946d81eb134754daf8ff5cc6e69c926d, type: 3}
+      sprite: {fileID: 21300000, guid: 008485198b527421dad935dea5676b09, type: 3}
+      hotspot: {x: 0, y: 0}
+    - iconType: 1
+      texture: {fileID: 2800000, guid: 68c6cf710486844679a948fa53505576, type: 3}
+      sprite: {fileID: 21300000, guid: 75e928028a63c402c8d503cedee466d6, type: 3}
+      hotspot: {x: 0, y: 0}
+    - iconType: 2
+      texture: {fileID: 2800000, guid: 8f65eb92b13884d659974e2b20c31fe2, type: 3}
+      sprite: {fileID: 21300000, guid: 40cffb77d21e14e9fbb40d7bf128e971, type: 3}
+      hotspot: {x: 0, y: 0}
 --- !u!1 &1794339392
 GameObject:
   m_ObjectHideFlags: 0
@@ -9612,9 +9566,8 @@ SceneRoots:
   - {fileID: 9011492067447604853}
   - {fileID: 525522646}
   - {fileID: 1442821505}
+  - {fileID: 2082927501}
   - {fileID: 424170097}
   - {fileID: 834310853}
-  - {fileID: 2082927501}
-  - {fileID: 1218410362}
   - {fileID: 132161563}
   - {fileID: 1736787652}

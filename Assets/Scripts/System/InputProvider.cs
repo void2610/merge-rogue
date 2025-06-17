@@ -13,7 +13,7 @@ public class InputProvider : MonoBehaviour
     
     private void Awake()
     {
-        if (Instance == null) Instance = this;
+        if (!Instance) Instance = this;
         else Destroy(this);
         
         _inputActions = new InputSystem_Actions();

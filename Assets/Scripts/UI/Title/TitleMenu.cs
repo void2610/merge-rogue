@@ -33,22 +33,28 @@ public class TitleMenu : MonoBehaviour
     private ILicenseService _licenseService;
     private IVersionService _versionService;
     private IGameSettingsService _gameSettingsService;
+    private IVirtualMouseService _virtualMouseService;
+    private InputProvider _inputProvider;
     
     [Inject]
     public void InjectDependencies(
         ICreditService creditService,
         ILicenseService licenseService,
         IVersionService versionService,
-        IGameSettingsService gameSettingsService)
+        IGameSettingsService gameSettingsService,
+        IVirtualMouseService virtualMouseService,
+        InputProvider inputProvider)
     {
         this._creditService = creditService;
         this._licenseService = licenseService;
         this._versionService = versionService;
         this._gameSettingsService = gameSettingsService;
+        this._virtualMouseService = virtualMouseService;
+        this._inputProvider = inputProvider;
     }
 
     private GameObject GetTopCanvasGroup() => canvasGroups.Find(c => c.alpha > 0)?.gameObject;
-    private bool IsVirtualMouseActive() => virtualMouse.GetComponent<MyVirtualMouseInput>().isActive;
+    private bool IsVirtualMouseActive() => _virtualMouseService?.IsVirtualMouseActive() ?? false;
 
     private void ResetSelectedGameObject()
     {
@@ -80,33 +86,19 @@ public class TitleMenu : MonoBehaviour
     }
 
     /// <summary>
-    /// 仮想マウスを任意の位置へ移動させるメソッド
+    /// 仮想マウスを中央に移動します
     /// </summary>
-    /// <param name="newPosition">移動先のスクリーン座標（ピクセル単位）</param>
     private void MoveVirtualMouseToCenter()
     {
-        var vm = virtualMouse.GetComponent<MyVirtualMouseInput>();
-        var centerPos = new Vector2(Screen.width / 2f, Screen.height / 2f);
-        InputState.Change(vm.virtualMouse.position, centerPos);
-        // ソフトウェアカーソル（UI上の表示）の位置も更新（存在する場合）
-        // もしCanvasのスケール等を考慮する必要があるなら、ここで座標変換を行う
-        virtualMouse.transform.position = Vector2.zero;
+        _virtualMouseService?.MoveVirtualMouseToCenter();
     }
 
+    /// <summary>
+    /// 仮想マウスの有効/無効を切り替えます
+    /// </summary>
     private void ToggleVirtualMouse()
     {
-        if (IsVirtualMouseActive())
-        {
-            virtualMouse.GetComponent<MyVirtualMouseInput>().isActive = false;
-            EventSystem.current.sendNavigationEvents = true;
-            virtualMouse.transform.position = new Vector2(-1000, -1000);
-        }
-        else
-        {
-            virtualMouse.GetComponent<MyVirtualMouseInput>().isActive = true;
-            EventSystem.current.sendNavigationEvents = false;
-            MoveVirtualMouseToCenter();
-        }
+        _virtualMouseService?.ToggleVirtualMouse();
     }
     
     private async UniTaskVoid EnableCanvasGroupAsync(string canvasName, bool e)
@@ -242,16 +234,16 @@ public class TitleMenu : MonoBehaviour
             _gameSettingsService.GenerateAndSaveSeed(seedInputField.text);
         }
         
-        if (InputProvider.Instance.UI.ResetCursor.triggered)
+        if (_inputProvider?.UI.ResetCursor.triggered == true)
             ResetSelectedGameObject();
-        if (InputProvider.Instance.UI.ToggleVirtualMouse.triggered)
+        if (_inputProvider?.UI.ToggleVirtualMouse.triggered == true)
             ToggleVirtualMouse();
         
         // スクロール操作
         var sr = GetActiveScrollRect();
-        if (sr)
+        if (sr && _inputProvider != null)
         {
-            var speed = InputProvider.Instance.GetScrollSpeed();
+            var speed = _inputProvider.GetScrollSpeed();
             var newPos = sr.verticalNormalizedPosition + speed.y * Time.unscaledDeltaTime;
             sr.verticalNormalizedPosition = Mathf.Clamp01(newPos);
         }
