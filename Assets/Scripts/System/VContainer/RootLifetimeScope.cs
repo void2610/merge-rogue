@@ -12,6 +12,9 @@ public class RootLifetimeScope : LifetimeScope
     [Header("カーソル設定")]
     [SerializeField] private CursorConfiguration cursorConfiguration;
     
+    [Header("コンテンツ設定")]
+    [SerializeField] private ContentProviderData contentProviderData;
+    
     protected override void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -22,6 +25,9 @@ public class RootLifetimeScope : LifetimeScope
     {
         // 共通サービスの登録
         RegisterSharedServices(builder);
+        
+        // ContentService関連の登録
+        RegisterContentServices(builder);
         
         // SetMouseCursorコンポーネントの依存性注入（全シーン共通）
         RegisterSetMouseCursorComponents(builder);
@@ -35,6 +41,27 @@ public class RootLifetimeScope : LifetimeScope
         builder.RegisterInstance(cursorConfiguration);
         builder.Register<IInputProvider, InputProviderService>(Lifetime.Singleton);
         // MouseCursorServiceは各シーンのLifetimeScopeで登録（VirtualMouseServiceとの依存関係のため）
+    }
+    
+    /// <summary>
+    /// ContentService関連の共通サービス登録
+    /// </summary>
+    private void RegisterContentServices(IContainerBuilder builder)
+    {
+        // ContentProviderDataのインスタンス登録
+        builder.RegisterInstance(contentProviderData);
+        
+        // 共通して使用するサービス
+        builder.Register<IRandomService, RandomService>(Lifetime.Singleton);
+        
+        // ContentServiceの登録（シーン固有の依存関係は各シーンで解決）
+        builder.Register<IContentService>(container =>
+        {
+            var data = container.Resolve<ContentProviderData>();
+            
+            var randomService = container.Resolve<IRandomService>();
+            return new ContentService(data, randomService);
+        }, Lifetime.Singleton);
     }
     
     /// <summary>

@@ -11,7 +11,6 @@ using Object = UnityEngine.Object;
 public class ContentService : IContentService
 {
     private readonly ContentProviderData _data;
-    private readonly IStageEventFactory _stageEventFactory;
     private readonly IRandomService _randomService;
     
     private int _act = 0;
@@ -23,15 +22,12 @@ public class ContentService : IContentService
     /// コンストラクタ
     /// </summary>
     /// <param name="data">統合データ（設定値とコンテンツデータ）</param>
-    /// <param name="stageEventFactory">ステージイベントファクトリー</param>
     /// <param name="randomService">ランダムサービス</param>
     public ContentService(
         ContentProviderData data,
-        IStageEventFactory stageEventFactory,
         IRandomService randomService)
     {
         _data = data ?? throw new ArgumentNullException(nameof(data));
-        _stageEventFactory = stageEventFactory ?? throw new ArgumentNullException(nameof(stageEventFactory));
         _randomService = randomService ?? throw new ArgumentNullException(nameof(randomService));
         
         // データ初期化処理
@@ -46,11 +42,20 @@ public class ContentService : IContentService
         _data.InitializeData();
     }
     
-    public StageEventBase GetRandomEvent()
+    /// <summary>
+    /// StageEventをランダムで取得する
+    /// </summary>
+    /// <returns></returns>
+    public Type GetRandomEventType()
     {
         var eventScript = GetRandomObjectFromList(_data.EventList);
-        return _stageEventFactory.CreateRandomEvent(eventScript);
-    }
+        var type = Type.GetType(eventScript.name);
+        if (type != null && type.IsSubclassOf(typeof(StageEventBase)))
+        {
+            return type;
+        } 
+        throw new Exception("Event not found or not a valid StageEventBase subclass");
+    } 
     
     public EnemyData GetRandomEnemy()
     {

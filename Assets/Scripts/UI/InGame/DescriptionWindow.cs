@@ -45,11 +45,13 @@ public class DescriptionWindow : MonoBehaviour
     private CancellationTokenSource _hideTokenSource;
     
     private IInputProvider _inputProvider;
+    private IContentService _contentService;
     
     [Inject]
-    public void InjectDependencies(IInputProvider inputProvider)
+    public void InjectDependencies(IInputProvider inputProvider, IContentService contentService)
     {
         _inputProvider = inputProvider;
+        _contentService = contentService;
     }
     
     public void AddTextToObservation(GameObject text) => _otherTriggerObjects.Add(text);
@@ -331,7 +333,8 @@ public class DescriptionWindow : MonoBehaviour
 
         descriptionText.text = r.GetDescription();
         flavorText.text = r.GetFlavorText();
-        statusTexts[0].text = "price: " + ContentProvider.GetSHopPrice(Shop.ShopItemType.Ball, r.rarity);
+        var price = _contentService.GetShopPrice(Shop.ShopItemType.Ball, r.rarity);
+        statusTexts[0].text = "price: " + price;
         statusTexts[1].alpha = 0;
         statusTexts[2].alpha = 0;
     }
@@ -469,7 +472,7 @@ public class DescriptionWindow : MonoBehaviour
     
     private void Awake()
     {
-        if (Instance == null) Instance = this;
+        if (!Instance) Instance = this;
         else Destroy(gameObject);
         
         this.transform.position = _disablePos;

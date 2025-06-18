@@ -47,7 +47,9 @@ public class StageEventProcessor : MonoBehaviour
     private async UniTaskVoid SetRandomEventAsync()
     {
         HideOptions();
-        _currentEvent = _contentService.GetRandomEvent();
+        var type = _contentService.GetRandomEventType();
+        _currentEvent = gameObject.AddComponent(type) as StageEventBase;
+        if (!_currentEvent) throw new Exception("Failed to create StageEventBase instance");
         _currentEvent.Init();
         descriptionText.text = _currentEvent.MainDescription;
 

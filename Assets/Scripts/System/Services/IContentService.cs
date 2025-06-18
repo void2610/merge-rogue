@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,7 +24,7 @@ public interface IContentService
     /// ランダムなステージイベントを取得する
     /// </summary>
     /// <returns>ステージイベントのインスタンス</returns>
-    StageEventBase GetRandomEvent();
+    Type GetRandomEventType();
     
     /// <summary>
     /// ランダムな敵データを取得する

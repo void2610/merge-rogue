@@ -2,10 +2,23 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using R3;
+using VContainer;
 
 public class StatusEffectManager : SingletonMonoBehaviour<StatusEffectManager>
 {
-    private static StatusEffectDataList StatusEffectDataList => ContentProvider.Instance.StatusEffectList;
+    private static IContentService _contentService;
+    private static StatusEffectDataList _statusEffectDataList => _contentService?.StatusEffectList ?? ContentProvider.Instance.StatusEffectList;
+    
+    /// <summary>
+    /// StatusEffectProcessorからアクセス可能なStatusEffectDataListプロパティ
+    /// </summary>
+    public StatusEffectDataList GetStatusEffectDataList() => _contentService?.StatusEffectList ?? ContentProvider.Instance.StatusEffectList;
+    
+    [Inject]
+    public void InjectDependencies(IContentService contentService)
+    {
+        _contentService = contentService;
+    }
     
     /// <summary>
     /// エンティティに状態異常を追加する
@@ -34,7 +47,7 @@ public class StatusEffectManager : SingletonMonoBehaviour<StatusEffectManager>
     /// </summary>
     public void ShowEffectText(StatusEffectType type, Vector3 position, bool isPlayer, int priority = 0)
     {
-        var effectColor = StatusEffectDataList.GetStatusEffectData(type).effectColor;
+        var effectColor = _statusEffectDataList.GetStatusEffectData(type).effectColor;
         var effectText = GetLocalizedName(type) + "!";
         var playerOffset = isPlayer ? 1 : -1;
         var offset = new Vector3(-priority * 0.1f, priority * 0.25f, 0);
@@ -52,7 +65,7 @@ public class StatusEffectManager : SingletonMonoBehaviour<StatusEffectManager>
     /// </summary>
     public Color GetStatusEffectColor(StatusEffectType type)
     {
-        return StatusEffectDataList.GetStatusEffectData(type).effectColor;
+        return _statusEffectDataList.GetStatusEffectData(type).effectColor;
     }
     
     /// <summary>
@@ -63,7 +76,7 @@ public class StatusEffectManager : SingletonMonoBehaviour<StatusEffectManager>
         // TODO: ローカライゼーションシステムと連携
         // return LocalizationManager.GetLocalizedValue(data.localizationKeyName);
         
-        return StatusEffectDataList.GetStatusEffectData(type)?.name ?? type.ToString();
+        return _statusEffectDataList.GetStatusEffectData(type)?.name ?? type.ToString();
     }
     
     /// <summary>
@@ -74,6 +87,6 @@ public class StatusEffectManager : SingletonMonoBehaviour<StatusEffectManager>
         // TODO: ローカライゼーションシステムと連携
         // return LocalizationManager.GetLocalizedValue(data.localizationKeyDesc);
         
-        return StatusEffectDataList.GetStatusEffectData(type)?.description ?? "";
+        return _statusEffectDataList.GetStatusEffectData(type)?.description ?? "";
     }
 }

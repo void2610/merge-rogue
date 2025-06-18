@@ -58,9 +58,20 @@ public class StatusEffectUI : MonoBehaviour
 
     private void Start()
     {
-        var statusEffectDataList = _contentService.StatusEffectList;
+        // VContainerの注入を待つ
+        if (_contentService == null) return;
         
-        foreach (var statusEffectData in statusEffectDataList.list)
+        var dataList = _contentService.StatusEffectList;
+        InitializeStatusEffectIcons(dataList);
+    }
+    
+    /// <summary>
+    /// ステータスエフェクトアイコンを初期化する
+    /// </summary>
+    /// <param name="dataList">ステータスエフェクトデータリスト</param>
+    private void InitializeStatusEffectIcons(StatusEffectDataList dataList)
+    {
+        foreach (var statusEffectData in dataList.list)
         {
             var type = statusEffectData.type;
             var icon = statusEffectData.icon;
