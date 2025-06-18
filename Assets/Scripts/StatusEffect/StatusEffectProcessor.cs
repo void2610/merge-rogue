@@ -5,22 +5,19 @@ using Cysharp.Threading.Tasks;
 
 /// <summary>
 /// 状態異常処理を一元管理する静的クラス
-/// Dictionary<StatusEffectType, int>でスタック数を管理し、
 /// 全ての状態異常ロジックをswitch文で処理する
 /// </summary>
 public static class StatusEffectProcessor
 {
-    // ContentServiceが利用できない場合のフォールバック
-    private static StatusEffectDataList DataList => StatusEffectManager.Instance?.GetStatusEffectDataList();
-    
     /// <summary>
     /// 指定した状態異常タイプのデータを取得する
     /// </summary>
     /// <param name="type">状態異常タイプ</param>
     /// <returns>状態異常データ、見つからない場合はnull</returns>
-    public static StatusEffectData GetEffectData(StatusEffectType type)
+    private static StatusEffectData GetEffectData(StatusEffectType type)
     {
-        return DataList.list.FirstOrDefault(d => d.type == type);
+        var dataList = StatusEffectManager.Instance.GetStatusEffectDataList();
+        return dataList.list.FirstOrDefault(d => d.type == type);
     }
     
     /// <summary>
