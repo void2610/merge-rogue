@@ -15413,6 +15413,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   scoreDisplayComponent: {fileID: 1477400323}
+  contentProviderData: {fileID: 11400000, guid: 94bcb644666b6454d813f27dfe6739da, type: 2}
 --- !u!4 &975825325
 Transform:
   m_ObjectHideFlags: 0

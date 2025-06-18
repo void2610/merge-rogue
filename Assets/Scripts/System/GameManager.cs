@@ -52,13 +52,15 @@ public class GameManager : MonoBehaviour
     private IScoreService _scoreService;
     private ScoreDisplayComponent _scoreDisplayComponent;
     private IInputProvider _inputProvider;
+    private IContentService _contentService;
     
     [Inject]
-    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider)
+    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider, IContentService contentService)
     {
         _scoreService = scoreService;
         _scoreDisplayComponent = scoreDisplayComponent;
         _inputProvider = inputProvider;
+        _contentService = contentService;
     }
     
     public System.Random Random => _random ??= new System.Random();
@@ -135,7 +137,7 @@ public class GameManager : MonoBehaviour
             case GameState.MapSelect:
                 // デモ版ではact2で終了
                 # if DEMO_PLAY
-                    if (StageManager.CurrentStage?.Type == StageType.Boss && ContentProvider.Instance.Act > 1)
+                    if (StageManager.CurrentStage?.Type == StageType.Boss && _contentService.Act > 1)
                     {
                         UIManager.Instance.EnableCanvasGroup("Clear", true);
                         break;

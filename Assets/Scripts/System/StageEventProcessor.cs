@@ -16,11 +16,13 @@ public class StageEventProcessor : MonoBehaviour
     
     private StageEventBase _currentEvent;
     private IInputProvider _inputProvider;
+    private IContentService _contentService;
     
     [Inject]
-    public void InjectDependencies(IInputProvider inputProvider)
+    public void InjectDependencies(IInputProvider inputProvider, IContentService contentService)
     {
         _inputProvider = inputProvider;
+        _contentService = contentService;
     }
     
     /// <summary>
@@ -45,7 +47,7 @@ public class StageEventProcessor : MonoBehaviour
     private async UniTaskVoid SetRandomEventAsync()
     {
         HideOptions();
-        _currentEvent = ContentProvider.Instance.GetRandomEvent();
+        _currentEvent = _contentService.GetRandomEvent();
         _currentEvent.Init();
         descriptionText.text = _currentEvent.MainDescription;
 

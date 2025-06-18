@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class StatusEffectUI : MonoBehaviour
 {
@@ -12,6 +13,14 @@ public class StatusEffectUI : MonoBehaviour
     [SerializeField] private float margin = 0.4f;
     
     private readonly Dictionary<StatusEffectType, GameObject> _statusEffectIcons = new();
+    
+    private IContentService _contentService;
+    
+    [Inject]
+    public void InjectDependencies(IContentService contentService)
+    {
+        _contentService = contentService;
+    }
     
     public List<Selectable> GetStatusEffectIcons()
     {
@@ -49,7 +58,7 @@ public class StatusEffectUI : MonoBehaviour
 
     private void Start()
     {
-        var statusEffectDataList = ContentProvider.Instance.StatusEffectList;
+        var statusEffectDataList = _contentService.StatusEffectList;
         
         foreach (var statusEffectData in statusEffectDataList.list)
         {

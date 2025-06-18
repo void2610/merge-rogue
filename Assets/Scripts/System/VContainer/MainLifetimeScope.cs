@@ -13,6 +13,9 @@ public class MainLifetimeScope : LifetimeScope
     [Header("コンポーネント参照")]
     [SerializeField] private ScoreDisplayComponent scoreDisplayComponent;
     
+    [Header("ContentService設定データ")]
+    [SerializeField] private ContentProviderData contentProviderData;
+    
     protected override void Configure(IContainerBuilder builder)
     {
         // マウス関連サービス（シーンごとに再生成）
@@ -22,20 +25,44 @@ public class MainLifetimeScope : LifetimeScope
         // スコア関連サービス
         builder.Register<IScoreService, ScoreService>(Lifetime.Singleton);
         
+        // ContentService関連の依存関係を登録
+        builder.Register<IRandomService, RandomService>(Lifetime.Singleton);
+        
+        // StageEventFactoryの登録（ContentProviderのGameObjectを使用）
+        builder.Register<IStageEventFactory>(container =>
+        {
+            var contentProvider = ContentProvider.Instance;
+            if (contentProvider == null)
+            {
+                throw new System.InvalidOperationException("ContentProvider instance is required for StageEventFactory");
+            }
+            return new StageEventFactory(contentProvider.gameObject);
+        }, Lifetime.Singleton);
+        
+        // ContentServiceの登録（完全なpure C#実装）
+        builder.Register<IContentService>(container =>
+        {
+            var data = contentProviderData;
+            var stageEventFactory = container.Resolve<IStageEventFactory>();
+            var randomService = container.Resolve<IRandomService>();
+            
+            return new ContentService(data, stageEventFactory, randomService);
+        }, Lifetime.Singleton);
+        
         // UI関連サービス（エントリーポイント）
         builder.RegisterEntryPoint<MouseHoverUISelector>(Lifetime.Singleton);
         
-        // ScoreDisplayComponentを登録（インスペクターから参照）
-        if (scoreDisplayComponent != null)
-        {
-            builder.RegisterComponent(scoreDisplayComponent);
-        }
+        builder.RegisterComponent(scoreDisplayComponent);
         
         // MainScene関連コンポーネントの依存注入を有効化
         builder.RegisterComponentInHierarchy<GameManager>();
         builder.RegisterComponentInHierarchy<MergeManager>();
         builder.RegisterComponentInHierarchy<StageEventProcessor>();
         builder.RegisterComponentInHierarchy<DescriptionWindow>();
+        builder.RegisterComponentInHierarchy<StatusEffectUI>();
+        builder.RegisterComponentInHierarchy<Treasure>();
+        builder.RegisterComponentInHierarchy<Shop>();
+        builder.RegisterComponentInHierarchy<AfterBattleUI>();
         
         // TODO: 段階的にMainScene専用のサービスを追加
         // 例: GameManager → IGameService

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using R3;
+using VContainer;
 
 public class Treasure : MonoBehaviour
 {
@@ -28,6 +29,14 @@ public class Treasure : MonoBehaviour
     private const int MAX_ITEMS = 3;
     private readonly Vector3 _disablePosition = new (100, 100, 0);
     private TreasureType _currentType;
+    
+    private IContentService _contentService;
+    
+    [Inject]
+    public void InjectDependencies(IContentService contentService)
+    {
+        _contentService = contentService;
+    }
 
     public void OpenTreasure(TreasureType type)
     {
@@ -66,12 +75,12 @@ public class Treasure : MonoBehaviour
         // 同じレアリティのレリックを被りなしでランダムに選ぶ
         var rarity = type switch
         {
-            TreasureType.Normal => ContentProvider.Instance.GetRandomRarity(),
+            TreasureType.Normal => _contentService.GetRandomRarity(),
             TreasureType.Initial => Rarity.Rare,
             TreasureType.Boss => Rarity.Boss,
             _ => Rarity.Common
         };
-        var relics = ContentProvider.Instance.GetRelicDataByRarity(rarity);
+        var relics = _contentService.GetRelicDataByRarity(rarity);
         for (var i = 0; i < count; i++)
         {
             var index = GameManager.Instance.RandomRange(0, relics.Count);
