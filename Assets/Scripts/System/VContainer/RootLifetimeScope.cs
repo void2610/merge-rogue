@@ -40,7 +40,6 @@ public class RootLifetimeScope : LifetimeScope
     {
         builder.RegisterInstance(cursorConfiguration);
         builder.Register<IInputProvider, InputProviderService>(Lifetime.Singleton);
-        // MouseCursorServiceは各シーンのLifetimeScopeで登録（VirtualMouseServiceとの依存関係のため）
     }
     
     /// <summary>
@@ -48,13 +47,6 @@ public class RootLifetimeScope : LifetimeScope
     /// </summary>
     private void RegisterContentServices(IContainerBuilder builder)
     {
-        // ContentProviderDataのnullチェックと登録
-        if (contentProviderData == null)
-        {
-            Debug.LogError("ContentProviderDataがRootLifetimeScopeで設定されていません。Inspector内で設定してください。");
-            return;
-        }
-        
         builder.RegisterInstance(contentProviderData);
         
         // 共通して使用するサービス
@@ -85,9 +77,7 @@ public class RootLifetimeScope : LifetimeScope
             if (container.TryResolve<IMouseCursorService>(out var mouseCursorService))
             {
                 foreach (var setMouseCursor in setMouseCursors)
-                {
                     setMouseCursor.InjectDependencies(mouseCursorService);
-                }
             }
         });
     }
