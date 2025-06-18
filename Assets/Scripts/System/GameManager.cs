@@ -8,6 +8,7 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Vector2 = UnityEngine.Vector2;
+using VContainer;
 
 public class GameManager : MonoBehaviour
 {
@@ -41,13 +42,22 @@ public class GameManager : MonoBehaviour
     public bool IsGameOver { get; private set; } = false;
     public Player Player { get; private set; }
     public StageManager StageManager => stageManager;
-    public ScoreManager ScoreManager => GetComponent<ScoreManager>();
     public EnemyContainer EnemyContainer => enemyContainer;
     
     public readonly ReactiveProperty<BigInteger> Coin = new(0);
     private string _seedText;
     private int _seed = 42;
     private System.Random _random;
+    
+    private IScoreService _scoreService;
+    private ScoreDisplayComponent _scoreDisplayComponent;
+    
+    [Inject]
+    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent)
+    {
+        _scoreService = scoreService;
+        _scoreDisplayComponent = scoreDisplayComponent;
+    }
     
     public System.Random Random => _random ??= new System.Random();
 
@@ -98,19 +108,12 @@ public class GameManager : MonoBehaviour
     {
         IsGameOver = true;
         ChangeState(GameState.GameOver);
-        ScoreManager.ShowScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value, Coin.Value);
+        _scoreDisplayComponent.ShowScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value, Coin.Value);
     }
     
     public void TweetScore()
     {
-        var (s, e, c) = ScoreManager.CalcScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value,
-            Coin.Value);
-        var score = (ulong)(s + e + c);
-        var text = $"Merge Rogueでスコア: {score}を獲得しました！\n" +
-                   $"#MergeRogue #unityroom\n" +
-                   $"https://unityroom.com/games/mergerogue";
-        var url = "https://twitter.com/intent/tweet?text=" + UnityEngine.Networking.UnityWebRequest.EscapeURL(text);
-        Application.OpenURL(url);
+        _scoreService.TweetScore();
     }
 
     public void ChangeState(GameState newState) => ChangeStateAsync(newState).Forget();

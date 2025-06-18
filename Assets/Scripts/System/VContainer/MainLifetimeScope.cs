@@ -1,3 +1,4 @@
+using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
@@ -9,11 +10,26 @@ using VContainer.Unity;
 /// </summary>
 public class MainLifetimeScope : LifetimeScope
 {
+    [Header("コンポーネント参照")]
+    [SerializeField] private ScoreDisplayComponent scoreDisplayComponent;
+    
     protected override void Configure(IContainerBuilder builder)
     {
         // マウス関連サービス（シーンごとに再生成）
         builder.Register<IVirtualMouseService, VirtualMouseService>(Lifetime.Scoped);
         builder.Register<IMouseCursorService, MouseCursorService>(Lifetime.Scoped);
+        
+        // スコア関連サービス
+        builder.Register<IScoreService, ScoreService>(Lifetime.Singleton);
+        
+        // ScoreDisplayComponentを登録（インスペクターから参照）
+        if (scoreDisplayComponent != null)
+        {
+            builder.RegisterComponent(scoreDisplayComponent);
+        }
+        
+        // GameManagerコンポーネントの依存注入を有効化
+        builder.RegisterComponentInHierarchy<GameManager>();
         
         // TODO: 段階的にMainScene専用のサービスを追加
         // 例: GameManager → IGameService
