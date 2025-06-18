@@ -19,13 +19,10 @@ public class MainLifetimeScope : LifetimeScope
         // マウス関連サービス（シーンごとに再生成）
         builder.Register<IVirtualMouseService, VirtualMouseService>(Lifetime.Scoped);
         builder.Register<IMouseCursorService, MouseCursorService>(Lifetime.Scoped);
-        
-        // スコア関連サービス
         builder.Register<IScoreService, ScoreService>(Lifetime.Singleton);
+        builder.Register<IRandomService, RandomService>(Lifetime.Singleton);
         
-        // UI関連サービス（エントリーポイント）
         builder.RegisterEntryPoint<MouseHoverUISelector>(Lifetime.Singleton);
-        
         builder.RegisterComponent(scoreDisplayComponent);
         
         // MainScene関連コンポーネントの依存注入を有効化
@@ -41,10 +38,5 @@ public class MainLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<AfterBattleUI>();
         builder.RegisterComponentInHierarchy<StatusEffectManager>();
         builder.RegisterComponentInHierarchy<EnemyContainer>();
-        
-        // TODO: 段階的にMainScene専用のサービスを追加
-        // 例: GameManager → IGameService
-        // 例: MergeManager → IMergeService
-        // 例: InventoryManager → IInventoryService
     }
 }

@@ -1,6 +1,6 @@
 /// <summary>
 /// ランダム数値生成を担当するサービスインターフェース
-/// GameManagerのランダム機能を抽象化
+/// シード値を使用した再現可能なランダム生成をサポート
 /// </summary>
 public interface IRandomService
 {

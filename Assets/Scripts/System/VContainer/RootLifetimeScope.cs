@@ -43,6 +43,7 @@ public class RootLifetimeScope : LifetimeScope
     {
         builder.RegisterInstance(cursorConfiguration);
         builder.Register<IInputProvider, InputProviderService>(Lifetime.Singleton);
+        builder.Register<IGameSettingsService, GameSettingsService>(Lifetime.Singleton);
     }
     
     /// <summary>

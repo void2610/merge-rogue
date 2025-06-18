@@ -45,36 +45,33 @@ public class GameManager : MonoBehaviour
     public EnemyContainer EnemyContainer => enemyContainer;
     
     public readonly ReactiveProperty<BigInteger> Coin = new(0);
-    private string _seedText;
-    private int _seed = 42;
-    private System.Random _random;
     
     private IScoreService _scoreService;
     private ScoreDisplayComponent _scoreDisplayComponent;
     private IInputProvider _inputProvider;
     private IContentService _contentService;
+    private IRandomService _randomService;
+    private IGameSettingsService _gameSettingsService;
     
     [Inject]
-    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider, IContentService contentService)
+    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider, IContentService contentService, IRandomService randomService, IGameSettingsService gameSettingsService)
     {
         _scoreService = scoreService;
         _scoreDisplayComponent = scoreDisplayComponent;
         _inputProvider = inputProvider;
         _contentService = contentService;
+        _randomService = randomService;
+        _gameSettingsService = gameSettingsService;
     }
     
-    public System.Random Random => _random ??= new System.Random();
-
     public float RandomRange(float min, float max)
     {
-        var randomValue = (float)(this._random.NextDouble() * (max - min) + min);
-        return randomValue;
+        return _randomService?.RandomRange(min, max) ?? UnityEngine.Random.Range(min, max);
     }
 
     public int RandomRange(int min, int max)
     {
-        var randomValue = this._random.Next(min, max);
-        return randomValue;
+        return _randomService?.RandomRange(min, max) ?? UnityEngine.Random.Range(min, max);
     }
     
     public void AddCoin(int amount)
@@ -168,26 +165,12 @@ public class GameManager : MonoBehaviour
     
     private void Awake()
     {
-        if (Instance != null){
+        if (Instance){
             Destroy(this.gameObject);
             return;
         }
         Instance = this;
 
-        if (PlayerPrefs.GetString("SeedText", "") == "")
-        {
-            var g = Guid.NewGuid();
-            _seedText = g.ToString("N")[..8];
-            _seed = _seedText.GetHashCode();
-            Debug.Log("random seed: " + _seedText);
-        }
-        else
-        {
-            _seedText = PlayerPrefs.GetString("SeedText", "");
-            _seed = _seedText.GetHashCode();
-            Debug.Log("fixed seed: " + _seedText);
-        }
-        _random = new System.Random(_seed);
         Register.Clear();
         DOTween.SetTweensCapacity(tweenersCapacity: 800, sequencesCapacity: 800);
 
@@ -203,7 +186,7 @@ public class GameManager : MonoBehaviour
             TimeScale = 3.0f;
             Time.timeScale = TimeScale;
         }
-        UIManager.Instance.SetSeedText(_seedText);
+        UIManager.Instance.SetSeedText(_gameSettingsService.GetSeedSettings().seedText);
         
         AddCoin(Application.isEditor ? debugCoin : 10);
         
