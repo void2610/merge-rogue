@@ -7,6 +7,7 @@ using R3;
 using Unity.VisualScripting;
 using UnityEngine;
 using VContainer;
+using VContainer.Unity;
 
 public class EnemyContainer : MonoBehaviour
 {
@@ -31,16 +32,20 @@ public class EnemyContainer : MonoBehaviour
     private int _gainedExp;
     
     private IContentService _contentService;
+    private IRandomService _randomService;
+    private IObjectResolver _resolver;
     
     [Inject]
-    public void InjectDependencies(IContentService contentService)
+    public void InjectDependencies(IContentService contentService, IRandomService randomService, IObjectResolver resolver)
     {
         _contentService = contentService;
+        _randomService = randomService;
+        _resolver = resolver;
     }
 
     public int GetCurrentEnemyCount() => _currentEnemies.Count;
     public List<EnemyBase> GetAllEnemies() => _currentEnemies;
-    public EnemyBase GetRandomEnemy() => _currentEnemies[GameManager.Instance.RandomRange(0, _currentEnemies.Count)];
+    public EnemyBase GetRandomEnemy() => _currentEnemies[_randomService.RandomRange(0, _currentEnemies.Count)];
     public int GetEnemyIndex(EnemyBase enemy) => _currentEnemies.IndexOf(enemy);
     public GameObject GetHpSliderPrefab() => enemyHpSliderPrefab;
     public GameObject GetCoinPrefab() => coinPrefab;
@@ -56,6 +61,9 @@ public class EnemyContainer : MonoBehaviour
         Debug.Log(bossData.className);
         var behaviour = e.AddComponent(type) as EnemyBase;
         
+        // VContainerで依存性を注入
+        _resolver.Inject(behaviour);
+        
         e.transform.localScale = new Vector3(1, 1, 1);
         e.transform.position = _positions[_currentEnemies.Count];
         behaviour.Init(bossData, stage);
@@ -70,6 +78,10 @@ public class EnemyContainer : MonoBehaviour
         {
             var enemyData = _contentService.GetRandomEnemy();
             var e = Instantiate(enemyBasePrefab, this.transform).GetComponent<EnemyBase>();
+            
+            // VContainerで依存性を注入
+            _resolver.Inject(e);
+            
             e.transform.position = _positions[_currentEnemies.Count];
             e.transform.localScale = new Vector3(1, 1, 1);
             e.Init(enemyData, stage);

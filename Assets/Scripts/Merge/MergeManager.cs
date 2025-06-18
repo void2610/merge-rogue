@@ -48,11 +48,13 @@ public class MergeManager : MonoBehaviour
     private float _fillingRateMagnification;
     
     private IInputProvider _inputProvider;
+    private IRandomService _randomService;
     
     [Inject]
-    public void InjectDependencies(IInputProvider inputProvider)
+    public void InjectDependencies(IInputProvider inputProvider, IRandomService randomService)
     {
         _inputProvider = inputProvider;
+        _randomService = randomService;
     }
     
     public void LevelUpWallWidth()
@@ -83,7 +85,7 @@ public class MergeManager : MonoBehaviour
     public Vector3 GetValidRandomPosition()
     {
         var width = wall.WallWidth;
-        var r = GameManager.Instance.RandomRange(-width / 2 + 0.2f, width / 2 - 0.2f);
+        var r = _randomService.RandomRange(-width / 2 + 0.2f, width / 2 - 0.2f);
         return new Vector3(r, 0.6f, 0);
     }
     

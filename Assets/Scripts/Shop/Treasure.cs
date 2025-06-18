@@ -31,11 +31,13 @@ public class Treasure : MonoBehaviour
     private TreasureType _currentType;
     
     private IContentService _contentService;
+    private IRandomService _randomService;
     
     [Inject]
-    public void InjectDependencies(IContentService contentService)
+    public void InjectDependencies(IContentService contentService, IRandomService randomService)
     {
         _contentService = contentService;
+        _randomService = randomService;
     }
 
     public void OpenTreasure(TreasureType type)
@@ -57,7 +59,7 @@ public class Treasure : MonoBehaviour
         
         var count = type switch
         {
-            TreasureType.Normal => GameManager.Instance.RandomRange(1, 4),
+            TreasureType.Normal => _randomService.RandomRange(1, 4),
             TreasureType.Initial => 3,
             TreasureType.Boss => 3,
             _ => 1
@@ -83,7 +85,7 @@ public class Treasure : MonoBehaviour
         var relics = _contentService.GetRelicDataByRarity(rarity);
         for (var i = 0; i < count; i++)
         {
-            var index = GameManager.Instance.RandomRange(0, relics.Count);
+            var index = _randomService.RandomRange(0, relics.Count);
             SetEvent(items[i], relics[index]);
             relics.RemoveAt(index);
         }

@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using Cysharp.Threading.Tasks;
 using R3;
+using VContainer;
 
 public class StageManager : MonoBehaviour
 {
@@ -19,6 +20,13 @@ public class StageManager : MonoBehaviour
     
     private MapGenerator _mapGenerator;
     private StageMapRenderer _mapRenderer;
+    private IRandomService _randomService;
+    
+    [Inject]
+    public void InjectDependencies(IRandomService randomService)
+    {
+        _randomService = randomService;
+    }
     
     public void StartFromFirstStage() => NextStage(_mapGenerator.GetStartNode()).Forget();
 
@@ -82,10 +90,10 @@ public class StageManager : MonoBehaviour
         if(CurrentStage.Type == StageType.Events)
         {
             // ランダムなステージに移動
-            if (GameManager.Instance.RandomRange(0.0f, 1.0f) < 0.75f)
+            if (_randomService.RandomRange(0.0f, 1.0f) < 0.75f)
                 r = 4;
             else
-                r = GameManager.Instance.RandomRange(0, 4);
+                r = _randomService.RandomRange(0, 4);
 
             var stage = (StageType)r;
             // ValueProcessorを通してステージタイプを最終決定

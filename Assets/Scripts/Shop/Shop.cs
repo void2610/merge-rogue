@@ -28,11 +28,13 @@ public class Shop : MonoBehaviour
     private int _selectedIndex = -1;
     
     private IContentService _contentService;
+    private IRandomService _randomService;
     
     [Inject]
-    public void InjectDependencies(IContentService contentService)
+    public void InjectDependencies(IContentService contentService, IRandomService randomService)
     {
         _contentService = contentService;
+        _randomService = randomService;
     }
     
     public void UnInteractableSelectedItem() => _itemObjects[_selectedIndex].GetComponent<Button>().interactable = false;
@@ -54,10 +56,10 @@ public class Shop : MonoBehaviour
         for(var i = 0; i < ITEM_NUM; i++)
         {
             var balls = _contentService.GetBallListExceptNormal();
-            var isBall = GameManager.Instance.RandomRange(0.0f, 1.0f) > 0.5f;
+            var isBall = _randomService.RandomRange(0.0f, 1.0f) > 0.5f;
             if (isBall)
             {
-                var index = GameManager.Instance.RandomRange(0, balls.Count);
+                var index = _randomService.RandomRange(0, balls.Count);
                 _currentItems.Add(balls[index]);
                 SetBallEvent(_itemObjects[i].transform.gameObject, balls[index], i);
             }

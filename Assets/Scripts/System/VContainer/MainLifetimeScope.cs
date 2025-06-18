@@ -31,6 +31,7 @@ public class MainLifetimeScope : LifetimeScope
         // MainScene関連コンポーネントの依存注入を有効化
         builder.RegisterComponentInHierarchy<GameManager>();
         builder.RegisterComponentInHierarchy<MergeManager>();
+        builder.RegisterComponentInHierarchy<StageManager>();
         builder.RegisterComponentInHierarchy<StageEventProcessor>();
         builder.RegisterComponentInHierarchy<DescriptionWindow>();
         builder.RegisterComponentInHierarchy<InventoryManager>();

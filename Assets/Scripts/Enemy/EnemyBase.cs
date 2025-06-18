@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using VContainer;
 
 public class EnemyBase : MonoBehaviour, IEntity
 {
@@ -31,8 +32,15 @@ public class EnemyBase : MonoBehaviour, IEntity
     private TextMeshProUGUI _attackCountText;
     private StatusEffectUI _statusEffectUI;
     private Image _attackIcon;
+    private IRandomService _randomService;
     
     public StatusEffectUI StatusEffectUI => _statusEffectUI;
+    
+    [Inject]
+    public void InjectDependencies(IRandomService randomService)
+    {
+        _randomService = randomService;
+    }
 
     
     public void AddStatusEffect(StatusEffectType type, int stacks)
@@ -125,8 +133,34 @@ public class EnemyBase : MonoBehaviour, IEntity
     
     protected virtual EnemyActionData GetNextAction()
     {
-        var behaviour = this.Data.actions.ChooseByProbability();
+        var behaviour = ChooseByProbability(this.Data.actions);
         return EnemyActionFactory.CreateActionByName(behaviour.actionName, this, (int)(Stage * 0.6f + behaviour.value));
+    }
+    
+    /// <summary>
+    /// EnemyBehaviorDataのリストから、probabilityの重みに従ってランダムに1つ選ぶ
+    /// </summary>
+    private EnemyData.EnemyBehaviorData ChooseByProbability(List<EnemyData.EnemyBehaviorData> list)
+    {
+        if (list == null || list.Count == 0)
+            throw new ArgumentException("EnemyBehaviorData list is empty or null");
+
+        var total = list.Sum(x => x.probability);
+        if (total <= 0f)
+            throw new ArgumentException("Total probability must be greater than zero");
+
+        var r = _randomService?.RandomRange(0f, total) ?? UnityEngine.Random.Range(0f, total);
+
+        var cumulative = 0f;
+        foreach (var item in list)
+        {
+            cumulative += item.probability;
+            if (r <= cumulative)
+                return item;
+        }
+
+        // fallback（浮動小数点の誤差対策）
+        return list[list.Count - 1];
     }
 
     private void DoAttack()

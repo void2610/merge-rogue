@@ -26,11 +26,13 @@ public class InventoryManager : MonoBehaviour
     private readonly List<float> _probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f };
     
     private IContentService _contentService;
+    private IRandomService _randomService;
     
     [Inject]
-    public void InjectDependencies(IContentService contentService)
+    public void InjectDependencies(IContentService contentService, IRandomService randomService)
     {
         _contentService = contentService;
+        _randomService = randomService;
     }
     
     public bool IsFull => InventorySize >= MAX_INVENTORY_SIZE;
@@ -157,7 +159,7 @@ public class InventoryManager : MonoBehaviour
     {
         GameObject ball;
         var total = _probabilities.Sum();
-        var r = GameManager.Instance.RandomRange(0.0f, total);
+        var r = _randomService.RandomRange(0.0f, total);
         for (var i = 0; i < InventorySize; i++)
         {
             if (r < _probabilities[i])

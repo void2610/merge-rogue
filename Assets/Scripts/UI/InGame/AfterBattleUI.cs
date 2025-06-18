@@ -22,11 +22,13 @@ public class AfterBattleUI : MonoBehaviour
     private static BallDataList AllBalls => InventoryManager.Instance.allBallDataList;
     
     private IContentService _contentService;
+    private IRandomService _randomService;
     
     [Inject]
-    public void InjectDependencies(IContentService contentService)
+    public void InjectDependencies(IContentService contentService, IRandomService randomService)
     {
         _contentService = contentService;
+        _randomService = randomService;
     }
     
     public void UnInteractableSelectedItem() => _itemObjects[_selectedIndex].GetComponent<MyButton>().IsAvailable = false;
@@ -99,7 +101,7 @@ public class AfterBattleUI : MonoBehaviour
         for(var i = 0; i < ITEM_NUM; i++)
         {
             var balls = _contentService.GetBallListExceptNormal();
-            var index = GameManager.Instance.RandomRange(0, balls.Count);
+            var index = _randomService.RandomRange(0, balls.Count);
             _currentItems.Add(balls[index]);
             SetBallEvent(_itemObjects[i].transform.gameObject, balls[index], i);
             _itemObjects[i].GetComponent<MyButton>().IsAvailable = true;
