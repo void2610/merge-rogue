@@ -28,8 +28,10 @@ public class MainLifetimeScope : LifetimeScope
             builder.RegisterComponent(scoreDisplayComponent);
         }
         
-        // GameManagerコンポーネントの依存注入を有効化
+        // MainScene関連コンポーネントの依存注入を有効化
         builder.RegisterComponentInHierarchy<GameManager>();
+        builder.RegisterComponentInHierarchy<MergeManager>();
+        builder.RegisterComponentInHierarchy<StageEventProcessor>();
         
         // TODO: 段階的にMainScene専用のサービスを追加
         // 例: GameManager → IGameService

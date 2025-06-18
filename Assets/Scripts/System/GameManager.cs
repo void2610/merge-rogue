@@ -51,12 +51,14 @@ public class GameManager : MonoBehaviour
     
     private IScoreService _scoreService;
     private ScoreDisplayComponent _scoreDisplayComponent;
+    private IInputProvider _inputProvider;
     
     [Inject]
-    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent)
+    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider)
     {
         _scoreService = scoreService;
         _scoreDisplayComponent = scoreDisplayComponent;
+        _inputProvider = inputProvider;
     }
     
     public System.Random Random => _random ??= new System.Random();
@@ -208,19 +210,19 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (InputProvider.Instance.UI.OpenPause.triggered)
+        if (_inputProvider.UI.OpenPause.triggered)
             UIManager.Instance.OnClickPauseButton();
-        if (InputProvider.Instance.UI.OpenMap.triggered)
+        if (_inputProvider.UI.OpenMap.triggered)
             UIManager.Instance.OnClickMapButton();
-        if (InputProvider.Instance.UI.ChangeSpeed.triggered)
+        if (_inputProvider.UI.ChangeSpeed.triggered)
             UIManager.Instance.OnClickSpeedButton();
-        if (InputProvider.Instance.UI.OpenTutorial.triggered)
+        if (_inputProvider.UI.OpenTutorial.triggered)
             UIManager.Instance.OnClickTutorialButton();
-        if (InputProvider.Instance.UI.ResetCursor.triggered)
+        if (_inputProvider.UI.ResetCursor.triggered)
             UIManager.Instance.ResetSelectedGameObject();
-        if (InputProvider.Instance.UI.ToggleVirtualMouse.triggered)
+        if (_inputProvider.UI.ToggleVirtualMouse.triggered)
             UIManager.Instance.ToggleVirtualMouse();
-        if (InputProvider.Instance.UI.ToggleCursorState.triggered)
+        if (_inputProvider.UI.ToggleCursorState.triggered)
             UIManager.Instance.ToggleCursorState();
         if(!UIManager.Instance.IsVirtualMouseActive())
             UIManager.Instance.SetVirtualMousePosition(new Vector2(9999, 9999));
