@@ -11634,8 +11634,6 @@ GameObject:
   - component: {fileID: 567445621}
   - component: {fileID: 567445623}
   - component: {fileID: 567445622}
-  - component: {fileID: 567445625}
-  - component: {fileID: 567445626}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -11724,34 +11722,6 @@ MonoBehaviour:
   afterBattleUI: {fileID: 109174368}
   stageManager: {fileID: 716147202}
   debugCoin: 0
---- !u!114 &567445625
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 567445620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84b9a032a38814e65abdd19b65cc650e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  stageText: {fileID: 1838614298}
-  enemyText: {fileID: 1077994477}
-  coinText: {fileID: 2108882092}
-  totalText: {fileID: 979674122}
---- !u!114 &567445626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 567445620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b20401d4b42114af3854e490d3d5b2ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &581884005 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3559292517470076089, guid: f5b253d8f0f3e46d3bd8b4ad4c4520e6, type: 3}
@@ -15442,6 +15412,7 @@ MonoBehaviour:
     TypeName: RootLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
+  scoreDisplayComponent: {fileID: 1477400323}
 --- !u!4 &975825325
 Transform:
   m_ObjectHideFlags: 0
@@ -21233,6 +21204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1477400321}
   - component: {fileID: 1477400322}
+  - component: {fileID: 1477400323}
   m_Layer: 6
   m_Name: GameOver
   m_TagString: Untagged
@@ -21276,10 +21248,26 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1477400320}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1477400323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1477400320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f619ae3b110bf4bfa864a596dc8bbdc3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stageText: {fileID: 1838614298}
+  enemyText: {fileID: 1077994477}
+  coinText: {fileID: 2108882092}
+  totalText: {fileID: 979674122}
 --- !u!1 &1486357763
 GameObject:
   m_ObjectHideFlags: 0
@@ -25565,97 +25553,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statusEffectUI: {fileID: 1888057323}
---- !u!1 &1997023695
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1997023697}
-  - component: {fileID: 1997023698}
-  m_Layer: 0
-  m_Name: ContentProvider
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1997023697
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1997023695}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1997023698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1997023695}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00cb786866a5d4374a7dc4a0ff1f4d2d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyList:
-  - list:
-    - data: {fileID: 11400000, guid: a76c5edd71784422b8b798351be6af49, type: 2}
-      probability: 0.5
-    - data: {fileID: 11400000, guid: b3473be55ae6f4664bd414a8841a8c0d, type: 2}
-      probability: 0.5
-    - data: {fileID: 11400000, guid: 5db2551ea5d994016a09369e39a682b4, type: 2}
-      probability: 0.5
-  bossList:
-  - list:
-    - data: {fileID: 11400000, guid: 8a3ebb566fa3744d8b997fa59347dd71, type: 2}
-      probability: 1
-    - data: {fileID: 11400000, guid: 052189ff9b0914745b204273d3d0303d, type: 2}
-      probability: 1
-  eventList:
-  - list:
-    - data: {fileID: 11500000, guid: 5b32f3e64ebd74bb78b8e03d97106fbb, type: 3}
-      probability: 1
-    - data: {fileID: 11500000, guid: 9c69f80c7606542d2ba15c5a4ef34780, type: 3}
-      probability: 0.8
-    - data: {fileID: 11500000, guid: 8822c9bb9900a4512ae2a33846d2abd7, type: 3}
-      probability: 1
-    - data: {fileID: 11500000, guid: c41486fb5d56e4063a772ae99ce184b3, type: 3}
-      probability: 1
-    - data: {fileID: 11500000, guid: 94bbdbb5538b5471bb10783b0b255c7c, type: 3}
-      probability: 1
-    - data: {fileID: 11500000, guid: c20f604d7a468471a88d4d8d30ffa0aa, type: 3}
-      probability: 1
-    - data: {fileID: 11500000, guid: ba865c5df106944e0b7dd50a57166c40, type: 3}
-      probability: 1
-    - data: {fileID: 11500000, guid: 7186b3d7216524f518bba12cd4659978, type: 3}
-      probability: 1
-  ballList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
-  relicList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
-  statusEffectList: {fileID: 11400000, guid: b4373a73fdb54e4db1f4000b1989152a, type: 2}
-  ballBaseImages:
-    _list:
-    - key: 0
-      value: {fileID: 21300000, guid: 7ee14596be770485d82adfccf7478e9f, type: 3}
-    - key: 1
-      value: {fileID: 21300000, guid: 99ce4d9fcd58e4310af680f5c79accc1, type: 3}
-    - key: 2
-      value: {fileID: 21300000, guid: 7e975f6e07d4c47cd94d6228f0d0b9c7, type: 3}
-    - key: 3
-      value: {fileID: 21300000, guid: 0b8da0e67670c4992b7ca52c41b771c4, type: 3}
-    - key: 4
-      value: {fileID: 21300000, guid: 8fb699a673a084c6f8794359fc1277f9, type: 3}
 --- !u!1001 &2000930964
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33976,7 +33873,6 @@ SceneRoots:
   - {fileID: 880282179}
   - {fileID: 1843446103}
   - {fileID: 318840770}
-  - {fileID: 1997023697}
   - {fileID: 507554972}
   - {fileID: 4695971492337070555}
   - {fileID: 291082603}

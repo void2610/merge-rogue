@@ -28,10 +28,7 @@ public class BallDataList : ScriptableObject
         {
             var assetPath = AssetDatabase.GUIDToAssetPath(guid);
             var ballData = AssetDatabase.LoadAssetAtPath<BallData>(assetPath);
-            if (ballData != null)
-            {
-                list.Add(ballData);
-            }
+            if (ballData) list.Add(ballData);
         }
         // レアリティでソート
         list = list.OrderBy(x => x.rarity).ToList();

@@ -6,6 +6,7 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine.EventSystems;
 using unityroom.Api;
+using VContainer;
 
 public class MergeManager : MonoBehaviour
 {
@@ -45,6 +46,14 @@ public class MergeManager : MonoBehaviour
     private bool _isMovable = false;
     private Camera _mainCamera;
     private float _fillingRateMagnification;
+    
+    private IInputProvider _inputProvider;
+    
+    [Inject]
+    public void InjectDependencies(IInputProvider inputProvider)
+    {
+        _inputProvider = inputProvider;
+    }
     
     public void LevelUpWallWidth()
     {
@@ -376,11 +385,11 @@ public class MergeManager : MonoBehaviour
     {
         float direction = 0f;
         
-        if (InputProvider.Instance.Gameplay.LeftMove.IsPressed())
+        if (_inputProvider.Gameplay.LeftMove.IsPressed())
         {
             direction = -1f;
         }
-        else if (InputProvider.Instance.Gameplay.RightMove.IsPressed())
+        else if (_inputProvider.Gameplay.RightMove.IsPressed())
         {
             direction = 1f;
         }
@@ -432,7 +441,7 @@ public class MergeManager : MonoBehaviour
         if(UIManager.Instance.IsAnyCanvasGroupEnabled()) return;
         if (EventSystem.current.currentSelectedGameObject != cursorSetter.gameObject) return;
         
-        var mousePosX = (InputProvider.Instance.GetMousePosition().x - Screen.width / 2) / Screen.width * 20;
+        var mousePosX = (_inputProvider.GetMousePosition().x - Screen.width / 2) / Screen.width * 20;
         var isMouseOvered = cursorSetter.IsMergeArea;
         if (isMouseOvered)
         {
@@ -441,12 +450,12 @@ public class MergeManager : MonoBehaviour
         }
         else
         {
-            if (InputProvider.Instance.Gameplay.LeftMove.IsPressed() && _currentBallPosition.x - size / 2 > -_limit)
+            if (_inputProvider.Gameplay.LeftMove.IsPressed() && _currentBallPosition.x - size / 2 > -_limit)
             {
                 _currentBallPosition += Vector3.left * (MOVE_SPEED * Time.deltaTime);
             }
 
-            if (InputProvider.Instance.Gameplay.RightMove.IsPressed() && _currentBallPosition.x + size / 2 < _limit)
+            if (_inputProvider.Gameplay.RightMove.IsPressed() && _currentBallPosition.x + size / 2 < _limit)
             {
                 _currentBallPosition += Vector3.right * (MOVE_SPEED * Time.deltaTime);
             }
@@ -458,8 +467,8 @@ public class MergeManager : MonoBehaviour
         
         if (Time.time - _lastFallTime <= COOL_TIME || RemainingBalls < 0) return;
 
-        var left = InputProvider.Instance.Gameplay.LeftClick.IsPressed();
-        var right = InputProvider.Instance.Gameplay.RightClick.IsPressed();
+        var left = _inputProvider.Gameplay.LeftClick.IsPressed();
+        var right = _inputProvider.Gameplay.RightClick.IsPressed();
         
         if (left)
         {

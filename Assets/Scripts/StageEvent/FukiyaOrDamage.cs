@@ -15,7 +15,7 @@ public class FukiyaOrDamage : StageEventBase
                 resultDescription = "吹矢を受け止めた！\n(レリックを獲得した)",
                 Action = () =>
                 {
-                    var r = ContentProvider.Instance.GetRelicByClassName("Fukiya");
+                    var r = ContentService.GetRelicByClassName("Fukiya");
                     RelicManager.Instance.AddRelic(r);
                 }
             },

@@ -8,6 +8,7 @@ using DG.Tweening;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Vector2 = UnityEngine.Vector2;
+using VContainer;
 
 public class GameManager : MonoBehaviour
 {
@@ -41,13 +42,26 @@ public class GameManager : MonoBehaviour
     public bool IsGameOver { get; private set; } = false;
     public Player Player { get; private set; }
     public StageManager StageManager => stageManager;
-    public ScoreManager ScoreManager => GetComponent<ScoreManager>();
     public EnemyContainer EnemyContainer => enemyContainer;
     
     public readonly ReactiveProperty<BigInteger> Coin = new(0);
     private string _seedText;
     private int _seed = 42;
     private System.Random _random;
+    
+    private IScoreService _scoreService;
+    private ScoreDisplayComponent _scoreDisplayComponent;
+    private IInputProvider _inputProvider;
+    private IContentService _contentService;
+    
+    [Inject]
+    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider, IContentService contentService)
+    {
+        _scoreService = scoreService;
+        _scoreDisplayComponent = scoreDisplayComponent;
+        _inputProvider = inputProvider;
+        _contentService = contentService;
+    }
     
     public System.Random Random => _random ??= new System.Random();
 
@@ -98,19 +112,12 @@ public class GameManager : MonoBehaviour
     {
         IsGameOver = true;
         ChangeState(GameState.GameOver);
-        ScoreManager.ShowScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value, Coin.Value);
+        _scoreDisplayComponent.ShowScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value, Coin.Value);
     }
     
     public void TweetScore()
     {
-        var (s, e, c) = ScoreManager.CalcScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value,
-            Coin.Value);
-        var score = (ulong)(s + e + c);
-        var text = $"Merge Rogueでスコア: {score}を獲得しました！\n" +
-                   $"#MergeRogue #unityroom\n" +
-                   $"https://unityroom.com/games/mergerogue";
-        var url = "https://twitter.com/intent/tweet?text=" + UnityEngine.Networking.UnityWebRequest.EscapeURL(text);
-        Application.OpenURL(url);
+        _scoreService.TweetScore();
     }
 
     public void ChangeState(GameState newState) => ChangeStateAsync(newState).Forget();
@@ -130,7 +137,7 @@ public class GameManager : MonoBehaviour
             case GameState.MapSelect:
                 // デモ版ではact2で終了
                 # if DEMO_PLAY
-                    if (StageManager.CurrentStage?.Type == StageType.Boss && ContentProvider.Instance.Act > 1)
+                    if (StageManager.CurrentStage?.Type == StageType.Boss && _contentService.Act > 1)
                     {
                         UIManager.Instance.EnableCanvasGroup("Clear", true);
                         break;
@@ -205,19 +212,19 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (InputProvider.Instance.UI.OpenPause.triggered)
+        if (_inputProvider.UI.OpenPause.triggered)
             UIManager.Instance.OnClickPauseButton();
-        if (InputProvider.Instance.UI.OpenMap.triggered)
+        if (_inputProvider.UI.OpenMap.triggered)
             UIManager.Instance.OnClickMapButton();
-        if (InputProvider.Instance.UI.ChangeSpeed.triggered)
+        if (_inputProvider.UI.ChangeSpeed.triggered)
             UIManager.Instance.OnClickSpeedButton();
-        if (InputProvider.Instance.UI.OpenTutorial.triggered)
+        if (_inputProvider.UI.OpenTutorial.triggered)
             UIManager.Instance.OnClickTutorialButton();
-        if (InputProvider.Instance.UI.ResetCursor.triggered)
+        if (_inputProvider.UI.ResetCursor.triggered)
             UIManager.Instance.ResetSelectedGameObject();
-        if (InputProvider.Instance.UI.ToggleVirtualMouse.triggered)
+        if (_inputProvider.UI.ToggleVirtualMouse.triggered)
             UIManager.Instance.ToggleVirtualMouse();
-        if (InputProvider.Instance.UI.ToggleCursorState.triggered)
+        if (_inputProvider.UI.ToggleCursorState.triggered)
             UIManager.Instance.ToggleCursorState();
         if(!UIManager.Instance.IsVirtualMouseActive())
             UIManager.Instance.SetVirtualMousePosition(new Vector2(9999, 9999));

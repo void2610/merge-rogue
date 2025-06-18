@@ -2,10 +2,14 @@ using System.Numerics;
 using TMPro;
 using UnityEngine;
 using DG.Tweening;
-using unityroom.Api;
 using Vector3 = UnityEngine.Vector3;
+using VContainer;
 
-public class ScoreManager : MonoBehaviour
+/// <summary>
+/// スコア表示を担当するMonoBehaviourコンポーネント
+/// スコア計算ロジックはIScoreServiceに移譲
+/// </summary>
+public class ScoreDisplayComponent : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI stageText;
     [SerializeField] private TextMeshProUGUI enemyText;
@@ -15,6 +19,14 @@ public class ScoreManager : MonoBehaviour
     private const float STAGE_COEFFICIENT = 5f;
     private const float ENEMY_COEFFICIENT = 3f;
     private const int COIN_COEFFICIENT = 1;
+    
+    private IScoreService _scoreService;
+    
+    [Inject]
+    public void InjectDependencies(IScoreService scoreService)
+    {
+        _scoreService = scoreService;
+    }
 
     public void ShowScore(int stageCount, int enemyCount, BigInteger coinCount)
     {
@@ -26,13 +38,12 @@ public class ScoreManager : MonoBehaviour
         ResetTransform(coinText);
         ResetTransform(totalText);
 
-        // スコア計算
-        var (stageScore, enemyScore, coinScore) = CalcScore(stageCount, enemyCount,coinCount);  
-        var total = (ulong)(stageScore + enemyScore + coinScore);
+        // スコア計算とキャッシュ・送信（サービスに移譲）
+        _scoreService.CalculateAndSubmitScore(stageCount, enemyCount, coinCount);
         
-        if(UnityroomApiClient.Instance != null)
-            
-            UnityroomApiClient.Instance.SendScore(1, total, ScoreboardWriteMode.HighScoreDesc);
+        // UI表示用のスコア計算
+        var (stageScore, enemyScore, coinScore) = _scoreService.CalcScore(stageCount, enemyCount, coinCount);  
+        var total = (ulong)(stageScore + enemyScore + coinScore);
 
         // アニメーションの順番
         var sequence = DOTween.Sequence();
@@ -69,13 +80,12 @@ public class ScoreManager : MonoBehaviour
                 }).SetUpdate(true);
     }
     
+    /// <summary>
+    /// スコア計算メソッド（後方互換性のため残存、内部でサービスを呼び出し）
+    /// </summary>
     public (int, int, BigInteger) CalcScore(int stageCount, int enemyCount, BigInteger coinCount)
     {
-        // スコア計算
-        var stageScore = (int)(stageCount * STAGE_COEFFICIENT);
-        var enemyScore = (int)(enemyCount * ENEMY_COEFFICIENT);
-        var coinScore = coinCount * COIN_COEFFICIENT;
-        return (stageScore, enemyScore, coinScore);
+        return _scoreService.CalcScore(stageCount, enemyCount, coinCount);
     }
 
     private static void AnimateText(TextMeshProUGUI text, string header, ulong count, float coefficient)

@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
 using R3;
+using VContainer;
 
 /// <summary>
 /// 休憩時にランダムなレリックを獲得するレリック
@@ -15,13 +17,18 @@ public class Santa : RelicBase
     private void OnRestEnter()
     {
         var rarity = GameManager.Instance?.RandomRange(0.0f, 1.0f) > 0.5f ? Rarity.Common : Rarity.Uncommon;
-        var relics = ContentProvider.Instance?.GetRelicDataByRarity(rarity);
         
-        if (relics != null && relics.Count > 0)
-        {
-            var randomRelic = relics[GameManager.Instance.RandomRange(0, relics.Count)];
-            RelicManager.Instance?.AddRelic(randomRelic);
-        }
+        var lifetimeScope = VContainer.Unity.LifetimeScope.Find<VContainer.Unity.LifetimeScope>();
+        if (!lifetimeScope || !lifetimeScope.Container.TryResolve(typeof(IContentService), out var service)) return;
+        
+        var contentService = service as IContentService; 
+        var relics = contentService?.GetRelicDataByRarity(rarity);
+
+        if (relics is not { Count: > 0 }) return;
+        
+        var randomRelic = relics[GameManager.Instance.RandomRange(0, relics.Count)];
+        RelicManager.Instance?.AddRelic(randomRelic);
+
         UI?.ActivateUI();
     }
 }

@@ -4,6 +4,7 @@ using DG.Tweening;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using Cysharp.Threading.Tasks;
+using VContainer;
 
 public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
 {
@@ -26,6 +27,15 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
     
     private const float SIZE_COEFFICIENT = 8f;
     private static List<float> BallSizes => InventoryManager.Instance.Sizes;
+    
+    private IContentService _contentService;
+    
+    [Inject]
+    public void InjectDependencies(IContentService contentService)
+    {
+        _contentService = contentService;
+    }
+    
     private readonly List<GameObject> _items = new();
     private int _selectedIndex = -1;
     private int _swapIndex = -1;
@@ -147,7 +157,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 if (res)
                 {
                     InventoryManager.Instance.ReplaceBall(_replaceBallData, _selectedIndex);
-                    GameManager.Instance.SubCoin(ContentProvider.GetSHopPrice(Shop.ShopItemType.Ball, _replaceBallData.rarity));
+                    GameManager.Instance.SubCoin(_contentService.GetShopPrice(Shop.ShopItemType.Ball, _replaceBallData.rarity));
                     
                     if (GameManager.Instance.state == GameManager.GameState.AfterBattle)
                         afterBattleUI.UnInteractableSelectedItem();
@@ -170,7 +180,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                     InventoryManager.Instance.UpgradeBall(_selectedIndex);
                     SeManager.Instance.PlaySe("levelUp");
                     afterBattleUI.SetUpgradeButtonInteractable(false);
-                    GameManager.Instance.SubCoin(ContentProvider.GetBallUpgradePrice());
+                    GameManager.Instance.SubCoin(_contentService.GetBallUpgradePrice());
                 }
                 CancelEdit();
                 break;
@@ -192,7 +202,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 if (res)
                 { 
                     subCursor.GetComponent<Image>().enabled = false;
-                    GameManager.Instance.SubCoin(ContentProvider.GetBallRemovePrice());
+                    GameManager.Instance.SubCoin(_contentService.GetBallRemovePrice());
                     await InventoryManager.Instance.SwapBall(_selectedIndex, _swapIndex);
                     UIManager.Instance.EnableCanvasGroup("Rest", false);
                     // Trigger organise event - no return value needed
@@ -206,7 +216,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 if (res)
                 {
                     InventoryManager.Instance.RemoveAndShiftBall(_selectedIndex);
-                    GameManager.Instance.SubCoin(ContentProvider.GetBallRemovePrice());
+                    GameManager.Instance.SubCoin(_contentService.GetBallRemovePrice());
                     UIManager.Instance.ResetSelectedGameObject();
                     shop.SetRemoveButtonInteractable(false);
                 }

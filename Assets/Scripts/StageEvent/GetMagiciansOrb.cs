@@ -15,7 +15,11 @@ public class GetMagiciansOrb : StageEventBase
                 resultDescription = "魔術師のオーブを手に入れた",
                 Action = () =>
                 {
-                    var ball = ContentProvider.Instance.GetBallDataFromClassName("MagiciansOrb");
+                    var lifetimeScope = VContainer.Unity.LifetimeScope.Find<VContainer.Unity.LifetimeScope>();
+                    if (!lifetimeScope || !lifetimeScope.Container.TryResolve(typeof(IContentService), out var service)) return;
+                    
+                    var contentService = service as IContentService;
+                    var ball = contentService?.GetBallDataFromClassName("MagiciansOrb");
                     InventoryManager.Instance.AddBall(ball);
                 }
             },

@@ -6,6 +6,7 @@ using Cysharp.Threading.Tasks;
 using R3;
 using Unity.VisualScripting;
 using UnityEngine;
+using VContainer;
 
 public class EnemyContainer : MonoBehaviour
 {
@@ -28,6 +29,14 @@ public class EnemyContainer : MonoBehaviour
     private readonly List<Vector3> _positions = new();
     private const int ENEMY_NUM = 4;
     private int _gainedExp;
+    
+    private IContentService _contentService;
+    
+    [Inject]
+    public void InjectDependencies(IContentService contentService)
+    {
+        _contentService = contentService;
+    }
 
     public int GetCurrentEnemyCount() => _currentEnemies.Count;
     public List<EnemyBase> GetAllEnemies() => _currentEnemies;
@@ -38,7 +47,7 @@ public class EnemyContainer : MonoBehaviour
 
     public void SpawnBoss(int stage)
     {
-        var bossData = ContentProvider.Instance.GetRandomBoss();
+        var bossData = _contentService.GetRandomBoss();
         
         // ボスの場合はEnemyBaseのサブクラスを取得して使用する
         var e = Instantiate(enemyBasePrefab, this.transform);
@@ -59,7 +68,7 @@ public class EnemyContainer : MonoBehaviour
         if (count <= 0) return;
         for(var i = 0; i < count; i++)
         {
-            var enemyData = ContentProvider.Instance.GetRandomEnemy();
+            var enemyData = _contentService.GetRandomEnemy();
             var e = Instantiate(enemyBasePrefab, this.transform).GetComponent<EnemyBase>();
             e.transform.position = _positions[_currentEnemies.Count];
             e.transform.localScale = new Vector3(1, 1, 1);
@@ -122,8 +131,8 @@ public class EnemyContainer : MonoBehaviour
         if (StageManager.CurrentStage.Type == StageType.Boss)
         {
             GameManager.Instance.Player.HealToFull();
-            ContentProvider.Instance.AddAct();
-            Debug.Log(ContentProvider.Instance.Act);
+            _contentService.AddAct();
+            Debug.Log(_contentService.Act);
         }
     }
     

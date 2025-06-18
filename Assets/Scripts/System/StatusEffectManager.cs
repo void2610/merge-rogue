@@ -2,10 +2,23 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using R3;
+using VContainer;
 
 public class StatusEffectManager : SingletonMonoBehaviour<StatusEffectManager>
 {
-    private static StatusEffectDataList StatusEffectDataList => ContentProvider.Instance.StatusEffectList;
+    private static IContentService _contentService;
+    private static StatusEffectDataList StatusEffectDataList => _contentService.StatusEffectList;
+    
+    /// <summary>
+    /// StatusEffectProcessorからアクセス可能なStatusEffectDataListプロパティ
+    /// </summary>
+    public StatusEffectDataList GetStatusEffectDataList() => _contentService.StatusEffectList;
+    
+    [Inject]
+    public void InjectDependencies(IContentService contentService)
+    {
+        _contentService = contentService;
+    }
     
     /// <summary>
     /// エンティティに状態異常を追加する

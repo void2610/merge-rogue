@@ -6,6 +6,7 @@ using TMPro;
 using DG.Tweening;
 using UnityEngine.EventSystems;
 using Coffee.UIEffects;
+using VContainer;
 
 public class Shop : MonoBehaviour
 {
@@ -26,6 +27,14 @@ public class Shop : MonoBehaviour
     private List<GameObject> _itemObjects;
     private int _selectedIndex = -1;
     
+    private IContentService _contentService;
+    
+    [Inject]
+    public void InjectDependencies(IContentService contentService)
+    {
+        _contentService = contentService;
+    }
+    
     public void UnInteractableSelectedItem() => _itemObjects[_selectedIndex].GetComponent<Button>().interactable = false;
     public void SetRemoveButtonInteractable(bool b) => removeButton.GetComponent<Button>().interactable = b;
     
@@ -36,7 +45,7 @@ public class Shop : MonoBehaviour
         for (var i = 0; i < ITEM_NUM; i++) _itemObjects[i].GetComponent<Button>().interactable = true;
 
         removeButton.GetComponent<Button>().interactable = true;
-        removeButton.transform.Find("Price").GetComponent<TextMeshProUGUI>().text = ContentProvider.GetBallRemovePrice().ToString();
+        removeButton.transform.Find("Price").GetComponent<TextMeshProUGUI>().text = _contentService.GetBallRemovePrice().ToString();
         
         _currentItems.Clear();
         _currentItemPrices.Clear();
@@ -44,7 +53,7 @@ public class Shop : MonoBehaviour
         
         for(var i = 0; i < ITEM_NUM; i++)
         {
-            var balls = ContentProvider.Instance.GetBallListExceptNormal();
+            var balls = _contentService.GetBallListExceptNormal();
             var isBall = GameManager.Instance.RandomRange(0.0f, 1.0f) > 0.5f;
             if (isBall)
             {
@@ -54,7 +63,7 @@ public class Shop : MonoBehaviour
             }
             else
             {
-                var r = ContentProvider.Instance.GetRandomRelic();
+                var r = _contentService.GetRandomRelic();
                 _currentItems.Add(r);
                 SetRelicEvent(_itemObjects[i].transform.gameObject, r, i);
             }
@@ -95,7 +104,7 @@ public class Shop : MonoBehaviour
 
     private void SetBallEvent(GameObject g, BallData ball, int index)
     {
-        var price = ContentProvider.GetSHopPrice(ShopItemType.Ball, ball.rarity);
+        var price = _contentService.GetShopPrice(ShopItemType.Ball, ball.rarity);
         _currentItemPrices[index] = price;
         var priceText = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
         priceText.text = price.ToString();
@@ -128,7 +137,7 @@ public class Shop : MonoBehaviour
     {
         Utils.RemoveAllEventFromObject(g);
         
-        var price = ContentProvider.GetSHopPrice(ShopItemType.Relic, relic.rarity);
+        var price = _contentService.GetShopPrice(ShopItemType.Relic, relic.rarity);
         _currentItemPrices[index] = price;
         var priceText = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
         priceText.text = price.ToString();
@@ -160,7 +169,7 @@ public class Shop : MonoBehaviour
     
     private void OnClickRemoveButton()
     {
-        var price = ContentProvider.GetBallRemovePrice();
+        var price = _contentService.GetBallRemovePrice();
         if (GameManager.Instance.Coin.Value < price)
         {
             NotifyWindow.Instance.Notify(NotifyWindow.NotifyType.NotEnoughCoin);

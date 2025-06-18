@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using System.Linq;
 using Coffee.UIEffects;
+using VContainer;
 
 public class AfterBattleUI : MonoBehaviour
 {
@@ -20,6 +21,14 @@ public class AfterBattleUI : MonoBehaviour
     private int _selectedIndex = -1;
     private static BallDataList AllBalls => InventoryManager.Instance.allBallDataList;
     
+    private IContentService _contentService;
+    
+    [Inject]
+    public void InjectDependencies(IContentService contentService)
+    {
+        _contentService = contentService;
+    }
+    
     public void UnInteractableSelectedItem() => _itemObjects[_selectedIndex].GetComponent<MyButton>().IsAvailable = false;
     public void SetUpgradeButtonInteractable(bool b) => ballUpgradeButton.IsAvailable = b;
     
@@ -34,7 +43,7 @@ public class AfterBattleUI : MonoBehaviour
     
     private void SetBallEvent(GameObject g, BallData ball, int index)
     {
-        var price = ContentProvider.GetSHopPrice(Shop.ShopItemType.Ball, ball.rarity);
+        var price = _contentService.GetShopPrice(Shop.ShopItemType.Ball, ball.rarity);
         _currentItemPrices[index] = price;
         var priceText = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
         priceText.text = price.ToString();
@@ -74,7 +83,7 @@ public class AfterBattleUI : MonoBehaviour
     
     public void OpenAfterBattle()
     {
-        var price = ContentProvider.GetBallUpgradePrice();
+        var price = _contentService.GetBallUpgradePrice();
         ballUpgradePriceText.text = price.ToString();
         var interactable = GameManager.Instance.Coin.Value >= price;
         ballUpgradeButton.IsAvailable = interactable;
@@ -89,7 +98,7 @@ public class AfterBattleUI : MonoBehaviour
         
         for(var i = 0; i < ITEM_NUM; i++)
         {
-            var balls = ContentProvider.Instance.GetBallListExceptNormal();
+            var balls = _contentService.GetBallListExceptNormal();
             var index = GameManager.Instance.RandomRange(0, balls.Count);
             _currentItems.Add(balls[index]);
             SetBallEvent(_itemObjects[i].transform.gameObject, balls[index], i);

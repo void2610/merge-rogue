@@ -7,6 +7,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using R3;
+using VContainer;
 
 public class StageEventProcessor : MonoBehaviour
 {
@@ -14,13 +15,41 @@ public class StageEventProcessor : MonoBehaviour
     [SerializeField] private List<GameObject> options;
     
     private StageEventBase _currentEvent;
+    private IInputProvider _inputProvider;
+    private IContentService _contentService;
+    
+    [Inject]
+    public void InjectDependencies(IInputProvider inputProvider, IContentService contentService)
+    {
+        _inputProvider = inputProvider;
+        _contentService = contentService;
+    }
+    
+    /// <summary>
+    /// 指定時間 await するが、途中でクリックかキー操作がされた場合は即座に終了する
+    /// </summary>
+    private async UniTask WaitOrSkipInput(int delayTime, CancellationToken cancellationToken = default)
+    {
+        using (var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken))
+        {
+            var delayTask = UniTask.Delay(delayTime, cancellationToken: cts.Token);
+            var conditionTask = UniTask.WaitUntil(() => _inputProvider.IsSkipButtonPressed(), cancellationToken: cts.Token);
+            
+            var result = await UniTask.WhenAny(delayTask, conditionTask);
+
+            // 待機をスキップするためキャンセル
+            if (result == 1) cts.Cancel();
+        }
+    }
     
     public void StartEvent() => SetRandomEventAsync().Forget();
     
     private async UniTaskVoid SetRandomEventAsync()
     {
         HideOptions();
-        _currentEvent = ContentProvider.Instance.GetRandomEvent();
+        var type = _contentService.GetRandomEventType();
+        _currentEvent = gameObject.AddComponent(type) as StageEventBase;
+        if (!_currentEvent) throw new Exception("Failed to create StageEventBase instance");
         _currentEvent.Init();
         descriptionText.text = _currentEvent.MainDescription;
 
@@ -28,7 +57,7 @@ public class StageEventProcessor : MonoBehaviour
         {
             // 説明文の表示アニメーションとクリック待機タスクを同時に開始
             var textTweenTask = descriptionText.ShowTextTween(0.1f, cts.Token);
-            var clickTask = UniTask.WaitUntil(() => InputProvider.Instance.IsSkipButtonPressed());
+            var clickTask = UniTask.WaitUntil(() => _inputProvider.IsSkipButtonPressed());
             var result = await UniTask.WhenAny(textTweenTask, clickTask);
             // クリックが先に検知されたらスキップ
             if (!result.hasResultLeft)
@@ -39,7 +68,7 @@ public class StageEventProcessor : MonoBehaviour
                 animator.ResetAllChars();
             }
 
-            await Utils.WaitOrSkipInput(500);
+            await WaitOrSkipInput(500);
 
             // 各オプションについて処理
             for (var i = 0; i < _currentEvent.Options.Count; i++)
@@ -51,7 +80,7 @@ public class StageEventProcessor : MonoBehaviour
                 optionText.text = _currentEvent.Options[i].description;
 
                 var optionTweenTask = optionText.ShowTextTween(0.1f, cts.Token);
-                var clickTaskOption = UniTask.WaitUntil(() => InputProvider.Instance.IsSkipButtonPressed());
+                var clickTaskOption = UniTask.WaitUntil(() => _inputProvider.IsSkipButtonPressed());
                 var resultOption = await UniTask.WhenAny(optionTweenTask, clickTaskOption);
                 if (!resultOption.hasResultLeft)
                 {
@@ -61,7 +90,7 @@ public class StageEventProcessor : MonoBehaviour
                     animatorOption.ResetAllChars();
                 }
 
-                await Utils.WaitOrSkipInput(200);
+                await WaitOrSkipInput(200);
                 options[i].GetComponent<Button>().interactable = _currentEvent.Options[i].IsAvailable();
 
                 EventManager.OnStageEventEnter.OnNext(R3.Unit.Default);
@@ -91,7 +120,7 @@ public class StageEventProcessor : MonoBehaviour
         using (var cts = new CancellationTokenSource())
         {
             var textTweenTask = descriptionText.ShowTextTween(0.1f, cts.Token);
-            var clickTask = UniTask.WaitUntil(() => InputProvider.Instance.IsSkipButtonPressed(), cancellationToken: cts.Token);
+            var clickTask = UniTask.WaitUntil(() => _inputProvider.IsSkipButtonPressed(), cancellationToken: cts.Token);
             var result = await UniTask.WhenAny(textTweenTask, clickTask);
         
             // クリック（またはキー入力）が先に完了した場合
@@ -109,7 +138,7 @@ public class StageEventProcessor : MonoBehaviour
 
         if (option.isEndless) return;
         
-        await Utils.WaitOrSkipInput(2500);
+        await WaitOrSkipInput(2500);
         
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
         UIManager.Instance.EnableCanvasGroup("Event", false);
