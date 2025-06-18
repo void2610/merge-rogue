@@ -24,7 +24,7 @@ public class RingShop : StageEventBase
                     rings.Add(ContentService.GetRelicByClassName("ShockRing"));
                     rings.Print();
                     
-                    var idx = GameManager.Instance.RandomRange(0, rings.Count);
+                    var idx = RandomService.RandomRange(0, rings.Count);
                     RelicManager.Instance.AddRelic(rings[idx]);
                     GameManager.Instance.SubCoin(_price);
                     _count++;

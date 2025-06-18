@@ -22,11 +22,13 @@ public abstract class StageEventBase : MonoBehaviour
     public List<OptionData> Options;
     
     protected IContentService ContentService;
+    protected IRandomService RandomService;
     
     [Inject]
-    public void InjectDependencies(IContentService contentService)
+    public void InjectDependencies(IContentService contentService, IRandomService randomService)
     {
         ContentService = contentService;
+        RandomService = randomService;
     }
 
     public abstract void Init();

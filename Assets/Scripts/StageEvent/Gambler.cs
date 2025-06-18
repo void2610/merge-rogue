@@ -42,7 +42,7 @@ public class Gambler : StageEventBase
         else
         {
             MainDescription = "ボロボロの男に出会った。\n「おお、お前だな...」";
-            var r = GameManager.Instance.RandomRange(0f, 1f) < 0.5f;
+            var r = RandomService.RandomRange(0f, 1f) < 0.5f;
             if(r){
                 Options = new List<OptionData>
                 {

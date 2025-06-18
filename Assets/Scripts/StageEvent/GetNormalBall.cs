@@ -26,7 +26,7 @@ public class GetNormalBall : StageEventBase
                 resultDescription = "(ボールを1つ捨てた)",
                 Action = () =>
                 {
-                    var idx = GameManager.Instance.RandomRange(0, InventoryManager.Instance.InventorySize);
+                    var idx = RandomService.RandomRange(0, InventoryManager.Instance.InventorySize);
                     InventoryManager.Instance.RemoveAndShiftBall(idx);
                 },
                 IsAvailable = () => InventoryManager.Instance.IsFull == false

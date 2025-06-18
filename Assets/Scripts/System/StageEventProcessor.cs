@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using R3;
 using VContainer;
+using VContainer.Unity;
 
 public class StageEventProcessor : MonoBehaviour
 {
@@ -17,12 +18,14 @@ public class StageEventProcessor : MonoBehaviour
     private StageEventBase _currentEvent;
     private IInputProvider _inputProvider;
     private IContentService _contentService;
+    private IObjectResolver _resolver;
     
     [Inject]
-    public void InjectDependencies(IInputProvider inputProvider, IContentService contentService)
+    public void InjectDependencies(IInputProvider inputProvider, IContentService contentService, IObjectResolver resolver)
     {
         _inputProvider = inputProvider;
         _contentService = contentService;
+        _resolver = resolver;
     }
     
     /// <summary>
@@ -50,6 +53,10 @@ public class StageEventProcessor : MonoBehaviour
         var type = _contentService.GetRandomEventType();
         _currentEvent = gameObject.AddComponent(type) as StageEventBase;
         if (!_currentEvent) throw new Exception("Failed to create StageEventBase instance");
+        
+        // VContainerで依存性を注入
+        _resolver.Inject(_currentEvent);
+        
         _currentEvent.Init();
         descriptionText.text = _currentEvent.MainDescription;
 
