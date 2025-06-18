@@ -27,5 +27,9 @@ public class TitleLifetimeScope : LifetimeScope
         builder.Register<ILicenseService, LicenseService>(Lifetime.Singleton).WithParameter("licenseManager", licenseManager);
         builder.Register<IVersionService, VersionService>(Lifetime.Singleton).WithParameter("version", gameVersion);
         builder.Register<IGameSettingsService, GameSettingsService>(Lifetime.Singleton);
+        
+        // マウス関連サービス（シーンごとに再生成）
+        builder.Register<IVirtualMouseService, VirtualMouseService>(Lifetime.Scoped);
+        builder.Register<IMouseCursorService, MouseCursorService>(Lifetime.Scoped);
     }
 }

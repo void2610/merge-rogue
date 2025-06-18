@@ -28,8 +28,7 @@ public class SetMouseCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         // 依存性注入が失敗した場合、手動で取得を試みる
         if (_isInjected) return;
         
-        // VContainerのLifetimeScopeを探す（どのLifetimeScopeでも良い）
-        var lifetimeScope = FindFirstObjectByType<VContainer.Unity.LifetimeScope>();
+        var lifetimeScope = FindChildLifetimeScope();
         if (!lifetimeScope) return;
         
         var container = lifetimeScope.Container;
@@ -54,5 +53,29 @@ public class SetMouseCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (_mouseCursorService == null) return;
         _mouseCursorService.ResetCursor();
+    }
+    
+    /// <summary>
+    /// 現在のシーンの子LifetimeScope（TitleやMain）を探す
+    /// RootLifetimeScopeは除外する
+    /// </summary>
+    /// <returns>子LifetimeScope、見つからない場合はnull</returns>
+    private VContainer.Unity.LifetimeScope FindChildLifetimeScope()
+    {
+        var allScopes = FindObjectsByType<VContainer.Unity.LifetimeScope>(FindObjectsSortMode.None);
+        
+        foreach (var scope in allScopes)
+        {
+            // RootLifetimeScopeは除外（DontDestroyOnLoadオブジェクトかどうかで判定）
+            if (scope.gameObject.scene.name == "DontDestroyOnLoad") continue;
+            
+            // MouseCursorServiceが登録されているかチェック
+            if (scope.Container != null && scope.Container.TryResolve<IMouseCursorService>(out _))
+            {
+                return scope;
+            }
+        }
+        
+        return null;
     }
 }

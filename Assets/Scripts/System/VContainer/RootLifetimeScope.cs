@@ -34,8 +34,7 @@ public class RootLifetimeScope : LifetimeScope
     {
         builder.RegisterInstance(cursorConfiguration);
         builder.Register<IInputProvider, InputProviderService>(Lifetime.Singleton);
-        builder.Register<IVirtualMouseService, VirtualMouseService>(Lifetime.Singleton);
-        builder.Register<IMouseCursorService, MouseCursorService>(Lifetime.Singleton);
+        // MouseCursorServiceは各シーンのLifetimeScopeで登録（VirtualMouseServiceとの依存関係のため）
     }
     
     /// <summary>
