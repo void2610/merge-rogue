@@ -66,17 +66,17 @@ public class ContentService : IContentService
     
     public List<BallData> GetBallListExceptNormal()
     {
-        return _data.BallList.list.Where(bd => bd.className != "NormalBall").ToList();
+        return _data.GetFilteredBallList().Where(bd => bd.className != "NormalBall").ToList();
     }
     
     public BallData GetNormalBallData()
     {
-        return _data.BallList.list.Find(bd => bd.className == "NormalBall");
+        return _data.GetFilteredBallList().Find(bd => bd.className == "NormalBall");
     }
     
     public BallData GetBallDataFromClassName(string className)
     {
-        return _data.BallList.GetBallDataFromClassName(className);
+        return _data.GetFilteredBallList().FirstOrDefault(bd => bd.className == className);
     }
     
     public RelicData GetRandomRelic()
@@ -86,14 +86,14 @@ public class ContentService : IContentService
     
     public RelicData GetRelicByClassName(string className)
     {
-        var r = _data.RelicList.list.Find(relic => relic.name == className);
+        var r = _data.GetFilteredRelicList().Find(relic => relic.name == className);
         if (!r) throw new Exception("Relic not found");
         return r;
     }
     
     public List<RelicData> GetRelicDataByRarity(Rarity rarity)
     {
-        return _data.RelicList.list.Where(bd => bd.rarity == rarity).ToList();
+        return  _data.GetFilteredRelicList().Where(bd => bd.rarity == rarity).ToList();
     }
     
     public int GetShopPrice(Shop.ShopItemType type, Rarity rarity)
@@ -130,7 +130,7 @@ public class ContentService : IContentService
     /// <returns>レリックデータ</returns>
     private RelicData GetRandomRelicDataByRarity(Rarity rarity)
     {
-        var targets = _data.RelicList.list.Where(bd => bd.rarity == rarity).ToList();
+        var targets = _data.GetFilteredRelicList().Where(bd => bd.rarity == rarity).ToList();
         if (targets.Count == 0) throw new Exception($"No relic found for rarity: {rarity}");
         
         var randomIndex = _randomService.RandomRange(0, targets.Count);

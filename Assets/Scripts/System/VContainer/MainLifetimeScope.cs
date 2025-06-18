@@ -33,7 +33,6 @@ public class MainLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<MergeManager>();
         builder.RegisterComponentInHierarchy<StageEventProcessor>();
         builder.RegisterComponentInHierarchy<DescriptionWindow>();
-        builder.RegisterComponentInHierarchy<StatusEffectUI>();
         builder.RegisterComponentInHierarchy<InventoryManager>();
         builder.RegisterComponentInHierarchy<InventoryUI>();
         builder.RegisterComponentInHierarchy<Treasure>();

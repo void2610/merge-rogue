@@ -93,44 +93,34 @@ public class ContentProviderData : ScriptableObject
     /// </summary>
     public void InitializeData()
     {
-        Debug.Log("ContentProviderData: Initializing data...");
         if (ballList) ballList.Register();
         if (relicList) relicList.Register();
         if (statusEffectList) statusEffectList.Register();
-        
+    }
+    
+    /// <summary>
+    /// デモ版でフィルタリングされたボールリストを取得
+    /// </summary>
+    public List<BallData> GetFilteredBallList()
+    {
         #if DEMO_PLAY
-            ApplyDemoFilter();
+        return ballList?.list?.FindAll(b => b.availableDemo) ?? new List<BallData>();
+        #else
+        return ballList?.list ?? new List<BallData>();
         #endif
     }
     
-    #if DEMO_PLAY
     /// <summary>
-    /// デモ版用のデータフィルタリング
-    /// 元のデータを変更せず、フィルタリングされたコピーを作成
+    /// デモ版でフィルタリングされたレリックリストを取得
     /// </summary>
-    private void ApplyDemoFilter()
+    public List<RelicData> GetFilteredRelicList()
     {
-        if (ballList)
-        {
-            // 元のballListのコピーを作成してフィルタリング
-            var originalBallList = ballList;
-            ballList = Instantiate(originalBallList);
-            var filteredBalls = ballList.list.FindAll(b => b.availableDemo);
-            ballList.list.Clear();
-            ballList.list.AddRange(filteredBalls);
-        }
-        
-        if (relicList)
-        {
-            // 元のrelicListのコピーを作成してフィルタリング
-            var originalRelicList = relicList;
-            relicList = Instantiate(originalRelicList);
-            var filteredRelics = relicList.list.FindAll(r => r.availableDemo);
-            relicList.list.Clear();
-            relicList.list.AddRange(filteredRelics);
-        }
+        #if DEMO_PLAY
+        return relicList?.list?.FindAll(r => r.availableDemo) ?? new List<RelicData>();
+        #else
+        return relicList?.list ?? new List<RelicData>();
+        #endif
     }
-    #endif
     
     /// <summary>
     /// 指定されたアクトのコンテンツデータリストを取得
