@@ -3,6 +3,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using VContainer;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -23,6 +24,14 @@ public class InventoryManager : MonoBehaviour
     public readonly List<float> Sizes = new() { 0.4f, 0.6f, 0.8f, 1.2f, 1.4f, 1.6f, 1.8f , 2f};
     public readonly List<float> Weights = new() { 10f, 8f, 5f, 2f, 1.75f, 1f, 0.5f, 0.1f };
     private readonly List<float> _probabilities = new() { 1f, 0.8f, 0.1f, 0.05f, 0.0f, 0.0f, 0.0f, 0.0f };
+    
+    private IContentService _contentService;
+    
+    [Inject]
+    public void InjectDependencies(IContentService contentService)
+    {
+        _contentService = contentService;
+    }
     
     public bool IsFull => InventorySize >= MAX_INVENTORY_SIZE;
     public bool IsOnlyOne => InventorySize == 1;
@@ -115,13 +124,22 @@ public class InventoryManager : MonoBehaviour
     // ボールタイプを指定して取得する共通メソッド
     public GameObject GetSpecialBallByClassName(string ballClassName, int rank)
     {
-        var bd = allBallDataList.GetBallDataFromClassName(ballClassName);
+        BallData bd = null;
+        
+        // ContentServiceから取得を試行
+        if (_contentService != null)
+            bd = _contentService.GetBallDataFromClassName(ballClassName);
+        
+        // ContentServiceで見つからない場合、allBallDataListから取得
+        if (!bd)
+            bd = allBallDataList.GetBallDataFromClassName(ballClassName);
+        
         var ball = CreateBallInstanceFromBallData(bd, rank);
         ball.GetComponent<BallBase>().Unfreeze();
         ball.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
         return ball;
     }
-
+    
     // マージ時に次のボールを生成
     public GameObject GetBallByRank(int rank)
     {
@@ -163,6 +181,12 @@ public class InventoryManager : MonoBehaviour
     // ボールのコピー元となるオブジェクトを生成、ステータス変化はこのオブジェクトに対して行う
     private GameObject CreateBallInstanceFromBallData(BallData data, int rank, int level = 0)
     {
+        if (data == null)
+        {
+            Debug.LogError("BallData is null in CreateBallInstanceFromBallData");
+            return null;
+        }
+        
         var ball = Instantiate(ballBasePrefab, this.transform);
         ball.name = $"{data.name} (Rank{rank}, Level{level+1})";
         BallBase ballBase;

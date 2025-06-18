@@ -93,9 +93,10 @@ public class ContentProviderData : ScriptableObject
     /// </summary>
     public void InitializeData()
     {
-        if (ballList != null) ballList.Register();
-        if (relicList != null) relicList.Register();
-        if (statusEffectList != null) statusEffectList.Register();
+        Debug.Log("ContentProviderData: Initializing data...");
+        if (ballList) ballList.Register();
+        if (relicList) relicList.Register();
+        if (statusEffectList) statusEffectList.Register();
         
         #if DEMO_PLAY
             ApplyDemoFilter();
@@ -105,20 +106,25 @@ public class ContentProviderData : ScriptableObject
     #if DEMO_PLAY
     /// <summary>
     /// デモ版用のデータフィルタリング
+    /// 元のデータを変更せず、フィルタリングされたコピーを作成
     /// </summary>
     private void ApplyDemoFilter()
     {
-        if (ballList != null)
+        if (ballList)
         {
-            // デモ版では使用可能なボールのみに制限
+            // 元のballListのコピーを作成してフィルタリング
+            var originalBallList = ballList;
+            ballList = Instantiate(originalBallList);
             var filteredBalls = ballList.list.FindAll(b => b.availableDemo);
             ballList.list.Clear();
             ballList.list.AddRange(filteredBalls);
         }
         
-        if (relicList != null)
+        if (relicList)
         {
-            // デモ版では使用可能なレリックのみに制限
+            // 元のrelicListのコピーを作成してフィルタリング
+            var originalRelicList = relicList;
+            relicList = Instantiate(originalRelicList);
             var filteredRelics = relicList.list.FindAll(r => r.availableDemo);
             relicList.list.Clear();
             relicList.list.AddRange(filteredRelics);
