@@ -18,24 +18,17 @@ public class Santa : RelicBase
     {
         var rarity = GameManager.Instance?.RandomRange(0.0f, 1.0f) > 0.5f ? Rarity.Common : Rarity.Uncommon;
         
-        List<RelicData> relics = null;
-        
         var lifetimeScope = VContainer.Unity.LifetimeScope.Find<VContainer.Unity.LifetimeScope>();
-        if (lifetimeScope && lifetimeScope.Container.TryResolve(typeof(IContentService), out var service))
-        {
-            var contentService = service as IContentService;
-            relics = contentService?.GetRelicDataByRarity(rarity);
-        }
-        else
-        {
-            throw new System.Exception("ContentService not found in the current scope");
-        }
+        if (!lifetimeScope || !lifetimeScope.Container.TryResolve(typeof(IContentService), out var service)) return;
         
-        if (relics != null && relics.Count > 0)
-        {
-            var randomRelic = relics[GameManager.Instance.RandomRange(0, relics.Count)];
-            RelicManager.Instance?.AddRelic(randomRelic);
-        }
+        var contentService = service as IContentService; 
+        var relics = contentService?.GetRelicDataByRarity(rarity);
+
+        if (relics is not { Count: > 0 }) return;
+        
+        var randomRelic = relics[GameManager.Instance.RandomRange(0, relics.Count)];
+        RelicManager.Instance?.AddRelic(randomRelic);
+
         UI?.ActivateUI();
     }
 }
