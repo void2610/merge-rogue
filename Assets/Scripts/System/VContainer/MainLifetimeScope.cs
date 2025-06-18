@@ -35,6 +35,7 @@ public class MainLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<GameManager>();
         builder.RegisterComponentInHierarchy<MergeManager>();
         builder.RegisterComponentInHierarchy<StageEventProcessor>();
+        builder.RegisterComponentInHierarchy<DescriptionWindow>();
         
         // TODO: 段階的にMainScene専用のサービスを追加
         // 例: GameManager → IGameService

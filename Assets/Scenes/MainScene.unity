@@ -11634,7 +11634,6 @@ GameObject:
   - component: {fileID: 567445621}
   - component: {fileID: 567445623}
   - component: {fileID: 567445622}
-  - component: {fileID: 567445626}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -11723,18 +11722,6 @@ MonoBehaviour:
   afterBattleUI: {fileID: 109174368}
   stageManager: {fileID: 716147202}
   debugCoin: 0
---- !u!114 &567445626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 567445620}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b20401d4b42114af3854e490d3d5b2ad, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &581884005 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3559292517470076089, guid: f5b253d8f0f3e46d3bd8b4ad4c4520e6, type: 3}

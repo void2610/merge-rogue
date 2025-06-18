@@ -11,6 +11,7 @@ using DG.Tweening;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using VContainer;
 
 public class DescriptionWindow : MonoBehaviour
 {
@@ -42,6 +43,14 @@ public class DescriptionWindow : MonoBehaviour
     private bool _isWindowLocked = false;
     private CancellationTokenSource _hoverTokenSource;
     private CancellationTokenSource _hideTokenSource;
+    
+    private IInputProvider _inputProvider;
+    
+    [Inject]
+    public void InjectDependencies(IInputProvider inputProvider)
+    {
+        _inputProvider = inputProvider;
+    }
     
     public void AddTextToObservation(GameObject text) => _otherTriggerObjects.Add(text);
     public void RemoveTextFromObservation(GameObject text) => _otherTriggerObjects.Remove(text);
@@ -367,10 +376,10 @@ public class DescriptionWindow : MonoBehaviour
     
     private bool IsMouseOverWindowOrDescendants(GameObject window)
     {
-        if(!window) return false;
+        if(!window || _inputProvider == null) return false;
         // マウスが現在のウィンドウ上にあるかチェック
         if (RectTransformUtility.RectangleContainsScreenPoint(
-                window.GetComponent<RectTransform>(), InputProvider.Instance.GetMousePosition(), uiCamera))
+                window.GetComponent<RectTransform>(), _inputProvider.GetMousePosition(), uiCamera))
         {
             return true;
         }
@@ -390,17 +399,17 @@ public class DescriptionWindow : MonoBehaviour
     
     private bool IsMouseOverObject(GameObject obj)
     {
-        if (!obj) return false;
+        if (!obj || _inputProvider == null) return false;
         return RectTransformUtility.RectangleContainsScreenPoint(
             obj.GetComponent<RectTransform>(),
-            InputProvider.Instance.GetMousePosition(),
+            _inputProvider.GetMousePosition(),
             uiCamera
         );
     }
     
     private bool IsMouseOverAnyWindow()
     {
-        if (!this) return false;
+        if (!this || _inputProvider == null) return false;
 
         // 全てのコライダーをチェック
         var allWindows = new List<GameObject>(_subWindows.Values) { this.gameObject, _rootTriggerObject };
@@ -413,7 +422,7 @@ public class DescriptionWindow : MonoBehaviour
             if(!window) continue;
             if (RectTransformUtility.RectangleContainsScreenPoint(
                     window.GetComponent<RectTransform>(),
-                    InputProvider.Instance.GetMousePosition(),
+                    _inputProvider.GetMousePosition(),
                     uiCamera))
             {
                 return true;
@@ -469,6 +478,9 @@ public class DescriptionWindow : MonoBehaviour
 
     private void Update()
     {
+        // InputProviderが注入されるまで処理をスキップ
+        if (_inputProvider == null) return;
+        
         // マウスがウィンドウ上にない場合、非表示処理を開始
         if (!IsMouseOverAnyWindow() && _isWindowLocked)
         {
@@ -497,7 +509,7 @@ public class DescriptionWindow : MonoBehaviour
         var linkIndices = windows.Select(w =>
             TMP_TextUtilities.FindIntersectingLink(
                 w.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>(),
-                InputProvider.Instance.GetMousePosition(), uiCamera)
+                _inputProvider.GetMousePosition(), uiCamera)
         ).ToList();
 
         var validLinks = linkIndices.Where(i => i != -1).ToList();

@@ -34,5 +34,8 @@ public class TitleLifetimeScope : LifetimeScope
         // マウス関連サービス（シーンごとに再生成）
         builder.Register<IVirtualMouseService, VirtualMouseService>(Lifetime.Scoped);
         builder.Register<IMouseCursorService, MouseCursorService>(Lifetime.Scoped);
+        
+        // DescriptionWindowのVContainer登録（InputProviderServiceの注入を有効化）
+        builder.RegisterComponentInHierarchy<DescriptionWindow>();
     }
 }
