@@ -20,13 +20,70 @@ Merge Rogue is a Unity 6 physics-based puzzle roguelike game where players merge
 
 - **R3:** Reactive programming framework (Cysharp/R3)
 - **UniTask:** Async/await support for Unity (Cysharp/UniTask)
+- **VContainer:** Dependency injection framework (hadashiA/VContainer)
 - **DOTween:** Animation and tweening
 - **Unity Localization:** Multi-language support (EN/JP)
 - **NuGet for Unity:** Package management for external libraries
 
+## Common Development Commands
+
+### Unity Compilation Management
+```bash
+# Check current compilation errors
+./unity-tools/unity-compile.sh check .
+
+# Trigger Unity Editor compilation (macOS only)
+./unity-tools/unity-compile.sh trigger .
+```
+
+### Build Commands
+- **WebGL Build:** Unity Editor → File → Build Settings → WebGL → Build
+- **Addressables Build:** Window → Asset Management → Addressables → Groups → Build → New Build → Default Build Script
+
 ## Core Architecture
 
-### Singleton Manager Pattern
+### VContainer Dependency Injection System
+
+The project uses a hierarchical VContainer setup with multiple LifetimeScopes:
+
+#### LifetimeScope Hierarchy
+```
+RootLifetimeScope (DontDestroyOnLoad)
+├── TitleLifetimeScope (TitleScene)
+└── MainLifetimeScope (MainScene)
+```
+
+#### RootLifetimeScope
+- **Purpose**: Manages globally shared services that persist across scene transitions
+- **Services**: 
+  - `IInputProvider/InputProviderService`: Input system management
+  - `CursorConfiguration`: Cursor texture and hotspot data
+- **Lifecycle**: Persists throughout application lifetime with `DontDestroyOnLoad`
+
+#### TitleLifetimeScope
+- **Purpose**: Title scene-specific services and components
+- **Services**:
+  - `ICreditService/CreditService`: Credit text management
+  - `ILicenseService/LicenseService`: License information display
+  - `IVersionService/VersionService`: Version number display
+  - `IGameSettingsService/GameSettingsService`: Audio settings and seed management
+  - `IVirtualMouseService/VirtualMouseService`: Virtual mouse for gamepad support (Scoped)
+  - `IMouseCursorService/MouseCursorService`: Custom cursor management (Scoped)
+- **Components**: `TitleMenu`, `Encyclopedia`
+
+#### MainLifetimeScope
+- **Purpose**: Main game scene services (future expansion planned)
+- **Current Services**:
+  - `IVirtualMouseService/VirtualMouseService`: Virtual mouse for gamepad support (Scoped)
+  - `IMouseCursorService/MouseCursorService`: Custom cursor management (Scoped)
+- **Planned Services**: GameManager, MergeManager, InventoryManager integration
+
+#### Service Lifetime Management
+- **Singleton**: Services that maintain state across the scope's lifetime
+- **Scoped**: Services that are recreated for each scene (used for scene-specific resources)
+- **Key Pattern**: VirtualMouseService and MouseCursorService use `Lifetime.Scoped` to ensure proper GameObject reference management across scene transitions
+
+### Singleton Manager Pattern (Legacy)
 - `GameManager`: Central state machine (Merge → EnemyAttack → AfterBattle → LevelUp → MapSelect)
 - `UIManager`: Canvas group management and navigation
 - `MergeManager`: Physics-based merge mechanics
@@ -45,7 +102,13 @@ Merge Rogue is a Unity 6 physics-based puzzle roguelike game where players merge
 - **BallBase**: Abstract base with 18+ specialized types (NormalBall, BombBall, etc.)
 - **EnemyBase**: Base enemy with AI behavior via EnemyActionData
 - **RelicBase**: Effect system with Init() → SubscribeEffect() → EffectImpl() pattern
-- **IEntity**: Shared interface for status effects (Player and EnemyBase)
+- **IEntity**: Simplified interface for status effects with Dictionary<StatusEffectType, int> management
+
+### Status Effect System
+- **StatusEffectProcessor**: Static class managing all status effect logic via switch statements
+- **Dictionary-based**: Uses `Dictionary<StatusEffectType, int>` for memory-efficient stack management
+- **Centralized Logic**: All 10 status effects (Burn, Shield, Freeze, etc.) processed in single class
+- **Data-Driven Timing**: StatusEffectTiming enum controls when effects trigger (OnTurnEnd, OnDamage, OnAttack, OnBattleEnd)
 
 ### Data-Driven Design
 All game content uses ScriptableObjects with reflection-based instantiation:
@@ -71,6 +134,15 @@ All game content uses ScriptableObjects with reflection-based instantiation:
 - Dynamic loading via `Type.GetType(className)`
 - UI integration with count display and interaction
 
+### Status Effect Processing
+- **Burn/Regeneration**: Turn-end damage/healing based on stack count
+- **Shield/Invincible**: Damage absorption and immunity systems
+- **Freeze**: Probability-based action skipping (stack × 10%, max 90%)
+- **Confusion**: Player-only cursor control disruption during merge
+- **Shock**: Enemy-only chain damage to other enemies
+- **Curse**: Player-only disturbance ball generation
+- **Power/Rage**: Attack modification (additive vs multiplicative)
+
 ### Localization
 - Unity Localization package with Google Sheets integration
 - Naming convention: `{className}_N` (name), `{className}_D` (description)
@@ -90,6 +162,8 @@ Assets/
 │   ├── StageEvent/     # Map events and encounters
 │   ├── StatusEffect/   # Temporary effect system
 │   ├── System/         # Core managers and utilities
+│   │   ├── Services/   # VContainer service implementations
+│   │   └── VContainer/ # LifetimeScope configurations
 │   └── UI/             # User interface components
 ├── ScriptableObjects/  # Data definitions
 │   ├── BallData/
@@ -101,6 +175,45 @@ Assets/
 ```
 
 ## Development Workflow
+
+### VContainer Service Development
+
+**Creating New Services:**
+1. Define interface in `Assets/Scripts/System/Services/`
+2. Implement service class with proper constructor injection
+3. Register in appropriate LifetimeScope
+4. Use `[Inject]` attribute for MonoBehaviour dependency injection
+
+**Service Registration Patterns:**
+```csharp
+// Pure C# service
+builder.Register<IMyService, MyService>(Lifetime.Singleton);
+
+// Service with parameters
+builder.Register<IMyService, MyService>(Lifetime.Singleton)
+    .WithParameter("paramName", paramValue);
+
+// MonoBehaviour component
+builder.RegisterComponentInHierarchy<MyComponent>()
+    .AsSelf()
+    .AsImplementedInterfaces();
+```
+
+**Dependency Injection Patterns:**
+```csharp
+// Constructor injection (pure C# services)
+public MyService(IDependency dependency)
+{
+    _dependency = dependency;
+}
+
+// Method injection (MonoBehaviour components)
+[Inject]
+public void InjectDependencies(IMyService myService)
+{
+    _myService = myService;
+}
+```
 
 ### Creating New Content
 
@@ -116,11 +229,70 @@ Assets/
 3. Add to AllRelicDataList asset
 4. Add localization entries to string tables
 
+**New Status Effect:**
+1. Add new enum value to `StatusEffectType` in `Assets/Scripts/Enums.cs`
+2. Add case statement to appropriate method in `StatusEffectProcessor.cs`
+3. Create StatusEffectData ScriptableObject with timing configuration
+4. Add localization entries for effect name and description
+
 ### Code Patterns
+
+**VContainer Service Registration:**
+```csharp
+// In TitleLifetimeScope or MainLifetimeScope
+builder.Register<IGameSettingsService, GameSettingsService>(Lifetime.Singleton);
+builder.Register<IVirtualMouseService, VirtualMouseService>(Lifetime.Scoped);
+builder.RegisterComponentInHierarchy<TitleMenu>();
+```
+
+**VContainer Dependency Injection:**
+```csharp
+// Constructor injection for services
+public GameSettingsService(IInputProvider inputProvider)
+
+// Method injection for MonoBehaviours
+[Inject]
+public void InjectDependencies(IGameSettingsService gameSettingsService)
+```
+
+**Manual Service Resolution (Fallback):**
+```csharp
+// In SetMouseCursor.cs pattern for components that need manual resolution
+private VContainer.Unity.LifetimeScope FindChildLifetimeScope()
+{
+    var allScopes = FindObjectsByType<VContainer.Unity.LifetimeScope>(FindObjectsSortMode.None);
+    
+    foreach (var scope in allScopes)
+    {
+        // Skip RootLifetimeScope (DontDestroyOnLoad)
+        if (scope.gameObject.scene.name == "DontDestroyOnLoad") continue;
+        
+        // Find scope with required service
+        if (scope.Container != null && scope.Container.TryResolve<IMouseCursorService>(out _))
+        {
+            return scope;
+        }
+    }
+    
+    return null;
+}
+```
 
 **Event Subscription:**
 ```csharp
 EventManager.OnPlayerDamaged.Subscribe(damage => { /* effect logic */ }).AddTo(this);
+```
+
+**Status Effect Management:**
+```csharp
+// Add status effect
+StatusEffectProcessor.AddStatusEffect(entity, StatusEffectType.Burn, 3);
+
+// Process turn end effects
+await StatusEffectProcessor.ProcessTurnEnd(entity);
+
+// Check specific conditions
+if (StatusEffectProcessor.CheckFreeze(enemy)) return; // Skip action
 ```
 
 **Data Access:**
@@ -147,6 +319,8 @@ UIManager.Instance.EnableCanvasGroup("WindowName", true);
 - Composite Disposables for automatic R3 subscription cleanup
 - Physics-based systems require careful performance monitoring
 - UI uses DOTween for smooth animations without blocking gameplay
+- **VContainer Optimization**: Scoped services ensure proper cleanup and recreation for scene-specific resources
+- **Service Lifetime Management**: Careful balance between Singleton (global state) and Scoped (scene-specific) lifetimes
 
 ## Development Tools
 
@@ -201,3 +375,44 @@ Assets/Scripts/Example.cs(11,9): error CS0103: The name 'NonExistentMethod' does
 - Unity Editor.log must be accessible for `check` command
 
 This tool enables efficient compilation error detection and resolution during development without complex configuration or verbose output.
+
+## Current VContainer Migration
+
+### Architecture Overview
+
+The project is currently undergoing a systematic migration from Singleton pattern to VContainer dependency injection:
+
+**Completed:**
+- **RootLifetimeScope**: Global services (InputProvider, CursorConfiguration)
+- **TitleLifetimeScope**: Title scene services (Credit, License, Version, GameSettings, Mouse services)
+- **MainLifetimeScope**: Basic setup with Mouse services
+- **Service Layer**: Interface-based service implementations
+- **Component Integration**: SetMouseCursor with fallback manual resolution
+
+**Key Design Decisions:**
+1. **Service Lifetime Strategy**: 
+   - `Singleton` for stateful services that should persist within their scope
+   - `Scoped` for services that need to be recreated per scene (e.g., services referencing scene-specific GameObjects)
+
+2. **Mouse Service Architecture**:
+   - `VirtualMouseService` and `MouseCursorService` use `Scoped` lifetime
+   - Ensures proper GameObject reference management across scene transitions
+   - Each scene gets fresh instances that reference the correct scene's UI elements
+
+3. **Fallback Resolution Pattern**:
+   - Components like `SetMouseCursor` include manual service resolution as fallback
+   - `FindChildLifetimeScope()` method excludes RootLifetimeScope and finds appropriate scene scope
+   - Ensures robustness when automatic injection fails
+
+**Migration Benefits:**
+- Clear separation of concerns between UI and business logic
+- Improved testability through interface-based design
+- Centralized dependency configuration
+- Proper lifecycle management for scene-specific resources
+- Support for both MonoBehaviour components and pure C# services
+
+**Future Migration Plans:**
+- GameManager → IGameService
+- MergeManager → IMergeService  
+- InventoryManager → IInventoryService
+- Progressive replacement of singleton pattern throughout the codebase

@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using unityroom.Api;
 using TMPro;
 using UnityEngine.EventSystems;
+using VContainer;
 
 public class Encyclopedia : MonoBehaviour
 {
@@ -15,11 +16,20 @@ public class Encyclopedia : MonoBehaviour
     [SerializeField] private GameObject relicContainerPrefab;
     [SerializeField] private SerializableDictionary<BallShapeType, Sprite> ballBaseImages;
     [SerializeField] private int numColumns = 15; // 列数
-    [SerializeField] private Selectable cloceButton;
+    [SerializeField] private Selectable closeButton;
     // 空白セルの高さ（例えば、セルの高さと同じか、調整したい値）
     [SerializeField] private float spacerHeight = 100f;
 
-    private List<GameObject> _items = new();
+    private readonly List<GameObject> _items = new();
+    
+    // Dependency injection
+    private TitleMenu _titleMenu;
+    
+    [Inject]
+    public void InjectDependencies(TitleMenu titleMenu)
+    {
+        this._titleMenu = titleMenu;
+    }
 
     private void SetBallData(GameObject g, BallData b)
     {
@@ -30,7 +40,7 @@ public class Encyclopedia : MonoBehaviour
         // イベントを登録
         Utils.AddEventToObject(g,  () =>
         {
-            TitleMenu.Instance.ShowDescriptionWindow(b, g);
+            _titleMenu.ShowDescriptionWindow(b, g);
         }, EventTriggerType.PointerEnter);
         
         var d = g.AddComponent<ShowDescription>();
@@ -47,7 +57,7 @@ public class Encyclopedia : MonoBehaviour
         // イベントを登録
         Utils.AddEventToObject(g,  () =>
         {
-            TitleMenu.Instance.ShowDescriptionWindow(r, g);
+            _titleMenu.ShowDescriptionWindow(r, g);
         }, EventTriggerType.PointerEnter);
         
         var d = g.AddComponent<ShowDescription>();
@@ -111,18 +121,18 @@ public class Encyclopedia : MonoBehaviour
             _items.Add(container);
         }
         
-        // cloceボタンへのナビゲーション
+        // closeボタンへのナビゲーション
         for (var i = _items.Count - numColumns; i < _items.Count; i++)
         {
             var s = _items[i].GetComponent<Selectable>();
             
-            var right = i + 1 < _items.Count ? _items[i + 1].GetComponent<Selectable>() : cloceButton;
+            var right = i + 1 < _items.Count ? _items[i + 1].GetComponent<Selectable>() : closeButton;
             
             var nav = new Navigation
             {
                 mode = Navigation.Mode.Explicit,
                 selectOnUp = _items[i - numColumns].GetComponent<Selectable>(),
-                selectOnDown = cloceButton,
+                selectOnDown = closeButton,
                 selectOnLeft = _items[i - 1].GetComponent<Selectable>(),
                 selectOnRight = right,
             };

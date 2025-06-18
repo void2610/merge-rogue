@@ -6,14 +6,12 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using Cysharp.Threading.Tasks;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.LowLevel;
+using VContainer;
 
 public class TitleMenu : MonoBehaviour
 {
-    public static TitleMenu Instance { get; private set; }
-    
     [SerializeField] private Image fadeImage;
     [SerializeField] private Slider bgmSlider;
     [SerializeField] private Slider seSlider;
@@ -22,13 +20,43 @@ public class TitleMenu : MonoBehaviour
     [SerializeField] private List<CanvasGroup> canvasGroups;
     [SerializeField] private DescriptionWindow descriptionWindow;
     [SerializeField] private GameObject virtualMouse;
+    [SerializeField] private TextMeshProUGUI creditText;
+    [SerializeField] private RectTransform creditContent;
+    [SerializeField] private TextMeshProUGUI licenseText;
+    [SerializeField] private RectTransform licenseContent;
+    [SerializeField] private TextMeshProUGUI versionText;
     
     private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
-
-    public GameObject GetTopCanvasGroup() => canvasGroups.Find(c => c.alpha > 0)?.gameObject;
-    public bool IsVirtualMouseActive() => virtualMouse.GetComponent<MyVirtualMouseInput>().isActive;
     
-    public void ResetSelectedGameObject()
+    // Service dependencies
+    private ICreditService _creditService;
+    private ILicenseService _licenseService;
+    private IVersionService _versionService;
+    private IGameSettingsService _gameSettingsService;
+    private IVirtualMouseService _virtualMouseService;
+    private IInputProvider _inputProvider;
+    
+    [Inject]
+    public void InjectDependencies(
+        ICreditService creditService,
+        ILicenseService licenseService,
+        IVersionService versionService,
+        IGameSettingsService gameSettingsService,
+        IVirtualMouseService virtualMouseService,
+        IInputProvider inputProvider)
+    {
+        this._creditService = creditService;
+        this._licenseService = licenseService;
+        this._versionService = versionService;
+        this._gameSettingsService = gameSettingsService;
+        this._virtualMouseService = virtualMouseService;
+        this._inputProvider = inputProvider;
+    }
+
+    private GameObject GetTopCanvasGroup() => canvasGroups.Find(c => c.alpha > 0)?.gameObject;
+    private bool IsVirtualMouseActive() => _virtualMouseService?.IsVirtualMouseActive() ?? false;
+
+    private void ResetSelectedGameObject()
     {
         var topCanvas = GetTopCanvasGroup();
         if (topCanvas)
@@ -42,8 +70,8 @@ public class TitleMenu : MonoBehaviour
             SelectionCursor.SetSelectedGameObjectSafe(startButton.gameObject);
         }
     }
-    
-    public ScrollRect GetActiveScrollRect()
+
+    private ScrollRect GetActiveScrollRect()
     {
         var topCanvas = GetTopCanvasGroup();
         if (topCanvas)
@@ -58,33 +86,19 @@ public class TitleMenu : MonoBehaviour
     }
 
     /// <summary>
-    /// 仮想マウスを任意の位置へ移動させるメソッド
+    /// 仮想マウスを中央に移動します
     /// </summary>
-    /// <param name="newPosition">移動先のスクリーン座標（ピクセル単位）</param>
-    public void MoveVirtualMouseToCenter()
+    private void MoveVirtualMouseToCenter()
     {
-        var vm = virtualMouse.GetComponent<MyVirtualMouseInput>();
-        var centerPos = new Vector2(Screen.width / 2f, Screen.height / 2f);
-        InputState.Change(vm.virtualMouse.position, centerPos);
-        // ソフトウェアカーソル（UI上の表示）の位置も更新（存在する場合）
-        // もしCanvasのスケール等を考慮する必要があるなら、ここで座標変換を行う
-        virtualMouse.transform.position = Vector2.zero;
+        _virtualMouseService?.MoveVirtualMouseToCenter();
     }
 
-    public void ToggleVirtualMouse()
+    /// <summary>
+    /// 仮想マウスの有効/無効を切り替えます
+    /// </summary>
+    private void ToggleVirtualMouse()
     {
-        if (IsVirtualMouseActive())
-        {
-            virtualMouse.GetComponent<MyVirtualMouseInput>().isActive = false;
-            EventSystem.current.sendNavigationEvents = true;
-            virtualMouse.transform.position = new Vector2(-1000, -1000);
-        }
-        else
-        {
-            virtualMouse.GetComponent<MyVirtualMouseInput>().isActive = true;
-            EventSystem.current.sendNavigationEvents = false;
-            MoveVirtualMouseToCenter();
-        }
+        _virtualMouseService?.ToggleVirtualMouse();
     }
     
     private async UniTaskVoid EnableCanvasGroupAsync(string canvasName, bool e)
@@ -164,32 +178,21 @@ public class TitleMenu : MonoBehaviour
         
         Application.Quit();
     }
-    private static void InitPlayerPrefs()
-    {
-        PlayerPrefs.SetFloat("BgmVolume", 1.0f);
-        PlayerPrefs.SetFloat("SeVolume", 1.0f);
-
-        PlayerPrefs.SetInt("Seed", 0);
-        PlayerPrefs.SetString("SeedText", "");
-    }
-
+    /// <summary>
+    /// 設定をリセットしてUIに反映します
+    /// </summary>
     public void ResetSetting()
     {
-        PlayerPrefs.SetFloat("BgmVolume", 1.0f);
-        PlayerPrefs.SetFloat("SeVolume", 1.0f);
-        bgmSlider.value = 1.0f;
-        seSlider.value = 1.0f;
+        _gameSettingsService.ResetAudioSettings();
+        
+        // UIスライダーに反映
+        var audioSettings = _gameSettingsService.GetAudioSettings();
+        bgmSlider.value = audioSettings.bgmVolume;
+        seSlider.value = audioSettings.seVolume;
     }
 
     private void Awake()
-    {
-        if (Instance == null) Instance = this;
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-        
+    {        
         // ScrollRectの初期化
         foreach(var scrollRect in FindObjectsByType<ScrollRect>(FindObjectsSortMode.None))
         {
@@ -207,65 +210,126 @@ public class TitleMenu : MonoBehaviour
             _canvasGroupTween.Add(canvasGroup.name, null);
             EnableCanvasGroupAsync(canvasGroup.name, false).Forget();
         }
-        
-        if (!PlayerPrefs.HasKey("BgmVolume")) InitPlayerPrefs();
     }
 
     private void Start()
     {
-        bgmSlider.value = PlayerPrefs.GetFloat("BgmVolume", 1.0f);
-        seSlider.value = PlayerPrefs.GetFloat("SeVolume", 1.0f);
-
-        seedInputField.text = PlayerPrefs.GetString("SeedText", "");
-
-        bgmSlider.onValueChanged.AddListener((value) =>
-        {
-            BgmManager.Instance.BgmVolume = value;
-        });
-
-        seSlider.onValueChanged.AddListener((value) =>
-        {
-            SeManager.Instance.SeVolume = value;
-        });
-
-        var trigger = seSlider.gameObject.AddComponent<EventTrigger>();
-        var entry = new EventTrigger.Entry();
-        entry.eventID = EventTriggerType.PointerUp;
-        entry.callback.AddListener(new UnityEngine.Events.UnityAction<BaseEventData>((data) =>
-        {
-            SeManager.Instance.PlaySe("button");
-        }));
-        trigger.triggers.Add(entry);
-        
+        Debug.Log("TitleMenu Start");
         Time.timeScale = 1.0f;
+        
+        InitializeSettings();
+        SetupUIListeners();
+        ToggleVirtualMouse();
+        InitializeTitleContent();
 
         fadeImage.color = new Color(0, 0, 0, 1);
         fadeImage.DOFade(0.0f, 1.0f);
-        
-        // 仮想マウスを無効化
-        ToggleVirtualMouse(); 
-        
-        Debug.Log("TitleMenu Start");
     }
 
     private void Update()
     {
-        var seed = seedInputField.text.GetHashCode();
-        PlayerPrefs.SetInt("Seed", seed);
-        PlayerPrefs.SetString("SeedText", seedInputField.text);
+        // シード設定をリアルタイムで保存
+        if (_gameSettingsService != null)
+        {
+            _gameSettingsService.GenerateAndSaveSeed(seedInputField.text);
+        }
         
-        if (InputProvider.Instance.UI.ResetCursor.triggered)
+        if (_inputProvider?.UI.ResetCursor.triggered == true)
             ResetSelectedGameObject();
-        if (InputProvider.Instance.UI.ToggleVirtualMouse.triggered)
+        if (_inputProvider?.UI.ToggleVirtualMouse.triggered == true)
             ToggleVirtualMouse();
         
         // スクロール操作
         var sr = GetActiveScrollRect();
-        if (sr)
+        if (sr && _inputProvider != null)
         {
-            var speed = InputProvider.Instance.GetScrollSpeed();
+            var speed = _inputProvider.GetScrollSpeed();
             var newPos = sr.verticalNormalizedPosition + speed.y * Time.unscaledDeltaTime;
             sr.verticalNormalizedPosition = Mathf.Clamp01(newPos);
+        }
+    }
+    
+    /// <summary>
+    /// 設定サービスを初期化し、UIに設定値を反映する
+    /// </summary>
+    private void InitializeSettings()
+    {
+        // 現在の設定をUIに反映
+        var audioSettings = _gameSettingsService.GetAudioSettings();
+        bgmSlider.value = audioSettings.bgmVolume;
+        seSlider.value = audioSettings.seVolume;
+        
+        var seedSettings = _gameSettingsService.GetSeedSettings();
+        seedInputField.text = seedSettings.seedText;
+    }
+    
+    /// <summary>
+    /// UIイベントリスナーを設定する
+    /// </summary>
+    private void SetupUIListeners()
+    {
+        // BGM音量変更リスナー
+        bgmSlider.onValueChanged.AddListener((value) =>
+        {
+            _gameSettingsService?.SaveBgmVolume(value);
+            BgmManager.Instance.BgmVolume = value;
+        });
+
+        // SE音量変更リスナー
+        seSlider.onValueChanged.AddListener((value) =>
+        {
+            _gameSettingsService?.SaveSeVolume(value);
+            SeManager.Instance.SeVolume = value;
+        });
+
+        // SE音量スライダーのポインターアップイベント（テスト音再生）
+        var trigger = seSlider.gameObject.AddComponent<EventTrigger>();
+        var entry = new EventTrigger.Entry { eventID = EventTriggerType.PointerUp };
+        entry.callback.AddListener(_ => SeManager.Instance.PlaySe("button"));
+        trigger.triggers.Add(entry);
+    }
+    
+    private void InitializeTitleContent()
+    {
+        // バージョンテキストの初期化
+        if (_versionService != null && versionText)
+        {
+            var versionString = _versionService.GetVersionText();
+            versionText.text = versionString;
+            
+            #if DEMO_PLAY
+            Debug.Log("Demo Build");
+            #else
+            Debug.Log("Full Build");
+            #endif
+        }
+        
+        creditText.text = _creditService.GetCreditText();
+        UpdateContentSize(creditText, creditContent);
+        licenseText.text = _licenseService.GetLicenseText();
+        UpdateContentSize(licenseText, licenseContent);
+    }
+    
+    private void UpdateContentSize(TextMeshProUGUI text, RectTransform content)
+    {
+        var preferredHeight = text.GetPreferredValues().y;
+        content.sizeDelta = new Vector2(content.sizeDelta.x, preferredHeight);
+    }
+    
+    /// <summary>
+    /// クレジットリンククリックハンドラー（UIイベントから呼び出し可能）
+    /// </summary>
+    /// <param name="position">クリック位置</param>
+    public void OnCreditLinkClick(Vector2 position)
+    {
+        if (!creditText) return;
+        
+        var linkIndex = TMP_TextUtilities.FindIntersectingLink(creditText, position, Camera.main);
+        if (linkIndex != -1)
+        {
+            var linkInfo = creditText.textInfo.linkInfo[linkIndex];
+            var url = linkInfo.GetLinkID();
+            Application.OpenURL(url);
         }
     }
 }
