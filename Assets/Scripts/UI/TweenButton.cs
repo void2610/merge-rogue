@@ -58,34 +58,6 @@ public class TweenButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         tweens.Add(t);
     }
 
-    public void CheckMouseAndTween()
-    {
-        if (raycaster == null || eventSystem == null)
-        {
-            Debug.LogError("Raycaster or EventSystem is not assigned.");
-            return;
-        }
-        var t = this.transform.DOScale(defaultScale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
-        tweens.Add(t);
-        // マウスからrayを飛ばして、ボタンの上にマウスがあるかどうかを判定する
-        var pointerEventData = new PointerEventData(eventSystem)
-        {
-            position = InputProvider.Instance.GetMousePosition()
-        };
-        var results = new List<RaycastResult>();
-        raycaster.Raycast(pointerEventData, results);
-        if (results.Count == 0)
-        {
-            return;
-        }
-        // UI要素にヒットしたか確認
-        if (results[0].gameObject == this.gameObject || results[0].gameObject.transform.IsChildOf(this.transform))
-        {
-            var t2 = this.transform.DOScale(defaultScale * scale, duration).SetEase(Ease.OutElastic).SetUpdate(true);
-            tweens.Add(t2);
-        }
-    }
-
     private void Awake()
     {
         defaultScale = this.transform.localScale.x;

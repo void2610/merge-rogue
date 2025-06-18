@@ -22,6 +22,9 @@ public class MainLifetimeScope : LifetimeScope
         // スコア関連サービス
         builder.Register<IScoreService, ScoreService>(Lifetime.Singleton);
         
+        // UI関連サービス（エントリーポイント）
+        builder.RegisterEntryPoint<MouseHoverUISelector>(Lifetime.Singleton);
+        
         // ScoreDisplayComponentを登録（インスペクターから参照）
         if (scoreDisplayComponent != null)
         {

@@ -148,14 +148,6 @@ public class Utils : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// 指定時間 await するが、途中でクリックかキー操作がされた場合は即座に終了する
-    /// </summary>
-    public static async UniTask WaitOrSkipInput(int delayTime, CancellationToken cancellationToken = default)
-    {
-        await WaitOrSkip(delayTime, () => InputProvider.Instance.IsSkipButtonPressed(), cancellationToken);
-    }
-
     private void Awake()
     {
         wordDictionary.SetInstance();

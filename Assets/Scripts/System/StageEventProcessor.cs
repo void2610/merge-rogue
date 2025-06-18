@@ -23,6 +23,23 @@ public class StageEventProcessor : MonoBehaviour
         _inputProvider = inputProvider;
     }
     
+    /// <summary>
+    /// 指定時間 await するが、途中でクリックかキー操作がされた場合は即座に終了する
+    /// </summary>
+    private async UniTask WaitOrSkipInput(int delayTime, CancellationToken cancellationToken = default)
+    {
+        using (var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken))
+        {
+            var delayTask = UniTask.Delay(delayTime, cancellationToken: cts.Token);
+            var conditionTask = UniTask.WaitUntil(() => _inputProvider.IsSkipButtonPressed(), cancellationToken: cts.Token);
+            
+            var result = await UniTask.WhenAny(delayTask, conditionTask);
+
+            // 待機をスキップするためキャンセル
+            if (result == 1) cts.Cancel();
+        }
+    }
+    
     public void StartEvent() => SetRandomEventAsync().Forget();
     
     private async UniTaskVoid SetRandomEventAsync()
@@ -47,7 +64,7 @@ public class StageEventProcessor : MonoBehaviour
                 animator.ResetAllChars();
             }
 
-            await Utils.WaitOrSkipInput(500);
+            await WaitOrSkipInput(500);
 
             // 各オプションについて処理
             for (var i = 0; i < _currentEvent.Options.Count; i++)
@@ -69,7 +86,7 @@ public class StageEventProcessor : MonoBehaviour
                     animatorOption.ResetAllChars();
                 }
 
-                await Utils.WaitOrSkipInput(200);
+                await WaitOrSkipInput(200);
                 options[i].GetComponent<Button>().interactable = _currentEvent.Options[i].IsAvailable();
 
                 EventManager.OnStageEventEnter.OnNext(R3.Unit.Default);
@@ -117,7 +134,7 @@ public class StageEventProcessor : MonoBehaviour
 
         if (option.isEndless) return;
         
-        await Utils.WaitOrSkipInput(2500);
+        await WaitOrSkipInput(2500);
         
         GameManager.Instance.ChangeState(GameManager.GameState.MapSelect);
         UIManager.Instance.EnableCanvasGroup("Event", false);
