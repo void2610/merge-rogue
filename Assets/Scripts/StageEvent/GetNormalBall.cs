@@ -15,7 +15,7 @@ public class GetNormalBall : StageEventBase
                 resultDescription = "(ただのボールを手に入れた)",
                 Action = () =>
                 {
-                    var ball = ContentProvider.Instance.GetNormalBallData();
+                    var ball = ContentService.GetNormalBallData();
                     InventoryManager.Instance.AddBall(ball);
                 },
                 IsAvailable = () => InventoryManager.Instance.IsFull == false

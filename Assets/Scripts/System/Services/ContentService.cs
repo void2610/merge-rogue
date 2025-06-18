@@ -12,10 +12,9 @@ public class ContentService : IContentService
 {
     private readonly ContentProviderData _data;
     private readonly IRandomService _randomService;
-    
-    private int _act = 0;
-    
-    public int Act => _act;
+
+    public int Act { get; private set; } = 0;
+
     public StatusEffectDataList StatusEffectList => _data.StatusEffectList;
     
     /// <summary>
@@ -27,19 +26,9 @@ public class ContentService : IContentService
         ContentProviderData data,
         IRandomService randomService)
     {
-        _data = data ?? throw new ArgumentNullException(nameof(data));
-        _randomService = randomService ?? throw new ArgumentNullException(nameof(randomService));
-        
-        // データ初期化処理
-        InitializeData();
-    }
-    
-    /// <summary>
-    /// データ初期化処理
-    /// </summary>
-    private void InitializeData()
-    {
+        _data = data;
         _data.InitializeData();
+        _randomService = randomService;
     }
     
     /// <summary>
@@ -124,7 +113,7 @@ public class ContentService : IContentService
     
     public void AddAct()
     {
-        _act++;
+        Act++;
     }
     
     public Sprite GetBallBaseImage(BallShapeType type)
@@ -159,13 +148,7 @@ public class ContentService : IContentService
     /// <returns>ランダムに選択されたオブジェクト</returns>
     private Object GetRandomObjectFromList(List<ContentProviderData.ContentDataList> contentLists)
     {
-        var contentDataList = _data.GetContentDataListForAct(contentLists, _act);
-        
-        if (contentDataList.list == null || contentDataList.list.Count == 0)
-        {
-            throw new Exception("No content data available");
-        }
-        
+        var contentDataList = _data.GetContentDataListForAct(contentLists, Act);
         var totalProbability = contentDataList.list.Sum(d => d.probability);
         var randomPoint = _randomService.RandomRange(0.0f, totalProbability);
         

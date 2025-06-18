@@ -19,9 +19,9 @@ public class RingShop : StageEventBase
                 Action = () =>
                 {
                     var rings = new List<RelicData>();
-                    rings.Add(ContentProvider.Instance.GetRelicByClassName("FireRing"));
-                    rings.Add(ContentProvider.Instance.GetRelicByClassName("IceRing"));
-                    rings.Add(ContentProvider.Instance.GetRelicByClassName("ShockRing"));
+                    rings.Add(ContentService.GetRelicByClassName("FireRing"));
+                    rings.Add(ContentService.GetRelicByClassName("IceRing"));
+                    rings.Add(ContentService.GetRelicByClassName("ShockRing"));
                     rings.Print();
                     
                     var idx = GameManager.Instance.RandomRange(0, rings.Count);

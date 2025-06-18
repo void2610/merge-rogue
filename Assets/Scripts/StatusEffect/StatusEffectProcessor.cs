@@ -10,7 +10,8 @@ using Cysharp.Threading.Tasks;
 /// </summary>
 public static class StatusEffectProcessor
 {
-    private static StatusEffectDataList DataList => ContentProvider.Instance.StatusEffectList;
+    // ContentServiceが利用できない場合のフォールバック
+    private static StatusEffectDataList DataList => StatusEffectManager.Instance?.GetStatusEffectDataList();
     
     /// <summary>
     /// 指定した状態異常タイプのデータを取得する

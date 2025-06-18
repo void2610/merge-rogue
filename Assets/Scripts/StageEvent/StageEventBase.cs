@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.Serialization;
+using VContainer;
 
 public abstract class StageEventBase : MonoBehaviour
 {
@@ -19,6 +20,14 @@ public abstract class StageEventBase : MonoBehaviour
     public string EventName;
     public string MainDescription;
     public List<OptionData> Options;
+    
+    protected IContentService ContentService;
+    
+    [Inject]
+    public void InjectDependencies(IContentService contentService)
+    {
+        ContentService = contentService;
+    }
 
     public abstract void Init();
 }

@@ -48,7 +48,13 @@ public class RootLifetimeScope : LifetimeScope
     /// </summary>
     private void RegisterContentServices(IContainerBuilder builder)
     {
-        // ContentProviderDataのインスタンス登録
+        // ContentProviderDataのnullチェックと登録
+        if (contentProviderData == null)
+        {
+            Debug.LogError("ContentProviderDataがRootLifetimeScopeで設定されていません。Inspector内で設定してください。");
+            return;
+        }
+        
         builder.RegisterInstance(contentProviderData);
         
         // 共通して使用するサービス
@@ -58,7 +64,6 @@ public class RootLifetimeScope : LifetimeScope
         builder.Register<IContentService>(container =>
         {
             var data = container.Resolve<ContentProviderData>();
-            
             var randomService = container.Resolve<IRandomService>();
             return new ContentService(data, randomService);
         }, Lifetime.Singleton);

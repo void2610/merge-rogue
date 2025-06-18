@@ -15,7 +15,18 @@ public class GetMagiciansOrb : StageEventBase
                 resultDescription = "魔術師のオーブを手に入れた",
                 Action = () =>
                 {
-                    var ball = ContentProvider.Instance.GetBallDataFromClassName("MagiciansOrb");
+                    // ContentServiceが利用可能な場合はそれを使用、そうでなければフォールバック
+                    BallData ball = null;
+                    var lifetimeScope = VContainer.Unity.LifetimeScope.Find<VContainer.Unity.LifetimeScope>();
+                    if (lifetimeScope != null && lifetimeScope.Container.TryResolve(typeof(IContentService), out var service))
+                    {
+                        var contentService = service as IContentService;
+                        ball = contentService?.GetBallDataFromClassName("MagiciansOrb");
+                    }
+                    else
+                    {
+                        throw new System.Exception("ContentService not found in the current scope");
+                    }
                     InventoryManager.Instance.AddBall(ball);
                 }
             },
