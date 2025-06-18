@@ -27,6 +27,5 @@ public class TitleLifetimeScope : LifetimeScope
         builder.Register<ILicenseService, LicenseService>(Lifetime.Singleton).WithParameter("licenseManager", licenseManager);
         builder.Register<IVersionService, VersionService>(Lifetime.Singleton).WithParameter("version", gameVersion);
         builder.Register<IGameSettingsService, GameSettingsService>(Lifetime.Singleton);
-        
     }
 }

@@ -27,10 +27,14 @@ public class SetMouseCursor : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         // 依存性注入が失敗した場合、手動で取得を試みる
         if (_isInjected) return;
-        var lifetimeScope = FindFirstObjectByType<TitleLifetimeScope>();
+        
+        // VContainerのLifetimeScopeを探す（どのLifetimeScopeでも良い）
+        var lifetimeScope = FindFirstObjectByType<VContainer.Unity.LifetimeScope>();
         if (!lifetimeScope) return;
+        
         var container = lifetimeScope.Container;
         if (container == null) return;
+        
         _mouseCursorService = container.Resolve<IMouseCursorService>();
         _isInjected = true;
     }

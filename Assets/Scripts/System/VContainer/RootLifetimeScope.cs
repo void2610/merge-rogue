@@ -12,6 +12,12 @@ public class RootLifetimeScope : LifetimeScope
     [Header("カーソル設定")]
     [SerializeField] private CursorConfiguration cursorConfiguration;
     
+    protected override void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+        base.Awake();
+    }
+    
     protected override void Configure(IContainerBuilder builder)
     {
         // 共通サービスの登録
@@ -26,19 +32,9 @@ public class RootLifetimeScope : LifetimeScope
     /// </summary>
     private void RegisterSharedServices(IContainerBuilder builder)
     {
-        // カーソル設定のインスタンス登録
-        if (cursorConfiguration != null)
-        {
-            builder.RegisterInstance(cursorConfiguration);
-        }
-        
-        // 入力プロバイダーの登録（全シーン共通）
+        builder.RegisterInstance(cursorConfiguration);
         builder.Register<IInputProvider, InputProviderService>(Lifetime.Singleton);
-        
-        // 仮想マウスサービスの登録（全シーン共通）
         builder.Register<IVirtualMouseService, VirtualMouseService>(Lifetime.Singleton);
-        
-        // マウスカーソルサービスの登録（全シーン共通）
         builder.Register<IMouseCursorService, MouseCursorService>(Lifetime.Singleton);
     }
     
