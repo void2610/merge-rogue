@@ -212,6 +212,9 @@ public class InventoryManager : MonoBehaviour
             return null;
         }
 
+        // BallBaseへのサービス注入（手動）
+        ballBase.InjectDependencies(_randomService);
+        
         ballBase.InitBall(data, rank, level);
         
         ball.transform.localScale = Vector3.one * (Sizes[rank - 1] * ballBase.Size * 0.8f);
@@ -229,7 +232,12 @@ public class InventoryManager : MonoBehaviour
 
         var data = ball.GetComponent<BallBase>().Data;
         var level = ball.GetComponent<BallBase>().Level;
-        newBall.GetComponent<BallBase>().InitBall(data, rank, level);
+        var newBallBase = newBall.GetComponent<BallBase>();
+        
+        // BallBaseへのサービス注入（手動）
+        newBallBase.InjectDependencies(_randomService);
+        
+        newBallBase.InitBall(data, rank, level);
         newBall.transform.localScale = ball.transform.localScale;
         newBall.GetComponent<SpriteRenderer>().color = ball.GetComponent<SpriteRenderer>().color;
         return newBall;

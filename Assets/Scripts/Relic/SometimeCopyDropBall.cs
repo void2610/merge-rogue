@@ -15,14 +15,13 @@ public class SometimeCopyDropBall : RelicBase
     
     private void OnBallDrop(Unit _)
     {
-        var r = GameManager.Instance?.RandomRange(0.0f, 1.0f) ?? 0f;
-        if (r < 0.5f)
+        if (RandomService.RandomRange(0.0f, 1.0f) < 0.5f)
         {
             var currentBall = MergeManager.Instance?.CurrentBall?.GetComponent<BallBase>();
-            if (currentBall != null)
+            if (currentBall)
             {
                 var level = currentBall.Rank;
-                var p = new Vector3(GameManager.Instance.RandomRange(-1f, 1f), 0.8f, 0);
+                var p = new Vector3(RandomService?.RandomRange(-1f, 1f) ?? 0f, 0.8f, 0);
                 MergeManager.Instance.SpawnBallFromLevel(level, p, Quaternion.identity);
                 UI?.ActivateUI();
             }

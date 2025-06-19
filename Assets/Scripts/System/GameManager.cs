@@ -64,16 +64,6 @@ public class GameManager : MonoBehaviour
         _gameSettingsService = gameSettingsService;
     }
     
-    public float RandomRange(float min, float max)
-    {
-        return _randomService?.RandomRange(min, max) ?? UnityEngine.Random.Range(min, max);
-    }
-
-    public int RandomRange(int min, int max)
-    {
-        return _randomService?.RandomRange(min, max) ?? UnityEngine.Random.Range(min, max);
-    }
-    
     public void AddCoin(int amount)
     {
         var finalAmount = EventManager.OnCoinGain.Process(amount);

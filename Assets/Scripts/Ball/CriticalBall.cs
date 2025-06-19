@@ -5,15 +5,13 @@ public class CriticalBall : BallBase
         base.Effect(other);
         
         var critical = 1.0f;
-        if (GameManager.Instance.RandomRange(0.0f, 1.0f) < 0.33f)
+        if (RandomService.RandomRange(0.0f, 1.0f) < 0.33f)
         {
             critical = 3.0f;
             SeManager.Instance.PlaySe("levelUp");
         }
-        else
-        {
-            DefaultMergeParticle();
-        }
+        
+        DefaultMergeParticle();
         MergeManager.Instance.Attack(AttackType.Normal, Attack * Rank * critical, this.transform.position);
     }
 }

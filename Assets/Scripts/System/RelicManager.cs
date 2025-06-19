@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using R3;
 using UnityEngine.UI;
 using UnityEngine.Serialization;
+using VContainer;
 
 public class RelicManager : MonoBehaviour
 {
@@ -22,6 +23,18 @@ public class RelicManager : MonoBehaviour
     private readonly List<RelicData> _relics = new();
     private readonly List<RelicBase> _behaviors = new();
     private readonly List<RelicUI> _relicUIs = new();
+    
+    private IRandomService _randomService;
+    private IContentService _contentService;
+    private IInventoryService _inventoryService;
+    
+    [Inject]
+    public void InjectDependencies(IRandomService randomService, IContentService contentService, IInventoryService inventoryService)
+    {
+        _randomService = randomService;
+        _contentService = contentService;
+        _inventoryService = inventoryService;
+    }
     
     public List<RelicData> GetCurrentRelics() => _relics;
     
@@ -95,6 +108,9 @@ public class RelicManager : MonoBehaviour
                 Debug.LogError("指定されたクラスはRelicBaseを継承していません: " + r.className);
                 return;
             }
+            
+            // 依存性注入
+            behaviour.InjectDependencies(_randomService, _contentService, _inventoryService);
             
             behaviour.Init(rui);
             _behaviors.Add(behaviour);

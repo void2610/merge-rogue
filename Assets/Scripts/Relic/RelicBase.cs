@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using R3;
+using VContainer;
 
 /// <summary>
 /// レリックベースクラス
@@ -12,15 +13,30 @@ public abstract class RelicBase : IDisposable
 {
     // UI関連
     protected RelicUI UI;
-    protected bool IsCountable = false;
+    protected bool IsCountable;
     protected readonly ReactiveProperty<int> Count = new(0);
     
     // イベント購読管理
     protected readonly List<IDisposable> SimpleSubscriptions = new();
 
     // ライフサイクル管理
-    private bool _isInitialized = false;
-    private bool _isDisposed = false;
+    private bool _isInitialized;
+    private bool _isDisposed;
+    
+    // 依存性注入されたサービス
+    protected IRandomService RandomService;
+    protected IContentService ContentService;
+    protected IInventoryService InventoryService;
+    
+    /// <summary>
+    /// 依存性注入メソッド
+    /// </summary>
+    public void InjectDependencies(IRandomService randomService, IContentService contentService, IInventoryService inventoryService = null)
+    {
+        RandomService = randomService;
+        ContentService = contentService;
+        InventoryService = inventoryService;
+    }
 
     // 初期化
     public virtual void Init(RelicUI relicUI)

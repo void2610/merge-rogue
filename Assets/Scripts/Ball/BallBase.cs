@@ -3,6 +3,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
+using VContainer;
 
 public class BallBase : MonoBehaviour
 {
@@ -25,6 +26,18 @@ public class BallBase : MonoBehaviour
     private List<float> _attacks = new();
     private List<float> _sizes = new();
     private List<float> _weights = new();
+    
+    // 依存性注入されたサービス（オプショナル、Instantiate時には注入されない場合がある）
+    protected IRandomService RandomService;
+    
+    /// <summary>
+    /// 依存性注入メソッド（オプショナル、VContainerが利用可能な場合のみ呼ばれる）
+    /// </summary>
+    [Inject]
+    public void InjectDependencies(IRandomService randomService)
+    {
+        RandomService = randomService;
+    }
     
     public void Freeze() => IsFrozen = true;
     public void Unfreeze() => UnfreezeAsync().Forget();
@@ -169,9 +182,6 @@ public class BallBase : MonoBehaviour
     {
         ParticleManager.Instance.MergeParticle(this.transform.position);
         // ParticleManager.Instance.MergePowerParticle(this.transform.position, MyEnumUtil.GetBallColor(Rank-1));
-        
-        
-        var i = Random.Range(0, 5);
-        SeManager.Instance.PlaySe("ball" + i);
+        SeManager.Instance.PlaySe("ball" + RandomService.RandomRange(0, 5));
     }
 }
