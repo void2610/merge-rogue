@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using VContainer;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -13,6 +14,14 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] private Vector2 mapMargin;
 
     public List<List<StageNode>> MapNodes { get; } = new();
+    
+    private IRandomService _randomService;
+    
+    [Inject]
+    public void InjectDependencies(IRandomService randomService)
+    {
+        _randomService = randomService;
+    }
 
     public Vector2Int GetMapSize() => mapSize;
     public List<StageData> GetStageData() => stageData;
@@ -85,11 +94,11 @@ public class MapGenerator : MonoBehaviour
             for (var i = 1; i < mapSize.x; i++)
             {
                 var currentY = MapNodes[i-1].FindIndex(node => node == currentNode);
-                var randomYOffset = GameManager.Instance.RandomRange(-1, 2); // -1から1までの値
+                var randomYOffset = _randomService.RandomRange(-1, 2); // -1から1までの値
                 var nextY = Mathf.Clamp(currentY + randomYOffset, 0, mapSize.y - 1);
                 
                 // スタートノードとゴールノードの特別な処理
-                if (i == 1) nextY = GameManager.Instance.RandomRange(0, mapSize.y);
+                if (i == 1) nextY = _randomService.RandomRange(0, mapSize.y);
                 else if (i == mapSize.x - 1) nextY = mid;
                 
                 var nextNode = MapNodes[i][nextY];
@@ -118,7 +127,7 @@ public class MapGenerator : MonoBehaviour
             sum += s.probability;
         }
         
-        var r = GameManager.Instance.RandomRange(0.0f, sum);
+        var r = _randomService.RandomRange(0.0f, sum);
         float cumulative = 0;
         
         foreach (var s in eligibleStages)

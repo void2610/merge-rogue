@@ -30,48 +30,31 @@ public class EnemyBase : MonoBehaviour, IEntity
     private TextMeshProUGUI _healthText;
     private Slider _healthSlider;
     private TextMeshProUGUI _attackCountText;
-    private StatusEffectUI _statusEffectUI;
     private Image _attackIcon;
     private IRandomService _randomService;
     
-    public StatusEffectUI StatusEffectUI => _statusEffectUI;
-    
+    public StatusEffectUI StatusEffectUI { get; private set; }
+
     [Inject]
     public void InjectDependencies(IRandomService randomService)
     {
         _randomService = randomService;
     }
 
-    
-    public void AddStatusEffect(StatusEffectType type, int stacks)
-    {
-        StatusEffectProcessor.AddStatusEffect(this, type, stacks);
-    }
-    
-    public void RemoveStatusEffect(StatusEffectType type, int stacks)
-    {
-        StatusEffectProcessor.RemoveStatusEffect(this, type, stacks);
-    }
-    
     public async UniTask UpdateStatusEffects()
     {
         if (!this.gameObject) return;
         await StatusEffectProcessor.ProcessTurnEnd(this);
     }
-    
-    public int ModifyIncomingDamage(int amount)
+
+    private int ModifyIncomingDamage(int amount)
     {
         return StatusEffectProcessor.ModifyIncomingDamage(this, amount);
     }
-    
-    public int ModifyOutgoingAttack(AttackType type, int amount)
+
+    private int ModifyOutgoingAttack(AttackType type, int amount)
     {
         return StatusEffectProcessor.ModifyOutgoingAttack(this, type, amount);
-    }
-    
-    public void OnBattleEnd()
-    {
-        StatusEffectProcessor.OnBattleEnd(this);
     }
     
     public void Damage(AttackType type, int damage)
@@ -160,18 +143,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         }
 
         // fallback（浮動小数点の誤差対策）
-        return list[list.Count - 1];
-    }
-
-    private void DoAttack()
-    {
-        // 状態異常で攻撃力を更新
-        var damage = ModifyOutgoingAttack(AttackType.Normal, Attack);
-        GameManager.Instance.Player.Damage(AttackType.Normal, Math.Max(1, damage));
-        this.transform.DOMoveX(-0.75f, 0.02f).SetRelative(true).OnComplete(() =>
-                {
-                    this.transform.DOMoveX(0.75f, 0.2f).SetRelative(true).SetEase(Ease.OutExpo).SetLink(gameObject);
-                }).SetLink(gameObject);
+        return list[^1];
     }
     
     private void OnAppear()
@@ -253,7 +225,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         _healthSlider = slider.GetComponent<Slider>();
         _attackCountText = slider.transform.Find("AttackCount").GetComponent<TextMeshProUGUI>();
         _attackIcon = slider.transform.Find("AttackIcon").GetComponent<Image>();
-        _statusEffectUI = slider.GetComponentInChildren<StatusEffectUI>();
+        StatusEffectUI = slider.GetComponentInChildren<StatusEffectUI>();
         _healthSlider.maxValue = MaxHealth;
         _healthSlider.value = Health;
         _healthText.text = Health + "/" + MaxHealth;

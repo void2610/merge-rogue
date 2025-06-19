@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
     // Sceneのライフサイクルに合わせてDisposeするためのCompositeDisposable
     public readonly CompositeDisposable SceneDisposables = new ();
     public float TimeScale { get; private set; } = 1.0f;
-    public bool IsGameOver { get; private set; } = false;
+    public bool IsGameOver { get; private set; }
     public Player Player { get; private set; }
     public StageManager StageManager => stageManager;
     public EnemyContainer EnemyContainer => enemyContainer;

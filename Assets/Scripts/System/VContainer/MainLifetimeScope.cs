@@ -38,5 +38,6 @@ public class MainLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<AfterBattleUI>();
         builder.RegisterComponentInHierarchy<StatusEffectManager>();
         builder.RegisterComponentInHierarchy<EnemyContainer>();
+        builder.RegisterComponentInHierarchy<MapGenerator>();
     }
 }
