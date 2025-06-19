@@ -16,9 +16,9 @@ public class GetNormalBall : StageEventBase
                 Action = () =>
                 {
                     var ball = ContentService.GetNormalBallData();
-                    InventoryManager.Instance.AddBall(ball);
+                    InventoryService.AddBall(ball);
                 },
-                IsAvailable = () => InventoryManager.Instance.IsFull == false
+                IsAvailable = () => InventoryService.IsFull == false
             },
             new OptionData
             {
@@ -26,10 +26,10 @@ public class GetNormalBall : StageEventBase
                 resultDescription = "(ボールを1つ捨てた)",
                 Action = () =>
                 {
-                    var idx = RandomService.RandomRange(0, InventoryManager.Instance.InventorySize);
-                    InventoryManager.Instance.RemoveAndShiftBall(idx);
+                    var idx = RandomService.RandomRange(0, InventoryService.InventorySize);
+                    InventoryService.RemoveAndShiftBall(idx);
                 },
-                IsAvailable = () => InventoryManager.Instance.IsFull == false
+                IsAvailable = () => InventoryService.IsFull == false
             },
         };
     }

@@ -49,12 +49,14 @@ public class MergeManager : MonoBehaviour
     
     private IInputProvider _inputProvider;
     private IRandomService _randomService;
+    private IInventoryService _inventoryService;
     
     [Inject]
-    public void InjectDependencies(IInputProvider inputProvider, IRandomService randomService)
+    public void InjectDependencies(IInputProvider inputProvider, IRandomService randomService, IInventoryService inventoryService)
     {
         _inputProvider = inputProvider;
         _randomService = randomService;
+        _inventoryService = inventoryService;
     }
     
     public void LevelUpWallWidth()
@@ -99,7 +101,7 @@ public class MergeManager : MonoBehaviour
     
     public void CreateBall(int rank, Vector3 p)
     {
-        var ball = InventoryManager.Instance.GetBallByRank(rank);
+        var ball = _inventoryService.GetBallByRank(rank);
         if (!ball) return;
 
         ball.transform.position = p;
@@ -110,7 +112,7 @@ public class MergeManager : MonoBehaviour
     
     public void CreateBombBall()
     {
-        var bomb = InventoryManager.Instance.GetSpecialBallByClassName("BombBall", 3);
+        var bomb = _inventoryService.GetSpecialBallByClassName("BombBall", 3);
         bomb.transform.position = GetValidRandomPosition();
         bomb.transform.SetParent(_ballContainer.transform);
         bomb.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
@@ -124,7 +126,7 @@ public class MergeManager : MonoBehaviour
     
     private void CreateRedBombInternal()
     {
-        var bomb = InventoryManager.Instance.GetSpecialBallByClassName("RedBombBall", 2);
+        var bomb = _inventoryService.GetSpecialBallByClassName("RedBombBall", 2);
         bomb.transform.position = GetValidRandomPosition();
         bomb.transform.SetParent(_ballContainer.transform);
         bomb.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
@@ -138,7 +140,7 @@ public class MergeManager : MonoBehaviour
     
     private void CreateDisturbBallInternal()
     {
-        var disturb = InventoryManager.Instance.GetSpecialBallByClassName("DisturbBall", 1);
+        var disturb = _inventoryService.GetSpecialBallByClassName("DisturbBall", 1);
         disturb.transform.position = GetValidRandomPosition();
         disturb.transform.SetParent(_ballContainer.transform);
         disturb.GetComponent<Rigidbody2D>().constraints = RigidbodyConstraints2D.None;
@@ -224,7 +226,7 @@ public class MergeManager : MonoBehaviour
     private GameObject GetRandomBallWithReroll(Vector3 position)
     {
         const int maxRerolls = 3;
-        var ball = InventoryManager.Instance.GetRandomBall(position);
+        var ball = _inventoryService.GetRandomBall(position);
         var ballBase = ball.GetComponent<BallBase>();
         var ballRank = ballBase.Rank;
         
@@ -282,7 +284,7 @@ public class MergeManager : MonoBehaviour
     
     public void SpawnBallFromLevel(int level, Vector3 p, Quaternion q)
     {
-        var ball = InventoryManager.Instance.GetBallByRank(level);
+        var ball = _inventoryService.GetBallByRank(level);
         if (!ball) return;
 
         ball.transform.position = p;

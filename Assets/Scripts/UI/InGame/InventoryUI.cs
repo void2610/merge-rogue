@@ -26,14 +26,16 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
     [SerializeField] private AfterBattleUI afterBattleUI;
     
     private const float SIZE_COEFFICIENT = 8f;
-    private static List<float> BallSizes => InventoryManager.Instance.Sizes;
+    private List<float> BallSizes => _inventoryService?.Sizes ?? new List<float>();
     
     private IContentService _contentService;
+    private IInventoryService _inventoryService;
     
     [Inject]
-    public void InjectDependencies(IContentService contentService)
+    public void InjectDependencies(IContentService contentService, IInventoryService inventoryService)
     {
         _contentService = contentService;
+        _inventoryService = inventoryService;
     }
     
     private readonly List<GameObject> _items = new();
@@ -153,10 +155,10 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
             case InventoryUIState.Disabled:
                 break;
             case InventoryUIState.Replace:
-                res = await dialog.OpenDialog(InventoryUIState.Replace, InventoryManager.Instance.GetBallData(index), InventoryManager.Instance.GetBallLevel(index), _replaceBallData);
+                res = await dialog.OpenDialog(InventoryUIState.Replace, _inventoryService.GetBallData(index), _inventoryService.GetBallLevel(index), _replaceBallData);
                 if (res)
                 {
-                    InventoryManager.Instance.ReplaceBall(_replaceBallData, _selectedIndex);
+                    _inventoryService.ReplaceBall(_replaceBallData, _selectedIndex);
                     GameManager.Instance.SubCoin(_contentService.GetShopPrice(Shop.ShopItemType.Ball, _replaceBallData.rarity));
                     
                     if (GameManager.Instance.state == GameManager.GameState.AfterBattle)
@@ -167,17 +169,17 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 CancelEdit();
                 break;
             case InventoryUIState.Upgrade:
-                if (InventoryManager.Instance.GetBallLevel(index) >= 2)
+                if (_inventoryService.GetBallLevel(index) >= 2)
                 {
                     SeManager.Instance.PlaySe("error");
                     NotifyWindow.Instance.Notify(NotifyWindow.NotifyType.CantUpgradeBall);
                     return;
                 }
                 
-                res = await dialog.OpenDialog(InventoryUIState.Upgrade, InventoryManager.Instance.GetBallData(index), InventoryManager.Instance.GetBallLevel(index), null);
+                res = await dialog.OpenDialog(InventoryUIState.Upgrade, _inventoryService.GetBallData(index), _inventoryService.GetBallLevel(index), null);
                 if (res)
                 { 
-                    InventoryManager.Instance.UpgradeBall(_selectedIndex);
+                    _inventoryService.UpgradeBall(_selectedIndex);
                     SeManager.Instance.PlaySe("levelUp");
                     afterBattleUI.SetUpgradeButtonInteractable(false);
                     GameManager.Instance.SubCoin(_contentService.GetBallUpgradePrice());
@@ -198,12 +200,12 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                     return;
                 }
                 
-                res = await dialog.OpenDialog(InventoryUIState.Swap, InventoryManager.Instance.GetBallData(index), InventoryManager.Instance.GetBallLevel(index), InventoryManager.Instance.GetBallData(_selectedIndex));
+                res = await dialog.OpenDialog(InventoryUIState.Swap, _inventoryService.GetBallData(index), _inventoryService.GetBallLevel(index), _inventoryService.GetBallData(_selectedIndex));
                 if (res)
                 { 
                     subCursor.GetComponent<Image>().enabled = false;
                     GameManager.Instance.SubCoin(_contentService.GetBallRemovePrice());
-                    await InventoryManager.Instance.SwapBall(_selectedIndex, _swapIndex);
+                    await _inventoryService.SwapBall(_selectedIndex, _swapIndex);
                     UIManager.Instance.EnableCanvasGroup("Rest", false);
                     // Trigger organise event - no return value needed
                     EventManager.OnOrganise.OnNext(R3.Unit.Default);
@@ -212,10 +214,10 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 CancelEdit();
                 break;
             case InventoryUIState.Remove:
-                res = await dialog.OpenDialog(InventoryUIState.Remove, InventoryManager.Instance.GetBallData(index), InventoryManager.Instance.GetBallLevel(index), null);
+                res = await dialog.OpenDialog(InventoryUIState.Remove, _inventoryService.GetBallData(index), _inventoryService.GetBallLevel(index), null);
                 if (res)
                 {
-                    InventoryManager.Instance.RemoveAndShiftBall(_selectedIndex);
+                    _inventoryService.RemoveAndShiftBall(_selectedIndex);
                     GameManager.Instance.SubCoin(_contentService.GetBallRemovePrice());
                     UIManager.Instance.ResetSelectedGameObject();
                     shop.SetRemoveButtonInteractable(false);

@@ -1,11 +1,20 @@
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class Rest : MonoBehaviour
 {
     [SerializeField] private Button restButton;
     [SerializeField] private Button organizeButton;
     [SerializeField] private Button skipButton;
+    
+    private static IInventoryService _inventoryService;
+    
+    [Inject]
+    public void InjectDependencies(IInventoryService inventoryService)
+    {
+        _inventoryService = inventoryService;
+    }
     
     private static void OnClickRest()
     {
@@ -19,7 +28,7 @@ public class Rest : MonoBehaviour
     
     private static void OnClickOrganise()
     {
-        InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Swap);
+        _inventoryService.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Swap);
     }
     
     private static void OnClickSkip()

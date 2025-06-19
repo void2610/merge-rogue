@@ -15,16 +15,13 @@ public class HealWhenMergeLastBall : RelicBase
     
     private void OnBallMerged((BallBase ball1, BallBase ball2) mergeData)
     {
-        var maxRank = InventoryManager.Instance?.InventorySize ?? 0;
+        if (mergeData.ball1?.Rank != InventoryService.InventorySize) return;
         
-        if (mergeData.ball1?.Rank == maxRank)
+        if (GameManager.Instance?.Player)
         {
-            if (GameManager.Instance?.Player != null)
-            {
-                int heal = GameManager.Instance.Player.MaxHealth.Value / 4;
-                GameManager.Instance.Player.Heal(heal);
-            }
-            UI?.ActivateUI();
+            var heal = GameManager.Instance.Player.MaxHealth.Value / 4;
+            GameManager.Instance.Player.Heal(heal);
         }
+        UI?.ActivateUI();
     }
 }

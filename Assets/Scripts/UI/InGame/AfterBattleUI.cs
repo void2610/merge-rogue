@@ -16,19 +16,19 @@ public class AfterBattleUI : MonoBehaviour
     
     private const int ITEM_NUM = 3;
     private readonly List<BallData> _currentItems = new();
-    private readonly List<int> _currentItemPrices = new();
     private List<GameObject> _itemObjects;
     private int _selectedIndex = -1;
-    private static BallDataList AllBalls => InventoryManager.Instance.allBallDataList;
     
     private IContentService _contentService;
     private IRandomService _randomService;
+    private IInventoryService _inventoryService;
     
     [Inject]
-    public void InjectDependencies(IContentService contentService, IRandomService randomService)
+    public void InjectDependencies(IContentService contentService, IRandomService randomService, IInventoryService inventoryService)
     {
         _contentService = contentService;
         _randomService = randomService;
+        _inventoryService = inventoryService;
     }
     
     public void UnInteractableSelectedItem() => _itemObjects[_selectedIndex].GetComponent<MyButton>().IsAvailable = false;
@@ -36,7 +36,7 @@ public class AfterBattleUI : MonoBehaviour
     
     private void BuyBall(int index)
     {
-        var ball = _currentItems[index] as BallData;
+        var ball = _currentItems[index];
         if (!ball) return;
         
         _selectedIndex = index;
@@ -46,7 +46,6 @@ public class AfterBattleUI : MonoBehaviour
     private void SetBallEvent(GameObject g, BallData ball, int index)
     {
         var price = _contentService.GetShopPrice(Shop.ShopItemType.Ball, ball.rarity);
-        _currentItemPrices[index] = price;
         var priceText = g.transform.Find("Price").GetComponent<TextMeshProUGUI>();
         priceText.text = price.ToString();
         var icon = g.transform.Find("Icon").GetComponent<Image>();
@@ -67,13 +66,12 @@ public class AfterBattleUI : MonoBehaviour
                 }
             });
         }
-        
         g.AddDescriptionWindowEvent(ball);
     }
     
     private void OnClickBallUpgradeButton()
     {
-        InventoryManager.Instance.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Upgrade);
+        _inventoryService.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Upgrade);
     }
     
     private void OnClickSkipAfterBattle()
@@ -90,13 +88,7 @@ public class AfterBattleUI : MonoBehaviour
         var interactable = GameManager.Instance.Coin.Value >= price;
         ballUpgradeButton.IsAvailable = interactable;
 
-        var count = 3;
-        
-        if (count > ITEM_NUM) throw new System.Exception("Invalid count");
-        
         _currentItems.Clear();
-        _currentItemPrices.Clear();
-        _currentItemPrices.AddRange(Enumerable.Repeat(0, ITEM_NUM));
         
         for(var i = 0; i < ITEM_NUM; i++)
         {

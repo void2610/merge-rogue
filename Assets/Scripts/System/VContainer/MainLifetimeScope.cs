@@ -20,7 +20,9 @@ public class MainLifetimeScope : LifetimeScope
         builder.Register<IVirtualMouseService, VirtualMouseService>(Lifetime.Scoped);
         builder.Register<IMouseCursorService, MouseCursorService>(Lifetime.Scoped);
         builder.Register<IScoreService, ScoreService>(Lifetime.Singleton);
-        builder.Register<IRandomService, RandomService>(Lifetime.Singleton);
+        
+        // InventoryServiceの登録（InventoryManagerに依存）
+        builder.Register<IInventoryService>(container => new InventoryService(container.Resolve<InventoryManager>()), Lifetime.Singleton);
         
         builder.RegisterEntryPoint<MouseHoverUISelector>(Lifetime.Singleton);
         builder.RegisterComponent(scoreDisplayComponent);
@@ -40,5 +42,6 @@ public class MainLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<EnemyContainer>();
         builder.RegisterComponentInHierarchy<MapGenerator>();
         builder.RegisterComponentInHierarchy<RelicManager>();
+        builder.RegisterComponentInHierarchy<Rest>();
     }
 }

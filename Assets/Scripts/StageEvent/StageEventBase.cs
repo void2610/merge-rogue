@@ -23,12 +23,14 @@ public abstract class StageEventBase : MonoBehaviour
     
     protected IContentService ContentService;
     protected IRandomService RandomService;
+    protected IInventoryService InventoryService;
     
     [Inject]
-    public void InjectDependencies(IContentService contentService, IRandomService randomService)
+    public void InjectDependencies(IContentService contentService, IRandomService randomService, IInventoryService inventoryService)
     {
         ContentService = contentService;
         RandomService = randomService;
+        InventoryService = inventoryService;
     }
 
     public abstract void Init();
