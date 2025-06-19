@@ -10,7 +10,7 @@ public class CreateTwoBallWhenSkip : RelicBase
     {
         // ボールスキップ時のイベント購読
         var subscription = EventManager.OnBallSkip.Subscribe(OnBallSkip);
-        _simpleSubscriptions.Add(subscription);
+        SimpleSubscriptions.Add(subscription);
     }
 
     private void OnBallSkip(Unit _)

@@ -16,7 +16,7 @@ public abstract class RelicBase : IDisposable
     protected readonly ReactiveProperty<int> Count = new(0);
     
     // イベント購読管理
-    protected readonly List<IDisposable> _simpleSubscriptions = new();
+    protected readonly List<IDisposable> SimpleSubscriptions = new();
 
     // ライフサイクル管理
     private bool _isInitialized = false;
@@ -49,11 +49,11 @@ public abstract class RelicBase : IDisposable
         EventManager.RemoveProcessorsFor(this);
         
         // シンプルなイベント購読も削除
-        foreach (var subscription in _simpleSubscriptions)
+        foreach (var subscription in SimpleSubscriptions)
         {
             subscription?.Dispose();
         }
-        _simpleSubscriptions.Clear();
+        SimpleSubscriptions.Clear();
     }
 
     // IDisposable実装
@@ -106,7 +106,7 @@ public abstract class RelicBase : IDisposable
     /// </summary>
     protected void AddSubscription(IDisposable subscription)
     {
-        _simpleSubscriptions.Add(subscription);
+        SimpleSubscriptions.Add(subscription);
     }
 }
 

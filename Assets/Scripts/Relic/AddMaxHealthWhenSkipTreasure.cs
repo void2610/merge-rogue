@@ -10,7 +10,7 @@ public class AddMaxHealthWhenSkipTreasure : RelicBase
     {
         // 宝物スキップ時のイベント購読
         var subscription = EventManager.OnTreasureSkipped.Subscribe(OnTreasureSkipped);
-        _simpleSubscriptions.Add(subscription);
+        SimpleSubscriptions.Add(subscription);
     }
 
     private void OnTreasureSkipped(Unit _)

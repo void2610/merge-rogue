@@ -10,7 +10,7 @@ public class SometimeCopyDropBall : RelicBase
     {
         // ボールドロップ時のイベント購読
         var subscription = EventManager.OnBallDrop.Subscribe(OnBallDrop);
-        _simpleSubscriptions.Add(subscription);
+        SimpleSubscriptions.Add(subscription);
     }
     
     private void OnBallDrop(Unit _)

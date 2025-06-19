@@ -199,7 +199,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         Data = d;
         Stage = stage;
         Magnification = (stage * 0.8f)+1;
-        MaxHealth = (int)(GameManager.Instance.RandomRange(d.maxHealthMin, d.maxHealthMax) * Magnification);
+        MaxHealth = (int)(_randomService.RandomRange(d.maxHealthMin, d.maxHealthMax) * Magnification);
         Health = MaxHealth;
         Attack = (int)(d.attack * (Magnification * 0.2f));
         Exp = d.exp + (int)(Magnification);

@@ -10,7 +10,7 @@ public class AttackWhenShield : RelicBase
     {
         // プレイヤーのステータス効果発動時のイベント購読
         var subscription = EventManager.OnPlayerStatusEffectTriggered.Subscribe(OnStatusEffectTriggered);
-        _simpleSubscriptions.Add(subscription);
+        SimpleSubscriptions.Add(subscription);
     }
 
     private void OnStatusEffectTriggered(StatusEffectType statusEffectType)

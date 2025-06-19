@@ -10,7 +10,7 @@ public class StrongBurnWhenManyBalls : RelicBase
     {
         // 敵ステータス効果発動時のイベント購読
         var subscription = EventManager.OnEnemyStatusEffectTriggered.Subscribe(OnEnemyStatusEffectTriggered);
-        _simpleSubscriptions.Add(subscription);
+        SimpleSubscriptions.Add(subscription);
     }
 
     private void OnEnemyStatusEffectTriggered(StatusEffectType statusEffectType)

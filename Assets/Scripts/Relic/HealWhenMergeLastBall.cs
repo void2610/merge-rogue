@@ -10,7 +10,7 @@ public class HealWhenMergeLastBall : RelicBase
     {
         // ボール合成時のイベント購読
         var subscription = EventManager.OnBallMerged.Subscribe(OnBallMerged);
-        _simpleSubscriptions.Add(subscription);
+        SimpleSubscriptions.Add(subscription);
     }
     
     private void OnBallMerged((BallBase ball1, BallBase ball2) mergeData)

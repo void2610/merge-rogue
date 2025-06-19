@@ -10,7 +10,7 @@ public class CreateBallWhenStatusEffect : RelicBase
     {
         // プレイヤーステータス効果追加時のイベント購読
         var subscription = EventManager.OnPlayerStatusEffectAdded.Subscribe(OnStatusEffectAdded);
-        _simpleSubscriptions.Add(subscription);
+        SimpleSubscriptions.Add(subscription);
     }
 
     private void OnStatusEffectAdded(Unit _)

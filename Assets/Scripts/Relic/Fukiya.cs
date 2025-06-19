@@ -10,7 +10,7 @@ public class Fukiya : RelicBase
     {
         // オーガナイズ時のイベント購読
         var subscription = EventManager.OnOrganise.Subscribe(OnOrganise);
-        _simpleSubscriptions.Add(subscription);
+        SimpleSubscriptions.Add(subscription);
     }
     
     private void OnOrganise(Unit _)

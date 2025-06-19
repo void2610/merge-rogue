@@ -10,7 +10,7 @@ public class AddMaxHealthWhenEnterStageEvent : RelicBase
     {
         // イベントステージ入場時のイベント購読
         var subscription = EventManager.OnEventStageEnter.Subscribe(OnEventStageEnter);
-        _simpleSubscriptions.Add(subscription);
+        SimpleSubscriptions.Add(subscription);
     }
 
     private void OnEventStageEnter(StageType stageType)

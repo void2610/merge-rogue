@@ -10,7 +10,7 @@ public class ShockTherapy : RelicBase
     {
         // 敵ステータス効果追加時のイベント購読
         var subscription = EventManager.OnEnemyStatusEffectAdded.Subscribe(OnEnemyStatusEffectAdded);
-        _simpleSubscriptions.Add(subscription);
+        SimpleSubscriptions.Add(subscription);
     }
 
     private void OnEnemyStatusEffectAdded(StatusEffectType statusEffectType)
