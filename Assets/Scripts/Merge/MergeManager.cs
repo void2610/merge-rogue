@@ -234,7 +234,7 @@ public class MergeManager : MonoBehaviour
         while (ballRank == _lastBallRank && rerollCount < maxRerolls)
         {
             Destroy(ball);
-            ball = InventoryManager.Instance.GetRandomBall(position);
+            ball = _inventoryService.GetRandomBall(position);
             ballBase = ball.GetComponent<BallBase>();
             ballRank = ballBase.Rank;
             rerollCount++;

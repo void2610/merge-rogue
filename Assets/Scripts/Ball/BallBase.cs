@@ -27,12 +27,8 @@ public class BallBase : MonoBehaviour
     private List<float> _sizes = new();
     private List<float> _weights = new();
     
-    // 依存性注入されたサービス（オプショナル、Instantiate時には注入されない場合がある）
     protected IRandomService RandomService;
     
-    /// <summary>
-    /// 依存性注入メソッド（オプショナル、VContainerが利用可能な場合のみ呼ばれる）
-    /// </summary>
     [Inject]
     public void InjectDependencies(IRandomService randomService)
     {
