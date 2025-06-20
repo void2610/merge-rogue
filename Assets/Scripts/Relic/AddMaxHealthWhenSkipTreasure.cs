@@ -6,7 +6,7 @@ using R3;
 /// </summary>
 public class AddMaxHealthWhenSkipTreasure : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // 宝物スキップ時のイベント購読
         var subscription = EventManager.OnTreasureSkipped.Subscribe(OnTreasureSkipped);

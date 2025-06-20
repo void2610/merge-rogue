@@ -6,7 +6,7 @@ using R3;
 /// </summary>
 public class MergeAllWhenLowHealth : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // プレイヤーダメージ時の条件付き効果を登録
         RelicHelpers.RegisterPlayerDamageModifier(this,

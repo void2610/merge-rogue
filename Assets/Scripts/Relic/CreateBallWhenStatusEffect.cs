@@ -6,7 +6,7 @@ using R3;
 /// </summary>
 public class CreateBallWhenStatusEffect : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // プレイヤーステータス効果追加時のイベント購読
         var subscription = EventManager.OnPlayerStatusEffectAdded.Subscribe(OnStatusEffectAdded);

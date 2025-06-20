@@ -6,7 +6,7 @@ using UnityEngine;
 /// </summary>
 public class StrongBurnWhenManyBalls : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // 敵ステータス効果発動時のイベント購読
         var subscription = EventManager.OnEnemyStatusEffectTriggered.Subscribe(OnEnemyStatusEffectTriggered);

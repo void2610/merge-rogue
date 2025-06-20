@@ -5,14 +5,9 @@ using UnityEngine;
 /// </summary>
 public class CreateBombWhenDamage : RelicBase
 {
-    public override void Init(RelicUI relicUI)
+    public override void RegisterEffects()
     {
         IsCountable = true; // カウント表示を有効化
-        base.Init(relicUI);
-    }
-
-    protected override void RegisterEffects()
-    {
         // ダメージ20毎にボム生成
         RegisterDamageAccumulator(
             threshold: 20,

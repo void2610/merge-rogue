@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 public class NoConsumeCoinDuringBattle : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // バトル中のコイン消費を0にブロック
         EventManager.OnCoinConsume.AddProcessor(this, current =>

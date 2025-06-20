@@ -7,7 +7,7 @@ public class HaisuiNoJin : RelicBase
 {
     private int _originalMaxHealth;
 
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // 最大HPを1/4に削減
         ModifyMaxHealth();

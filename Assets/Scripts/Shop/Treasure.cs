@@ -32,12 +32,14 @@ public class Treasure : MonoBehaviour
     
     private IContentService _contentService;
     private IRandomService _randomService;
+    private IRelicService _relicService;
     
     [Inject]
-    public void InjectDependencies(IContentService contentService, IRandomService randomService)
+    public void InjectDependencies(IContentService contentService, IRandomService randomService, IRelicService relicService)
     {
         _contentService = contentService;
         _randomService = randomService;
+        _relicService = relicService;
     }
 
     public void OpenTreasure(TreasureType type)
@@ -125,7 +127,7 @@ public class Treasure : MonoBehaviour
             {
                 if (!relic) return;
                 
-                RelicManager.Instance.AddRelic(relic);
+                _relicService.AddRelic(relic);
                 g.transform.position = _disablePosition;
                 // レリック取得イベントを発火（現在は直接ProcessModificationsを使用）
                 EventManager.OnRelicObtainedTreasure.OnNext(R3.Unit.Default);

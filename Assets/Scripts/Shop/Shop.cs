@@ -29,12 +29,14 @@ public class Shop : MonoBehaviour
     
     private IContentService _contentService;
     private IRandomService _randomService;
+    private IRelicService _relicService;
     
     [Inject]
-    public void InjectDependencies(IContentService contentService, IRandomService randomService)
+    public void InjectDependencies(IContentService contentService, IRandomService randomService, IRelicService relicService)
     {
         _contentService = contentService;
         _randomService = randomService;
+        _relicService = relicService;
     }
     
     public void UnInteractableSelectedItem() => _itemObjects[_selectedIndex].GetComponent<Button>().interactable = false;
@@ -98,7 +100,7 @@ public class Shop : MonoBehaviour
     {
         var relic = _currentItems[index] as RelicData;
         if (!relic) return;
-        RelicManager.Instance.AddRelic(relic);
+        _relicService.AddRelic(relic);
         _itemObjects[index].GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
         UIManager.Instance.ResetSelectedGameObject();

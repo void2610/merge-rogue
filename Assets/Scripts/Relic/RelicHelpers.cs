@@ -121,7 +121,7 @@ public static class RelicHelpers
     /// </summary>
     public static Func<bool> HasRelicCondition<T>() where T : RelicBase
     {
-        return () => RelicManager.Instance.HasRelic(typeof(T));
+        return () => RelicService.Instance?.HasRelic(typeof(T)) ?? false;
     }
 
     // ===== イベント購読のヘルパーメソッド =====

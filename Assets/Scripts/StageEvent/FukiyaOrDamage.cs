@@ -16,7 +16,7 @@ public class FukiyaOrDamage : StageEventBase
                 Action = () =>
                 {
                     var r = ContentService.GetRelicByClassName("Fukiya");
-                    RelicManager.Instance.AddRelic(r);
+                    RelicService.AddRelic(r);
                 }
             },
             new OptionData

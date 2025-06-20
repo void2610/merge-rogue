@@ -36,8 +36,6 @@ public class RelicManager : MonoBehaviour
         _inventoryService = inventoryService;
     }
     
-    public List<RelicData> GetCurrentRelics() => _relics;
-    
     public void AddRelic(RelicData relic)
     {
         if(_relics.Count >= MAX_RELICS)

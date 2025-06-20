@@ -8,7 +8,7 @@ using VContainer;
 /// </summary>
 public class Santa : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // 休憩時のイベント購読
         AddSubscription(RelicHelpers.SubscribeRestEnter(OnRestEnter));
@@ -21,7 +21,7 @@ public class Santa : RelicBase
 
         if (relics is not { Count: > 0 }) return;
         var randomRelic = relics[RandomService.RandomRange(0, relics.Count)];
-        RelicManager.Instance?.AddRelic(randomRelic);
+        RelicService.Instance?.AddRelic(randomRelic);
 
         UI?.ActivateUI();
     }

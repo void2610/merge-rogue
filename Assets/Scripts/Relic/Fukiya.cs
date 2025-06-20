@@ -6,7 +6,7 @@ using R3;
 /// </summary>
 public class Fukiya : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // オーガナイズ時のイベント購読
         var subscription = EventManager.OnOrganise.Subscribe(OnOrganise);

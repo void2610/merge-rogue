@@ -6,15 +6,10 @@ using R3;
 /// </summary>
 public class MonsterEnergy : RelicBase
 {
-    public override void Init(RelicUI relicUI)
+    public override void RegisterEffects()
     {
         IsCountable = true;
         Count.Value = 3;
-        base.Init(relicUI);
-    }
-
-    protected override void RegisterEffects()
-    {
         // ボールレベルアップ量を増加
         MergeManager.Instance?.LevelUpBallAmount();
         

@@ -6,7 +6,7 @@ using R3;
 /// </summary>
 public class SometimeCopyDropBall : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // ボールドロップ時のイベント購読
         var subscription = EventManager.OnBallDrop.Subscribe(OnBallDrop);

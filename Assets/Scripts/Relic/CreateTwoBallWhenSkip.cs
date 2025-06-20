@@ -6,7 +6,7 @@ using R3;
 /// </summary>
 public class CreateTwoBallWhenSkip : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // ボールスキップ時のイベント購読
         var subscription = EventManager.OnBallSkip.Subscribe(OnBallSkip);

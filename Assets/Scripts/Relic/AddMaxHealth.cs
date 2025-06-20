@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 public class AddMaxHealth : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // 最大HP増加
         if (GameManager.Instance?.Player != null)

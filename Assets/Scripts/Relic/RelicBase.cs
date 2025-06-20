@@ -20,7 +20,6 @@ public abstract class RelicBase : IDisposable
     protected readonly List<IDisposable> SimpleSubscriptions = new();
 
     // ライフサイクル管理
-    private bool _isInitialized;
     private bool _isDisposed;
     
     // 依存性注入されたサービス
@@ -38,23 +37,19 @@ public abstract class RelicBase : IDisposable
         InventoryService = inventoryService;
     }
 
-    // 初期化
-    public virtual void Init(RelicUI relicUI)
+    /// <summary>
+    /// UIを設定する（後から設定可能）
+    /// </summary>
+    /// <param name="relicUI">関連付けるRelicUI</param>
+    public void SetUI(RelicUI relicUI)
     {
-        if (_isInitialized) return;
-
         UI = relicUI;
         UI?.EnableCount(IsCountable);
         UI?.SubscribeCount(Count);
-        
-        // レリック固有の効果を登録
-        RegisterEffects();
-        
-        _isInitialized = true;
     }
 
     // レリック固有の効果登録（派生クラスで実装）
-    protected abstract void RegisterEffects();
+    public abstract void RegisterEffects();
 
     // 全ての効果を削除
     public virtual void RemoveAllEffects()

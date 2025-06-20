@@ -24,6 +24,9 @@ public class MainLifetimeScope : LifetimeScope
         // InventoryServiceの登録（InventoryManagerに依存）
         builder.Register<IInventoryService>(container => new InventoryService(container.Resolve<InventoryManager>()), Lifetime.Singleton);
         
+        // RelicServiceの登録
+        builder.Register<IRelicService, RelicService>(Lifetime.Singleton);
+        
         builder.RegisterEntryPoint<MouseHoverUISelector>(Lifetime.Singleton);
         builder.RegisterComponent(scoreDisplayComponent);
         
@@ -41,7 +44,7 @@ public class MainLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<StatusEffectManager>();
         builder.RegisterComponentInHierarchy<EnemyContainer>();
         builder.RegisterComponentInHierarchy<MapGenerator>();
-        builder.RegisterComponentInHierarchy<RelicManager>();
+        builder.RegisterComponentInHierarchy<RelicUIManager>();
         builder.RegisterComponentInHierarchy<Rest>();
     }
 }

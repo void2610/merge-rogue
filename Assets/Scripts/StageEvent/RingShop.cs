@@ -25,7 +25,7 @@ public class RingShop : StageEventBase
                     rings.Print();
                     
                     var idx = RandomService.RandomRange(0, rings.Count);
-                    RelicManager.Instance.AddRelic(rings[idx]);
+                    RelicService.AddRelic(rings[idx]);
                     GameManager.Instance.SubCoin(_price);
                     _count++;
                     _price += 15;
