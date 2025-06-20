@@ -16434,10 +16434,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   relicPrefab: {fileID: 6729976926087826395, guid: 4d7ea21157c3e4729809c5978c721e5b, type: 3}
   relicContainer: {fileID: 1029647713}
-  relicGridPosition: {x: 0, y: 0, z: 0}
-  relicGridSize: {x: 4, y: 8}
-  relicOffset: {x: 0, y: 0}
-  relicUISize: 1
+  relicGridPosition: {x: -455, y: 52, z: 0}
+  relicGridSize: {x: 3, y: 9}
+  relicOffset: {x: 40, y: 36}
+  relicUISize: 0.75
   testRelics:
   - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
   - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
