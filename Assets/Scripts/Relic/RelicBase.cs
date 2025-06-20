@@ -26,15 +26,17 @@ public abstract class RelicBase : IDisposable
     protected IRandomService RandomService;
     protected IContentService ContentService;
     protected IInventoryService InventoryService;
+    public RelicService RelicService { get; private set; }
     
     /// <summary>
     /// 依存性注入メソッド
     /// </summary>
-    public void InjectDependencies(IRandomService randomService, IContentService contentService, IInventoryService inventoryService = null)
+    public void InjectDependencies(IRandomService randomService, IContentService contentService, IInventoryService inventoryService, RelicService relicService)
     {
         RandomService = randomService;
         ContentService = contentService;
         InventoryService = inventoryService;
+        RelicService = relicService;
     }
 
     /// <summary>
@@ -118,6 +120,46 @@ public abstract class RelicBase : IDisposable
     protected void AddSubscription(IDisposable subscription)
     {
         SimpleSubscriptions.Add(subscription);
+    }
+    
+    // ===== 便利な条件チェックメソッド =====
+    
+    /// <summary>
+    /// プレイヤーのHP条件をチェック（以下）
+    /// </summary>
+    protected bool IsPlayerHealthBelow(float healthPercentage)
+    {
+        if (!GameManager.Instance?.Player) return false;
+        var currentHealth = GameManager.Instance.Player.Health.Value;
+        var maxHealth = GameManager.Instance.Player.MaxHealth.Value;
+        return currentHealth <= maxHealth * healthPercentage;
+    }
+    
+    /// <summary>
+    /// プレイヤーのHP条件をチェック（以上）
+    /// </summary>
+    protected bool IsPlayerHealthAbove(float healthPercentage)
+    {
+        if (!GameManager.Instance?.Player) return false;
+        var currentHealth = GameManager.Instance.Player.Health.Value;
+        var maxHealth = GameManager.Instance.Player.MaxHealth.Value;
+        return currentHealth > maxHealth * healthPercentage;
+    }
+    
+    /// <summary>
+    /// ゲーム状態をチェック
+    /// </summary>
+    protected bool IsGameState(params GameManager.GameState[] states)
+    {
+        return GameManager.Instance && Array.Exists(states, state => GameManager.Instance.state == state);
+    }
+    
+    /// <summary>
+    /// 他のレリックを所持しているかチェック
+    /// </summary>
+    protected bool HasRelic<T>() where T : RelicBase
+    {
+        return RelicService?.HasRelic(typeof(T)) ?? false;
     }
 }
 

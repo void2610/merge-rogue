@@ -21,7 +21,7 @@ public class Santa : RelicBase
 
         if (relics is not { Count: > 0 }) return;
         var randomRelic = relics[RandomService.RandomRange(0, relics.Count)];
-        RelicService.Instance?.AddRelic(randomRelic);
+        RelicService.AddRelic(randomRelic);
 
         UI?.ActivateUI();
     }

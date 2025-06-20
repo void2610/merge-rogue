@@ -10,10 +10,10 @@ public class NoConsumeCoinDuringBattle : RelicBase
         // バトル中のコイン消費を0にブロック
         EventManager.OnCoinConsume.AddProcessor(this, current =>
         {
-            if (RelicHelpers.GameStateCondition(
+            if (IsGameState(
                 GameManager.GameState.Merge,
                 GameManager.GameState.EnemyAttack
-            )())
+            ))
             {
                 if (current > 0) // コイン消費をブロックする時のみUIをアクティベート
                 {

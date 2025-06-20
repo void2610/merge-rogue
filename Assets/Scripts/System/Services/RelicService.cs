@@ -9,10 +9,6 @@ using UnityEngine;
 /// </summary>
 public class RelicService : IRelicService, IDisposable
 {
-    /// <summary>
-    /// 現在のインスタンス（RelicHelpersとの互換性のためのstaticアクセス）
-    /// </summary>
-    public static RelicService Instance { get; private set; }
     private const int MAX_RELICS = 27;
     private readonly List<RelicData> _relics = new();
     private readonly List<RelicBase> _behaviors = new();
@@ -54,9 +50,6 @@ public class RelicService : IRelicService, IDisposable
         _randomService = randomService;
         _contentService = contentService;
         _inventoryService = inventoryService;
-        
-        // Instanceを設定（RelicHelpersとの互換性のため）
-        Instance = this;
     }
     
     /// <summary>
@@ -143,7 +136,7 @@ public class RelicService : IRelicService, IDisposable
             }
             
             // 依存性注入
-            behaviour.InjectDependencies(_randomService, _contentService, _inventoryService);
+            behaviour.InjectDependencies(_randomService, _contentService, _inventoryService, this);
             
             behaviour.RegisterEffects();
             _behaviors.Add(behaviour);
@@ -173,11 +166,5 @@ public class RelicService : IRelicService, IDisposable
         // イベントのクリーンアップ
         OnRelicAdded = null;
         OnRelicRemoved = null;
-        
-        // Instanceをクリア
-        if (Instance == this)
-        {
-            Instance = null;
-        }
     }
 }
