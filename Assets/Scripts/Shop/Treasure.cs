@@ -92,8 +92,8 @@ public class Treasure : MonoBehaviour
             relics.RemoveAt(index);
         }
     }
-    
-    public void CloseTreasure()
+
+    private void CloseTreasure()
     {
         items.ForEach(item => item.transform.position = _disablePosition);
         UIManager.Instance.EnableCanvasGroup("Treasure", false);

@@ -31,7 +31,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Volume volume;
     [SerializeField] private List<CanvasGroup> canvasGroups;
     [SerializeField] private TextMeshProUGUI coinText;
-    [SerializeField] private TextMeshProUGUI stageText;
     [SerializeField] private TextMeshProUGUI expText;
     [SerializeField] private Slider hpSlider;
     [SerializeField] private TextMeshProUGUI hpText;
@@ -126,7 +125,6 @@ public class UIManager : MonoBehaviour
         return canvasGroups.Find(c => c.alpha > 0)?.gameObject;  
     }
     
-    private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
     private void UpdateCoinText(System.Numerics.BigInteger amount) => coinText.text = "coin: " + amount;
 
     public void ResetSelectedGameObject(bool isToggle = false)
@@ -371,7 +369,6 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.Coin.Subscribe(UpdateCoinText).AddTo(this);
-        GameManager.Instance.StageManager.CurrentStageCount.Subscribe(UpdateStageText).AddTo(this);
         GameManager.Instance.Player.Exp.Subscribe((v) => UpdateExpText(v, GameManager.Instance.Player.MaxExp)).AddTo(this);
         GameManager.Instance.Player.Health.Subscribe((v) =>
         {

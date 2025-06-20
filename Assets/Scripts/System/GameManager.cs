@@ -34,12 +34,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private StageManager stageManager;
     
     [Header("デバッグ")]
-    [SerializeField] private int debugCoin = 0;
+    [SerializeField] private int debugCoin;
 
     public float TimeScale { get; private set; } = 1.0f;
     public bool IsGameOver { get; private set; }
     public Player Player { get; private set; }
-    public StageManager StageManager => stageManager;
     public EnemyContainer EnemyContainer => enemyContainer;
     
     public readonly ReactiveProperty<BigInteger> Coin = new(0);
@@ -87,7 +86,7 @@ public class GameManager : MonoBehaviour
     {
         IsGameOver = true;
         ChangeState(GameState.GameOver);
-        _scoreDisplayComponent.ShowScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value, Coin.Value);
+        _scoreDisplayComponent.ShowScore(stageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value, Coin.Value);
     }
     
     public void TweetScore()
@@ -119,7 +118,7 @@ public class GameManager : MonoBehaviour
                     } 
                 # endif 
                 
-                StageManager.SetNextNodeActive();
+                stageManager.SetNextNodeActive();
                 await UniTask.Delay(400, DelayType.UnscaledDeltaTime);
                 UIManager.Instance.OnClickMapButtonForce(true);
                 break;
