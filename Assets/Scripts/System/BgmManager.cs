@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
+using VContainer;
 
 public class BgmManager : MonoBehaviour
 {
@@ -24,11 +25,14 @@ public class BgmManager : MonoBehaviour
     private List<SoundData> bgmList = new List<SoundData>();
 
     private AudioSource AudioSource => this.GetComponent<AudioSource>();
-    private bool _isPlaying = false;
-    private SoundData _currentBGM = null;
-    private float _volume = 1.0f;
+    
     private const float FADE_TIME = 1.0f;
+    
+    private bool _isPlaying = false;
+    private float _volume = 1.0f;
     private bool _isFading = false;
+    private SoundData _currentBGM = null;
+    private IGameSettingsService _gameSettingsService;
 
     public float BgmVolume
     {
@@ -40,7 +44,7 @@ public class BgmManager : MonoBehaviour
                 value = 0.0001f;
             }
             _volume = value;
-            PlayerPrefs.SetFloat("BgmVolume", value);
+            _gameSettingsService.SaveBgmVolume(value);
             bmgMixerGroup.audioMixer.SetFloat("BgmVolume", Mathf.Log10(value) * 20);
             AudioSource.volume = _currentBGM?.volume ?? 1;
         }
@@ -87,9 +91,10 @@ public class BgmManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null)
+        if (!Instance)
         {
             Instance = this;
+            DontDestroyOnLoad(this.gameObject);
         }
         else
         {
@@ -97,10 +102,17 @@ public class BgmManager : MonoBehaviour
         }
     }
 
+    [Inject]
+    public void InjectDependencies(IGameSettingsService gameSettingsService)
+    {
+        _gameSettingsService = gameSettingsService;
+    }
+    
     private void Start()
     {
         _currentBGM = null;
-        _volume = PlayerPrefs.GetFloat("BgmVolume", 1.0f);
+        var audioSettings = _gameSettingsService.GetAudioSettings();
+        _volume = audioSettings.bgmVolume;
         bmgMixerGroup.audioMixer.SetFloat("BgmVolume", Mathf.Log10(_volume) * 20);
         AudioSource.volume = 0;
         AudioSource.outputAudioMixerGroup = bmgMixerGroup;

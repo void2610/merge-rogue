@@ -16,10 +16,13 @@ using DG.Tweening;
 using JetBrains.Annotations;
 using R3;
 using UnityEngine.Serialization;
+using VContainer;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+    
+    private IGameSettingsService _gameSettingsService;
     
     [SerializeField] private Canvas uiCanvas;
     [SerializeField] private Camera uiCamera;
@@ -347,13 +350,20 @@ public class UIManager : MonoBehaviour
         vignette.intensity.value = value;
     }
 
+    [Inject]
+    public void InjectDependencies(IGameSettingsService gameSettingsService)
+    {
+        _gameSettingsService = gameSettingsService;
+    }
+    
     private void Awake()
     {
         if(Instance == null) Instance = this;
         else Destroy(gameObject);
         
-        bgmSlider.value = PlayerPrefs.GetFloat("BgmVolume", 1.0f);
-        seSlider.value = PlayerPrefs.GetFloat("SeVolume", 1.0f);
+        var audioSettings = _gameSettingsService.GetAudioSettings();
+        bgmSlider.value = audioSettings.bgmVolume;
+        seSlider.value = audioSettings.seVolume;
 
         foreach (var canvasGroup in canvasGroups)
         {

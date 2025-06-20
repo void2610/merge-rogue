@@ -15,35 +15,23 @@ public class RootLifetimeScope : LifetimeScope
     [Header("コンテンツ設定")]
     [SerializeField] private ContentProviderData contentProviderData;
     
-    protected override void Awake()
-    {
-        DontDestroyOnLoad(this.gameObject);
-        base.Awake();
-    }
-    
     protected override void Configure(IContainerBuilder builder)
-    {
-        // 共通サービスの登録
-        RegisterSharedServices(builder);
-        
-        // ContentService関連の登録
-        RegisterContentServices(builder);
-        
-        // SetMouseCursorコンポーネントの依存性注入（全シーン共通）
-        RegisterSetMouseCursorComponents(builder);
-        
-        // StatusEffectUIコンポーネントの依存性注入（全シーン共通）
-        RegisterStatusEffectUIComponents(builder);
-    }
-    
-    /// <summary>
-    /// 全シーンで共有するサービスの登録
-    /// </summary>
-    private void RegisterSharedServices(IContainerBuilder builder)
     {
         builder.RegisterInstance(cursorConfiguration);
         builder.Register<IInputProvider, InputProviderService>(Lifetime.Singleton);
         builder.Register<IGameSettingsService, GameSettingsService>(Lifetime.Singleton);
+        builder.RegisterComponentInHierarchy<BgmManager>();
+        builder.RegisterComponentInHierarchy<SeManager>();
+        
+        // ContentService関連の登録
+        RegisterContentServices(builder);
+        // SetMouseCursorコンポーネントの依存性注入（全シーン共通）
+        RegisterSetMouseCursorComponents(builder);
+        // StatusEffectUIコンポーネントの依存性注入（全シーン共通）
+        RegisterStatusEffectUIComponents(builder);
+        
+        // 解決が終わったらDontDestroyOnLoadを適用
+        DontDestroyOnLoad(this.gameObject);
     }
     
     /// <summary>
@@ -95,5 +83,4 @@ public class RootLifetimeScope : LifetimeScope
                 statusEffectUI.InjectDependencies(contentService);
         });
     }
-    
 }

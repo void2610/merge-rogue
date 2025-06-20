@@ -47,5 +47,6 @@ public class MainLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<RelicUIManager>();
         builder.RegisterComponentInHierarchy<Rest>();
         builder.RegisterComponentInHierarchy<SeedText>();
+        builder.RegisterComponentInHierarchy<UIManager>();
     }
 }

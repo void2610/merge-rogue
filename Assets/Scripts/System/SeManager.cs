@@ -2,6 +2,7 @@ using System.Linq;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Audio;
+using VContainer;
 
 public class SeManager : MonoBehaviour
 {
@@ -17,12 +18,13 @@ public class SeManager : MonoBehaviour
     [SerializeField] private SoundData[] soundDatas;
 
     public static SeManager Instance;
+    private IGameSettingsService _gameSettingsService;
     private readonly AudioSource[] _seAudioSourceList = new AudioSource[20];
     private float _seVolume = 0.5f;
 
     private void Awake()
     {
-        if (Instance == null)
+        if (!Instance)
         {
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
@@ -50,7 +52,7 @@ public class SeManager : MonoBehaviour
                 value = 0.0001f;
             }
             seMixerGroup.audioMixer.SetFloat("SeVolume", Mathf.Log10(value) * 20);
-            PlayerPrefs.SetFloat("SeVolume", value);
+            _gameSettingsService.SaveSeVolume(value);
         }
     }
 
@@ -100,9 +102,16 @@ public class SeManager : MonoBehaviour
 
     private AudioSource GetUnusedAudioSource() => _seAudioSourceList.FirstOrDefault(t => t.isPlaying == false);
 
+    [Inject]
+    public void InjectDependencies(IGameSettingsService gameSettingsService)
+    {
+        _gameSettingsService = gameSettingsService;
+    }
+    
     private void Start()
     {
-        SeVolume = PlayerPrefs.GetFloat("SeVolume", 1.0f);
+        var audioSettings = _gameSettingsService.GetAudioSettings();
+        SeVolume = audioSettings.seVolume;
         seMixerGroup.audioMixer.SetFloat("SeVolume", Mathf.Log10(_seVolume) * 20);
     }
 }
