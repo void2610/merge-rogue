@@ -1,20 +1,27 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using VContainer;
 
 public class SeedText : MonoBehaviour
 {
-    private TextMeshProUGUI _text;
-    public void SetText(string seed) => _text.text = $"seed: {seed}";
-
-    private void Awake()
+    private string _seedText;
+    
+    [Inject]
+    public void InjectDependencies(IRandomService randomService)
     {
-        _text = this.GetComponent<TextMeshProUGUI>();
-        
+       Debug.Log("SeedText: Injecting dependencies");
+        var t = this.GetComponent<TextMeshProUGUI>();
+        _seedText = randomService.SeedText;
+        t.text = $"Seed: {_seedText}";
+    }
+
+    private void Start()
+    {
         // クリックしたらシードをコピーする
         this.GetComponent<Button>().onClick.AddListener(() =>
         {
-            GUIUtility.systemCopyBuffer = _text.text.Split(' ')[1];
+            GUIUtility.systemCopyBuffer = _seedText;
             NotifyWindow.Instance.Notify(NotifyWindow.NotifyType.SeedCopied);
         });
     }

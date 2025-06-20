@@ -176,7 +176,6 @@ public class GameManager : MonoBehaviour
             TimeScale = 3.0f;
             Time.timeScale = TimeScale;
         }
-        UIManager.Instance.SetSeedText(_gameSettingsService.GetSeedSettings().seedText);
         
         AddCoin(Application.isEditor ? debugCoin : 10);
         

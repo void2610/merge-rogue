@@ -63,7 +63,6 @@ public class StatusEffectUI : MonoBehaviour
         // 依存性注入が失敗した場合、手動で取得を試みる
         if (!_isInjected)
         {
-            Debug.Log("StatusEffectUI: Injecting dependencies manually.");
             var lifetimeScope = FindChildLifetimeScope();
             if (lifetimeScope)
             {

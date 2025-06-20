@@ -64,14 +64,6 @@ public class UIManager : MonoBehaviour
     public void ShowBallDescriptionWindow(BallData b, GameObject g, int level) =>
         descriptionWindow.ShowWindowWithHoverCheck(b, g, level).Forget();
 
-    public void SetSeedText(string seed)
-    {
-        foreach(var seedText in FindObjectsByType<SeedText>(FindObjectsSortMode.None))
-        {
-            seedText.SetText(seed);
-        }
-    }
-    
     public void ToggleCursorState()
     {
         if (inventoryCanvasBlocker.activeSelf) return;
