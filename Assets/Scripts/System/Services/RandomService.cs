@@ -37,8 +37,8 @@ public class RandomService : IRandomService
             _seed = _seedText.GetHashCode();
             
             // GameSettingsServiceに保存
-            _gameSettingsService.SaveSeedText(_seedText);
-            _gameSettingsService.SaveSeed(_seed);
+            // _gameSettingsService.SaveSeedText(_seedText);
+            // _gameSettingsService.SaveSeed(_seed);
             
             Debug.Log($"RandomService: Generated new seed: {_seedText}");
         }
