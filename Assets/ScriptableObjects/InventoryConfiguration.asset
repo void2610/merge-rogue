@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxInventorySize: 10
   minInventorySize: 1
-  firstInventorySize: 8
+  firstInventorySize: 7
   inventoryPosition: {x: 0, y: -7, z: 0}
-  ballSpacing: 0.6
+  ballSpacing: 0.5
   sizes:
   - 0.4
   - 0.6
