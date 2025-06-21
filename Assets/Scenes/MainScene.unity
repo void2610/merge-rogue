@@ -15389,7 +15389,6 @@ MonoBehaviour:
     TypeName: RootLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
-  scoreDisplayComponent: {fileID: 1477400323}
   inventoryConfiguration: {fileID: 11400000, guid: 00a25f7e1cc3d4b2fb162625fa639052, type: 2}
 --- !u!4 &975825325
 Transform:
@@ -24327,7 +24326,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1883030246}
-  - component: {fileID: 1883030245}
   - component: {fileID: 1883030247}
   m_Layer: 0
   m_Name: InventoryManager
@@ -24336,33 +24334,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1883030245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1883030244}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3851c210955714e81b4721bf9e3254af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allBallDataList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
-  normalBallData: {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  ballBasePrefab: {fileID: 5528515049713681562, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
-  inventoryPosition: {x: 0, y: -7, z: 0}
-  testBalls:
-  - {fileID: 11400000, guid: 988658c93269b4a7aa2905750b6622a2, type: 2}
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  - {fileID: 11400000, guid: 282f2e804c8cc447982a8e7498d5cdb4, type: 2}
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  - {fileID: 11400000, guid: 988658c93269b4a7aa2905750b6622a2, type: 2}
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
 --- !u!4 &1883030246
 Transform:
   m_ObjectHideFlags: 0

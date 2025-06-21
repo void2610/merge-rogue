@@ -37,7 +37,6 @@ public class MainLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<StageManager>();
         builder.RegisterComponentInHierarchy<StageEventProcessor>();
         builder.RegisterComponentInHierarchy<DescriptionWindow>();
-        builder.RegisterComponentInHierarchy<InventoryManager>();
         builder.RegisterComponentInHierarchy<InventoryUI>();
         builder.RegisterComponentInHierarchy<Treasure>();
         builder.RegisterComponentInHierarchy<Shop>();
