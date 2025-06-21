@@ -14,6 +14,7 @@ public interface IInventoryService
     
     // UI設定メソッド（循環依存回避）
     void SetInventoryUI(InventoryUI inventoryUI);
+    void Initialize();
     
     // UI操作メソッド
     void StartEditSwap();

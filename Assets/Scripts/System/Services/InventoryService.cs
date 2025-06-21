@@ -26,13 +26,9 @@ public class InventoryService : IInventoryService
         _config = config;
         _contentService = contentService;
         _randomService = randomService;
-        
         InventorySize = _config.FirstInventorySize;
-
         _inventory = new List<GameObject>(InventorySize);
         for (var i = 0; i < _config.MaxInventorySize; i++) _inventory.Add(null);
-        
-        Initialize();
     }
     
     /// <summary>
@@ -46,9 +42,9 @@ public class InventoryService : IInventoryService
     
     
     /// <summary>
-    /// インベントリの初期化
+    /// インベントリの初期化（UI設定後に実行）
     /// </summary>
-    private void Initialize()
+    public void Initialize()
     {
         // 全てnormalBallで初期化
         for (var i = 0; i < _config.FirstInventorySize; i++)
@@ -63,7 +59,7 @@ public class InventoryService : IInventoryService
         {
             for (var i = 0; i < _config.MaxInventorySize && i < _config.TestBalls.Count; i++)
             {
-                if (_config.TestBalls[i] != null)
+                if (_config.TestBalls[i])
                 {
                     SetBall(_config.TestBalls[i], i + 1);
                 }

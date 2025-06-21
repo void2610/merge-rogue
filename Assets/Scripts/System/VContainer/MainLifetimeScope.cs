@@ -21,6 +21,9 @@ public class InventoryInitializer : IStartable
     {
         // 両方のオブジェクトが生成された後に相互参照を設定
         _inventoryService.SetInventoryUI(_inventoryUI);
+        
+        // UI設定後にインベントリを初期化
+        _inventoryService.Initialize();
     }
 }
 
