@@ -12,6 +12,9 @@ public interface IInventoryService
     bool IsFull { get; }
     List<float> Sizes { get; }
     
+    // UI設定メソッド（循環依存回避）
+    void SetInventoryUI(InventoryUI inventoryUI);
+    
     // UI操作メソッド
     void StartEditSwap();
     void StartEditUpgrade();

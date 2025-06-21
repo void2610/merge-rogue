@@ -18,15 +18,14 @@ public class InventoryService : IInventoryService
 
     public int InventorySize { get; private set; }
     public bool IsFull => InventorySize >= _config.MaxInventorySize;
-    private readonly InventoryUI _inventoryUI;
+    private InventoryUI _inventoryUI;
     public List<float> Sizes => _config.Sizes.ToList();
     
-    public InventoryService(InventoryConfiguration config, IContentService contentService, IRandomService randomService, InventoryUI inventoryUI)
+    public InventoryService(InventoryConfiguration config, IContentService contentService, IRandomService randomService)
     {
         _config = config;
         _contentService = contentService;
         _randomService = randomService;
-        _inventoryUI = inventoryUI;
         
         InventorySize = _config.FirstInventorySize;
 
@@ -34,6 +33,15 @@ public class InventoryService : IInventoryService
         for (var i = 0; i < _config.MaxInventorySize; i++) _inventory.Add(null);
         
         Initialize();
+    }
+    
+    /// <summary>
+    /// InventoryUIを設定（循環依存回避のため分離）
+    /// </summary>
+    /// <param name="inventoryUI">InventoryUIコンポーネント</param>
+    public void SetInventoryUI(InventoryUI inventoryUI)
+    {
+        _inventoryUI = inventoryUI;
     }
     
     
