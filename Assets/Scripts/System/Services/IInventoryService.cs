@@ -13,6 +13,10 @@ public interface IInventoryService
     InventoryUI InventoryUI { get; }
     List<float> Sizes { get; }
     
+    // 初期化メソッド
+    void SetInventoryUI(InventoryUI inventoryUI);
+    void Initialize();
+    
     // ボール管理メソッド
     void UpgradeBall(int index);
     void AddBall(BallData data);

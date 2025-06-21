@@ -12,6 +12,7 @@ public class MainLifetimeScope : LifetimeScope
 {
     [Header("コンポーネント参照")]
     [SerializeField] private ScoreDisplayComponent scoreDisplayComponent;
+    [SerializeField] private InventoryConfiguration inventoryConfiguration;
     
     
     protected override void Configure(IContainerBuilder builder)
@@ -21,8 +22,14 @@ public class MainLifetimeScope : LifetimeScope
         builder.Register<IMouseCursorService, MouseCursorService>(Lifetime.Scoped);
         builder.Register<IScoreService, ScoreService>(Lifetime.Singleton);
         
-        // InventoryServiceの登録（InventoryManagerに依存）
-        builder.Register<IInventoryService>(container => new InventoryService(container.Resolve<InventoryManager>()), Lifetime.Singleton);
+        builder.RegisterInstance(inventoryConfiguration);
+        builder.Register<IInventoryService>(container =>
+        {
+            var config = container.Resolve<InventoryConfiguration>();
+            var contentService = container.Resolve<IContentService>();
+            var randomService = container.Resolve<IRandomService>();
+            return new InventoryService(config, contentService, randomService);
+        }, Lifetime.Singleton);
         
         // RelicServiceの登録
         builder.Register<IRelicService, RelicService>(Lifetime.Singleton);

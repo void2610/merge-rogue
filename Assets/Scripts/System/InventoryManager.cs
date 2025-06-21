@@ -7,8 +7,6 @@ using VContainer;
 
 public class InventoryManager : MonoBehaviour
 {
-    public static InventoryManager Instance { get; private set; }
-    
     [SerializeField] public BallDataList allBallDataList;
     [SerializeField] private BallData normalBallData;
     [SerializeField] private GameObject ballBasePrefab;
@@ -248,22 +246,10 @@ public class InventoryManager : MonoBehaviour
         return inventoryPosition + new Vector3(index * (0.6f + Sizes[index] * 0.5f), 0, 0);
     }
 
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-        }
-
-        for(var i = 0; i < MAX_INVENTORY_SIZE; i++) _inventory.Add(null);
-    }
-
     private void Start()
     {
+        for(var i = 0; i < MAX_INVENTORY_SIZE; i++) _inventory.Add(null);
+        
         // 全てnormalBallで初期化
         for (var i = 0; i < FIRST_INVENTORY_SIZE; i++)
         {

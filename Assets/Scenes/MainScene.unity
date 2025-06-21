@@ -1987,7 +1987,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8478239314545346535, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
       propertyPath: m_fontSize
-      value: 9
+      value: 8.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3386,7 +3386,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 12.9
+      value: 7.25
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -4429,7 +4429,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 14.75
+      value: 12.25
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -5748,7 +5748,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 14.75
+      value: 12.25
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -11492,7 +11492,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 12.9
+      value: 7.25
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -11690,7 +11690,6 @@ MonoBehaviour:
   - {fileID: 1607858725}
   - {fileID: 1941433901}
   coinText: {fileID: 1007425568}
-  stageText: {fileID: 400580596}
   expText: {fileID: 1932937372}
   hpSlider: {fileID: 1951852459}
   hpText: {fileID: 1566874251}
@@ -13022,7 +13021,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb1e6ec0bc7b1480bbeb409014459446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundController: {fileID: 716147206}
   shop: {fileID: 1941433902}
   treasure: {fileID: 1607858726}
   stageEventProcessor: {fileID: 605675524}
@@ -13422,7 +13420,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 12.9
+      value: 7.25
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -14011,7 +14009,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 14.75
+      value: 9.8
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -15392,6 +15390,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   scoreDisplayComponent: {fileID: 1477400323}
+  inventoryConfiguration: {fileID: 11400000, guid: 00a25f7e1cc3d4b2fb162625fa639052, type: 2}
 --- !u!4 &975825325
 Transform:
   m_ObjectHideFlags: 0
@@ -15822,7 +15821,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 23.5
+      value: 23.95
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -17274,7 +17273,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 14.75
+      value: 12.25
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -18564,7 +18563,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 14
+      value: 14.75
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -21813,7 +21812,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 14.75
+      value: 12.25
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSizeBase
@@ -23430,7 +23429,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8478239314545346535, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
       propertyPath: m_fontSize
-      value: 9
+      value: 8.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -24344,7 +24343,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1883030244}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3851c210955714e81b4721bf9e3254af, type: 3}
   m_Name: 
@@ -32632,7 +32631,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2130223538874710914, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_fontSize
-      value: 12.9
+      value: 7.25
       objectReference: {fileID: 0}
     - target: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
       propertyPath: m_Pivot.x
@@ -33293,7 +33292,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8478239314545346535, guid: fe4b93b903db54718a61778c9f645c04, type: 3}
       propertyPath: m_fontSize
-      value: 9
+      value: 8.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
