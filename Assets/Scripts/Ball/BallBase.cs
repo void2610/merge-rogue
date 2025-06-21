@@ -137,8 +137,6 @@ public class BallBase : MonoBehaviour
         {
             if (this.Serial < b.Serial)
             {
-                var pos = (this.transform.position + b.transform.position) / 2;
-                Debug.Log($"マージ発生: {this.GetType().Name}({this.GetInstanceID()}) + {b.GetType().Name}({b.GetInstanceID()})");
                 EventManager.OnBallMerged.OnNext((this, b));
                 
                 var center = (this.transform.position + b.transform.position) / 2;
