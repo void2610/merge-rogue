@@ -28,7 +28,7 @@ public class Rest : MonoBehaviour
     
     private static void OnClickOrganise()
     {
-        _inventoryService.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Swap);
+        _inventoryService.StartEditSwap();
     }
     
     private static void OnClickSkip()

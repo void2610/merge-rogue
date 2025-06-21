@@ -23,13 +23,7 @@ public class MainLifetimeScope : LifetimeScope
         builder.Register<IScoreService, ScoreService>(Lifetime.Singleton);
         
         builder.RegisterInstance(inventoryConfiguration);
-        builder.Register<IInventoryService>(container =>
-        {
-            var config = container.Resolve<InventoryConfiguration>();
-            var contentService = container.Resolve<IContentService>();
-            var randomService = container.Resolve<IRandomService>();
-            return new InventoryService(config, contentService, randomService);
-        }, Lifetime.Singleton);
+        builder.Register<IInventoryService, InventoryService>(Lifetime.Singleton);
         
         // RelicServiceの登録
         builder.Register<IRelicService, RelicService>(Lifetime.Singleton);

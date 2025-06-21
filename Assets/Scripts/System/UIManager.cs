@@ -358,7 +358,7 @@ public class UIManager : MonoBehaviour
     
     private void Awake()
     {
-        if(Instance == null) Instance = this;
+        if(!Instance) Instance = this;
         else Destroy(gameObject);
         
         var audioSettings = _gameSettingsService.GetAudioSettings();

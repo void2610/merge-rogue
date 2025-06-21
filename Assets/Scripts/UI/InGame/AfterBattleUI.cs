@@ -40,7 +40,7 @@ public class AfterBattleUI : MonoBehaviour
         if (!ball) return;
         
         _selectedIndex = index;
-        InventoryUI.Instance.StartEditReplace(ball);
+        _inventoryService.StartEditReplace(ball);
     }
     
     private void SetBallEvent(GameObject g, BallData ball, int index)
@@ -71,7 +71,7 @@ public class AfterBattleUI : MonoBehaviour
     
     private void OnClickBallUpgradeButton()
     {
-        _inventoryService.InventoryUI.StartEdit(InventoryUI.InventoryUIState.Upgrade);
+        _inventoryService.StartEditUpgrade();
     }
     
     private void OnClickSkipAfterBattle()

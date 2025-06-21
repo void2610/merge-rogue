@@ -18,14 +18,15 @@ public class InventoryService : IInventoryService
 
     public int InventorySize { get; private set; }
     public bool IsFull => InventorySize >= _config.MaxInventorySize;
-    public InventoryUI InventoryUI { get; private set; }
+    private readonly InventoryUI _inventoryUI;
     public List<float> Sizes => _config.Sizes.ToList();
     
-    public InventoryService(InventoryConfiguration config, IContentService contentService, IRandomService randomService)
+    public InventoryService(InventoryConfiguration config, IContentService contentService, IRandomService randomService, InventoryUI inventoryUI)
     {
         _config = config;
         _contentService = contentService;
         _randomService = randomService;
+        _inventoryUI = inventoryUI;
         
         InventorySize = _config.FirstInventorySize;
 
@@ -35,14 +36,6 @@ public class InventoryService : IInventoryService
         Initialize();
     }
     
-    /// <summary>
-    /// InventoryUIの設定（外部から注入）
-    /// </summary>
-    /// <param name="inventoryUI">InventoryUIインスタンス</param>
-    public void SetInventoryUI(InventoryUI inventoryUI)
-    {
-        InventoryUI = inventoryUI;
-    }
     
     /// <summary>
     /// インベントリの初期化
@@ -53,7 +46,7 @@ public class InventoryService : IInventoryService
         for (var i = 0; i < _config.FirstInventorySize; i++)
         {
             var ball = CreateBallInstanceFromBallData(_config.NormalBallData, i + 1);
-            InventoryUI?.CreateBallUI(ball, i, ball.GetComponent<BallBase>());
+            _inventoryUI?.CreateBallUI(ball, i, ball.GetComponent<BallBase>());
             _inventory[i] = ball;
         }
         
@@ -83,7 +76,7 @@ public class InventoryService : IInventoryService
         ballBase.Upgrade();
         var tmp = _inventory[index];
         _inventory[index] = CreateBallInstanceFromBallData(ballBase.Data, ballBase.Rank, ballBase.Level);
-        InventoryUI?.CreateBallUI(_inventory[index], index, ballBase);
+        _inventoryUI?.CreateBallUI(_inventory[index], index, ballBase);
         Object.Destroy(tmp);
     }
     
@@ -99,7 +92,7 @@ public class InventoryService : IInventoryService
         var ball = CreateBallInstanceFromBallData(data, InventorySize + 1);
         _inventory[InventorySize] = ball;
         InventorySize++;
-        InventoryUI?.CreateBallUI(ball, InventorySize - 1, ball.GetComponent<BallBase>());
+        _inventoryUI?.CreateBallUI(ball, InventorySize - 1, ball.GetComponent<BallBase>());
     }
     
     /// <summary>
@@ -117,7 +110,7 @@ public class InventoryService : IInventoryService
         var newBall = CreateBallInstanceFromBallData(data, rank);
         
         _inventory[index] = newBall;
-        InventoryUI?.CreateBallUI(newBall, index, newBall.GetComponent<BallBase>());
+        _inventoryUI?.CreateBallUI(newBall, index, newBall.GetComponent<BallBase>());
         if (old) Object.Destroy(old);
     }
     
@@ -142,10 +135,10 @@ public class InventoryService : IInventoryService
         _inventory[index1] = CreateBallInstanceFromBallData(data2, index1 + 1, level2);
         _inventory[index2] = CreateBallInstanceFromBallData(data1, index2 + 1, level1);
         
-        if (InventoryUI != null)
+        if (_inventoryUI != null)
         {
-            InventoryUI.CreateBallUITween(_inventory[index1], index2, index1, _inventory[index1].GetComponent<BallBase>()).Forget();
-            await InventoryUI.CreateBallUITween(_inventory[index2], index1, index2, _inventory[index2].GetComponent<BallBase>());
+            _inventoryUI.CreateBallUITween(_inventory[index1], index2, index1, _inventory[index1].GetComponent<BallBase>()).Forget();
+            await _inventoryUI.CreateBallUITween(_inventory[index2], index1, index2, _inventory[index2].GetComponent<BallBase>());
         }
         
         await UniTask.Delay(1000);
@@ -161,7 +154,7 @@ public class InventoryService : IInventoryService
             throw new ArgumentOutOfRangeException(nameof(index), "Index out of range");
             
         Object.Destroy(_inventory[index]);
-        InventoryUI?.RemoveBallUI(index);
+        _inventoryUI?.RemoveBallUI(index);
         
         for (var i = index; i < InventorySize - 1; i++)
         {
@@ -169,7 +162,7 @@ public class InventoryService : IInventoryService
             var level = _inventory[i + 1].GetComponent<BallBase>().Level;
             Object.Destroy(_inventory[i + 1]);
             _inventory[i] = CreateBallInstanceFromBallData(data, i + 1, level);
-            InventoryUI?.CreateBallUI(_inventory[i], i, _inventory[i].GetComponent<BallBase>());
+            _inventoryUI?.CreateBallUI(_inventory[i], i, _inventory[i].GetComponent<BallBase>());
         }
         InventorySize--;
     }
@@ -280,7 +273,7 @@ public class InventoryService : IInventoryService
         var newBall = CreateBallInstanceFromBallData(data, rank);
         
         _inventory[index] = newBall;
-        InventoryUI?.CreateBallUI(newBall, index, newBall.GetComponent<BallBase>());
+        _inventoryUI?.CreateBallUI(newBall, index, newBall.GetComponent<BallBase>());
         if (old) Object.Destroy(old);
     }
     
@@ -359,5 +352,48 @@ public class InventoryService : IInventoryService
         newBall.transform.localScale = ball.transform.localScale;
         newBall.GetComponent<SpriteRenderer>().color = ball.GetComponent<SpriteRenderer>().color;
         return newBall;
+    }
+    
+    // UI操作のラッパーメソッド
+    
+    /// <summary>
+    /// スワップ編集モードを開始
+    /// </summary>
+    public void StartEditSwap()
+    {
+        _inventoryUI.StartEdit(InventoryUI.InventoryUIState.Swap);
+    }
+    
+    /// <summary>
+    /// アップグレード編集モードを開始
+    /// </summary>
+    public void StartEditUpgrade()
+    {
+        _inventoryUI.StartEdit(InventoryUI.InventoryUIState.Upgrade);
+    }
+    
+    /// <summary>
+    /// 置換編集モードを開始
+    /// </summary>
+    /// <param name="ballData">置換するボールデータ</param>
+    public void StartEditReplace(BallData ballData)
+    {
+        _inventoryUI.StartEditReplace(ballData);
+    }
+    
+    /// <summary>
+    /// 削除編集モードを開始
+    /// </summary>
+    public void StartEditRemove()
+    {
+        _inventoryUI.StartEdit(InventoryUI.InventoryUIState.Remove);
+    }
+    
+    /// <summary>
+    /// 編集モードをキャンセル
+    /// </summary>
+    public void CancelEdit()
+    {
+        _inventoryUI.CancelEdit();
     }
 }
