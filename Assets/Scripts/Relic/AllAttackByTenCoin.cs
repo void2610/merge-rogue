@@ -8,7 +8,7 @@ using System.Linq;
 /// </summary>
 public class AllAttackByTenCoin : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // 攻撃処理：Normal → All変換 + 1.5倍攻撃力（条件を満たす場合）
         EventManager.OnAttackProcess.AddProcessor(this, attackData =>
@@ -30,7 +30,7 @@ public class AllAttackByTenCoin : RelicBase
     {
         var coin = GameManager.Instance.Coin.Value;
         var enemyCount = GameManager.Instance.EnemyContainer.GetCurrentEnemyCount();
-        var hasNoConsumeCoin = RelicHelpers.HasRelicCondition<NoConsumeCoinDuringBattle>()();
+        var hasNoConsumeCoin = HasRelic<NoConsumeCoinDuringBattle>();
 
         // コインが足りるか、賢者の石があるか、かつ敵が2体以上いる場合
         return (coin >= 10 || hasNoConsumeCoin) && enemyCount >= 2;
@@ -41,7 +41,7 @@ public class AllAttackByTenCoin : RelicBase
     /// </summary>
     private void ConsumeCoinsForConversion()
     {
-        var hasNoConsumeCoin = RelicHelpers.HasRelicCondition<NoConsumeCoinDuringBattle>()();
+        var hasNoConsumeCoin = HasRelic<NoConsumeCoinDuringBattle>();
         if (!hasNoConsumeCoin)
         {
             GameManager.Instance.SubCoin(10);

@@ -10,8 +10,19 @@ public interface IInventoryService
     // プロパティ
     int InventorySize { get; }
     bool IsFull { get; }
-    InventoryUI InventoryUI { get; }
     List<float> Sizes { get; }
+    
+    // UI設定メソッド（循環依存回避）
+    void SetInventoryUI(InventoryUI inventoryUI);
+    void Initialize();
+    
+    // UI操作メソッド
+    void StartEditSwap();
+    void StartEditUpgrade();
+    void StartEditReplace(BallData ballData);
+    void StartEditRemove();
+    void CancelEdit();
+    
     
     // ボール管理メソッド
     void UpgradeBall(int index);

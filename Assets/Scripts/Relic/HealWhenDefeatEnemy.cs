@@ -5,7 +5,7 @@ using System;
 /// </summary>
 public class HealWhenDefeatEnemy : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // 敵撃破時のイベント購読
         AddSubscription(RelicHelpers.SubscribeEnemyDefeated(OnEnemyDefeated));

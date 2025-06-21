@@ -29,12 +29,16 @@ public class Shop : MonoBehaviour
     
     private IContentService _contentService;
     private IRandomService _randomService;
+    private IRelicService _relicService;
+    private IInventoryService _inventoryService;
     
     [Inject]
-    public void InjectDependencies(IContentService contentService, IRandomService randomService)
+    public void InjectDependencies(IContentService contentService, IRandomService randomService, IRelicService relicService, IInventoryService inventoryService)
     {
         _contentService = contentService;
         _randomService = randomService;
+        _relicService = relicService;
+        _inventoryService = inventoryService;
     }
     
     public void UnInteractableSelectedItem() => _itemObjects[_selectedIndex].GetComponent<Button>().interactable = false;
@@ -90,7 +94,7 @@ public class Shop : MonoBehaviour
         if (!ball) return;
         
         _selectedIndex = index;
-        InventoryUI.Instance.StartEditReplace(ball);
+        _inventoryService.StartEditReplace(ball);
         UIManager.Instance.ResetSelectedGameObject();
     }
 
@@ -98,7 +102,7 @@ public class Shop : MonoBehaviour
     {
         var relic = _currentItems[index] as RelicData;
         if (!relic) return;
-        RelicManager.Instance.AddRelic(relic);
+        _relicService.AddRelic(relic);
         _itemObjects[index].GetComponent<Button>().interactable = false;
         GameManager.Instance.SubCoin(_currentItemPrices[index]);
         UIManager.Instance.ResetSelectedGameObject();
@@ -181,7 +185,7 @@ public class Shop : MonoBehaviour
         }
         
         // ボール削除イベント（現在は未実装）
-        InventoryUI.Instance.StartEdit(InventoryUI.InventoryUIState.Remove);
+        _inventoryService.StartEditRemove();
     }
     
     private void OnClickSkipButton() => CloseShop();

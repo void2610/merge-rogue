@@ -61,4 +61,22 @@ public interface IGameSettingsService
     /// </summary>
     /// <returns>設定データが存在する場合true</returns>
     bool HasSettings();
+    
+    /// <summary>
+    /// 倍速設定を取得します
+    /// </summary>
+    /// <returns>倍速が有効な場合true</returns>
+    bool IsDoubleSpeedEnabled();
+    
+    /// <summary>
+    /// 倍速設定を保存します
+    /// </summary>
+    /// <param name="enabled">倍速を有効にする場合true</param>
+    void SaveDoubleSpeedEnabled(bool enabled);
+    
+    /// <summary>
+    /// 倍速設定を切り替えます
+    /// </summary>
+    /// <returns>切り替え後の倍速設定</returns>
+    bool ToggleDoubleSpeed();
 }

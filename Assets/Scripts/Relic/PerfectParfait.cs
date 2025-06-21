@@ -3,7 +3,7 @@
 /// </summary>
 public class PerfectParfait : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // プレイヤー攻撃時の修正を登録
         EventManager.OnPlayerAttack.AddProcessor(this, current =>

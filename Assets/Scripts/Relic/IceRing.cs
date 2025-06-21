@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 public class IceRing : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // 攻撃時に氷結状態異常を付与
         RelicHelpers.RegisterPlayerAttackModifier(this,

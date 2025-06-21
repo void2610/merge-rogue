@@ -19,7 +19,8 @@ public class RedBombBall : BallBase
         _fireParticle.transform.SetParent(this.transform);
         _fireParticle.transform.localPosition = new Vector3(0.2f, 0.8f, 0);
         
-        _disposable = EventManager.OnBallMerged.Subscribe(CheckNearMerge).AddTo(this);
+        // 共通化されたマージ検知メソッドを使用
+        _disposable = SubscribeNearbyMerge(OnNearbyMerge, 1f);
     }
     
     private void Start()
@@ -62,20 +63,14 @@ public class RedBombBall : BallBase
         this.DestroyWithNoEffect();
     }
     
-    private void CheckNearMerge((BallBase ball1, BallBase ball2) mergeData)
+    private void OnNearbyMerge((BallBase ball1, BallBase ball2) mergeData)
     {
-        // 周りのボールがマージされたら回数をカウント
-        var (b1, b2) = mergeData;
-        var mergePosition = (b1.transform.position + b2.transform.position) / 2f;
-        var distance = Vector3.Distance(this.transform.position, mergePosition);
-        if (distance < 1f)
+        // 周りのボールがマージされたら回数をカウント（距離チェックは共通メソッドで済み）
+        _nearbyMergeCount++;
+        ParticleManager.Instance.MergeBallIconParticle(this.transform.position, this.Size, this.Data.sprite);
+        if (_nearbyMergeCount >= 3)
         {
-            _nearbyMergeCount++;
-            ParticleManager.Instance.MergeBallIconParticle(this.transform.position, this.Size, this.Data.sprite);
-            if (_nearbyMergeCount >= 3)
-            {
-                this.EffectAndDestroy(null);
-            }
+            this.EffectAndDestroy(null);
         }
     }
     

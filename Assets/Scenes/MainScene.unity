@@ -11690,7 +11690,6 @@ MonoBehaviour:
   - {fileID: 1607858725}
   - {fileID: 1941433901}
   coinText: {fileID: 1007425568}
-  stageText: {fileID: 400580596}
   expText: {fileID: 1932937372}
   hpSlider: {fileID: 1951852459}
   hpText: {fileID: 1566874251}
@@ -13022,7 +13021,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb1e6ec0bc7b1480bbeb409014459446, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  backgroundController: {fileID: 716147206}
   shop: {fileID: 1941433902}
   treasure: {fileID: 1607858726}
   stageEventProcessor: {fileID: 605675524}
@@ -13170,6 +13168,7 @@ GameObject:
   m_Component:
   - component: {fileID: 725906729}
   - component: {fileID: 725906730}
+  - component: {fileID: 725906731}
   m_Layer: 5
   m_Name: InventoryUIContainer
   m_TagString: Untagged
@@ -13208,6 +13207,25 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &725906731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725906728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1103410e159dc496dad0e6af57ef2439, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballUIPrefab: {fileID: 5315751102541514650, guid: 99dbff61fceb64a369f7d0f952d05246, type: 3}
+  shop: {fileID: 1941433902}
+  inventoryPosition: {x: -0.4, y: 1.95, z: 0}
+  inventoryUIContainer: {fileID: 725906728}
+  subCursor: {fileID: 240537029}
+  dialog: {fileID: 2057808266}
+  afterBattleUI: {fileID: 109174368}
 --- !u!1001 &731875496
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14317,7 +14335,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 880282179}
-  - component: {fileID: 880282178}
   m_Layer: 0
   m_Name: RelicManager
   m_TagString: Untagged
@@ -14325,26 +14342,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &880282178
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880282177}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e538cbced0c940a7a1e6c965b76504a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  relicPrefab: {fileID: 6729976926087826395, guid: 4d7ea21157c3e4729809c5978c721e5b, type: 3}
-  relicContainer: {fileID: 1029647713}
-  relicGridPosition: {x: -455, y: 52, z: 0}
-  relicGridSize: {x: 3, y: 9}
-  relicOffset: {x: 40, y: 36}
-  relicUISize: 0.75
-  testRelics:
-  - {fileID: 11400000, guid: 64fe3870994dc4a6f8c7c24742c0f02b, type: 2}
 --- !u!4 &880282179
 Transform:
   m_ObjectHideFlags: 0
@@ -15412,7 +15409,7 @@ MonoBehaviour:
     TypeName: RootLifetimeScope
   autoRun: 1
   autoInjectGameObjects: []
-  scoreDisplayComponent: {fileID: 1477400323}
+  inventoryConfiguration: {fileID: 11400000, guid: 00a25f7e1cc3d4b2fb162625fa639052, type: 2}
 --- !u!4 &975825325
 Transform:
   m_ObjectHideFlags: 0
@@ -16406,6 +16403,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1029647713}
   - component: {fileID: 1029647714}
+  - component: {fileID: 1029647715}
   m_Layer: 0
   m_Name: RelicContainer
   m_TagString: Untagged
@@ -16440,6 +16438,35 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &1029647715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029647712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 127b18125fdbe4c01a8387eaf2a2443a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  relicPrefab: {fileID: 6729976926087826395, guid: 4d7ea21157c3e4729809c5978c721e5b, type: 3}
+  relicContainer: {fileID: 1029647713}
+  relicGridPosition: {x: -455, y: 52, z: 0}
+  relicGridSize: {x: 3, y: 9}
+  relicOffset: {x: 40, y: 36}
+  relicUISize: 0.75
+  testRelics:
+  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
+  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
+  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
+  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
+  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
+  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
+  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
+  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
+  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
+  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
 --- !u!1 &1066192357
 GameObject:
   m_ObjectHideFlags: 0
@@ -24310,85 +24337,6 @@ MonoBehaviour:
   _entryId:
     _value: c2f11f32-6b76-49f4-a9cf-916e11b26cc6
   _component: {fileID: 1880978491}
---- !u!1 &1883030244
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1883030246}
-  - component: {fileID: 1883030245}
-  - component: {fileID: 1883030247}
-  m_Layer: 0
-  m_Name: InventoryManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1883030245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1883030244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3851c210955714e81b4721bf9e3254af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  allBallDataList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
-  normalBallData: {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  ballBasePrefab: {fileID: 5528515049713681562, guid: f2cc5a227c12749f9b65de7746204849, type: 3}
-  inventoryPosition: {x: 0, y: -7, z: 0}
-  testBalls:
-  - {fileID: 11400000, guid: 988658c93269b4a7aa2905750b6622a2, type: 2}
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  - {fileID: 11400000, guid: 282f2e804c8cc447982a8e7498d5cdb4, type: 2}
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  - {fileID: 11400000, guid: 988658c93269b4a7aa2905750b6622a2, type: 2}
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  - {fileID: 11400000, guid: 3a6521644c52a45de84efd89bb8e5515, type: 2}
-  - {fileID: 0}
-  - {fileID: 0}
---- !u!4 &1883030246
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1883030244}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1883030247
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1883030244}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1103410e159dc496dad0e6af57ef2439, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ballUIPrefab: {fileID: 5315751102541514650, guid: 99dbff61fceb64a369f7d0f952d05246, type: 3}
-  shop: {fileID: 1941433902}
-  inventoryPosition: {x: -0.4, y: 1.95, z: 0}
-  inventoryUIContainer: {fileID: 725906728}
-  subCursor: {fileID: 240537029}
-  dialog: {fileID: 2057808266}
-  afterBattleUI: {fileID: 109174368}
 --- !u!1001 &1888057321
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -33869,7 +33817,6 @@ SceneRoots:
   - {fileID: 632287033}
   - {fileID: 567445621}
   - {fileID: 716147203}
-  - {fileID: 1883030246}
   - {fileID: 880282179}
   - {fileID: 1843446103}
   - {fileID: 318840770}

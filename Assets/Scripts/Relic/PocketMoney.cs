@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 public class PocketMoney : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // ショップ入店時にコイン10枚獲得
         AddSubscription(RelicHelpers.SubscribeShopEnter(() =>

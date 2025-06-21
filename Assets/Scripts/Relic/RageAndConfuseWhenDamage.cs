@@ -3,7 +3,7 @@ using R3;
 
 public class RageAndConfuseWhenDamage : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // プレイヤーがダメージを受けた時
         EventManager.OnPlayerDamage.AddProcessor(this, OnDamage);

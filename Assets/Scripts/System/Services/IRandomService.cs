@@ -4,6 +4,8 @@
 /// </summary>
 public interface IRandomService
 {
+    string SeedText { get; }
+    
     /// <summary>
     /// 指定された範囲内のランダムなfloat値を生成する
     /// </summary>

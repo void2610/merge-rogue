@@ -7,7 +7,7 @@ public class AddElasticityToWall : RelicBase
 {
     private PhysicsMaterial2D _pm;
 
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // 物理マテリアルの設定
         _pm = MergeManager.Instance.GetWallMaterial();

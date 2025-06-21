@@ -34,14 +34,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private StageManager stageManager;
     
     [Header("デバッグ")]
-    [SerializeField] private int debugCoin = 0;
+    [SerializeField] private int debugCoin;
 
-    // Sceneのライフサイクルに合わせてDisposeするためのCompositeDisposable
-    public readonly CompositeDisposable SceneDisposables = new ();
     public float TimeScale { get; private set; } = 1.0f;
     public bool IsGameOver { get; private set; }
     public Player Player { get; private set; }
-    public StageManager StageManager => stageManager;
     public EnemyContainer EnemyContainer => enemyContainer;
     
     public readonly ReactiveProperty<BigInteger> Coin = new(0);
@@ -50,17 +47,15 @@ public class GameManager : MonoBehaviour
     private ScoreDisplayComponent _scoreDisplayComponent;
     private IInputProvider _inputProvider;
     private IContentService _contentService;
-    private IRandomService _randomService;
     private IGameSettingsService _gameSettingsService;
     
     [Inject]
-    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider, IContentService contentService, IRandomService randomService, IGameSettingsService gameSettingsService)
+    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider, IContentService contentService, IGameSettingsService gameSettingsService)
     {
         _scoreService = scoreService;
         _scoreDisplayComponent = scoreDisplayComponent;
         _inputProvider = inputProvider;
         _contentService = contentService;
-        _randomService = randomService;
         _gameSettingsService = gameSettingsService;
     }
     
@@ -82,16 +77,8 @@ public class GameManager : MonoBehaviour
 
     public void ChangeTimeScale()
     {
-        if (PlayerPrefs.GetInt("IsDoubleSpeed", 0) == 0)
-        {
-            TimeScale = 3.0f;
-            PlayerPrefs.SetInt("IsDoubleSpeed", 1);
-        }
-        else
-        {
-            TimeScale = 1.0f;
-            PlayerPrefs.SetInt("IsDoubleSpeed", 0);
-        }
+        var isDoubleSpeed = _gameSettingsService.ToggleDoubleSpeed();
+        TimeScale = isDoubleSpeed ? 3.0f : 1.0f;
         Time.timeScale = TimeScale;
     }
 
@@ -99,7 +86,7 @@ public class GameManager : MonoBehaviour
     {
         IsGameOver = true;
         ChangeState(GameState.GameOver);
-        _scoreDisplayComponent.ShowScore(StageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value, Coin.Value);
+        _scoreDisplayComponent.ShowScore(stageManager.CurrentStageCount.Value + 1, EnemyContainer.DefeatedEnemyCount.Value, Coin.Value);
     }
     
     public void TweetScore()
@@ -131,7 +118,7 @@ public class GameManager : MonoBehaviour
                     } 
                 # endif 
                 
-                StageManager.SetNextNodeActive();
+                stageManager.SetNextNodeActive();
                 await UniTask.Delay(400, DelayType.UnscaledDeltaTime);
                 UIManager.Instance.OnClickMapButtonForce(true);
                 break;
@@ -165,18 +152,15 @@ public class GameManager : MonoBehaviour
         DOTween.SetTweensCapacity(tweenersCapacity: 800, sequencesCapacity: 800);
 
         Player = playerObj.GetComponent<Player>();
-        
-        SceneManager.sceneUnloaded += OnSceneUnloaded;
     }
 
     public void Start()
     {
-        if (PlayerPrefs.GetInt("IsDoubleSpeed", 0) == 1)
+        if (_gameSettingsService.IsDoubleSpeedEnabled())
         {
             TimeScale = 3.0f;
             Time.timeScale = TimeScale;
         }
-        UIManager.Instance.SetSeedText(_gameSettingsService.GetSeedSettings().seedText);
         
         AddCoin(Application.isEditor ? debugCoin : 10);
         
@@ -201,12 +185,5 @@ public class GameManager : MonoBehaviour
             UIManager.Instance.ToggleCursorState();
         if(!UIManager.Instance.IsVirtualMouseActive())
             UIManager.Instance.SetVirtualMousePosition(new Vector2(9999, 9999));
-    }
-    
-    private void OnSceneUnloaded(Scene scene)
-    {
-        // シーンがアンロードされるときに購読を解除
-        SceneDisposables.Clear();
-        Debug.Log($"Scene {scene.name} unloaded. Subscriptions cleared.");
     }
 }

@@ -6,7 +6,7 @@ using R3;
 /// </summary>
 public class ShockTherapy : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // 敵ステータス効果追加時のイベント購読
         var subscription = EventManager.OnEnemyStatusEffectAdded.Subscribe(OnEnemyStatusEffectAdded);

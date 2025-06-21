@@ -6,10 +6,6 @@ using VContainer;
 
 public class StageManager : MonoBehaviour
 {
-    [Header("背景制御")]
-    [SerializeField] private BackgroundController backgroundController;
-    
-
     [Header("ステージ")]
     [SerializeField] private Shop shop;
     [SerializeField] private Treasure treasure;
@@ -20,6 +16,7 @@ public class StageManager : MonoBehaviour
     
     private MapGenerator _mapGenerator;
     private StageMapRenderer _mapRenderer;
+    private BackgroundController _backgroundController;
     private IRandomService _randomService;
     
     [Inject]
@@ -66,7 +63,7 @@ public class StageManager : MonoBehaviour
         SetAllNodeInactive();
         UIManager.Instance.OnClickMapButtonForce(false);
         SeManager.Instance.WaitAndPlaySe("footsteps", 0.2f);
-        backgroundController.PlayStageTransition();
+        _backgroundController.PlayStageTransition();
         
         var nextTransform = next.Obj.GetComponent<RectTransform>();
         _mapRenderer.MovePlayerIcon(nextTransform, 0.5f);
@@ -84,17 +81,12 @@ public class StageManager : MonoBehaviour
             _ => BgmType.Other
         };
         BgmManager.Instance.PlayRandomBGM(bgmType).Forget();
-        
-        var r = 0;
+
         StageType finalStage;
         if(CurrentStage.Type == StageType.Events)
         {
             // ランダムなステージに移動
-            if (_randomService.RandomRange(0.0f, 1.0f) < 0.75f)
-                r = 4;
-            else
-                r = _randomService.RandomRange(0, 4);
-
+            var r = _randomService.RandomRange(0.0f, 1.0f) < 0.75f ? 4 : _randomService.RandomRange(0, 4);
             var stage = (StageType)r;
             // ValueProcessorを通してステージタイプを最終決定
             finalStage = EventManager.OnStageTypeDecision.Process(stage);
@@ -106,8 +98,6 @@ public class StageManager : MonoBehaviour
         }
         
         ProcessStage(finalStage);
-        
-        // カーソルの位置を変更
     }
 
     private void ProcessStage(StageType s)
@@ -161,6 +151,7 @@ public class StageManager : MonoBehaviour
     {
         _mapGenerator = this.GetComponent<MapGenerator>();
         _mapRenderer = this.GetComponent<StageMapRenderer>();
+        _backgroundController = this.GetComponent<BackgroundController>();
     }
 
     private void Start()

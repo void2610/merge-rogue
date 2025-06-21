@@ -5,7 +5,7 @@ using UnityEngine;
 /// </summary>
 public class DoubleAttackWhenLowHealth : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // バトル開始時に低HP条件をチェックして怒り状態異常を付与
         AddSubscription(RelicHelpers.SubscribeBattleStart(() =>

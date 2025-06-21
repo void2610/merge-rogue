@@ -5,14 +5,9 @@ using UnityEngine;
 /// </summary>
 public class ReverseAlchemy : RelicBase
 {
-    public override void Init(RelicUI relicUI)
+    public override void RegisterEffects()
     {
         IsCountable = true; // カウント表示を有効化
-        base.Init(relicUI);
-    }
-
-    protected override void RegisterEffects()
-    {
         // ダメージ5毎にコイン1枚獲得
         RegisterDamageAccumulator(
             threshold: 5,

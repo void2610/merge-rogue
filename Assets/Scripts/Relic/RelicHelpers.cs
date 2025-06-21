@@ -78,51 +78,6 @@ public static class RelicHelpers
         EventManager.OnPlayerDamage.AddProcessor(relic, modifier, condition);
     }
 
-    // ===== 条件チェックのヘルパーメソッド =====
-
-    /// <summary>
-    /// プレイヤーのHP条件（以下）
-    /// </summary>
-    public static Func<bool> PlayerHealthCondition(float healthPercentage)
-    {
-        return () =>
-        {
-            if (!GameManager.Instance?.Player) return false;
-            var currentHealth = GameManager.Instance.Player.Health.Value;
-            var maxHealth = GameManager.Instance.Player.MaxHealth.Value;
-            return currentHealth <= maxHealth * healthPercentage;
-        };
-    }
-
-    /// <summary>
-    /// プレイヤーのHP条件（以上）
-    /// </summary>
-    public static Func<bool> PlayerHealthConditionAbove(float healthPercentage)
-    {
-        return () =>
-        {
-            if (!GameManager.Instance?.Player) return false;
-            var currentHealth = GameManager.Instance.Player.Health.Value;
-            var maxHealth = GameManager.Instance.Player.MaxHealth.Value;
-            return currentHealth > maxHealth * healthPercentage;
-        };
-    }
-
-    /// <summary>
-    /// ゲーム状態条件
-    /// </summary>
-    public static Func<bool> GameStateCondition(params GameManager.GameState[] states)
-    {
-        return () => GameManager.Instance && Array.Exists(states, state => GameManager.Instance.state == state);
-    }
-
-    /// <summary>
-    /// 他のレリック所持条件
-    /// </summary>
-    public static Func<bool> HasRelicCondition<T>() where T : RelicBase
-    {
-        return () => RelicManager.Instance.HasRelic(typeof(T));
-    }
 
     // ===== イベント購読のヘルパーメソッド =====
 

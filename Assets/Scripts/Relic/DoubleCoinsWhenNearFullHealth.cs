@@ -5,12 +5,12 @@ using UnityEngine;
 /// </summary>
 public class DoubleCoinsWhenNearFullHealth : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // HPが80%以上の時にコイン獲得量を2倍にする
         EventManager.OnCoinGain.AddProcessor(this, current =>
         {
-            if (RelicHelpers.PlayerHealthConditionAbove(0.8f)())
+            if (IsPlayerHealthAbove(0.8f))
             {
                 ActivateUI();
                 return (int)(current * 2.0f);

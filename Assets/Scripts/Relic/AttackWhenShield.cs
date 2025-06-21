@@ -6,7 +6,7 @@ using R3;
 /// </summary>
 public class AttackWhenShield : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // プレイヤーのステータス効果発動時のイベント購読
         var subscription = EventManager.OnPlayerStatusEffectTriggered.Subscribe(OnStatusEffectTriggered);

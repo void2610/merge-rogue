@@ -4,6 +4,7 @@ using Cysharp.Threading.Tasks;
 using UnityEngine;
 using DG.Tweening;
 using VContainer;
+using R3;
 
 public class BallBase : MonoBehaviour
 {
@@ -136,7 +137,6 @@ public class BallBase : MonoBehaviour
         {
             if (this.Serial < b.Serial)
             {
-                var pos = (this.transform.position + b.transform.position) / 2;
                 EventManager.OnBallMerged.OnNext((this, b));
                 
                 var center = (this.transform.position + b.transform.position) / 2;
@@ -179,5 +179,34 @@ public class BallBase : MonoBehaviour
         ParticleManager.Instance.MergeParticle(this.transform.position);
         // ParticleManager.Instance.MergePowerParticle(this.transform.position, MyEnumUtil.GetBallColor(Rank-1));
         SeManager.Instance.PlaySe("ball" + RandomService.RandomRange(0, 5));
+    }
+    
+    private bool IsNearbyMerge((BallBase ball1, BallBase ball2) mergeData, float range = 1f)
+    {
+        var (b1, b2) = mergeData;
+        if (!b1 || !b2 || !this) return false;
+        
+        var mergePosition = (b1.transform.position + b2.transform.position) * 0.5f;
+        var rangeSqr = range * range;
+        return (this.transform.position - mergePosition).sqrMagnitude < rangeSqr;
+    }
+    
+    /// <summary>
+    /// 近くのマージを監視するSubscriptionを作成
+    /// </summary>
+    /// <param name="onNearbyMerge">近くでマージが発生した時のコールバック</param>
+    /// <param name="range">検知範囲</param>
+    /// <returns>Subscription</returns>
+    protected System.IDisposable SubscribeNearbyMerge(System.Action<(BallBase ball1, BallBase ball2)> onNearbyMerge, float range = 1f)
+    {
+        return EventManager.OnBallMerged
+            .Subscribe(mergeData =>
+            {
+                if (IsNearbyMerge(mergeData, range))
+                {
+                    onNearbyMerge(mergeData);
+                }
+            })
+            .AddTo(this);
     }
 }

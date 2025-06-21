@@ -11,6 +11,7 @@ public class GameSettingsService : IGameSettingsService
     private const string SE_VOLUME_KEY = "SeVolume";
     private const string SEED_KEY = "Seed";
     private const string SEED_TEXT_KEY = "SeedText";
+    private const string DOUBLE_SPEED_KEY = "IsDoubleSpeed";
     
     public GameSettingsService()
     {
@@ -128,6 +129,36 @@ public class GameSettingsService : IGameSettingsService
     public bool HasSettings()
     {
         return PlayerPrefs.HasKey(BGM_VOLUME_KEY);
+    }
+    
+    /// <summary>
+    /// 倍速設定を取得します
+    /// </summary>
+    /// <returns>倍速が有効な場合true</returns>
+    public bool IsDoubleSpeedEnabled()
+    {
+        return PlayerPrefs.GetInt(DOUBLE_SPEED_KEY, 0) == 1;
+    }
+    
+    /// <summary>
+    /// 倍速設定を保存します
+    /// </summary>
+    /// <param name="enabled">倍速を有効にする場合true</param>
+    public void SaveDoubleSpeedEnabled(bool enabled)
+    {
+        PlayerPrefs.SetInt(DOUBLE_SPEED_KEY, enabled ? 1 : 0);
+        PlayerPrefs.Save();
+    }
+    
+    /// <summary>
+    /// 倍速設定を切り替えます
+    /// </summary>
+    /// <returns>切り替え後の倍速設定</returns>
+    public bool ToggleDoubleSpeed()
+    {
+        var newValue = !IsDoubleSpeedEnabled();
+        SaveDoubleSpeedEnabled(newValue);
+        return newValue;
     }
     
     /// <summary>

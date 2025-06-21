@@ -3,7 +3,7 @@
 /// </summary>
 public class AddOneToAllAttack : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // 攻撃力に+5する
         EventManager.OnPlayerAttack.AddProcessor(this, current =>

@@ -7,9 +7,10 @@ using UnityEngine;
 /// </summary>
 public class RandomService : IRandomService
 {
+    public string SeedText { get; private set; }
+    
     private System.Random _random;
     private int _seed;
-    private string _seedText;
     private readonly IGameSettingsService _gameSettingsService;
     
     /// <summary>
@@ -33,20 +34,20 @@ public class RandomService : IRandomService
         if (string.IsNullOrEmpty(seedSettings.seedText))
         {
             var guid = Guid.NewGuid();
-            _seedText = guid.ToString("N")[..8];
-            _seed = _seedText.GetHashCode();
+            SeedText = guid.ToString("N")[..8];
+            _seed = SeedText.GetHashCode();
             
             // GameSettingsServiceに保存
-            _gameSettingsService.SaveSeedText(_seedText);
-            _gameSettingsService.SaveSeed(_seed);
+            // _gameSettingsService.SaveSeedText(_seedText);
+            // _gameSettingsService.SaveSeed(_seed);
             
-            Debug.Log($"RandomService: Generated new seed: {_seedText}");
+            Debug.Log($"RandomService: Generated new seed: {SeedText}");
         }
         else
         {
-            _seedText = seedSettings.seedText;
+            SeedText = seedSettings.seedText;
             _seed = seedSettings.seed;
-            Debug.Log($"RandomService: Using existing seed: {_seedText}");
+            Debug.Log($"RandomService: Using existing seed: {SeedText}");
         }
         
         _random = new System.Random(_seed);

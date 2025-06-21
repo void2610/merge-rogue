@@ -6,7 +6,7 @@ using R3;
 /// </summary>
 public class HealWhenMergeLastBall : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // ボール合成時のイベント購読
         var subscription = EventManager.OnBallMerged.Subscribe(OnBallMerged);

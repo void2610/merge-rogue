@@ -6,7 +6,7 @@ using R3;
 /// </summary>
 public class HealWhenStatusEffect : RelicBase
 {
-    protected override void RegisterEffects()
+    public override void RegisterEffects()
     {
         // プレイヤーステータス効果追加時のイベント購読
         var subscription = EventManager.OnPlayerStatusEffectAdded.Subscribe(OnStatusEffectAdded);

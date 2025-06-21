@@ -16,10 +16,13 @@ using DG.Tweening;
 using JetBrains.Annotations;
 using R3;
 using UnityEngine.Serialization;
+using VContainer;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
+    
+    private IGameSettingsService _gameSettingsService;
     
     [SerializeField] private Canvas uiCanvas;
     [SerializeField] private Camera uiCamera;
@@ -31,7 +34,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Volume volume;
     [SerializeField] private List<CanvasGroup> canvasGroups;
     [SerializeField] private TextMeshProUGUI coinText;
-    [SerializeField] private TextMeshProUGUI stageText;
     [SerializeField] private TextMeshProUGUI expText;
     [SerializeField] private Slider hpSlider;
     [SerializeField] private TextMeshProUGUI hpText;
@@ -64,14 +66,6 @@ public class UIManager : MonoBehaviour
     public void ShowBallDescriptionWindow(BallData b, GameObject g, int level) =>
         descriptionWindow.ShowWindowWithHoverCheck(b, g, level).Forget();
 
-    public void SetSeedText(string seed)
-    {
-        foreach(var seedText in FindObjectsByType<SeedText>(FindObjectsSortMode.None))
-        {
-            seedText.SetText(seed);
-        }
-    }
-    
     public void ToggleCursorState()
     {
         if (inventoryCanvasBlocker.activeSelf) return;
@@ -134,7 +128,6 @@ public class UIManager : MonoBehaviour
         return canvasGroups.Find(c => c.alpha > 0)?.gameObject;  
     }
     
-    private void UpdateStageText(int stage) => stageText.text = "stage: " + Mathf.Max(1, stage + 1);
     private void UpdateCoinText(System.Numerics.BigInteger amount) => coinText.text = "coin: " + amount;
 
     public void ResetSelectedGameObject(bool isToggle = false)
@@ -357,13 +350,20 @@ public class UIManager : MonoBehaviour
         vignette.intensity.value = value;
     }
 
+    [Inject]
+    public void InjectDependencies(IGameSettingsService gameSettingsService)
+    {
+        _gameSettingsService = gameSettingsService;
+    }
+    
     private void Awake()
     {
-        if(Instance == null) Instance = this;
+        if(!Instance) Instance = this;
         else Destroy(gameObject);
         
-        bgmSlider.value = PlayerPrefs.GetFloat("BgmVolume", 1.0f);
-        seSlider.value = PlayerPrefs.GetFloat("SeVolume", 1.0f);
+        var audioSettings = _gameSettingsService.GetAudioSettings();
+        bgmSlider.value = audioSettings.bgmVolume;
+        seSlider.value = audioSettings.seVolume;
 
         foreach (var canvasGroup in canvasGroups)
         {
@@ -379,7 +379,6 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.Coin.Subscribe(UpdateCoinText).AddTo(this);
-        GameManager.Instance.StageManager.CurrentStageCount.Subscribe(UpdateStageText).AddTo(this);
         GameManager.Instance.Player.Exp.Subscribe((v) => UpdateExpText(v, GameManager.Instance.Player.MaxExp)).AddTo(this);
         GameManager.Instance.Player.Health.Subscribe((v) =>
         {
