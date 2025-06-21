@@ -15,7 +15,6 @@ public interface IInventoryService
     
     // 初期化メソッド
     void SetInventoryUI(InventoryUI inventoryUI);
-    void Initialize();
     
     // ボール管理メソッド
     void UpgradeBall(int index);
