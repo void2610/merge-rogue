@@ -68,7 +68,7 @@ public class DescriptionWindow : MonoBehaviour
         // StatusEffectManagerが初期化されていない場合は失敗
         if (StatusEffectManager.Instance == null) return false;
         
-        // 状態異常名から対応するStatusEffectTypeを取得
+        // enum名での検索
         if (System.Enum.TryParse<StatusEffectType>(word, true, out var statusEffectType))
         {
             description = StatusEffects.GetDescription(statusEffectType);
@@ -76,7 +76,7 @@ public class DescriptionWindow : MonoBehaviour
             return !string.IsNullOrEmpty(description);
         }
         
-        // 日本語名での検索も試行
+        // ローカライズされた名前での検索
         foreach (StatusEffectType type in System.Enum.GetValues(typeof(StatusEffectType)))
         {
             var localizedName = StatusEffects.GetLocalizedName(type);
