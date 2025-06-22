@@ -20,6 +20,12 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 157741719aeba4019a0c1e6510bba4db
+    m_Address: Assets/Localization/StringTable/WordDictionary/WordDictionary Shared
+      Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 7fa29c7d37b40404d85e0afeb5581314
     m_Address: Assets/Localization/UI Shared Data.asset
     m_ReadOnly: 1

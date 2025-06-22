@@ -73,10 +73,31 @@ public class StatusEffectManager : SingletonMonoBehaviour<StatusEffectManager>
     /// </summary>
     public string GetLocalizedName(StatusEffectType type)
     {
-        // TODO: ローカライゼーションシステムと連携
-        // return LocalizationManager.GetLocalizedValue(data.localizationKeyName);
+        // WordDictionary形式のキーを使用（例: Burn → BURN_N）
+        var wordDictionaryKey = $"{type.ToString().ToUpper()}_N";
+        if (LocalizeStringLoader.Instance != null)
+        {
+            var localizedName = LocalizeStringLoader.Instance.Get(wordDictionaryKey);
+            // キーが見つからない場合は [KEY] 形式で返される
+            if (!localizedName.StartsWith("[") || !localizedName.EndsWith("]"))
+            {
+                return localizedName;
+            }
+        }
         
-        return StatusEffectDataList.GetStatusEffectData(type)?.name ?? type.ToString();
+        // フォールバック: StatusEffectDataから取得
+        var data = StatusEffectDataList.GetStatusEffectData(type);
+        if (data?.localizationKeyName != null && LocalizeStringLoader.Instance != null)
+        {
+            var statusEffectKey = LocalizeStringLoader.Instance.Get(data.localizationKeyName);
+            if (!statusEffectKey.StartsWith("[") || !statusEffectKey.EndsWith("]"))
+            {
+                return statusEffectKey;
+            }
+        }
+        
+        // 最終フォールバック: データの名前またはenum名
+        return data?.name ?? type.ToString();
     }
     
     /// <summary>
@@ -84,9 +105,30 @@ public class StatusEffectManager : SingletonMonoBehaviour<StatusEffectManager>
     /// </summary>
     public string GetDescription(StatusEffectType type)
     {
-        // TODO: ローカライゼーションシステムと連携
-        // return LocalizationManager.GetLocalizedValue(data.localizationKeyDesc);
+        // WordDictionary形式のキーを使用（例: Burn → BURN_D）
+        var wordDictionaryKey = $"{type.ToString().ToUpper()}_D";
+        if (LocalizeStringLoader.Instance != null)
+        {
+            var localizedDesc = LocalizeStringLoader.Instance.Get(wordDictionaryKey);
+            // キーが見つからない場合は [KEY] 形式で返される
+            if (!localizedDesc.StartsWith("[") || !localizedDesc.EndsWith("]"))
+            {
+                return localizedDesc;
+            }
+        }
         
-        return StatusEffectDataList.GetStatusEffectData(type)?.description ?? "";
+        // フォールバック: StatusEffectDataから取得
+        var data = StatusEffectDataList.GetStatusEffectData(type);
+        if (data?.localizationKeyDesc != null && LocalizeStringLoader.Instance != null)
+        {
+            var statusEffectDesc = LocalizeStringLoader.Instance.Get(data.localizationKeyDesc);
+            if (!statusEffectDesc.StartsWith("[") || !statusEffectDesc.EndsWith("]"))
+            {
+                return statusEffectDesc;
+            }
+        }
+        
+        // 最終フォールバック: データの説明
+        return data?.description ?? "";
     }
 }

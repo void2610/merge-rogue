@@ -13,8 +13,6 @@ using Cysharp.Threading.Tasks;
 
 public class Utils : MonoBehaviour
 {
-    [SerializeField] private WordDictionary wordDictionary;
-    
     /// <summary>
     /// オブジェクトにイベントを追加する
     /// </summary>
@@ -49,38 +47,35 @@ public class Utils : MonoBehaviour
     /// <summary>
     /// 辞書に基づいたハイライト処理を行う
     /// </summary>
-    public static string GetHighlightWords(string description)
+    public static string GetHighlightWords(WordDictionary wordDictionary, string description)
     {
-        // 短い単語から順に処理するためソート
-        var sortedWords = WordDictionary.Instance.words.OrderBy(entry => entry.word.Length).Where(entry => description.Contains(entry.word)).ToList();
+        if (wordDictionary?.words == null || string.IsNullOrEmpty(description)) 
+            return description;
+        
+        // 説明文に含まれる単語のみを取得し、長い単語から順に処理（重複を避けるため）
+        var matchedEntries = wordDictionary.words
+            .Select(entry => new { Entry = entry, Word = entry.GetLocalizedWord() })
+            .Where(item => !string.IsNullOrEmpty(item.Word) && description.Contains(item.Word))
+            .OrderByDescending(item => item.Word.Length) // 長い単語から処理
+            .ToList();
 
-        foreach (var entry in sortedWords)
+        foreach (var item in matchedEntries)
         {
-            if (string.IsNullOrEmpty(entry.word)) continue;
-
-            // 既存のハイライトを解除
-            var containedWords = WordDictionary.Instance.words.Where(e => entry.word.Contains(e.word)).ToList();
-            containedWords.ForEach(e => description = RemoveExistingHighlights(description, e.word));
-
-            // ハイライトを適用
-            var replacement = $"<link=\"{entry.word}\"><color=#{ColorUtility.ToHtmlStringRGB(entry.textColor)}><nobr>{entry.word}</nobr></color></link>";
-            description = description.Replace(entry.word, replacement);
+            var word = item.Word;
+            var entry = item.Entry;
+            
+            // 既にハイライト済みの部分は処理しない
+            if (description.Contains($"<link=\"{entry.localizationKey}\">"))
+                continue;
+            
+            // ハイライトを適用（リンクIDにはlocalizationKeyを使用）
+            var replacement = $"<link=\"{entry.localizationKey}\"><color=#{ColorUtility.ToHtmlStringRGB(entry.textColor)}><nobr>{word}</nobr></color></link>";
+            description = description.Replace(word, replacement);
         }
 
         return description;
     }
 
-    /// <summary>
-    /// 既存のハイライトを解除する
-    /// </summary>
-    private static string RemoveExistingHighlights(string description, string word)
-    {
-        // ハイライト形式の正規表現を作成
-        string pattern = $@"<link=""{word}""><color=#\w+><nobr>{word}</nobr></color></link>";
-
-        // ハイライト部分を元の文字列に戻す
-        return Regex.Replace(description, pattern, word);
-    }
 
     /// <summary>
     /// マージ時のボールの近くにある別のボールを取得する(2つのボールを無視)
@@ -98,7 +93,7 @@ public class Utils : MonoBehaviour
             if (col.gameObject == other) continue;
             
             var ball = col.gameObject.GetComponent<BallBase>();
-            if (ball == null) continue;
+            if (!ball) continue;
             if (ball.IsFrozen || ball.isDestroyed) continue;
             
             result.Add(ball);
@@ -146,10 +141,5 @@ public class Utils : MonoBehaviour
             // 待機をスキップするためキャンセル
             if (result == 1) cts.Cancel();
         }
-    }
-
-    private void Awake()
-    {
-        wordDictionary.SetInstance();
     }
 }

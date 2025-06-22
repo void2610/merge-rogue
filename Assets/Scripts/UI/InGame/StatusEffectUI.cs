@@ -123,8 +123,9 @@ public class StatusEffectUI : MonoBehaviour
             go.transform.Find("Stack").GetComponent<TextMeshProUGUI>().text = "";
             _statusEffectIcons[type] = go;
             
-            var displayName = StatusEffectManager.Instance.GetLocalizedName(type);
-            go.AddSubDescriptionWindowEvent(displayName);
+            // WordDictionary形式のキーを使用（例: Burn → BURN）
+            var wordDictionaryKey = type.ToString().ToUpper();
+            go.AddSubDescriptionWindowEvent(wordDictionaryKey);
             go.SetActive(false);
         }
     }
