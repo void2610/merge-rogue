@@ -171,7 +171,7 @@ public class DescriptionWindow : MonoBehaviour
         else if(obj is RelicData r) SetRelicTexts(r);
         else throw new System.ArgumentException("obj is not BallData or RelicData");
         
-        descriptionText.text = Utils.GetHighlightWords(descriptionText.text);
+        descriptionText.text = Utils.GetHighlightWords(wordDictionary, descriptionText.text);
 
         // ワールド座標をRectTransformのローカル座標に変換
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
@@ -226,33 +226,36 @@ public class DescriptionWindow : MonoBehaviour
         if(_subWindows.ContainsKey((parent, word))) return;
         _subWindows.Where(pair => pair.Key.Item1 == parent).ToList().ForEach(pair => HideSubWindow(parent, pair.Key.Item2));
         
+        string displayName;
         string description;
         Color textColor;
         
-        // 状態異常の説明を試行
-        if (TryGetStatusEffectDescription(word, out description, out textColor))
+        // WordDictionaryから汎用メソッドで検索（キーまたはローカライズされた単語名で検索）
+        var wordEntry = wordDictionary.GetWordEntryByAny(word);
+        if (wordEntry != null)
+        {
+            // WordEntryが見つかった場合、ローカライズされた内容を取得
+            displayName = wordEntry.GetLocalizedWord();
+            description = wordEntry.GetLocalizedDescription();
+            textColor = wordEntry.textColor;
+        }
+        // 状態異常の説明を試行（WordDictionaryに見つからなかった場合）
+        else if (TryGetStatusEffectDescription(word, out description, out textColor))
         {
             // StatusEffectDataから取得成功
+            displayName = word; // 状態異常は元のまま表示
         }
         else
         {
-            // WordDictionaryから取得
-            var wordEntry = wordDictionary.GetWordEntry(word);
-            if (wordEntry != null)
-            {
-                description = wordEntry.description;
-                textColor = wordEntry.textColor;
-            }
-            else
-            {
-                description = $"説明が見つかりません: {word}";
-                textColor = Color.white;
-            }
+            // どこにも見つからなかった場合
+            displayName = word;
+            description = $"説明が見つかりません: {word}";
+            textColor = Color.white;
         }
         
         var g = Instantiate(subWindowPrefab, windowContainer.transform);
-        g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = $"<color=#{ColorUtility.ToHtmlStringRGB(textColor)}>{word}</color>";
-        g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = Utils.GetHighlightWords(description);
+        g.transform.Find("NameText").GetComponent<TextMeshProUGUI>().text = $"<color=#{ColorUtility.ToHtmlStringRGB(textColor)}>{displayName}</color>";
+        g.transform.Find("DescriptionText").GetComponent<TextMeshProUGUI>().text = Utils.GetHighlightWords(wordDictionary, description);
         
         Utils.AddEventToObject(g, () => HideSubWindow(parent, word), EventTriggerType.PointerExit);
         

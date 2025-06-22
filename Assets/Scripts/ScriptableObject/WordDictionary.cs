@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 
 [CreateAssetMenu(fileName = "WordDictionary", menuName = "Scriptable Objects/WordDictionary")]
 public class WordDictionary : ScriptableObject
@@ -7,27 +9,79 @@ public class WordDictionary : ScriptableObject
     [System.Serializable]
     public class WordEntry
     {
-        public string word;       // 単語
-        [TextArea(1, 10)]
-        public string description; // 説明文
+        public string localizationKey; // ローカライズキー（例: MAX_HEALTH）
         public Color textColor;   // 表示色
+        
+        // ローカライズされた単語名を取得
+        public string GetLocalizedWord()
+        {
+            var table = LocalizationSettings.StringDatabase.GetTable("WordDictionary");
+            return table.GetEntry($"{localizationKey}_N")?.GetLocalizedString() ?? $"[{localizationKey}]";
+        }
+        
+        // ローカライズされた説明文を取得
+        public string GetLocalizedDescription()
+        {
+            var table = LocalizationSettings.StringDatabase.GetTable("WordDictionary");
+            return table.GetEntry($"{localizationKey}_D")?.GetLocalizedString() ?? $"[{localizationKey}]";
+        }
     }
     
-    public static WordDictionary Instance; // シングルトンインスタンス
-
     public List<WordEntry> words; // 辞書データ
     
-    public void SetInstance() => Instance = this;
-    
-    public WordEntry GetWordEntry(string word)
+    // ローカライズキーからWordEntryを取得
+    public WordEntry GetWordEntryByKey(string localizationKey)
     {
         foreach (var entry in words)
         {
-            if (entry.word == word)
+            if (entry.localizationKey == localizationKey)
             {
                 return entry;
             }
         }
+        return null; // 見つからなかった場合
+    }
+    
+    // 文字列がWordDictionaryに存在するかチェック（キーまたはローカライズされた単語名で検索）
+    public bool ContainsWord(string searchText)
+    {
+        return GetWordEntryByAny(searchText) != null;
+    }
+    
+    // キーまたはローカライズされた単語名からWordEntryを取得する汎用メソッド
+    public WordEntry GetWordEntryByAny(string searchText)
+    {
+        if (string.IsNullOrEmpty(searchText)) return null;
+        
+        // まずキーで検索
+        var entryByKey = GetWordEntryByKey(searchText);
+        if (entryByKey != null) return entryByKey;
+        
+        // 次にローカライズされた単語名で検索
+        foreach (var entry in words)
+        {
+            if (entry.GetLocalizedWord().Equals(searchText, System.StringComparison.OrdinalIgnoreCase))
+            {
+                return entry;
+            }
+        }
+        
+        return null; // 見つからなかった場合
+    }
+    
+    // ローカライズされた単語名からWordEntryを取得
+    public WordEntry GetWordEntryByLocalizedWord(string localizedWord)
+    {
+        if (string.IsNullOrEmpty(localizedWord)) return null;
+        
+        foreach (var entry in words)
+        {
+            if (entry.GetLocalizedWord().Equals(localizedWord, System.StringComparison.OrdinalIgnoreCase))
+            {
+                return entry;
+            }
+        }
+        
         return null; // 見つからなかった場合
     }
 }
