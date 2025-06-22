@@ -6,6 +6,7 @@ public enum LocalizationTableType
     UI,
     Ball,
     Relic,
+    WordDictionary,
 }
 
 public enum CursorIconType

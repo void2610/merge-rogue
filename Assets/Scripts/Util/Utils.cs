@@ -49,25 +49,25 @@ public class Utils : MonoBehaviour
     /// </summary>
     public static string GetHighlightWords(WordDictionary wordDictionary, string description)
     {
-        // ローカライズされた単語を取得し、短い単語から順に処理するためソート
-        var entries = wordDictionary.words
+        if (wordDictionary?.words == null || string.IsNullOrEmpty(description)) 
+            return description;
+        
+        // 説明文に含まれる単語のみを取得し、長い単語から順に処理（重複を避けるため）
+        var matchedEntries = wordDictionary.words
             .Select(entry => new { Entry = entry, Word = entry.GetLocalizedWord() })
-            .Where(item => description.Contains(item.Word))
-            .OrderBy(item => item.Word.Length)
+            .Where(item => !string.IsNullOrEmpty(item.Word) && description.Contains(item.Word))
+            .OrderByDescending(item => item.Word.Length) // 長い単語から処理
             .ToList();
 
-        foreach (var item in entries)
+        foreach (var item in matchedEntries)
         {
             var word = item.Word;
             var entry = item.Entry;
             
-            // 既存のハイライトを解除
-            var containedEntries = wordDictionary.words
-                .Select(e => new { Entry = e, Word = e.GetLocalizedWord() })
-                .Where(e => word.Contains(e.Word))
-                .ToList();
-            containedEntries.ForEach(e => description = RemoveExistingHighlights(description, e.Word));
-
+            // 既にハイライト済みの部分は処理しない
+            if (description.Contains($"<link=\"{entry.localizationKey}\">"))
+                continue;
+            
             // ハイライトを適用（リンクIDにはlocalizationKeyを使用）
             var replacement = $"<link=\"{entry.localizationKey}\"><color=#{ColorUtility.ToHtmlStringRGB(entry.textColor)}><nobr>{word}</nobr></color></link>";
             description = description.Replace(word, replacement);
@@ -76,17 +76,6 @@ public class Utils : MonoBehaviour
         return description;
     }
 
-    /// <summary>
-    /// 既存のハイライトを解除する
-    /// </summary>
-    private static string RemoveExistingHighlights(string description, string word)
-    {
-        // ハイライト形式の正規表現を作成
-        string pattern = $@"<link=""{word}""><color=#\w+><nobr>{word}</nobr></color></link>";
-
-        // ハイライト部分を元の文字列に戻す
-        return Regex.Replace(description, pattern, word);
-    }
 
     /// <summary>
     /// マージ時のボールの近くにある別のボールを取得する(2つのボールを無視)

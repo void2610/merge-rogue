@@ -15,6 +15,12 @@ public class WordDictionary : ScriptableObject
         // ローカライズされた単語名を取得
         public string GetLocalizedWord()
         {
+            if (LocalizeStringLoader.Instance != null)
+            {
+                return LocalizeStringLoader.Instance.Get($"{localizationKey}_N");
+            }
+            
+            // フォールバック：直接取得
             var table = LocalizationSettings.StringDatabase.GetTable("WordDictionary");
             return table.GetEntry($"{localizationKey}_N")?.GetLocalizedString() ?? $"[{localizationKey}]";
         }
@@ -22,6 +28,12 @@ public class WordDictionary : ScriptableObject
         // ローカライズされた説明文を取得
         public string GetLocalizedDescription()
         {
+            if (LocalizeStringLoader.Instance != null)
+            {
+                return LocalizeStringLoader.Instance.Get($"{localizationKey}_D");
+            }
+            
+            // フォールバック：直接取得
             var table = LocalizationSettings.StringDatabase.GetTable("WordDictionary");
             return table.GetEntry($"{localizationKey}_D")?.GetLocalizedString() ?? $"[{localizationKey}]";
         }
@@ -58,15 +70,7 @@ public class WordDictionary : ScriptableObject
         if (entryByKey != null) return entryByKey;
         
         // 次にローカライズされた単語名で検索
-        foreach (var entry in words)
-        {
-            if (entry.GetLocalizedWord().Equals(searchText, System.StringComparison.OrdinalIgnoreCase))
-            {
-                return entry;
-            }
-        }
-        
-        return null; // 見つからなかった場合
+        return GetWordEntryByLocalizedWord(searchText);
     }
     
     // ローカライズされた単語名からWordEntryを取得
