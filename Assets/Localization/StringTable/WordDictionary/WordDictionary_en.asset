@@ -22,6 +22,207 @@ MonoBehaviour:
     m_Localized: dad
     m_Metadata:
       m_Items: []
+  - m_Id: 7078503505920
+    m_Localized: Max HP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700224
+    m_Localized: Max HP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700225
+    m_Localized: HP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700226
+    m_Localized: A value that represents vitality. HP cannot be recovered beyond
+      maximum.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700227
+    m_Localized: Number of balls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700228
+    m_Localized: How many balls can be dropped in one turn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700229
+    m_Localized: turn
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700230
+    m_Localized: After the player merges and attacks, the enemy takes action, and
+      the merge begins again. This is called one turn.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700231
+    m_Localized: Stack Count
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700232
+    m_Localized: A value that indicates the number of overlapping abnormal conditions.
+      When it reaches 0, the abnormal conditions are removed. It basically decreases
+      by 1 each turn, and becomes 0 after the battle ends.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700233
+    m_Localized: damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700234
+    m_Localized: Reduces the target's HP
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700235
+    m_Localized: recovery
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700236
+    m_Localized: Increases the target's HP. Any increase over the target's maximum
+      HP is ignored.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700237
+    m_Localized: Player
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700238
+    m_Localized: you
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700239
+    m_Localized: merge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700240
+    m_Localized: This occurs when two balls of the same ball level come into contact
+      with each other, causing the two balls to become balls of the next higher ball
+      level.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700241
+    m_Localized: Merge Area
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700242
+    m_Localized: Where the ball is in the center of the screen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700243
+    m_Localized: Ball Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700244
+    m_Localized: A value that indicates the performance of the ball. When you first
+      obtain it, it is 1, and it can be improved up to 3.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700245
+    m_Localized: filling rate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700246
+    m_Localized: 'This indicates how high the ball is in the merge area. It can be
+      divided into three states: low, medium, and high.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700247
+    m_Localized: Ball Rank
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700248
+    m_Localized: A value that indicates the ball's position from the left in the
+      inventory. The larger the value, the more difficult it is to use, but the more
+      powerful it is.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700249
+    m_Localized: break
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700250
+    m_Localized: By entering a rest space and selecting "Rest", the player can recover
+      20% of their maximum HP.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700251
+    m_Localized: Burns
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700252
+    m_Localized: At the end of the turn, deal damage according to the number of stacks.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700253
+    m_Localized: curse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700254
+    m_Localized: At the end of the turn, a number of Jamming Balls will appear in
+      the Merge Area depending on the number of stacks.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700255
+    m_Localized: shield
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700256
+    m_Localized: Reduces damage to HP by the number of stacks. The number of stacks
+      decreases as the damage is reduced.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700257
+    m_Localized: frozen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700258
+    m_Localized: There is a n*10% chance of being incapacitated depending on the
+      number of stacks n. When incapacitated, the number of stacks is halved.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700259
+    m_Localized: invincible
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700260
+    m_Localized: Take no damage as long as you have stacks.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700261
+    m_Localized: Electric shock
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700262
+    m_Localized: At the end of the turn, all enemies will take damage according to
+      the number of stacks.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700263
+    m_Localized: reproduction
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700264
+    m_Localized: At the end of the turn, recover HP according to the number of stacks.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700265
+    m_Localized: Power
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700266
+    m_Localized: Basic attacks deal extra damage equal to the number of stacks.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700267
+    m_Localized: anger
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700268
+    m_Localized: Multiplies all attack power by (1 + 0.1 * n) for each stack number
+      n.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
