@@ -223,6 +223,23 @@ MonoBehaviour:
       n.
     m_Metadata:
       m_Items: []
+  - m_Id: 30319624314880
+    m_Localized: confusion
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30319645286400
+    m_Localized: The cursor moves on its own
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30593361371136
+    m_Localized: curse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30593365565440
+    m_Localized: At the end of the turn, a number of Jamming Balls will appear in
+      the Merge Area depending on the number of stacks.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

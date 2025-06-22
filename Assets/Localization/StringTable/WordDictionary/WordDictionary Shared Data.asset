@@ -135,12 +135,12 @@ MonoBehaviour:
     m_Key: BURN_D
     m_Metadata:
       m_Items: []
-  - m_Id: 7078507700253
-    m_Key: CURSED_N
+  - m_Id: 30593361371136
+    m_Key: CURSE_N
     m_Metadata:
       m_Items: []
-  - m_Id: 7078507700254
-    m_Key: CURSED_D
+  - m_Id: 30593365565440
+    m_Key: CURSE_D
     m_Metadata:
       m_Items: []
   - m_Id: 7078507700255
@@ -197,6 +197,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 7078507700268
     m_Key: RAGE_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30319624314880
+    m_Key: CONNFUSION_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 30319645286400
+    m_Key: CONNFUSION_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700253
+    m_Key: CURSED_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7078507700254
+    m_Key: CURSED_D
     m_Metadata:
       m_Items: []
   - m_Id: 1471193014272

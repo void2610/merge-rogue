@@ -59,3 +59,5 @@ MonoBehaviour:
     textColor: {r: 1, g: 0.31209666, b: 0, a: 0}
   - localizationKey: RAGE
     textColor: {r: 1, g: 0, b: 0.49438477, a: 0}
+  - localizationKey: CONFUSION
+    textColor: {r: 1, g: 0.8302624, b: 0, a: 0}
