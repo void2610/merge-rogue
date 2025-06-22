@@ -244,7 +244,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 2115868761776131
-    m_Localized: I can't have any more relics
+    m_Localized: I can't hold any more relics
     m_Metadata:
       m_Items: []
   references:
