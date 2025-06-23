@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5449951999844281227}
   - component: {fileID: -7249124341886125131}
   - component: {fileID: 2308682725425691010}
-  - component: {fileID: -271133512111199453}
   - component: {fileID: 6242619871807967653}
   - component: {fileID: 4335802573578125731}
   m_Layer: 5
@@ -63,7 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -103,9 +102,9 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_PressedColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 0.7, g: 0.7, b: 0.7, a: 0.5019608}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -142,21 +141,6 @@ MonoBehaviour:
   duration: 0.5
   raycaster: {fileID: 0}
   eventSystem: {fileID: 0}
---- !u!114 &-271133512111199453
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3540213210033325969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6e1d633c6a85e040a3eeb66ccca5432, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _entryId:
-    _value: af515ef3-f896-4abf-80b8-0ab3bc46b877
-  _component: {fileID: 5449951999844281227}
 --- !u!114 &6242619871807967653
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,7 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cfd2797a89f44139de4718491154f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorType: 1
+  cursorIconType: 1
 --- !u!114 &4335802573578125731
 MonoBehaviour:
   m_ObjectHideFlags: 0

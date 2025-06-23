@@ -153,7 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _entryId:
-    _value: af515ef3-f896-4abf-80b8-0ab3bc46b877
+    _value: ad87a1fd-fc16-4446-9f4c-d9390dbca292
   _component: {fileID: 6099846053738752402}
 --- !u!114 &5763856610207175512
 MonoBehaviour:
@@ -223,4 +223,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cfd2797a89f44139de4718491154f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorType: 1
+  cursorIconType: 1

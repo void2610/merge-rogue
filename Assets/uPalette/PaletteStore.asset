@@ -82,12 +82,12 @@ MonoBehaviour:
           - _value: {r: 0.4, g: 0.4, b: 0.4, a: 1}
       - _id: ad87a1fd-fc16-4446-9f4c-d9390dbca292
         _name:
-          _value: New Color
+          _value: BlackText
         _values:
           _keys:
           - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
           _values:
-          - _value: {r: 1, g: 1, b: 1, a: 1}
+          - _value: {r: 0.49056602, g: 0.39306986, b: 0.30776075, a: 1}
     _themes:
       _keys:
       - 4cdfc659-724c-45a6-8a1a-6cef44e9252c
