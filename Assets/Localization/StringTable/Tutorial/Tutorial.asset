@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
+  m_Name: Tutorial
+  m_EditorClassIdentifier: 
+  m_SharedTableData: {fileID: 11400000, guid: 71a14856c9fd04bd2ac2a25c7081407c, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: 610b0c27a81964d35afe48047bb75407, type: 2}
+  - {fileID: 11400000, guid: f454c284925554f8690ea12424ad7624, type: 2}
+  m_Extensions:
+  - rid: 6692065952433176585
+  m_Group: String Table
+  references:
+    version: 2
+    RefIds:
+    - rid: 6692065952433176585
+      type: {class: GoogleSheetsExtension, ns: UnityEditor.Localization.Plugins.Google, asm: Unity.Localization.Editor}
+      data:
+        m_Collection: {fileID: 11400000}
+        m_SheetsServiceProvider: {fileID: 11400000, guid: 22fecd69b1d224dc1af20138bc2be6d7, type: 2}
+        m_SpreadsheetId: 1Ca0frHbyjuPpucqHPTSaIsCCQG1GhFJEvSnNqwPVi_U
+        m_SheetId: 0
+        m_Columns: []
+        m_RemoveMissingPulledKeys: 1
