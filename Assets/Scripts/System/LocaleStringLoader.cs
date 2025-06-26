@@ -23,6 +23,7 @@ public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
             LocalizationTableType.Ball => LocalizationSettings.StringDatabase.GetTableAsync("Ball"),
             LocalizationTableType.Relic => LocalizationSettings.StringDatabase.GetTableAsync("Relic"),
             LocalizationTableType.WordDictionary => LocalizationSettings.StringDatabase.GetTableAsync("WordDictionary"),
+            LocalizationTableType.Tutorial => LocalizationSettings.StringDatabase.GetTableAsync("Tutorial"),
             _ => throw new System.ArgumentOutOfRangeException(nameof(tableType), $"Unknown LocalizationTableType: {tableType}")
         };
         return await task;
@@ -37,6 +38,7 @@ public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
         await AddTable(LocalizationTableType.Ball);
         await AddTable(LocalizationTableType.Relic);
         await AddTable(LocalizationTableType.WordDictionary);
+        await AddTable(LocalizationTableType.Tutorial);
     }
 
     private async UniTask AddTable(LocalizationTableType tableType)

@@ -16,28 +16,17 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI titleText;
     [SerializeField] private TextMeshProUGUI descriptionText;
     [SerializeField] private Image tutorialImage;
-    [SerializeField] private GameObject imageContainer;
     
     // プライベートフィールド
     private int _currentPageIndex = 0;
     private EventSystem _eventSystem;
     
-    private void Start()
+    private void Awake()
     {
         _eventSystem = EventSystem.current;
         
-        if (tutorialPages == null || tutorialPages.Count == 0)
-        {
-            Debug.LogError("TutorialManager: チュートリアルページが設定されていません");
-            return;
-        }
-        
-        // ボタンイベントの設定
-        if (nextButton)
-            nextButton.onClick.AddListener(NextPage);
-        
-        if (previousButton)
-            previousButton.onClick.AddListener(PreviousPage);
+        nextButton.onClick.AddListener(NextPage);
+        previousButton.onClick.AddListener(PreviousPage);
         
         // 最初のページを表示
         ShowPage(0);
@@ -87,45 +76,30 @@ public class TutorialManager : MonoBehaviour
     
     private void UpdateTitle(TutorialPageData pageData)
     {
-        if (titleText)
-        {
-            titleText.text = pageData.GetTitle();
-        }
+        titleText.text = pageData.GetTitle();
     }
     
     private void UpdateDescription(TutorialPageData pageData)
     {
-        if (descriptionText)
-        {
-            descriptionText.text = pageData.GetDescription();
-        }
+        descriptionText.text = pageData.GetDescription();
     }
     
     private void UpdateImage(TutorialPageData pageData)
     {
-        if (!tutorialImage || !imageContainer) return;
-        
         if (pageData.TutorialImage)
         {
             tutorialImage.sprite = pageData.TutorialImage;
-            imageContainer.SetActive(true);
+            tutorialImage.gameObject.SetActive(true);
         }
         else
         {
-            imageContainer.SetActive(false);
+            tutorialImage.gameObject.SetActive(false);
         }
     }
     
     private void UpdateNavigationButtons()
     {
-        if (nextButton)
-        {
-            nextButton.interactable = _currentPageIndex < tutorialPages.Count - 1;
-        }
-        
-        if (previousButton)
-        {
-            previousButton.interactable = _currentPageIndex > 0;
-        }
+        nextButton.interactable = _currentPageIndex < tutorialPages.Count - 1;
+        previousButton.interactable = _currentPageIndex > 0;
     }
 }

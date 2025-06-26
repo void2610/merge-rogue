@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e3825cae6cf0044a4a86f7fe6500a43f, type: 3}
-  m_Name: BOSS
+  m_Name: Boss
   m_EditorClassIdentifier: 
   pageId: BOSS
   tutorialImage: {fileID: 0}

@@ -228,6 +228,62 @@ MonoBehaviour:
       relic.
     m_Metadata:
       m_Items: []
+  - m_Id: 209820660523008
+    m_Localized: welcome!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209820660523009
+    m_Localized: map
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209820664717312
+    m_Localized: Battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209820664717313
+    m_Localized: merge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209820664717314
+    m_Localized: filling rate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209820664717315
+    m_Localized: Level Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209820664717316
+    m_Localized: item
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209820664717317
+    m_Localized: Battle Victory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209820664717318
+    m_Localized: break
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209820664717319
+    m_Localized: shop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209820664717320
+    m_Localized: event
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209820664717321
+    m_Localized: boss
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209820664717322
+    m_Localized: treasure chest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 209820664717323
+    m_Localized: You can obtain random relics from treasure chest squares.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

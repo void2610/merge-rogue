@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3825cae6cf0044a4a86f7fe6500a43f, type: 3}
   m_Name: Item
   m_EditorClassIdentifier: 
-  pageId: Item
+  pageId: ITEM
   tutorialImage: {fileID: 0}
