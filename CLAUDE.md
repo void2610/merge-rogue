@@ -416,3 +416,32 @@ The project is currently undergoing a systematic migration from Singleton patter
 - MergeManager → IMergeService  
 - InventoryManager → IInventoryService
 - Progressive replacement of singleton pattern throughout the codebase
+
+## Unity Development Guidelines
+
+### Unity Object Null Checks
+
+When checking Unity objects (GameObjects, Components) for null, use implicit boolean conversion instead of explicit null comparison to avoid Rider warnings about "implicitly checking Unity object lifetime":
+
+```csharp
+// ❌ Avoid - Causes Rider warning
+if (titleText != null)
+{
+    titleText.text = "Hello";
+}
+
+// ✅ Preferred - No warning
+if (titleText)
+{
+    titleText.text = "Hello";
+}
+
+// ✅ Also good for negation
+if (!tutorialImage || !imageContainer) return;
+```
+
+This applies to all Unity object types including:
+- MonoBehaviour components (Text, Image, Button, etc.)
+- GameObject
+- Transform
+- Any Unity.Object derived types

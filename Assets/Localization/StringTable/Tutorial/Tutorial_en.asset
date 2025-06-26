@@ -99,6 +99,135 @@ MonoBehaviour:
       relic.
     m_Metadata:
       m_Items: []
+  - m_Id: 205748427546624
+    m_Localized: welcome!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748427546625
+    m_Localized: Welcome to the world of Merge Rogue! Here you can find information
+      about the game. Defeat enemies, collect relics and travel to the depths of
+      the world!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748427546626
+    m_Localized: map
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748427546627
+    m_Localized: You can move to the next map by selecting the adjacent square to
+      the right of your current location. When you reach the rightmost square and
+      defeat the boss, you can proceed to the next map.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748427546628
+    m_Localized: Battle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748427546629
+    m_Localized: In the battle grid, you drop balls into the merge area at the bottom
+      of the screen and damage enemies by merging the balls together. You can move
+      on to the next stage by defeating all the enemies displayed at the top of the
+      screen. Defeating enemies earns you coins and experience points.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740928
+    m_Localized: merge
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740929
+    m_Localized: You can merge balls by dropping a ball into the merge area and touching
+      a ball of the same rank. The merged ball will disappear and a ball of the next
+      higher rank will be generated in your inventory. The merged ball will activate
+      an effect and attack the enemy, dealing damage calculated as ball attack power
+      * ball rank * player attack power. If there is no ball of the next rank in
+      your inventory, a new ball will not be generated. If there are too many balls
+      and they touch the ceiling of the merge area, the ball will disappear and you
+      will receive damage according to its rank.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740930
+    m_Localized: filling rate
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740931
+    m_Localized: 'The fill rate indicates how many balls are in the merge area. There
+      are three types of fill rate: low, medium, and high. At the start of each turn,
+      the height of the merge area to which the balls are present is checked, and
+      the current fill rate is updated. The height at which the fill rate changes
+      is displayed in the merge area by yellow and red lines. When the fill rate
+      is medium or high, the player''s attack power increases by 1.5 or 2 times.
+      Be careful not to accumulate too many balls...'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740932
+    m_Localized: Level Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740933
+    m_Localized: When you accumulate experience points, you can level up and strengthen
+      your player. You can strengthen your player's attack power with "Attack", the
+      width of the merge area with "Width", and the number of balls you can drop
+      in one turn with "Ball". You can check the experience points until the next
+      level up in the exp notation at the top left of the screen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740934
+    m_Localized: item
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740935
+    m_Localized: Along the way, you may obtain balls and relics. By merging balls
+      in the merge area, you can attack and exert effects. After obtaining a ball,
+      you can upgrade, replace, or delete it. If you possess a relic, it will exert
+      a powerful effect under certain conditions or at certain times!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740936
+    m_Localized: Battle Victory
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740937
+    m_Localized: As you win battles, you can use coins to upgrade the balls in your
+      inventory. Balls can be upgraded up to level 3.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740938
+    m_Localized: break
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740939
+    m_Localized: 'At the rest space, you have two options: "Rest" will restore 20%
+      of your health, or "Organise" will allow you to swap the positions of the two
+      balls in your inventory.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740940
+    m_Localized: shop
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740941
+    m_Localized: In Shopmath, you can use coins to purchase balls and relics, and
+      you can also remove balls from your inventory.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740942
+    m_Localized: event
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740943
+    m_Localized: Random events occur in event spaces.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740944
+    m_Localized: boss
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740945
+    m_Localized: In the boss mass, a battle with a powerful boss begins. Defeating
+      the boss will fully restore the player's HP and allow players to obtain a powerful
+      relic.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

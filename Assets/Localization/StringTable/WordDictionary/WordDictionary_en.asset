@@ -62,8 +62,8 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 7078507700232
     m_Localized: A value that indicates the number of overlapping abnormal conditions.
-      When it reaches 0, the abnormal conditions are removed. It generally decreases
-      by 1 each turn, and becomes 0 at the end of the battle.
+      When it reaches 0, the abnormal conditions are removed. It basically decreases
+      by 1 each turn, and becomes 0 after the battle ends.
     m_Metadata:
       m_Items: []
   - m_Id: 7078507700233
@@ -169,7 +169,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 7078507700256
     m_Localized: Reduces damage to HP by the number of stacks. The number of stacks
-      decreases by the amount of damage reduced.
+      decreases as the damage is reduced.
     m_Metadata:
       m_Items: []
   - m_Id: 7078507700257

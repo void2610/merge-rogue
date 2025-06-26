@@ -15,6 +15,102 @@ MonoBehaviour:
   m_TableCollectionName: Tutorial
   m_TableCollectionNameGuidString: 71a14856c9fd04bd2ac2a25c7081407c
   m_Entries:
+  - m_Id: 205748427546624
+    m_Key: TITLE_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748427546625
+    m_Key: TITLE_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748427546626
+    m_Key: MAP_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748427546627
+    m_Key: MAP_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748427546628
+    m_Key: BATTLE_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748427546629
+    m_Key: BATTLE_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740928
+    m_Key: MERGE_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740929
+    m_Key: MERGE_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740930
+    m_Key: FILLING_RATE_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740931
+    m_Key: FILLING_RATE_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740932
+    m_Key: LEVEL_UP_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740933
+    m_Key: LEVEL_UP_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740934
+    m_Key: ITEM_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740935
+    m_Key: ITEM_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740936
+    m_Key: AFTER_BATTLE_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740937
+    m_Key: AFTER_BATTLE_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740938
+    m_Key: REST_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740939
+    m_Key: REST_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740940
+    m_Key: SHOP_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740941
+    m_Key: SHOP_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740942
+    m_Key: EVENT_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740943
+    m_Key: EVENT_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740944
+    m_Key: BOSS_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205748431740945
+    m_Key: BOSS_D
+    m_Metadata:
+      m_Items: []
   - m_Id: 6914330058752
     m_Key: TITLE
     m_Metadata:
