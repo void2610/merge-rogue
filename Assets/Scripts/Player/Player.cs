@@ -113,10 +113,12 @@ public class Player : MonoBehaviour, IEntity
     {
         Exp.Value += amount;
 
-        if (CheckAndLevelUp())
-            GameManager.Instance.ChangeState(GameManager.GameState.LevelUp);
-        else
-            GameManager.Instance.ChangeState(GameManager.GameState.AfterBattle);
+        // レベルアップは無効
+        // if (CheckAndLevelUp())
+        //     GameManager.Instance.ChangeState(GameManager.GameState.LevelUp);
+        // else
+        
+        GameManager.Instance.ChangeState(GameManager.GameState.AfterBattle);
         Exp.ForceNotify();
     }
 
