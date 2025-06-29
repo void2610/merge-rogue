@@ -14,6 +14,7 @@ public class ContentService : IContentService
     private readonly IRandomService _randomService;
 
     public int Act { get; private set; } = 0;
+    public float ShopPriceMultiplier { get; private set; } = 1.0f;
 
     public StatusEffectDataList StatusEffectList => _data.StatusEffectList;
     
@@ -96,20 +97,10 @@ public class ContentService : IContentService
         return  _data.GetFilteredRelicList().Where(bd => bd.rarity == rarity).ToList();
     }
     
-    public int GetShopPrice(Shop.ShopItemType type, Rarity rarity)
-    {
-        return _data.GetShopPrice(type, rarity);
-    }
-    
-    public int GetBallRemovePrice()
-    {
-        return _data.BallRemovePrice;
-    }
-    
-    public int GetBallUpgradePrice()
-    {
-        return _data.BallUpgradePrice;
-    }
+    public int GetShopPrice(Shop.ShopItemType type, Rarity rarity) => (int)(_data.GetShopPrice(type, rarity) * ShopPriceMultiplier);
+    public int GetBallRemovePrice() => (int)(_data.BallRemovePrice * ShopPriceMultiplier);
+    public int GetBallUpgradePrice() => (int)(_data.BallUpgradePrice * ShopPriceMultiplier);
+    public void SetShopPriceMultiplier(float multiplier) => ShopPriceMultiplier = multiplier;
     
     public void AddAct()
     {

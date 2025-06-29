@@ -14461,37 +14461,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 868537447}
   m_CullTransparentMesh: 1
---- !u!1 &880282177
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 880282179}
-  m_Layer: 0
-  m_Name: RelicManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &880282179
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 880282177}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &885543999
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -16543,17 +16512,7 @@ MonoBehaviour:
   relicGridSize: {x: 3, y: 9}
   relicOffset: {x: 40, y: 36}
   relicUISize: 0.75
-  testRelics:
-  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
-  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
-  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
-  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
-  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
-  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
-  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
-  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
-  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
-  - {fileID: 11400000, guid: 488a977c5ce0e492698a252b2e73c19d, type: 2}
+  testRelics: []
 --- !u!1 &1066192357
 GameObject:
   m_ObjectHideFlags: 0
@@ -24392,7 +24351,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1868987099}
   - component: {fileID: 1868987100}
-  - component: {fileID: 1868987101}
   - component: {fileID: 1868987102}
   m_Layer: 6
   m_Name: Tutorial
@@ -24430,37 +24388,10 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1868987098}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &1868987101
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1868987098}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9d53aa66d8c7f449ba051c82d97c521a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pages:
-  - {fileID: 4907999735807353449, guid: 04125a147f1c74acba5d2a77c7f55e37, type: 3}
-  - {fileID: 4907999735807353449, guid: deedba680a45f4da98ec4e318c7a80db, type: 3}
-  - {fileID: 4907999735807353449, guid: 5cf4be220f8a94e80b916f5a89038eb9, type: 3}
-  - {fileID: 4907999735807353449, guid: ef0df9294b64e49779f586a251cf4f1f, type: 3}
-  - {fileID: 4907999735807353449, guid: 998e0a5e57ee34d63b38761d95096bd6, type: 3}
-  - {fileID: 4907999735807353449, guid: 75ab0e8d1a32f452987d615ce294797c, type: 3}
-  - {fileID: 4907999735807353449, guid: c30694711846243b6bb45022bb13b683, type: 3}
-  - {fileID: 4907999735807353449, guid: 0817da62e690d4c509f1235ef7f6ad6c, type: 3}
-  - {fileID: 4907999735807353449, guid: 8683e591befde4ff0b798b8219ad3e3a, type: 3}
-  - {fileID: 4907999735807353449, guid: 1b8deb2bdc34e4be98e27a0a3508c5a4, type: 3}
-  - {fileID: 4907999735807353449, guid: 80f07c3dbb1fd4d669aac3b613aa7f49, type: 3}
-  - {fileID: 4907999735807353449, guid: c6ba32136c1b64956a04ed5414c9d3ad, type: 3}
-  nextButton: {fileID: 542548624}
-  previousButton: {fileID: 2094932173}
 --- !u!114 &1868987102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34251,7 +34182,6 @@ SceneRoots:
   - {fileID: 632287033}
   - {fileID: 567445621}
   - {fileID: 716147203}
-  - {fileID: 880282179}
   - {fileID: 1843446103}
   - {fileID: 318840770}
   - {fileID: 507554972}

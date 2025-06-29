@@ -122,4 +122,10 @@ public interface IContentService
     /// アクトを進める
     /// </summary>
     void AddAct();
+    
+    /// <summary>
+    /// ショップ価格倍率を設定する（レリック効果用）
+    /// </summary>
+    /// <param name="multiplier">価格倍率</param>
+    void SetShopPriceMultiplier(float multiplier);
 }
