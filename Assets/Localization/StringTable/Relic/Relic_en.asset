@@ -411,6 +411,31 @@ MonoBehaviour:
     m_Localized: ---
     m_Metadata:
       m_Items: []
+  - m_Id: 13028110545969152
+    m_Localized: The Empire's Cost
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13028110692769792
+    m_Localized: Greatly expands merge area. Shop selling prices increase by 1.5
+      times.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13028110692769793
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13028110692769794
+    m_Localized: Tension rod
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13028110692769795
+    m_Localized: Expand the merge area
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13028110692769796
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
