@@ -33,6 +33,7 @@ public static class EventManager
     public static readonly Subject<Unit> OnShopEnter = new();
     public static readonly Subject<Unit> OnRestEnter = new();
     public static readonly Subject<Unit> OnBallDrop = new();
+    public static readonly Subject<Unit> OnMergePhaseStart = new();
     
     // 追加の簡易イベント
     public static readonly Subject<(BallBase, BallBase)> OnBallMerged = new();

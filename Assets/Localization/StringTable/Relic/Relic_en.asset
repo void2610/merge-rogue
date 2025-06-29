@@ -436,6 +436,19 @@ MonoBehaviour:
     m_Localized: ---
     m_Metadata:
       m_Items: []
+  - m_Id: 13033665687707648
+    m_Localized: Randomize Dispenser
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13033665687707649
+    m_Localized: The number of balls increases by 1. At the start of a turn, the
+      walls of the merge area will move randomly.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13033665687707650
+    m_Localized: ---
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

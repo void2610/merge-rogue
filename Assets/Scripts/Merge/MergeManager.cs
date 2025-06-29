@@ -80,6 +80,15 @@ public class MergeManager : MonoBehaviour
         _ballPerOneTurn++;
     }
     
+    /// <summary>
+    /// 壁の幅をランダムに変更する
+    /// </summary>
+    public void RandomizeWallWidth()
+    {
+        var newWidth = _randomService.RandomRange(-0.5f, 0.5f) + _wallWidths[_wallWidthLevel];
+        wall.SetWallWidth(newWidth);
+    }
+    
     public PhysicsMaterial2D GetWallMaterial() => wallMaterial;
     public int GetBallCount() => _ballContainer.GetComponentsInChildren<Rigidbody2D>().Length;
     public void RemoveAllBalls() => _ballContainer.GetComponentsInChildren<Rigidbody2D>().ToList().ForEach(b => Destroy(b.gameObject));
@@ -164,6 +173,9 @@ public class MergeManager : MonoBehaviour
         Reset();
         
         _fillingRateMagnification = FillingRateManager.Instance.CalcFillingGauge();
+        
+        // マージフェーズ開始イベントを発火
+        EventManager.OnMergePhaseStart.OnNext(R3.Unit.Default);
     }
     
     public async UniTaskVoid EndMerge()
