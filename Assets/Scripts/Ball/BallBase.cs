@@ -133,7 +133,9 @@ public class BallBase : MonoBehaviour
     protected　virtual void HandleCollision(BallBase b)
     {
         if (isDestroyed || IsFrozen || !isMergable) return;
-        if (b.Rank == this.Rank && !b.IsFrozen && !b.isDestroyed && b.isMergable)
+        if (b.isDestroyed || b.IsFrozen || !b.isMergable) return;
+        
+        if (b.Rank == this.Rank)
         {
             if (this.Serial < b.Serial)
             {
