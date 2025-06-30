@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 3062421429702195480}
   - component: {fileID: 1456961676650038863}
   - component: {fileID: 5456628851290725859}
-  - component: {fileID: -5788210161225054758}
   - component: {fileID: -3374708413793716747}
   m_Layer: 5
   m_Name: MapLine
@@ -60,7 +59,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0.49056602, g: 0.39306986, b: 0.30776075, a: 1}
+  m_Color: {r: 0.5283019, g: 0.3897766, b: 0.26664296, a: 0.8}
   m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -70,23 +69,8 @@ MonoBehaviour:
   points:
   - {x: 0, y: 0}
   - {x: 0, y: 0}
-  thickness: 1.5
+  thickness: 1.2
   center: 0
---- !u!114 &-5788210161225054758
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2000249465076816775}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6e1d633c6a85e040a3eeb66ccca5432, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _entryId:
-    _value: ad87a1fd-fc16-4446-9f4c-d9390dbca292
-  _component: {fileID: 5456628851290725859}
 --- !u!114 &-3374708413793716747
 MonoBehaviour:
   m_ObjectHideFlags: 0
