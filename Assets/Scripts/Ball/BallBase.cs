@@ -55,8 +55,12 @@ public class BallBase : MonoBehaviour
             var otherCollider = contacts[i].collider;
             if (otherCollider && otherCollider.TryGetComponent(out BallBase b))
             {
-                HandleCollision(b);
-                b.HandleCollision(this);
+                // Serial番号が小さい方のみがHandleCollisionを実行することで、
+                // 重複実行を避けてPhysics処理負荷を軽減する
+                if (this.Serial < b.Serial)
+                {
+                    HandleCollision(b);
+                }
             }
         }
     }
@@ -137,23 +141,27 @@ public class BallBase : MonoBehaviour
         
         if (b.Rank == this.Rank)
         {
-            if (this.Serial < b.Serial)
-            {
-                EventManager.OnBallMerged.OnNext((this, b));
-                
-                var center = (this.transform.position + b.transform.position) / 2;
-                var rotation = Quaternion.Lerp(this.transform.rotation, b.transform.rotation, 0.5f);
-                MergeManager.Instance.SpawnBallFromLevel(NextRank, center, rotation);
+            EventManager.OnBallMerged.OnNext((this, b));
+            
+            var center = (this.transform.position + b.transform.position) / 2;
+            var rotation = Quaternion.Lerp(this.transform.rotation, b.transform.rotation, 0.5f);
+            MergeManager.Instance.SpawnBallFromLevel(NextRank, center, rotation);
 
-                EffectAndDestroy(b);
-                b.EffectAndDestroy(this);
-            }
+            EffectAndDestroy(b);
+            b.EffectAndDestroy(this);
         }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.TryGetComponent(out BallBase b)) HandleCollision(b);
+        if (other.gameObject.TryGetComponent(out BallBase b))
+        {
+            // Serial番号が小さい方のみがHandleCollisionを実行することで、重複実行を避けてPhysics処理負荷を軽減する
+            if (this.Serial < b.Serial)
+            {
+                HandleCollision(b);
+            }
+        }
     }
     
     public void EffectAndDestroy(BallBase other)
