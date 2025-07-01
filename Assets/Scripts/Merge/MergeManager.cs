@@ -34,8 +34,6 @@ public class MergeManager : MonoBehaviour
     private const float MOVE_SPEED = 1.0f;
     private const float COOL_TIME = 1.0f;
     private readonly List<float> _attacks = new() { 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 3.75f, 4.0f};
-    private readonly List<float> _wallWidths = new() { 3.0f, 3.5f, 4.5f, 5.5f, 5.5f, 6.0f, 6.5f, 7.0f, 7.5f};
-    private int _wallWidthLevel = 0;
     private int _attackLevel = 0;
     private GameObject _ballContainer;
     private float _lastFallTime;
@@ -61,10 +59,7 @@ public class MergeManager : MonoBehaviour
     
     public void LevelUpWallWidth()
     {
-        if (_wallWidthLevel < _wallWidths.Count - 1)
-        {
-            wall.SetWallWidth(_wallWidths[++_wallWidthLevel]);
-        }
+        wall.LevelUpWallWidth();
     }
     
     public void LevelUpAttack()
@@ -85,8 +80,8 @@ public class MergeManager : MonoBehaviour
     /// </summary>
     public void RandomizeWallWidth()
     {
-        var newWidth = _randomService.RandomRange(-0.5f, 0.5f) + _wallWidths[_wallWidthLevel];
-        wall.SetWallWidth(newWidth);
+        var randomOffset = _randomService.RandomRange(-0.5f, 0.5f);
+        wall.RandomizeWallWidth(randomOffset);
     }
     
     public PhysicsMaterial2D GetWallMaterial() => wallMaterial;
@@ -419,7 +414,6 @@ public class MergeManager : MonoBehaviour
         else Destroy(gameObject);
 
         _ballContainer = new GameObject("BallContainer");
-        wall.SetWallWidth(_wallWidths[0]);
         wallMaterial.bounciness = 0.0f;
         fallAnchor.GetComponent<HingeJoint2D>().useConnectedAnchor = false;
         arrow.DOFade(0, 0).Forget();

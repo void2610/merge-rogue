@@ -449,6 +449,19 @@ MonoBehaviour:
     m_Localized: ---
     m_Metadata:
       m_Items: []
+  - m_Id: 13587621178499072
+    m_Localized: Rotten fruit wine
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13587621207859200
+    m_Localized: When taking damage, there is a chance that the player will receive
+      1 stack of Confusion and Rage.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13587621207859201
+    m_Localized: A bit sour...
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

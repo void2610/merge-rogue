@@ -423,6 +423,18 @@ MonoBehaviour:
     m_Key: IncreaseBallAmountButRandomizeWalls_F
     m_Metadata:
       m_Items: []
+  - m_Id: 13587621178499072
+    m_Key: RageAndConfuseWhenDamage_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13587621207859200
+    m_Key: RageAndConfuseWhenDamage_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 13587621207859201
+    m_Key: RageAndConfuseWhenDamage_F
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
