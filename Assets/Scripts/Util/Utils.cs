@@ -83,7 +83,9 @@ public class Utils : MonoBehaviour
     public static List<BallBase> GetNearbyBalls(GameObject obj, GameObject other, float radius)
     {
         var result = new List<BallBase>();
-        var hitColliders = Physics2D.OverlapCircleAll(obj.transform.position, radius);
+        // Ballレイヤーのみをチェックして物理演算負荷を軽減
+        int ballLayer = LayerMask.GetMask("Ball");
+        var hitColliders = Physics2D.OverlapCircleAll(obj.transform.position, radius, ballLayer);
         // 取得したコライダーをリストに変換
         foreach (var col in hitColliders)
         {
@@ -107,7 +109,9 @@ public class Utils : MonoBehaviour
     public static List<BallBase> GetNearbyBalls(GameObject obj, float radius)
     {
         var result = new List<BallBase>();
-        var hitColliders = Physics2D.OverlapCircleAll(obj.transform.position, radius);
+        // Ballレイヤーのみをチェックして物理演算負荷を軽減
+        int ballLayer = LayerMask.GetMask("Ball");
+        var hitColliders = Physics2D.OverlapCircleAll(obj.transform.position, radius, ballLayer);
         // 取得したコライダーをリストに変換
         foreach (var col in hitColliders)
         {

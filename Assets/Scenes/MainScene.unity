@@ -4235,7 +4235,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 183
+    m_Bits: 439
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -13928,6 +13928,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eab425d58be2940c6b743fbbb82ce72d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  wallWidths:
+  - 3
+  - 3.5
+  - 4.5
+  - 5.5
+  - 5.5
+  - 6
+  - 6.5
+  - 7
+  - 7.5
+  wallWidthLevel: 0
   leftWall: {fileID: 1984357586}
   rightWall: {fileID: 1066192357}
   floor: {fileID: 1461756396}
