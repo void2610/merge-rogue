@@ -46,6 +46,9 @@ public class BallBase : MonoBehaviour
             
         IsFrozen = false;
         
+        // GetContactsは重い処理のため、マージ可能でない場合はスキップ
+        if (!isMergable) return;
+        
         // 既に接触しているオブジェクトを取得
         var contacts = new ContactPoint2D[10]; // 最大10個まで接触しているオブジェクトを取得
         var contactCount = GetComponent<Rigidbody2D>().GetContacts(contacts);
@@ -55,6 +58,9 @@ public class BallBase : MonoBehaviour
             var otherCollider = contacts[i].collider;
             if (otherCollider && otherCollider.TryGetComponent(out BallBase b))
             {
+                // 基本チェックを追加
+                if (b.isDestroyed || b.IsFrozen || !b.isMergable) continue;
+                
                 // Serial番号が小さい方のみがHandleCollisionを実行することで、
                 // 重複実行を避けてPhysics処理負荷を軽減する
                 if (this.Serial < b.Serial)
@@ -154,8 +160,14 @@ public class BallBase : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+        // 基本的な早期リターンチェックを追加（物理演算負荷軽減のため）
+        if (isDestroyed || IsFrozen) return;
+        
         if (other.gameObject.TryGetComponent(out BallBase b))
         {
+            // 相手のボールも基本チェック
+            if (b.isDestroyed || b.IsFrozen) return;
+            
             // Serial番号が小さい方のみがHandleCollisionを実行することで、重複実行を避けてPhysics処理負荷を軽減する
             if (this.Serial < b.Serial)
             {
