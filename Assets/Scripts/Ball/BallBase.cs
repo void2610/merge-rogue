@@ -149,9 +149,7 @@ public class BallBase : MonoBehaviour
         {
             EventManager.OnBallMerged.OnNext((this, b));
             
-            var center = (this.transform.position + b.transform.position) / 2;
-            var rotation = Quaternion.Lerp(this.transform.rotation, b.transform.rotation, 0.5f);
-            MergeManager.Instance.SpawnBallFromLevel(NextRank, center, rotation);
+            MergeManager.Instance.SpawnBallFromLevel(NextRank, this.transform.position, this.transform.rotation);
 
             EffectAndDestroy(b);
             b.EffectAndDestroy(this);

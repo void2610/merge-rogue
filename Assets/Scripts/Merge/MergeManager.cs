@@ -1,4 +1,5 @@
 using UnityEngine;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -13,7 +14,10 @@ public class MergeManager : MonoBehaviour
     public static MergeManager Instance;
     private static readonly int _ratio = Shader.PropertyToID("_Ratio");
     private static readonly int _alpha = Shader.PropertyToID("_Alpha");
-
+    
+    // Unityのデフォルト物理演算タイムステップ（通常0.02秒 = 50Hz）を保存
+    private static readonly float DEFAULT_FIXED_TIMESTEP = 0.02f;
+    
     [SerializeField] private MergeAreaCursorSetter cursorSetter;
     [SerializeField] private MergeWall wall;
     [SerializeField] public PhysicsMaterial2D wallMaterial;
@@ -44,6 +48,7 @@ public class MergeManager : MonoBehaviour
     private bool _isMovable = false;
     private Camera _mainCamera;
     private float _fillingRateMagnification;
+    private bool _isHitStopping = false;
     
     private IInputProvider _inputProvider;
     private IRandomService _randomService;
@@ -498,48 +503,86 @@ public class MergeManager : MonoBehaviour
     
     private async UniTask ApplyDynamicHitStop(float duration)
     {
-        // 元のFixed Timestepを保存
+        if (_isHitStopping) return;
+        _isHitStopping = true;
+        
+        // 元のFixed Timestepを保存（通常は0.02秒 = 50Hz）
         var originalFixedTimestep = Time.fixedDeltaTime;
         var originalTimeScale = GameManager.Instance.TimeScale;
         
-        // フェーズ1: 完全停止（最初の60%の時間）
-        Time.fixedDeltaTime = originalFixedTimestep * 0.005f; // 物理演算を超高精度に（200倍）
-        Time.timeScale = originalTimeScale * 0.01f; // ほぼ完全停止（1%速度）
+        // DOTweenのトラッキング用リスト
+        var tweens = new List<Tween>();
         
-        await UniTask.Delay((int)(duration * 0.6f * 1000), DelayType.UnscaledDeltaTime);
-        
-        // フェーズ2: DOTweenを使って滑らかに加速（次の30%の時間）
-        var phase2Duration = duration * 0.3f;
-        // TimeScale用のDOTween
-        var t1 = DOTween.To(
-            () => Time.timeScale,
-            x => Time.timeScale = x,
-            originalTimeScale * 0.3f,
-            phase2Duration
-        ).SetEase(Ease.OutCubic).SetUpdate(true).ToUniTask();
-        // FixedDeltaTime用のDOTween
-        var t2 = DOTween.To(
-            () => Time.fixedDeltaTime,
-            x => Time.fixedDeltaTime = x,
-            originalFixedTimestep * 0.02f,
-            phase2Duration
-        ).SetEase(Ease.OutCubic).SetUpdate(true).ToUniTask();
-        await UniTask.WhenAll(t1, t2);
-        
-        // フェーズ3: 急速に元に戻る（最後の10%の時間）
-        var phase3Duration = duration * 0.1f;
-        var t3 = DOTween.To(
-            () => Time.timeScale,
-            x => Time.timeScale = x,
-            originalTimeScale,
-            phase3Duration
-        ).SetEase(Ease.OutBack).SetUpdate(true).ToUniTask();
-        var t4 = DOTween.To(
-            () => Time.fixedDeltaTime,
-            x => Time.fixedDeltaTime = x,
-            originalFixedTimestep,
-            phase3Duration
-        ).SetEase(Ease.OutBack).SetUpdate(true).ToUniTask();
-        await UniTask.WhenAll(t3, t4); 
+        try
+        {
+            // フェーズ1: 完全停止（最初の60%の時間）
+            Time.fixedDeltaTime = originalFixedTimestep * 0.005f; // 物理演算を超高精度に（200倍）
+            Time.timeScale = originalTimeScale * 0.01f; // ほぼ完全停止（1%速度）
+            
+            await UniTask.Delay((int)(duration * 0.6f * 1000), DelayType.UnscaledDeltaTime, cancellationToken: this.GetCancellationTokenOnDestroy());
+            
+            // フェーズ2: DOTweenを使って滑らかに加速（次の30%の時間）
+            var phase2Duration = duration * 0.3f;
+            // TimeScale用のDOTween
+            var tween1 = DOTween.To(
+                () => Time.timeScale,
+                x => Time.timeScale = x,
+                originalTimeScale * 0.3f,
+                phase2Duration
+            ).SetEase(Ease.OutCubic).SetUpdate(true);
+            tweens.Add(tween1);
+            
+            // FixedDeltaTime用のDOTween
+            var tween2 = DOTween.To(
+                () => Time.fixedDeltaTime,
+                x => Time.fixedDeltaTime = x,
+                originalFixedTimestep * 0.02f,
+                phase2Duration
+            ).SetEase(Ease.OutCubic).SetUpdate(true);
+            tweens.Add(tween2);
+            
+            await UniTask.WhenAll(
+                tween1.ToUniTask(cancellationToken: this.GetCancellationTokenOnDestroy()),
+                tween2.ToUniTask(cancellationToken: this.GetCancellationTokenOnDestroy())
+            );
+            
+            // フェーズ3: 急速に元に戻る（最後の10%の時間）
+            var phase3Duration = duration * 0.1f;
+            var tween3 = DOTween.To(
+                () => Time.timeScale,
+                x => Time.timeScale = x,
+                originalTimeScale,
+                phase3Duration
+            ).SetEase(Ease.OutBack).SetUpdate(true);
+            tweens.Add(tween3);
+            
+            var tween4 = DOTween.To(
+                () => Time.fixedDeltaTime,
+                x => Time.fixedDeltaTime = x,
+                originalFixedTimestep,
+                phase3Duration
+            ).SetEase(Ease.OutBack).SetUpdate(true);
+            tweens.Add(tween4);
+            
+            await UniTask.WhenAll(
+                tween3.ToUniTask(cancellationToken: this.GetCancellationTokenOnDestroy()),
+                tween4.ToUniTask(cancellationToken: this.GetCancellationTokenOnDestroy())
+            );
+        }
+        catch (OperationCanceledException)
+        {
+            // キャンセルされた場合は即座に元の値に戻す
+            Time.timeScale = originalTimeScale;
+            Time.fixedDeltaTime = originalFixedTimestep;
+        }
+        finally
+        {
+            // すべてのDOTweenを強制的にキル（物理演算負荷問題の根本解決）
+            foreach (var tween in tweens) tween?.Kill();
+            
+            Time.timeScale = originalTimeScale;
+            Time.fixedDeltaTime = originalFixedTimestep;
+            _isHitStopping = false;
+        }
     }
 }
