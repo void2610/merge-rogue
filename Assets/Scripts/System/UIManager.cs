@@ -147,8 +147,8 @@ public class UIManager : MonoBehaviour
                 var target = _cursorPosition switch
                 {
                     CursorPositionType.Merge => mergeArea,
-                    CursorPositionType.Ball => ballUIContainer.GetChild(0).gameObject,
-                    CursorPositionType.Relic => relicContainer.GetChild(0).gameObject,
+                    CursorPositionType.Ball => ballUIContainer.childCount > 0 ? ballUIContainer.GetChild(0).gameObject : null,
+                    CursorPositionType.Relic => relicContainer.childCount > 0 ? relicContainer.GetChild(0).gameObject : null,
                     CursorPositionType.StatusEffect => GetFirstSelectableStatusEffectUI(),
                     _ => null,
                 };

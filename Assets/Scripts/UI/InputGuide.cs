@@ -37,27 +37,23 @@ public class InputGuide : MonoBehaviour
     }
 
     [SerializeField] private List<InputGuideData> mergeGuides = new();
-    [SerializeField] private List<InputGuideData> navigationGuides = new();
     [SerializeField] private List<InputGuideData> shortcutGuides = new();
     [SerializeField] private LocalizedString dropText;
     [SerializeField] private LocalizedString submitText;
     [SerializeField] private LocalizedString moveText;
-    [SerializeField] private LocalizedString selectText;
-    [SerializeField] private LocalizedString scrollText;
     [SerializeField] private GameObject inputGuidePrefab;
     [SerializeField] private Vector2 leftPos;
     [SerializeField] private Vector2 rightPos;
     [SerializeField] private float alignment;
-    [SerializeField] private bool isTitleMenu;
     public event Action<InputSchemeType> OnSchemeChanged;
     private Action<InputSchemeType> _onSchemeChanged;
     private InputGuideType _currentType = InputGuideType.Navigate;
     private InputSchemeType _scheme = InputSchemeType.KeyboardAndMouse;
 
-    public InputSchemeType Scheme
+    private InputSchemeType Scheme
     {
         get => _scheme;
-        private set
+        set
         {
             if (_scheme == value) return;
             _scheme = value;
@@ -89,19 +85,6 @@ public class InputGuide : MonoBehaviour
         };
     }
     
-    private static string GetDeviceIconGroup(InputDevice device)
-    {
-        return device switch
-        {
-            Keyboard => "Keyboard",
-            Mouse => "Mouse",
-            XInputController => "XInputController",
-            DualShockGamepad => "DualShockGamepad",
-            // SwitchProControllerHID => "SwitchProController",
-            _ => null
-        };
-    }
-    
     private void OnEnable()
     {
         UpdateText(_currentType);
@@ -127,7 +110,6 @@ public class InputGuide : MonoBehaviour
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
     }
     
-    // ロケールが変わった時にガイドを再構成する
     private void OnLocaleChanged(Locale locale)
     {
         UpdateText(_currentType);
@@ -142,38 +124,20 @@ public class InputGuide : MonoBehaviour
     {
         foreach (Transform child in this.transform)
         {
-            if(!child.TryGetComponent<Image>(out var image))
-                Destroy(child.gameObject);
+            if(!child.TryGetComponent<Image>(out _)) Destroy(child.gameObject);
         }
         
         _currentType = type;
         var t = GetOperationDisplay(_currentType);
-        switch (type)
+        t.AddRange(GetGuideTexts(mergeGuides));
+        TextMeshProUGUI last1 = null;
+        for(var i = 0; i < t.Count; i++)
         {
-            case InputGuideType.Merge:
-                t.AddRange(GetGuideTexts(mergeGuides));
-                TextMeshProUGUI last1 = null;
-                for(var i = 0; i < t.Count; i++)
-                {
-                    var obj = Instantiate(inputGuidePrefab, this.transform);
-                    var a = i == 0 ? leftPos.x : (last1.transform.localPosition.x + alignment * last1.GetPreferredValues().x);
-                    obj.transform.localPosition = new Vector2(a, leftPos.y);
-                    obj.GetComponent<TextMeshProUGUI>().text = t[i];
-                    last1 = obj.GetComponent<TextMeshProUGUI>();
-                }
-                break;
-            case InputGuideType.Navigate:
-                t.AddRange(GetGuideTexts(navigationGuides));
-                TextMeshProUGUI last2 = null;
-                for(var i = 0; i < t.Count; i++)
-                {
-                    var obj = Instantiate(inputGuidePrefab, this.transform);
-                    var a = i == 0 ? leftPos.x : (last2.transform.localPosition.x + alignment * last2.GetPreferredValues().x);
-                    obj.transform.localPosition = new Vector2(a, leftPos.y);
-                    obj.GetComponent<TextMeshProUGUI>().text = t[i];
-                    last2 = obj.GetComponent<TextMeshProUGUI>();
-                }
-                break;
+            var obj = Instantiate(inputGuidePrefab, this.transform);
+            var a = i == 0 ? leftPos.x : (last1.transform.localPosition.x + alignment * last1.GetPreferredValues().x);
+            obj.transform.localPosition = new Vector2(a, leftPos.y);
+            obj.GetComponent<TextMeshProUGUI>().text = t[i];
+            last1 = obj.GetComponent<TextMeshProUGUI>();
         }
 
         var t3 = GetGuideTexts(shortcutGuides);
@@ -193,7 +157,7 @@ public class InputGuide : MonoBehaviour
         var shortcutTexts = new List<string>();
         foreach (var data in list)
         {
-            string displaySprite = "";
+            var displaySprite = "";
             var action = data.action.action;
             // 現在のスキーマに合致するバインディングを探す
             foreach (var binding in action.bindings)
@@ -218,22 +182,21 @@ public class InputGuide : MonoBehaviour
     /// </summary>
     private string GetSpriteNameFromBinding(InputBinding binding)
     {
-        if (string.IsNullOrEmpty(binding.path))
-            return "";
+        if (string.IsNullOrEmpty(binding.path)) return "";
         
         // 例: "<Keyboard>/shift" から "Keyboard" を抽出
-        int start = binding.path.IndexOf('<') + 1;
-        int end = binding.path.IndexOf('>');
-        if (start < 0 || end < 0 || end <= start)
-            return "";
-        string device = binding.path.Substring(start, end - start);
+        var start = binding.path.IndexOf('<') + 1;
+        var end = binding.path.IndexOf('>');
+        if (start < 0 || end < 0 || end <= start) return "";
+        
+        var device = binding.path.Substring(start, end - start);
 
         // '/' 以降のコントロール名を抽出（例: "shift"）
-        int slashIndex = binding.path.IndexOf('/');
-        string control = "";
+        var slashIndex = binding.path.IndexOf('/');
+        var control = "";
         if (slashIndex >= 0 && slashIndex < binding.path.Length - 1)
         {
-             control = binding.path.Substring(slashIndex + 1);
+             control = binding.path[(slashIndex + 1)..];
         }
 
         // スプライト命名は小文字に変換して、"device-control" の形式にする
@@ -266,24 +229,16 @@ public class InputGuide : MonoBehaviour
 
     private List<string> GetOperationDisplay(InputGuideType type)
     {
-        var t1 = type == InputGuideType.Merge ? moveText.GetLocalizedString() : selectText.GetLocalizedString();
         var t2 = type == InputGuideType.Merge ? dropText.GetLocalizedString() : submitText.GetLocalizedString();
-        var t3 = scrollText.GetLocalizedString();
         var list = new List<string>();
         if (_scheme == InputSchemeType.KeyboardAndMouse)
         {
-            list.Add(t1 + ": <sprite name=\"Keyboard-leftArrow\"><sprite name=\"Keyboard-rightArrow\"><sprite name=\"Keyboard-upArrow\"><sprite name=\"Keyboard-downArrow\">/<sprite name=\"Keyboard-a\"><sprite name=\"Keyboard-d\"><sprite name=\"Keyboard-s\"><sprite name=\"Keyboard-w\">/<sprite name=\"Mouse-position\">");
             list.Add(t2 + ": <sprite name=\"Keyboard-space\">/<sprite name=\"Mouse-leftButton\">");
-            list.Add(t3 + ": <sprite name=\"Mouse-wheel\">");
         }
         else
         {
-            list.Add(t1 + ": <sprite name=\"Gamepad-leftsticknone\">/<sprite name=\"Gamepad-dpad\">");
             list.Add(t2 + ": <sprite name=\"Gamepad-buttonSouth\">");
-            list.Add(t3 + ": <sprite name=\"Gamepad-rightstickmovever\">");
         }
-        
-        if(!isTitleMenu) list.RemoveAt(2);
         return list;
     }
 }
