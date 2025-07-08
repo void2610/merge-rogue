@@ -506,8 +506,6 @@ public class MergeManager : MonoBehaviour
         if (_isHitStopping) return;
         _isHitStopping = true;
         
-        // 元のFixed Timestepを保存（通常は0.02秒 = 50Hz）
-        var originalFixedTimestep = Time.fixedDeltaTime;
         var originalTimeScale = GameManager.Instance.TimeScale;
         
         // DOTweenのトラッキング用リスト
@@ -516,7 +514,7 @@ public class MergeManager : MonoBehaviour
         try
         {
             // フェーズ1: 完全停止（最初の60%の時間）
-            Time.fixedDeltaTime = originalFixedTimestep * 0.005f; // 物理演算を超高精度に（200倍）
+            Time.fixedDeltaTime = DEFAULT_FIXED_TIMESTEP * 0.005f; // 物理演算を超高精度に（200倍）
             Time.timeScale = originalTimeScale * 0.01f; // ほぼ完全停止（1%速度）
             
             await UniTask.Delay((int)(duration * 0.6f * 1000), DelayType.UnscaledDeltaTime, cancellationToken: this.GetCancellationTokenOnDestroy());
@@ -536,7 +534,7 @@ public class MergeManager : MonoBehaviour
             var tween2 = DOTween.To(
                 () => Time.fixedDeltaTime,
                 x => Time.fixedDeltaTime = x,
-                originalFixedTimestep * 0.02f,
+                DEFAULT_FIXED_TIMESTEP * 0.02f,
                 phase2Duration
             ).SetEase(Ease.OutCubic).SetUpdate(true);
             tweens.Add(tween2);
@@ -559,7 +557,7 @@ public class MergeManager : MonoBehaviour
             var tween4 = DOTween.To(
                 () => Time.fixedDeltaTime,
                 x => Time.fixedDeltaTime = x,
-                originalFixedTimestep,
+                DEFAULT_FIXED_TIMESTEP,
                 phase3Duration
             ).SetEase(Ease.OutBack).SetUpdate(true);
             tweens.Add(tween4);
@@ -573,7 +571,7 @@ public class MergeManager : MonoBehaviour
         {
             // キャンセルされた場合は即座に元の値に戻す
             Time.timeScale = originalTimeScale;
-            Time.fixedDeltaTime = originalFixedTimestep;
+            Time.fixedDeltaTime = DEFAULT_FIXED_TIMESTEP;
         }
         finally
         {
@@ -581,7 +579,7 @@ public class MergeManager : MonoBehaviour
             foreach (var tween in tweens) tween?.Kill();
             
             Time.timeScale = originalTimeScale;
-            Time.fixedDeltaTime = originalFixedTimestep;
+            Time.fixedDeltaTime = DEFAULT_FIXED_TIMESTEP;
             _isHitStopping = false;
         }
     }

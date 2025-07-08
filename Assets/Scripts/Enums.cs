@@ -59,6 +59,7 @@ public enum ActionType
     Buff,
     Debuff,
     SelfDamage,
+    Move,
 }
 
 public enum EnemyType
