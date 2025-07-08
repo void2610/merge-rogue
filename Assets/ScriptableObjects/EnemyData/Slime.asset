@@ -16,7 +16,7 @@ MonoBehaviour:
   displayName: "\u30B9\u30E9\u30A4\u30E0"
   flavorText: "\u30B9\u30E9\u30A4\u30E0"
   enemyType: 0
-  isRanged: 0
+  attackRange: 0
   maxHealthMin: 7
   maxHealthMax: 10
   attack: 1

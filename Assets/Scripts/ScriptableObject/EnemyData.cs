@@ -27,7 +27,7 @@ public class EnemyData : ScriptableObject
 
     [Header("Enemy Status")]
     public EnemyType enemyType;
-    public bool isRanged; // 遠距離攻撃かどうか（falseなら近接攻撃）
+    public int attackRange; // 攻撃射程（0:近接攻撃、1以上:遠距離攻撃）
 
     public int maxHealthMin;
     public int maxHealthMax;
