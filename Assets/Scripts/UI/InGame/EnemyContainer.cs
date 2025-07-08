@@ -44,8 +44,8 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         _resolver = resolver;
     }
 
-    public int GetCurrentEnemyCount() => _currentEnemies.Count(e => e != null);
-    public List<EnemyBase> GetAllEnemies() => _currentEnemies.Where(e => e != null).ToList();
+    public int GetCurrentEnemyCount() => _currentEnemies.Count(e => e);
+    public List<EnemyBase> GetAllEnemies() => _currentEnemies.Where(e => e).ToList();
     public EnemyBase GetRandomEnemy() 
     {
         var validEnemies = GetAllEnemies();
@@ -399,7 +399,8 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         
         // インデックスに応じて距離を計算
         var distanceFromPlayer = enemyIndex * alignment;
-        var targetPosition = this.transform.position + new Vector3(distanceFromPlayer, 0, 0);
+        // EnemyDataのenemyYOffsetを適用
+        var targetPosition = this.transform.position + new Vector3(distanceFromPlayer, enemy.Data.enemyYOffset, 0);
 
         // 即座に位置を設定
         enemy.transform.position = targetPosition;
@@ -418,7 +419,8 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         
         // インデックスに応じて距離を計算
         var distanceFromPlayer = enemyIndex * alignment;
-        var targetPosition = this.transform.position + new Vector3(distanceFromPlayer, 0, 0);
+        // EnemyDataのenemyYOffsetを適用
+        var targetPosition = this.transform.position + new Vector3(distanceFromPlayer, enemy.Data.enemyYOffset, 0);
 
         // DOTweenで滑らかな移動アニメーション
         enemy.transform.DOMove(targetPosition, 0.5f)
