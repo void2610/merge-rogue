@@ -20,6 +20,7 @@ public class EnemyBase : MonoBehaviour, IEntity
     public int Health { get; protected set; }
     public int MaxHealth { get; protected set; }
     public Dictionary<StatusEffectType, int> StatusEffectStacks { get; } = new();
+    public int Position { get; private set; } = 5;
 
     protected int TurnCount = 0;
     protected int Stage = 0;
@@ -40,6 +41,22 @@ public class EnemyBase : MonoBehaviour, IEntity
     {
         _randomService = randomService;
     }
+    
+    /// <summary>
+    /// 敵の位置を1つ前進させる
+    /// </summary>
+    public void MoveForward()
+    {
+        if (Position > 0) Position--;
+    }
+    
+    /// <summary>
+    /// 攻撃距離に到達したかチェック
+    /// </summary>
+    private bool IsInAttackRange()
+    {
+        return Position <= Data.attackRange;
+    }
 
     public async UniTask UpdateStatusEffects()
     {
@@ -55,6 +72,22 @@ public class EnemyBase : MonoBehaviour, IEntity
     private int ModifyOutgoingAttack(AttackType type, int amount)
     {
         return StatusEffectProcessor.ModifyOutgoingAttack(this, type, amount);
+    }
+    
+    /// <summary>
+    /// HPバーの位置を更新
+    /// </summary>
+    public void UpdateHpBarPosition()
+    {
+        if (!_healthSlider) return;
+        
+        var c = UIManager.Instance.GetUICamera();
+        var pos = c.WorldToScreenPoint(this.transform.position);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            UIManager.Instance.GetUICanvas().GetComponent<RectTransform>(), pos, c, out var localPosition
+        );
+        localPosition.y += Data.hpSliderYOffset;
+        _healthSlider.GetComponent<RectTransform>().anchoredPosition = localPosition;
     }
     
     public void Damage(AttackType type, int damage)
@@ -95,10 +128,36 @@ public class EnemyBase : MonoBehaviour, IEntity
         // Freeze状態なら行動しない
         if (StatusEffectProcessor.CheckFreeze(this)) return;
         
+        // 攻撃距離に到達していない場合
+        if (!IsInAttackRange())
+        {
+            // 移動
+            EnemyContainer.Instance.MoveEnemyOneStep(this);
+            
+            // 移動後の表示更新（攻撃は次のターンから）
+            if (IsInAttackRange())
+            {
+                // 射程に入ったが、このターンは移動のみ
+                _attackCountText.text = (ActionInterval - TurnCount).ToString();
+                UpdateAttackIcon(_nextAction);
+            }
+            else
+            {
+                // まだ射程外
+                _attackCountText.text = "1";
+                UpdateAttackIcon(new EnemyActionData { type = ActionType.Move });
+            }
+            return;
+        }
+        
         TurnCount++;
         if(TurnCount == ActionInterval)
         {
             TurnCount = 0;
+            
+            // _nextActionがnullの場合は初期化
+            _nextAction ??= GetNextAction();
+            
             _nextAction.Action();
             _nextAction = GetNextAction();
             UpdateAttackIcon(_nextAction);
@@ -189,6 +248,7 @@ public class EnemyBase : MonoBehaviour, IEntity
             ActionType.Heal => Color.green,
             ActionType.Buff => Color.cyan,
             ActionType.Debuff => Color.magenta,
+            ActionType.Move => Color.blue,
             _ => Color.white
         };
     }
@@ -229,11 +289,22 @@ public class EnemyBase : MonoBehaviour, IEntity
         _healthSlider.maxValue = MaxHealth;
         _healthSlider.value = Health;
         _healthText.text = Health + "/" + MaxHealth;
-        _attackCountText.text = (ActionInterval - TurnCount).ToString();
-        
-        // 通常攻撃の設定
+        // 次の行動を必ず設定
         _nextAction = GetNextAction();
-        UpdateAttackIcon(_nextAction);
+        
+        // 初期状態での表示設定
+        if (!IsInAttackRange())
+        {
+            // 移動が必要な場合
+            _attackCountText.text = "1";
+            UpdateAttackIcon(new EnemyActionData { type = ActionType.Move });
+        }
+        else
+        {
+            // 攻撃可能な場合
+            _attackCountText.text = (ActionInterval - TurnCount).ToString();
+            UpdateAttackIcon(_nextAction);
+        }
         
         OnAppear();
     }

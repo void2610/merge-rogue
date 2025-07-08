@@ -25,9 +25,11 @@ public class EnemyContainer : MonoBehaviour
     [SerializeField] private GameObject coinPrefab;
     [SerializeField] private float alignment = 4;
     [SerializeField] private Treasure treasure;
+    [SerializeField] private float attackDistance = 2f; // 近接攻撃の距離
+    [SerializeField] private float spawnDistance = 8f; // 敵の出現距離（右側から）
     public readonly ReactiveProperty<int> DefeatedEnemyCount = new(0);
     private readonly List<EnemyBase> _currentEnemies = new();
-    private readonly List<Vector3> _positions = new();
+    private Vector3 _basePosition; // 基準位置（プレイヤーに最も近い位置）
     private const int ENEMY_NUM = 4;
     private int _gainedExp;
     
@@ -65,9 +67,16 @@ public class EnemyContainer : MonoBehaviour
         _resolver.Inject(behaviour);
         
         e.transform.localScale = new Vector3(1, 1, 1);
-        e.transform.position = _positions[_currentEnemies.Count];
-        behaviour.Init(bossData, stage);
+        
+        // リストに追加してからInit
         _currentEnemies.Add(behaviour);
+        
+        // ボスの初期化
+        behaviour.Init(bossData, stage);
+        
+        // 整数ベースの位置システムで初期位置を設定
+        var spawnIndex = _currentEnemies.Count - 1;
+        UpdateEnemyPosition(behaviour, spawnIndex);
     }
 
     public void SpawnEnemy(int count, int stage)
@@ -82,10 +91,17 @@ public class EnemyContainer : MonoBehaviour
             // VContainerで依存性を注入
             _resolver.Inject(e);
             
-            e.transform.position = _positions[_currentEnemies.Count];
             e.transform.localScale = new Vector3(1, 1, 1);
-            e.Init(enemyData, stage);
+            
+            // リストに追加してからInit
             _currentEnemies.Add(e);
+            
+            // 敵の初期化
+            e.Init(enemyData, stage);
+            
+            // 整数ベースの位置システムで初期位置を設定
+            var spawnIndex = _currentEnemies.Count - 1;
+            UpdateEnemyPosition(e, spawnIndex);
         }
     }
     
@@ -234,9 +250,53 @@ public class EnemyContainer : MonoBehaviour
             return;
         }
         
-        _positions.Add(this.transform.position + new Vector3(-alignment * 2, 0, 0));
-        _positions.Add(this.transform.position + new Vector3(-alignment, 0, 0));
-        _positions.Add(this.transform.position);
-        _positions.Add(this.transform.position + new Vector3(alignment, 0, 0));
+        // 基準位置（プレイヤーに最も近い位置）を設定
+        _basePosition = this.transform.position;
+    }
+    
+    /// <summary>
+    /// 敵をターンごとに移動させる（整数ベース）
+    /// </summary>
+    public void MoveEnemyOneStep(EnemyBase enemy)
+    {
+        var enemyIndex = GetEnemyIndex(enemy);
+        if (enemyIndex < 0) return;
+        
+        // 敵の位置を1つ前進
+        enemy.MoveForward();
+        
+        // 新しい位置に基づいて座標を更新
+        UpdateEnemyPosition(enemy, enemyIndex);
+    }
+    
+    /// <summary>
+    /// 敵の位置に基づいて実際の座標を計算・更新
+    /// </summary>
+    private void UpdateEnemyPosition(EnemyBase enemy, int enemyIndex)
+    {
+        // 自分より前にいる敵の最小位置を取得
+        var minPositionAhead = enemy.Position;
+        for (var i = 0; i < enemyIndex; i++)
+        {
+            if (i < _currentEnemies.Count && _currentEnemies[i])
+            {
+                minPositionAhead = Mathf.Min(minPositionAhead, _currentEnemies[i].Position);
+            }
+        }
+        
+        // 前の敵に追いつかないように位置を制限
+        var effectivePosition = enemy.Position;
+        if (enemyIndex > 0 && minPositionAhead <= enemy.Position)
+        {
+            // 前の敵より後ろに留まる
+            effectivePosition = Mathf.Max(enemy.Position, minPositionAhead + 1);
+        }
+        
+        // 最終的な位置を計算
+        var targetPosition = _basePosition + new Vector3(effectivePosition * 1.5f, 0, 0);
+
+        // 座標とHPバーを更新
+        enemy.transform.position = targetPosition;
+        enemy.UpdateHpBarPosition();
     }
 }

@@ -2403,7 +2403,7 @@ Transform:
   m_GameObject: {fileID: 198190387}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.3, y: 2.9, z: 10}
+  m_LocalPosition: {x: -3.5, y: 3, z: 10}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2426,6 +2426,8 @@ MonoBehaviour:
   coinPrefab: {fileID: 1812483531616101450, guid: 2c13a74f3d7c84bd29db8479f7091bf5, type: 3}
   alignment: 3
   treasure: {fileID: 1607858726}
+  attackDistance: 1
+  spawnDistance: 7
 --- !u!1 &213023586
 GameObject:
   m_ObjectHideFlags: 0
