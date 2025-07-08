@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using R3;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -99,12 +100,12 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         
         _currentEnemies[spawnIndex] = behaviour;
         
-        // 全ての敵の位置を更新
+        // 全ての敵の位置を更新（スポーン時は即座に配置）
         for (var i = 0; i < _currentEnemies.Count; i++)
         {
             if (_currentEnemies[i])
             {
-                UpdateEnemyPosition(i);
+                SetEnemyPositionImmediate(i);
             }
         }
     }
@@ -170,12 +171,12 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         
         _currentEnemies[spawnIndex] = e;
         
-        // 全ての敵の位置を更新
+        // 全ての敵の位置を更新（スポーン時は即座に配置）
         for (var i = 0; i < _currentEnemies.Count; i++)
         {
             if (_currentEnemies[i])
             {
-                UpdateEnemyPosition(i);
+                SetEnemyPositionImmediate(i);
             }
         }
     }
@@ -387,7 +388,26 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
     }
     
     /// <summary>
-    /// インデックスに基づいて敵の実際の座標を計算・更新
+    /// インデックスに基づいて敵の位置を即座に設定（スポーン時用）
+    /// </summary>
+    private void SetEnemyPositionImmediate(int enemyIndex)
+    {
+        if (enemyIndex < 0 || enemyIndex >= _currentEnemies.Count) return;
+        
+        var enemy = _currentEnemies[enemyIndex];
+        if (!enemy) return;
+        
+        // インデックスに応じて距離を計算
+        var distanceFromPlayer = enemyIndex * alignment;
+        var targetPosition = this.transform.position + new Vector3(distanceFromPlayer, 0, 0);
+
+        // 即座に位置を設定
+        enemy.transform.position = targetPosition;
+        enemy.UpdateHpBarPosition();
+    }
+
+    /// <summary>
+    /// インデックスに基づいて敵の実際の座標を計算・更新（アニメーション付き）
     /// </summary>
     private void UpdateEnemyPosition(int enemyIndex)
     {
@@ -400,8 +420,13 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         var distanceFromPlayer = enemyIndex * alignment;
         var targetPosition = this.transform.position + new Vector3(distanceFromPlayer, 0, 0);
 
-        // 座標とHPバーを更新
-        enemy.transform.position = targetPosition;
-        enemy.UpdateHpBarPosition();
+        // DOTweenで滑らかな移動アニメーション
+        enemy.transform.DOMove(targetPosition, 0.5f)
+            .SetEase(Ease.OutQuad)
+            .OnUpdate(() => {
+                // アニメーション中もHPバーの位置を更新
+                enemy.UpdateHpBarPosition();
+            })
+            .SetLink(enemy.gameObject);
     }
 }
