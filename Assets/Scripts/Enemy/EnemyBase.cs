@@ -20,7 +20,6 @@ public class EnemyBase : MonoBehaviour, IEntity
     public int Health { get; protected set; }
     public int MaxHealth { get; protected set; }
     public Dictionary<StatusEffectType, int> StatusEffectStacks { get; } = new();
-    public int Position { get; private set; } = 5;
 
     protected int TurnCount = 0;
     protected int Stage = 0;
@@ -43,19 +42,24 @@ public class EnemyBase : MonoBehaviour, IEntity
     }
     
     /// <summary>
-    /// 敵の位置を1つ前進させる
-    /// </summary>
-    public void MoveForward()
-    {
-        if (Position > 0) Position--;
-    }
-    
-    /// <summary>
     /// 攻撃距離に到達したかチェック
     /// </summary>
     private bool IsInAttackRange()
     {
-        return Position <= Data.attackRange;
+        var currentIndex = EnemyContainer.Instance.GetEnemyIndex(this);
+        if (currentIndex < 0) return false;
+        
+        // 実際の距離ベースで判定
+        // インデックスに応じて直接距離を計算
+        var distanceFromPlayer = currentIndex * 1.5f + 2f;
+        
+        // attackRangeを距離として解釈
+        // attackRange 0: 近接攻撃（距離2f以下）
+        // attackRange 1: 短距離攻撃（距離4f以下）
+        // attackRange 2: 中距離攻撃（距離6f以下）
+        var maxAttackDistance = Data.attackRange * 2f + 2f; // 2, 4, 6, 8...
+        
+        return distanceFromPlayer <= maxAttackDistance;
     }
 
     public async UniTask UpdateStatusEffects()

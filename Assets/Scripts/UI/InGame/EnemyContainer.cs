@@ -9,7 +9,7 @@ using UnityEngine;
 using VContainer;
 using VContainer.Unity;
 
-public class EnemyContainer : MonoBehaviour
+public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
 {
     [System.Serializable]
     internal class EnemyData
@@ -18,20 +18,18 @@ public class EnemyContainer : MonoBehaviour
         public float probability;
     }
     
-    public static EnemyContainer Instance { get; private set; }
-
     [SerializeField] private GameObject enemyBasePrefab;
     [SerializeField] private GameObject enemyHpSliderPrefab;
     [SerializeField] private GameObject coinPrefab;
     [SerializeField] private float alignment = 4;
     [SerializeField] private Treasure treasure;
-    [SerializeField] private float attackDistance = 2f; // 近接攻撃の距離
-    [SerializeField] private float spawnDistance = 8f; // 敵の出現距離（右側から）
+    [SerializeField] private int spawnDistance = 5; // 敵がスポーンするインデックス（後方から）
     public readonly ReactiveProperty<int> DefeatedEnemyCount = new(0);
     private readonly List<EnemyBase> _currentEnemies = new();
-    private Vector3 _basePosition; // 基準位置（プレイヤーに最も近い位置）
     private const int ENEMY_NUM = 4;
     private int _gainedExp;
+    private int _pendingSpawnCount; // スポーン待ちの敵の数
+    private int _spawnStage; // スポーンする敵のステージレベル
     
     private IContentService _contentService;
     private IRandomService _randomService;
@@ -45,9 +43,13 @@ public class EnemyContainer : MonoBehaviour
         _resolver = resolver;
     }
 
-    public int GetCurrentEnemyCount() => _currentEnemies.Count;
-    public List<EnemyBase> GetAllEnemies() => _currentEnemies;
-    public EnemyBase GetRandomEnemy() => _currentEnemies[_randomService.RandomRange(0, _currentEnemies.Count)];
+    public int GetCurrentEnemyCount() => _currentEnemies.Count(e => e != null);
+    public List<EnemyBase> GetAllEnemies() => _currentEnemies.Where(e => e != null).ToList();
+    public EnemyBase GetRandomEnemy() 
+    {
+        var validEnemies = GetAllEnemies();
+        return validEnemies.Count > 0 ? validEnemies[_randomService.RandomRange(0, validEnemies.Count)] : null;
+    }
     public int GetEnemyIndex(EnemyBase enemy) => _currentEnemies.IndexOf(enemy);
     public GameObject GetHpSliderPrefab() => enemyHpSliderPrefab;
     public GameObject GetCoinPrefab() => coinPrefab;
@@ -59,71 +61,140 @@ public class EnemyContainer : MonoBehaviour
         // ボスの場合はEnemyBaseのサブクラスを取得して使用する
         var e = Instantiate(enemyBasePrefab, this.transform);
         Destroy(e.GetComponent<EnemyBase>());
-        var type = System.Type.GetType(bossData.className);
-        Debug.Log(bossData.className);
+        var type = Type.GetType(bossData.className);
         var behaviour = e.AddComponent(type) as EnemyBase;
+        
+        if (!behaviour) return;
         
         // VContainerで依存性を注入
         _resolver.Inject(behaviour);
         
         e.transform.localScale = new Vector3(1, 1, 1);
         
-        // リストに追加してからInit
-        _currentEnemies.Add(behaviour);
-        
         // ボスの初期化
         behaviour.Init(bossData, stage);
         
-        // 整数ベースの位置システムで初期位置を設定
-        var spawnIndex = _currentEnemies.Count - 1;
-        UpdateEnemyPosition(behaviour, spawnIndex);
+        // 最も後ろの空いている位置を見つけてスポーンする（ボス用）
+        var spawnIndex = -1;
+        
+        // 最低spawnDistance以降の位置を探す
+        for (var i = spawnDistance; i < _currentEnemies.Count; i++)
+        {
+            if (!_currentEnemies[i])
+            {
+                spawnIndex = i;
+                break;
+            }
+        }
+        
+        // 空いている位置がない場合は、リストを拡張して最後尾に追加
+        if (spawnIndex == -1)
+        {
+            spawnIndex = Math.Max(spawnDistance, _currentEnemies.Count);
+            while (_currentEnemies.Count <= spawnIndex)
+            {
+                _currentEnemies.Add(null);
+            }
+        }
+        
+        _currentEnemies[spawnIndex] = behaviour;
+        
+        // 全ての敵の位置を更新
+        for (var i = 0; i < _currentEnemies.Count; i++)
+        {
+            if (_currentEnemies[i])
+            {
+                UpdateEnemyPosition(i);
+            }
+        }
     }
 
+    /// <summary>
+    /// スポーン待ちの敵を設定する
+    /// </summary>
     public void SpawnEnemy(int count, int stage)
     {
         count = count > ENEMY_NUM ? ENEMY_NUM : count;
         if (count <= 0) return;
-        for(var i = 0; i < count; i++)
+        
+        _pendingSpawnCount = count;
+        _spawnStage = stage;
+        
+        // 最初の1体は即座にスポーン
+        if (_pendingSpawnCount > 0)
         {
-            var enemyData = _contentService.GetRandomEnemy();
-            var e = Instantiate(enemyBasePrefab, this.transform).GetComponent<EnemyBase>();
-            
-            // VContainerで依存性を注入
-            _resolver.Inject(e);
-            
-            e.transform.localScale = new Vector3(1, 1, 1);
-            
-            // リストに追加してからInit
-            _currentEnemies.Add(e);
-            
-            // 敵の初期化
-            e.Init(enemyData, stage);
-            
-            // 整数ベースの位置システムで初期位置を設定
-            var spawnIndex = _currentEnemies.Count - 1;
-            UpdateEnemyPosition(e, spawnIndex);
+            SpawnSingleEnemy(_spawnStage);
+            _pendingSpawnCount--;
+        }
+    }
+    
+    /// <summary>
+    /// 敵を1体だけスポーンする
+    /// </summary>
+    public void SpawnSingleEnemy(int stage)
+    {
+        var enemyData = _contentService.GetRandomEnemy();
+        var e = Instantiate(enemyBasePrefab, this.transform).GetComponent<EnemyBase>();
+        
+        // VContainerで依存性を注入
+        _resolver.Inject(e);
+        
+        e.transform.localScale = new Vector3(1, 1, 1);
+        
+        // 敵の初期化
+        e.Init(enemyData, stage);
+        
+        // 最も後ろの空いている位置を見つけてスポーンする
+        var spawnIndex = -1;
+        
+        // 最低spawnDistance以降の位置を探す
+        for (var i = spawnDistance; i < _currentEnemies.Count; i++)
+        {
+            if (!_currentEnemies[i])
+            {
+                spawnIndex = i;
+                break;
+            }
+        }
+        
+        // 空いている位置がない場合は、リストを拡張して最後尾に追加
+        if (spawnIndex == -1)
+        {
+            // spawnDistanceより後ろの最初の位置、または既存の敵がいる最も後ろの位置の次
+            spawnIndex = Math.Max(spawnDistance, _currentEnemies.Count);
+            while (_currentEnemies.Count <= spawnIndex)
+            {
+                _currentEnemies.Add(null);
+            }
+        }
+        
+        _currentEnemies[spawnIndex] = e;
+        
+        // 全ての敵の位置を更新
+        for (var i = 0; i < _currentEnemies.Count; i++)
+        {
+            if (_currentEnemies[i])
+            {
+                UpdateEnemyPosition(i);
+            }
         }
     }
     
     public void DamageAllEnemies(int damage)
     {
-        for(var i = 0; i < _currentEnemies.Count; i++)
-        {
-            _currentEnemies[i].Damage(AttackType.All, damage);
-        }
+        foreach (var e in _currentEnemies)
+            e?.Damage(AttackType.All, damage);
     }
     
     public void HealAllEnemies(int heal)
     {
-        for(var i = 0; i < _currentEnemies.Count; i++)
-        {
-            _currentEnemies[i].Heal(heal);
-        }
+        foreach (var e in _currentEnemies)
+            e?.Heal(heal);
     }
     
     public void HealEnemy(int index, int heal)
     {
-        if (index < 0 || index >= _currentEnemies.Count) return;
+        if (index < 0 || index >= _currentEnemies.Count || !_currentEnemies[index]) return;
         _currentEnemies[index].Heal(heal);
     }
 
@@ -132,11 +203,18 @@ public class EnemyContainer : MonoBehaviour
         var enemyBase = enemy.GetComponent<EnemyBase>();
         DefeatedEnemyCount.Value++;
         _gainedExp += enemyBase.Exp;
-        _currentEnemies.Remove(enemyBase);
+        
+        // リストから削除（nullに置き換え）
+        var index = _currentEnemies.IndexOf(enemyBase);
+        if (index >= 0)
+        {
+            _currentEnemies[index] = null;
+        }
+        
         enemyBase.OnDisappear();
 
         // 全ての敵を倒したらステージ進行
-        if (_currentEnemies.Count == 0)
+        if (GetCurrentEnemyCount() == 0)
         {
             Physics2D.simulationMode = SimulationMode2D.Script;
             
@@ -199,7 +277,7 @@ public class EnemyContainer : MonoBehaviour
                 break;
             case AttackType.All:
                 ParticleManager.Instance.AllHitParticle(new Vector3(-3.7f, 3.3f, 0));
-                for(var i = 0; i < es.Count; i++) es[i].Damage(type, atk);
+                foreach (var e in es) e.Damage(type, atk);
                 break;
         } 
         
@@ -212,18 +290,24 @@ public class EnemyContainer : MonoBehaviour
     
     public void Action()
     {
+        // 待機中の敵がいれば1体スポーン
+        if (_pendingSpawnCount > 0)
+        {
+            SpawnSingleEnemy(_spawnStage);
+            _pendingSpawnCount--;
+        }
+        
         AttackPlayerAsync().Forget();
     }
 
     private async UniTaskVoid AttackPlayerAsync()
     {
-        if(_currentEnemies.Count == 0) return;
-        // 行動
-        for(var i = 0; i < _currentEnemies.Count; i ++)
+        if(GetCurrentEnemyCount() == 0) return;
+        // 行動 - null参照を防ぐため事前に有効な敵のリストを取得
+        var validEnemies = _currentEnemies.Where(e => e != null && e.gameObject).ToList();
+        foreach (var t in validEnemies)
         {
-            if (!_currentEnemies[i]?.gameObject) continue;
-            _currentEnemies[i].Action();
-            // 0.5秒待つ
+            t.Action();
             await UniTask.Delay(250);
         }
         
@@ -231,69 +315,90 @@ public class EnemyContainer : MonoBehaviour
         
         // 状態異常を更新
         await GameManager.Instance.Player.UpdateStatusEffects();
-        var tasks = _currentEnemies.ToList().Select(e => e.UpdateStatusEffects());
+        var tasks = _currentEnemies.Where(e => e != null).Select(e => e.UpdateStatusEffects());
         await UniTask.WhenAll(tasks);
 
-        if(_currentEnemies.Count > 0)
+        if(GetCurrentEnemyCount() > 0)
             GameManager.Instance.ChangeState(GameManager.GameState.Merge);
     }
 
-    public void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-        else
-        {
-            Destroy(this);
-            return;
-        }
-        
-        // 基準位置（プレイヤーに最も近い位置）を設定
-        _basePosition = this.transform.position;
-    }
-    
     /// <summary>
-    /// 敵をターンごとに移動させる（整数ベース）
+    /// 敵をターンごとに移動させる（インデックスベース）
     /// </summary>
     public void MoveEnemyOneStep(EnemyBase enemy)
     {
-        var enemyIndex = GetEnemyIndex(enemy);
-        if (enemyIndex < 0) return;
+        var currentIndex = GetEnemyIndex(enemy);
         
-        // 敵の位置を1つ前進
-        enemy.MoveForward();
-        
-        // 新しい位置に基づいて座標を更新
-        UpdateEnemyPosition(enemy, enemyIndex);
-    }
-    
-    /// <summary>
-    /// 敵の位置に基づいて実際の座標を計算・更新
-    /// </summary>
-    private void UpdateEnemyPosition(EnemyBase enemy, int enemyIndex)
-    {
-        // 自分より前にいる敵の最小位置を取得
-        var minPositionAhead = enemy.Position;
-        for (var i = 0; i < enemyIndex; i++)
+        if (currentIndex < 0) 
         {
-            if (i < _currentEnemies.Count && _currentEnemies[i])
+            return; // 見つからない場合は移動しない
+        }
+        
+        // 1体だけの場合はインデックスベースで移動判定
+        var actualEnemyCount = _currentEnemies.Count(e => e != null);
+        if (actualEnemyCount == 1)
+        {
+            // 1体だけの場合は位置を直接移動
+            var currentEnemyIndex = GetEnemyIndex(enemy);
+            if (currentEnemyIndex > 0)
             {
-                minPositionAhead = Mathf.Min(minPositionAhead, _currentEnemies[i].Position);
+                var newIndex = currentEnemyIndex - 1;
+                _currentEnemies[currentEnemyIndex] = null;
+                _currentEnemies[newIndex] = enemy;
+                
+                // 全ての敵の位置を更新
+                for (var i = 0; i < _currentEnemies.Count; i++)
+                {
+                    if (_currentEnemies[i])
+                    {
+                        UpdateEnemyPosition(i);
+                    }
+                }
+                
+                return;
             }
         }
         
-        // 前の敵に追いつかないように位置を制限
-        var effectivePosition = enemy.Position;
-        if (enemyIndex > 0 && minPositionAhead <= enemy.Position)
+        if (currentIndex <= 0) 
         {
-            // 前の敵より後ろに留まる
-            effectivePosition = Mathf.Max(enemy.Position, minPositionAhead + 1);
+            return; // 既に最前列の場合は移動しない
         }
         
-        // 最終的な位置を計算
-        var targetPosition = _basePosition + new Vector3(effectivePosition * 1.5f, 0, 0);
+        // 前の位置に敵がいるかチェック（追い越し防止）
+        var frontIndex = currentIndex - 1;
+        if (_currentEnemies[frontIndex])
+        {
+            return;
+        }
+        
+        
+        // 敵を新しい位置に移動（nullエントリーに配慮したシンプルな移動）
+        _currentEnemies[currentIndex] = null;
+        _currentEnemies[currentIndex - 1] = enemy;
+        
+        // すべての敵の位置を再計算
+        for (var i = 0; i < _currentEnemies.Count; i++)
+        {
+            if (_currentEnemies[i])
+            {
+                UpdateEnemyPosition(i);
+            }
+        }
+    }
+    
+    /// <summary>
+    /// インデックスに基づいて敵の実際の座標を計算・更新
+    /// </summary>
+    private void UpdateEnemyPosition(int enemyIndex)
+    {
+        if (enemyIndex < 0 || enemyIndex >= _currentEnemies.Count) return;
+        
+        var enemy = _currentEnemies[enemyIndex];
+        if (!enemy) return;
+        
+        // インデックスに応じて距離を計算
+        var distanceFromPlayer = enemyIndex * alignment;
+        var targetPosition = this.transform.position + new Vector3(distanceFromPlayer, 0, 0);
 
         // 座標とHPバーを更新
         enemy.transform.position = targetPosition;

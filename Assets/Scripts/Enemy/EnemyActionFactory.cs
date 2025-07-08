@@ -76,7 +76,7 @@ public static class EnemyActionFactory
         {
             name = "増援",
             type = ActionType.Buff,
-            Action = () => { EnemyContainer.Instance.SpawnEnemy(1, stage); }
+            Action = () => { EnemyContainer.Instance.SpawnSingleEnemy(stage); }
         };
     }
     
