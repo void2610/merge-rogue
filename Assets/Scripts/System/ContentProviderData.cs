@@ -62,6 +62,10 @@ public class ContentProviderData : ScriptableObject
     [Header("レリック重複回避設定")]
     [SerializeField] private int relicRetryCount = 3; // 重複回避の再試行回数
     
+    [Header("敵難易度倍率設定（バランス調整用）")]
+    [SerializeField] private float baseEnemyHealthMultiplier = 1.0f;  // 基本ヘルス倍率
+    [SerializeField] private float baseEnemyAttackMultiplier = 1.0f;  // 基本攻撃力倍率
+    
     // プロパティでデータにアクセス
     public List<ContentDataList> EnemyList => enemyList;
     public List<ContentDataList> BossList => bossList;
@@ -83,6 +87,10 @@ public class ContentProviderData : ScriptableObject
     public int BallRemovePrice => ballRemovePrice;
     public int BallUpgradePrice => ballUpgradePrice;
     public int RelicRetryCount => relicRetryCount;
+    
+    // 敵難易度倍率設定
+    public float BaseEnemyHealthMultiplier => baseEnemyHealthMultiplier;
+    public float BaseEnemyAttackMultiplier => baseEnemyAttackMultiplier;
     
     /// <summary>
     /// データ初期化処理

@@ -251,18 +251,24 @@ public class EnemyBase : MonoBehaviour, IEntity
         };
     }
     
-    public virtual void Init(EnemyData d, int stage, IRandomService randomService)
+    public virtual void Init(EnemyData d, int stage, IRandomService randomService, IEnemyDifficultyService difficultyService, int act = 1)
     {
         RandomService = randomService;
         // 敵のデータを設定
         Data = d;
         Stage = stage;
-        Magnification = (stage * 0.8f)+1;
-        MaxHealth = (int)(RandomService.RandomRange(d.maxHealthMin, d.maxHealthMax) * Magnification);
+        
+        // 難易度サービスから倍率を取得
+        Magnification = difficultyService.CalculateMagnification(stage, act, d.enemyType);
+        var healthMagnification = difficultyService.CalculateHealthMagnification(Magnification, d.enemyType);
+        var attackMagnification = difficultyService.CalculateAttackMagnification(Magnification, d.enemyType);
+        var rewardMagnification = difficultyService.CalculateRewardMagnification(Magnification, d.enemyType);
+        
+        MaxHealth = (int)(RandomService.RandomRange(d.maxHealthMin, d.maxHealthMax) * healthMagnification);
         Health = MaxHealth;
-        Attack = (int)(d.attack * (Magnification * 0.2f));
-        Exp = d.exp + (int)(Magnification);
-        Coin = d.coin + (int)(Magnification);
+        Attack = (int)(d.attack * attackMagnification);
+        Exp = d.exp + (int)(Magnification * rewardMagnification);
+        Coin = d.coin + (int)(Magnification * rewardMagnification);
         ActionInterval = d.interval;
         
         // スプライトアニメーションを設定

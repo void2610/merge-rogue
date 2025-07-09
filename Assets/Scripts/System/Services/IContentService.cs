@@ -121,4 +121,27 @@ public interface IContentService
     /// </summary>
     /// <param name="multiplier">価格倍率</param>
     void SetShopPriceMultiplier(float multiplier);
+    
+    // ====== 敵難易度関連 ======
+    
+    /// <summary>
+    /// 全体的な敵難易度倍率（動的変更可能）
+    /// </summary>
+    float GlobalEnemyDifficultyMultiplier { get; }
+    
+    /// <summary>
+    /// 全体的な敵難易度倍率を設定する（レリック効果用）
+    /// </summary>
+    /// <param name="multiplier">難易度倍率</param>
+    void SetGlobalEnemyDifficultyMultiplier(float multiplier);
+    
+    /// <summary>
+    /// 敵のヘルス基本倍率を取得する（ContentProviderDataから）
+    /// </summary>
+    float BaseEnemyHealthMultiplier { get; }
+    
+    /// <summary>
+    /// 敵の攻撃力基本倍率を取得する（ContentProviderDataから）
+    /// </summary>
+    float BaseEnemyAttackMultiplier { get; }
 }

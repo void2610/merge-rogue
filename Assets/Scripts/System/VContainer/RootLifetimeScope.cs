@@ -20,6 +20,7 @@ public class RootLifetimeScope : LifetimeScope
         builder.RegisterInstance(cursorConfiguration);
         builder.Register<IInputProvider, InputProviderService>(Lifetime.Singleton);
         builder.Register<IGameSettingsService, GameSettingsService>(Lifetime.Singleton);
+        builder.Register<IEnemyDifficultyService, EnemyDifficultyService>(Lifetime.Singleton);
         builder.RegisterComponentInHierarchy<BgmManager>();
         builder.RegisterComponentInHierarchy<SeManager>();
         

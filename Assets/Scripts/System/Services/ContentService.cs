@@ -15,6 +15,11 @@ public class ContentService : IContentService
 
     public int Act { get; private set; } = 0;
     public float ShopPriceMultiplier { get; private set; } = 1.0f;
+    
+    // 敵難易度関連プロパティ
+    public float GlobalEnemyDifficultyMultiplier { get; private set; } = 1.0f;
+    public float BaseEnemyHealthMultiplier => _data.BaseEnemyHealthMultiplier;
+    public float BaseEnemyAttackMultiplier => _data.BaseEnemyAttackMultiplier;
 
     public StatusEffectDataList StatusEffectList => _data.StatusEffectList;
     
@@ -149,5 +154,12 @@ public class ContentService : IContentService
         
         // フォールバックとして最後の要素を返す
         return contentDataList.list.Last().data;
+    }
+    
+    // ====== 敵難易度関連メソッド ======
+    
+    public void SetGlobalEnemyDifficultyMultiplier(float multiplier)
+    {
+        GlobalEnemyDifficultyMultiplier = multiplier;
     }
 }

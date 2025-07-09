@@ -17,9 +17,9 @@ public class ShieldBoss : EnemyBase
         return EnemyActionFactory.ShieldAction(this, _shieldStack);
     }
     
-    public override void Init(EnemyData d, int stage, IRandomService randomService)
+    public override void Init(EnemyData d, int stage, IRandomService randomService, IEnemyDifficultyService difficultyService, int act = 1)
     {
         _shieldStack = (int) ((stage + 1) * 0.6f * SHIELD_STACK);
-        base.Init(d, stage, randomService);
+        base.Init(d, stage, randomService, difficultyService, act);
     }
 }
