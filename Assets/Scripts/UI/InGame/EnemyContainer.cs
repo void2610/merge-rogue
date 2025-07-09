@@ -52,6 +52,7 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
     }
 
     public int GetCurrentEnemyCount() => _currentEnemies.Count(e => e);
+    public int GetRemainingEnemyCount() => GetCurrentEnemyCount() + _pendingSpawnCount;
     public List<EnemyBase> GetAllEnemies() => _currentEnemies.Where(e => e).ToList();
     public EnemyBase GetRandomEnemy() 
     {
@@ -125,7 +126,7 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         _pendingSpawnCount = count;
         _spawnStage = stage;
         
-        // 最初の1体は即座にスポーン
+        // 最初の1体は即座にスポーン（ステージ開始時）
         if (_pendingSpawnCount > 0)
         {
             if (SpawnSingleEnemy(_spawnStage))
@@ -220,8 +221,8 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         
         enemyBase.OnDisappear();
 
-        // 全ての敵を倒したらステージ進行
-        if (GetCurrentEnemyCount() == 0)
+        // 全ての敵を倒し、スポーン予定の敵もいなければステージ進行
+        if (GetRemainingEnemyCount() == 0)
         {
             // リストを再初期化（Clearは不要、新しいリストで上書き）
             _currentEnemies = new List<EnemyBase>(new EnemyBase[MAX_ENEMY_COUNT]);
@@ -300,7 +301,31 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
     
     public void Action()
     {
-        // 待機中の敵がいれば1体スポーン
+        AttackPlayerAsync().Forget();
+    }
+
+    private async UniTaskVoid AttackPlayerAsync()
+    {
+        // 現在の敵がいる場合のみ行動処理を実行
+        if(GetCurrentEnemyCount() > 0)
+        {
+            // 行動 - null参照を防ぐため事前に有効な敵のリストを取得
+            var validEnemies = _currentEnemies.Where(e => e != null && e.gameObject).ToList();
+            foreach (var t in validEnemies)
+            {
+                t.Action();
+                await UniTask.Delay(250);
+            }
+            
+            await UniTask.Delay(100);
+            
+            // 状態異常を更新
+            await GameManager.Instance.Player.UpdateStatusEffects();
+            var tasks = _currentEnemies.Where(e => e != null).Select(e => e.UpdateStatusEffects());
+            await UniTask.WhenAll(tasks);
+        }
+
+        // 敵の行動が全て終わった後に新しい敵をスポーン
         if (_pendingSpawnCount > 0)
         {
             // スポーンに成功した場合のみカウントを減らす
@@ -309,29 +334,8 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
                 _pendingSpawnCount--;
             }
         }
-        
-        AttackPlayerAsync().Forget();
-    }
 
-    private async UniTaskVoid AttackPlayerAsync()
-    {
-        if(GetCurrentEnemyCount() == 0) return;
-        // 行動 - null参照を防ぐため事前に有効な敵のリストを取得
-        var validEnemies = _currentEnemies.Where(e => e != null && e.gameObject).ToList();
-        foreach (var t in validEnemies)
-        {
-            t.Action();
-            await UniTask.Delay(250);
-        }
-        
-        await UniTask.Delay(100);
-        
-        // 状態異常を更新
-        await GameManager.Instance.Player.UpdateStatusEffects();
-        var tasks = _currentEnemies.Where(e => e != null).Select(e => e.UpdateStatusEffects());
-        await UniTask.WhenAll(tasks);
-
-        if(GetCurrentEnemyCount() > 0)
+        if(GetRemainingEnemyCount() > 0)
             GameManager.Instance.ChangeState(GameManager.GameState.Merge);
     }
 

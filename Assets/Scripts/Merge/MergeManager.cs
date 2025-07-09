@@ -210,8 +210,8 @@ public class MergeManager : MonoBehaviour
         
         attackCountUI.SetAttackCount(0);
         
-        // 敵が残っていたら敵の攻撃へ
-        if (EnemyContainer.Instance.GetCurrentEnemyCount() > 0)
+        // 敵が残っていたら敵の攻撃へ（スポーン予定の敵も含む）
+        if (EnemyContainer.Instance.GetRemainingEnemyCount() > 0)
         {
             await UniTask.Delay(750);
             GameManager.Instance.ChangeState(GameManager.GameState.EnemyAttack);
