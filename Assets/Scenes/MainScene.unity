@@ -2426,7 +2426,7 @@ MonoBehaviour:
   coinPrefab: {fileID: 1812483531616101450, guid: 2c13a74f3d7c84bd29db8479f7091bf5, type: 3}
   alignment: 2.3
   treasure: {fileID: 1607858726}
-  spawnDistance: 4
+  spawnDistance: 3
 --- !u!1 &213023586
 GameObject:
   m_ObjectHideFlags: 0

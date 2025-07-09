@@ -126,12 +126,18 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         _pendingSpawnCount = count;
         _spawnStage = stage;
         
-        // 最初の1体は即座にスポーン（ステージ開始時）
-        if (_pendingSpawnCount > 0)
+        // 最初の最大3体は即座にスポーン（ステージ開始時）
+        int initialSpawnCount = Math.Min(3, _pendingSpawnCount);
+        for (int i = 0; i < initialSpawnCount; i++)
         {
             if (SpawnSingleEnemy(_spawnStage))
             {
                 _pendingSpawnCount--;
+            }
+            else
+            {
+                // スポーンに失敗した場合はループを抜ける（スペースがない）
+                break;
             }
         }
     }
