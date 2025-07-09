@@ -71,13 +71,6 @@ public interface IContentService
     /// <returns>ボールデータ</returns>
     BallData GetBallDataFromClassName(string className);
     
-    /// <summary>
-    /// ボールベース画像を取得する
-    /// </summary>
-    /// <param name="type">ボール形状タイプ</param>
-    /// <returns>ボールベース画像</returns>
-    Sprite GetBallBaseImage(BallShapeType type);
-    
     // ====== レリック関連メソッド ======
     
     /// <summary>

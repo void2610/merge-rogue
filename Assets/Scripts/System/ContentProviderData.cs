@@ -41,9 +41,6 @@ public class ContentProviderData : ScriptableObject
     [Header("ステータスエフェクトデータ")]
     [SerializeField] private StatusEffectDataList statusEffectList;
     
-    [Header("ボールベース画像")]
-    [SerializeField] private SerializableDictionary<BallShapeType, Sprite> ballBaseImages;
-    
     [Header("レアリティ確率設定")]
     [SerializeField, Range(0f, 1f)] private float commonProbability = 0.40f;   // 40%
     [SerializeField, Range(0f, 1f)] private float uncommonProbability = 0.70f; // 30% (累積70%)
@@ -72,7 +69,6 @@ public class ContentProviderData : ScriptableObject
     public BallDataList BallList => ballList;
     public RelicDataList RelicList => relicList;
     public StatusEffectDataList StatusEffectList => statusEffectList;
-    public SerializableDictionary<BallShapeType, Sprite> BallBaseImages => ballBaseImages;
     
     // 設定値アクセス用プロパティ
     public float CommonProbability => commonProbability;

@@ -31,16 +31,10 @@ public class EnemyBase : MonoBehaviour, IEntity
     private Slider _healthSlider;
     private TextMeshProUGUI _attackCountText;
     private Image _attackIcon;
-    private IRandomService _randomService;
+    protected IRandomService RandomService;
     
     public StatusEffectUI StatusEffectUI { get; private set; }
 
-    [Inject]
-    public void InjectDependencies(IRandomService randomService)
-    {
-        _randomService = randomService;
-    }
-    
     /// <summary>
     /// 攻撃距離に到達したかチェック
     /// </summary>
@@ -195,7 +189,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         if (total <= 0f)
             throw new ArgumentException("Total probability must be greater than zero");
 
-        var r = _randomService?.RandomRange(0f, total) ?? UnityEngine.Random.Range(0f, total);
+        var r = RandomService?.RandomRange(0f, total) ?? UnityEngine.Random.Range(0f, total);
 
         var cumulative = 0f;
         foreach (var item in list)
@@ -257,13 +251,14 @@ public class EnemyBase : MonoBehaviour, IEntity
         };
     }
     
-    public virtual void Init(EnemyData d, int stage)
+    public virtual void Init(EnemyData d, int stage, IRandomService randomService)
     {
+        RandomService = randomService;
         // 敵のデータを設定
         Data = d;
         Stage = stage;
         Magnification = (stage * 0.8f)+1;
-        MaxHealth = (int)(_randomService.RandomRange(d.maxHealthMin, d.maxHealthMax) * Magnification);
+        MaxHealth = (int)(RandomService.RandomRange(d.maxHealthMin, d.maxHealthMax) * Magnification);
         Health = MaxHealth;
         Attack = (int)(d.attack * (Magnification * 0.2f));
         Exp = d.exp + (int)(Magnification);

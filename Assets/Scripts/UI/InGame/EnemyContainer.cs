@@ -34,7 +34,6 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
     
     private IContentService _contentService;
     private IRandomService _randomService;
-    private IObjectResolver _resolver;
     
     protected override void Awake()
     {
@@ -44,11 +43,10 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
     }
     
     [Inject]
-    public void InjectDependencies(IContentService contentService, IRandomService randomService, IObjectResolver resolver)
+    public void InjectDependencies(IContentService contentService, IRandomService randomService)
     {
         _contentService = contentService;
         _randomService = randomService;
-        _resolver = resolver;
     }
 
     public int GetCurrentEnemyCount() => _currentEnemies.Count(e => e);
@@ -95,13 +93,10 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         
         if (!behaviour) return;
         
-        // VContainerで依存性を注入
-        _resolver.Inject(behaviour);
-        
         e.transform.localScale = new Vector3(1, 1, 1);
         
         // ボスの初期化
-        behaviour.Init(bossData, stage);
+        behaviour.Init(bossData, stage, _randomService);
         
         _currentEnemies[spawnIndex] = behaviour;
         
@@ -172,13 +167,10 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         var enemyData = _contentService.GetRandomEnemy();
         var e = Instantiate(enemyBasePrefab, this.transform).GetComponent<EnemyBase>();
         
-        // VContainerで依存性を注入
-        _resolver.Inject(e);
-        
         e.transform.localScale = new Vector3(1, 1, 1);
         
         // 敵の初期化
-        e.Init(enemyData, stage);
+        e.Init(enemyData, stage, _randomService);
         
         _currentEnemies[spawnIndex] = e;
         

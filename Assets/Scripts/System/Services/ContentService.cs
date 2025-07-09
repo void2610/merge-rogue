@@ -107,11 +107,6 @@ public class ContentService : IContentService
         Act++;
     }
     
-    public Sprite GetBallBaseImage(BallShapeType type)
-    {
-        return _data.BallBaseImages[type];
-    }
-    
     // ====== プライベートメソッド ======
     
     /// <summary>
