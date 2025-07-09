@@ -22,12 +22,12 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
     [SerializeField] private GameObject enemyBasePrefab;
     [SerializeField] private GameObject enemyHpSliderPrefab;
     [SerializeField] private GameObject coinPrefab;
-    [SerializeField] private float alignment = 4;
+    [SerializeField] private float alignment = 3;
     [SerializeField] private Treasure treasure;
     [SerializeField] private int spawnDistance = 5; // 敵がスポーンするインデックス（後方から）
     public readonly ReactiveProperty<int> DefeatedEnemyCount = new(0);
-    private readonly List<EnemyBase> _currentEnemies = new();
-    private const int ENEMY_NUM = 4;
+    private List<EnemyBase> _currentEnemies;
+    private const int MAX_ENEMY_COUNT = 6; // 最大敵数 (spawnDistance + 1)
     private int _gainedExp;
     private int _pendingSpawnCount; // スポーン待ちの敵の数
     private int _spawnStage; // スポーンする敵のステージレベル
@@ -35,6 +35,13 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
     private IContentService _contentService;
     private IRandomService _randomService;
     private IObjectResolver _resolver;
+    
+    protected override void Awake()
+    {
+        base.Awake();
+        // 固定サイズのリストを初期化（全てnullで埋める）
+        _currentEnemies = new List<EnemyBase>(new EnemyBase[MAX_ENEMY_COUNT]);
+    }
     
     [Inject]
     public void InjectDependencies(IContentService contentService, IRandomService randomService, IObjectResolver resolver)
@@ -57,6 +64,26 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
 
     public void SpawnBoss(int stage)
     {
+        // 最も後ろの空いている位置を見つける（スポーン前にチェック）
+        var spawnIndex = -1;
+        
+        // 最低spawnDistance以降の位置を探す（MAX_ENEMY_COUNTまで）
+        for (var i = spawnDistance; i < MAX_ENEMY_COUNT; i++)
+        {
+            if (!_currentEnemies[i])
+            {
+                spawnIndex = i;
+                break;
+            }
+        }
+        
+        // 空いている位置がない場合は、スポーンをスキップ
+        if (spawnIndex == -1)
+        {
+            return;
+        }
+        
+        // スポーン可能な場合のみボスを作成
         var bossData = _contentService.GetRandomBoss();
         
         // ボスの場合はEnemyBaseのサブクラスを取得して使用する
@@ -75,29 +102,6 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         // ボスの初期化
         behaviour.Init(bossData, stage);
         
-        // 最も後ろの空いている位置を見つけてスポーンする（ボス用）
-        var spawnIndex = -1;
-        
-        // 最低spawnDistance以降の位置を探す
-        for (var i = spawnDistance; i < _currentEnemies.Count; i++)
-        {
-            if (!_currentEnemies[i])
-            {
-                spawnIndex = i;
-                break;
-            }
-        }
-        
-        // 空いている位置がない場合は、リストを拡張して最後尾に追加
-        if (spawnIndex == -1)
-        {
-            spawnIndex = Math.Max(spawnDistance, _currentEnemies.Count);
-            while (_currentEnemies.Count <= spawnIndex)
-            {
-                _currentEnemies.Add(null);
-            }
-        }
-        
         _currentEnemies[spawnIndex] = behaviour;
         
         // 全ての敵の位置を更新（スポーン時は即座に配置）
@@ -115,7 +119,7 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
     /// </summary>
     public void SpawnEnemy(int count, int stage)
     {
-        count = count > ENEMY_NUM ? ENEMY_NUM : count;
+        count = count > MAX_ENEMY_COUNT ? MAX_ENEMY_COUNT : count;
         if (count <= 0) return;
         
         _pendingSpawnCount = count;
@@ -124,16 +128,40 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         // 最初の1体は即座にスポーン
         if (_pendingSpawnCount > 0)
         {
-            SpawnSingleEnemy(_spawnStage);
-            _pendingSpawnCount--;
+            if (SpawnSingleEnemy(_spawnStage))
+            {
+                _pendingSpawnCount--;
+            }
         }
     }
     
     /// <summary>
     /// 敵を1体だけスポーンする
     /// </summary>
-    public void SpawnSingleEnemy(int stage)
+    /// <returns>スポーンに成功した場合はtrue、失敗した場合はfalse</returns>
+    public bool SpawnSingleEnemy(int stage)
     {
+        // 最も後ろの空いている位置を見つける（スポーン前にチェック）
+        var spawnIndex = -1;
+        
+        // 最低spawnDistance以降の位置を探す（MAX_ENEMY_COUNTまで）
+        for (var i = spawnDistance; i < MAX_ENEMY_COUNT; i++)
+        {
+            if (!_currentEnemies[i])
+            {
+                spawnIndex = i;
+                break;
+            }
+        }
+        
+        // 空いている位置がない場合は、スポーンをスキップ
+        if (spawnIndex == -1)
+        {
+            // スポーン待ちカウントを維持（次のターンで再試行）
+            return false;
+        }
+        
+        // スポーン可能な場合のみ敵を作成
         var enemyData = _contentService.GetRandomEnemy();
         var e = Instantiate(enemyBasePrefab, this.transform).GetComponent<EnemyBase>();
         
@@ -145,30 +173,6 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         // 敵の初期化
         e.Init(enemyData, stage);
         
-        // 最も後ろの空いている位置を見つけてスポーンする
-        var spawnIndex = -1;
-        
-        // 最低spawnDistance以降の位置を探す
-        for (var i = spawnDistance; i < _currentEnemies.Count; i++)
-        {
-            if (!_currentEnemies[i])
-            {
-                spawnIndex = i;
-                break;
-            }
-        }
-        
-        // 空いている位置がない場合は、リストを拡張して最後尾に追加
-        if (spawnIndex == -1)
-        {
-            // spawnDistanceより後ろの最初の位置、または既存の敵がいる最も後ろの位置の次
-            spawnIndex = Math.Max(spawnDistance, _currentEnemies.Count);
-            while (_currentEnemies.Count <= spawnIndex)
-            {
-                _currentEnemies.Add(null);
-            }
-        }
-        
         _currentEnemies[spawnIndex] = e;
         
         // 全ての敵の位置を更新（スポーン時は即座に配置）
@@ -179,6 +183,8 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
                 SetEnemyPositionImmediate(i);
             }
         }
+        
+        return true;
     }
     
     public void DamageAllEnemies(int damage)
@@ -217,6 +223,9 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         // 全ての敵を倒したらステージ進行
         if (GetCurrentEnemyCount() == 0)
         {
+            // リストを再初期化（Clearは不要、新しいリストで上書き）
+            _currentEnemies = new List<EnemyBase>(new EnemyBase[MAX_ENEMY_COUNT]);
+            
             Physics2D.simulationMode = SimulationMode2D.Script;
             
             if (StageManager.CurrentStage.Type == StageType.Boss)
@@ -294,8 +303,11 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         // 待機中の敵がいれば1体スポーン
         if (_pendingSpawnCount > 0)
         {
-            SpawnSingleEnemy(_spawnStage);
-            _pendingSpawnCount--;
+            // スポーンに成功した場合のみカウントを減らす
+            if (SpawnSingleEnemy(_spawnStage))
+            {
+                _pendingSpawnCount--;
+            }
         }
         
         AttackPlayerAsync().Forget();
