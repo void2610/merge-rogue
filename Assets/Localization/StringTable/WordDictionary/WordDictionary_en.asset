@@ -19,7 +19,7 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 1471193014272
-    m_Localized: dad
+    m_Localized: decay
     m_Metadata:
       m_Items: []
   - m_Id: 7078503505920
@@ -238,6 +238,11 @@ MonoBehaviour:
   - m_Id: 30593365565440
     m_Localized: At the end of the turn, a number of Jamming Balls will appear in
       the Merge Area depending on the number of stacks.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8685936631078912
+    m_Localized: Each turn, a random ball will disappear depending on the number
+      of stacks.
     m_Metadata:
       m_Items: []
   references:

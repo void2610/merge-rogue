@@ -216,7 +216,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1471193014272
-    m_Key: TESDSSSSS
+    m_Key: StatusEffect_Decay_N
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8685936631078912
+    m_Key: StatusEffect_Decay_D
     m_Metadata:
       m_Items: []
   m_Metadata:
