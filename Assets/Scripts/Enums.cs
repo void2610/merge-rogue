@@ -102,6 +102,7 @@ public enum StatusEffectType
     Rage,
     Curse,
     Confusion,
+    Decay,
 }
 
 public enum StatusEffectTiming

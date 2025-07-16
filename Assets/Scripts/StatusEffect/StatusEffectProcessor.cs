@@ -218,6 +218,18 @@ public static class StatusEffectProcessor
                     MergeManager.Instance.CreateDisturbBall(stacks);
                 }
                 break;
+                
+            // 【Decay】腐敗 - 毎ターン終了時にスタック数分のランダムなボールを消滅させる
+            // 効果: プレイヤーのボールを直接削除してリソース圧迫、戦略的選択肢を制限する
+            case StatusEffectType.Decay:
+                if (entity is Player)
+                {
+                    for (var i = 0; i < stacks; i++)
+                    {
+                        MergeManager.Instance.RemoveRandomBall();
+                    }
+                }
+                break;
         }
     }
     

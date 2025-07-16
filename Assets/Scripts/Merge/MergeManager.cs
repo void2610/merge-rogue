@@ -93,6 +93,22 @@ public class MergeManager : MonoBehaviour
     public int GetBallCount() => _ballContainer.GetComponentsInChildren<Rigidbody2D>().Length;
     public void RemoveAllBalls() => _ballContainer.GetComponentsInChildren<Rigidbody2D>().ToList().ForEach(b => Destroy(b.gameObject));
     
+    /// <summary>
+    /// ランダムなボールを1つ削除する
+    /// </summary>
+    public void RemoveRandomBall()
+    {
+        var balls = _ballContainer.GetComponentsInChildren<Rigidbody2D>();
+        if (balls.Length == 0) return;
+        
+        var randomIndex = _randomService.RandomRange(0, balls.Length);
+        var targetBall = balls[randomIndex];
+        if (targetBall && targetBall.gameObject)
+        {
+            Destroy(targetBall.gameObject);
+        }
+    }
+    
     public Vector3 GetValidRandomPosition()
     {
         var width = wall.WallWidth;
