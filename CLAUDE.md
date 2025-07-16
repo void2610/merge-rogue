@@ -445,3 +445,16 @@ This applies to all Unity object types including:
 - GameObject
 - Transform
 - Any Unity.Object derived types
+
+## Asynchronous Programming Guidelines
+
+- **Coroutine Usage**: 
+  - **Rule:** Coroutines are absolutely prohibited
+  - **Replacement:** Use UniTask for all asynchronous processing
+
+## Additional Development Guidelines
+
+- **Coroutineは絶対に使用せず、非同期処理にはUniTaskを使用すること。**
+```
+
+</invoke>
