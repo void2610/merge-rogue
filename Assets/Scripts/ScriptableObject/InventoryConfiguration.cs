@@ -29,7 +29,8 @@ public class InventoryConfiguration : ScriptableObject
     [SerializeField] private BallDataList allBallDataList;
     
     [Header("テスト設定")]
-    [SerializeField] private List<BallData> testBalls = new List<BallData>(10);
+    [SerializeField] private List<BallData> testBalls = new(10);
+    [SerializeField] private List<RelicData> testRelics = new();
     
     // プロパティアクセス
     public int MaxInventorySize => maxInventorySize;
@@ -44,6 +45,7 @@ public class InventoryConfiguration : ScriptableObject
     public BallData NormalBallData => normalBallData;
     public BallDataList AllBallDataList => allBallDataList;
     public List<BallData> TestBalls => testBalls;
+    public List<RelicData> TestRelics => testRelics;
     
     /// <summary>
     /// インベントリ位置を計算

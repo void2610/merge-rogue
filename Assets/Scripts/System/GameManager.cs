@@ -48,15 +48,19 @@ public class GameManager : MonoBehaviour
     private IInputProvider _inputProvider;
     private IContentService _contentService;
     private IGameSettingsService _gameSettingsService;
+    private IRelicService _relicService;
+    private InventoryConfiguration _inventoryConfiguration;
     
     [Inject]
-    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider, IContentService contentService, IGameSettingsService gameSettingsService)
+    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider, IContentService contentService, IGameSettingsService gameSettingsService, IRelicService relicService, InventoryConfiguration inventoryConfiguration)
     {
         _scoreService = scoreService;
         _scoreDisplayComponent = scoreDisplayComponent;
         _inputProvider = inputProvider;
         _contentService = contentService;
         _gameSettingsService = gameSettingsService;
+        _relicService = relicService;
+        _inventoryConfiguration = inventoryConfiguration;
     }
     
     public void AddCoin(int amount)
@@ -164,7 +168,29 @@ public class GameManager : MonoBehaviour
         
         AddCoin(Application.isEditor ? debugCoin : 10);
         
+        // テスト用レリックの追加（エディタでのみ）
+        // RelicUIManagerのStart()が実行された後に実行するため、1フレーム遅延させる
+        if (Application.isEditor && _inventoryConfiguration != null && _inventoryConfiguration.TestRelics != null)
+        {
+            AddTestRelicsAfterDelay().Forget();
+        }
+        
         treasure.OpenTreasure(Treasure.TreasureType.Initial);
+    }
+    
+    /// <summary>
+    /// テスト用レリックを遅延追加するUniTask
+    /// RelicUIManagerのStart()が実行された後に実行される
+    /// </summary>
+    private async UniTaskVoid AddTestRelicsAfterDelay()
+    {
+        // 1フレーム待機してRelicUIManagerの初期化を完了させる
+        await UniTask.Yield();
+        
+        foreach (var relic in _inventoryConfiguration.TestRelics)
+        {
+            if (relic) _relicService.AddRelic(relic);
+        }
     }
 
     private void Update()

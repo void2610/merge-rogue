@@ -46,10 +46,10 @@ public class MainLifetimeScope : LifetimeScope
         builder.Register<IMouseCursorService, MouseCursorService>(Lifetime.Scoped);
         
         builder.Register<IScoreService, ScoreService>(Lifetime.Singleton);
-        builder.Register<IRelicService, RelicService>(Lifetime.Singleton);
         
         builder.RegisterInstance(inventoryConfiguration);
         builder.Register<IInventoryService, InventoryService>(Lifetime.Singleton);
+        builder.Register<IRelicService, RelicService>(Lifetime.Singleton);
         
         builder.RegisterEntryPoint<MouseHoverUISelector>(Lifetime.Singleton);
         

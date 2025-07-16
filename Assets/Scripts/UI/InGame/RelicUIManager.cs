@@ -19,9 +19,6 @@ public class RelicUIManager : MonoBehaviour
     [SerializeField] private Vector2 relicOffset;
     [SerializeField] private float relicUISize;
     
-    [Header("テスト用")]
-    [SerializeField] private List<RelicData> testRelics;
-    
     private readonly List<RelicUI> _relicUIs = new();
     private IRelicService _relicService;
     
@@ -41,15 +38,6 @@ public class RelicUIManager : MonoBehaviour
         {
             _relicService.OnRelicAdded += OnRelicAdded;
             _relicService.OnRelicRemoved += OnRelicRemoved;
-        }
-        
-        // テスト用レリックの追加（エディタでのみ）
-        if (Application.isEditor && testRelics != null)
-        {
-            foreach (var relic in testRelics)
-            {
-                _relicService?.AddRelic(relic);
-            }
         }
     }
     
