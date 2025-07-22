@@ -2403,7 +2403,7 @@ Transform:
   m_GameObject: {fileID: 198190387}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -3.7, y: 2.85, z: 10}
+  m_LocalPosition: {x: -3.5, y: 2.85, z: 10}
   m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -2424,7 +2424,7 @@ MonoBehaviour:
   enemyBasePrefab: {fileID: 7954668992148410542, guid: 0951d62e1178c43b68db7d78b6bec2fb, type: 3}
   enemyHpSliderPrefab: {fileID: 3765540371106708028, guid: 5870f6351589f4b099ad1836b848608d, type: 3}
   coinPrefab: {fileID: 1812483531616101450, guid: 2c13a74f3d7c84bd29db8479f7091bf5, type: 3}
-  alignment: 2.3
+  alignment: 1
   treasure: {fileID: 1607858726}
   spawnDistance: 3
 --- !u!1 &213023586
@@ -16524,7 +16524,6 @@ MonoBehaviour:
   relicGridSize: {x: 3, y: 9}
   relicOffset: {x: 40, y: 36}
   relicUISize: 0.75
-  testRelics: []
 --- !u!1 &1066192357
 GameObject:
   m_ObjectHideFlags: 0

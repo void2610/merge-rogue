@@ -13,6 +13,7 @@ public class EnemyBase : MonoBehaviour, IEntity
     public EnemyData Data { get; private set; }
     public string EnemyName => Data.displayName;
     public EnemyType EnemyType => Data.enemyType;
+    public bool IsMelee { get; private set; } // 近接タイプかどうか
     public int ActionInterval { get; private set; } = 1;
     public int Attack { get; private set; } = 1;
     public int Coin { get; private set; } = 0;
@@ -45,15 +46,7 @@ public class EnemyBase : MonoBehaviour, IEntity
         
         // 実際の距離ベースで判定
         // インデックスに応じて直接距離を計算
-        var distanceFromPlayer = currentIndex * 1.5f + 2f;
-        
-        // attackRangeを距離として解釈
-        // attackRange 0: 近接攻撃（距離2f以下）
-        // attackRange 1: 短距離攻撃（距離4f以下）
-        // attackRange 2: 中距離攻撃（距離6f以下）
-        var maxAttackDistance = Data.attackRange * 2f + 2f; // 2, 4, 6, 8...
-        
-        return distanceFromPlayer <= maxAttackDistance;
+        return currentIndex <= Data.attackRange;
     }
 
     public async UniTask UpdateStatusEffects()
@@ -257,6 +250,9 @@ public class EnemyBase : MonoBehaviour, IEntity
         // 敵のデータを設定
         Data = d;
         Stage = stage;
+        
+        // 近接タイプの判定（EnemyDataのisMeleeフラグを使用）
+        IsMelee = d.isMelee;
         
         // 難易度サービスから倍率を取得
         Magnification = difficultyService.CalculateMagnification(stage, act, d.enemyType);

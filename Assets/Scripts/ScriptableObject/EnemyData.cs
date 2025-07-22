@@ -28,6 +28,7 @@ public class EnemyData : ScriptableObject
     [Header("Enemy Status")]
     public EnemyType enemyType;
     public int attackRange; // 攻撃射程（0:近接攻撃、1以上:遠距離攻撃）
+    public bool isMelee = false; // 近接タイプかどうか（true:近接、false:遠隔）
 
     public int maxHealthMin;
     public int maxHealthMax;

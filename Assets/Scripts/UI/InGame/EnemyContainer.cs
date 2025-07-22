@@ -26,8 +26,11 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
     [SerializeField] private Treasure treasure;
     [SerializeField] private int spawnDistance = 5; // 敵がスポーンするインデックス（後方から）
     public readonly ReactiveProperty<int> DefeatedEnemyCount = new(0);
-    private List<EnemyBase> _currentEnemies;
-    private const int MAX_ENEMY_COUNT = 6; // 最大敵数 (spawnDistance + 1)
+    // 近接用レーン（柔軟なサイズ）
+    private List<EnemyBase> _meleeEnemies;
+    // 遠隔用レーン（柔軟なサイズ）
+    private List<EnemyBase> _rangedEnemies;
+    private const int MAX_ENEMY_COUNT = 6;
     private int _gainedExp;
     private int _pendingSpawnCount; // スポーン待ちの敵の数
     private int _spawnStage; // スポーンする敵のステージレベル
@@ -39,8 +42,9 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
     protected override void Awake()
     {
         base.Awake();
-        // 固定サイズのリストを初期化（全てnullで埋める）
-        _currentEnemies = new List<EnemyBase>(new EnemyBase[MAX_ENEMY_COUNT]);
+        // 各レーンを柔軟サイズで初期化（全体で6体まで可能）
+        _meleeEnemies = new List<EnemyBase>(new EnemyBase[MAX_ENEMY_COUNT]);
+        _rangedEnemies = new List<EnemyBase>(new EnemyBase[MAX_ENEMY_COUNT]);
     }
     
     [Inject]
@@ -51,15 +55,42 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         _difficultyService = difficultyService;
     }
 
-    public int GetCurrentEnemyCount() => _currentEnemies.Count(e => e);
+    public int GetCurrentEnemyCount() => _meleeEnemies.Count(e => e) + _rangedEnemies.Count(e => e);
     public int GetRemainingEnemyCount() => GetCurrentEnemyCount() + _pendingSpawnCount;
-    public List<EnemyBase> GetAllEnemies() => _currentEnemies.Where(e => e).ToList();
+    public List<EnemyBase> GetAllEnemies() => 
+        _meleeEnemies.Where(e => e).Concat(_rangedEnemies.Where(e => e)).ToList();
     public EnemyBase GetRandomEnemy() 
     {
         var validEnemies = GetAllEnemies();
         return validEnemies.Count > 0 ? validEnemies[_randomService.RandomRange(0, validEnemies.Count)] : null;
     }
-    public int GetEnemyIndex(EnemyBase enemy) => _currentEnemies.IndexOf(enemy);
+    
+    /// <summary>
+    /// 敵のレーン内インデックスを取得（各レーン内で0-5）
+    /// </summary>
+    public int GetEnemyIndex(EnemyBase enemy)
+    {
+        var meleeIndex = _meleeEnemies.IndexOf(enemy);
+        if (meleeIndex >= 0) return meleeIndex;
+        
+        var rangedIndex = _rangedEnemies.IndexOf(enemy);
+        if (rangedIndex >= 0) return rangedIndex;
+        
+        return -1;
+    }
+    
+    /// <summary>
+    /// 敵が近接タイプかどうか判定
+    /// </summary>
+    private bool IsMeleeEnemy(EnemyBase enemy) => enemy.IsMelee;
+    
+    /// <summary>
+    /// EnemyDataから近接タイプかどうか判定
+    /// </summary>
+    private bool IsMeleeEnemyByData(global::EnemyData enemyData)
+    {
+        return enemyData.isMelee;
+    }
     public GameObject GetHpSliderPrefab() => enemyHpSliderPrefab;
     public GameObject GetCoinPrefab() => coinPrefab;
 
@@ -68,10 +99,16 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         // 最も後ろの空いている位置を見つける（スポーン前にチェック）
         var spawnIndex = -1;
         
-        // 最低spawnDistance以降の位置を探す（MAX_ENEMY_COUNTまで）
-        for (var i = spawnDistance; i < MAX_ENEMY_COUNT; i++)
+        // ボスのタイプに応じてスポーン位置を決定
+        var bossData = _contentService.GetRandomBoss();
+        // 近接・遠隔の判定
+        var isMelee = IsMeleeEnemyByData(bossData);
+        var targetLane = isMelee ? _meleeEnemies : _rangedEnemies;
+        
+        // 後方から空いている位置を探す
+        for (var i = MAX_ENEMY_COUNT - 1; i >= 0; i--)
         {
-            if (!_currentEnemies[i])
+            if (!targetLane[i])
             {
                 spawnIndex = i;
                 break;
@@ -79,13 +116,7 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         }
         
         // 空いている位置がない場合は、スポーンをスキップ
-        if (spawnIndex == -1)
-        {
-            return;
-        }
-        
-        // スポーン可能な場合のみボスを作成
-        var bossData = _contentService.GetRandomBoss();
+        if (spawnIndex == -1) return;
         
         // ボスの場合はEnemyBaseのサブクラスを取得して使用する
         var e = Instantiate(enemyBasePrefab, this.transform);
@@ -101,16 +132,10 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         int currentAct = _contentService.Act;
         behaviour.Init(bossData, stage, _randomService, _difficultyService, currentAct);
         
-        _currentEnemies[spawnIndex] = behaviour;
+        targetLane[spawnIndex] = behaviour;
         
         // 全ての敵の位置を更新（スポーン時は即座に配置）
-        for (var i = 0; i < _currentEnemies.Count; i++)
-        {
-            if (_currentEnemies[i])
-            {
-                SetEnemyPositionImmediate(i);
-            }
-        }
+        UpdateAllEnemyPositions(true);
     }
 
     /// <summary>
@@ -118,15 +143,14 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
     /// </summary>
     public void SpawnEnemy(int count, int stage)
     {
-        count = count > MAX_ENEMY_COUNT ? MAX_ENEMY_COUNT : count;
         if (count <= 0) return;
         
         _pendingSpawnCount = count;
         _spawnStage = stage;
         
         // 最初の最大3体は即座にスポーン（ステージ開始時）
-        int initialSpawnCount = Math.Min(3, _pendingSpawnCount);
-        for (int i = 0; i < initialSpawnCount; i++)
+        var initialSpawnCount = Math.Min(3, _pendingSpawnCount);
+        for (var i = 0; i < initialSpawnCount; i++)
         {
             if (SpawnSingleEnemy(_spawnStage))
             {
@@ -149,10 +173,16 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         // 最も後ろの空いている位置を見つける（スポーン前にチェック）
         var spawnIndex = -1;
         
-        // 最低spawnDistance以降の位置を探す（MAX_ENEMY_COUNTまで）
-        for (var i = spawnDistance; i < MAX_ENEMY_COUNT; i++)
+        // 敵のタイプに応じてスポーン位置を決定
+        var enemyData = _contentService.GetRandomEnemy();
+        // 近接・遠隔の判定
+        var isMelee = IsMeleeEnemyByData(enemyData);
+        var targetLane = isMelee ? _meleeEnemies : _rangedEnemies;
+        
+        // 後方から空いている位置を探す
+        for (var i = MAX_ENEMY_COUNT - 1; i >= 0; i--)
         {
-            if (!_currentEnemies[i])
+            if (!targetLane[i])
             {
                 spawnIndex = i;
                 break;
@@ -167,7 +197,6 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         }
         
         // スポーン可能な場合のみ敵を作成
-        var enemyData = _contentService.GetRandomEnemy();
         var e = Instantiate(enemyBasePrefab, this.transform).GetComponent<EnemyBase>();
         
         e.transform.localScale = new Vector3(1, 1, 1);
@@ -176,36 +205,46 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         int currentAct = _contentService.Act;
         e.Init(enemyData, stage, _randomService, _difficultyService, currentAct);
         
-        _currentEnemies[spawnIndex] = e;
+        targetLane[spawnIndex] = e;
         
         // 全ての敵の位置を更新（スポーン時は即座に配置）
-        for (var i = 0; i < _currentEnemies.Count; i++)
-        {
-            if (_currentEnemies[i])
-            {
-                SetEnemyPositionImmediate(i);
-            }
-        }
+        UpdateAllEnemyPositions(true);
         
         return true;
     }
     
     public void DamageAllEnemies(int damage)
     {
-        foreach (var e in _currentEnemies)
+        foreach (var e in _meleeEnemies)
+            e?.Damage(AttackType.All, damage);
+        foreach (var e in _rangedEnemies)
             e?.Damage(AttackType.All, damage);
     }
     
     public void HealAllEnemies(int heal)
     {
-        foreach (var e in _currentEnemies)
+        foreach (var e in _meleeEnemies)
+            e?.Heal(heal);
+        foreach (var e in _rangedEnemies)
             e?.Heal(heal);
     }
     
     public void HealEnemy(int index, int heal)
     {
-        if (index < 0 || index >= _currentEnemies.Count || !_currentEnemies[index]) return;
-        _currentEnemies[index].Heal(heal);
+        if (index < 0) return;
+        
+        // 近接レーンの範囲内かチェック
+        if (index < _meleeEnemies.Count && _meleeEnemies[index])
+        {
+            _meleeEnemies[index].Heal(heal);
+            return;
+        }
+        
+        // 遠隔レーンの範囲内かチェック
+        if (index < _rangedEnemies.Count && _rangedEnemies[index])
+        {
+            _rangedEnemies[index].Heal(heal);
+        }
     }
 
     public void RemoveEnemy(GameObject enemy)
@@ -215,10 +254,18 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         _gainedExp += enemyBase.Exp;
         
         // リストから削除（nullに置き換え）
-        var index = _currentEnemies.IndexOf(enemyBase);
-        if (index >= 0)
+        var meleeIndex = _meleeEnemies.IndexOf(enemyBase);
+        if (meleeIndex >= 0)
         {
-            _currentEnemies[index] = null;
+            _meleeEnemies[meleeIndex] = null;
+        }
+        else
+        {
+            var rangedIndex = _rangedEnemies.IndexOf(enemyBase);
+            if (rangedIndex >= 0)
+            {
+                _rangedEnemies[rangedIndex] = null;
+            }
         }
         
         enemyBase.OnDisappear();
@@ -227,7 +274,8 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         if (GetRemainingEnemyCount() == 0)
         {
             // リストを再初期化（Clearは不要、新しいリストで上書き）
-            _currentEnemies = new List<EnemyBase>(new EnemyBase[MAX_ENEMY_COUNT]);
+            _meleeEnemies = new List<EnemyBase>(new EnemyBase[MAX_ENEMY_COUNT]);
+            _rangedEnemies = new List<EnemyBase>(new EnemyBase[MAX_ENEMY_COUNT]);
             
             Physics2D.simulationMode = SimulationMode2D.Script;
             
@@ -312,7 +360,8 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         if(GetCurrentEnemyCount() > 0)
         {
             // 行動 - null参照を防ぐため事前に有効な敵のリストを取得
-            var validEnemies = _currentEnemies.Where(e => e != null && e.gameObject).ToList();
+            var validEnemies = _meleeEnemies.Concat(_rangedEnemies)
+                .Where(e => e != null && e.gameObject).ToList();
             foreach (var t in validEnemies)
             {
                 t.Action();
@@ -323,8 +372,9 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
             
             // 状態異常を更新
             await GameManager.Instance.Player.UpdateStatusEffects();
-            var tasks = _currentEnemies.Where(e => e != null).Select(e => e.UpdateStatusEffects());
-            await UniTask.WhenAll(tasks);
+            var allTasks = _meleeEnemies.Concat(_rangedEnemies)
+                .Where(e => e != null).Select(e => e.UpdateStatusEffects());
+            await UniTask.WhenAll(allTasks);
         }
 
         // 敵の行動が全て終わった後に新しい敵をスポーン
@@ -348,105 +398,72 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
     {
         var currentIndex = GetEnemyIndex(enemy);
         
-        if (currentIndex < 0) 
-        {
-            return; // 見つからない場合は移動しない
-        }
+        if (currentIndex < 0) return;
         
-        // 1体だけの場合はインデックスベースで移動判定
-        var actualEnemyCount = _currentEnemies.Count(e => e != null);
-        if (actualEnemyCount == 1)
+        var isMelee = IsMeleeEnemy(enemy);
+        var targetLane = isMelee ? _meleeEnemies : _rangedEnemies;
+        var currentLaneIndex = targetLane.IndexOf(enemy);
+        
+        if (currentLaneIndex <= 0) return;
+        if (targetLane[currentLaneIndex - 1]) return;
+        
+        // 敵を新しい位置に移動
+        targetLane[currentLaneIndex] = null;
+        targetLane[currentLaneIndex - 1] = enemy;
+        
+        // 全ての敵の位置を再計算
+        UpdateAllEnemyPositions(false);
+    }
+    
+    /// <summary>
+    /// 全ての敵の位置を更新
+    /// </summary>
+    /// <param name="immediate">即座に配置するか（スポーン時）</param>
+    private void UpdateAllEnemyPositions(bool immediate)
+    {
+        // 近接レーンの位置更新
+        for (var i = 0; i < _meleeEnemies.Count; i++)
         {
-            // 1体だけの場合は位置を直接移動
-            var currentEnemyIndex = GetEnemyIndex(enemy);
-            if (currentEnemyIndex > 0)
+            if (_meleeEnemies[i])
             {
-                var newIndex = currentEnemyIndex - 1;
-                _currentEnemies[currentEnemyIndex] = null;
-                _currentEnemies[newIndex] = enemy;
-                
-                // 全ての敵の位置を更新
-                for (var i = 0; i < _currentEnemies.Count; i++)
-                {
-                    if (_currentEnemies[i])
-                    {
-                        UpdateEnemyPosition(i);
-                    }
-                }
-                
-                return;
+                UpdateEnemyPosition(_meleeEnemies[i], i, true, immediate);
             }
         }
         
-        if (currentIndex <= 0) 
+        // 遠隔レーンの位置更新
+        for (var i = 0; i < _rangedEnemies.Count; i++)
         {
-            return; // 既に最前列の場合は移動しない
-        }
-        
-        // 前の位置に敵がいるかチェック（追い越し防止）
-        var frontIndex = currentIndex - 1;
-        if (_currentEnemies[frontIndex])
-        {
-            return;
-        }
-        
-        
-        // 敵を新しい位置に移動（nullエントリーに配慮したシンプルな移動）
-        _currentEnemies[currentIndex] = null;
-        _currentEnemies[currentIndex - 1] = enemy;
-        
-        // すべての敵の位置を再計算
-        for (var i = 0; i < _currentEnemies.Count; i++)
-        {
-            if (_currentEnemies[i])
+            if (_rangedEnemies[i])
             {
-                UpdateEnemyPosition(i);
+                UpdateEnemyPosition(_rangedEnemies[i], i, false, immediate);
             }
         }
     }
     
     /// <summary>
-    /// インデックスに基づいて敵の位置を即座に設定（スポーン時用）
+    /// 敵の位置を更新
     /// </summary>
-    private void SetEnemyPositionImmediate(int enemyIndex)
+    /// <param name="enemy">対象の敵</param>
+    /// <param name="laneIndex">レーン内のインデックス</param>
+    /// <param name="isMelee">近接レーンかどうか</param>
+    /// <param name="immediate">即座に配置するか</param>
+    private void UpdateEnemyPosition(EnemyBase enemy, int laneIndex, bool isMelee, bool immediate)
     {
-        if (enemyIndex < 0 || enemyIndex >= _currentEnemies.Count) return;
-        
-        var enemy = _currentEnemies[enemyIndex];
-        if (!enemy) return;
-        
-        // インデックスに応じて距離を計算
-        var distanceFromPlayer = enemyIndex * alignment;
-        // EnemyDataのenemyYOffsetを適用
+        var screenPosition = isMelee ? laneIndex * 2 : laneIndex * 2 + 1;
+        var distanceFromPlayer = screenPosition * alignment;
         var targetPosition = this.transform.position + new Vector3(distanceFromPlayer, enemy.Data.enemyYOffset, 0);
-
-        // 即座に位置を設定
-        enemy.transform.position = targetPosition;
-        enemy.UpdateHpBarPosition();
-    }
-
-    /// <summary>
-    /// インデックスに基づいて敵の実際の座標を計算・更新（アニメーション付き）
-    /// </summary>
-    private void UpdateEnemyPosition(int enemyIndex)
-    {
-        if (enemyIndex < 0 || enemyIndex >= _currentEnemies.Count) return;
         
-        var enemy = _currentEnemies[enemyIndex];
-        if (!enemy) return;
-        
-        // インデックスに応じて距離を計算
-        var distanceFromPlayer = enemyIndex * alignment;
-        // EnemyDataのenemyYOffsetを適用
-        var targetPosition = this.transform.position + new Vector3(distanceFromPlayer, enemy.Data.enemyYOffset, 0);
-
-        // DOTweenで滑らかな移動アニメーション
-        enemy.transform.DOMove(targetPosition, 0.5f)
-            .SetEase(Ease.OutQuad)
-            .OnUpdate(() => {
-                // アニメーション中もHPバーの位置を更新
-                enemy.UpdateHpBarPosition();
-            })
-            .SetLink(enemy.gameObject);
+        if (immediate)
+        {
+            enemy.transform.position = targetPosition;
+            enemy.UpdateHpBarPosition();
+        }
+        else
+        {
+            enemy.transform.DOMove(targetPosition, 0.5f)
+                .SetEase(Ease.OutQuad)
+                .OnUpdate(enemy.UpdateHpBarPosition)
+                .SetLink(enemy.gameObject);
+        }
     }
 }

@@ -17,6 +17,7 @@ MonoBehaviour:
   flavorText: "\u30A6\u30A3\u30C3\u30C1"
   enemyType: 0
   attackRange: 3
+  isMelee: 0
   maxHealthMin: 10
   maxHealthMax: 15
   attack: 1
