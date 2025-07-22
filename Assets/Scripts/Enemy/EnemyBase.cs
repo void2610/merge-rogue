@@ -41,11 +41,11 @@ public class EnemyBase : MonoBehaviour, IEntity
     /// </summary>
     private bool IsInAttackRange()
     {
+        if (!IsMelee) return true;
+        
         var currentIndex = EnemyContainer.Instance.GetEnemyIndex(this);
         if (currentIndex < 0) return false;
         
-        // 実際の距離ベースで判定
-        // インデックスに応じて直接距離を計算
         return currentIndex <= Data.attackRange;
     }
 
