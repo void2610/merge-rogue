@@ -56,15 +56,9 @@ public class ExplodeWhenDefeatNearbyEnemy : RelicBase
         // nullエントリを除外してクラッシュを防ぐ
         var allEnemies = EnemyContainer.Instance.GetAllEnemies().Where(e => e != null).ToList();
         
-        // 倒された敵と同じレーンかどうか判定
-        var defeatedIsMelee = defeatedEnemy.IsMelee;
-        
         foreach (var enemy in allEnemies)
         {
             if (!enemy || !enemy.gameObject || enemy == defeatedEnemy) continue;
-            
-            // 同じレーンの敵のみ対象にする
-            if (enemy.IsMelee != defeatedIsMelee) continue;
             
             var enemyDistance = EnemyContainer.Instance.GetEnemyIndex(enemy);
             if (enemyDistance < 0) continue;
