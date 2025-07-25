@@ -18,7 +18,7 @@ public class FillingRateManager : MonoBehaviour
     [SerializeField] private FillingRateTrigger lowerTrigger;
     [SerializeField] private FillingRateTrigger higherTrigger;
     [SerializeField] private Image fillImage;
-    [SerializeField] private TextMeshProUGUI fillingRateText;
+    // [SerializeField] private TextMeshProUGUI fillingRateText;
     [SerializeField] private ParticleSystem fillingRateParticle;
     
     public FillingRateType fillingRate;
@@ -66,8 +66,8 @@ public class FillingRateManager : MonoBehaviour
             _ => 1f
         };
             
-        fillingRateText.text = "x" + res.ToString("F1");
-        fillingRateText.color = fillingRate.GetColor();
+        // fillingRateText.text = "x" + res.ToString("F1");
+        // fillingRateText.color = fillingRate.GetColor();
         
         return res;
     }

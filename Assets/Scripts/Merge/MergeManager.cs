@@ -26,7 +26,7 @@ public class MergeManager : MonoBehaviour
     [SerializeField] private GameObject ballGauge;
     [SerializeField] private TextMeshProUGUI ballCountText;
     [SerializeField] private Vector3 nextBallPosition;
-    [SerializeField] private AttackCountUI attackCountUI;
+    // [SerializeField] private AttackCountUI attackCountUI;
     
     public float attackMagnification = 1.0f;
     public int RemainingBalls { get; private set; } = 0;
@@ -224,7 +224,7 @@ public class MergeManager : MonoBehaviour
         
         await UniTask.Delay(200);
         
-        attackCountUI.SetAttackCount(0);
+        // attackCountUI.SetAttackCount(0);
         
         // 敵が残っていたら敵の攻撃へ（スポーン予定の敵も含む）
         if (EnemyContainer.Instance.GetRemainingEnemyCount() > 0)
