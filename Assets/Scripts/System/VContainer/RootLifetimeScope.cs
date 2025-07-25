@@ -101,8 +101,7 @@ public class RootLifetimeScope : LifetimeScope
             // BgmManagerの生成
             if (bgmManagerPrefab != null)
             {
-                var bgmManagerObj = Instantiate(bgmManagerPrefab, transform);
-                DontDestroyOnLoad(bgmManagerObj);
+                var bgmManagerObj = Instantiate(bgmManagerPrefab);
                 
                 var bgmManager = bgmManagerObj.GetComponent<BgmManager>();
                 if (bgmManager != null && container.TryResolve<IGameSettingsService>(out var gameSettingsService))
@@ -114,8 +113,7 @@ public class RootLifetimeScope : LifetimeScope
             // SeManagerの生成
             if (seManagerPrefab != null)
             {
-                var seManagerObj = Instantiate(seManagerPrefab, transform);
-                DontDestroyOnLoad(seManagerObj);
+                var seManagerObj = Instantiate(seManagerPrefab);
                 
                 var seManager = seManagerObj.GetComponent<SeManager>();
                 if (seManager != null && container.TryResolve<IGameSettingsService>(out var gameSettingsService))
