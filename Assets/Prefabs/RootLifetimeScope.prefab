@@ -47,9 +47,7 @@ MonoBehaviour:
   parentReference:
     TypeName: 
   autoRun: 1
-  autoInjectGameObjects:
-  - {fileID: 0}
-  - {fileID: 0}
+  autoInjectGameObjects: []
   cursorConfiguration:
     cursorIcons:
     - iconType: 0
@@ -65,3 +63,5 @@ MonoBehaviour:
       sprite: {fileID: 21300000, guid: 40cffb77d21e14e9fbb40d7bf128e971, type: 3}
       hotspot: {x: 0, y: 0}
   contentProviderData: {fileID: 11400000, guid: 94bcb644666b6454d813f27dfe6739da, type: 2}
+  bgmManagerPrefab: {fileID: 848032370746883498, guid: 02acc1db45445450d9f673428c961d81, type: 3}
+  seManagerPrefab: {fileID: 8483398409194093420, guid: 36e7d41e860a34646a8c6080dc5b4666, type: 3}

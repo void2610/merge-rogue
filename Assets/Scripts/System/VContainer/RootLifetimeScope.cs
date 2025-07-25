@@ -15,14 +15,19 @@ public class RootLifetimeScope : LifetimeScope
     [Header("コンテンツ設定")]
     [SerializeField] private ContentProviderData contentProviderData;
     
+    [Header("音声管理プレハブ")]
+    [SerializeField] private GameObject bgmManagerPrefab;
+    [SerializeField] private GameObject seManagerPrefab;
+    
     protected override void Configure(IContainerBuilder builder)
     {
         builder.RegisterInstance(cursorConfiguration);
         builder.Register<IInputProvider, InputProviderService>(Lifetime.Singleton);
         builder.Register<IGameSettingsService, GameSettingsService>(Lifetime.Singleton);
         builder.Register<IEnemyDifficultyService, EnemyDifficultyService>(Lifetime.Singleton);
-        builder.RegisterComponentInHierarchy<BgmManager>();
-        builder.RegisterComponentInHierarchy<SeManager>();
+        
+        // 音声管理コンポーネントの動的生成と登録
+        RegisterAudioManagers(builder);
         
         // ContentService関連の登録
         RegisterContentServices(builder);
@@ -82,6 +87,42 @@ public class RootLifetimeScope : LifetimeScope
             if (!container.TryResolve<IContentService>(out var contentService)) return;
             foreach (var statusEffectUI in statusEffectUIs)
                 statusEffectUI.InjectDependencies(contentService);
+        });
+    }
+    
+    /// <summary>
+    /// 音声管理コンポーネントの動的生成と登録
+    /// </summary>
+    private void RegisterAudioManagers(IContainerBuilder builder)
+    {
+        // BgmManagerとSeManagerを動的に生成してDontDestroyOnLoadに配置
+        builder.RegisterBuildCallback(container =>
+        {
+            // BgmManagerの生成
+            if (bgmManagerPrefab != null)
+            {
+                var bgmManagerObj = Instantiate(bgmManagerPrefab, transform);
+                DontDestroyOnLoad(bgmManagerObj);
+                
+                var bgmManager = bgmManagerObj.GetComponent<BgmManager>();
+                if (bgmManager != null && container.TryResolve<IGameSettingsService>(out var gameSettingsService))
+                {
+                    bgmManager.InjectDependencies(gameSettingsService);
+                }
+            }
+            
+            // SeManagerの生成
+            if (seManagerPrefab != null)
+            {
+                var seManagerObj = Instantiate(seManagerPrefab, transform);
+                DontDestroyOnLoad(seManagerObj);
+                
+                var seManager = seManagerObj.GetComponent<SeManager>();
+                if (seManager != null && container.TryResolve<IGameSettingsService>(out var gameSettingsService))
+                {
+                    seManager.InjectDependencies(gameSettingsService);
+                }
+            }
         });
     }
 }
