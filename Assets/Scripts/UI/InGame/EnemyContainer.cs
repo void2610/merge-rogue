@@ -198,11 +198,10 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
         
         // スポーン可能な場合のみ敵を作成
         var e = Instantiate(enemyBasePrefab, this.transform).GetComponent<EnemyBase>();
-        
         e.transform.localScale = new Vector3(1, 1, 1);
         
         // 敵の初期化
-        int currentAct = _contentService.Act;
+        var currentAct = _contentService.Act;
         e.Init(enemyData, stage, _randomService, _difficultyService, currentAct);
         
         targetLane[spawnIndex] = e;

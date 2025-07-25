@@ -270,10 +270,12 @@ public class EnemyBase : MonoBehaviour, IEntity
         // スプライトアニメーションを設定
         this.GetComponent<SpriteSheetAnimator>().Setup(d.sprites, d.framePerSecond);
         this.transform.Translate(0, d.enemyYOffset, 0);
+        this.transform.localScale *= 0.7f;
 
         // UIの初期化
         var c = UIManager.Instance.GetUICamera();
         var hpSlider = EnemyContainer.Instance.GetHpSliderPrefab();
+        hpSlider.transform.localScale = Vector3.one * 0.6f;
         var slider = Instantiate(hpSlider, UIManager.Instance.GetEnemyUIContainer());
         var pos = c.WorldToScreenPoint(this.transform.position);
         RectTransformUtility.ScreenPointToLocalPointInRectangle(

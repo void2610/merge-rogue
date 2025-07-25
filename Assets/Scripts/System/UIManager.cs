@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private Volume volume;
     [SerializeField] private List<CanvasGroup> canvasGroups;
     [SerializeField] private TextMeshProUGUI coinText;
-    [SerializeField] private TextMeshProUGUI expText;
+    // [SerializeField] private TextMeshProUGUI expText;
     [SerializeField] private Slider hpSlider;
     [SerializeField] private TextMeshProUGUI hpText;
     [SerializeField] private Shop shop;
@@ -271,10 +271,10 @@ public class UIManager : MonoBehaviour
     {
         if (GameManager.Instance.Player.Level >= Player.MAX_LEVEL)
         {
-            expText.text = "max level";
+            // expText.text = "max level";
             return;
         }
-        expText.text = "exp: " + now + "/" + max;
+        // expText.text = "exp: " + now + "/" + max;
     }
 
     public void OnClickPauseButton()
