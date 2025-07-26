@@ -26,6 +26,7 @@ public class TitleLifetimeScope : LifetimeScope
         
         // UI関連サービス（エントリーポイント）
         builder.RegisterEntryPoint<MouseHoverUISelector>();
+        builder.RegisterEntryPoint<SettingsPresenter>();
         
         // マウス関連サービス（シーンごとに再生成）
         builder.Register<IVirtualMouseService, VirtualMouseService>(Lifetime.Scoped);

@@ -36,8 +36,7 @@ public class TitlePresenter : MonoBehaviour
     private IInputProvider _inputProvider;
     private IVirtualMouseService _virtualMouseService;
     private SettingsManager _settingsManager;
-    private Button _startButton;
-    private SettingsView _settingsView;
+    private GameObject _startButton;
     
     [Inject]
     public void Construct(IInputProvider inputProvider, IVirtualMouseService virtualMouseService)
@@ -87,13 +86,15 @@ public class TitlePresenter : MonoBehaviour
     {
         _titleButtons = new List<TitleButtonData>
         {
-            new TitleButtonData("Start Game", () => StartGame().Forget()),
-            new TitleButtonData("Encyclopedia", () => EnableCanvasGroupWithReset("Encyclopedia", true).Forget()),
-            new TitleButtonData("Settings", () => EnableCanvasGroupWithReset("Setting", true).Forget()),
-            new TitleButtonData("Credits", () => EnableCanvasGroupWithReset("Credit", true).Forget()),
-            new TitleButtonData("Licenses", () => EnableCanvasGroupWithReset("License", true).Forget()),
-            new TitleButtonData("Exit", TitleFunctions.ExitGame)
+            new("Start Game", () => StartGame().Forget()),
+            new("Encyclopedia", () => EnableCanvasGroupWithReset("Encyclopedia", true).Forget()),
+            new("Settings", () => EnableCanvasGroupWithReset("Setting", true).Forget()),
+            new("Credits", () => EnableCanvasGroupWithReset("Credit", true).Forget()),
+            new("Licenses", () => EnableCanvasGroupWithReset("License", true).Forget()),
+            new("Exit", TitleFunctions.ExitGame)
         };
+
+        var buttons = new List<Selectable>();
         
         foreach (var buttonData in _titleButtons)
         {
@@ -101,9 +102,11 @@ public class TitlePresenter : MonoBehaviour
             var button = buttonObject.GetComponent<Button>();
             button.GetComponentInChildren<TextMeshProUGUI>().text = buttonData.ButtonText;
             button.onClick.AddListener(() => buttonData.OnClickAction.Invoke());
+            buttons.Add(button);
         }
-        _startButton = titleButtonContainer.GetChild(0).GetComponent<Button>();
-        _startButton.gameObject.AddComponent<FocusSelectable>();
+        _startButton = buttons[0].gameObject;
+        _startButton.AddComponent<FocusSelectable>();
+        buttons.SetNavigation(false);
         
         twitterButton.onClick.AddListener(TitleFunctions.OpenTwitter);
         steamButton.onClick.AddListener(TitleFunctions.OpenSteam);
@@ -124,7 +127,6 @@ public class TitlePresenter : MonoBehaviour
     {
         Time.timeScale = 1.0f;
         _canvasGroupSwitcher = new CanvasGroupSwitcher(canvasGroups);
-        _settingsView = FindAnyObjectByType<SettingsView>();
         
         SetUpTitleButtons();
         
@@ -132,9 +134,10 @@ public class TitlePresenter : MonoBehaviour
         fadeImage.DOFade(0, 0.5f);
     }
 
-    private void Start()
+    private async UniTaskVoid Start()
     {
         ToggleVirtualMouse();
+        await UniTask.DelayFrame(1); // フェードイン後にUIを初期化
         ResetSelectedGameObject();
     }
 
