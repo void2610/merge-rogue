@@ -154,10 +154,10 @@ public class TitleMenu : MonoBehaviour
     // public void ShowLicense() => EnableCanvasGroupAsync("License", true).Forget();
     // public void HideLicense() => EnableCanvasGroupAsync("License", false).Forget();
     
-    public void ShowDescriptionWindow(object o, GameObject g)
-    {
-        descriptionWindow.ShowWindowWithHoverCheck(o, g).Forget();
-    }
+    // public void ShowDescriptionWindow(object o, GameObject g)
+    // {
+    //     descriptionWindow.ShowWindowWithHoverCheck(o, g).Forget();
+    // }
     
     public void OpenTwitter()
     {

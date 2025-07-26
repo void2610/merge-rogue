@@ -23,12 +23,12 @@ public class Encyclopedia : MonoBehaviour
     private readonly List<GameObject> _items = new();
     
     // Dependency injection
-    private TitleMenu _titleMenu;
+    private DescriptionWindow _descriptionWindow;
     
     [Inject]
-    public void InjectDependencies(TitleMenu titleMenu)
+    public void InjectDependencies(DescriptionWindow descriptionWindow)
     {
-        this._titleMenu = titleMenu;
+        _descriptionWindow = descriptionWindow;
     }
 
     private void SetBallData(GameObject g, BallData b)
@@ -40,7 +40,7 @@ public class Encyclopedia : MonoBehaviour
         // イベントを登録
         Utils.AddEventToObject(g,  () =>
         {
-            _titleMenu.ShowDescriptionWindow(b, g);
+            _descriptionWindow.ShowWindowWithHoverCheck(b, g).Forget();
         }, EventTriggerType.PointerEnter);
         
         var d = g.AddComponent<ShowDescription>();
@@ -57,7 +57,7 @@ public class Encyclopedia : MonoBehaviour
         // イベントを登録
         Utils.AddEventToObject(g,  () =>
         {
-            _titleMenu.ShowDescriptionWindow(r, g);
+            _descriptionWindow.ShowWindowWithHoverCheck(r, g).Forget();
         }, EventTriggerType.PointerEnter);
         
         var d = g.AddComponent<ShowDescription>();

@@ -35,7 +35,9 @@ public class TitlePresenter : MonoBehaviour
     private CanvasGroupSwitcher _canvasGroupSwitcher;
     private IInputProvider _inputProvider;
     private IVirtualMouseService _virtualMouseService;
+    private SettingsManager _settingsManager;
     private Button _startButton;
+    private SettingsView _settingsView;
     
     [Inject]
     public void Construct(IInputProvider inputProvider, IVirtualMouseService virtualMouseService)
@@ -122,6 +124,7 @@ public class TitlePresenter : MonoBehaviour
     {
         Time.timeScale = 1.0f;
         _canvasGroupSwitcher = new CanvasGroupSwitcher(canvasGroups);
+        _settingsView = FindAnyObjectByType<SettingsView>();
         
         SetUpTitleButtons();
         

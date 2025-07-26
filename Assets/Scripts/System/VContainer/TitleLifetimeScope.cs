@@ -14,10 +14,6 @@ public class TitleLifetimeScope : LifetimeScope
     
     protected override void Configure(IContainerBuilder builder)
     {
-        builder.RegisterComponentInHierarchy<TitleMenu>()
-            .AsSelf()
-            .AsImplementedInterfaces();
-            
         builder.RegisterComponentInHierarchy<Encyclopedia>()
             .AsSelf()
             .AsImplementedInterfaces();
@@ -26,9 +22,10 @@ public class TitleLifetimeScope : LifetimeScope
         builder.Register<ICreditService, CreditService>(Lifetime.Singleton).WithParameter("textAsset", creditTextAsset);
         builder.Register<ILicenseService, LicenseService>(Lifetime.Singleton).WithParameter("licenseManager", licenseManager);
         builder.Register<IVersionService, VersionService>(Lifetime.Singleton).WithParameter("version", gameVersion);
+        builder.Register<SettingsManager>(Lifetime.Singleton);
         
         // UI関連サービス（エントリーポイント）
-        builder.RegisterEntryPoint<MouseHoverUISelector>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<MouseHoverUISelector>();
         
         // マウス関連サービス（シーンごとに再生成）
         builder.Register<IVirtualMouseService, VirtualMouseService>(Lifetime.Scoped);
