@@ -28,16 +28,12 @@ public class RootLifetimeScope : LifetimeScope
         
         // 音声管理コンポーネントの動的生成と登録
         RegisterAudioManagers(builder);
-        
         // ContentService関連の登録
         RegisterContentServices(builder);
         // SetMouseCursorコンポーネントの依存性注入（全シーン共通）
         RegisterSetMouseCursorComponents(builder);
         // StatusEffectUIコンポーネントの依存性注入（全シーン共通）
         RegisterStatusEffectUIComponents(builder);
-        
-        // 解決が終わったらDontDestroyOnLoadを適用
-        DontDestroyOnLoad(this.gameObject);
     }
     
     /// <summary>

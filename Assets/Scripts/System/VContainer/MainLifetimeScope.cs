@@ -38,7 +38,6 @@ public class MainLifetimeScope : LifetimeScope
     [Header("コンポーネント参照")]
     [SerializeField] private InventoryConfiguration inventoryConfiguration;
     
-    
     protected override void Configure(IContainerBuilder builder)
     {
         // マウス関連サービス（シーンごとに再生成）
@@ -67,10 +66,10 @@ public class MainLifetimeScope : LifetimeScope
         builder.Register<IInventoryService, InventoryService>(Lifetime.Singleton);
         builder.Register<IRelicService, RelicService>(Lifetime.Singleton);
         
-        builder.RegisterEntryPoint<MouseHoverUISelector>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<MouseHoverUISelector>();
         
         // インベントリ初期化処理（相互参照設定）
-        builder.RegisterEntryPoint<InventoryInitializer>(Lifetime.Singleton);
+        builder.RegisterEntryPoint<InventoryInitializer>();
         
         // MainScene関連コンポーネントの依存注入を有効化
         builder.RegisterComponentInHierarchy<GameManager>();
