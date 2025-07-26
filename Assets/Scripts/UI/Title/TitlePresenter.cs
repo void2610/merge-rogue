@@ -129,6 +129,9 @@ public class TitlePresenter : MonoBehaviour
             button.GetComponentInChildren<TextMeshProUGUI>().text = buttonData.ButtonText;
             button.onClick.AddListener(() => buttonData.OnClickAction.Invoke());
             buttons.Add(button);
+            var n = button.navigation;
+            n.selectOnRight = twitterButton;
+            button.navigation = n;
         }
         _startButton = buttons[0].gameObject;
         _startButton.AddComponent<FocusSelectable>();
@@ -140,6 +143,15 @@ public class TitlePresenter : MonoBehaviour
         closeSettingsButton.onClick.AddListener(() => EnableCanvasGroupWithReset("Setting", false).Forget());
         closeCreditButton.onClick.AddListener(() => EnableCanvasGroupWithReset("Credit", false).Forget());
         closeLicenseButton.onClick.AddListener(() => EnableCanvasGroupWithReset("License", false).Forget());
+        
+        var tn = twitterButton.navigation;
+        tn.selectOnLeft = _startButton.GetComponent<Selectable>();
+        tn.selectOnDown = steamButton;
+        twitterButton.navigation = tn;
+        var sn = steamButton.navigation;
+        sn.selectOnLeft = _startButton.GetComponent<Selectable>();
+        sn.selectOnUp = twitterButton;
+        steamButton.navigation = sn;
     }
     
     private void Awake()
