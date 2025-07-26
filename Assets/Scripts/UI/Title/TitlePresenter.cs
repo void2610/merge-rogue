@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -20,10 +21,15 @@ public class TitlePresenter : MonoBehaviour
     
     [SerializeField] private GameObject titleButtonPrefab;
     [SerializeField] private Transform titleButtonContainer;
+    [SerializeField] private List<CanvasGroup> canvasGroups;
     [SerializeField] private Image fadeImage;
+    [Header("Buttons")]
     [SerializeField] private Button twitterButton;
     [SerializeField] private Button steamButton;
-    [SerializeField] private List<CanvasGroup> canvasGroups;
+    [SerializeField] private Button closeEncyclopediaButton;
+    [SerializeField] private Button closeSettingsButton;
+    [SerializeField] private Button closeCreditButton;
+    [SerializeField] private Button closeLicenseButton;
     
     private List<TitleButtonData> _titleButtons;
     private CanvasGroupSwitcher _canvasGroupSwitcher;
@@ -71,6 +77,16 @@ public class TitlePresenter : MonoBehaviour
     
     private void SetUpTitleButtons()
     {
+        _titleButtons = new List<TitleButtonData>
+        {
+            new TitleButtonData("Start Game", () => StartGame().Forget()),
+            new TitleButtonData("Encyclopedia", () => _canvasGroupSwitcher.EnableCanvasGroup("Encyclopedia", true)),
+            new TitleButtonData("Settings", () => _canvasGroupSwitcher.EnableCanvasGroup("Setting", true)),
+            new TitleButtonData("Credits", () => _canvasGroupSwitcher.EnableCanvasGroup("Credit", true)),
+            new TitleButtonData("Licenses", () => _canvasGroupSwitcher.EnableCanvasGroup("License", true)),
+            new TitleButtonData("Exit", TitleFunctions.ExitGame)
+        };
+        
         foreach (var buttonData in _titleButtons)
         {
             var buttonObject = Instantiate(titleButtonPrefab, titleButtonContainer);
@@ -83,35 +99,34 @@ public class TitlePresenter : MonoBehaviour
         
         twitterButton.onClick.AddListener(TitleFunctions.OpenTwitter);
         steamButton.onClick.AddListener(TitleFunctions.OpenSteam);
+        closeEncyclopediaButton.onClick.AddListener(() => _canvasGroupSwitcher.EnableCanvasGroup("Encyclopedia", false));
+        closeSettingsButton.onClick.AddListener(() => _canvasGroupSwitcher.EnableCanvasGroup("Setting", false));
+        closeCreditButton.onClick.AddListener(() => _canvasGroupSwitcher.EnableCanvasGroup("Credit", false));
+        closeLicenseButton.onClick.AddListener(() => _canvasGroupSwitcher.EnableCanvasGroup("License", false));
+    }
+
+    private async UniTask StartGame()
+    {
+        fadeImage.color = new Color(0, 0, 0, 0);
+        await fadeImage.DOFade(1.0f, 1.0f);
+        TitleFunctions.StartGame();
     }
     
     private void Awake()
     {
+        Time.timeScale = 1.0f;
         _canvasGroupSwitcher = new CanvasGroupSwitcher(canvasGroups);
-        
-        // ボタンデータを初期化
-        _titleButtons = new List<TitleButtonData>
-        {
-            new TitleButtonData("Start Game", TitleFunctions.StartGame),
-            new TitleButtonData("Encyclopedia", () => _canvasGroupSwitcher.EnableCanvasGroup("Encyclopedia", true)),
-            new TitleButtonData("Settings", () => _canvasGroupSwitcher.EnableCanvasGroup("Settings", true)),
-            new TitleButtonData("Credits", () => _canvasGroupSwitcher.EnableCanvasGroup("Credit", true)),
-            new TitleButtonData("Licenses", () => _canvasGroupSwitcher.EnableCanvasGroup("License", true)),
-            new TitleButtonData("Exit", TitleFunctions.ExitGame)
-        };
         
         SetUpTitleButtons();
         
         // フェードイン
-        fadeImage.DOFade(0, 0.5f).SetUpdate(true).OnComplete(() =>
-        {
-            fadeImage.gameObject.SetActive(false);
-        }).Play();
+        fadeImage.DOFade(0, 0.5f);
     }
 
     private void Start()
     {
         ToggleVirtualMouse();
+        ResetSelectedGameObject();
     }
 
     private void Update()
