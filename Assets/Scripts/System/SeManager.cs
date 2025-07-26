@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using VContainer;
 
-public class SeManager : MonoBehaviour
+public class SeManager : SingletonMonoBehaviour<SeManager>
 {
     [System.Serializable]
     public class SoundData
@@ -17,23 +17,12 @@ public class SeManager : MonoBehaviour
     [SerializeField] private AudioMixerGroup seMixerGroup;
     [SerializeField] private SoundData[] soundDatas;
 
-    public static SeManager Instance;
-    private IGameSettingsService _gameSettingsService;
     private readonly AudioSource[] _seAudioSourceList = new AudioSource[20];
     private float _seVolume = 0.5f;
 
-    private void Awake()
+    protected override void Awake()
     {
-        if (!Instance)
-        {
-            Instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-
+        base.Awake();
         for (var i = 0; i < _seAudioSourceList.Length; ++i)
         {
             _seAudioSourceList[i] = gameObject.AddComponent<AudioSource>();
@@ -52,23 +41,18 @@ public class SeManager : MonoBehaviour
                 value = 0.0001f;
             }
             seMixerGroup.audioMixer.SetFloat("SeVolume", Mathf.Log10(value) * 20);
-            _gameSettingsService.SaveSeVolume(value);
         }
     }
 
     public void PlaySe(AudioClip clip, float volume = 1.0f, float pitch = 1.0f)
     {
         var audioSource = GetUnusedAudioSource();
-        if (clip == null)
+        if (!clip)
         {
             Debug.LogError("AudioClip could not be found.");
             return;
         }
-        if (audioSource == null)
-        {
-            // Debug.LogWarning("There is no available AudioSource.");
-            return;
-        }
+        if (!audioSource) return;
 
         audioSource.clip = clip;
         audioSource.volume = volume;
@@ -102,16 +86,10 @@ public class SeManager : MonoBehaviour
 
     private AudioSource GetUnusedAudioSource() => _seAudioSourceList.FirstOrDefault(t => t.isPlaying == false);
 
-    [Inject]
-    public void InjectDependencies(IGameSettingsService gameSettingsService)
-    {
-        _gameSettingsService = gameSettingsService;
-    }
-    
     private void Start()
     {
-        var audioSettings = _gameSettingsService.GetAudioSettings();
-        SeVolume = audioSettings.seVolume;
+        // TODO
+        // SeVolume = audioSettings.seVolume;
         seMixerGroup.audioMixer.SetFloat("SeVolume", Mathf.Log10(_seVolume) * 20);
     }
 }

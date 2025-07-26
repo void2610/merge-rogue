@@ -22,8 +22,6 @@ public class UIManager : MonoBehaviour
 {
     public static UIManager Instance;
     
-    private IGameSettingsService _gameSettingsService;
-    
     [SerializeField] private Canvas uiCanvas;
     [SerializeField] private Camera uiCamera;
     [SerializeField] private Slider bgmSlider;
@@ -350,21 +348,11 @@ public class UIManager : MonoBehaviour
         vignette.intensity.value = value;
     }
 
-    [Inject]
-    public void InjectDependencies(IGameSettingsService gameSettingsService)
-    {
-        _gameSettingsService = gameSettingsService;
-    }
-    
     private void Awake()
     {
         if(!Instance) Instance = this;
         else Destroy(gameObject);
         
-        var audioSettings = _gameSettingsService.GetAudioSettings();
-        bgmSlider.value = audioSettings.bgmVolume;
-        seSlider.value = audioSettings.seVolume;
-
         foreach (var canvasGroup in canvasGroups)
         {
             _canvasGroupTween.Add(canvasGroup.name, null);

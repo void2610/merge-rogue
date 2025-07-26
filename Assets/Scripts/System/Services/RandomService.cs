@@ -10,16 +10,12 @@ public class RandomService : IRandomService
     public string SeedText { get; private set; }
     
     private System.Random _random;
+    private readonly string _seedText;
     private int _seed;
-    private readonly IGameSettingsService _gameSettingsService;
     
-    /// <summary>
-    /// コンストラクタ - GameSettingsServiceからシードを取得
-    /// </summary>
-    /// <param name="gameSettingsService">ゲーム設定サービス</param>
-    public RandomService(IGameSettingsService gameSettingsService)
+    public RandomService(string seedText)
     {
-        _gameSettingsService = gameSettingsService;
+        _seedText = seedText;
         InitializeSeed();
     }
     
@@ -28,25 +24,19 @@ public class RandomService : IRandomService
     /// </summary>
     private void InitializeSeed()
     {
-        var seedSettings = _gameSettingsService.GetSeedSettings();
-        
         // シードテキストが空の場合は新規生成
-        if (string.IsNullOrEmpty(seedSettings.seedText))
+        if (string.IsNullOrEmpty(_seedText))
         {
             var guid = Guid.NewGuid();
             SeedText = guid.ToString("N")[..8];
             _seed = SeedText.GetHashCode();
             
-            // GameSettingsServiceに保存
-            // _gameSettingsService.SaveSeedText(_seedText);
-            // _gameSettingsService.SaveSeed(_seed);
-            
             Debug.Log($"RandomService: Generated new seed: {SeedText}");
         }
         else
         {
-            SeedText = seedSettings.seedText;
-            _seed = seedSettings.seed;
+            SeedText = _seedText;
+            _seed = SeedText.GetHashCode();
             Debug.Log($"RandomService: Using existing seed: {SeedText}");
         }
         
