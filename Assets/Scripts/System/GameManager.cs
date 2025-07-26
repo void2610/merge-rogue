@@ -47,18 +47,16 @@ public class GameManager : MonoBehaviour
     private ScoreDisplayComponent _scoreDisplayComponent;
     private IInputProvider _inputProvider;
     private IContentService _contentService;
-    private IGameSettingsService _gameSettingsService;
     private IRelicService _relicService;
     private InventoryConfiguration _inventoryConfiguration;
     
     [Inject]
-    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider, IContentService contentService, IGameSettingsService gameSettingsService, IRelicService relicService, InventoryConfiguration inventoryConfiguration)
+    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider, IContentService contentService, IRelicService relicService, InventoryConfiguration inventoryConfiguration)
     {
         _scoreService = scoreService;
         _scoreDisplayComponent = scoreDisplayComponent;
         _inputProvider = inputProvider;
         _contentService = contentService;
-        _gameSettingsService = gameSettingsService;
         _relicService = relicService;
         _inventoryConfiguration = inventoryConfiguration;
     }
@@ -81,8 +79,9 @@ public class GameManager : MonoBehaviour
 
     public void ChangeTimeScale()
     {
-        var isDoubleSpeed = _gameSettingsService.ToggleDoubleSpeed();
-        TimeScale = isDoubleSpeed ? 3.0f : 1.0f;
+        // TODO
+        // var isDoubleSpeed = _gameSettingsService.ToggleDoubleSpeed();
+        // TimeScale = isDoubleSpeed ? 3.0f : 1.0f;
         Time.timeScale = TimeScale;
     }
 
@@ -160,11 +159,12 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        if (_gameSettingsService.IsDoubleSpeedEnabled())
-        {
-            TimeScale = 3.0f;
-            Time.timeScale = TimeScale;
-        }
+        // TODO
+        // if (_gameSettingsService.IsDoubleSpeedEnabled())
+        // {
+        //     TimeScale = 3.0f;
+        //     Time.timeScale = TimeScale;
+        // }
         
         AddCoin(Application.isEditor ? debugCoin : 10);
         

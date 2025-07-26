@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using R3;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// ゲーム設定の管理を行うサービスクラス
@@ -55,13 +56,22 @@ public class SettingsManager : IDisposable
         seTestSetting.ButtonAction = () => SeManager.Instance.PlaySe("Test");
         _settings.Add(seTestSetting);
         
+        // ゲーム速度設定
+        var gameSpeedSetting = new SliderSetting("ゲーム速度", "ゲームの速度を調整します", 1f, 0.1f, 3f);
+        gameSpeedSetting.OnValueChanged.Subscribe(v =>
+        {
+            if (SceneManager.GetActiveScene().name == "TitleScene") return; // タイトルシーンでは速度変更しない
+            Time.timeScale = v;
+        }).AddTo(_disposables);
+        _settings.Add(gameSpeedSetting);
+        
         // フルスクリーン切り替え
         var fullscreenSetting = new EnumSetting("フルスクリーン", "フルスクリーン表示の切り替え", 
             new[] { "false", "true" }, Screen.fullScreen ? "true" : "false", new[] { "オフ", "オン" });
         fullscreenSetting.OnValueChanged.Subscribe(v => Screen.fullScreen = v == "true").AddTo(_disposables);
         _settings.Add(fullscreenSetting);
         
-        // セーブデータ削除ボタン
+        // 設定のリセットボタン
         var deleteDataSetting = new ButtonSetting(
             "設定のリセット", 
             "設定をデフォルト値に戻します",
@@ -100,7 +110,7 @@ public class SettingsManager : IDisposable
     /// <summary>
     /// すべての設定をデフォルト値にリセット
     /// </summary>
-    public void ResetAllSettings()
+    private void ResetAllSettings()
     {
         foreach (var setting in _settings)
         {
@@ -111,7 +121,7 @@ public class SettingsManager : IDisposable
     /// <summary>
     /// 設定データをファイルに保存
     /// </summary>
-    public void SaveSettings()
+    private void SaveSettings()
     {
         try
         {
@@ -140,7 +150,7 @@ public class SettingsManager : IDisposable
     /// <summary>
     /// ファイルから設定データを読み込み
     /// </summary>
-    public void LoadSettings()
+    private void LoadSettings()
     {
         try
         {

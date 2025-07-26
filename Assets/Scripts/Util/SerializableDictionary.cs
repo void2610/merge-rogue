@@ -2,9 +2,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Unityでシリアライズ可能な辞書実装
+/// Inspectorで辞書を編集可能にする
+/// </summary>
 [Serializable]
-public class SerializableDictionary<TKey, TValue> :
-    Dictionary<TKey, TValue>,
+public class SerializableDictionary<TKey, TValue> : 
+    Dictionary<TKey, TValue>, 
     ISerializationCallbackReceiver
 {
     [Serializable]
@@ -13,9 +17,6 @@ public class SerializableDictionary<TKey, TValue> :
         public TKey key = default;
         public TValue value = default;
 
-        /// <summary>
-        /// Pair
-        /// </summary>
         public Pair(TKey key, TValue value)
         {
             this.key = key;
@@ -24,29 +25,36 @@ public class SerializableDictionary<TKey, TValue> :
     }
 
     [SerializeField]
-    private List<Pair> _list = null;
+    private List<Pair> serializedList = new List<Pair>();
 
     /// <summary>
-    /// OnAfterDeserialize
+    /// Unityがオブジェクトをデシリアライズした後に呼ばれる
+    /// シリアライズされたリストを辞書に変換する
     /// </summary>
     void ISerializationCallbackReceiver.OnAfterDeserialize()
     {
         Clear();
-        foreach (Pair pair in _list)
+        
+        foreach (var pair in serializedList)
         {
-            if (ContainsKey(pair.key))
+            if (pair.key != null && !ContainsKey(pair.key))
             {
-                continue;
+                Add(pair.key, pair.value);
             }
-            Add(pair.key, pair.value);
         }
     }
 
     /// <summary>
-    /// OnBeforeSerialize
+    /// Unityがオブジェクトをシリアライズする前に呼ばれる
+    /// 辞書をシリアライズ可能なリストに変換する
     /// </summary>
     void ISerializationCallbackReceiver.OnBeforeSerialize()
     {
-        // 処理なし
+        serializedList.Clear();
+        
+        foreach (var kvp in this)
+        {
+            serializedList.Add(new Pair(kvp.Key, kvp.Value));
+        }
     }
 }
