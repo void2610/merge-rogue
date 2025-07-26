@@ -62,6 +62,11 @@ public class SettingsManager : IDisposable
         {
             if (SceneManager.GetActiveScene().name == "TitleScene") return; // タイトルシーンでは速度変更しない
             Time.timeScale = v;
+            // GameManagerのTimeScaleも更新
+            if (GameManager.Instance != null)
+            {
+                GameManager.Instance.TimeScale = v;
+            }
         }).AddTo(_disposables);
         _settings.Add(gameSpeedSetting);
         

@@ -36,7 +36,11 @@ public class GameManager : MonoBehaviour
     [Header("デバッグ")]
     [SerializeField] private int debugCoin;
 
-    public float TimeScale { get; private set; } = 1.0f;
+    public float TimeScale
+    {
+        get => Time.timeScale;
+        set => Time.timeScale = Mathf.Clamp(value, 1f, 3f);
+    }
     public bool IsGameOver { get; private set; }
     public Player Player { get; private set; }
     public EnemyContainer EnemyContainer => enemyContainer;
@@ -49,9 +53,10 @@ public class GameManager : MonoBehaviour
     private IContentService _contentService;
     private IRelicService _relicService;
     private InventoryConfiguration _inventoryConfiguration;
+    private SettingsManager _settingsManager;
     
     [Inject]
-    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider, IContentService contentService, IRelicService relicService, InventoryConfiguration inventoryConfiguration)
+    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider, IContentService contentService, IRelicService relicService, InventoryConfiguration inventoryConfiguration, SettingsManager settingsManager = null)
     {
         _scoreService = scoreService;
         _scoreDisplayComponent = scoreDisplayComponent;
@@ -59,6 +64,7 @@ public class GameManager : MonoBehaviour
         _contentService = contentService;
         _relicService = relicService;
         _inventoryConfiguration = inventoryConfiguration;
+        _settingsManager = settingsManager;
     }
     
     public void AddCoin(int amount)
@@ -79,10 +85,9 @@ public class GameManager : MonoBehaviour
 
     public void ChangeTimeScale()
     {
-        // TODO
-        // var isDoubleSpeed = _gameSettingsService.ToggleDoubleSpeed();
-        // TimeScale = isDoubleSpeed ? 3.0f : 1.0f;
-        Time.timeScale = TimeScale;
+        // SettingsManagerから現在のゲーム速度を取得
+        var gameSpeedSetting = _settingsManager?.GetSetting<SliderSetting>("ゲーム速度");
+        if (gameSpeedSetting != null) TimeScale = gameSpeedSetting.CurrentValue;
     }
 
     public void GameOver()
@@ -159,18 +164,20 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        // TODO
-        // if (_gameSettingsService.IsDoubleSpeedEnabled())
-        // {
-        //     TimeScale = 3.0f;
-        //     Time.timeScale = TimeScale;
-        // }
-        
+        // SettingsManagerから現在のゲーム速度を取得して適用
+        var gameSpeedSetting = _settingsManager?.GetSetting<SliderSetting>("ゲーム速度");
+        if (gameSpeedSetting != null)
+        {
+            TimeScale = gameSpeedSetting.CurrentValue;
+            // 設定値が変更されたときの処理を登録
+            gameSpeedSetting.OnValueChanged.Subscribe(speed => TimeScale = speed).AddTo(this);
+        }
+
         AddCoin(Application.isEditor ? debugCoin : 10);
         
         // テスト用レリックの追加（エディタでのみ）
         // RelicUIManagerのStart()が実行された後に実行するため、1フレーム遅延させる
-        if (Application.isEditor && _inventoryConfiguration != null && _inventoryConfiguration.TestRelics != null)
+        if (Application.isEditor && _inventoryConfiguration && _inventoryConfiguration.TestRelics != null)
         {
             AddTestRelicsAfterDelay().Forget();
         }
