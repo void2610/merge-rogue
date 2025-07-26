@@ -47,7 +47,13 @@ public class TitlePresenter : MonoBehaviour
     private void ToggleVirtualMouse()
     {
         _virtualMouseService?.ToggleVirtualMouse();
-    }    
+    }
+    
+    private async UniTask EnableCanvasGroupWithReset(string canvasName, bool enable)
+    {
+        await _canvasGroupSwitcher.EnableCanvasGroupAsync(canvasName, enable);
+        ResetSelectedGameObject();
+    }
     
     private void ResetSelectedGameObject()
     {
@@ -80,10 +86,10 @@ public class TitlePresenter : MonoBehaviour
         _titleButtons = new List<TitleButtonData>
         {
             new TitleButtonData("Start Game", () => StartGame().Forget()),
-            new TitleButtonData("Encyclopedia", () => _canvasGroupSwitcher.EnableCanvasGroup("Encyclopedia", true)),
-            new TitleButtonData("Settings", () => _canvasGroupSwitcher.EnableCanvasGroup("Setting", true)),
-            new TitleButtonData("Credits", () => _canvasGroupSwitcher.EnableCanvasGroup("Credit", true)),
-            new TitleButtonData("Licenses", () => _canvasGroupSwitcher.EnableCanvasGroup("License", true)),
+            new TitleButtonData("Encyclopedia", () => EnableCanvasGroupWithReset("Encyclopedia", true).Forget()),
+            new TitleButtonData("Settings", () => EnableCanvasGroupWithReset("Setting", true).Forget()),
+            new TitleButtonData("Credits", () => EnableCanvasGroupWithReset("Credit", true).Forget()),
+            new TitleButtonData("Licenses", () => EnableCanvasGroupWithReset("License", true).Forget()),
             new TitleButtonData("Exit", TitleFunctions.ExitGame)
         };
         
@@ -99,10 +105,10 @@ public class TitlePresenter : MonoBehaviour
         
         twitterButton.onClick.AddListener(TitleFunctions.OpenTwitter);
         steamButton.onClick.AddListener(TitleFunctions.OpenSteam);
-        closeEncyclopediaButton.onClick.AddListener(() => _canvasGroupSwitcher.EnableCanvasGroup("Encyclopedia", false));
-        closeSettingsButton.onClick.AddListener(() => _canvasGroupSwitcher.EnableCanvasGroup("Setting", false));
-        closeCreditButton.onClick.AddListener(() => _canvasGroupSwitcher.EnableCanvasGroup("Credit", false));
-        closeLicenseButton.onClick.AddListener(() => _canvasGroupSwitcher.EnableCanvasGroup("License", false));
+        closeEncyclopediaButton.onClick.AddListener(() => EnableCanvasGroupWithReset("Encyclopedia", false).Forget());
+        closeSettingsButton.onClick.AddListener(() => EnableCanvasGroupWithReset("Setting", false).Forget());
+        closeCreditButton.onClick.AddListener(() => EnableCanvasGroupWithReset("Credit", false).Forget());
+        closeLicenseButton.onClick.AddListener(() => EnableCanvasGroupWithReset("License", false).Forget());
     }
 
     private async UniTask StartGame()
