@@ -73,16 +73,22 @@ public class SettingsManager : IDisposable
         fullscreenSetting.OnValueChanged.Subscribe(v => Screen.fullScreen = v == "true").AddTo(_disposables);
         _settings.Add(fullscreenSetting);
         
+        // シードタイプ設定
+        var seedTypeSetting = new EnumSetting("シードタイプ", "シード値の生成方法を選択します", 
+            new[] { "manual", "random" }, "random", new[] { "手動指定", "ランダム生成" });
+        _settings.Add(seedTypeSetting);
+        
         // シード値設定
-        var seedSetting = new TextInputSetting("シード値", "ランダム生成のシード値を設定します", "", 20, "シード値を入力");
+        var seedSetting = new TextInputSetting("シード値", "ランダム生成のシード値を設定します（手動指定時のみ有効）", "", 20, "シード値を入力");
         _settings.Add(seedSetting);
         
         // シード値ランダム生成ボタン
-        var randomSeedSetting = new ButtonSetting("ランダムシード生成", "ランダムなシード値を生成します", "生成");
+        var randomSeedSetting = new ButtonSetting("ランダムシード生成", "ランダムなシード値を生成して手動指定に設定します", "生成");
         randomSeedSetting.ButtonAction = () => {
             var guid = System.Guid.NewGuid();
             var randomSeed = guid.ToString("N")[..8]; // 8文字のランダム文字列
-            seedSetting.CurrentValue = randomSeed;
+            seedTypeSetting.CurrentValue = "manual"; // シードタイプを手動指定に変更
+            seedSetting.CurrentValue = randomSeed;   // ランダムシードを設定
         };
         _settings.Add(randomSeedSetting);
         
@@ -127,8 +133,30 @@ public class SettingsManager : IDisposable
     /// </summary>
     public string GetSeedValue()
     {
-        var seedSetting = GetSetting<TextInputSetting>("シード値");
-        return seedSetting?.CurrentValue ?? "";
+        var seedTypeSetting = GetSetting<EnumSetting>("シードタイプ");
+        var seedType = seedTypeSetting?.CurrentValue ?? "random";
+        
+        if (seedType == "random")
+        {
+            // ランダムシードを生成
+            var guid = System.Guid.NewGuid();
+            return guid.ToString("N")[..8]; // 8文字のランダム文字列
+        }
+        else
+        {
+            // 手動指定のシード値を取得
+            var seedSetting = GetSetting<TextInputSetting>("シード値");
+            var manualSeed = seedSetting?.CurrentValue ?? "";
+            
+            // 手動指定でも空の場合はランダムシードを生成
+            if (string.IsNullOrEmpty(manualSeed))
+            {
+                var guid = System.Guid.NewGuid();
+                return guid.ToString("N")[..8];
+            }
+            
+            return manualSeed;
+        }
     }
     
     /// <summary>
