@@ -73,6 +73,19 @@ public class SettingsManager : IDisposable
         fullscreenSetting.OnValueChanged.Subscribe(v => Screen.fullScreen = v == "true").AddTo(_disposables);
         _settings.Add(fullscreenSetting);
         
+        // シード値設定
+        var seedSetting = new TextInputSetting("シード値", "ランダム生成のシード値を設定します", "", 20, "シード値を入力");
+        _settings.Add(seedSetting);
+        
+        // シード値ランダム生成ボタン
+        var randomSeedSetting = new ButtonSetting("ランダムシード生成", "ランダムなシード値を生成します", "生成");
+        randomSeedSetting.ButtonAction = () => {
+            var guid = System.Guid.NewGuid();
+            var randomSeed = guid.ToString("N")[..8]; // 8文字のランダム文字列
+            seedSetting.CurrentValue = randomSeed;
+        };
+        _settings.Add(randomSeedSetting);
+        
         // 設定のリセットボタン
         var deleteDataSetting = new ButtonSetting(
             "設定のリセット", 
@@ -107,6 +120,15 @@ public class SettingsManager : IDisposable
     public T GetSetting<T>(string settingName) where T : class, ISettingBase
     {
         return _settings.FirstOrDefault(s => s.SettingName == settingName) as T;
+    }
+    
+    /// <summary>
+    /// シード値を取得
+    /// </summary>
+    public string GetSeedValue()
+    {
+        var seedSetting = GetSetting<TextInputSetting>("シード値");
+        return seedSetting?.CurrentValue ?? "";
     }
     
     /// <summary>

@@ -48,6 +48,14 @@ public class SettingsPresenter : IStartable, IDisposable
             })
             .AddTo(_disposables);
         
+        // テキスト入力変更イベント
+        _settingsView.OnTextInputChanged
+            .Subscribe(data => {
+                var setting = _settingsManager.GetSetting<TextInputSetting>(data.settingName);
+                if (setting != null) setting.CurrentValue = data.value;
+            })
+            .AddTo(_disposables);
+        
         // ボタンクリックイベント
         _settingsView.OnButtonClicked
             .Subscribe(settingName => {
@@ -98,6 +106,13 @@ public class SettingsPresenter : IStartable, IDisposable
                 data.buttonText = buttonSetting.ButtonText;
                 data.requiresConfirmation = buttonSetting.RequiresConfirmation;
                 data.confirmationMessage = buttonSetting.ConfirmationMessage;
+                break;
+                
+            case TextInputSetting textInputSetting:
+                data.type = SettingsView.SettingType.TextInput;
+                data.stringValue = textInputSetting.CurrentValue;
+                data.maxLength = textInputSetting.MaxLength;
+                data.placeholder = textInputSetting.Placeholder;
                 break;
         }
         

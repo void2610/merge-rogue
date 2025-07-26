@@ -47,6 +47,22 @@ public class MainLifetimeScope : LifetimeScope
         
         builder.Register<IScoreService, ScoreService>(Lifetime.Singleton);
         
+        // RandomServiceをSettingsManagerのシード値で初期化
+        builder.Register<IRandomService>(container =>
+        {
+            var settingsManager = container.Resolve<SettingsManager>();
+            var seedValue = settingsManager.GetSeedValue();
+            return new RandomService(seedValue);
+        }, Lifetime.Singleton);
+        
+        // ContentServiceの登録
+        builder.Register<IContentService>(container =>
+        {
+            var data = container.Resolve<ContentProviderData>();
+            var randomService = container.Resolve<IRandomService>();
+            return new ContentService(data, randomService);
+        }, Lifetime.Singleton);
+        
         builder.RegisterInstance(inventoryConfiguration);
         builder.Register<IInventoryService, InventoryService>(Lifetime.Singleton);
         builder.Register<IRelicService, RelicService>(Lifetime.Singleton);

@@ -18,10 +18,12 @@ public class SettingsView : MonoBehaviour
     [SerializeField] private GameObject sliderSettingPrefab;
     [SerializeField] private GameObject buttonSettingPrefab;
     [SerializeField] private GameObject enumSettingPrefab;
+    [SerializeField] private GameObject textInputSettingPrefab;
     
     // 外部への通知用イベント
     private readonly Subject<(string settingName, float value)> _onSliderChanged = new();
     private readonly Subject<(string settingName, string value)> _onEnumChanged = new();
+    private readonly Subject<(string settingName, string value)> _onTextInputChanged = new();
     private readonly Subject<string> _onButtonClicked = new();
     
     private readonly List<GameObject> _settingUIObjects = new();
@@ -35,6 +37,11 @@ public class SettingsView : MonoBehaviour
     /// 列挙型設定値変更イベント  
     /// </summary>
     public Observable<(string settingName, string value)> OnEnumChanged => _onEnumChanged;
+    
+    /// <summary>
+    /// テキスト入力設定値変更イベント
+    /// </summary>
+    public Observable<(string settingName, string value)> OnTextInputChanged => _onTextInputChanged;
     
     /// <summary>
     /// ボタンクリックイベント
@@ -59,13 +66,16 @@ public class SettingsView : MonoBehaviour
         public string buttonText;
         public bool requiresConfirmation;
         public string confirmationMessage;
+        public int maxLength;
+        public string placeholder;
     }
     
     public enum SettingType
     {
         Slider,
         Enum,
-        Button
+        Button,
+        TextInput
     }
     
     /// <summary>
@@ -107,6 +117,9 @@ public class SettingsView : MonoBehaviour
                 break;
             case SettingType.Enum:
                 CreateEnumUI(settingData, containerObject.transform);
+                break;
+            case SettingType.TextInput:
+                CreateTextInputUI(settingData, containerObject.transform);
                 break;
             default:
                 Debug.LogWarning($"未対応の設定タイプ: {settingData.type}");
@@ -314,6 +327,35 @@ public class SettingsView : MonoBehaviour
         {
             valueText.text = settingData.options[index];
         }
+    }
+    
+    /// <summary>
+    /// テキスト入力設定のUIを生成
+    /// </summary>
+    private GameObject CreateTextInputUI(SettingDisplayData settingData, Transform parent)
+    {
+        var uiObject = Instantiate(textInputSettingPrefab, parent);
+        
+        // レイアウト要素を追加して残り幅を使用
+        var layoutElement = uiObject.GetComponent<LayoutElement>();
+        if (!layoutElement) layoutElement = uiObject.AddComponent<LayoutElement>();
+        layoutElement.flexibleWidth = 1f; // 残りの幅を使用
+        
+        var inputField = uiObject.GetComponentInChildren<TMP_InputField>();
+        inputField.text = settingData.stringValue ?? "";
+        inputField.characterLimit = settingData.maxLength > 0 ? settingData.maxLength : 50;
+        
+        if (!string.IsNullOrEmpty(settingData.placeholder))
+        {
+            inputField.placeholder.GetComponent<TextMeshProUGUI>().text = settingData.placeholder;
+        }
+        
+        // テキスト変更時のイベント - 外部に通知
+        inputField.onValueChanged.AddListener(value => {
+            _onTextInputChanged.OnNext((settingData.name, value));
+        });
+        
+        return uiObject;
     }
     
     /// <summary>

@@ -41,22 +41,11 @@ public class RootLifetimeScope : LifetimeScope
     }
     
     /// <summary>
-    /// ContentService関連の共通サービス登録
+    /// 共通データの登録
     /// </summary>
     private void RegisterContentServices(IContainerBuilder builder)
     {
         builder.RegisterInstance(contentProviderData);
-        
-        // 共通して使用するサービス
-        builder.Register<IRandomService, RandomService>(Lifetime.Singleton).WithParameter("seedText", "test_seed");
-        
-        // ContentServiceの登録（シーン固有の依存関係は各シーンで解決）
-        builder.Register<IContentService>(container =>
-        {
-            var data = container.Resolve<ContentProviderData>();
-            var randomService = container.Resolve<IRandomService>();
-            return new ContentService(data, randomService);
-        }, Lifetime.Singleton);
     }
     
     /// <summary>
