@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using VContainer;
 
@@ -10,8 +9,8 @@ public class TitlePresenter : MonoBehaviour
 {
     private class TitleButtonData
     {
-        public string ButtonText;
-        public System.Action OnClickAction;
+        public readonly string ButtonText;
+        public readonly System.Action OnClickAction;
         public TitleButtonData(string buttonText, System.Action onClickAction)
         {
             ButtonText = buttonText;
@@ -22,6 +21,8 @@ public class TitlePresenter : MonoBehaviour
     [SerializeField] private GameObject titleButtonPrefab;
     [SerializeField] private Transform titleButtonContainer;
     [SerializeField] private Image fadeImage;
+    [SerializeField] private Button twitterButton;
+    [SerializeField] private Button steamButton;
     [SerializeField] private List<CanvasGroup> canvasGroups;
     
     private List<TitleButtonData> _titleButtons;
@@ -79,6 +80,9 @@ public class TitlePresenter : MonoBehaviour
         }
         _startButton = titleButtonContainer.GetChild(0).GetComponent<Button>();
         _startButton.gameObject.AddComponent<FocusSelectable>();
+        
+        twitterButton.onClick.AddListener(TitleFunctions.OpenTwitter);
+        steamButton.onClick.AddListener(TitleFunctions.OpenSteam);
     }
     
     private void Awake()
@@ -93,9 +97,7 @@ public class TitlePresenter : MonoBehaviour
             new TitleButtonData("Settings", () => _canvasGroupSwitcher.EnableCanvasGroup("Settings", true)),
             new TitleButtonData("Credits", () => _canvasGroupSwitcher.EnableCanvasGroup("Credit", true)),
             new TitleButtonData("Licenses", () => _canvasGroupSwitcher.EnableCanvasGroup("License", true)),
-            new TitleButtonData("Open Twitter", TitleFunctions.OpenTwitter),
-            new TitleButtonData("Open Steam", TitleFunctions.OpenSteam),
-            new TitleButtonData("Exit Game", TitleFunctions.ExitGame)
+            new TitleButtonData("Exit", TitleFunctions.ExitGame)
         };
         
         SetUpTitleButtons();
@@ -105,7 +107,10 @@ public class TitlePresenter : MonoBehaviour
         {
             fadeImage.gameObject.SetActive(false);
         }).Play();
-        
+    }
+
+    private void Start()
+    {
         ToggleVirtualMouse();
     }
 

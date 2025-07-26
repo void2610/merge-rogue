@@ -26,6 +26,7 @@ public class SelectionCursor : MonoBehaviour
     public static void SetSelectedGameObjectSafe(GameObject go)
     {
         _allowProgrammaticChange = true;
+        if (!_eventSystem) _eventSystem = EventSystem.current;
         _eventSystem.SetSelectedGameObject(go);
     }
     
