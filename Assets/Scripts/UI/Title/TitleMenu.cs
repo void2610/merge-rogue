@@ -56,20 +56,20 @@ public class TitleMenu : MonoBehaviour
     private GameObject GetTopCanvasGroup() => canvasGroups.Find(c => c.alpha > 0)?.gameObject;
     private bool IsVirtualMouseActive() => _virtualMouseService?.IsVirtualMouseActive() ?? false;
 
-    private void ResetSelectedGameObject()
-    {
-        var topCanvas = GetTopCanvasGroup();
-        if (topCanvas)
-        {
-            var focusSelectable = topCanvas.GetComponentInChildren<FocusSelectable>();
-            if (focusSelectable.GetComponent<Selectable>().interactable == true)
-                SelectionCursor.SetSelectedGameObjectSafe(focusSelectable.gameObject);
-        }
-        else
-        {
-            SelectionCursor.SetSelectedGameObjectSafe(startButton.gameObject);
-        }
-    }
+    // private void ResetSelectedGameObject()
+    // {
+    //     var topCanvas = GetTopCanvasGroup();
+    //     if (topCanvas)
+    //     {
+    //         var focusSelectable = topCanvas.GetComponentInChildren<FocusSelectable>();
+    //         if (focusSelectable.GetComponent<Selectable>().interactable == true)
+    //             SelectionCursor.SetSelectedGameObjectSafe(focusSelectable.gameObject);
+    //     }
+    //     else
+    //     {
+    //         SelectionCursor.SetSelectedGameObjectSafe(startButton.gameObject);
+    //     }
+    // }
 
     private ScrollRect GetActiveScrollRect()
     {
@@ -96,47 +96,47 @@ public class TitleMenu : MonoBehaviour
     /// <summary>
     /// 仮想マウスの有効/無効を切り替えます
     /// </summary>
-    private void ToggleVirtualMouse()
-    {
-        _virtualMouseService?.ToggleVirtualMouse();
-    }
+    // private void ToggleVirtualMouse()
+    // {
+    //     _virtualMouseService?.ToggleVirtualMouse();
+    // }
     
-    private async UniTaskVoid EnableCanvasGroupAsync(string canvasName, bool e)
-    {
-        var cg = canvasGroups.Find(c => c.name == canvasName);
-        if (!cg) return;
-        if (_canvasGroupTween[canvasName].IsActive()) return;
-        
-        // アニメーション中は操作をブロック
-        cg.interactable = false;
-        cg.blocksRaycasts = false;
-        
-        var seq = DOTween.Sequence();
-        seq.SetUpdate(true).Forget();
-        if (e)
-        {
-            seq.Join(cg.transform.DOMoveY(-0.45f, 0).SetRelative(true)).Forget();
-            seq.Join(cg.transform.DOMoveY(0.45f, 0.2f).SetRelative(true).SetEase(Ease.OutBack)).Forget();
-            seq.Join(cg.DOFade(1, 0.2f)).Forget();
-        }
-        else
-        {
-            seq.Join(cg.DOFade(0, 0.2f)).Forget();
-        }
-        
-        _canvasGroupTween[canvasName] = seq;
-        SelectionCursor.SetSelectedGameObjectSafe(null);
-        
-        await seq.AsyncWaitForCompletion();
-        
-        // inputGuide.UpdateText(IsAnyCanvasGroupEnabled() ? InputGuide.InputGuideType.Navigate : InputGuide.InputGuideType.Merge);
-        _canvasGroupTween[canvasName] = null;
-        cg.interactable = e;
-        cg.blocksRaycasts = e;
-        
-        // FocusSelectableがアタッチされているオブジェクトがあればフォーカス
-        ResetSelectedGameObject();
-    }
+    // private async UniTaskVoid EnableCanvasGroupAsync(string canvasName, bool e)
+    // {
+    //     var cg = canvasGroups.Find(c => c.name == canvasName);
+    //     if (!cg) return;
+    //     if (_canvasGroupTween[canvasName].IsActive()) return;
+    //     
+    //     // アニメーション中は操作をブロック
+    //     cg.interactable = false;
+    //     cg.blocksRaycasts = false;
+    //     
+    //     var seq = DOTween.Sequence();
+    //     seq.SetUpdate(true).Forget();
+    //     if (e)
+    //     {
+    //         seq.Join(cg.transform.DOMoveY(-0.45f, 0).SetRelative(true)).Forget();
+    //         seq.Join(cg.transform.DOMoveY(0.45f, 0.2f).SetRelative(true).SetEase(Ease.OutBack)).Forget();
+    //         seq.Join(cg.DOFade(1, 0.2f)).Forget();
+    //     }
+    //     else
+    //     {
+    //         seq.Join(cg.DOFade(0, 0.2f)).Forget();
+    //     }
+    //     
+    //     _canvasGroupTween[canvasName] = seq;
+    //     SelectionCursor.SetSelectedGameObjectSafe(null);
+    //     
+    //     await seq.AsyncWaitForCompletion();
+    //     
+    //     // inputGuide.UpdateText(IsAnyCanvasGroupEnabled() ? InputGuide.InputGuideType.Navigate : InputGuide.InputGuideType.Merge);
+    //     _canvasGroupTween[canvasName] = null;
+    //     cg.interactable = e;
+    //     cg.blocksRaycasts = e;
+    //     
+    //     // FocusSelectableがアタッチされているオブジェクトがあればフォーカス
+    //     ResetSelectedGameObject();
+    // }
     
     public void StartGame()
     {
@@ -147,12 +147,12 @@ public class TitleMenu : MonoBehaviour
         });
     }
     
-    public void ShowEncyclopedia() => EnableCanvasGroupAsync("Encyclopedia", true).Forget();
-    public void HideEncyclopedia() => EnableCanvasGroupAsync("Encyclopedia", false).Forget();
-    public void ShowCredit() => EnableCanvasGroupAsync("Credit", true).Forget();
-    public void HideCredit() => EnableCanvasGroupAsync("Credit", false).Forget();
-    public void ShowLicense() => EnableCanvasGroupAsync("License", true).Forget();
-    public void HideLicense() => EnableCanvasGroupAsync("License", false).Forget();
+    // public void ShowEncyclopedia() => EnableCanvasGroupAsync("Encyclopedia", true).Forget();
+    // public void HideEncyclopedia() => EnableCanvasGroupAsync("Encyclopedia", false).Forget();
+    // public void ShowCredit() => EnableCanvasGroupAsync("Credit", true).Forget();
+    // public void HideCredit() => EnableCanvasGroupAsync("Credit", false).Forget();
+    // public void ShowLicense() => EnableCanvasGroupAsync("License", true).Forget();
+    // public void HideLicense() => EnableCanvasGroupAsync("License", false).Forget();
     
     public void ShowDescriptionWindow(object o, GameObject g)
     {
@@ -205,11 +205,11 @@ public class TitleMenu : MonoBehaviour
         }
         
         // CanvasGroupの初期化
-        foreach (var canvasGroup in canvasGroups)
-        {
-            _canvasGroupTween.Add(canvasGroup.name, null);
-            EnableCanvasGroupAsync(canvasGroup.name, false).Forget();
-        }
+        // foreach (var canvasGroup in canvasGroups)
+        // {
+        //     _canvasGroupTween.Add(canvasGroup.name, null);
+        //     EnableCanvasGroupAsync(canvasGroup.name, false).Forget();
+        // }
     }
 
     private void Start()
@@ -219,7 +219,7 @@ public class TitleMenu : MonoBehaviour
         
         InitializeSettings();
         SetupUIListeners();
-        ToggleVirtualMouse();
+        // ToggleVirtualMouse();
         InitializeTitleContent();
 
         fadeImage.color = new Color(0, 0, 0, 1);
@@ -234,10 +234,10 @@ public class TitleMenu : MonoBehaviour
             _gameSettingsService.GenerateAndSaveSeed(seedInputField.text);
         }
         
-        if (_inputProvider?.UI.ResetCursor.triggered == true)
-            ResetSelectedGameObject();
-        if (_inputProvider?.UI.ToggleVirtualMouse.triggered == true)
-            ToggleVirtualMouse();
+        // if (_inputProvider?.UI.ResetCursor.triggered == true)
+        //     ResetSelectedGameObject();
+        // if (_inputProvider?.UI.ToggleVirtualMouse.triggered == true)
+            // ToggleVirtualMouse();
         
         // スクロール操作
         var sr = GetActiveScrollRect();

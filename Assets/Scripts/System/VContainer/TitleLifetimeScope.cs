@@ -36,5 +36,6 @@ public class TitleLifetimeScope : LifetimeScope
         
         // DescriptionWindowのVContainer登録（InputProviderServiceの注入を有効化）
         builder.RegisterComponentInHierarchy<DescriptionWindow>();
+        builder.RegisterComponentInHierarchy<TitlePresenter>();
     }
 }

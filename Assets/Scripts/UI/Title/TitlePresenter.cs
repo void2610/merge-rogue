@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using VContainer;
 
 public class TitlePresenter : MonoBehaviour
 {
@@ -22,18 +24,49 @@ public class TitlePresenter : MonoBehaviour
     [SerializeField] private Image fadeImage;
     [SerializeField] private List<CanvasGroup> canvasGroups;
     
-    private List<TitleButtonData> _titleButtons = new List<TitleButtonData>
-    {
-        new TitleButtonData("Start Game", TitleFunctions.StartGame),
-        new TitleButtonData("Encyclopedia", _canvasGroupSwitcher.EnableCanvasGroup("Encyclopedia", true)),
-        new TitleButtonData("Settings", _canvasGroupSwitcher.EnableCanvasGroup("Settings", true)),
-        new TitleButtonData("Credits", _canvasGroupSwitcher.EnableCanvasGroup("Credit", true)),
-        new TitleButtonData("Licenses", _canvasGroupSwitcher.EnableCanvasGroup("License", true)),
-        new TitleButtonData("Open Twitter", TitleFunctions.OpenTwitter),
-        new TitleButtonData("Open Steam", TitleFunctions.OpenSteam),
-        new TitleButtonData("Exit Game", TitleFunctions.ExitGame)
-    };
+    private List<TitleButtonData> _titleButtons;
     private CanvasGroupSwitcher _canvasGroupSwitcher;
+    private IInputProvider _inputProvider;
+    private IVirtualMouseService _virtualMouseService;
+    private Button _startButton;
+    
+    [Inject]
+    public void Construct(IInputProvider inputProvider, IVirtualMouseService virtualMouseService)
+    {
+        _inputProvider = inputProvider;
+        _virtualMouseService = virtualMouseService;
+    }
+    
+    private void ToggleVirtualMouse()
+    {
+        _virtualMouseService?.ToggleVirtualMouse();
+    }    
+    
+    private void ResetSelectedGameObject()
+    {
+        var topCanvas = _canvasGroupSwitcher.GetTopCanvasGroup();
+        if (topCanvas)
+        {
+            var focusSelectable = topCanvas.GetComponentInChildren<FocusSelectable>();
+            if (focusSelectable.GetComponent<Selectable>().interactable)
+                SelectionCursor.SetSelectedGameObjectSafe(focusSelectable.gameObject);
+        }
+        else
+        {
+            SelectionCursor.SetSelectedGameObjectSafe(_startButton.gameObject);
+        }
+    }
+    
+    private ScrollRect GetActiveScrollRect()
+    {
+        var topCanvas = _canvasGroupSwitcher.GetTopCanvasGroup();
+        if (topCanvas)
+        {
+            var scrollRect = topCanvas.GetComponentInChildren<ScrollRect>();
+            if (scrollRect) return scrollRect;
+        }
+        return null;
+    }
     
     private void SetUpTitleButtons()
     {
@@ -41,14 +74,30 @@ public class TitlePresenter : MonoBehaviour
         {
             var buttonObject = Instantiate(titleButtonPrefab, titleButtonContainer);
             var button = buttonObject.GetComponent<Button>();
-            button.GetComponentInChildren<Text>().text = buttonData.ButtonText;
+            button.GetComponentInChildren<TextMeshProUGUI>().text = buttonData.ButtonText;
             button.onClick.AddListener(() => buttonData.OnClickAction.Invoke());
         }
+        _startButton = titleButtonContainer.GetChild(0).GetComponent<Button>();
+        _startButton.gameObject.AddComponent<FocusSelectable>();
     }
     
     private void Awake()
     {
         _canvasGroupSwitcher = new CanvasGroupSwitcher(canvasGroups);
+        
+        // ボタンデータを初期化
+        _titleButtons = new List<TitleButtonData>
+        {
+            new TitleButtonData("Start Game", TitleFunctions.StartGame),
+            new TitleButtonData("Encyclopedia", () => _canvasGroupSwitcher.EnableCanvasGroup("Encyclopedia", true)),
+            new TitleButtonData("Settings", () => _canvasGroupSwitcher.EnableCanvasGroup("Settings", true)),
+            new TitleButtonData("Credits", () => _canvasGroupSwitcher.EnableCanvasGroup("Credit", true)),
+            new TitleButtonData("Licenses", () => _canvasGroupSwitcher.EnableCanvasGroup("License", true)),
+            new TitleButtonData("Open Twitter", TitleFunctions.OpenTwitter),
+            new TitleButtonData("Open Steam", TitleFunctions.OpenSteam),
+            new TitleButtonData("Exit Game", TitleFunctions.ExitGame)
+        };
+        
         SetUpTitleButtons();
         
         // フェードイン
@@ -56,6 +105,25 @@ public class TitlePresenter : MonoBehaviour
         {
             fadeImage.gameObject.SetActive(false);
         }).Play();
+        
+        ToggleVirtualMouse();
     }
 
+    private void Update()
+    {
+        if (_inputProvider?.UI.ResetCursor.triggered == true)
+            ResetSelectedGameObject();
+        
+        if (_inputProvider?.UI.ToggleVirtualMouse.triggered == true)
+            ToggleVirtualMouse();
+        
+        // スクロール操作
+        var sr = GetActiveScrollRect();
+        if (sr && _inputProvider != null)
+        {
+            var speed = _inputProvider.GetScrollSpeed();
+            var newPos = sr.verticalNormalizedPosition + speed.y * Time.unscaledDeltaTime;
+            sr.verticalNormalizedPosition = Mathf.Clamp01(newPos);
+        }
+    }
 }
