@@ -23,7 +23,6 @@ public class RootLifetimeScope : LifetimeScope
     {
         builder.RegisterInstance(cursorConfiguration);
         builder.Register<IInputProvider, InputProviderService>(Lifetime.Singleton);
-        builder.Register<IEnemyDifficultyService, EnemyDifficultyService>(Lifetime.Singleton);
         builder.Register<SettingsManager>(Lifetime.Singleton);
         
         // 音声管理コンポーネントの動的生成と登録

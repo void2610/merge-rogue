@@ -44,8 +44,6 @@ public class MainLifetimeScope : LifetimeScope
         builder.Register<IVirtualMouseService, VirtualMouseService>(Lifetime.Scoped);
         builder.Register<IMouseCursorService, MouseCursorService>(Lifetime.Scoped);
         
-        builder.Register<IScoreService, ScoreService>(Lifetime.Singleton);
-        
         // RandomServiceをSettingsManagerのシード値で初期化
         builder.Register<IRandomService>(container =>
         {
@@ -65,10 +63,10 @@ public class MainLifetimeScope : LifetimeScope
         builder.RegisterInstance(inventoryConfiguration);
         builder.Register<IInventoryService, InventoryService>(Lifetime.Singleton);
         builder.Register<IRelicService, RelicService>(Lifetime.Singleton);
+        builder.Register<IScoreService, ScoreService>(Lifetime.Singleton);
+        builder.Register<IEnemyDifficultyService, EnemyDifficultyService>(Lifetime.Singleton);
         
         builder.RegisterEntryPoint<MouseHoverUISelector>();
-        
-        // インベントリ初期化処理（相互参照設定）
         builder.RegisterEntryPoint<InventoryInitializer>();
         
         // MainScene関連コンポーネントの依存注入を有効化
