@@ -1,15 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.EventSystems;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using VContainer;
 
@@ -40,7 +37,7 @@ public class DescriptionWindow : MonoBehaviour
     private readonly List<GameObject> _otherTriggerObjects = new();
     // ルートウィンドウのトリガー元のオブジェクト
     private GameObject _rootTriggerObject;
-    private bool _isWindowLocked = false;
+    private bool _isWindowLocked;
     private CancellationTokenSource _hoverTokenSource;
     private CancellationTokenSource _hideTokenSource;
     
@@ -66,10 +63,10 @@ public class DescriptionWindow : MonoBehaviour
         textColor = Color.white;
         
         // StatusEffectManagerが初期化されていない場合は失敗
-        if (StatusEffectManager.Instance == null) return false;
+        if (!StatusEffectManager.Instance) return false;
         
         // enum名での検索
-        if (System.Enum.TryParse<StatusEffectType>(word, true, out var statusEffectType))
+        if (Enum.TryParse<StatusEffectType>(word, true, out var statusEffectType))
         {
             description = StatusEffects.GetDescription(statusEffectType);
             textColor = StatusEffects.GetColor(statusEffectType);
@@ -77,10 +74,10 @@ public class DescriptionWindow : MonoBehaviour
         }
         
         // ローカライズされた名前での検索
-        foreach (StatusEffectType type in System.Enum.GetValues(typeof(StatusEffectType)))
+        foreach (StatusEffectType type in Enum.GetValues(typeof(StatusEffectType)))
         {
             var localizedName = StatusEffects.GetLocalizedName(type);
-            if (localizedName.Equals(word, System.StringComparison.OrdinalIgnoreCase))
+            if (localizedName.Equals(word, StringComparison.OrdinalIgnoreCase))
             {
                 description = StatusEffects.GetDescription(type);
                 textColor = StatusEffects.GetColor(type);
@@ -169,7 +166,7 @@ public class DescriptionWindow : MonoBehaviour
 
         if(obj is BallData b) SetBallTexts(b, ballLevel);
         else if(obj is RelicData r) SetRelicTexts(r);
-        else throw new System.ArgumentException("obj is not BallData or RelicData");
+        else throw new ArgumentException("obj is not BallData or RelicData");
         
         descriptionText.text = Utils.GetHighlightWords(wordDictionary, descriptionText.text);
 
@@ -270,7 +267,7 @@ public class DescriptionWindow : MonoBehaviour
             containerRect, 
             parentScreenPos, 
             uiCamera, 
-            out var localParentPos
+            out _
         );
         // ③ 固定のオフセットを付与（必要に応じてオフセット値は変更してください）
         var offset = new Vector2(100f, 25f);

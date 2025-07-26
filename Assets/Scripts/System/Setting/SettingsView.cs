@@ -342,18 +342,25 @@ public class SettingsView : MonoBehaviour
         layoutElement.flexibleWidth = 1f; // 残りの幅を使用
         
         var inputField = uiObject.GetComponentInChildren<TMP_InputField>();
-        inputField.text = settingData.stringValue ?? "";
-        inputField.characterLimit = settingData.maxLength > 0 ? settingData.maxLength : 50;
-        
-        if (!string.IsNullOrEmpty(settingData.placeholder))
+        if (inputField)
         {
-            inputField.placeholder.GetComponent<TextMeshProUGUI>().text = settingData.placeholder;
+            inputField.text = settingData.stringValue ?? "";
+            inputField.characterLimit = settingData.maxLength > 0 ? settingData.maxLength : 50;
+            
+            if (!string.IsNullOrEmpty(settingData.placeholder) && inputField.placeholder)
+            {
+                var placeholderText = inputField.placeholder.GetComponent<TextMeshProUGUI>();
+                if (placeholderText)
+                {
+                    placeholderText.text = settingData.placeholder;
+                }
+            }
+            
+            // テキスト変更時のイベント - 外部に通知
+            inputField.onValueChanged.AddListener(value => {
+                _onTextInputChanged.OnNext((settingData.name, value));
+            });
         }
-        
-        // テキスト変更時のイベント - 外部に通知
-        inputField.onValueChanged.AddListener(value => {
-            _onTextInputChanged.OnNext((settingData.name, value));
-        });
         
         return uiObject;
     }

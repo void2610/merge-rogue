@@ -23,6 +23,17 @@ public class TitleLifetimeScope : LifetimeScope
         builder.Register<ILicenseService, LicenseService>(Lifetime.Singleton).WithParameter("licenseManager", licenseManager);
         builder.Register<IVersionService, VersionService>(Lifetime.Singleton).WithParameter("version", gameVersion);
         
+        // RandomService（タイトル画面では固定シードでOK）
+        builder.Register<IRandomService, RandomService>(Lifetime.Singleton).WithParameter("seedText", "title_seed");
+        
+        // ContentServiceの登録
+        builder.Register<IContentService>(container =>
+        {
+            var data = container.Resolve<ContentProviderData>();
+            var randomService = container.Resolve<IRandomService>();
+            return new ContentService(data, randomService);
+        }, Lifetime.Singleton);
+        
         // UI関連サービス（エントリーポイント）
         builder.RegisterEntryPoint<MouseHoverUISelector>();
         builder.RegisterEntryPoint<SettingsPresenter>();
