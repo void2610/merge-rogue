@@ -17891,7 +17891,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1168070099}
-  - component: {fileID: 1168070100}
   - component: {fileID: 1168070102}
   m_Layer: 0
   m_Name: Utils
@@ -17915,18 +17914,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1168070100
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1168070097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c9b15fc4789e42bbb9273ab02d8e5e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1168070102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26561,19 +26548,7 @@ MonoBehaviour:
   rightMoveDistance: 270
   shiftUpDistance: 30
   iconSprites:
-    _list:
-    - key: 0
-      value: {fileID: 21300000, guid: 962ad27993ed9487f8233a134e56b3af, type: 3}
-    - key: 1
-      value: {fileID: 21300000, guid: 4a06ac434eddc4ba9b229395ef26af41, type: 3}
-    - key: 2
-      value: {fileID: 21300000, guid: 962ad27993ed9487f8233a134e56b3af, type: 3}
-    - key: 3
-      value: {fileID: 21300000, guid: 962ad27993ed9487f8233a134e56b3af, type: 3}
-    - key: 4
-      value: {fileID: 21300000, guid: 962ad27993ed9487f8233a134e56b3af, type: 3}
-    - key: 5
-      value: {fileID: 21300000, guid: 141dcd1439a644dbc95eaf535c21d822, type: 3}
+    serializedList: []
 --- !u!114 &2230902143142103757
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -85,9 +85,11 @@ public class GameManager : MonoBehaviour
 
     public void ChangeTimeScale()
     {
-        // SettingsManagerから現在のゲーム速度を取得
-        var gameSpeedSetting = _settingsManager?.GetSetting<SliderSetting>("ゲーム速度");
-        if (gameSpeedSetting != null) TimeScale = gameSpeedSetting.CurrentValue;
+        var setting = _settingsManager.GetSetting<EnumSetting>("ゲーム速度");
+        setting.MoveNext();
+        // 新しい値を適用
+        if (float.TryParse(setting.CurrentValue, out var speed))
+            TimeScale = speed;
     }
 
     public void GameOver()
@@ -165,13 +167,14 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         // SettingsManagerから現在のゲーム速度を取得して適用
-        var gameSpeedSetting = _settingsManager?.GetSetting<SliderSetting>("ゲーム速度");
-        if (gameSpeedSetting != null)
+        var setting = _settingsManager.GetSetting<EnumSetting>("ゲーム速度");
+        if (float.TryParse(setting.CurrentValue, out var speed))
+            TimeScale = speed;
+        // 設定値が変更されたときの処理を登録
+        setting.OnValueChanged.Subscribe(v =>
         {
-            TimeScale = gameSpeedSetting.CurrentValue;
-            // 設定値が変更されたときの処理を登録
-            gameSpeedSetting.OnValueChanged.Subscribe(speed => TimeScale = speed).AddTo(this);
-        }
+            if (float.TryParse(v, out var s)) TimeScale = s; 
+        }).AddTo(this);
 
         AddCoin(Application.isEditor ? debugCoin : 10);
         

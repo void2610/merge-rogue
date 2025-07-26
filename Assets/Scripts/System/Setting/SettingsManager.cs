@@ -57,16 +57,13 @@ public class SettingsManager : IDisposable
         _settings.Add(seTestSetting);
         
         // ゲーム速度設定
-        var gameSpeedSetting = new SliderSetting("ゲーム速度", "ゲームの速度を調整します", 1f, 0.1f, 3f);
+        var gameSpeedSetting = new EnumSetting("ゲーム速度", "ゲームの速度を調整します", 
+            new[] { "1.0", "2.0", "3.0" }, "1.0", new[] { "x1", "x2", "x3" });
         gameSpeedSetting.OnValueChanged.Subscribe(v =>
         {
-            if (SceneManager.GetActiveScene().name == "TitleScene") return; // タイトルシーンでは速度変更しない
-            Time.timeScale = v;
-            // GameManagerのTimeScaleも更新
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.TimeScale = v;
-            }
+            // タイトルシーンでは速度変更しない
+            if (SceneManager.GetActiveScene().name == "TitleScene") return; 
+            if (float.TryParse(v, out var speed)) GameManager.Instance.TimeScale = speed;
         }).AddTo(_disposables);
         _settings.Add(gameSpeedSetting);
         
