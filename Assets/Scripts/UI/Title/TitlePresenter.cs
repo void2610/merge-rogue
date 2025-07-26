@@ -23,6 +23,10 @@ public class TitlePresenter : MonoBehaviour
     [SerializeField] private Transform titleButtonContainer;
     [SerializeField] private List<CanvasGroup> canvasGroups;
     [SerializeField] private Image fadeImage;
+    [Header("Texts")]
+    [SerializeField] private TextMeshProUGUI versionText;
+    [SerializeField] private TextMeshProUGUI creditText;
+    [SerializeField] private TextMeshProUGUI licenseText;
     [Header("Buttons")]
     [SerializeField] private Button twitterButton;
     [SerializeField] private Button steamButton;
@@ -36,13 +40,19 @@ public class TitlePresenter : MonoBehaviour
     private IInputProvider _inputProvider;
     private IVirtualMouseService _virtualMouseService;
     private SettingsManager _settingsManager;
+    private ICreditService _creditService;
+    private ILicenseService _licenseService;
+    private IVersionService _versionService;
     private GameObject _startButton;
     
     [Inject]
-    public void Construct(IInputProvider inputProvider, IVirtualMouseService virtualMouseService)
+    public void Construct(IInputProvider inputProvider, IVirtualMouseService virtualMouseService, ICreditService creditService, ILicenseService licenseService, IVersionService versionService)
     {
         _inputProvider = inputProvider;
         _virtualMouseService = virtualMouseService;
+        _creditService = creditService;
+        _licenseService = licenseService;
+        _versionService = versionService;
     }
     
     private void ToggleVirtualMouse()
@@ -82,6 +92,22 @@ public class TitlePresenter : MonoBehaviour
         return null;
     }
     
+    private async UniTask StartGame()
+    {
+        fadeImage.color = new Color(0, 0, 0, 0);
+        await fadeImage.DOFade(1.0f, 1.0f);
+        TitleFunctions.StartGame();
+    }
+    
+    private void UpdateContentSize(TextMeshProUGUI text)
+    {
+        var preferredHeight = text.GetPreferredValues().y;
+        var content = text.GetComponentInParent<RectTransform>();
+        var parentRect = content.parent.GetComponent<RectTransform>();
+        content.sizeDelta = new Vector2(content.sizeDelta.x, preferredHeight);
+        parentRect.sizeDelta = new Vector2(parentRect.sizeDelta.x, Mathf.Max(parentRect.sizeDelta.y, preferredHeight + 20));
+    }    
+    
     private void SetUpTitleButtons()
     {
         _titleButtons = new List<TitleButtonData>
@@ -115,20 +141,30 @@ public class TitlePresenter : MonoBehaviour
         closeCreditButton.onClick.AddListener(() => EnableCanvasGroupWithReset("Credit", false).Forget());
         closeLicenseButton.onClick.AddListener(() => EnableCanvasGroupWithReset("License", false).Forget());
     }
-
-    private async UniTask StartGame()
-    {
-        fadeImage.color = new Color(0, 0, 0, 0);
-        await fadeImage.DOFade(1.0f, 1.0f);
-        TitleFunctions.StartGame();
-    }
     
     private void Awake()
     {
         Time.timeScale = 1.0f;
         _canvasGroupSwitcher = new CanvasGroupSwitcher(canvasGroups);
         
+        // ScrollRectの初期化
+        foreach(var scrollRect in FindObjectsByType<ScrollRect>(FindObjectsSortMode.None))
+        {
+            var sr = scrollRect.GetComponentInChildren<ScrollRect>();
+            if (sr)
+            {
+                sr.verticalNormalizedPosition = 1.0f;
+                sr.horizontalNormalizedPosition = 0.0f;
+            }
+        }
+        
         SetUpTitleButtons();
+
+        versionText.text = _versionService.GetVersionText();
+        creditText.text = _creditService.GetCreditText();
+        UpdateContentSize(creditText);
+        licenseText.text = _licenseService.GetLicenseText();
+        UpdateContentSize(licenseText);
         
         // フェードイン
         fadeImage.DOFade(0, 0.5f);

@@ -561,7 +561,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 880.0001}
+  m_AnchoredPosition: {x: 0, y: 880}
   m_SizeDelta: {x: 0, y: 1200}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &268676072
@@ -1755,8 +1755,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 525522646}
-  - component: {fileID: 525522647}
-  - component: {fileID: 525522648}
   - component: {fileID: 525522649}
   m_Layer: 0
   m_Name: Script
@@ -1780,46 +1778,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &525522647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 525522644}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f659a169965f40a29e98535b65a7bdb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fadeImage: {fileID: 2197458387876389145}
-  bgmSlider: {fileID: 1726523491086587730}
-  seSlider: {fileID: 7365138923118517382}
-  startButton: {fileID: 0}
-  seedInputField: {fileID: 1127570501579463181}
-  canvasGroups:
-  - {fileID: 7534264256002800262}
-  - {fileID: 381134787}
-  - {fileID: 1355233667}
-  descriptionWindow: {fileID: 1076025709}
-  virtualMouse: {fileID: 526097901}
-  creditText: {fileID: 3991593536172324305}
-  creditContent: {fileID: 159701273}
-  licenseText: {fileID: 1623745731}
-  licenseContent: {fileID: 1794339393}
-  versionText: {fileID: 1028979280}
---- !u!114 &525522648
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 525522644}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c9b15fc4789e42bbb9273ab02d8e5e2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &525522649
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1832,11 +1790,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6ccf73d461f5241baa67416d537c6fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &526097901 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4708163982929759418, guid: c61584230ac814755b2c9093a1616784, type: 3}
-  m_PrefabInstance: {fileID: 7010973562742723594}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &526097902 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3242042165249655485, guid: c61584230ac814755b2c9093a1616784, type: 3}
@@ -3165,8 +3118,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1870222280}
   m_HandleRect: {fileID: 1870222279}
   m_Direction: 2
-  m_Value: -0.00000013268512
-  m_Size: 0.6157615
+  m_Value: 0
+  m_Size: 0.6166667
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3588,17 +3541,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8883364435546100084, guid: 3fe5237b4f23740c7b070957eac1f3ba, type: 3}
   m_PrefabInstance: {fileID: 1075336362}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1076025709 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7247047407357346821, guid: 34c59e3fd9b634f9e8f66c815d5d0861, type: 3}
-  m_PrefabInstance: {fileID: 432572825}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a6b514714f8644dc38a85b070ca4601d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1082281960
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3947,7 +3889,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 230.00003}
+  m_AnchoredPosition: {x: 0, y: 230.00002}
   m_SizeDelta: {x: 863, y: 600}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1181778950
@@ -5609,8 +5551,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 465917899}
   m_HandleRect: {fileID: 465917897}
   m_Direction: 2
-  m_Value: -0.0000001040372
-  m_Size: 0.2662753
+  m_Value: 0
+  m_Size: 0.26666668
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5975,6 +5917,9 @@ MonoBehaviour:
   - {fileID: 7534264256002800262}
   - {fileID: 381134787}
   fadeImage: {fileID: 2197458387876389145}
+  versionText: {fileID: 1028979280}
+  creditText: {fileID: 3991593536172324305}
+  licenseText: {fileID: 1623745731}
   twitterButton: {fileID: 1175967072}
   steamButton: {fileID: 1082281966}
   closeEncyclopediaButton: {fileID: 408336311}

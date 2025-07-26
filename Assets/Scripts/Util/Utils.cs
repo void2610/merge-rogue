@@ -11,7 +11,7 @@ using TMPro;
 using Cysharp.Threading.Tasks;
 
 
-public class Utils : MonoBehaviour
+public class Utils
 {
     /// <summary>
     /// オブジェクトにイベントを追加する
