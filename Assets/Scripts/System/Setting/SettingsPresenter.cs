@@ -51,10 +51,10 @@ public class SettingsPresenter : IStartable, IDisposable
             })
             .AddTo(_disposables);
         
-        // テキスト入力変更イベント（更新中は無視）
+        // テキスト入力変更イベント
         _settingsView.OnTextInputChanged
-            .Where(_ => !_isUpdating)
             .Subscribe(data => {
+                // 更新中でも自分自身の入力は処理する
                 var setting = _settingsManager.GetSetting<TextInputSetting>(data.settingName);
                 if (setting != null) setting.CurrentValue = data.value;
             })

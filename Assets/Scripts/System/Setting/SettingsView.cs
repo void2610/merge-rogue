@@ -383,6 +383,8 @@ public class SettingsView : MonoBehaviour
             
             inputField.onDeselect.AddListener(str => {
                 _focusedInputFields.Remove(settingData.name);
+                // フォーカスが外れた時に最終的な値を送信
+                _onTextInputChanged.OnNext((settingData.name, inputField.text));
             });
             
             // テキスト変更時のイベント - 外部に通知
