@@ -54,8 +54,10 @@ public class SettingsManager : IDisposable
         _settings.Add(seSetting);
         
         // SE音量テスト
-        var seTestSetting = new ButtonSetting("SE音量テスト", "現在のSE音量で効果音を再生します", "再生");
-        seTestSetting.ButtonAction = () => SeManager.Instance.PlaySe("Test");
+        var seTestSetting = new ButtonSetting("SE音量テスト", "現在のSE音量で効果音を再生します", "再生")
+        {
+            ButtonAction = () => SeManager.Instance.PlaySe("Test")
+        };
         _settings.Add(seTestSetting);
         
         // ゲーム速度設定
@@ -85,12 +87,14 @@ public class SettingsManager : IDisposable
         _settings.Add(seedSetting);
         
         // シード値ランダム生成ボタン
-        var randomSeedSetting = new ButtonSetting("ランダムシード生成", "ランダムなシード値を生成して手動指定に設定します", "生成");
-        randomSeedSetting.ButtonAction = () => {
-            var guid = Guid.NewGuid();
-            var randomSeed = guid.ToString("N")[..8]; // 8文字のランダム文字列
-            seedTypeSetting.CurrentValue = "manual"; // シードタイプを手動指定に変更
-            seedSetting.CurrentValue = randomSeed;   // ランダムシードを設定
+        var randomSeedSetting = new ButtonSetting("ランダムシード生成", "ランダムなシード値を生成して手動指定に設定します", "生成")
+        {
+            ButtonAction = () => {
+                var guid = Guid.NewGuid();
+                var randomSeed = guid.ToString("N")[..8]; // 8文字のランダム文字列
+                seedTypeSetting.CurrentValue = "manual"; // シードタイプを手動指定に変更
+                seedSetting.CurrentValue = randomSeed;   // ランダムシードを設定
+            }
         };
         _settings.Add(randomSeedSetting);
         
@@ -108,8 +112,10 @@ public class SettingsManager : IDisposable
             "デフォルトに戻す", 
             true, 
             "本当に設定をリセットしますか？"
-        );
-        deleteDataSetting.ButtonAction = ResetAllSettings;
+        )
+        {
+            ButtonAction = ResetAllSettings
+        };
         _settings.Add(deleteDataSetting);
     }
     
