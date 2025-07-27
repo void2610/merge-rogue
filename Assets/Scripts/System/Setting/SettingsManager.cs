@@ -98,7 +98,7 @@ public class SettingsManager : IDisposable
         var defaultLanguage = GetCurrentLanguageCode();
         var languageSetting = new EnumSetting("言語", "ゲーム内で使用する言語を設定します", 
             new[] { "ja", "en" }, defaultLanguage, new[] { "日本語", "English" });
-        languageSetting.OnValueChanged.Subscribe(v => SetLanguageAsync(v).Forget()).AddTo(_disposables);
+        languageSetting.OnValueChanged.Subscribe(SetLanguage).AddTo(_disposables);
         _settings.Add(languageSetting);
         
         // 設定のリセットボタン
@@ -119,13 +119,13 @@ public class SettingsManager : IDisposable
     private void SubscribeToSettingChanges()
     {
         foreach (var setting in _settings)
+            setting.OnSettingChanged.Subscribe(_ => LoadSettingsImpl(setting)).AddTo(_disposables);
+        return;
+        
+        void LoadSettingsImpl(ISettingBase setting)
         {
-            setting.OnSettingChanged
-                .Subscribe(_ => {
-                    _onSettingChanged.OnNext(setting.SettingName);
-                    SaveSettings(); // 設定変更時に自動保存
-                })
-                .AddTo(_disposables);
+            _onSettingChanged.OnNext(setting.SettingName);
+            SaveSettings(); // 設定変更時に自動保存
         }
     }
     
@@ -171,19 +171,25 @@ public class SettingsManager : IDisposable
     /// <summary>
     /// 言語コードからLocaleを設定
     /// </summary>
-    private async UniTask SetLanguageAsync(string languageCode)
+    private void SetLanguage(string languageCode)
     {
-        try
+        SetLanguageImpl().Forget();
+        return;
+
+        async UniTaskVoid SetLanguageImpl()
         {
-            // ローカライゼーション設定の初期化を待つ
-            await LocalizationSettings.InitializationOperation.Task;
-            
-            // 対応する言語を検索
-            var availableLocales = LocalizationSettings.AvailableLocales.Locales;
-            var targetLocale = availableLocales.FirstOrDefault(locale => locale.Identifier.Code == languageCode);
-            if (targetLocale) LocalizationSettings.SelectedLocale = targetLocale;
+            try
+            {
+                // ローカライゼーション設定の初期化を待つ
+                await LocalizationSettings.InitializationOperation.Task;
+
+                // 対応する言語を検索
+                var availableLocales = LocalizationSettings.AvailableLocales.Locales;
+                var targetLocale = availableLocales.FirstOrDefault(locale => locale.Identifier.Code == languageCode);
+                if (targetLocale) LocalizationSettings.SelectedLocale = targetLocale;
+            }
+            catch (Exception e) { Debug.LogError($"{e.Message}"); }
         }
-        catch (Exception e) { Debug.LogError($"{e.Message}"); }
     }
     
     /// <summary>
