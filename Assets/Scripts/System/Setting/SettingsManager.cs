@@ -4,6 +4,8 @@ using System.Linq;
 using R3;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Localization.Settings;
+using Cysharp.Threading.Tasks;
 
 /// <summary>
 /// ゲーム設定の管理を行うサービスクラス
@@ -85,12 +87,19 @@ public class SettingsManager : IDisposable
         // シード値ランダム生成ボタン
         var randomSeedSetting = new ButtonSetting("ランダムシード生成", "ランダムなシード値を生成して手動指定に設定します", "生成");
         randomSeedSetting.ButtonAction = () => {
-            var guid = System.Guid.NewGuid();
+            var guid = Guid.NewGuid();
             var randomSeed = guid.ToString("N")[..8]; // 8文字のランダム文字列
             seedTypeSetting.CurrentValue = "manual"; // シードタイプを手動指定に変更
             seedSetting.CurrentValue = randomSeed;   // ランダムシードを設定
         };
         _settings.Add(randomSeedSetting);
+        
+        // 言語設定
+        var defaultLanguage = GetCurrentLanguageCode();
+        var languageSetting = new EnumSetting("言語", "ゲーム内で使用する言語を設定します", 
+            new[] { "ja", "en" }, defaultLanguage, new[] { "日本語", "English" });
+        languageSetting.OnValueChanged.Subscribe(v => SetLanguageAsync(v).Forget()).AddTo(_disposables);
+        _settings.Add(languageSetting);
         
         // 設定のリセットボタン
         var deleteDataSetting = new ButtonSetting(
@@ -139,7 +148,7 @@ public class SettingsManager : IDisposable
         if (seedType == "random")
         {
             // ランダムシードを生成
-            var guid = System.Guid.NewGuid();
+            var guid = Guid.NewGuid();
             return guid.ToString("N")[..8]; // 8文字のランダム文字列
         }
         else
@@ -151,11 +160,50 @@ public class SettingsManager : IDisposable
             // 手動指定でも空の場合はランダムシードを生成
             if (string.IsNullOrEmpty(manualSeed))
             {
-                var guid = System.Guid.NewGuid();
+                var guid = Guid.NewGuid();
                 return guid.ToString("N")[..8];
             }
             
             return manualSeed;
+        }
+    }
+    
+    /// <summary>
+    /// 言語コードからLocaleを設定
+    /// </summary>
+    private async UniTask SetLanguageAsync(string languageCode)
+    {
+        try
+        {
+            // ローカライゼーション設定の初期化を待つ
+            await LocalizationSettings.InitializationOperation.Task;
+            
+            // 対応する言語を検索
+            var availableLocales = LocalizationSettings.AvailableLocales.Locales;
+            var targetLocale = availableLocales.FirstOrDefault(locale => locale.Identifier.Code == languageCode);
+            if (targetLocale) LocalizationSettings.SelectedLocale = targetLocale;
+        }
+        catch (Exception e) { Debug.LogError($"{e.Message}"); }
+    }
+    
+    /// <summary>
+    /// 現在の言語コードを取得
+    /// </summary>
+    private string GetCurrentLanguageCode()
+    {
+        try
+        {
+            if (LocalizationSettings.InitializationOperation.IsDone && LocalizationSettings.SelectedLocale)
+            {
+                var currentCode = LocalizationSettings.SelectedLocale.Identifier.Code;
+                if (currentCode is "ja" or "en") return currentCode;
+            }
+            return "en";
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"{e.Message}");
+            return "en";
         }
     }
     
@@ -258,7 +306,7 @@ public class SettingsManager : IDisposable
     /// <summary>
     /// 設定データのシリアライゼーション用クラス
     /// </summary>
-    [System.Serializable]
+    [Serializable]
     private class SettingsData
     {
         public SerializableDictionary<string, string> settingValues = new();
