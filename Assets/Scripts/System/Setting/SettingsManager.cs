@@ -86,18 +86,6 @@ public class SettingsManager : IDisposable
         var seedSetting = new TextInputSetting("シード値", "ランダム生成のシード値を設定します（手動指定時のみ有効）", "", 20, "シード値を入力");
         _settings.Add(seedSetting);
         
-        // シード値ランダム生成ボタン
-        var randomSeedSetting = new ButtonSetting("ランダムシード生成", "ランダムなシード値を生成して手動指定に設定します", "生成")
-        {
-            ButtonAction = () => {
-                var guid = Guid.NewGuid();
-                var randomSeed = guid.ToString("N")[..8]; // 8文字のランダム文字列
-                seedTypeSetting.CurrentValue = "manual"; // シードタイプを手動指定に変更
-                seedSetting.CurrentValue = randomSeed;   // ランダムシードを設定
-            }
-        };
-        _settings.Add(randomSeedSetting);
-        
         // 言語設定
         var defaultLanguage = GetCurrentLanguageCode();
         var languageSetting = new EnumSetting("言語", "ゲーム内で使用する言語を設定します", 
