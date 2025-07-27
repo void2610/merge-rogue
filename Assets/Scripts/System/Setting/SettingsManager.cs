@@ -24,6 +24,11 @@ public class SettingsManager : IDisposable
     /// </summary>
     public IReadOnlyList<ISettingBase> Settings => _settings.AsReadOnly();
     
+    /// <summary>
+    /// 設定が変更された時のイベント（UIの更新通知用）
+    /// </summary>
+    public Observable<string> OnSettingChanged => _onSettingChanged;
+    
     public SettingsManager()
     {
         // 既存の設定がない場合は初期設定を作成
@@ -34,7 +39,9 @@ public class SettingsManager : IDisposable
         
         // セーブデータから設定を読み込む
         LoadSettings();
-        ApplyCurrentValues();
+        
+        // シーン別の設定適用を監視
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
     /// <summary>
@@ -65,9 +72,14 @@ public class SettingsManager : IDisposable
             new[] { "1.0", "2.0", "3.0" }, "1.0", new[] { "x1", "x2", "x3" });
         gameSpeedSetting.OnValueChanged.Subscribe(v =>
         {
-            // タイトルシーンでは速度変更しない
-            if (SceneManager.GetActiveScene().name == "TitleScene") return; 
-            if (float.TryParse(v, out var speed)) GameManager.Instance.TimeScale = speed;
+            // MainSceneでGameManagerが存在する場合のみ速度を変更
+            if (SceneManager.GetActiveScene().name == "MainScene" && GameManager.Instance) 
+            {
+                if (float.TryParse(v, out var speed))
+                {
+                    GameManager.Instance.TimeScale = speed;
+                }
+            }
         }).AddTo(_disposables);
         _settings.Add(gameSpeedSetting);
         
@@ -83,7 +95,7 @@ public class SettingsManager : IDisposable
         _settings.Add(seedTypeSetting);
         
         // シード値設定
-        var seedSetting = new TextInputSetting("シード値", "ランダム生成のシード値を設定します（手動指定時のみ有効）", "", 20, "シード値を入力");
+        var seedSetting = new TextInputSetting("シード値", "手動指定時のみ有効", "", 20, "シード値を入力");
         _settings.Add(seedSetting);
         
         // 言語設定
@@ -296,10 +308,30 @@ public class SettingsManager : IDisposable
     }
     
     /// <summary>
+    /// シーンロード時の処理
+    /// </summary>
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // MainSceneの場合のみゲーム速度設定を適用
+        if (scene.name == "MainScene")
+        {
+            var gameSpeedSetting = GetSetting<EnumSetting>("ゲーム速度");
+            if (gameSpeedSetting != null && GameManager.Instance)
+            {
+                if (float.TryParse(gameSpeedSetting.CurrentValue, out var speed))
+                {
+                    GameManager.Instance.TimeScale = speed;
+                }
+            }
+        }
+    }
+    
+    /// <summary>
     /// リソース解放
     /// </summary>
     public void Dispose()
     {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
         _disposables?.Dispose();
     }
     

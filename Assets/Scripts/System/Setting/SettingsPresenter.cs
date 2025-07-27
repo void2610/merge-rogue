@@ -1,6 +1,7 @@
 using System;
 using System.Linq;
 using R3;
+using UnityEngine;
 using VContainer.Unity;
 using Object = UnityEngine.Object;
 
@@ -13,6 +14,7 @@ public class SettingsPresenter : IStartable, IDisposable
     private SettingsView _settingsView;
     private readonly SettingsManager _settingsManager;
     private readonly CompositeDisposable _disposables = new();
+    private bool _isUpdating = false;
     
     public SettingsPresenter(SettingsManager settingsManager)
     {
@@ -24,6 +26,7 @@ public class SettingsPresenter : IStartable, IDisposable
         _settingsView = Object.FindFirstObjectByType<SettingsView>();
         
         SubscribeToViewEvents();
+        SubscribeToModelEvents();
         RefreshSettingsView();
     }
     
@@ -48,8 +51,9 @@ public class SettingsPresenter : IStartable, IDisposable
             })
             .AddTo(_disposables);
         
-        // テキスト入力変更イベント
+        // テキスト入力変更イベント（更新中は無視）
         _settingsView.OnTextInputChanged
+            .Where(_ => !_isUpdating)
             .Subscribe(data => {
                 var setting = _settingsManager.GetSetting<TextInputSetting>(data.settingName);
                 if (setting != null) setting.CurrentValue = data.value;
@@ -61,6 +65,22 @@ public class SettingsPresenter : IStartable, IDisposable
             .Subscribe(settingName => {
                 var setting = _settingsManager.GetSetting<ButtonSetting>(settingName);
                 setting?.ExecuteAction();
+            })
+            .AddTo(_disposables);
+    }
+    
+    /// <summary>
+    /// SettingsManagerのイベントをSubscribe（Model→View更新）
+    /// </summary>
+    private void SubscribeToModelEvents()
+    {
+        // フォーカス状態をチェックして更新を制限
+        _settingsManager.OnSettingChanged
+            .Where(_ => !_settingsView.HasFocusedInputField())
+            .Subscribe(_ => {
+                _isUpdating = true;
+                RefreshSettingsView();
+                _isUpdating = false;
             })
             .AddTo(_disposables);
     }
@@ -117,6 +137,19 @@ public class SettingsPresenter : IStartable, IDisposable
         }
         
         return data;
+    }
+    
+    /// <summary>
+    /// 個別の設定項目だけを更新（フォーカス維持のため）
+    /// </summary>
+    private void UpdateIndividualSetting(string settingName)
+    {
+        var setting = _settingsManager.Settings.FirstOrDefault(s => s.SettingName == settingName);
+        if (setting != null)
+        {
+            var displayData = ConvertToDisplayData(setting);
+            _settingsView.UpdateSetting(displayData);
+        }
     }
     
     public void Dispose()

@@ -27,6 +27,8 @@ public class SettingsView : MonoBehaviour
     private readonly Subject<string> _onButtonClicked = new();
     
     private readonly List<GameObject> _settingUIObjects = new();
+    private readonly Dictionary<string, GameObject> _settingUIMap = new();
+    private readonly HashSet<string> _focusedInputFields = new();
     
     /// <summary>
     /// スライダー設定値変更イベント
@@ -47,6 +49,11 @@ public class SettingsView : MonoBehaviour
     /// ボタンクリックイベント
     /// </summary>
     public Observable<string> OnButtonClicked => _onButtonClicked;
+    
+    /// <summary>
+    /// フォーカス中のInputFieldがあるかチェック
+    /// </summary>
+    public bool HasFocusedInputField() => _focusedInputFields.Count > 0;
     
     /// <summary>
     /// 設定データ構造体
@@ -90,14 +97,26 @@ public class SettingsView : MonoBehaviour
         // 各設定項目のUIを生成
         foreach (var settingData in settingsData)
         {
-            CreateSettingUI(settingData);
+            var uiObject = CreateSettingUI(settingData);
+            _settingUIMap[settingData.name] = uiObject;
+        }
+    }
+    
+    /// <summary>
+    /// 個別の設定項目を更新（フォーカス維持）
+    /// </summary>
+    public void UpdateSetting(SettingDisplayData settingData)
+    {
+        if (_settingUIMap.TryGetValue(settingData.name, out var uiObject) && uiObject)
+        {
+            UpdateExistingSettingUI(uiObject, settingData);
         }
     }
     
     /// <summary>
     /// 設定項目のUIを生成
     /// </summary>
-    private void CreateSettingUI(SettingDisplayData settingData)
+    private GameObject CreateSettingUI(SettingDisplayData settingData)
     {
         // 設定項目のコンテナを作成（横並び用）
         var containerObject = Instantiate(settingsContentContainerPrefab, this.transform);
@@ -127,6 +146,7 @@ public class SettingsView : MonoBehaviour
         }
         
         _settingUIObjects.Add(containerObject);
+        return containerObject;
     }
     
     /// <summary>
@@ -356,6 +376,15 @@ public class SettingsView : MonoBehaviour
                 }
             }
             
+            // フォーカス状態を監視
+            inputField.onSelect.AddListener(str => {
+                _focusedInputFields.Add(settingData.name);
+            });
+            
+            inputField.onDeselect.AddListener(str => {
+                _focusedInputFields.Remove(settingData.name);
+            });
+            
             // テキスト変更時のイベント - 外部に通知
             inputField.onValueChanged.AddListener(value => {
                 _onTextInputChanged.OnNext((settingData.name, value));
@@ -376,5 +405,72 @@ public class SettingsView : MonoBehaviour
         }
         
         _settingUIObjects.Clear();
+        _settingUIMap.Clear();
+    }
+    
+    /// <summary>
+    /// 既存のUI要素を更新（フォーカス維持のため再生成せず値のみ更新）
+    /// </summary>
+    private void UpdateExistingSettingUI(GameObject uiObject, SettingDisplayData settingData)
+    {
+        switch (settingData.type)
+        {
+            case SettingType.Slider:
+                UpdateSliderUI(uiObject, settingData);
+                break;
+            case SettingType.Enum:
+                UpdateEnumUI(uiObject, settingData);
+                break;
+            case SettingType.TextInput:
+                UpdateTextInputUI(uiObject, settingData);
+                break;
+            case SettingType.Button:
+                // ボタンは更新不要（テキストが変わることはない）
+                break;
+        }
+    }
+    
+    /// <summary>
+    /// 既存のスライダーUIを更新
+    /// </summary>
+    private void UpdateSliderUI(GameObject uiObject, SettingDisplayData settingData)
+    {
+        var slider = uiObject.GetComponentInChildren<Slider>();
+        if (slider && slider.value != settingData.floatValue)
+        {
+            // イベント発火を避けて値のみ更新
+            slider.SetValueWithoutNotify(settingData.floatValue);
+            
+            // 値テキストも更新
+            var valueText = uiObject.transform.Find("ValueText")?.GetComponent<TextMeshProUGUI>();
+            UpdateValueText(valueText, settingData.floatValue);
+        }
+    }
+    
+    /// <summary>
+    /// 既存のEnum UIを更新
+    /// </summary>
+    private void UpdateEnumUI(GameObject uiObject, SettingDisplayData settingData)
+    {
+        var valueText = uiObject.transform.Find("ValueText")?.GetComponent<TextMeshProUGUI>();
+        if (valueText)
+        {
+            int currentIndex = System.Array.IndexOf(settingData.options ?? new string[0], settingData.stringValue);
+            if (currentIndex < 0) currentIndex = 0;
+            UpdateEnumValueText(valueText, settingData, currentIndex);
+        }
+    }
+    
+    /// <summary>
+    /// 既存のTextInput UIを更新（フォーカス中は除く）
+    /// </summary>
+    private void UpdateTextInputUI(GameObject uiObject, SettingDisplayData settingData)
+    {
+        var inputField = uiObject.GetComponentInChildren<TMP_InputField>();
+        if (inputField && !inputField.isFocused && inputField.text != settingData.stringValue)
+        {
+            // フォーカス中でない場合のみ更新
+            inputField.SetTextWithoutNotify(settingData.stringValue ?? "");
+        }
     }
 }
