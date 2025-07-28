@@ -61,6 +61,10 @@ public class ConfirmationDialogView : MonoBehaviour
             confirmButton.interactable = true;
             cancelButton.interactable = true;
             
+            // キャンセルボタンに自動フォーカス
+            await UniTask.Yield(); // UIの更新を待つ
+            SelectionCursor.SetSelectedGameObjectSafe(cancelButton.gameObject);
+            
             // ユーザーの選択を待つ
             var result = await _dialogResult.Task;
             
