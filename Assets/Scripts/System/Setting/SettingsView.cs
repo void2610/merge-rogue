@@ -1,10 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using R3;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Cysharp.Threading.Tasks;
 
 /// <summary>
 /// 設定画面のUI表示を担当するViewクラス
@@ -26,9 +25,9 @@ public class SettingsView : MonoBehaviour
     private readonly Subject<(string settingName, string value)> _onTextInputChanged = new();
     private readonly Subject<string> _onButtonClicked = new();
     
-    private readonly List<GameObject> _settingUIObjects = new();
-    private readonly Dictionary<string, GameObject> _settingUIMap = new();
+    private readonly List<ISettingItem> _settingItems = new();
     private readonly HashSet<string> _focusedInputFields = new();
+    private SettingItemFactory _factory;
     
     /// <summary>
     /// スライダー設定値変更イベント
@@ -86,6 +85,28 @@ public class SettingsView : MonoBehaviour
     }
     
     /// <summary>
+    /// 初期化処理
+    /// </summary>
+    private void Awake()
+    {
+        // ファクトリーを初期化
+        _factory = new SettingItemFactory(
+            settingsContentContainerPrefab,
+            titleTextPrefab,
+            sliderSettingPrefab,
+            buttonSettingPrefab,
+            enumSettingPrefab,
+            textInputSettingPrefab,
+            confirmationDialog,
+            _onSliderChanged,
+            _onEnumChanged,
+            _onTextInputChanged,
+            _onButtonClicked,
+            _focusedInputFields
+        );
+    }
+    
+    /// <summary>
     /// 外部から設定データを注入してUIを更新
     /// </summary>
     /// <param name="settingsData">設定データ配列</param>
@@ -97,9 +118,12 @@ public class SettingsView : MonoBehaviour
         // 各設定項目のUIを生成
         foreach (var settingData in settingsData)
         {
-            var uiObject = CreateSettingUI(settingData);
-            _settingUIMap[settingData.name] = uiObject;
+            var settingItem = _factory.Create(settingData, this.transform);
+            if (settingItem != null) _settingItems.Add(settingItem);
         }
+        
+        // ナビゲーションを設定
+        SetupNavigation();
     }
     
     /// <summary>
@@ -107,293 +131,8 @@ public class SettingsView : MonoBehaviour
     /// </summary>
     public void UpdateSetting(SettingDisplayData settingData)
     {
-        if (_settingUIMap.TryGetValue(settingData.name, out var uiObject) && uiObject)
-        {
-            UpdateExistingSettingUI(uiObject, settingData);
-        }
-    }
-    
-    /// <summary>
-    /// 設定項目のUIを生成
-    /// </summary>
-    private GameObject CreateSettingUI(SettingDisplayData settingData)
-    {
-        // 設定項目のコンテナを作成（横並び用）
-        var containerObject = Instantiate(settingsContentContainerPrefab, this.transform);
-        // containerObject.transform.localScale = Vector3.one;
-        
-        // タイトルテキストを作成（左側）
-        CreateTitleText(containerObject.transform, settingData.displayName);
-        
-        // 設定固有のUIを作成（右側）
-        switch (settingData.type)
-        {
-            case SettingType.Slider:
-                CreateSliderUI(settingData, containerObject.transform);
-                break;
-            case SettingType.Button:
-                CreateButtonUI(settingData, containerObject.transform);
-                break;
-            case SettingType.Enum:
-                CreateEnumUI(settingData, containerObject.transform);
-                break;
-            case SettingType.TextInput:
-                CreateTextInputUI(settingData, containerObject.transform);
-                break;
-            default:
-                Debug.LogWarning($"未対応の設定タイプ: {settingData.type}");
-                break;
-        }
-        
-        _settingUIObjects.Add(containerObject);
-        return containerObject;
-    }
-    
-    /// <summary>
-    /// タイトルテキストを作成
-    /// </summary>
-    private void CreateTitleText(Transform parent, string titleText)
-    {
-        var titleObject = Instantiate(titleTextPrefab, parent);
-        
-        // プレハブからTextコンポーネントを取得してテキストを設定
-        var textComponent = titleObject.GetComponentInChildren<TextMeshProUGUI>();
-        textComponent.text = titleText;
-        // レイアウト要素を追加してタイトル幅を固定
-        var layoutElement = titleObject.GetComponent<LayoutElement>();
-        if (!layoutElement)
-        {
-            layoutElement = titleObject.AddComponent<LayoutElement>();
-        }
-        layoutElement.preferredWidth = 150f; // タイトルの固定幅
-        layoutElement.flexibleWidth = 0f;    // 伸縮しない
-    }
-    
-    /// <summary>
-    /// スライダー設定のUIを生成
-    /// </summary>
-    private GameObject CreateSliderUI(SettingDisplayData settingData, Transform parent)
-    {
-        var uiObject = Instantiate(sliderSettingPrefab, parent);
-        
-        // レイアウト要素を追加して残り幅を使用
-        var layoutElement = uiObject.GetComponent<LayoutElement>();
-        if (!layoutElement)
-        {
-            layoutElement = uiObject.AddComponent<LayoutElement>();
-        }
-        layoutElement.flexibleWidth = 1f; // 残りの幅を使用
-        
-        // UIコンポーネントを取得
-        var slider = uiObject.GetComponentInChildren<Slider>();
-        var valueText = uiObject.transform.Find("ValueText")?.GetComponent<TextMeshProUGUI>();
-        
-        // スライダーの設定
-        if (slider)
-        {
-            slider.minValue = settingData.minValue;
-            slider.maxValue = settingData.maxValue;
-            slider.value = settingData.floatValue;
-            
-            // スライダー変更時のイベント - 外部に通知
-            slider.onValueChanged.AddListener(value => {
-                UpdateValueText(valueText, value);
-                _onSliderChanged.OnNext((settingData.name, value));
-            });
-        }
-        
-        // 値テキストの初期化
-        UpdateValueText(valueText, settingData.floatValue);
-        
-        return uiObject;
-    }
-    
-    /// <summary>
-    /// ボタン設定のUIを生成
-    /// </summary>
-    private GameObject CreateButtonUI(SettingDisplayData settingData, Transform parent)
-    {
-        var uiObject = Instantiate(buttonSettingPrefab, parent);
-        
-        // レイアウト要素を追加して残り幅を使用
-        var layoutElement = uiObject.GetComponent<LayoutElement>();
-        if (!layoutElement)
-        {
-            layoutElement = uiObject.AddComponent<LayoutElement>();
-        }
-        layoutElement.flexibleWidth = 1f; // 残りの幅を使用
-        
-        // UIコンポーネントを取得
-        var button = uiObject.GetComponentInChildren<Button>();
-        var buttonText = button?.GetComponentInChildren<TextMeshProUGUI>();
-        
-        // ボタンテキストを設定
-        if (buttonText) buttonText.text = settingData.buttonText;
-        
-        // ボタンクリック時のイベント - 外部に通知
-        if (button)
-        {
-            button.onClick.AddListener(() => {
-                if (settingData.requiresConfirmation)
-                {
-                    ShowConfirmationDialog(settingData).Forget();
-                }
-                else
-                {
-                    _onButtonClicked.OnNext(settingData.name);
-                }
-            });
-        }
-        
-        return uiObject;
-    }
-    
-    /// <summary>
-    /// 確認ダイアログを表示
-    /// </summary>
-    private async UniTaskVoid ShowConfirmationDialog(SettingDisplayData settingData)
-    {
-        var result = await confirmationDialog.ShowDialog(
-            settingData.confirmationMessage,
-            "実行",
-            "キャンセル"
-        );
-        
-        if (result)
-        {
-            _onButtonClicked.OnNext(settingData.name);
-        }
-    }
-    
-    /// <summary>
-    /// 値テキストを更新
-    /// </summary>
-    private void UpdateValueText(TextMeshProUGUI valueText, float value)
-    {
-        if (valueText)
-        {
-            valueText.text = $"{value:F2}";
-        }
-    }
-    
-    
-    /// <summary>
-    /// Enum設定のUIを生成
-    /// </summary>
-    private GameObject CreateEnumUI(SettingDisplayData settingData, Transform parent)
-    {
-        var uiObject = Instantiate(enumSettingPrefab, parent);
-        
-        // レイアウト要素を追加して残り幅を使用
-        var layoutElement = uiObject.GetComponent<LayoutElement>();
-        if (!layoutElement)
-        {
-            layoutElement = uiObject.AddComponent<LayoutElement>();
-        }
-        layoutElement.flexibleWidth = 1f; // 残りの幅を使用
-        
-        // UIコンポーネントを取得
-        var prevButton = uiObject.transform.Find("PrevButton")?.GetComponent<Button>();
-        var nextButton = uiObject.transform.Find("NextButton")?.GetComponent<Button>();
-        var valueText = uiObject.transform.Find("ValueText")?.GetComponent<TextMeshProUGUI>();
-        
-        // 現在のインデックスを計算
-        int currentIndex = System.Array.IndexOf(settingData.options ?? new string[0], settingData.stringValue);
-        if (currentIndex < 0) currentIndex = 0;
-        
-        // ボタンの設定
-        if (prevButton)
-        {
-            prevButton.onClick.AddListener(() => {
-                if (settingData.options != null && settingData.options.Length > 0)
-                {
-                    currentIndex = (currentIndex - 1 + settingData.options.Length) % settingData.options.Length;
-                    var newValue = settingData.options[currentIndex];
-                    UpdateEnumValueText(valueText, settingData, currentIndex);
-                    _onEnumChanged.OnNext((settingData.name, newValue));
-                }
-            });
-        }
-        
-        if (nextButton)
-        {
-            nextButton.onClick.AddListener(() => {
-                if (settingData.options != null && settingData.options.Length > 0)
-                {
-                    currentIndex = (currentIndex + 1) % settingData.options.Length;
-                    var newValue = settingData.options[currentIndex];
-                    UpdateEnumValueText(valueText, settingData, currentIndex);
-                    _onEnumChanged.OnNext((settingData.name, newValue));
-                }
-            });
-        }
-        
-        // 値テキストの初期化
-        UpdateEnumValueText(valueText, settingData, currentIndex);
-        
-        return uiObject;
-    }
-    
-    /// <summary>
-    /// Enumの値テキストを更新
-    /// </summary>
-    private void UpdateEnumValueText(TextMeshProUGUI valueText, SettingDisplayData settingData, int index)
-    {
-        if (valueText && settingData.displayNames != null && index >= 0 && index < settingData.displayNames.Length)
-        {
-            valueText.text = settingData.displayNames[index];
-        }
-        else if (valueText && settingData.options != null && index >= 0 && index < settingData.options.Length)
-        {
-            valueText.text = settingData.options[index];
-        }
-    }
-    
-    /// <summary>
-    /// テキスト入力設定のUIを生成
-    /// </summary>
-    private GameObject CreateTextInputUI(SettingDisplayData settingData, Transform parent)
-    {
-        var uiObject = Instantiate(textInputSettingPrefab, parent);
-        
-        // レイアウト要素を追加して残り幅を使用
-        var layoutElement = uiObject.GetComponent<LayoutElement>();
-        if (!layoutElement) layoutElement = uiObject.AddComponent<LayoutElement>();
-        layoutElement.flexibleWidth = 1f; // 残りの幅を使用
-        
-        var inputField = uiObject.GetComponentInChildren<TMP_InputField>();
-        if (inputField)
-        {
-            inputField.text = settingData.stringValue ?? "";
-            inputField.characterLimit = settingData.maxLength > 0 ? settingData.maxLength : 50;
-            
-            if (!string.IsNullOrEmpty(settingData.placeholder) && inputField.placeholder)
-            {
-                var placeholderText = inputField.placeholder.GetComponent<TextMeshProUGUI>();
-                if (placeholderText)
-                {
-                    placeholderText.text = settingData.placeholder;
-                }
-            }
-            
-            // フォーカス状態を監視
-            inputField.onSelect.AddListener(str => {
-                _focusedInputFields.Add(settingData.name);
-            });
-            
-            inputField.onDeselect.AddListener(str => {
-                _focusedInputFields.Remove(settingData.name);
-                // フォーカスが外れた時に最終的な値を送信
-                _onTextInputChanged.OnNext((settingData.name, inputField.text));
-            });
-            
-            // テキスト変更時のイベント - 外部に通知
-            inputField.onValueChanged.AddListener(value => {
-                _onTextInputChanged.OnNext((settingData.name, value));
-            });
-        }
-        
-        return uiObject;
+        var settingItem = _settingItems.FirstOrDefault(item => item.SettingName == settingData.name);
+        settingItem?.UpdateValue(settingData);
     }
     
     /// <summary>
@@ -401,78 +140,61 @@ public class SettingsView : MonoBehaviour
     /// </summary>
     private void ClearSettingsUI()
     {
-        foreach (var uiObject in _settingUIObjects)
+        foreach (var settingItem in _settingItems)
         {
-            if (uiObject) DestroyImmediate(uiObject);
+            settingItem.Dispose();
         }
         
-        _settingUIObjects.Clear();
-        _settingUIMap.Clear();
+        _settingItems.Clear();
     }
     
     /// <summary>
-    /// 既存のUI要素を更新（フォーカス維持のため再生成せず値のみ更新）
+    /// 生成された設定UIのナビゲーションを設定
     /// </summary>
-    private void UpdateExistingSettingUI(GameObject uiObject, SettingDisplayData settingData)
+    private void SetupNavigation()
     {
-        switch (settingData.type)
+        var selectables = new List<Selectable>();
+        
+        // 各設定項目からSelectable要素を収集
+        foreach (var settingItem in _settingItems)
         {
-            case SettingType.Slider:
-                UpdateSliderUI(uiObject, settingData);
-                break;
-            case SettingType.Enum:
-                UpdateEnumUI(uiObject, settingData);
-                break;
-            case SettingType.TextInput:
-                UpdateTextInputUI(uiObject, settingData);
-                break;
-            case SettingType.Button:
-                // ボタンは更新不要（テキストが変わることはない）
-                break;
+            selectables.AddRange(settingItem.GetSelectables());
         }
-    }
-    
-    /// <summary>
-    /// 既存のスライダーUIを更新
-    /// </summary>
-    private void UpdateSliderUI(GameObject uiObject, SettingDisplayData settingData)
-    {
-        var slider = uiObject.GetComponentInChildren<Slider>();
-        if (slider && slider.value != settingData.floatValue)
+        
+        // ナビゲーションを設定
+        if (selectables.Count > 0)
         {
-            // イベント発火を避けて値のみ更新
-            slider.SetValueWithoutNotify(settingData.floatValue);
+            // 垂直ナビゲーションを設定（isHorizontal = false）
+            selectables.SetNavigation(false);
             
-            // 値テキストも更新
-            var valueText = uiObject.transform.Find("ValueText")?.GetComponent<TextMeshProUGUI>();
-            UpdateValueText(valueText, settingData.floatValue);
-        }
-    }
-    
-    /// <summary>
-    /// 既存のEnum UIを更新
-    /// </summary>
-    private void UpdateEnumUI(GameObject uiObject, SettingDisplayData settingData)
-    {
-        var valueText = uiObject.transform.Find("ValueText")?.GetComponent<TextMeshProUGUI>();
-        if (valueText)
-        {
-            int currentIndex = System.Array.IndexOf(settingData.options ?? new string[0], settingData.stringValue);
-            if (currentIndex < 0) currentIndex = 0;
-            UpdateEnumValueText(valueText, settingData, currentIndex);
-        }
-    }
-    
-    /// <summary>
-    /// 既存のTextInput UIを更新（フォーカス中は除く）
-    /// </summary>
-    private void UpdateTextInputUI(GameObject uiObject, SettingDisplayData settingData)
-    {
-        var inputField = uiObject.GetComponentInChildren<TMP_InputField>();
-        if (inputField && !inputField.isFocused && inputField.text != settingData.stringValue)
-        {
-            // フォーカス中でない場合のみ更新
-            inputField.SetTextWithoutNotify(settingData.stringValue ?? "");
+            // Enum設定の特別な処理：横ナビゲーションを追加（垂直ナビゲーション設定後に実行）
+            for (var i = 0; i < selectables.Count - 1; i++)
+            {
+                var current = selectables[i];
+                var next = selectables[i + 1];
+                
+                // 連続するボタンがPrevButton/NextButtonのペアの場合
+                if (current is Button btn1 && next is Button btn2 &&
+                    btn1.name == "PrevButton" && btn2.name == "NextButton")
+                {
+                    // 現在のナビゲーション設定を取得
+                    var nav1 = btn1.navigation;
+                    var nav2 = btn2.navigation;
+                    
+                    // 横ナビゲーションを追加（既存の上下ナビゲーションは保持）
+                    nav1.mode = Navigation.Mode.Explicit;
+                    nav1.selectOnRight = btn2;
+                    // 左ナビゲーションはnullのまま（ループしない）
+                    
+                    nav2.mode = Navigation.Mode.Explicit;
+                    nav2.selectOnLeft = btn1;
+                    // 右ナビゲーションはnullのまま（ループしない）
+                    
+                    // 更新したナビゲーションを適用
+                    btn1.navigation = nav1;
+                    btn2.navigation = nav2;
+                }
+            }
         }
     }
 }

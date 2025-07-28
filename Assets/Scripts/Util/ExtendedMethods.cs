@@ -32,7 +32,6 @@ public static class ExtendedMethods
         var nextIndex = (index + 1) % values.Length;
         return values[nextIndex];
     }
-    
 
     /// <summary>
     /// Selectableのリストに対してナビゲーションを設定する
