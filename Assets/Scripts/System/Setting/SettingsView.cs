@@ -18,6 +18,7 @@ public class SettingsView : MonoBehaviour
     [SerializeField] private GameObject buttonSettingPrefab;
     [SerializeField] private GameObject enumSettingPrefab;
     [SerializeField] private GameObject textInputSettingPrefab;
+    [SerializeField] private Button closeButton;
     
     // 外部への通知用イベント
     private readonly Subject<(string settingName, float value)> _onSliderChanged = new();
@@ -122,6 +123,9 @@ public class SettingsView : MonoBehaviour
             if (settingItem != null) _settingItems.Add(settingItem);
         }
         
+        // 最初の要素にフォーカスを設定
+        _settingItems[0].GetSelectables()[0].gameObject.AddComponent<FocusSelectable>();
+        
         // ナビゲーションを設定
         SetupNavigation();
     }
@@ -161,40 +165,46 @@ public class SettingsView : MonoBehaviour
             selectables.AddRange(settingItem.GetSelectables());
         }
         
-        // ナビゲーションを設定
-        if (selectables.Count > 0)
+        // 垂直ナビゲーションを設定（isHorizontal = false）
+        selectables.SetNavigation(false);
+        
+        // Enum設定の特別な処理：横ナビゲーションを追加（垂直ナビゲーション設定後に実行）
+        for (var i = 0; i < selectables.Count - 1; i++)
         {
-            // 垂直ナビゲーションを設定（isHorizontal = false）
-            selectables.SetNavigation(false);
+            var current = selectables[i];
+            var next = selectables[i + 1];
             
-            // Enum設定の特別な処理：横ナビゲーションを追加（垂直ナビゲーション設定後に実行）
-            for (var i = 0; i < selectables.Count - 1; i++)
+            // 連続するボタンがPrevButton/NextButtonのペアの場合
+            if (current is Button btn1 && next is Button btn2 &&
+                btn1.name == "PrevButton" && btn2.name == "NextButton")
             {
-                var current = selectables[i];
-                var next = selectables[i + 1];
+                // 現在のナビゲーション設定を取得
+                var nav1 = btn1.navigation;
+                var nav2 = btn2.navigation;
                 
-                // 連続するボタンがPrevButton/NextButtonのペアの場合
-                if (current is Button btn1 && next is Button btn2 &&
-                    btn1.name == "PrevButton" && btn2.name == "NextButton")
-                {
-                    // 現在のナビゲーション設定を取得
-                    var nav1 = btn1.navigation;
-                    var nav2 = btn2.navigation;
-                    
-                    // 横ナビゲーションを追加（既存の上下ナビゲーションは保持）
-                    nav1.mode = Navigation.Mode.Explicit;
-                    nav1.selectOnRight = btn2;
-                    // 左ナビゲーションはnullのまま（ループしない）
-                    
-                    nav2.mode = Navigation.Mode.Explicit;
-                    nav2.selectOnLeft = btn1;
-                    // 右ナビゲーションはnullのまま（ループしない）
-                    
-                    // 更新したナビゲーションを適用
-                    btn1.navigation = nav1;
-                    btn2.navigation = nav2;
-                }
+                // 横ナビゲーションを追加（既存の上下ナビゲーションは保持）
+                nav1.mode = Navigation.Mode.Explicit;
+                nav1.selectOnRight = btn2;
+                // 左ナビゲーションはnullのまま（ループしない）
+                
+                nav2.mode = Navigation.Mode.Explicit;
+                nav2.selectOnLeft = btn1;
+                // 右ナビゲーションはnullのまま（ループしない）
+                
+                // 更新したナビゲーションを適用
+                btn1.navigation = nav1;
+                btn2.navigation = nav2;
             }
         }
+        
+        // Closeボタンのナビゲーションを設定
+        var closeNav = closeButton.navigation;
+        closeNav.selectOnDown = selectables[0];
+        closeNav.selectOnUp = selectables[^1];
+        closeButton.navigation = closeNav;
+        
+        var firstNav = selectables[0].navigation;
+        firstNav.selectOnUp = closeButton;
+        selectables[0].navigation = firstNav;
     }
 }

@@ -486,7 +486,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 880}
+  m_AnchoredPosition: {x: 0, y: 880.0008}
   m_SizeDelta: {x: 0, y: 1200}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &268676072
@@ -2649,8 +2649,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1870222280}
   m_HandleRect: {fileID: 1870222279}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.61666375
+  m_Value: -0.0000039805536
+  m_Size: 0.61665356
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3147,7 +3147,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 230}
+  m_AnchoredPosition: {x: 0, y: 230.0009}
   m_SizeDelta: {x: 863, y: 600}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1181778950
@@ -3256,6 +3256,7 @@ MonoBehaviour:
   buttonSettingPrefab: {fileID: 7651081926481070851, guid: 0a00ecd555aea4400929b726ac5d6905, type: 3}
   enumSettingPrefab: {fileID: 7336120262016937810, guid: ae3ed93a5e1ab4018a01f709116a43c8, type: 3}
   textInputSettingPrefab: {fileID: 4433947640417577639, guid: 936bd054dc7cb4428845001094bb432f, type: 3}
+  closeButton: {fileID: 1324844917}
 --- !u!1001 &1314268255
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3529,19 +3530,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5528164159451888881, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1324844918}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
 --- !u!224 &1324844915 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 2308496511606162327, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
-  m_PrefabInstance: {fileID: 1324844914}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1324844916 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5528164159451888881, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
   m_PrefabInstance: {fileID: 1324844914}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &1324844917 stripped
@@ -3549,22 +3542,10 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8808425035667154617, guid: 5aef93864616a4942b8ef9f360c89388, type: 3}
   m_PrefabInstance: {fileID: 1324844914}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1324844916}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1324844918
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1324844916}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2fa6efa9683646ee94195eda5211a35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &1355233664
@@ -4602,8 +4583,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 465917899}
   m_HandleRect: {fileID: 465917897}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.26666534
+  m_Value: -0.0000008322976
+  m_Size: 0.26666096
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
