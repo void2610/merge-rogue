@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using R3;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
@@ -29,6 +31,9 @@ public class SettingsView : MonoBehaviour
     private readonly List<ISettingItem> _settingItems = new();
     private readonly HashSet<string> _focusedInputFields = new();
     private SettingItemFactory _factory;
+    private string _lastSelectedObjectName; // 最後に選択されていたオブジェクトの名前を記憶
+    private string _lastSelectedObjectType; // 最後に選択されていたオブジェクトのタイプを記憶
+    private string _lastSelectedSettingName; // 最後に選択されていた要素が属する設定項目名を記憶
     
     /// <summary>
     /// スライダー設定値変更イベント
@@ -105,6 +110,22 @@ public class SettingsView : MonoBehaviour
             _onButtonClicked,
             _focusedInputFields
         );
+        
+        // 各設定項目の値変更イベントを監視してフォーカス復元を実行
+        _onSliderChanged.Subscribe(_ => {
+            StoreCurrentSelection();
+            RestoreFocusAfterDelay().Forget();
+        });
+        
+        _onEnumChanged.Subscribe(_ => {
+            StoreCurrentSelection();
+            RestoreFocusAfterDelay().Forget();
+        });
+        
+        _onButtonClicked.Subscribe(_ => {
+            StoreCurrentSelection();
+            RestoreFocusAfterDelay().Forget();
+        });
     }
     
     /// <summary>
@@ -206,5 +227,104 @@ public class SettingsView : MonoBehaviour
         var firstNav = selectables[0].navigation;
         firstNav.selectOnUp = closeButton;
         selectables[0].navigation = firstNav;
+    }
+    
+    /// <summary>
+    /// 現在選択されているオブジェクトの情報を記憶
+    /// </summary>
+    private void StoreCurrentSelection()
+    {
+        var currentSelected = EventSystem.current?.currentSelectedGameObject;
+        if (currentSelected)
+        {
+            _lastSelectedObjectName = currentSelected.name;
+            _lastSelectedObjectType = currentSelected.GetComponent<Selectable>()?.GetType().Name ?? "Unknown";
+            _lastSelectedSettingName = FindSettingNameForObject(currentSelected);
+        }
+        else
+        {
+            _lastSelectedObjectName = null;
+            _lastSelectedObjectType = null;
+            _lastSelectedSettingName = null;
+        }
+    }
+    
+    /// <summary>
+    /// 数フレーム後にフォーカスを復元
+    /// </summary>
+    private async UniTaskVoid RestoreFocusAfterDelay()
+    {
+        // UI更新が完了するまで待機
+        await UniTask.DelayFrame(5);
+        
+        if (!string.IsNullOrEmpty(_lastSelectedObjectName))
+        {
+            RestoreFocusToSimilarElement();
+        }
+    }
+    
+    /// <summary>
+    /// 類似の要素にフォーカスを復元
+    /// </summary>
+    private void RestoreFocusToSimilarElement()
+    {
+        // 特定の設定項目から要素を探す
+        if (!string.IsNullOrEmpty(_lastSelectedSettingName))
+        {
+            var targetSettingItem = _settingItems.FirstOrDefault(item => item.SettingName == _lastSelectedSettingName);
+            if (targetSettingItem != null)
+            {
+                var targetSelectables = targetSettingItem.GetSelectables();
+                
+                // 同じ設定項目内で同じ名前とタイプの要素を探す
+                var exactMatch = targetSelectables.FirstOrDefault(s => 
+                    s.name == _lastSelectedObjectName && 
+                    s.GetType().Name == _lastSelectedObjectType);
+                
+                if (exactMatch)
+                {
+                    SelectionCursor.SetSelectedGameObjectSafe(exactMatch.gameObject);
+                    return;
+                }
+                
+                // 同じ設定項目内で同じ名前の要素を探す
+                var nameMatch = targetSelectables.FirstOrDefault(s => s.name == _lastSelectedObjectName);
+                if (nameMatch)
+                {
+                    SelectionCursor.SetSelectedGameObjectSafe(nameMatch.gameObject);
+                    return;
+                }
+                
+                // 同じ設定項目内で同じタイプの要素を探す
+                var typeMatch = targetSelectables.FirstOrDefault(s => s.GetType().Name == _lastSelectedObjectType);
+                if (typeMatch)
+                {
+                    SelectionCursor.SetSelectedGameObjectSafe(typeMatch.gameObject);
+                    return;
+                }
+                
+                // 同じ設定項目内の最初の要素を選択
+                if (targetSelectables.Count > 0)
+                {
+                    SelectionCursor.SetSelectedGameObjectSafe(targetSelectables[0].gameObject);
+                }
+            }
+        }
+    }
+    
+    /// <summary>
+    /// 指定されたゲームオブジェクトがどの設定項目に属するかを特定
+    /// </summary>
+    private string FindSettingNameForObject(GameObject targetObject)
+    {
+        foreach (var settingItem in _settingItems)
+        {
+            var selectables = settingItem.GetSelectables();
+            if (selectables.Any(s => s.gameObject == targetObject))
+            {
+                return settingItem.SettingName;
+            }
+        }
+        return null;
     }
 }

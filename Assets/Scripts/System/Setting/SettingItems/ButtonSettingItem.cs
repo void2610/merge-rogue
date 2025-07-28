@@ -3,6 +3,7 @@ using Cysharp.Threading.Tasks;
 using R3;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 /// <summary>
@@ -107,6 +108,7 @@ public class ButtonSettingItem : ISettingItem
         else
         {
             _onButtonClicked.OnNext(SettingName);
+            UpdateSelection().Forget();
         }
     }
     
@@ -121,6 +123,21 @@ public class ButtonSettingItem : ISettingItem
         if (result)
         {
             _onButtonClicked.OnNext(SettingName);
+        }
+        
+        // ダイアログが閉じた後、元のボタンにフォーカスを戻す
+        UpdateSelection().Forget();
+    }
+    
+    /// <summary>
+    /// 1フレーム後にボタンの選択状態を復元
+    /// </summary>
+    private async UniTaskVoid UpdateSelection()
+    {
+        await UniTask.Yield();
+        if (_button && _button.gameObject)
+        {
+            SelectionCursor.SetSelectedGameObjectSafe(_button.gameObject);
         }
     }
 }
