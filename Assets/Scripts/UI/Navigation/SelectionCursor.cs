@@ -2,7 +2,6 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using DG.Tweening;
 using UnityEngine.Serialization;
 
 public class SelectionCursor : MonoBehaviour
@@ -12,7 +11,6 @@ public class SelectionCursor : MonoBehaviour
     [SerializeField] private Camera uiCamera;
     [SerializeField] private float magnification = 4f;
     [SerializeField] private Vector2 offset;
-    [SerializeField] private float tweenDuration = 0.2f;
 
     private Canvas _canvas;
     private RectTransform _canvasRect;
@@ -110,7 +108,7 @@ public class SelectionCursor : MonoBehaviour
                 }
             }
             _previousSelected = currentSelected;
-            TweenMarker(currentSelected);
+            UpdateMarkerImmediate(currentSelected);
             _allowProgrammaticChange = false;
             
             
@@ -141,6 +139,8 @@ public class SelectionCursor : MonoBehaviour
         else
         {
             _allowProgrammaticChange = false;
+            // 毎フレーム位置を更新してズレを防ぐ
+            UpdateMarkerImmediate(currentSelected);
         }
     }
 
@@ -170,33 +170,4 @@ public class SelectionCursor : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Tweenを利用してマーカーを滑らかに移動・サイズ変更します（キャンバスローカル座標で計算）
-    /// </summary>
-    private void TweenMarker(GameObject selectedObject)
-    {
-        if (selectedObject.TryGetComponent<RectTransform>(out RectTransform selectedRect))
-        {
-            var corners = new Vector3[4];
-            selectedRect.GetWorldCorners(corners);
-        
-            var screenMin = RectTransformUtility.WorldToScreenPoint(uiCamera, corners[0]);
-            var screenMax = RectTransformUtility.WorldToScreenPoint(uiCamera, corners[2]);
-
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, screenMin, uiCamera, out var localMin);
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRect, screenMax, uiCamera, out var localMax);
-
-            // キャンバスローカル座標で中心位置とサイズを算出
-            var targetCenter = ((localMin + localMax) / 2f) + offset;
-            var targetSize = new Vector2(localMax.x - localMin.x, localMax.y - localMin.y) * magnification;
-
-            // ここでは、DOMoveではなくDOAnchorPosを使用して、アンカー座標をTweenします
-            cursor.DOAnchorPos(targetCenter, tweenDuration).SetEase(Ease.OutQuad).SetUpdate(true);
-            cursor.DOSizeDelta(targetSize, tweenDuration).SetEase(Ease.OutQuad).SetUpdate(true);
-            if (cursorImage.color.a <= 0)
-            {
-                cursorImage.DOFade(1, tweenDuration).SetUpdate(true);
-            }
-        }
-    }
 }
