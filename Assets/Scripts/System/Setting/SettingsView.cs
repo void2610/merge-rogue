@@ -179,31 +179,34 @@ public class SettingsView : MonoBehaviour
         selectables.SetNavigation(false);
         
         // Enum設定の特別な処理：横ナビゲーションを追加（垂直ナビゲーション設定後に実行）
-        for (var i = 0; i < selectables.Count - 1; i++)
+        foreach (var settingItem in _settingItems)
         {
-            var current = selectables[i];
-            var next = selectables[i + 1];
-            
-            // 連続するボタンがPrevButton/NextButtonのペアの場合
-            if (current is Button btn1 && next is Button btn2 &&
-                btn1.name == "PrevButton" && btn2.name == "NextButton")
+            if (settingItem is EnumSettingItem enumSetting)
             {
-                // 現在のナビゲーション設定を取得
-                var nav1 = btn1.navigation;
-                var nav2 = btn2.navigation;
+                // EnumSettingItemのPrevButtonとNextButtonを取得
+                var prevButton = enumSetting.GameObject.GetComponentsInChildren<Button>()
+                    .FirstOrDefault(b => b.name == "PrevButton");
+                var nextButton = enumSetting.GameObject.GetComponentsInChildren<Button>()
+                    .FirstOrDefault(b => b.name == "NextButton");
                 
-                // 横ナビゲーションを追加（既存の上下ナビゲーションは保持）
-                nav1.mode = Navigation.Mode.Explicit;
-                nav1.selectOnRight = btn2;
-                // 左ナビゲーションはnullのまま（ループしない）
-                
-                nav2.mode = Navigation.Mode.Explicit;
-                nav2.selectOnLeft = btn1;
-                // 右ナビゲーションはnullのまま（ループしない）
-                
-                // 更新したナビゲーションを適用
-                btn1.navigation = nav1;
-                btn2.navigation = nav2;
+                if (prevButton && nextButton)
+                {
+                    // PrevButtonのナビゲーション設定（垂直ナビゲーションは既に設定済み）
+                    var prevNav = prevButton.navigation;
+                    prevNav.mode = Navigation.Mode.Explicit;
+                    prevNav.selectOnRight = nextButton;  // 右でNextButtonに移動
+                    prevButton.navigation = prevNav;
+                    
+                    // NextButtonのナビゲーション設定（左右 + 上下ナビゲーション）
+                    var nextNav = nextButton.navigation;
+                    nextNav.mode = Navigation.Mode.Explicit;
+                    nextNav.selectOnLeft = prevButton;   // 左でPrevButtonに戻る
+                    
+                    // 上下ナビゲーションを設定（PrevButtonと同じ上下要素に移動）
+                    nextNav.selectOnUp = prevNav.selectOnUp;
+                    nextNav.selectOnDown = prevNav.selectOnDown;
+                    nextButton.navigation = nextNav;
+                }
             }
         }
         

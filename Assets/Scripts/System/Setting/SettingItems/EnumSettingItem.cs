@@ -78,7 +78,6 @@ public class EnumSettingItem : ISettingItem
     {
         var selectables = new List<Selectable>();
         if (_prevButton) selectables.Add(_prevButton);
-        if (_nextButton) selectables.Add(_nextButton);
         return selectables;
     }
     
