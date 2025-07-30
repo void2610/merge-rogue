@@ -77,9 +77,10 @@ public class SettingsPresenter : IStartable, IDisposable
         // フォーカス状態をチェックして更新を制限
         _settingsManager.OnSettingChanged
             .Where(_ => !_settingsView.HasFocusedInputField())
-            .Subscribe(_ => {
+            .Subscribe(settingName => {
                 _isUpdating = true;
-                RefreshSettingsView();
+                // 全体再生成ではなく個別更新を使用してUIの再生成を防ぐ
+                UpdateIndividualSetting(settingName);
                 _isUpdating = false;
             })
             .AddTo(_disposables);

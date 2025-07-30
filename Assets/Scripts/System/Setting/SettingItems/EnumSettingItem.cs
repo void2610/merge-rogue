@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cysharp.Threading.Tasks;
 using R3;
 using TMPro;
 using UnityEngine;
@@ -125,6 +126,7 @@ public class EnumSettingItem : ISettingItem
             var newValue = _currentData.options[_currentIndex];
             UpdateValueText();
             _onValueChanged.OnNext((SettingName, newValue));
+            RestoreFocus(_prevButton).Forget();
         }
     }
     
@@ -136,6 +138,7 @@ public class EnumSettingItem : ISettingItem
             var newValue = _currentData.options[_currentIndex];
             UpdateValueText();
             _onValueChanged.OnNext((SettingName, newValue));
+            RestoreFocus(_nextButton).Forget();
         }
     }
     
@@ -150,6 +153,18 @@ public class EnumSettingItem : ISettingItem
                  _currentIndex >= 0 && _currentIndex < _currentData.options.Length)
         {
             _valueText.text = _currentData.options[_currentIndex];
+        }
+    }
+    
+    /// <summary>
+    /// 1フレーム後にボタンの選択状態を復元
+    /// </summary>
+    private async UniTaskVoid RestoreFocus(Button targetButton)
+    {
+        await UniTask.Yield();
+        if (targetButton && targetButton.gameObject)
+        {
+            SelectionCursor.SetSelectedGameObjectSafe(targetButton.gameObject);
         }
     }
 }
