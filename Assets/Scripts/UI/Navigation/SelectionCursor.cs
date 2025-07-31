@@ -76,6 +76,8 @@ public class SelectionCursor : MonoBehaviour
         {
             _previousSelected = null;
             if(UIManager.Instance) UIManager.Instance.ResetSelectedGameObject();
+            // 選択がない場合はカーソルを非表示
+            cursorImage.color = new Color(1, 1, 1, 0);
             return;
         }
 
@@ -95,7 +97,6 @@ public class SelectionCursor : MonoBehaviour
                 if (_isLockToInventory && !IsInInventoryCanvasGroup(currentSelected))
                 {
                     _eventSystem.SetSelectedGameObject(_previousSelected);
-                    Debug.Log("ロック中のため");
                     return;
                 }
                 
@@ -103,7 +104,6 @@ public class SelectionCursor : MonoBehaviour
                 if (!IsSameCanvasGroup(currentSelected, _previousSelected))
                 {
                     _eventSystem.SetSelectedGameObject(_previousSelected);
-                    Debug.Log("グループが異なるため");
                     return;
                 }
             }
@@ -145,6 +145,30 @@ public class SelectionCursor : MonoBehaviour
     }
 
     /// <summary>
+    /// 選択オブジェクトの透明度をチェックしてカーソルの表示/非表示を制御
+    /// </summary>
+    private bool ShouldShowCursor(GameObject selectedObject)
+    {
+        // 選択オブジェクトのGraphicコンポーネント（Image、Text等）の透明度をチェック
+        if (selectedObject.TryGetComponent<Graphic>(out var graphic) && graphic.color.a < 1.0f)
+            return false;
+        
+        // すべての親のCanvasGroupを再帰的にチェック
+        var current = selectedObject.transform;
+        while (current)
+        {
+            if (current.TryGetComponent<CanvasGroup>(out var canvasGroup))
+            {
+                if (canvasGroup.alpha < 0.99f || !canvasGroup.interactable || !canvasGroup.blocksRaycasts)
+                    return false;
+            }
+            current = current.parent;
+        }
+        
+        return true; // 透明度に問題がない場合はカーソルを表示
+    }
+
+    /// <summary>
     /// 選択対象のRectTransformからマーカーの位置とサイズをキャンバスのローカル座標で即時反映します
     /// </summary>
     private void UpdateMarkerImmediate(GameObject selectedObject)
@@ -152,6 +176,12 @@ public class SelectionCursor : MonoBehaviour
         var corners = new Vector3[4];
         if (selectedObject.TryGetComponent<RectTransform>(out var selectedRect))
         {
+            if (!ShouldShowCursor(selectedObject))
+            {
+                cursorImage.color = new Color(1, 1, 1, 0);
+                return;
+            }
+            
             selectedRect.GetWorldCorners(corners);
             
             // ワールド座標→スクリーン座標
