@@ -219,6 +219,11 @@ public class SettingsView : MonoBehaviour
         var firstNav = selectables[0].navigation;
         firstNav.selectOnUp = closeButton;
         selectables[0].navigation = firstNav;
+        
+        // 最後の要素から下へのナビゲーションで閉じるボタンへ
+        var lastNav = selectables[^1].navigation;
+        lastNav.selectOnDown = closeButton;
+        selectables[^1].navigation = lastNav;
     }
     
     
