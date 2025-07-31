@@ -14,7 +14,119 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TableCollectionName: Setting
   m_TableCollectionNameGuidString: 4bd558fe2d64943dea7080b7bd7da4f6
-  m_Entries: []
+  m_Entries:
+  - m_Id: 3737744564224
+    m_Key: BGM_VOLUME_NAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737748758528
+    m_Key: BGM_VOLUME_DESC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737748758529
+    m_Key: SE_VOLUME_NAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737748758530
+    m_Key: SE_VOLUME_DESC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737761341440
+    m_Key: SE_VOLUME_TEST_NAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737761341441
+    m_Key: SE_VOLUME_TEST_DESC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737761341442
+    m_Key: SE_VOLUME_TEST_BUTTON
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737761341443
+    m_Key: GAME_SPEED_NAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737761341444
+    m_Key: GAME_SPEED_DESC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737761341445
+    m_Key: GAME_SPEED_0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535744
+    m_Key: GAME_SPEED_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535745
+    m_Key: GAME_SPEED_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535746
+    m_Key: FULL_SCREEN_NAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535747
+    m_Key: FULL_SCREEN_DESC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535748
+    m_Key: FULL_SCREEN_0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535749
+    m_Key: FULL_SCREEN_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535750
+    m_Key: SEED_TEPY_NAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535751
+    m_Key: SEED_TEPY_DESC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535752
+    m_Key: SEED_TEPY_0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535753
+    m_Key: SEED_TEPY_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535754
+    m_Key: LANGUAGE_NAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535755
+    m_Key: LANGUAGE_DESC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535756
+    m_Key: LANGUAGE_0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535757
+    m_Key: LANGUAGE_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5192874450944
+    m_Key: RESET_NAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5192874450945
+    m_Key: RESET_DESC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5192874450946
+    m_Key: RESET_BUTTON
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5192874450947
+    m_Key: RESET_CONFIRM
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -17,7 +17,119 @@ MonoBehaviour:
   m_SharedData: {fileID: 11400000, guid: 4bd558fe2d64943dea7080b7bd7da4f6, type: 2}
   m_Metadata:
     m_Items: []
-  m_TableData: []
+  m_TableData:
+  - m_Id: 3737744564224
+    m_Localized: BGM volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737748758528
+    m_Localized: Background music volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737748758529
+    m_Localized: SE Volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737748758530
+    m_Localized: Sound effect volume
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737761341440
+    m_Localized: SE volume test
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737761341441
+    m_Localized: Plays the sound effect at the current volume level.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737761341442
+    m_Localized: reproduction
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737761341443
+    m_Localized: Game Speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737761341444
+    m_Localized: Adjust the game speed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737761341445
+    m_Localized: x1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535744
+    m_Localized: x2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535745
+    m_Localized: x3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535746
+    m_Localized: Full Screen
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535747
+    m_Localized: Toggle full screen view
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535748
+    m_Localized: off
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535749
+    m_Localized: on
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535750
+    m_Localized: Seed Type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535751
+    m_Localized: Select how to generate the seed value
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535752
+    m_Localized: Manual specification
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535753
+    m_Localized: Random Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535754
+    m_Localized: language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535755
+    m_Localized: Set the language used in the game
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535756
+    m_Localized: Japanese
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535757
+    m_Localized: English
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5192874450944
+    m_Localized: Reset settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5192874450945
+    m_Localized: Reset the settings to their default values
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5192874450946
+    m_Localized: Restore Defaults
+    m_Metadata:
+      m_Items: []
+  - m_Id: 5192874450947
+    m_Localized: Do you really want to reset the settings?
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
