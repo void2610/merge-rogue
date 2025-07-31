@@ -243,6 +243,10 @@ MonoBehaviour:
     m_Key: NOTIFY_CANT_HOLD_ANY_MORE_RELICS
     m_Metadata:
       m_Items: []
+  - m_Id: 24516356354334720
+    m_Key: SETTING
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:
