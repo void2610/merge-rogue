@@ -79,20 +79,28 @@ MonoBehaviour:
     m_Key: FULL_SCREEN_1
     m_Metadata:
       m_Items: []
-  - m_Id: 3737765535750
-    m_Key: SEED_TEPY_NAME
+  - m_Id: 336220986007552
+    m_Key: SEED_TYPE_NAME
     m_Metadata:
       m_Items: []
-  - m_Id: 3737765535751
-    m_Key: SEED_TEPY_DESC
+  - m_Id: 336220986007553
+    m_Key: SEED_TYPE_DESC
     m_Metadata:
       m_Items: []
-  - m_Id: 3737765535752
-    m_Key: SEED_TEPY_0
+  - m_Id: 336220990201856
+    m_Key: SEED_TYPE_0
     m_Metadata:
       m_Items: []
-  - m_Id: 3737765535753
-    m_Key: SEED_TEPY_1
+  - m_Id: 336220990201857
+    m_Key: SEED_TYPE_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 335710878949376
+    m_Key: SEED_VALUE_NAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 335710916698112
+    m_Key: SEED_VALUE_DESC
     m_Metadata:
       m_Items: []
   - m_Id: 3737765535754
@@ -125,6 +133,22 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5192874450947
     m_Key: RESET_CONFIRM
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535750
+    m_Key: SEED_TEPY_NAME
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535751
+    m_Key: SEED_TEPY_DESC
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535752
+    m_Key: SEED_TEPY_0
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3737765535753
+    m_Key: SEED_TEPY_1
     m_Metadata:
       m_Items: []
   m_Metadata:

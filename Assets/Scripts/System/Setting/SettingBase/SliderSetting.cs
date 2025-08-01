@@ -40,6 +40,16 @@ public class SliderSetting : SettingBase<float>
         maxValue = max;
     }
     
+    /// <summary>
+    /// ローカライゼーションキーベースのコンストラクタ
+    /// </summary>
+    public SliderSetting(string localizationKey, float defaultVal, float min, float max) 
+        : base(localizationKey, defaultVal)
+    {
+        minValue = min;
+        maxValue = max;
+    }
+    
     public SliderSetting()
     {
         // シリアライゼーション用のデフォルトコンストラクタ

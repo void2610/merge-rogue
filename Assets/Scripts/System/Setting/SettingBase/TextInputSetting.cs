@@ -18,7 +18,17 @@ public class TextInputSetting : SettingBase<string>
     /// <summary>
     /// プレースホルダーテキスト
     /// </summary>
-    public string Placeholder => placeholder;
+    public string Placeholder
+    {
+        get
+        {
+            if (!string.IsNullOrEmpty(localizationKey))
+            {
+                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_PLACEHOLDER") ?? placeholder;
+            }
+            return placeholder;
+        }
+    }
     
     /// <summary>
     /// 現在の値（文字数制限付き）
@@ -42,6 +52,16 @@ public class TextInputSetting : SettingBase<string>
     {
         maxLength = maxLen;
         placeholder = placeholderText;
+    }
+    
+    /// <summary>
+    /// ローカライゼーションキーベースのコンストラクタ
+    /// </summary>
+    public TextInputSetting(string localizationKey, string defaultVal, int maxLen = 50) 
+        : base(localizationKey, defaultVal ?? "")
+    {
+        maxLength = maxLen;
+        placeholder = localizationKey + "_PLACEHOLDER"; // フォールバック用
     }
     
     public TextInputSetting()

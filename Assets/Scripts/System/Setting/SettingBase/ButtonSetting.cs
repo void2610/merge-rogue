@@ -15,7 +15,17 @@ public class ButtonSetting : SettingBase<Unit>
     /// <summary>
     /// ボタンに表示するテキスト
     /// </summary>
-    public string ButtonText => buttonText;
+    public string ButtonText
+    {
+        get
+        {
+            if (!string.IsNullOrEmpty(localizationKey))
+            {
+                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_BUTTON") ?? buttonText;
+            }
+            return buttonText;
+        }
+    }
     
     /// <summary>
     /// 確認ダイアログが必要かどうか
@@ -25,7 +35,17 @@ public class ButtonSetting : SettingBase<Unit>
     /// <summary>
     /// 確認ダイアログのメッセージ
     /// </summary>
-    public string ConfirmationMessage => confirmationMessage;
+    public string ConfirmationMessage
+    {
+        get
+        {
+            if (!string.IsNullOrEmpty(localizationKey))
+            {
+                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_CONFIRM") ?? confirmationMessage;
+            }
+            return confirmationMessage;
+        }
+    }
     
     /// <summary>
     /// ボタンアクション実行用のデリゲート
@@ -38,6 +58,17 @@ public class ButtonSetting : SettingBase<Unit>
         buttonText = btnText;
         requiresConfirmation = needsConfirmation;
         confirmationMessage = confirmMsg;
+    }
+    
+    /// <summary>
+    /// ローカライゼーションキーベースのコンストラクタ
+    /// </summary>
+    public ButtonSetting(string localizationKey, bool needsConfirmation = false) 
+        : base(localizationKey, Unit.Default)
+    {
+        buttonText = localizationKey + "_BUTTON"; // フォールバック用
+        requiresConfirmation = needsConfirmation;
+        confirmationMessage = needsConfirmation ? localizationKey + "_CONFIRM" : string.Empty; // フォールバック用
     }
     
     public ButtonSetting()

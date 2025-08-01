@@ -14,6 +14,7 @@ public abstract class SettingBase<T> : ISettingBase
     [SerializeField] protected string description;
     [SerializeField] protected T currentValue;
     [SerializeField] protected T defaultValue;
+    [SerializeField] protected string localizationKey; // ローカライゼーションキーのベース部分
     
     private readonly Subject<Unit> _onSettingChanged = new();
     private readonly Subject<T> _onValueChanged = new();
@@ -21,12 +22,32 @@ public abstract class SettingBase<T> : ISettingBase
     /// <summary>
     /// 設定項目の名前
     /// </summary>
-    public string SettingName => settingName;
+    public string SettingName
+    {
+        get
+        {
+            if (!string.IsNullOrEmpty(localizationKey))
+            {
+                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_NAME") ?? settingName;
+            }
+            return settingName;
+        }
+    }
     
     /// <summary>
     /// 設定項目の説明
     /// </summary>
-    public string Description => description;
+    public string Description
+    {
+        get
+        {
+            if (!string.IsNullOrEmpty(localizationKey))
+            {
+                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_DESC") ?? description;
+            }
+            return description;
+        }
+    }
     
     /// <summary>
     /// 現在の値
@@ -64,6 +85,19 @@ public abstract class SettingBase<T> : ISettingBase
     {
         settingName = name;
         description = desc;
+        defaultValue = defaultVal;
+        currentValue = defaultVal;
+        localizationKey = string.Empty;
+    }
+    
+    /// <summary>
+    /// ローカライゼーションキーベースのコンストラクタ
+    /// </summary>
+    protected SettingBase(string localizationKey, T defaultVal)
+    {
+        this.localizationKey = localizationKey;
+        settingName = localizationKey; // フォールバック用
+        description = localizationKey + "_DESC"; // フォールバック用
         defaultValue = defaultVal;
         currentValue = defaultVal;
     }

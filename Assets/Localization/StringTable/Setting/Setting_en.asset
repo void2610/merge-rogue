@@ -27,7 +27,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3737748758529
-    m_Localized: SE Volume
+    m_Localized: SE volume
     m_Metadata:
       m_Items: []
   - m_Id: 3737748758530
@@ -43,7 +43,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3737761341442
-    m_Localized: reproduction
+    m_Localized: Play
     m_Metadata:
       m_Items: []
   - m_Id: 3737761341443
@@ -128,6 +128,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 5192874450947
     m_Localized: Do you really want to reset the settings?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 335710878949376
+    m_Localized: Seed Value
+    m_Metadata:
+      m_Items: []
+  - m_Id: 335710916698112
+    m_Localized: Seed value used for manual configuration
+    m_Metadata:
+      m_Items: []
+  - m_Id: 336220986007552
+    m_Localized: Seed Type
+    m_Metadata:
+      m_Items: []
+  - m_Id: 336220986007553
+    m_Localized: Select how to generate the seed value
+    m_Metadata:
+      m_Items: []
+  - m_Id: 336220990201856
+    m_Localized: Manual specification
+    m_Metadata:
+      m_Items: []
+  - m_Id: 336220990201857
+    m_Localized: Random Settings
     m_Metadata:
       m_Items: []
   references:

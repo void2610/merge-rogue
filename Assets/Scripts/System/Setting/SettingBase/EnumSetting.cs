@@ -35,7 +35,23 @@ public class EnumSetting : SettingBase<string>
     /// <summary>
     /// 表示名の配列（未設定の場合はOptionsを使用）
     /// </summary>
-    public string[] DisplayNames => displayNames ?? options ?? new string[0];
+    public string[] DisplayNames 
+    {
+        get
+        {
+            if (!string.IsNullOrEmpty(localizationKey) && LocalizeStringLoader.Instance != null)
+            {
+                // ローカライゼーションキーから動的生成
+                var localizedNames = new string[options?.Length ?? 0];
+                for (int i = 0; i < localizedNames.Length; i++)
+                {
+                    localizedNames[i] = LocalizeStringLoader.Instance.Get($"{localizationKey}_{i}");
+                }
+                return localizedNames;
+            }
+            return displayNames ?? options ?? new string[0];
+        }
+    }
     
     /// <summary>
     /// 現在の表示名
@@ -61,6 +77,16 @@ public class EnumSetting : SettingBase<string>
     {
         options = opts ?? new string[] { "Option1" };
         this.displayNames = displayNames;
+    }
+    
+    /// <summary>
+    /// ローカライゼーションキーベースのコンストラクタ
+    /// </summary>
+    public EnumSetting(string localizationKey, string[] opts, int defaultIndex = 0) 
+        : base(localizationKey, (opts != null && defaultIndex >= 0 && defaultIndex < opts.Length) ? opts[defaultIndex] : (opts?.FirstOrDefault() ?? ""))
+    {
+        options = opts ?? new string[] { "Option1" };
+        displayNames = null; // ローカライゼーションから動的生成するためnull
     }
     
     public EnumSetting()
