@@ -28,6 +28,7 @@ public class SettingsPresenter : IStartable, IDisposable
         
         SubscribeToViewEvents();
         SubscribeToModelEvents();
+        SubscribeToLocalizationEvents();
         
         // SettingsManagerの初期化完了を待ってから初回の表示更新
         WaitForSettingsAndRefresh().Forget();
@@ -102,6 +103,19 @@ public class SettingsPresenter : IStartable, IDisposable
     }
     
     /// <summary>
+    /// LocalizeStringLoaderのイベントをSubscribe（ローカライゼーション更新時のView更新）
+    /// </summary>
+    private void SubscribeToLocalizationEvents()
+    {
+        if (LocalizeStringLoader.Instance)
+        {
+            LocalizeStringLoader.Instance.OnLocalizationUpdated
+                .Subscribe(_ => RefreshSettingsViewWithStatePreservation())
+                .AddTo(_disposables);
+        }
+    }
+    
+    /// <summary>
     /// SettingsManagerのデータをViewの形式に変換してViewに設定
     /// </summary>
     private void RefreshSettingsView()
@@ -111,6 +125,18 @@ public class SettingsPresenter : IStartable, IDisposable
         
         var settingsData = _settingsManager.Settings.Select(ConvertToDisplayData).ToArray();
         _settingsView.SetSettings(settingsData);
+    }
+    
+    /// <summary>
+    /// SettingsManagerのデータをViewの形式に変換してViewに設定（状態保持版）
+    /// </summary>
+    private void RefreshSettingsViewWithStatePreservation()
+    {
+        // 設定が空の場合は何もしない（初期化待ち）
+        if (_settingsManager.Settings.Count == 0) return;
+        
+        var settingsData = _settingsManager.Settings.Select(ConvertToDisplayData).ToArray();
+        _settingsView.SetSettingsWithStatePreservation(settingsData);
     }
     
     /// <summary>

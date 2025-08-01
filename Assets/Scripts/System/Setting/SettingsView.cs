@@ -141,6 +141,29 @@ public class SettingsView : MonoBehaviour
     }
     
     /// <summary>
+    /// 外部から設定データを注入してUIを更新（状態保持版）
+    /// </summary>
+    /// <param name="settingsData">設定データ配列</param>
+    public void SetSettingsWithStatePreservation(SettingDisplayData[] settingsData)
+    {
+        // 既存のUI要素をクリア
+        ClearSettingsUI();
+        
+        // 各設定項目のUIを生成
+        foreach (var settingData in settingsData)
+        {
+            var settingItem = _factory.Create(settingData, this.transform);
+            if (settingItem != null) _settingItems.Add(settingItem);
+        }
+        
+        // ナビゲーションを設定
+        SetupNavigation();
+        
+        // スクロールを最上部に戻してフォーカスを設定
+        RestoreState();
+    }
+    
+    /// <summary>
     /// 個別の設定項目を更新（フォーカス維持）
     /// </summary>
     public void UpdateSetting(SettingDisplayData settingData)
@@ -320,4 +343,23 @@ public class SettingsView : MonoBehaviour
             contentTransform.anchoredPosition = new Vector2(contentTransform.anchoredPosition.x, newScrollPos);
         }
     }
+    
+    
+    /// <summary>
+    /// スクロールを最上部に戻してフォーカスを設定
+    /// </summary>
+    private void RestoreState()
+    {
+        // スクロール位置を最上部にリセット
+        _scrollRect.content.anchoredPosition = new Vector2(_scrollRect.content.anchoredPosition.x, 0);
+        
+        // 常に最初の要素にフォーカス（強制的に設定）
+        if (_settingItems.Count > 0)
+        {
+            var firstSelectable = _settingItems[0].GetSelectables()[0];
+            EventSystem.current.SetSelectedGameObject(firstSelectable.gameObject);
+        }
+    }
+    
+    
 }

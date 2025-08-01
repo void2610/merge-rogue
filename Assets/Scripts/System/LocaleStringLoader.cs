@@ -4,14 +4,19 @@ using UnityEngine;
 using UnityEngine.Localization.Settings;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Localization.Tables;
+using R3;
 
 public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
 {
     private readonly Dictionary<string, string> _cache = new();
     private bool _isInitialized;
+    private readonly Subject<Unit> _onLocalizationUpdated = new();
     
     /// <summary>初期化が完了しているかどうか</summary>
     public bool IsInitialized => _isInitialized;
+    
+    /// <summary>ローカライゼーションが更新された時のイベント</summary>
+    public Observable<Unit> OnLocalizationUpdated => _onLocalizationUpdated;
     
     /// <summary>キャッシュからキーに対応する文字列を返す。見つからなければ [key] を返す。</summary>
     public string Get(string key) => _cache.TryGetValue(key, out var val) ? val : $"[{key}]";
@@ -48,6 +53,7 @@ public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
         await AddTable(LocalizationTableType.Setting);
         
         _isInitialized = true;
+        _onLocalizationUpdated.OnNext(Unit.Default);
     }
     
     /// <summary>
@@ -80,5 +86,10 @@ public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
         // ロケールが変更されたらキャッシュを作り直す
         LocalizationSettings.SelectedLocaleChanged += _ => PreloadAsync().Forget();
         PreloadAsync().Forget();
+    }
+    
+    private void OnDestroy()
+    {
+        _onLocalizationUpdated?.Dispose();
     }
 }
