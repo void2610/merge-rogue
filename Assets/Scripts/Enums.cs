@@ -8,6 +8,7 @@ public enum LocalizationTableType
     Relic,
     WordDictionary,
     Tutorial,
+    Setting,
 }
 
 public enum CursorIconType

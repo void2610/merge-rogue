@@ -1,13 +1,17 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
-using UnityEngine.AddressableAssets;
 using Cysharp.Threading.Tasks;
 using UnityEngine.Localization.Tables;
 
 public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
 {
     private readonly Dictionary<string, string> _cache = new();
+    private bool _isInitialized;
+    
+    /// <summary>初期化が完了しているかどうか</summary>
+    public bool IsInitialized => _isInitialized;
     
     /// <summary>キャッシュからキーに対応する文字列を返す。見つからなければ [key] を返す。</summary>
     public string Get(string key) => _cache.TryGetValue(key, out var val) ? val : $"[{key}]";
@@ -24,6 +28,7 @@ public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
             LocalizationTableType.Relic => LocalizationSettings.StringDatabase.GetTableAsync("Relic"),
             LocalizationTableType.WordDictionary => LocalizationSettings.StringDatabase.GetTableAsync("WordDictionary"),
             LocalizationTableType.Tutorial => LocalizationSettings.StringDatabase.GetTableAsync("Tutorial"),
+            LocalizationTableType.Setting => LocalizationSettings.StringDatabase.GetTableAsync("Setting"),
             _ => throw new System.ArgumentOutOfRangeException(nameof(tableType), $"Unknown LocalizationTableType: {tableType}")
         };
         return await task;
@@ -31,6 +36,7 @@ public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
     
     private async UniTask PreloadAsync()
     {
+        _isInitialized = false;
         _cache.Clear();
 
         // 必要なテーブルを全部読む
@@ -39,6 +45,20 @@ public class LocalizeStringLoader : SingletonMonoBehaviour<LocalizeStringLoader>
         await AddTable(LocalizationTableType.Relic);
         await AddTable(LocalizationTableType.WordDictionary);
         await AddTable(LocalizationTableType.Tutorial);
+        await AddTable(LocalizationTableType.Setting);
+        
+        _isInitialized = true;
+    }
+    
+    /// <summary>
+    /// 初期化が完了するまで待機
+    /// </summary>
+    public async UniTask WaitForInitialization()
+    {
+        while (!_isInitialized)
+        {
+            await UniTask.Yield();
+        }
     }
 
     private async UniTask AddTable(LocalizationTableType tableType)

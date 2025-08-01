@@ -31,8 +31,23 @@ public class SettingsManager : IDisposable
     
     public SettingsManager()
     {
+        // LocalizeStringLoaderの初期化を待ってから設定を初期化
+        InitializeAsync().Forget();
+    }
+    
+    private async UniTaskVoid InitializeAsync()
+    {
+        // LocalizeStringLoaderの初期化を待機
+        if (LocalizeStringLoader.Instance)
+        {
+            await LocalizeStringLoader.Instance.WaitForInitialization();
+        }
+        
         // 既存の設定がない場合は初期設定を作成
-        if (_settings.Count == 0) InitializeDefaultSettings();
+        if (_settings.Count == 0) 
+        {
+            InitializeDefaultSettings();
+        }
         
         // 各設定の値変更イベントを監視
         SubscribeToSettingChanges();
@@ -51,25 +66,24 @@ public class SettingsManager : IDisposable
     private void InitializeDefaultSettings()
     {
         // BGM音量設定
-        var bgmSetting = new SliderSetting("BGM音量", "バックグラウンドミュージックの音量", 0.8f, 0f, 1f);
+        var bgmSetting = new SliderSetting("BGM_VOLUME", 0.8f, 0f, 1f);
         bgmSetting.OnValueChanged.Subscribe(v => BgmManager.Instance.BgmVolume = v).AddTo(_disposables);
         _settings.Add(bgmSetting);
         
         // SE音量設定
-        var seSetting = new SliderSetting("SE音量", "効果音の音量", 0.8f, 0f, 1f);
+        var seSetting = new SliderSetting("SE_VOLUME", 0.8f, 0f, 1f);
         seSetting.OnValueChanged.Subscribe(v => SeManager.Instance.SeVolume = v).AddTo(_disposables);
         _settings.Add(seSetting);
         
         // SE音量テスト
-        var seTestSetting = new ButtonSetting("SE音量テスト", "現在のSE音量で効果音を再生します", "再生")
+        var seTestSetting = new ButtonSetting("SE_VOLUME_TEST")
         {
             ButtonAction = () => SeManager.Instance.PlaySe("Test")
         };
         _settings.Add(seTestSetting);
         
         // ゲーム速度設定
-        var gameSpeedSetting = new EnumSetting("ゲーム速度", "ゲームの速度を調整します", 
-            new[] { "1.0", "2.0", "3.0" }, "1.0", new[] { "x1", "x2", "x3" });
+        var gameSpeedSetting = new EnumSetting("GAME_SPEED", new[] { "1.0", "2.0", "3.0" }, 0);
         gameSpeedSetting.OnValueChanged.Subscribe(v =>
         {
             // MainSceneでGameManagerが存在する場合のみ速度を変更
@@ -84,35 +98,27 @@ public class SettingsManager : IDisposable
         _settings.Add(gameSpeedSetting);
         
         // フルスクリーン切り替え
-        var fullscreenSetting = new EnumSetting("フルスクリーン", "フルスクリーン表示の切り替え", 
-            new[] { "false", "true" }, Screen.fullScreen ? "true" : "false", new[] { "オフ", "オン" });
+        var fullscreenSetting = new EnumSetting("FULL_SCREEN", new[] { "false", "true" }, Screen.fullScreen ? 1 : 0);
         fullscreenSetting.OnValueChanged.Subscribe(v => Screen.fullScreen = v == "true").AddTo(_disposables);
         _settings.Add(fullscreenSetting);
         
         // シードタイプ設定
-        var seedTypeSetting = new EnumSetting("シードタイプ", "シード値の生成方法を選択します", 
-            new[] { "manual", "random" }, "random", new[] { "手動指定", "ランダム生成" });
+        var seedTypeSetting = new EnumSetting("SEED_TYPE", new[] { "manual", "random" }, 1);
         _settings.Add(seedTypeSetting);
         
         // シード値設定
-        var seedSetting = new TextInputSetting("シード値", "手動指定時のみ有効", "", 20, "シード値を入力");
+        var seedSetting = new TextInputSetting("SEED_VALUE", "", 20);
         _settings.Add(seedSetting);
         
         // 言語設定
         var defaultLanguage = GetCurrentLanguageCode();
-        var languageSetting = new EnumSetting("言語", "ゲーム内で使用する言語を設定します", 
-            new[] { "ja", "en" }, defaultLanguage, new[] { "日本語", "English" });
+        var defaultLanguageIndex = defaultLanguage == "ja" ? 0 : 1;
+        var languageSetting = new EnumSetting("LANGUAGE", new[] { "ja", "en" }, defaultLanguageIndex);
         languageSetting.OnValueChanged.Subscribe(SetLanguage).AddTo(_disposables);
         _settings.Add(languageSetting);
         
         // 設定のリセットボタン
-        var deleteDataSetting = new ButtonSetting(
-            "設定のリセット", 
-            "設定をデフォルト値に戻します",
-            "デフォルトに戻す", 
-            true, 
-            "本当に設定をリセットしますか？"
-        )
+        var deleteDataSetting = new ButtonSetting("RESET", true)
         {
             ButtonAction = ResetAllSettings
         };

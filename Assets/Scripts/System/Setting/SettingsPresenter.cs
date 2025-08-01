@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using Cysharp.Threading.Tasks;
 using R3;
 using UnityEngine;
 using VContainer.Unity;
@@ -27,6 +28,20 @@ public class SettingsPresenter : IStartable, IDisposable
         
         SubscribeToViewEvents();
         SubscribeToModelEvents();
+        
+        // SettingsManagerの初期化完了を待ってから初回の表示更新
+        WaitForSettingsAndRefresh().Forget();
+    }
+    
+    private async UniTaskVoid WaitForSettingsAndRefresh()
+    {
+        // SettingsManagerが設定を初期化するまで待機
+        while (_settingsManager.Settings.Count == 0)
+        {
+            await UniTask.Yield();
+        }
+        
+        // 設定が準備できたらViewを更新
         RefreshSettingsView();
     }
     
@@ -91,6 +106,9 @@ public class SettingsPresenter : IStartable, IDisposable
     /// </summary>
     private void RefreshSettingsView()
     {
+        // 設定が空の場合は何もしない（初期化待ち）
+        if (_settingsManager.Settings.Count == 0) return;
+        
         var settingsData = _settingsManager.Settings.Select(ConvertToDisplayData).ToArray();
         _settingsView.SetSettings(settingsData);
     }
