@@ -247,6 +247,10 @@ MonoBehaviour:
     m_Key: SETTING
     m_Metadata:
       m_Items: []
+  - m_Id: 24935757234823168
+    m_Key: CONFIRM_SETTING_RESET
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

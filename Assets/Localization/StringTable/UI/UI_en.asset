@@ -251,6 +251,10 @@ MonoBehaviour:
     m_Localized: Setting
     m_Metadata:
       m_Items: []
+  - m_Id: 24935757234823168
+    m_Localized: Do you want to reset game settings?
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
