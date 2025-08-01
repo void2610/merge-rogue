@@ -144,4 +144,9 @@ public interface IContentService
     /// 敵の攻撃力基本倍率を取得する（ContentProviderDataから）
     /// </summary>
     float BaseEnemyAttackMultiplier { get; }
+    
+    /// <summary>
+    /// デモ版かどうか
+    /// </summary>
+    bool IsDemoPlay { get; }
 }

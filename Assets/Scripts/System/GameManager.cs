@@ -126,15 +126,6 @@ public class GameManager : MonoBehaviour
                 EnemyContainer.Action();
                 break;
             case GameState.MapSelect:
-                // デモ版ではact2で終了
-                # if DEMO_PLAY
-                    if (StageManager.CurrentStage?.Type == StageType.Boss && _contentService.Act > 1)
-                    {
-                        UIManager.Instance.EnableCanvasGroup("Clear", true);
-                        break;
-                    } 
-                # endif 
-                
                 stageManager.SetNextNodeActive();
                 await UniTask.Delay(400, DelayType.UnscaledDeltaTime);
                 UIManager.Instance.OnClickMapButtonForce(true);

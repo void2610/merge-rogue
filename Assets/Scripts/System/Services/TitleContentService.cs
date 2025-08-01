@@ -15,11 +15,16 @@ public class TitleContentService : IContentService
     public float GlobalEnemyDifficultyMultiplier => 1.0f;
     public float BaseEnemyHealthMultiplier => _data?.BaseEnemyHealthMultiplier ?? 1.0f;
     public float BaseEnemyAttackMultiplier => _data?.BaseEnemyAttackMultiplier ?? 1.0f;
+    public bool IsDemoPlay { get; } = false;
 
     public TitleContentService(ContentProviderData data)
     {
         _data = data;
         _data?.InitializeData();
+        
+        # if DEMO_PLAY
+        IsDemoPlay = true;
+        # endif
     }
 
     // DescriptionWindowで使用される唯一のメソッド

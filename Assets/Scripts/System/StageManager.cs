@@ -9,6 +9,7 @@ public class StageManager : MonoBehaviour
     [Header("ステージ")]
     [SerializeField] private Shop shop;
     [SerializeField] private Treasure treasure;
+    [SerializeField] private ClearScreenView clearScreenView;
     [SerializeField] private StageEventProcessor stageEventProcessor;
     [SerializeField] private StageType startStage;
     public readonly ReactiveProperty<int> CurrentStageCount = new(-1);
@@ -18,10 +19,12 @@ public class StageManager : MonoBehaviour
     private StageMapRenderer _mapRenderer;
     private BackgroundController _backgroundController;
     private IRandomService _randomService;
+    private IContentService _contentService;
     
     [Inject]
-    public void InjectDependencies(IRandomService randomService)
+    public void InjectDependencies(IRandomService randomService, IContentService contentService)
     {
+        _contentService = contentService;
         _randomService = randomService;
     }
     
@@ -29,24 +32,39 @@ public class StageManager : MonoBehaviour
 
     public void SetNextNodeActive()
     {
-        // ボスを倒したらマップを再生成して次のステージを設定
+        // ボスステージの場合、ボスを倒した後に次のアクトを準備する
         if (CurrentStage?.Type == StageType.Boss)
         {
-            _mapGenerator.GenerateMap();
-            _mapRenderer.DrawMap(_mapGenerator.MapNodes, _mapGenerator.GetStageData());
-            _mapRenderer.SetButtonEvents(_mapGenerator.MapNodes, n => NextStage(n).Forget());
-            _mapRenderer.ChangeFocusNode(_mapGenerator.GetStartNode(), _mapGenerator.MapNodes);
+            PrepareNextAct();
             
-            var startTransform = _mapGenerator.GetStartNode().Obj.GetComponent<RectTransform>();
-            _mapRenderer.MovePlayerIcon(startTransform, 0f); // 即座に移動
-            
-            // CurrentStageをnullにリセットして、スタートノードをアクティブにする
-            CurrentStage = null;
-            _mapRenderer.SetNextNodeActive(null, _mapGenerator.MapNodes);
+            // デモ版ではact2で終了
+            if (_contentService.IsDemoPlay && _contentService.Act > 1)
+                clearScreenView.Show(_contentService.Act, true);
+            else
+                clearScreenView.Show(_contentService.Act, false);
             return;
         }
         
+        // 通常のステージの場合、次のステージをアクティブにする
         _mapRenderer.SetNextNodeActive(CurrentStage, _mapGenerator.MapNodes);
+    }
+
+    /// <summary>
+    /// ボスを倒した後、次のアクトを準備する。
+    /// </summary>
+    private void PrepareNextAct()
+    {
+        _mapGenerator.GenerateMap();
+        _mapRenderer.DrawMap(_mapGenerator.MapNodes, _mapGenerator.GetStageData());
+        _mapRenderer.SetButtonEvents(_mapGenerator.MapNodes, n => NextStage(n).Forget());
+        _mapRenderer.ChangeFocusNode(_mapGenerator.GetStartNode(), _mapGenerator.MapNodes);
+            
+        var startTransform = _mapGenerator.GetStartNode().Obj.GetComponent<RectTransform>();
+        _mapRenderer.MovePlayerIcon(startTransform, 0f); // 即座に移動
+            
+        // CurrentStageをnullにリセットして、スタートノードをアクティブにする
+        CurrentStage = null;
+        _mapRenderer.SetNextNodeActive(null, _mapGenerator.MapNodes);
     }
     
     private void SetAllNodeInactive()

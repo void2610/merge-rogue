@@ -13,6 +13,7 @@ public class ContentService : IContentService
     private readonly ContentProviderData _data;
     private readonly IRandomService _randomService;
 
+    public bool IsDemoPlay { get; } = false;
     public int Act { get; private set; } = 0;
     public float ShopPriceMultiplier { get; private set; } = 1.0f;
     
@@ -35,6 +36,9 @@ public class ContentService : IContentService
         _data = data;
         _data.InitializeData();
         _randomService = randomService;
+        #if DEMO_PLAY
+        IsDemoPlay = true;
+        #endif
     }
     
     /// <summary>

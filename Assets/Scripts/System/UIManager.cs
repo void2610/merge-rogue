@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Cysharp.Threading.Tasks;
@@ -6,7 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.Rendering;
@@ -15,8 +13,6 @@ using TMPro;
 using DG.Tweening;
 using JetBrains.Annotations;
 using R3;
-using UnityEngine.Serialization;
-using VContainer;
 
 public class UIManager : MonoBehaviour
 {
@@ -47,9 +43,9 @@ public class UIManager : MonoBehaviour
     
     private static CursorPositionType _cursorPosition = CursorPositionType.Merge;
 
-    public bool IsPaused { get; private set; } = false;
-    public bool IsMapOpened { get; private set; } = false;
-    public bool IsTutorialOpened { get; set; } = false;
+    public bool IsPaused { get; private set; }
+    public bool IsMapOpened { get; private set; }
+    public bool IsTutorialOpened { get; set; }
     
     private CanvasGroupSwitcher _canvasGroupSwitcher;
     
@@ -98,9 +94,8 @@ public class UIManager : MonoBehaviour
     
     public void LockCursorToInventory(bool b)
     {
-        if (b) SetCursorState(CursorPositionType.Ball);
-        else SetCursorState(CursorPositionType.Merge);
-        
+        SetCursorState(b ? CursorPositionType.Ball : CursorPositionType.Merge);
+
         SelectionCursor.LockCursorToInventory(b);
         MouseHoverUISelector.LockCursorToInventory(b);
         inventoryCanvasBlocker.SetActive(b);
@@ -160,7 +155,7 @@ public class UIManager : MonoBehaviour
             // レリックがない場合は状態異常またはマージにスキップ
             if (_cursorPosition == CursorPositionType.Relic && relicContainer.childCount == 0)
             {
-                var nextState = GetFirstSelectableStatusEffectUI() != null 
+                var nextState = GetFirstSelectableStatusEffectUI() 
                     ? CursorPositionType.StatusEffect 
                     : CursorPositionType.Merge;
                 SetCursorState(nextState);
@@ -192,7 +187,6 @@ public class UIManager : MonoBehaviour
     /// <summary>
     /// 仮想マウスを任意の位置へ移動させるメソッド
     /// </summary>
-    /// <param name="newPosition">移動先のスクリーン座標（ピクセル単位）</param>
     public void MoveVirtualMouseToCenter()
     {
         var vm = virtualMouse.GetComponent<MyVirtualMouseInput>();
@@ -235,15 +229,14 @@ public class UIManager : MonoBehaviour
         descriptionWindow.HideWindowFromNavigation();
     }
 
-    private void UpdateExpText(int now, int max)
-    {
-        if (GameManager.Instance.Player.Level >= Player.MAX_LEVEL)
-        {
-            // expText.text = "max level";
-            return;
-        }
-        // expText.text = "exp: " + now + "/" + max;
-    }
+    // private void UpdateExpText(int now, int max)
+    // {
+    //     if (GameManager.Instance.Player.Level >= Player.MAX_LEVEL)
+    //     {
+    //         expText.text = "max level";
+    //     }
+    //     expText.text = "exp: " + now + "/" + max;
+    // }
 
     public void OnClickPauseButton()
     {
@@ -333,7 +326,7 @@ public class UIManager : MonoBehaviour
     private void Start()
     {
         GameManager.Instance.Coin.Subscribe(UpdateCoinText).AddTo(this);
-        GameManager.Instance.Player.Exp.Subscribe((v) => UpdateExpText(v, GameManager.Instance.Player.MaxExp)).AddTo(this);
+        // GameManager.Instance.Player.Exp.Subscribe((v) => UpdateExpText(v, GameManager.Instance.Player.MaxExp)).AddTo(this);
         GameManager.Instance.Player.Health.Subscribe((v) =>
         {
             hpSlider.value = v;
