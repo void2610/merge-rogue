@@ -22,12 +22,33 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 2700768917129003098
+      type: {class: KeyColumn, ns: UnityEditor.Localization.Plugins.Google.Columns, asm: Unity.Localization.Editor}
+      data:
+        m_Column: A
+    - rid: 2700768917129003099
+      type: {class: LocaleColumn, ns: UnityEditor.Localization.Plugins.Google.Columns, asm: Unity.Localization.Editor}
+      data:
+        m_Column: B
+        m_LocaleIdentifier:
+          m_Code: en
+        m_IncludeComments: 0
+    - rid: 2700768917129003100
+      type: {class: LocaleColumn, ns: UnityEditor.Localization.Plugins.Google.Columns, asm: Unity.Localization.Editor}
+      data:
+        m_Column: C
+        m_LocaleIdentifier:
+          m_Code: ja
+        m_IncludeComments: 0
     - rid: 8005200719560835073
       type: {class: GoogleSheetsExtension, ns: UnityEditor.Localization.Plugins.Google, asm: Unity.Localization.Editor}
       data:
         m_Collection: {fileID: 11400000}
         m_SheetsServiceProvider: {fileID: 11400000, guid: 22fecd69b1d224dc1af20138bc2be6d7, type: 2}
         m_SpreadsheetId: 1Ca0frHbyjuPpucqHPTSaIsCCQG1GhFJEvSnNqwPVi_U
-        m_SheetId: 1917812923
-        m_Columns: []
+        m_SheetId: 1535366031
+        m_Columns:
+        - rid: 2700768917129003098
+        - rid: 2700768917129003099
+        - rid: 2700768917129003100
         m_RemoveMissingPulledKeys: 1
