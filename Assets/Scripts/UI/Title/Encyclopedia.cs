@@ -139,6 +139,14 @@ public class Encyclopedia : MonoBehaviour
             s.navigation = nav;
         }
         
+        // closeボタンのナビゲーション設定
+        if (closeButton && _items.Count > 0)
+        {
+            var closeNav = closeButton.navigation;
+            closeNav.selectOnUp = _items[0].GetComponent<Selectable>();
+            closeButton.navigation = closeNav;
+        }
+        
         // レイアウト更新
         Canvas.ForceUpdateCanvases();
     }
