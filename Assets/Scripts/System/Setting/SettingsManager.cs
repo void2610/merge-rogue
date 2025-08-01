@@ -301,17 +301,6 @@ public class SettingsManager : IDisposable
     }
     
     /// <summary>
-    /// 現在の設定値を適用
-    /// </summary>
-    private void ApplyCurrentValues()
-    {
-        foreach (var setting in _settings)
-        {
-            setting.ApplyCurrentValue();
-        }
-    }
-    
-    /// <summary>
     /// リソース解放
     /// </summary>
     public void Dispose()

@@ -8,14 +8,25 @@ public class CanvasGroupSwitcher
     private readonly List<CanvasGroup> _canvasGroups;
     private readonly Dictionary<string, Sequence> _canvasGroupTween = new ();
     
-    public CanvasGroupSwitcher(List<CanvasGroup> canvasGroups)
+    public CanvasGroupSwitcher(List<CanvasGroup> canvasGroups, string initialVisibleCanvas = null)
     {
         _canvasGroups = canvasGroups;
         
         foreach (var cg in _canvasGroups)
         {
             _canvasGroupTween[cg.name] = null;
-            EnableCanvasGroupAsync(cg.name, false).Forget();
+            
+            if (cg.name == initialVisibleCanvas)
+            {
+                // 初期表示するキャンバスは即座に表示状態に設定
+                cg.alpha = 1f;
+                cg.interactable = true;
+                cg.blocksRaycasts = true;
+            }
+            else
+            {
+                EnableCanvasGroupAsync(cg.name, false).Forget();
+            }
         }
     }
     

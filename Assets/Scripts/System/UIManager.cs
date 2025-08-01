@@ -51,7 +51,7 @@ public class UIManager : MonoBehaviour
     public bool IsMapOpened { get; private set; } = false;
     public bool IsTutorialOpened { get; set; } = false;
     
-    private readonly Dictionary<string, Sequence> _canvasGroupTween = new();
+    private CanvasGroupSwitcher _canvasGroupSwitcher;
     
     public Transform PlayerStatusUI => playerStatusUI;
     public Transform EnemyStatusUIContainer => enemyStatusUIContainer;
@@ -120,11 +120,7 @@ public class UIManager : MonoBehaviour
         return canvasGroups.Exists(c => c.alpha > 0);
     }
 
-    public GameObject GetTopCanvasGroup()
-    { 
-        if (!IsAnyCanvasGroupEnabled()) return null;
-        return canvasGroups.Find(c => c.alpha > 0)?.gameObject;  
-    }
+    public GameObject GetTopCanvasGroup() => _canvasGroupSwitcher?.GetTopCanvasGroup();
     
     private void UpdateCoinText(System.Numerics.BigInteger amount) => coinText.text = "coin: " + amount;
 
@@ -230,35 +226,9 @@ public class UIManager : MonoBehaviour
     
     private async UniTaskVoid EnableCanvasGroupAsync(string canvasName, bool e)
     {
-        var cg = canvasGroups.Find(c => c.name == canvasName);
-        if (!cg) return;
-        if (_canvasGroupTween[canvasName].IsActive()) return;
-        
-        // アニメーション中は操作をブロック
-        cg.interactable = false;
-        cg.blocksRaycasts = false;
-        
-        var seq = DOTween.Sequence();
-        seq.SetUpdate(true).Forget();
-        if (e)
-        {
-            seq.Join(cg.transform.DOMoveY(-0.45f, 0).SetRelative(true)).Forget();
-            seq.Join(cg.transform.DOMoveY(0.45f, 0.2f).SetRelative(true).SetEase(Ease.OutBack)).Forget();
-            seq.Join(cg.DOFade(1, 0.2f)).Forget();
-        }
-        else
-        {
-            seq.Join(cg.DOFade(0, 0.2f)).Forget();
-        }
-        
-        _canvasGroupTween[canvasName] = seq;
-        
-        await seq.AsyncWaitForCompletion();
+        await _canvasGroupSwitcher.EnableCanvasGroupAsync(canvasName, e);
         
         inputGuide.UpdateText(IsAnyCanvasGroupEnabled() ? InputGuide.InputGuideType.Navigate : InputGuide.InputGuideType.Merge);
-        _canvasGroupTween[canvasName] = null;
-        cg.interactable = e;
-        cg.blocksRaycasts = e;
         
         // FocusSelectableがアタッチされているオブジェクトがあればフォーカス
         ResetSelectedGameObject();
@@ -353,12 +323,8 @@ public class UIManager : MonoBehaviour
         if(!Instance) Instance = this;
         else Destroy(gameObject);
         
-        foreach (var canvasGroup in canvasGroups)
-        {
-            _canvasGroupTween.Add(canvasGroup.name, null);
-            if(canvasGroup.name != "Treasure")
-                EnableCanvasGroup(canvasGroup.name, false);
-        }
+        _canvasGroupSwitcher = new CanvasGroupSwitcher(canvasGroups, "Treasure");
+        
         _cursorPosition = CursorPositionType.Merge;
         
         inventoryCanvasBlocker.SetActive(false);
