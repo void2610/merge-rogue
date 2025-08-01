@@ -8,7 +8,6 @@ using UnityEngine;
 public class TextInputSetting : SettingBase<string>
 {
     [SerializeField] private int maxLength = 50;
-    [SerializeField] private string placeholder = "";
     
     /// <summary>
     /// 最大文字数
@@ -24,9 +23,9 @@ public class TextInputSetting : SettingBase<string>
         {
             if (!string.IsNullOrEmpty(localizationKey))
             {
-                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_PLACEHOLDER") ?? placeholder;
+                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_PLACEHOLDER") ?? $"{localizationKey}_PLACEHOLDER";
             }
-            return placeholder;
+            return $"{localizationKey}_PLACEHOLDER";
         }
     }
     
@@ -47,13 +46,6 @@ public class TextInputSetting : SettingBase<string>
         }
     }
     
-    public TextInputSetting(string name, string desc, string defaultVal, int maxLen = 50, string placeholderText = "") 
-        : base(name, desc, defaultVal ?? "")
-    {
-        maxLength = maxLen;
-        placeholder = placeholderText;
-    }
-    
     /// <summary>
     /// ローカライゼーションキーベースのコンストラクタ
     /// </summary>
@@ -61,14 +53,12 @@ public class TextInputSetting : SettingBase<string>
         : base(localizationKey, defaultVal ?? "")
     {
         maxLength = maxLen;
-        placeholder = localizationKey + "_PLACEHOLDER"; // フォールバック用
     }
     
     public TextInputSetting()
     {
         // シリアライゼーション用のデフォルトコンストラクタ
         maxLength = 50;
-        placeholder = "";
     }
     
     public override string GetSettingType()

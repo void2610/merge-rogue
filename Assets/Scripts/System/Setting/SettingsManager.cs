@@ -43,20 +43,17 @@ public class SettingsManager : IDisposable
             await LocalizeStringLoader.Instance.WaitForInitialization();
         }
         
-        // 既存の設定がない場合は初期設定を作成
-        if (_settings.Count == 0) 
-        {
-            InitializeDefaultSettings();
-        }
-        
+        InitializeDefaultSettings();
         // 各設定の値変更イベントを監視
         SubscribeToSettingChanges();
-        
-        // セーブデータから設定を読み込む
+        // セーバータから設定を読み込む
         LoadSettings();
         
-        // シーン別の設定適用を監視
-        SceneManager.sceneLoaded += OnSceneLoaded;
+        // 初期化完了後にGameManagerのゲーム速度を設定
+        if (SceneManager.GetActiveScene().name == "MainScene" && GameManager.Instance)
+        {
+            GameManager.Instance.ApplyGameSpeedFromSettings();
+        }
     }
     
     /// <summary>
@@ -89,10 +86,7 @@ public class SettingsManager : IDisposable
             // MainSceneでGameManagerが存在する場合のみ速度を変更
             if (SceneManager.GetActiveScene().name == "MainScene" && GameManager.Instance) 
             {
-                if (float.TryParse(v, out var speed))
-                {
-                    GameManager.Instance.TimeScale = speed;
-                }
+                GameManager.Instance.ApplyGameSpeedFromSettings();
             }
         }).AddTo(_disposables);
         _settings.Add(gameSpeedSetting);
@@ -142,11 +136,15 @@ public class SettingsManager : IDisposable
     }
     
     /// <summary>
-    /// 設定名で設定項目を取得
+    /// 設定名またはローカライズキーで設定項目を取得
     /// </summary>
-    public T GetSetting<T>(string settingName) where T : class, ISettingBase
+    public T GetSetting<T>(string settingKey) where T : class, ISettingBase
     {
-        return _settings.FirstOrDefault(s => s.SettingName == settingName) as T;
+        // まずローカライズキーで検索
+        var setting = _settings.FirstOrDefault(s => s.LocalizeKey == settingKey);
+        // 見つからない場合は表示名で検索（後方互換性のため）
+        setting ??= _settings.FirstOrDefault(s => s.SettingName == settingKey);
+        return setting as T;
     }
     
     /// <summary>
@@ -154,7 +152,7 @@ public class SettingsManager : IDisposable
     /// </summary>
     public string GetSeedValue()
     {
-        var seedTypeSetting = GetSetting<EnumSetting>("シードタイプ");
+        var seedTypeSetting = GetSetting<EnumSetting>("SEED_TYPE");
         var seedType = seedTypeSetting?.CurrentValue ?? "random";
         
         if (seedType == "random")
@@ -166,7 +164,7 @@ public class SettingsManager : IDisposable
         else
         {
             // 手動指定のシード値を取得
-            var seedSetting = GetSetting<TextInputSetting>("シード値");
+            var seedSetting = GetSetting<TextInputSetting>("SEED_VALUE");
             var manualSeed = seedSetting?.CurrentValue ?? "";
             
             // 手動指定でも空の場合はランダムシードを生成
@@ -314,30 +312,10 @@ public class SettingsManager : IDisposable
     }
     
     /// <summary>
-    /// シーンロード時の処理
-    /// </summary>
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        // MainSceneの場合のみゲーム速度設定を適用
-        if (scene.name == "MainScene")
-        {
-            var gameSpeedSetting = GetSetting<EnumSetting>("ゲーム速度");
-            if (gameSpeedSetting != null && GameManager.Instance)
-            {
-                if (float.TryParse(gameSpeedSetting.CurrentValue, out var speed))
-                {
-                    GameManager.Instance.TimeScale = speed;
-                }
-            }
-        }
-    }
-    
-    /// <summary>
     /// リソース解放
     /// </summary>
     public void Dispose()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
         _disposables?.Dispose();
     }
     

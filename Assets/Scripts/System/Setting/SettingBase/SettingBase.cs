@@ -10,8 +10,6 @@ using UnityEngine;
 [System.Serializable]
 public abstract class SettingBase<T> : ISettingBase
 {
-    [SerializeField] protected string settingName;
-    [SerializeField] protected string description;
     [SerializeField] protected T currentValue;
     [SerializeField] protected T defaultValue;
     [SerializeField] protected string localizationKey; // ローカライゼーションキーのベース部分
@@ -28,9 +26,9 @@ public abstract class SettingBase<T> : ISettingBase
         {
             if (!string.IsNullOrEmpty(localizationKey))
             {
-                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_NAME") ?? settingName;
+                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_NAME") ?? localizationKey;
             }
-            return settingName;
+            return localizationKey;
         }
     }
     
@@ -43,11 +41,16 @@ public abstract class SettingBase<T> : ISettingBase
         {
             if (!string.IsNullOrEmpty(localizationKey))
             {
-                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_DESC") ?? description;
+                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_DESC") ?? $"{localizationKey}_DESC";
             }
-            return description;
+            return $"{localizationKey}_DESC";
         }
     }
+    
+    /// <summary>
+    /// ローカライゼーションキー（設定検索用）
+    /// </summary>
+    public string LocalizeKey => localizationKey;
     
     /// <summary>
     /// 現在の値
@@ -81,23 +84,12 @@ public abstract class SettingBase<T> : ISettingBase
     /// </summary>
     public Observable<Unit> OnSettingChanged => _onSettingChanged;
     
-    protected SettingBase(string name, string desc, T defaultVal)
-    {
-        settingName = name;
-        description = desc;
-        defaultValue = defaultVal;
-        currentValue = defaultVal;
-        localizationKey = string.Empty;
-    }
-    
     /// <summary>
     /// ローカライゼーションキーベースのコンストラクタ
     /// </summary>
     protected SettingBase(string localizationKey, T defaultVal)
     {
         this.localizationKey = localizationKey;
-        settingName = localizationKey; // フォールバック用
-        description = localizationKey + "_DESC"; // フォールバック用
         defaultValue = defaultVal;
         currentValue = defaultVal;
     }
@@ -135,7 +127,7 @@ public abstract class SettingBase<T> : ISettingBase
         }
         catch (Exception e)
         {
-            Debug.LogWarning($"Setting {settingName} のデシリアライズに失敗: {e.Message}");
+            Debug.LogWarning($"Setting {localizationKey} のデシリアライズに失敗: {e.Message}");
             ResetToDefault();
         }
     }
@@ -168,6 +160,7 @@ public interface ISettingBase
 {
     string SettingName { get; }
     string Description { get; }
+    string LocalizeKey { get; }
     Observable<Unit> OnSettingChanged { get; }
     void ResetToDefault();
     string SerializeValue();

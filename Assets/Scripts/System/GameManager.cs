@@ -82,10 +82,17 @@ public class GameManager : MonoBehaviour
         SeManager.Instance.PlaySe("coin");
         Coin.Value -= finalAmount;
     }
+    
+    public void ApplyGameSpeedFromSettings()
+    {
+        var setting = _settingsManager?.GetSetting<EnumSetting>("GAME_SPEED");
+        if (setting != null && float.TryParse(setting.CurrentValue, out var speed))
+            TimeScale = speed;
+    }
 
     public void ChangeTimeScale()
     {
-        var setting = _settingsManager.GetSetting<EnumSetting>("ゲーム速度");
+        var setting = _settingsManager.GetSetting<EnumSetting>("GAME_SPEED");
         setting.MoveNext();
         // 新しい値を適用
         if (float.TryParse(setting.CurrentValue, out var speed))
@@ -166,15 +173,7 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        // SettingsManagerから現在のゲーム速度を取得して適用
-        var setting = _settingsManager.GetSetting<EnumSetting>("ゲーム速度");
-        if (float.TryParse(setting.CurrentValue, out var speed))
-            TimeScale = speed;
-        // 設定値が変更されたときの処理を登録
-        setting.OnValueChanged.Subscribe(v =>
-        {
-            if (float.TryParse(v, out var s)) TimeScale = s; 
-        }).AddTo(this);
+        ApplyGameSpeedFromSettings();
 
         AddCoin(Application.isEditor ? debugCoin : 10);
         

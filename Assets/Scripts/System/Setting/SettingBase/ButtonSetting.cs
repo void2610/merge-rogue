@@ -8,9 +8,7 @@ using UnityEngine;
 [System.Serializable]
 public class ButtonSetting : SettingBase<Unit>
 {
-    [SerializeField] private string buttonText;
     [SerializeField] private bool requiresConfirmation;
-    [SerializeField] private string confirmationMessage;
     
     /// <summary>
     /// ボタンに表示するテキスト
@@ -21,9 +19,9 @@ public class ButtonSetting : SettingBase<Unit>
         {
             if (!string.IsNullOrEmpty(localizationKey))
             {
-                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_BUTTON") ?? buttonText;
+                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_BUTTON") ?? $"{localizationKey}_BUTTON";
             }
-            return buttonText;
+            return $"{localizationKey}_BUTTON";
         }
     }
     
@@ -41,9 +39,9 @@ public class ButtonSetting : SettingBase<Unit>
         {
             if (!string.IsNullOrEmpty(localizationKey))
             {
-                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_CONFIRM") ?? confirmationMessage;
+                return LocalizeStringLoader.Instance?.Get($"{localizationKey}_CONFIRM") ?? $"{localizationKey}_CONFIRM";
             }
-            return confirmationMessage;
+            return $"{localizationKey}_CONFIRM";
         }
     }
     
@@ -52,29 +50,18 @@ public class ButtonSetting : SettingBase<Unit>
     /// </summary>
     public Action ButtonAction { get; set; }
     
-    public ButtonSetting(string name, string desc, string btnText, bool needsConfirmation = false, string confirmMsg = "") 
-        : base(name, desc, Unit.Default)
-    {
-        buttonText = btnText;
-        requiresConfirmation = needsConfirmation;
-        confirmationMessage = confirmMsg;
-    }
-    
     /// <summary>
     /// ローカライゼーションキーベースのコンストラクタ
     /// </summary>
     public ButtonSetting(string localizationKey, bool needsConfirmation = false) 
         : base(localizationKey, Unit.Default)
     {
-        buttonText = localizationKey + "_BUTTON"; // フォールバック用
         requiresConfirmation = needsConfirmation;
-        confirmationMessage = needsConfirmation ? localizationKey + "_CONFIRM" : string.Empty; // フォールバック用
     }
     
     public ButtonSetting()
     {
         // シリアライゼーション用のデフォルトコンストラクタ
-        buttonText = "実行";
     }
     
     /// <summary>
@@ -90,7 +77,7 @@ public class ButtonSetting : SettingBase<Unit>
         }
         catch (Exception e)
         {
-            Debug.LogError($"ButtonSetting {settingName} のアクション実行中にエラー: {e.Message}");
+            Debug.LogError($"ButtonSetting {localizationKey} のアクション実行中にエラー: {e.Message}");
         }
     }
     

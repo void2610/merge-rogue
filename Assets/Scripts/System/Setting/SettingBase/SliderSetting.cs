@@ -33,13 +33,6 @@ public class SliderSetting : SettingBase<float>
         }
     }
     
-    public SliderSetting(string name, string desc, float defaultVal, float min, float max) 
-        : base(name, desc, defaultVal)
-    {
-        minValue = min;
-        maxValue = max;
-    }
-    
     /// <summary>
     /// ローカライゼーションキーベースのコンストラクタ
     /// </summary>

@@ -10,7 +10,6 @@ using UnityEngine;
 public class EnumSetting : SettingBase<string>
 {
     [SerializeField] private string[] options;
-    [SerializeField] private string[] displayNames; // 表示用の名前（オプション）
     
     /// <summary>
     /// 現在選択されているインデックス
@@ -49,7 +48,7 @@ public class EnumSetting : SettingBase<string>
                 }
                 return localizedNames;
             }
-            return displayNames ?? options ?? new string[0];
+            return options ?? new string[0];
         }
     }
     
@@ -65,20 +64,6 @@ public class EnumSetting : SettingBase<string>
         }
     }
     
-    public EnumSetting(string name, string desc, string[] opts, string defaultValue = null, string[] displayNames = null) 
-        : base(name, desc, defaultValue ?? (opts?.FirstOrDefault() ?? ""))
-    {
-        options = opts ?? new string[] { "Option1" };
-        this.displayNames = displayNames;
-    }
-    
-    public EnumSetting(string name, string desc, string[] opts, int defaultIndex = 0, string[] displayNames = null) 
-        : base(name, desc, (opts != null && defaultIndex >= 0 && defaultIndex < opts.Length) ? opts[defaultIndex] : (opts?.FirstOrDefault() ?? ""))
-    {
-        options = opts ?? new string[] { "Option1" };
-        this.displayNames = displayNames;
-    }
-    
     /// <summary>
     /// ローカライゼーションキーベースのコンストラクタ
     /// </summary>
@@ -86,7 +71,6 @@ public class EnumSetting : SettingBase<string>
         : base(localizationKey, (opts != null && defaultIndex >= 0 && defaultIndex < opts.Length) ? opts[defaultIndex] : (opts?.FirstOrDefault() ?? ""))
     {
         options = opts ?? new string[] { "Option1" };
-        displayNames = null; // ローカライゼーションから動的生成するためnull
     }
     
     public EnumSetting()
@@ -121,14 +105,14 @@ public class EnumSetting : SettingBase<string>
     /// <summary>
     /// 指定したenumの値で設定を初期化
     /// </summary>
-    public static EnumSetting CreateFromEnum<T>(string name, string desc, T defaultValue, string[] customDisplayNames = null) 
+    public static EnumSetting CreateFromEnum<T>(string localizationKey, T defaultValue) 
         where T : Enum
     {
         var enumValues = Enum.GetValues(typeof(T)).Cast<T>().ToArray();
         var options = enumValues.Select(e => e.ToString()).ToArray();
-        var defaultVal = defaultValue.ToString();
+        var defaultIndex = Array.IndexOf(options, defaultValue.ToString());
         
-        return new EnumSetting(name, desc, options, defaultVal, customDisplayNames);
+        return new EnumSetting(localizationKey, options, defaultIndex >= 0 ? defaultIndex : 0);
     }
     
     /// <summary>
@@ -156,8 +140,8 @@ public class EnumSetting : SettingBase<string>
 [System.Serializable]
 public class ResolutionSetting : EnumSetting
 {
-    public ResolutionSetting(string name = "解像度", string desc = "画面解像度の設定") 
-        : base(name, desc, GetResolutionOptions(), GetDefaultResolutionIndex(), GetResolutionDisplayNames())
+    public ResolutionSetting(string localizationKey = "RESOLUTION") 
+        : base(localizationKey, GetResolutionOptions(), GetDefaultResolutionIndex())
     {
     }
     
