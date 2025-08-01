@@ -333,7 +333,7 @@ public class UIManager : MonoBehaviour
            selectables.AddRange(seUI.GetStatusEffectIcons());
         }
         if (selectables.Count == 0) return;
-        selectables.SetNavigation();
+        selectables.SetHorizontalNavigation();
     }
     
     private void Fade(bool e)

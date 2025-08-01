@@ -34,9 +34,11 @@ public static class ExtendedMethods
     }
 
     /// <summary>
-    /// Selectableのリストに対してナビゲーションを設定する
+    /// Selectableのリストに対して水平方向のナビゲーションを設定する
     /// </summary>
-    public static void SetNavigation(this List<Selectable> selectables, bool isHorizontal = true)
+    /// <param name="selectables">Selectableのリスト</param>
+    /// <param name="isLoop">最初と最後を繋げる循環ナビゲーションかどうか</param>
+    public static void SetHorizontalNavigation(this List<Selectable> selectables, bool isLoop = false)
     {
         for (var i = 0; i < selectables.Count; i++)
         {
@@ -44,10 +46,38 @@ public static class ExtendedMethods
             var navigation = selectable.navigation;
             navigation.mode = Navigation.Mode.Explicit;
 
-            if (isHorizontal)
+            if (isLoop)
+            {
+                navigation.selectOnLeft = i == 0 ? selectables[^1] : selectables[i - 1];
+                navigation.selectOnRight = i == selectables.Count - 1 ? selectables[0] : selectables[i + 1];
+            }
+            else
             {
                 navigation.selectOnLeft = i == 0 ? null : selectables[i - 1];
                 navigation.selectOnRight = i == selectables.Count - 1 ? null : selectables[i + 1];
+            }
+
+            selectable.navigation = navigation;
+        }
+    }
+
+    /// <summary>
+    /// Selectableのリストに対して垂直方向のナビゲーションを設定する
+    /// </summary>
+    /// <param name="selectables">Selectableのリスト</param>
+    /// <param name="isLoop">最初と最後を繋げる循環ナビゲーションかどうか</param>
+    public static void SetVerticalNavigation(this List<Selectable> selectables, bool isLoop = false)
+    {
+        for (var i = 0; i < selectables.Count; i++)
+        {
+            var selectable = selectables[i];
+            var navigation = selectable.navigation;
+            navigation.mode = Navigation.Mode.Explicit;
+
+            if (isLoop)
+            {
+                navigation.selectOnUp = i == 0 ? selectables[^1] : selectables[i - 1];
+                navigation.selectOnDown = i == selectables.Count - 1 ? selectables[0] : selectables[i + 1];
             }
             else
             {

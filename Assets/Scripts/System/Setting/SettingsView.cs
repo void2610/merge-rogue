@@ -198,8 +198,7 @@ public class SettingsView : MonoBehaviour
             selectables.AddRange(settingItem.GetSelectables());
         }
         
-        // 垂直ナビゲーションを設定（isHorizontal = false）
-        selectables.SetNavigation(false);
+        selectables.SetVerticalNavigation();
         
         // Enum設定の特別な処理：横ナビゲーションを追加（垂直ナビゲーション設定後に実行）
         foreach (var settingItem in _settingItems)

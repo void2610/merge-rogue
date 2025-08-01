@@ -135,7 +135,7 @@ public class TitlePresenter : MonoBehaviour
         }
         _startButton = buttons[0].gameObject;
         _startButton.AddComponent<FocusSelectable>();
-        buttons.SetNavigation(false);
+        buttons.SetVerticalNavigation(true);
         
         twitterButton.onClick.AddListener(TitleFunctions.OpenTwitter);
         steamButton.onClick.AddListener(TitleFunctions.OpenSteam);
