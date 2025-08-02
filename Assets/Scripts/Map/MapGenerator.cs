@@ -60,7 +60,7 @@ public class MapGenerator : MonoBehaviour
                 // スタートノード
                 if (i == 0 && j == mid)
                 {
-                    nodeStageData = stageDataDict.GetValueOrDefault(StageType.Enemy);
+                    nodeStageData = stageDataDict.GetValueOrDefault(StageType.Boss);
                 }
                 // ボスノード
                 else if (i == mapSize.x - 1 && j == mid)
@@ -161,9 +161,8 @@ public class MapGenerator : MonoBehaviour
             
             foreach (var connection in currentNode.Connections)
             {
-                if (!reachableNodes.Contains(connection))
+                if (reachableNodes.Add(connection))
                 {
-                    reachableNodes.Add(connection);
                     queue.Enqueue(connection);
                 }
             }
@@ -178,7 +177,7 @@ public class MapGenerator : MonoBehaviour
                 if (!reachableNodes.Contains(node))
                 {
                     // 既に描画されている場合はオブジェクトを削除
-                    if (node.Obj != null)
+                    if (node.Obj)
                     {
                         Destroy(node.Obj);
                     }

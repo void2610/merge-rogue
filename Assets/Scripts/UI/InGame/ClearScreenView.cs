@@ -15,6 +15,11 @@ public class ClearScreenView : MonoBehaviour
         image.sprite = sprites[act];
         demoClearUI.SetActive(isDemoClear);
         nextButton.gameObject.SetActive(!isDemoClear);
+
+        nextButton.GetComponent<FocusSelectable>().enabled = !isDemoClear;
+        titleButton.GetComponent<FocusSelectable>().enabled = isDemoClear;
+        
+        UIManager.Instance.EnableCanvasGroup("Clear", true);
     }
     
     private void OnClickNext()
@@ -28,5 +33,16 @@ public class ClearScreenView : MonoBehaviour
     {
         nextButton.onClick.AddListener(OnClickNext);
         titleButton.onClick.AddListener(() => UIManager.Instance.OnClickTitle());
+
+        var nn = nextButton.navigation;
+        nn.mode = Navigation.Mode.Explicit;
+        nn.selectOnRight = titleButton;
+        nn.selectOnLeft = titleButton;
+        nextButton.navigation = nn;
+        var tt = titleButton.navigation;
+        tt.mode = Navigation.Mode.Explicit;
+        tt.selectOnRight = nextButton;
+        tt.selectOnLeft = nextButton;
+        titleButton.navigation = tt;
     }
 }

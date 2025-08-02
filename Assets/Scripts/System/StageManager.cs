@@ -38,10 +38,8 @@ public class StageManager : MonoBehaviour
             PrepareNextAct();
             
             // デモ版ではact2で終了
-            if (_contentService.IsDemoPlay && _contentService.Act > 1)
-                clearScreenView.Show(_contentService.Act, true);
-            else
-                clearScreenView.Show(_contentService.Act, false);
+            var isDemoClear = _contentService.IsDemoPlay && _contentService.Act > 1;
+            clearScreenView.Show(_contentService.Act, isDemoClear);
             return;
         }
         
