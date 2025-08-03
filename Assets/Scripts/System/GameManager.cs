@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     public float TimeScale
     {
         get => _currentTimeScale;
-        set 
+        private set 
         {
             _currentTimeScale = Mathf.Clamp(value, 1f, 3f);
             // ポーズ中でなければTime.timeScaleも更新
@@ -179,9 +179,9 @@ public class GameManager : MonoBehaviour
         // テスト用レリックの追加（エディタでのみ）
         // RelicUIManagerのStart()が実行された後に実行するため、1フレーム遅延させる
         if (Application.isEditor && _inventoryConfiguration && _inventoryConfiguration.TestRelics != null)
-        {
             AddTestRelicsAfterDelay().Forget();
-        }
+        
+        BgmManager.Instance.Stop().Forget();
         
         treasure.OpenTreasure(Treasure.TreasureType.Initial);
     }
