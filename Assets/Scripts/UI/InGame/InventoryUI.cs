@@ -158,7 +158,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 res = await dialog.OpenDialog(InventoryUIState.Replace, _inventoryService.GetBallData(index), _inventoryService.GetBallLevel(index), _replaceBallData);
                 if (res)
                 {
-                    _inventoryService.ReplaceBall(_replaceBallData, _selectedIndex);
+                    _inventoryService.ReplaceBall(_replaceBallData, _selectedIndex + 1);
                     GameManager.Instance.SubCoin(_contentService.GetShopPrice(Shop.ShopItemType.Ball, _replaceBallData.rarity));
                     
                     if (GameManager.Instance.state == GameManager.GameState.AfterBattle)
