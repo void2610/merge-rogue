@@ -7,9 +7,12 @@ public class Coin : MonoBehaviour
 {
     private readonly Vector3 _target = new(7.5f, 4.5f, 0);
     private const float FLOOR = 2.8f;
+
+    public void SetUp(float xPos) => SetUpAsync(xPos).Forget();
     
-    public async UniTask SetUpAsync(float xPos, CancellationToken cancellationToken = default)
+    private async UniTask SetUpAsync(float xPos)
     {
+        var cancellationToken = this.GetCancellationTokenOnDestroy();
         var rx = Random.Range(-1f, 1f);
         this.transform.position = new Vector3(xPos, FLOOR + 1, 0);
         var rt = Random.Range(0.75f, 1.5f);
@@ -33,11 +36,5 @@ public class Coin : MonoBehaviour
             .ToUniTask(cancellationToken: cancellationToken);
             
         Destroy(this.gameObject);
-    }
-    
-    // 元のメソッドを残して互換性を維持
-    public void SetUp(float xPos)
-    {
-        SetUpAsync(xPos, this.GetCancellationTokenOnDestroy()).Forget();
     }
 }

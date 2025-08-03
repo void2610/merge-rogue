@@ -209,7 +209,8 @@ public class EnemyBase : MonoBehaviour, IEntity
     {
         SeManager.Instance.PlaySe("coin");
         var coinPrefab = EnemyContainer.Instance.GetCoinPrefab();
-        for (var i = 0; i < Coin; i++)
+        var displayCoinCount = CoinDisplayCalculator.CalculateDisplayCount(Coin);
+        for (var i = 0; i < displayCoinCount; i++)
         {
             var c = Instantiate(coinPrefab).GetComponent<Coin>();
             c?.SetUp(this.transform.position.x);

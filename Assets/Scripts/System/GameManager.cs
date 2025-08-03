@@ -36,10 +36,18 @@ public class GameManager : MonoBehaviour
     [Header("デバッグ")]
     [SerializeField] private int debugCoin;
 
+    private float _currentTimeScale = 1f;  // ゲームの実際の速度設定を保持
+    
     public float TimeScale
     {
-        get => Time.timeScale;
-        set => Time.timeScale = Mathf.Clamp(value, 1f, 3f);
+        get => _currentTimeScale;
+        set 
+        {
+            _currentTimeScale = Mathf.Clamp(value, 1f, 3f);
+            // ポーズ中でなければTime.timeScaleも更新
+            if (!UIManager.Instance || !UIManager.Instance.IsPaused)
+                Time.timeScale = _currentTimeScale;
+        }
     }
     public bool IsGameOver { get; private set; }
     public Player Player { get; private set; }
