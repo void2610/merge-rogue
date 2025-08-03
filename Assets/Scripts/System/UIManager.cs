@@ -344,10 +344,12 @@ public class UIManager : MonoBehaviour
         {
             BgmManager.Instance.BgmVolume = value;
         });
+        bgmSlider.value = BgmManager.Instance.BgmVolume;
         seSlider.onValueChanged.AddListener((value) =>
         {
             SeManager.Instance.SeVolume = value;
         });
+        seSlider.value = SeManager.Instance.SeVolume;
 
         var trigger = seSlider.gameObject.AddComponent<EventTrigger>();
         var entry = new EventTrigger.Entry

@@ -187,6 +187,8 @@ public class TitlePresenter : MonoBehaviour
         ToggleVirtualMouse();
         await UniTask.DelayFrame(1); // フェードイン後にUIを初期化
         ResetSelectedGameObject();
+
+        BgmManager.Instance.Stop().Forget();
     }
 
     private void Update()
