@@ -150,7 +150,7 @@ public class SelectionCursor : MonoBehaviour
     private bool ShouldShowCursor(GameObject selectedObject)
     {
         // 選択オブジェクトのGraphicコンポーネント（Image、Text等）の透明度をチェック
-        if (selectedObject.TryGetComponent<Graphic>(out var graphic) && graphic.color.a < 1.0f)
+        if (selectedObject.TryGetComponent<Graphic>(out var graphic) && graphic.color.a < 0.99f)
             return false;
         
         // すべての親のCanvasGroupを再帰的にチェック

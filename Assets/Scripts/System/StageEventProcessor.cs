@@ -92,10 +92,10 @@ public class StageEventProcessor : MonoBehaviour
                 if (!resultOption.hasResultLeft)
                 {
                     cts.Cancel();
-                    optionText.alpha = 1;
                     var animatorOption = new DOTweenTMPAnimator(optionText);
                     animatorOption.ResetAllChars();
                 }
+                optionText.alpha = 1;
 
                 await WaitOrSkipInput(200);
                 options[i].GetComponent<Button>().interactable = _currentEvent.Options[i].IsAvailable();
