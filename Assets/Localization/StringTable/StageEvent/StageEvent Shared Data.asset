@@ -15,12 +15,144 @@ MonoBehaviour:
   m_TableCollectionName: StageEvent
   m_TableCollectionNameGuidString: cab9b65a528894d0eb867217bd1a99a8
   m_Entries:
-  - m_Id: 5776683819008
-    m_Key: FUKIYA_N
-    m_Metadata:
-      m_Items: []
   - m_Id: 5776780288000
     m_Key: FUKIYA_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211115692032
+    m_Key: FUKIYA_1_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886336
+    m_Key: FUKIYA_1_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886337
+    m_Key: FUKIYA_1_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886338
+    m_Key: FUKIYA_2_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886339
+    m_Key: FUKIYA_2_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886340
+    m_Key: FUKIYA_2_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886342
+    m_Key: NARIKIN_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886343
+    m_Key: NARIKIN_1_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886344
+    m_Key: NARIKIN_1_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886345
+    m_Key: NARIKIN_1_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886346
+    m_Key: NARIKIN_2_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886347
+    m_Key: NARIKIN_2_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886348
+    m_Key: NARIKIN_2_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886350
+    m_Key: MAGICIANS_ORB_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886351
+    m_Key: MAGICIANS_ORB_1_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886352
+    m_Key: MAGICIANS_ORB_1_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886353
+    m_Key: MAGICIANS_ORB_1_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886354
+    m_Key: MAGICIANS_ORB_2_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886355
+    m_Key: MAGICIANS_ORB_2_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886356
+    m_Key: MAGICIANS_ORB_2_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886358
+    m_Key: GET_NORMAL_BALL_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886359
+    m_Key: GET_NORMAL_BALL_1_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886360
+    m_Key: GET_NORMAL_BALL_1_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886361
+    m_Key: GET_NORMAL_BALL_1_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886362
+    m_Key: GET_NORMAL_BALL_2_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886363
+    m_Key: GET_NORMAL_BALL_2_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886364
+    m_Key: GET_NORMAL_BALL_2_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886366
+    m_Key: LIFE_MONEY_TRADE_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886367
+    m_Key: LIFE_MONEY_TRADE_1_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886368
+    m_Key: LIFE_MONEY_TRADE_1_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886369
+    m_Key: LIFE_MONEY_TRADE_1_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886370
+    m_Key: LIFE_MONEY_TRADE_2_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886371
+    m_Key: LIFE_MONEY_TRADE_2_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886372
+    m_Key: LIFE_MONEY_TRADE_2_R
     m_Metadata:
       m_Items: []
   m_Metadata:
