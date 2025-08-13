@@ -37,7 +37,6 @@ public class TitleContentService : IContentService
     public int GetBallUpgradePrice() => _data?.BallUpgradePrice ?? 0;
 
     // 以下は未実装（TitleSceneでは使用されない）
-    public Type GetRandomEventType() => throw new NotSupportedException("TitleScene does not support random events");
     public List<StageEventData> GetAllStageEventData() => throw new NotSupportedException("TitleScene does not support stage event data");
     public EnemyData GetRandomEnemy() => throw new NotSupportedException("TitleScene does not support random enemies");
     public EnemyData GetRandomBoss() => throw new NotSupportedException("TitleScene does not support random bosses");
