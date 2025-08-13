@@ -41,21 +41,6 @@ public class ContentService : IContentService
         #endif
     }
     
-    /// <summary>
-    /// StageEventをランダムで取得する
-    /// </summary>
-    /// <returns></returns>
-    public Type GetRandomEventType()
-    {
-        var eventScript = GetRandomObjectFromList(_data.EventList);
-        var type = Type.GetType(eventScript.name);
-        if (type != null && type.IsSubclassOf(typeof(StageEventBase)))
-        {
-            return type;
-        } 
-        throw new Exception("Event not found or not a valid StageEventBase subclass");
-    } 
-    
     public EnemyData GetRandomEnemy()
     {
         var enemy = GetRandomObjectFromList(_data.EnemyList) as EnemyData;
@@ -89,6 +74,11 @@ public class ContentService : IContentService
         return _data.GetFilteredBallList().FirstOrDefault(bd => bd.className == className);
     }
     
+    public BallData GetBallData(string ballType)
+    {
+        return _data.GetFilteredBallList().FirstOrDefault(bd => bd.className == ballType || bd.name == ballType);
+    }
+    
     public RelicData GetRandomRelic()
     {
         return GetRandomRelicDataByRarity(GetRandomRarity());
@@ -101,9 +91,19 @@ public class ContentService : IContentService
         return r;
     }
     
+    public RelicData GetRelicData(string relicName)
+    {
+        return _data.GetFilteredRelicList().FirstOrDefault(rd => rd.className == relicName || rd.name == relicName);
+    }
+    
     public List<RelicData> GetRelicDataByRarity(Rarity rarity)
     {
         return  _data.GetFilteredRelicList().Where(bd => bd.rarity == rarity).ToList();
+    }
+    
+    public List<RelicData> GetAllRelicData()
+    {
+        return _data.GetFilteredRelicList();
     }
     
     public int GetShopPrice(Shop.ShopItemType type, Rarity rarity) => (int)(_data.GetShopPrice(type, rarity) * ShopPriceMultiplier);
@@ -165,5 +165,12 @@ public class ContentService : IContentService
     public void SetGlobalEnemyDifficultyMultiplier(float multiplier)
     {
         GlobalEnemyDifficultyMultiplier = multiplier;
+    }
+    
+    // ====== ステージイベント関連メソッド ======
+    
+    public List<StageEventData> GetAllStageEventData()
+    {
+        return _data.StageEventDataList?.StageEventDataList ?? new List<StageEventData>();
     }
 }

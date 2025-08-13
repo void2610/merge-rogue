@@ -21,10 +21,10 @@ public interface IContentService
     // ====== ランダム取得メソッド ======
     
     /// <summary>
-    /// ランダムなステージイベントを取得する
+    /// 全てのステージイベントデータを取得する
     /// </summary>
-    /// <returns>ステージイベントのインスタンス</returns>
-    Type GetRandomEventType();
+    /// <returns>ステージイベントデータのリスト</returns>
+    List<StageEventData> GetAllStageEventData();
     
     /// <summary>
     /// ランダムな敵データを取得する
@@ -71,6 +71,13 @@ public interface IContentService
     /// <returns>ボールデータ</returns>
     BallData GetBallDataFromClassName(string className);
     
+    /// <summary>
+    /// ボールタイプ名からボールデータを取得する
+    /// </summary>
+    /// <param name="ballType">ボールタイプ名</param>
+    /// <returns>ボールデータ</returns>
+    BallData GetBallData(string ballType);
+    
     // ====== レリック関連メソッド ======
     
     /// <summary>
@@ -86,6 +93,12 @@ public interface IContentService
     /// <param name="rarity">レアリティ</param>
     /// <returns>指定レアリティのレリックデータリスト</returns>
     List<RelicData> GetRelicDataByRarity(Rarity rarity);
+    
+    /// <summary>
+    /// 全てのレリックデータを取得する
+    /// </summary>
+    /// <returns>全レリックデータリスト</returns>
+    List<RelicData> GetAllRelicData();
     
     // ====== 価格関連メソッド ======
     
