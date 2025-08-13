@@ -47,6 +47,7 @@ MonoBehaviour:
   ballList: {fileID: 11400000, guid: b403a1c8e9b1c4c8ebd30524bcbf77b7, type: 2}
   relicList: {fileID: 11400000, guid: 1d674c77c4bdc4710b1797774ab9c0b0, type: 2}
   statusEffectList: {fileID: 11400000, guid: b4373a73fdb54e4db1f4000b1989152a, type: 2}
+  stageEventDataList: {fileID: 11400000, guid: 2c349c8a5db6d4a059b07e44db3b75db, type: 2}
   commonProbability: 0.4
   uncommonProbability: 0.7
   rareProbability: 0.85

@@ -9,6 +9,7 @@ public enum LocalizationTableType
     WordDictionary,
     Tutorial,
     Setting,
+    StageEvent,
 }
 
 public enum CursorIconType

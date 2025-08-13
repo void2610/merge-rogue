@@ -2,6 +2,38 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## 🚨 CRITICAL DEVELOPMENT PRINCIPLES 🚨
+
+### エラーハンドリング方針
+**絶対に開発者の設定ミスによるランタイムエラーを隠してはならない**
+
+- ❌ **禁止**: `if (relicData != null)` のような開発者設定ミスによるnullチェック
+- ❌ **禁止**: 設定不備を警告で済ませる `Debug.LogWarning("設定されていません")`
+- ✅ **推奨**: 設定ミスは即座にクラッシュさせ、問題を明確化する
+
+**理由**: 
+- ランタイムエラーを隠す実装は不具合の原因となる
+- 開発者が問題に気付かず、本番で予期しない動作が発生する
+- エラーは早期に発見し、設定時点で修正すべき
+
+**正しいアプローチ**:
+```csharp
+// ❌ 間違い - 完全に不要で有害
+if (relicData != null) 
+{
+    relicData.DoSomething();
+    Debug.Log("何かしました"); // デバッグ文も不要で可読性を下げる
+}
+
+// ✅ 正しい - シンプルで直接的
+relicData.DoSomething();
+```
+
+**追加の重要原則**:
+- **不要なif文の完全禁止**: 開発者設定ミスのチェックは一切書かない
+- **デバッグ文の禁止**: `Debug.Log()` は可読性を落とすだけの最低な行為
+- **最小限の実装**: 本質的でない全てのコードを削除する
+
 ## Project Overview
 
 Merge Rogue is a Unity 6 physics-based puzzle roguelike game where players merge balls to create powerful attacks against enemies. The game features a relic system, procedural map generation, and localization support.

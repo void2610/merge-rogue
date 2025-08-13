@@ -41,6 +41,9 @@ public class ContentProviderData : ScriptableObject
     [Header("ステータスエフェクトデータ")]
     [SerializeField] private StatusEffectDataList statusEffectList;
     
+    [Header("ステージイベントデータ")]
+    [SerializeField] private AllStageEventDataList stageEventDataList;
+    
     [Header("レアリティ確率設定")]
     [SerializeField, Range(0f, 1f)] private float commonProbability = 0.40f;   // 40%
     [SerializeField, Range(0f, 1f)] private float uncommonProbability = 0.70f; // 30% (累積70%)
@@ -73,6 +76,7 @@ public class ContentProviderData : ScriptableObject
     public BallDataList BallList => ballList;
     public RelicDataList RelicList => relicList;
     public StatusEffectDataList StatusEffectList => statusEffectList;
+    public AllStageEventDataList StageEventDataList => stageEventDataList;
     
     // 設定値アクセス用プロパティ
     public float CommonProbability => commonProbability;
