@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5be51871efa6c3e4eae1703925c8f5ac, type: 3}
+  m_Name: StageEvent
+  m_EditorClassIdentifier: 
+  m_SharedTableData: {fileID: 11400000, guid: cab9b65a528894d0eb867217bd1a99a8, type: 2}
+  m_Tables:
+  - {fileID: 11400000, guid: dfcc7e307fb384991b3eacb3fe32ff60, type: 2}
+  - {fileID: 11400000, guid: 6f56e8b9c796c4cdd99ea8a3abc86273, type: 2}
+  m_Extensions:
+  - rid: 2700769192909471843
+  m_Group: String Table
+  references:
+    version: 2
+    RefIds:
+    - rid: 2700769192909471843
+      type: {class: GoogleSheetsExtension, ns: UnityEditor.Localization.Plugins.Google, asm: Unity.Localization.Editor}
+      data:
+        m_Collection: {fileID: 11400000}
+        m_SheetsServiceProvider: {fileID: 0}
+        m_SpreadsheetId: 
+        m_SheetId: 0
+        m_Columns: []
+        m_RemoveMissingPulledKeys: 1

@@ -41,6 +41,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cab9b65a528894d0eb867217bd1a99a8
+    m_Address: Assets/Localization/StringTable/StageEvent/StageEvent Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e9771d71674dc4b10b0e4dba0a8939bc
     m_Address: Assets/Localization/Relic Shared Data.asset
     m_ReadOnly: 1
