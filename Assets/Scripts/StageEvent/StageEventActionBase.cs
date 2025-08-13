@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Threading;
-using Cysharp.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -13,9 +10,7 @@ public abstract class StageEventActionBase
     /// <summary>
     /// アクションを実行
     /// </summary>
-    /// <param name="cancellationToken">キャンセレーショントークン</param>
-    /// <returns>実行結果</returns>
-    public abstract UniTask Execute(CancellationToken cancellationToken = default);
+    public abstract void Execute();
     
     /// <summary>
     /// アクションが実行可能かチェック

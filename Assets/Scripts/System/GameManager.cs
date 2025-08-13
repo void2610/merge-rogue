@@ -52,6 +52,9 @@ public class GameManager : MonoBehaviour
     public bool IsGameOver { get; private set; }
     public Player Player { get; private set; }
     public EnemyContainer EnemyContainer => enemyContainer;
+    public IRelicService RelicService => _relicService;
+    public IInventoryService InventoryService => _inventoryService;
+    public IContentService ContentService => _contentService;
     
     public readonly ReactiveProperty<BigInteger> Coin = new(0);
     
@@ -60,17 +63,19 @@ public class GameManager : MonoBehaviour
     private IInputProvider _inputProvider;
     private IContentService _contentService;
     private IRelicService _relicService;
+    private IInventoryService _inventoryService;
     private InventoryConfiguration _inventoryConfiguration;
     private SettingsManager _settingsManager;
     
     [Inject]
-    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider, IContentService contentService, IRelicService relicService, InventoryConfiguration inventoryConfiguration, SettingsManager settingsManager = null)
+    public void InjectDependencies(IScoreService scoreService, ScoreDisplayComponent scoreDisplayComponent, IInputProvider inputProvider, IContentService contentService, IRelicService relicService, IInventoryService inventoryService, InventoryConfiguration inventoryConfiguration, SettingsManager settingsManager = null)
     {
         _scoreService = scoreService;
         _scoreDisplayComponent = scoreDisplayComponent;
         _inputProvider = inputProvider;
         _contentService = contentService;
         _relicService = relicService;
+        _inventoryService = inventoryService;
         _inventoryConfiguration = inventoryConfiguration;
         _settingsManager = settingsManager;
     }
