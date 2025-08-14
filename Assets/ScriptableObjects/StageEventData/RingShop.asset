@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RingShop
   m_EditorClassIdentifier: 
   eventId: RING_SHOP
-  weight: 1
+  weight: 9999
   options:
   - actions:
     - rid: 8001
@@ -31,7 +31,7 @@ MonoBehaviour:
         amount: 15
     - rid: 8002
       type: {class: AddRandomRingRelicAction, ns: , asm: Assembly-CSharp}
-      data: {}
+      data: 
     - rid: 8003
       type: {class: DoNothingAction, ns: , asm: Assembly-CSharp}
-      data: {}
+      data: 

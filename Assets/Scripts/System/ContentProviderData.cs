@@ -104,6 +104,7 @@ public class ContentProviderData : ScriptableObject
         if (ballList) ballList.Register();
         if (relicList) relicList.Register();
         if (statusEffectList) statusEffectList.Register();
+        if (stageEventDataList) stageEventDataList.Register();
     }
     
     /// <summary>

@@ -80,8 +80,17 @@ public class StageEventView : MonoBehaviour
             // テキストを設定
             var buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
             var description = LocalizeStringLoader.Instance.Get(option.GetDescriptionKey(_currentEventData.eventId, i));
-            var effectDescription = LocalizeStringLoader.Instance.Get(option.GetEffectDescriptionKey(_currentEventData.eventId, i));
-            buttonText.text = $"{description}({effectDescription})";
+            
+            // DoNothingActionの場合は効果説明を表示しない
+            if (option.actions.Count == 1 && option.actions[0] is DoNothingAction)
+            {
+                buttonText.text = description;
+            }
+            else
+            {
+                var effectDescription = LocalizeStringLoader.Instance.Get(option.GetEffectDescriptionKey(_currentEventData.eventId, i));
+                buttonText.text = $"{description}({effectDescription})";
+            }
             
             // ボタンのクリックイベントを設定
             var buttonComponent = button.GetComponent<Button>();
@@ -138,8 +147,18 @@ public class StageEventView : MonoBehaviour
             
             var buttonText = button.GetComponentInChildren<TextMeshProUGUI>();
             var description = LocalizeStringLoader.Instance.Get(option.GetDescriptionKey(_currentEventData.eventId, i));
-            var effectDescription = LocalizeStringLoader.Instance.Get(option.GetEffectDescriptionKey(_currentEventData.eventId, i));
-            buttonText.text = $"{description}({effectDescription})";
+            
+            // DoNothingActionの場合は効果説明を表示しない
+            var hasOnlyDoNothing = option.actions.Count == 1 && option.actions[0] is DoNothingAction;
+            if (hasOnlyDoNothing)
+            {
+                buttonText.text = description;
+            }
+            else
+            {
+                var effectDescription = LocalizeStringLoader.Instance.Get(option.GetEffectDescriptionKey(_currentEventData.eventId, i));
+                buttonText.text = $"{description}({effectDescription})";
+            }
         }
     }
     

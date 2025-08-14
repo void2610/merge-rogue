@@ -21,4 +21,14 @@ public class AllStageEventDataList : ScriptableObject
     {
         return stageEventDataList.Find(data => data.eventId == eventId);
     }
+
+    /// <summary>
+    /// 全てのステージイベントデータを登録
+    /// </summary>
+    public void Register()
+    {
+#if UNITY_EDITOR
+        this.RegisterAssetsInSameDirectory(stageEventDataList, sortKeySelector: data => data.eventId);
+#endif
+    }
 }
