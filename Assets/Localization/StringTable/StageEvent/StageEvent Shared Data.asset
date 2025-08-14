@@ -72,31 +72,31 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 17211119886350
-    m_Key: MAGICIANS_ORB_D
+    m_Key: GET_MAGICIANS_ORB_D
     m_Metadata:
       m_Items: []
   - m_Id: 17211119886351
-    m_Key: MAGICIANS_ORB_1_D
+    m_Key: GET_MAGICIANS_ORB_1_D
     m_Metadata:
       m_Items: []
   - m_Id: 17211119886352
-    m_Key: MAGICIANS_ORB_1_E
+    m_Key: GET_MAGICIANS_ORB_1_E
     m_Metadata:
       m_Items: []
   - m_Id: 17211119886353
-    m_Key: MAGICIANS_ORB_1_R
+    m_Key: GET_MAGICIANS_ORB_1_R
     m_Metadata:
       m_Items: []
   - m_Id: 17211119886354
-    m_Key: MAGICIANS_ORB_2_D
+    m_Key: GET_MAGICIANS_ORB_2_D
     m_Metadata:
       m_Items: []
   - m_Id: 17211119886355
-    m_Key: MAGICIANS_ORB_2_E
+    m_Key: GET_MAGICIANS_ORB_2_E
     m_Metadata:
       m_Items: []
   - m_Id: 17211119886356
-    m_Key: MAGICIANS_ORB_2_R
+    m_Key: GET_MAGICIANS_ORB_2_R
     m_Metadata:
       m_Items: []
   - m_Id: 17211119886358
@@ -173,6 +173,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 18211119886384
     m_Key: CLEANING_SERVICE_2_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 292410268573696
+    m_Key: CLEANING_SERVICE_2_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 292410323099648
+    m_Key: CLEANING_SERVICE_2_R
     m_Metadata:
       m_Items: []
   - m_Id: 18211119886390
