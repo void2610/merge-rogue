@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.Linq;
 
 /// <summary>
 /// StageEventDataのカスタムエディタ
@@ -18,95 +16,7 @@ public class StageEventDataEditor : Editor
     private void OnEnable()
     {
         // ローカライゼーションデータを読み込み
-        LoadLocalizationData();
-    }
-    
-    /// <summary>
-    /// ローカライゼーションデータを読み込み
-    /// </summary>
-    private void LoadLocalizationData()
-    {
-        _japaneseLocalizations = new Dictionary<string, string>();
-        
-        try
-        {
-            // 日本語テーブルファイルを直接読み込み
-            var jaTablePath = "Assets/Localization/StringTable/StageEvent/StageEvent_ja.asset";
-            var sharedDataPath = "Assets/Localization/StringTable/StageEvent/StageEvent Shared Data.asset";
-            
-            var jaTableText = System.IO.File.ReadAllText(jaTablePath);
-            var sharedDataText = System.IO.File.ReadAllText(sharedDataPath);
-            
-            // 共有データからキーとIDの対応を取得
-            var keyIdMap = ParseSharedData(sharedDataText);
-            
-            // 日本語テーブルからIDと文字列の対応を取得
-            var idTextMap = ParseJapaneseTable(jaTableText);
-            
-            // キーと日本語文字列の対応を構築
-            foreach (var keyId in keyIdMap)
-            {
-                if (idTextMap.TryGetValue(keyId.Value, out var localizedText))
-                {
-                    _japaneseLocalizations[keyId.Key] = localizedText;
-                }
-                else
-                {
-                    // IDが存在しない場合は空文字列として登録
-                    _japaneseLocalizations[keyId.Key] = "";
-                }
-            }
-        }
-        catch (System.Exception ex)
-        {
-            Debug.LogWarning($"ローカライゼーションデータの読み込みに失敗: {ex.Message}");
-        }
-    }
-    
-    /// <summary>
-    /// 共有データファイルを解析してキー→ID対応を取得
-    /// </summary>
-    private Dictionary<string, string> ParseSharedData(string yamlText)
-    {
-        var keyIdMap = new Dictionary<string, string>();
-        
-        // YAMLからエントリを抽出
-        var entryMatches = Regex.Matches(yamlText, @"- m_Id: (\d+)\s+m_Key: (\w+)");
-        
-        foreach (Match match in entryMatches)
-        {
-            var id = match.Groups[1].Value;
-            var key = match.Groups[2].Value;
-            keyIdMap[key] = id;
-        }
-        
-        return keyIdMap;
-    }
-    
-    /// <summary>
-    /// 日本語テーブルファイルを解析してID→テキスト対応を取得
-    /// </summary>
-    private Dictionary<string, string> ParseJapaneseTable(string yamlText)
-    {
-        var idTextMap = new Dictionary<string, string>();
-        
-        // YAMLからローカライズされたテキストを抽出
-        // 引用符あり・なし両方のパターンに対応、空文字列も含む
-        var entryMatches = Regex.Matches(yamlText, @"- m_Id: (\d+)\s+m_Localized: (?:""(.*?)""|(.*))\s*$", RegexOptions.Multiline);
-        
-        foreach (Match match in entryMatches)
-        {
-            var id = match.Groups[1].Value;
-            // 引用符ありパターン（グループ2）または引用符なしパターン（グループ3）から取得
-            var localizedText = match.Groups[2].Success 
-                ? match.Groups[2].Value 
-                : match.Groups[3].Value;
-            // Unicodeエスケープシーケンスをデコード
-            localizedText = Regex.Unescape(localizedText);
-            idTextMap[id] = localizedText;
-        }
-        
-        return idTextMap;
+        _japaneseLocalizations = LocalizationEditorHelper.LoadJapaneseLocalization("StageEvent");
     }
     
     public override void OnInspectorGUI()
@@ -316,11 +226,7 @@ public class StageEventDataEditor : Editor
     /// </summary>
     private string GetLocalizedText(string key)
     {
-        if (_japaneseLocalizations == null || string.IsNullOrEmpty(key))
-            return null;
-            
-        _japaneseLocalizations.TryGetValue(key, out var localizedText);
-        return localizedText;
+        return LocalizationEditorHelper.GetLocalizedText(_japaneseLocalizations, key);
     }
     
     /// <summary>
