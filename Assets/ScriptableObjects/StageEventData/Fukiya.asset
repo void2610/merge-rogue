@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5bf95fdcfac449dda8490b6573e0b60, type: 3}
+  m_Name: Fukiya
+  m_EditorClassIdentifier: 
+  eventId: FUKIYA
+  weight: 1
+  options:
+  - actions:
+    - rid: 2001
+    isEndless: 0
+  - actions:
+    - rid: 2002
+    isEndless: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 2001
+      type: {class: AddRelicAction, ns: , asm: Assembly-CSharp}
+      data:
+        relicData: {fileID: 11400000, guid: 3003d8a8bc7ba418da775b0f443d35c2, type: 2}
+    - rid: 2002
+      type: {class: DamageAction, ns: , asm: Assembly-CSharp}
+      data:
+        amount: 10
