@@ -1,0 +1,230 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: StageEvent_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: cab9b65a528894d0eb867217bd1a99a8, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 5776780288000
+    m_Localized: A blowgun is coming! What should you do?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211115692032
+    m_Localized: Receive in bag
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886336
+    m_Localized: Get the Relic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886337
+    m_Localized: I got the cursed blowgun!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886338
+    m_Localized: Receive with your body
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886339
+    m_Localized: 10 damage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886340
+    m_Localized: I got hit by an arrow in the knee...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886342
+    m_Localized: I met a chubby old man. "Is there something I can help you with?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886343
+    m_Localized: It's dark and I can't see very well.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886344
+    m_Localized: Change next battle to rest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886345
+    m_Localized: The man took out a 100 coin from his pocket and set it on fire...
+      "How about it? It's brighter now, isn't it?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886346
+    m_Localized: I want money.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886347
+    m_Localized: Get 100 coins
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886348
+    m_Localized: The man took 100 coins out of his pocket and handed them to me.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886350
+    m_Localized: I met a wizard. "I don't seem to be able to use it properly... Could
+      you please accept it?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886351
+    m_Localized: receive
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886352
+    m_Localized: Obtain the Wizard's Orb
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886353
+    m_Localized: Obtained the Wizard's Orb.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886354
+    m_Localized: Walk away
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886356
+    m_Localized: Maybe we'll meet again...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886358
+    m_Localized: There are a bunch of regular balls rolling around! What should you
+      do?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886359
+    m_Localized: Pick up the ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886360
+    m_Localized: Get a regular ball
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886361
+    m_Localized: I got a regular ball.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886362
+    m_Localized: dispose of
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886363
+    m_Localized: Discard random balls
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886364
+    m_Localized: Random balls were discarded.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886366
+    m_Localized: I met a suspicious man. "Shall we make a deal?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886367
+    m_Localized: Trade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886368
+    m_Localized: 25 coins spent, ???
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886369
+    m_Localized: 25 coins gave me a huge recovery in health.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886370
+    m_Localized: Walk away
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886372
+    m_Localized: ...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886380
+    m_Localized: Cleaning service available for 50 coins!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886381
+    m_Localized: Please proceed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886382
+    m_Localized: 50 coins spent, clear merge area
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886383
+    m_Localized: All balls in the merge area have been cleaned up.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886384
+    m_Localized: No thank you.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886390
+    m_Localized: Met a ring-selling girl. "Would you like to buy a ring?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886391
+    m_Localized: Buy a ring
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886392
+    m_Localized: 15 coins spent, get random ring relic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886393
+    m_Localized: Got a wonderful ring.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886400
+    m_Localized: Met a ragged man. "Want to invest with me...?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886401
+    m_Localized: Invest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886402
+    m_Localized: Invest all coins
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886403
+    m_Localized: Thanks! (Handed over all coins)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283658228326400
+    m_Localized: '"What a depressed guy."'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283602943205376
+    m_Localized: Walk away
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283644181602304
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 285011122053120
+    m_Localized: Walk away
+    m_Metadata:
+      m_Items: []
+  - m_Id: 285011122053122
+    m_Localized: ...
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

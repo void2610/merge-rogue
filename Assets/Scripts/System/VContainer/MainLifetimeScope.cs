@@ -65,6 +65,8 @@ public class MainLifetimeScope : LifetimeScope
         builder.Register<IRelicService, RelicService>(Lifetime.Singleton);
         builder.Register<IScoreService, ScoreService>(Lifetime.Singleton);
         builder.Register<IEnemyDifficultyService, EnemyDifficultyService>(Lifetime.Singleton);
+        builder.Register<IStageEventService, StageEventService>(Lifetime.Singleton);
+        builder.Register<StageEventPresenter>(Lifetime.Singleton);
         
         builder.RegisterEntryPoint<MouseHoverUISelector>();
         builder.RegisterEntryPoint<InventoryInitializer>();
@@ -74,7 +76,7 @@ public class MainLifetimeScope : LifetimeScope
         builder.RegisterComponentInHierarchy<MergeManager>();
         builder.RegisterComponentInHierarchy<StageManager>();
         builder.RegisterComponentInHierarchy<ScoreDisplayComponent>();
-        builder.RegisterComponentInHierarchy<StageEventProcessor>();
+        builder.RegisterComponentInHierarchy<StageEventView>();
         builder.RegisterComponentInHierarchy<DescriptionWindow>();
         builder.RegisterComponentInHierarchy<InventoryUI>();
         builder.RegisterComponentInHierarchy<Treasure>();

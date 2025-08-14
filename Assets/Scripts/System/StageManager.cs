@@ -10,7 +10,6 @@ public class StageManager : MonoBehaviour
     [SerializeField] private Shop shop;
     [SerializeField] private Treasure treasure;
     [SerializeField] private ClearScreenView clearScreenView;
-    [SerializeField] private StageEventProcessor stageEventProcessor;
     [SerializeField] private StageType startStage;
     public readonly ReactiveProperty<int> CurrentStageCount = new(-1);
     public static StageNode CurrentStage { get; private set; }
@@ -20,12 +19,14 @@ public class StageManager : MonoBehaviour
     private BackgroundController _backgroundController;
     private IRandomService _randomService;
     private IContentService _contentService;
+    private StageEventPresenter _stageEventPresenter;
     
     [Inject]
-    public void InjectDependencies(IRandomService randomService, IContentService contentService)
+    public void InjectDependencies(IRandomService randomService, IContentService contentService, StageEventPresenter stageEventPresenter)
     {
         _contentService = contentService;
         _randomService = randomService;
+        _stageEventPresenter = stageEventPresenter;
     }
     
     public void StartFromFirstStage() => NextStage(_mapGenerator.GetStartNode()).Forget();
@@ -151,7 +152,7 @@ public class StageManager : MonoBehaviour
             case StageType.Events:
                 EventManager.OnEventStageEnter.OnNext(StageType.Events);
                 UIManager.Instance.EnableCanvasGroup("Event", true);
-                stageEventProcessor.StartEvent();
+                _stageEventPresenter.StartEvent();
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(s), s, null);

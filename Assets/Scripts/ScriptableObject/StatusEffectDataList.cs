@@ -16,29 +16,7 @@ public class StatusEffectDataList : ScriptableObject
     public void Register()
     {
 #if UNITY_EDITOR
-        // ScriptableObject (このスクリプト) と同じディレクトリパスを取得
-        var path = AssetDatabase.GetAssetPath(this);
-        path = System.IO.Path.GetDirectoryName(path);
-
-        // 指定ディレクトリ内の全てのStatusEffectDataを検索
-        var guids = AssetDatabase.FindAssets("t:StatusEffectData", new[] { path });
-
-        // 検索結果をリストに追加
-        list.Clear();
-        foreach (var guid in guids)
-        {
-            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            var statusEffectData = AssetDatabase.LoadAssetAtPath<StatusEffectData>(assetPath);
-            if (statusEffectData != null)
-            {
-                list.Add(statusEffectData);
-            }
-        }
-        
-        // タイプでソート
-        list = list.OrderBy(x => x.type).ToList();
-
-        UnityEditor.EditorUtility.SetDirty(this); // ScriptableObjectを更新
+        this.RegisterAssetsInSameDirectory(list, sortKeySelector: data => data.name);
 #endif
     }
     

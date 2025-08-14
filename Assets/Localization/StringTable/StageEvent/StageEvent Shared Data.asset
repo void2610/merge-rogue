@@ -1,0 +1,252 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: StageEvent Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: StageEvent
+  m_TableCollectionNameGuidString: cab9b65a528894d0eb867217bd1a99a8
+  m_Entries:
+  - m_Id: 5776780288000
+    m_Key: FUKIYA_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211115692032
+    m_Key: FUKIYA_1_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886336
+    m_Key: FUKIYA_1_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886337
+    m_Key: FUKIYA_1_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886338
+    m_Key: FUKIYA_2_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886339
+    m_Key: FUKIYA_2_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886340
+    m_Key: FUKIYA_2_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886342
+    m_Key: NARIKIN_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886343
+    m_Key: NARIKIN_1_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886344
+    m_Key: NARIKIN_1_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886345
+    m_Key: NARIKIN_1_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886346
+    m_Key: NARIKIN_2_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886347
+    m_Key: NARIKIN_2_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886348
+    m_Key: NARIKIN_2_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886350
+    m_Key: GET_MAGICIANS_ORB_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886351
+    m_Key: GET_MAGICIANS_ORB_1_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886352
+    m_Key: GET_MAGICIANS_ORB_1_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886353
+    m_Key: GET_MAGICIANS_ORB_1_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886354
+    m_Key: GET_MAGICIANS_ORB_2_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886355
+    m_Key: GET_MAGICIANS_ORB_2_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886356
+    m_Key: GET_MAGICIANS_ORB_2_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886358
+    m_Key: GET_NORMAL_BALL_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886359
+    m_Key: GET_NORMAL_BALL_1_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886360
+    m_Key: GET_NORMAL_BALL_1_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886361
+    m_Key: GET_NORMAL_BALL_1_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886362
+    m_Key: GET_NORMAL_BALL_2_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886363
+    m_Key: GET_NORMAL_BALL_2_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886364
+    m_Key: GET_NORMAL_BALL_2_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886366
+    m_Key: LIFE_MONEY_TRADE_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886367
+    m_Key: LIFE_MONEY_TRADE_1_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886368
+    m_Key: LIFE_MONEY_TRADE_1_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886369
+    m_Key: LIFE_MONEY_TRADE_1_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886370
+    m_Key: LIFE_MONEY_TRADE_2_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886371
+    m_Key: LIFE_MONEY_TRADE_2_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 17211119886372
+    m_Key: LIFE_MONEY_TRADE_2_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886380
+    m_Key: CLEANING_SERVICE_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886381
+    m_Key: CLEANING_SERVICE_1_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886382
+    m_Key: CLEANING_SERVICE_1_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886383
+    m_Key: CLEANING_SERVICE_1_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886384
+    m_Key: CLEANING_SERVICE_2_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 292410268573696
+    m_Key: CLEANING_SERVICE_2_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 292410323099648
+    m_Key: CLEANING_SERVICE_2_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886390
+    m_Key: RING_SHOP_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886391
+    m_Key: RING_SHOP_1_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886392
+    m_Key: RING_SHOP_1_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886393
+    m_Key: RING_SHOP_1_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 285011122053120
+    m_Key: RING_SHOP_2_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 285011122053121
+    m_Key: RING_SHOP_2_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 285011122053122
+    m_Key: RING_SHOP_2_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886400
+    m_Key: GAMBLER_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886401
+    m_Key: GAMBLER_1_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886402
+    m_Key: GAMBLER_1_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886403
+    m_Key: GAMBLER_1_R
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283602943205376
+    m_Key: GAMBLER_2_D
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283644181602304
+    m_Key: GAMBLER_2_E
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283658228326400
+    m_Key: GAMBLER_2_R
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 2700769192909471834
+  references:
+    version: 2
+    RefIds:
+    - rid: 2700769192909471834
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1755063594343

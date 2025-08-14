@@ -24,7 +24,6 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
     [SerializeField] private GameObject coinPrefab;
     [SerializeField] private float alignment = 3;
     [SerializeField] private Treasure treasure;
-    [SerializeField] private int spawnDistance = 5; // 敵がスポーンするインデックス（後方から）
     public readonly ReactiveProperty<int> DefeatedEnemyCount = new(0);
     // 近接用レーン（柔軟なサイズ）
     private List<EnemyBase> _meleeEnemies;

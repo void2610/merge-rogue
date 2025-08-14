@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5bf95fdcfac449dda8490b6573e0b60, type: 3}
+  m_Name: RingShop
+  m_EditorClassIdentifier: 
+  eventId: RING_SHOP
+  weight: 9999
+  options:
+  - actions:
+    - rid: 8001
+    - rid: 8002
+    isEndless: 1
+  - actions:
+    - rid: 8003
+    isEndless: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 8001
+      type: {class: SubCoinAction, ns: , asm: Assembly-CSharp}
+      data:
+        amount: 15
+    - rid: 8002
+      type: {class: AddRandomRingRelicAction, ns: , asm: Assembly-CSharp}
+      data: 
+    - rid: 8003
+      type: {class: DoNothingAction, ns: , asm: Assembly-CSharp}
+      data: 

@@ -15,25 +15,7 @@ public class BallDataList : ScriptableObject
     public void Register()
     {
 #if UNITY_EDITOR
-        // ScriptableObject (このスクリプト) と同じディレクトリパスを取得
-        var path = AssetDatabase.GetAssetPath(this);
-        path = System.IO.Path.GetDirectoryName(path);
-
-        // 指定ディレクトリ内の全てのRelicDataを検索
-        var guids = AssetDatabase.FindAssets("t:BallData", new[] { path });
-
-        // 検索結果をリストに追加
-        list.Clear();
-        foreach (var guid in guids)
-        {
-            var assetPath = AssetDatabase.GUIDToAssetPath(guid);
-            var ballData = AssetDatabase.LoadAssetAtPath<BallData>(assetPath);
-            if (ballData) list.Add(ballData);
-        }
-        // レアリティでソート
-        list = list.OrderBy(x => x.rarity).ToList();
-
-        UnityEditor.EditorUtility.SetDirty(this); // ScriptableObjectを更新
+        this.RegisterAssetsInSameDirectory(list, sortKeySelector: data => data.name);
 #endif
     }
 

@@ -84,10 +84,10 @@ public class RelicService : IRelicService, IDisposable
     /// <returns>削除に成功したかどうか</returns>
     public bool RemoveRelic(RelicData relic)
     {
-        var index = _relics.FindIndex(r => r.id == relic.id);
+        var index = _relics.FindIndex(r => r.className == relic.className);
         if (index == -1)
         {
-            Debug.LogError("指定されたレリックが存在しません: " + relic.id);
+            Debug.LogError("指定されたレリックが存在しません: " + relic.className);
             return false;
         }
 
