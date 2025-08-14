@@ -76,7 +76,7 @@ public class RelicUIManager : MonoBehaviour
     /// <param name="relicData">削除されたレリックデータ</param>
     private void OnRelicRemoved(RelicData relicData)
     {
-        var index = _relicService.Relics.ToList().FindIndex(r => r.id == relicData.id);
+        var index = _relicService.Relics.ToList().FindIndex(r => r.className == relicData.className);
         if (index >= 0 && index < _relicUIs.Count)
         {
             Destroy(_relicUIs[index].gameObject);

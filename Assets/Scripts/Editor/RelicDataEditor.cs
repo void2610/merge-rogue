@@ -53,21 +53,8 @@ public class RelicDataEditor : Editor
         
         using (new EditorGUILayout.VerticalScope(EditorStyles.helpBox))
         {
-            EditorGUILayout.PropertyField(serializedObject.FindProperty("id"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("className"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("sprite"));
-            
-            // レガシーフィールド（非推奨）
-            EditorGUILayout.Space(5);
-            EditorGUILayout.LabelField("レガシーフィールド（非推奨）", EditorStyles.miniLabel);
-            using (new EditorGUI.DisabledScope(true))
-            {
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("displayName"));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("description"));
-                EditorGUILayout.PropertyField(serializedObject.FindProperty("flavorText"));
-            }
-            EditorGUILayout.Space(5);
-            
             EditorGUILayout.PropertyField(serializedObject.FindProperty("rarity"));
             EditorGUILayout.PropertyField(serializedObject.FindProperty("availableDemo"));
         }
