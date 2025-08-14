@@ -11805,7 +11805,6 @@ GameObject:
   - component: {fileID: 605675522}
   - component: {fileID: 605675523}
   - component: {fileID: 605675525}
-  - component: {fileID: 605675524}
   m_Layer: 6
   m_Name: Event
   m_TagString: Untagged
@@ -11846,18 +11845,6 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &605675524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 605675521}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 02e2529110eb04ced87d9febe6bc2eb5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &605675525
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13028,7 +13015,6 @@ MonoBehaviour:
   shop: {fileID: 1941433902}
   treasure: {fileID: 1607858726}
   clearScreenView: {fileID: 1897929370}
-  stageEventPresenter: {fileID: 0}
   startStage: 0
 --- !u!4 &716147203
 Transform:

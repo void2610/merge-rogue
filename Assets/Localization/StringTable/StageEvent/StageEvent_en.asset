@@ -153,6 +153,78 @@ MonoBehaviour:
     m_Localized: ...
     m_Metadata:
       m_Items: []
+  - m_Id: 18211119886380
+    m_Localized: Cleaning service available for 50 coins!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886381
+    m_Localized: Please proceed.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886382
+    m_Localized: 50 coins spent, clear merge area
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886383
+    m_Localized: All balls in the merge area have been cleaned up.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886384
+    m_Localized: No thank you.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886390
+    m_Localized: Met a ring-selling girl. "Would you like to buy a ring?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886391
+    m_Localized: Buy a ring
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886392
+    m_Localized: 15 coins spent, get random ring relic
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886393
+    m_Localized: Got a wonderful ring.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886400
+    m_Localized: Met a ragged man. "Want to invest with me...?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886401
+    m_Localized: Invest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886402
+    m_Localized: Invest all coins
+    m_Metadata:
+      m_Items: []
+  - m_Id: 18211119886403
+    m_Localized: Thanks! (Handed over all coins)
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283658228326400
+    m_Localized: '"What a depressed guy."'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283602943205376
+    m_Localized: Walk away
+    m_Metadata:
+      m_Items: []
+  - m_Id: 283644181602304
+    m_Localized: 
+    m_Metadata:
+      m_Items: []
+  - m_Id: 285011122053120
+    m_Localized: Walk away
+    m_Metadata:
+      m_Items: []
+  - m_Id: 285011122053122
+    m_Localized: ...
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

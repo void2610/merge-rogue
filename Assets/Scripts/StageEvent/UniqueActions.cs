@@ -10,7 +10,19 @@ public class NextBattleToRestAction : StageEventActionBase
 {
     public override void Execute()
     {
-        // TODO: StageManagerにNextBattleToRestメソッドを実装する必要がある
+        // 一度だけ実行されるプロセッサーを登録
+        var oneTimeUse = false;
+        var registrationKey = this;
+        
+        EventManager.OnStageTypeDecision.AddProcessor(registrationKey, stage =>
+        {
+            if (!oneTimeUse && stage == StageType.Enemy)
+            {
+                oneTimeUse = true;
+                return StageType.Rest;
+            }
+            return stage;
+        });
     }
     
     public override bool CanExecute()
@@ -48,4 +60,22 @@ public class AddRandomRingRelicAction : StageEventActionBase
         var relicService = GameManager.Instance.RelicService;
         return relicService.Relics.Count < relicService.MaxRelics;
     }
+}
+
+/// <summary>
+/// マージエリアの全ボールをクリアするアクション
+/// </summary>
+[Serializable]
+public class ClearAllBallsAction : StageEventActionBase
+{
+    public override void Execute()
+    {
+        MergeManager.Instance.RemoveAllBalls();
+    }
+    
+    public override bool CanExecute()
+    {
+        return MergeManager.Instance.GetBallCount() > 0;
+    }
+}
 }
