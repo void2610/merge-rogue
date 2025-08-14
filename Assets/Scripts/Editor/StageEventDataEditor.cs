@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEditor;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 /// <summary>
 /// StageEventDataのカスタムエディタ
@@ -49,6 +50,11 @@ public class StageEventDataEditor : Editor
                 {
                     _japaneseLocalizations[keyId.Key] = localizedText;
                 }
+                else
+                {
+                    // IDが存在しない場合は空文字列として登録
+                    _japaneseLocalizations[keyId.Key] = "";
+                }
             }
         }
         catch (System.Exception ex)
@@ -85,14 +91,18 @@ public class StageEventDataEditor : Editor
         var idTextMap = new Dictionary<string, string>();
         
         // YAMLからローカライズされたテキストを抽出
-        var entryMatches = Regex.Matches(yamlText, @"- m_Id: (\d+)\s+m_Localized: ""(.+?)""");
+        // 引用符あり・なし両方のパターンに対応、空文字列も含む
+        var entryMatches = Regex.Matches(yamlText, @"- m_Id: (\d+)\s+m_Localized: (?:""(.*?)""|(.*))\s*$", RegexOptions.Multiline);
         
         foreach (Match match in entryMatches)
         {
             var id = match.Groups[1].Value;
-            var localizedText = match.Groups[2].Value;
+            // 引用符ありパターン（グループ2）または引用符なしパターン（グループ3）から取得
+            var localizedText = match.Groups[2].Success 
+                ? match.Groups[2].Value 
+                : match.Groups[3].Value;
             // Unicodeエスケープシーケンスをデコード
-            localizedText = System.Text.RegularExpressions.Regex.Unescape(localizedText);
+            localizedText = Regex.Unescape(localizedText);
             idTextMap[id] = localizedText;
         }
         
@@ -267,19 +277,36 @@ public class StageEventDataEditor : Editor
             EditorGUILayout.LabelField($"[{key}]", EditorStyles.miniLabel, GUILayout.Width(150));
         }
         
-        var style = GetLocalizedTextStyle(localizedText);
-        var content = string.IsNullOrEmpty(localizedText) ? $"<未設定: {key}>" : localizedText;
+        var content = localizedText == null ? $"<未設定: {key}>" : localizedText;
         
-        // GUIを無効化して読み取り専用にする
-        using (new EditorGUI.DisabledScope(true))
+        // メインの説明文（isTextArea）の場合は複数行表示、それ以外は省略表示
+        if (isTextArea)
         {
-            if (isTextArea)
+            var style = GetLocalizedTextStyle(localizedText, true);
+            // GUIを無効化して読み取り専用にする
+            using (new EditorGUI.DisabledScope(true))
             {
                 EditorGUILayout.TextArea(content, style, GUILayout.MinHeight(40));
             }
-            else
+        }
+        else
+        {
+            // 改行を含む場合は最初の行のみ表示し、長すぎる場合は省略
+            var displayContent = content;
+            if (content.Contains('\n'))
             {
-                EditorGUILayout.TextField(content, style);
+                displayContent = content.Substring(0, content.IndexOf('\n')) + "...";
+            }
+            else if (content.Length > 50)
+            {
+                displayContent = content.Substring(0, 47) + "...";
+            }
+            
+            var style = GetLocalizedTextStyle(localizedText, false);
+            // GUIを無効化して読み取り専用にする
+            using (new EditorGUI.DisabledScope(true))
+            {
+                EditorGUILayout.TextField(displayContent, style);
             }
         }
     }
@@ -309,12 +336,12 @@ public class StageEventDataEditor : Editor
     /// <summary>
     /// ローカライズテキストのスタイルを取得
     /// </summary>
-    private GUIStyle GetLocalizedTextStyle(string localizedText)
+    private GUIStyle GetLocalizedTextStyle(string localizedText, bool isTextArea = false)
     {
         // 読み取り専用フィールド用のベーススタイル
-        var style = new GUIStyle(EditorStyles.textField);
+        var style = new GUIStyle(isTextArea ? EditorStyles.label : EditorStyles.textField);
         
-        if (string.IsNullOrEmpty(localizedText))
+        if (localizedText == null)
         {
             style.normal.background = CreateColorTexture(_warningColor);
             style.fontStyle = FontStyle.Italic;
@@ -323,21 +350,26 @@ public class StageEventDataEditor : Editor
         else
         {
             style.fontStyle = FontStyle.Normal;
-            // 編集不能フィールドらしい暗い背景色と適切なテキスト色
-            var readOnlyColor = EditorGUIUtility.isProSkin ? 
-                new Color(0.08f, 0.08f, 0.08f, 1f) : 
-                new Color(0.65f, 0.65f, 0.65f, 1f);
+            if (!isTextArea)
+            {
+                // TextFieldの場合のみ背景色を設定
+                var readOnlyColor = EditorGUIUtility.isProSkin ? 
+                    new Color(0.08f, 0.08f, 0.08f, 1f) : 
+                    new Color(0.65f, 0.65f, 0.65f, 1f);
+                style.normal.background = CreateColorTexture(readOnlyColor);
+            }
             var textColor = EditorGUIUtility.isProSkin ? 
-                new Color(0.6f, 0.6f, 0.6f, 1f) : 
-                new Color(0.3f, 0.3f, 0.3f, 1f);
-                
-            style.normal.background = CreateColorTexture(readOnlyColor);
+                new Color(0.7f, 0.7f, 0.7f, 1f) : 
+                new Color(0.2f, 0.2f, 0.2f, 1f);
             style.normal.textColor = textColor;
         }
         
         style.wordWrap = true;
-        style.alignment = TextAnchor.MiddleLeft;
-        style.padding = new RectOffset(8, 8, 4, 4);
+        style.alignment = TextAnchor.UpperLeft;
+        style.padding = new RectOffset(4, 4, 2, 2);
+        style.fontSize = EditorStyles.label.fontSize;
+        style.fixedHeight = 0;
+        style.stretchHeight = true;
         return style;
     }
     
