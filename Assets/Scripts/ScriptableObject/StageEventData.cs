@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using MackySoft.SerializeReferenceExtensions;
 
 /// <summary>
 /// ステージイベントのデータを定義するScriptableObject
