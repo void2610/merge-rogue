@@ -2426,7 +2426,6 @@ MonoBehaviour:
   coinPrefab: {fileID: 1812483531616101450, guid: 2c13a74f3d7c84bd29db8479f7091bf5, type: 3}
   alignment: 1
   treasure: {fileID: 1607858726}
-  spawnDistance: 3
 --- !u!1 &213023586
 GameObject:
   m_ObjectHideFlags: 0
@@ -18885,8 +18884,8 @@ SpriteRenderer:
   m_Color: {r: 0.7, g: 0.7, b: 0.7, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 2
-  m_Size: {x: 5, y: 1}
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 1
   m_SpriteTileMode: 1
   m_WasSpriteAssigned: 1
@@ -18901,8 +18900,8 @@ Transform:
   m_GameObject: {fileID: 1291382172}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 5.1, z: 50}
-  m_LocalScale: {x: 6, y: 6, z: 2.88}
+  m_LocalPosition: {x: 0, y: 6.2, z: 100}
+  m_LocalScale: {x: 5.5, y: 1.1, z: 1.1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}

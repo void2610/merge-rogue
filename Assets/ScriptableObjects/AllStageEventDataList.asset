@@ -13,4 +13,11 @@ MonoBehaviour:
   m_Name: AllStageEventDataList
   m_EditorClassIdentifier: 
   stageEventDataList:
+  - {fileID: 11400000, guid: 70d4eb10521d24a6091d219f121f38d2, type: 2}
   - {fileID: 11400000, guid: fc485932adbbb4656bce56c0f5f442c9, type: 2}
+  - {fileID: 11400000, guid: 6eafe71f81b2b413bb1c13f872d30007, type: 2}
+  - {fileID: 11400000, guid: 9c5c6707d315e4f2fa51c94843a3819a, type: 2}
+  - {fileID: 11400000, guid: 13dfde7fb53b540358057b5835395811, type: 2}
+  - {fileID: 11400000, guid: 633f22ff2bfa8416fad140dbda2b8def, type: 2}
+  - {fileID: 11400000, guid: 848a056a32d684f1b86d4b992dd7cf0c, type: 2}
+  - {fileID: 11400000, guid: 089533d3154ff4b6fa8d3429dd76c7fb, type: 2}

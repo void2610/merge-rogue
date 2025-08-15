@@ -12,7 +12,8 @@ public class BackgroundController : MonoBehaviour
     [SerializeField] private float torchInterval = 5;
     
     private Material _bgMaterial;
-    private static readonly int _mainTex = Shader.PropertyToID("_MainTex");
+    private static readonly int _offsetX = Shader.PropertyToID("_OffsetX");
+    private static readonly int _offsetY = Shader.PropertyToID("_OffsetY");
     private Tween _torchTween;
 
     private void Start()
@@ -24,18 +25,19 @@ public class BackgroundController : MonoBehaviour
     {
         _bgMaterial = new Material(bgSpriteRenderer.material);
         bgSpriteRenderer.material = _bgMaterial;
-        _bgMaterial.SetTextureOffset(_mainTex, new Vector2(0, 0));
+        _bgMaterial.SetFloat(_offsetX, 0);
+        _bgMaterial.SetFloat(_offsetY, 0);
     }
 
     public void PlayStageTransition()
     {
-        DOTween.To(() => _bgMaterial.GetTextureOffset(_mainTex), 
-                   x => _bgMaterial.SetTextureOffset(_mainTex, x), 
-                   new Vector2(1, 0), 2.0f)
+        DOTween.To(() => _bgMaterial.GetFloat(_offsetX), 
+                   x => _bgMaterial.SetFloat(_offsetX, x), 
+                   1.0f, 2.0f)
             .SetEase(Ease.InOutSine)
             .OnComplete(() =>
             {
-                _bgMaterial.SetTextureOffset(_mainTex, new Vector2(0, 0));
+                _bgMaterial.SetFloat(_offsetX, 0);
                 MoveTorchesToNewPosition();
             })
             .SetLink(gameObject)
