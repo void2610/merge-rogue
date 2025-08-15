@@ -1,12 +1,13 @@
 このUnityプロジェクトが利用しているライブラリ一覧です。
 
 
-更新日時：2025/05/27_12:38:48
+更新日時：2025/08/15_19:36:51
 
 | Name  | License Type | Charge Type | URL1 | URL2 | Memo1 | Use Lib | Add Date |
 | -------------  | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- | ------------- |
 | Alchemy | MIT | Unknown |  |  |  |  | 2025/01/05_22:00:22 |
 | DOTween | Other | Paid_OneTimePurchase | https://assetstore.unity.com/packages/tools/animation/dotween-hotween-v2-27676 |  |  |  | 2024/12/06_10:12:08 |
+| LitMotion | MIT | Free | https://github.com/annulusgames/LitMotion |  |  |  | 2024/12/06_11:53:34 |
 | NuGetForUnity | MIT | Free | https://github.com/GlitchEnzo/NuGetForUnity |  |  |  | 2024/12/06_10:13:18 |
 | R3 | MIT | Free | https://github.com/Cysharp/R3 |  |  |  | 2024/12/06_10:05:44 |
 | UI Effect | MIT | Free | https://github.com/mob-sakai/UIEffect |  |  |  | 2024/12/06_11:53:34 |

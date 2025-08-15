@@ -15,6 +15,7 @@ MonoBehaviour:
   _licenseAllConfigList:
   - {fileID: 11400000, guid: 821af3bf44b0c401f86f208ddc6f67c0, type: 2}
   - {fileID: 11400000, guid: 9bf35bdea81f248f2ae61761bf7fdff9, type: 2}
+  - {fileID: 11400000, guid: 4e793d2479ba541ffa711ce2110be171, type: 2}
   - {fileID: 11400000, guid: 4a831785c417c4f73b6ad05c9f94cee4, type: 2}
   - {fileID: 11400000, guid: 89078cdaf5ecc49888e895a42b35984d, type: 2}
   - {fileID: 11400000, guid: 34653998762f14eb683569764cb63804, type: 2}
