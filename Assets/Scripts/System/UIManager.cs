@@ -13,6 +13,7 @@ using TMPro;
 using DG.Tweening;
 using JetBrains.Annotations;
 using R3;
+using VContainer;
 
 public class UIManager : MonoBehaviour
 {
@@ -48,6 +49,7 @@ public class UIManager : MonoBehaviour
     public bool IsTutorialOpened { get; set; }
     
     private CanvasGroupSwitcher _canvasGroupSwitcher;
+    private SettingsManager _settingsManager;
     
     public Transform PlayerStatusUI => playerStatusUI;
     public Transform EnemyStatusUIContainer => enemyStatusUIContainer;
@@ -212,6 +214,39 @@ public class UIManager : MonoBehaviour
         }
     }
     
+    [Inject]
+    public void InjectDependencies(SettingsManager settingsManager)
+    {
+        _settingsManager = settingsManager;
+    }
+    
+    private async UniTaskVoid InitializeVolumeSettingsAsync()
+    {
+        // SettingsManagerが注入されるまで待機
+        while (_settingsManager == null)
+        {
+            await UniTask.Yield();
+        }
+        
+        // SettingsManagerの初期化が完了するまで待機
+        while (_settingsManager.Settings.Count == 0)
+        {
+            await UniTask.Yield();
+        }
+        
+        // SettingsManagerから音量設定を取得
+        var bgmSetting = _settingsManager.GetSetting<SliderSetting>("BGM_VOLUME");
+        var seSetting = _settingsManager.GetSetting<SliderSetting>("SE_VOLUME");
+        
+        // 初期値をSettingsManagerから設定
+        bgmSlider.value = bgmSetting.CurrentValue;
+        seSlider.value = seSetting.CurrentValue;
+        
+        // スライダー変更時にSettingsManagerの設定を更新（自動保存される）
+        bgmSlider.onValueChanged.AddListener(value => bgmSetting.CurrentValue = value);
+        seSlider.onValueChanged.AddListener(value => seSetting.CurrentValue = value);
+    }
+    
     public void SetVirtualMousePosition(Vector2 pos)
     {
         var rectTransform = virtualMouse.GetComponent<RectTransform>();
@@ -340,16 +375,8 @@ public class UIManager : MonoBehaviour
             hpText.text = GameManager.Instance.Player.Health.Value + "/" + v;
         }).AddTo(this);
         
-        bgmSlider.onValueChanged.AddListener((value) =>
-        {
-            BgmManager.Instance.BgmVolume = value;
-        });
-        bgmSlider.value = BgmManager.Instance.BgmVolume;
-        seSlider.onValueChanged.AddListener((value) =>
-        {
-            SeManager.Instance.SeVolume = value;
-        });
-        seSlider.value = SeManager.Instance.SeVolume;
+        // 音量設定の初期化（SettingsManagerの注入を待つ）
+        InitializeVolumeSettingsAsync().Forget();
 
         var trigger = seSlider.gameObject.AddComponent<EventTrigger>();
         var entry = new EventTrigger.Entry

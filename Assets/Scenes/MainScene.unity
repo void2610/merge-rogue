@@ -13141,7 +13141,7 @@ MonoBehaviour:
   ballUIPrefab: {fileID: 5315751102541514650, guid: 99dbff61fceb64a369f7d0f952d05246, type: 3}
   emptySlotPrefab: {fileID: 5315751102541514650, guid: c5e8bbb06a8a941518e9cc2b9164044e, type: 3}
   shop: {fileID: 1941433902}
-  inventoryPosition: {x: -0.4, y: 1.5, z: 0}
+  inventoryPosition: {x: -0.4, y: 1.86, z: 0}
   inventoryUIContainer: {fileID: 725906728}
   subCursor: {fileID: 240537029}
   dialog: {fileID: 2057808266}
