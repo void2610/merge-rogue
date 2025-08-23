@@ -50,11 +50,5 @@ public class SerializableDictionary<TKey, TValue> :
     /// </summary>
     void ISerializationCallbackReceiver.OnBeforeSerialize()
     {
-        serializedList.Clear();
-        
-        foreach (var kvp in this)
-        {
-            serializedList.Add(new Pair(kvp.Key, kvp.Value));
-        }
     }
 }
