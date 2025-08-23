@@ -245,7 +245,9 @@ public class SettingsManager : IDisposable
             
             foreach (var setting in _settings)
             {
-                settingsData.settingValues[setting.SettingName] = setting.SerializeValue();
+                var key = setting.LocalizeKey;
+                var value = setting.SerializeValue();
+                settingsData.settingValues.Add(new SettingKeyValue(key, value));
             }
             
             var json = JsonUtility.ToJson(settingsData, true);
@@ -254,7 +256,16 @@ public class SettingsManager : IDisposable
             PlayerPrefs.SetString("GameSettings", json);
             PlayerPrefs.Save();
 #else
-            System.IO.File.WriteAllText(SettingsFilePath, json);
+            var filePath = SettingsFilePath;
+            
+            // ディレクトリが存在しない場合は作成
+            var directory = System.IO.Path.GetDirectoryName(filePath);
+            if (!System.IO.Directory.Exists(directory))
+            {
+                System.IO.Directory.CreateDirectory(directory);
+            }
+            
+            System.IO.File.WriteAllText(filePath, json);
 #endif
         }
         catch (Exception e)
@@ -287,9 +298,10 @@ public class SettingsManager : IDisposable
             {
                 foreach (var setting in _settings)
                 {
-                    if (settingsData.settingValues.TryGetValue(setting.SettingName, out var value))
+                    var savedSetting = settingsData.settingValues.FirstOrDefault(kvp => kvp.key == setting.LocalizeKey);
+                    if (savedSetting != null)
                     {
-                        setting.DeserializeValue(value);
+                        setting.DeserializeValue(savedSetting.value);
                     }
                 }
             }
@@ -314,6 +326,22 @@ public class SettingsManager : IDisposable
     [Serializable]
     private class SettingsData
     {
-        public SerializableDictionary<string, string> settingValues = new();
+        public List<SettingKeyValue> settingValues = new();
+    }
+    
+    /// <summary>
+    /// キー・バリューペアのシリアライゼーション用クラス
+    /// </summary>
+    [Serializable]
+    private class SettingKeyValue
+    {
+        public string key;
+        public string value;
+        
+        public SettingKeyValue(string key, string value)
+        {
+            this.key = key;
+            this.value = value;
+        }
     }
 }
