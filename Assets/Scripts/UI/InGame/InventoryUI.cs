@@ -14,10 +14,12 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
         Replace,
         Upgrade,
         Swap,
-        Remove
+        Remove,
+        Add
     }
     
     [SerializeField] private GameObject ballUIPrefab;
+    [SerializeField] private GameObject emptySlotPrefab;
     [SerializeField] private Shop shop;
     [SerializeField] private Vector3 inventoryPosition;
     [SerializeField] private GameObject inventoryUIContainer;
@@ -42,7 +44,7 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
     private int _selectedIndex = -1;
     private int _swapIndex = -1;
     private InventoryUIState _state = InventoryUIState.Disabled;
-    private BallData _replaceBallData;
+    private BallData _targetBallData;
 
     public void CreateBallUI(GameObject ball, int rank, BallBase ballBase)
     {
@@ -62,6 +64,44 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
         {
             Destroy(_items[rank]);
             _items[rank] = g;
+        }
+    }
+    
+    public void CreateEmptySlotUI(int index)
+    {
+        var g = Instantiate(emptySlotPrefab, inventoryUIContainer.transform);
+        
+        g.transform.position = CalcInventoryPosition(index);
+        g.transform.localScale = GetBallScale(index);
+        
+        SetEmptySlotEvent(g, index);
+        if (_items.Count <= index)
+        {
+            _items.Add(g);
+        }
+        else
+        {
+            if (_items[index]) Destroy(_items[index]);
+            _items[index] = g;
+        }
+    }
+    
+    public void InitializeEmptySlots()
+    {
+        // 既存の空きスロットを全て削除
+        for (var i = _inventoryService.InventorySize; i < _items.Count; i++)
+        {
+            if (_items[i])
+            {
+                Destroy(_items[i]);
+                _items[i] = null;
+            }
+        }
+        
+        // Replace状態またはAdd状態の時のみ空きスロットを表示
+        if ((_state == InventoryUIState.Replace || _state == InventoryUIState.Add) && _inventoryService.InventorySize < 10)
+        {
+            CreateEmptySlotUI(_inventoryService.InventorySize);
         }
     }
     
@@ -112,8 +152,9 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
     public void StartEditReplace(BallData ballData)
     {
         _state = InventoryUIState.Replace;
-        _replaceBallData = ballData;
+        _targetBallData = ballData;
         UIManager.Instance.LockCursorToInventory(true);
+        InitializeEmptySlots();
     }
     
     private void SetEvent(GameObject g, int index, BallBase ballBase)
@@ -133,6 +174,25 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
         if (index >= _items.Count) nav.selectOnRight = null;
         else nav.selectOnRight = _items[index].GetComponent<Button>();
     }
+    
+    private void SetEmptySlotEvent(GameObject g, int index)
+    {
+        // 空きスロットクリックでボールの追加
+        var button = g.GetComponent<Button>();
+        button.onClick.RemoveAllListeners();
+        button.onClick.AddListener(() => OnClickEmptySlot(index).Forget());
+        g.RemoveAllEventTrigger();
+        
+        // ナビゲーションを手動設定
+        var nav = button.navigation;
+        nav.mode = Navigation.Mode.Explicit;
+        nav.selectOnDown = null;
+        nav.selectOnUp = null;
+        if (index <= 0) nav.selectOnLeft = null;
+        else if (index - 1 < _items.Count && _items[index - 1]) nav.selectOnLeft = _items[index - 1].GetComponent<Button>();
+        if (index >= _items.Count - 1) nav.selectOnRight = null;
+        else if (index + 1 < _items.Count && _items[index + 1]) nav.selectOnRight = _items[index + 1].GetComponent<Button>();
+    }
 
     public void CancelEdit()
     {
@@ -140,6 +200,9 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
         UIManager.Instance.LockCursorToInventory(false);
         _swapIndex = -1;
         subCursor.GetComponent<Image>().enabled = false;
+        
+        // 編集キャンセル時に空きスロットを削除
+        InitializeEmptySlots();
     }
 
     private async UniTaskVoid OnClickBall(int index)
@@ -155,11 +218,11 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
             case InventoryUIState.Disabled:
                 break;
             case InventoryUIState.Replace:
-                res = await dialog.OpenDialog(InventoryUIState.Replace, _inventoryService.GetBallData(index), _inventoryService.GetBallLevel(index), _replaceBallData);
+                res = await dialog.OpenDialog(InventoryUIState.Replace, _inventoryService.GetBallData(index), _inventoryService.GetBallLevel(index), _targetBallData);
                 if (res)
                 {
-                    _inventoryService.ReplaceBall(_replaceBallData, _selectedIndex + 1);
-                    GameManager.Instance.SubCoin(_contentService.GetShopPrice(Shop.ShopItemType.Ball, _replaceBallData.rarity));
+                    _inventoryService.ReplaceBall(_targetBallData, _selectedIndex + 1);
+                    GameManager.Instance.SubCoin(_contentService.GetShopPrice(Shop.ShopItemType.Ball, _targetBallData.rarity));
                     
                     if (GameManager.Instance.state == GameManager.GameState.AfterBattle)
                         afterBattleUI.UnInteractableSelectedItem();
@@ -224,7 +287,37 @@ public class InventoryUI : SingletonMonoBehaviour<InventoryUI>
                 }
                 CancelEdit();
                 break;
+            case InventoryUIState.Add:
+                // Add状態の場合、通常のボールをクリックしても何もしない（既存のボールは選択できない）
+                SeManager.Instance.PlaySe("error");
+                break;
         }
+    }
+    
+    private async UniTaskVoid OnClickEmptySlot(int index)
+    {
+        // Replace状態またはAdd状態で動作
+        if (_state != InventoryUIState.Replace && _state != InventoryUIState.Add) return;
+        
+        UIManager.Instance.LockCursorToInventory(false);
+        _selectedIndex = index;
+        SeManager.Instance.PlaySe("button");
+        
+        var res = await dialog.OpenDialog(InventoryUIState.Add, _targetBallData, 0, null);
+        if (res)
+        {
+            _inventoryService.AddBall(_targetBallData);
+            GameManager.Instance.SubCoin(_contentService.GetShopPrice(Shop.ShopItemType.Ball, _targetBallData.rarity));
+            
+            // 空きスロットを更新
+            InitializeEmptySlots();
+            
+            if (GameManager.Instance.state == GameManager.GameState.AfterBattle)
+                afterBattleUI.UnInteractableSelectedItem();
+            else
+                shop.UnInteractableSelectedItem();
+        }
+        CancelEdit();
     }
     
     private Vector3 CalcInventoryPosition(int index)

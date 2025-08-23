@@ -66,6 +66,12 @@ public class ConfirmationDialog : MonoBehaviour
                 SetBallTexts(rightWindow, ball1, level+1, true, ball1, level);
                 rightBallImage.sprite = ball1.sprite;
                 break;
+            case InventoryUI.InventoryUIState.Add:
+                ResetBallTexts(leftWindow);
+                leftBallImage.sprite = null;
+                SetBallTexts(rightWindow, ball1, level);
+                rightBallImage.sprite = ball1.sprite;
+                break;
         }
         
         UIManager.Instance.EnableCanvasGroup("Confirm", true);
