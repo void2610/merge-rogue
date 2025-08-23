@@ -146,8 +146,5 @@ public class Player : MonoBehaviour, IEntity
     {
         RemainingLevelUps = 0;
         Health.Value = MaxHealth.Value;
-        
-        var spriteRenderer = this.transform.GetComponentsInChildren<SpriteRenderer>()[0];
-        _material = spriteRenderer.material;
     }
 }
