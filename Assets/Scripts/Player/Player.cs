@@ -24,6 +24,12 @@ public class Player : MonoBehaviour, IEntity
     
     public StatusEffectUI StatusEffectUI => statusEffectUI;
     
+    private void Awake()
+    {
+        var spriteRenderer = GetComponent<SpriteRenderer>();
+        _material = spriteRenderer.material;
+    }
+    
     public void AddStatusEffect(StatusEffectType type, int stacks)
     {
         StatusEffectProcessor.AddStatusEffect(this, type, stacks);
@@ -69,10 +75,13 @@ public class Player : MonoBehaviour, IEntity
         SeManager.Instance.PlaySe("enemyAttack");
         CameraMove.Instance.ShakeCamera(0.5f, 0.15f);
         ParticleManager.Instance.DamageText(damage, this.transform.position.x);
-        _material.DOColor(Color.red, 0).OnComplete(() =>
+        if (_material)
         {
-            _material.DOColor(new Color(0.7f,0.7f,0.7f), 0.3f);
-        });
+            _material.DOColor(Color.red, 0).OnComplete(() =>
+            {
+                _material.DOColor(Color.white, 0.3f);
+            });
+        }
         
         Health.Value -= damage;
         if (Health.Value <= 0)

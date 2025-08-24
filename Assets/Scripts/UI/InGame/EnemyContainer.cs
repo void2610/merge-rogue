@@ -370,8 +370,7 @@ public class EnemyContainer : SingletonMonoBehaviour<EnemyContainer>
             
             // 状態異常を更新
             await GameManager.Instance.Player.UpdateStatusEffects();
-            var allTasks = _meleeEnemies.Concat(_rangedEnemies)
-                .Where(e => e != null).Select(e => e.UpdateStatusEffects());
+            var allTasks = validEnemies.Select(e => e.UpdateStatusEffects());
             await UniTask.WhenAll(allTasks);
         }
 

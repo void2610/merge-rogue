@@ -35,5 +35,5 @@ MonoBehaviour:
   - {fileID: -1680270377, guid: f40834502e1774a8bad2530bce387704, type: 3}
   - {fileID: -57574143, guid: f40834502e1774a8bad2530bce387704, type: 3}
   framePerSecond: 3
-  hpSliderYOffset: 35
-  enemyYOffset: 0.43
+  hpSliderYOffset: 30
+  enemyYOffset: 0.7

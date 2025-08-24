@@ -352,8 +352,8 @@ public static class StatusEffectProcessor
     {
         var position = entity switch
         {
-            Player player => player.transform.position,
-            EnemyBase enemy => enemy.transform.position,
+            Player player => player ? player.transform.position : Vector3.zero,
+            EnemyBase enemy => enemy ? enemy.transform.position : Vector3.zero,
             _ => Vector3.zero
         };
         
