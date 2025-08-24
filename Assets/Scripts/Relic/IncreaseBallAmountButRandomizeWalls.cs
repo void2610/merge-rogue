@@ -11,7 +11,7 @@ public class IncreaseBallAmountButRandomizeWalls : RelicBase
         // ターン開始時に壁をランダムに変更
         AddSubscription(EventManager.OnMergePhaseStart.Subscribe(_ =>
         {
-            if (RandomService.RandomRange(0f, 1f) < 0.5f) return;
+            if (RandomService.Chance(0.5f)) return;
             MergeManager.Instance?.RandomizeWallWidth();
         }));
     }

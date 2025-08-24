@@ -5,7 +5,7 @@ public class CriticalBall : BallBase
         base.Effect(other);
         
         var critical = 1.0f;
-        if (RandomService.RandomRange(0.0f, 1.0f) < 0.33f)
+        if (RandomService.Chance(0.33f))
         {
             critical = 3.0f;
             SeManager.Instance.PlaySe("levelUp");

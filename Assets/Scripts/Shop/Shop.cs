@@ -60,7 +60,7 @@ public class Shop : MonoBehaviour
         for(var i = 0; i < ITEM_NUM; i++)
         {
             var balls = _contentService.GetBallListExceptNormal();
-            var isBall = _randomService.RandomRange(0.0f, 1.0f) > 0.5f;
+            var isBall = _randomService.Chance(0.5f);
             if (isBall)
             {
                 var index = _randomService.RandomRange(0, balls.Count);

@@ -15,7 +15,7 @@ public class SometimeCopyDropBall : RelicBase
     
     private void OnBallDrop(Unit _)
     {
-        if (RandomService.RandomRange(0.0f, 1.0f) < 0.5f)
+        if (RandomService.Chance(0.5f))
         {
             var currentBall = MergeManager.Instance?.CurrentBall?.GetComponent<BallBase>();
             if (currentBall)

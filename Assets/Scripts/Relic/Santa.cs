@@ -16,7 +16,7 @@ public class Santa : RelicBase
 
     private void OnRestEnter()
     {
-        var rarity = RandomService.RandomRange(0.0f, 1.0f) > 0.5f ? Rarity.Common : Rarity.Uncommon;
+        var rarity = RandomService.Chance(0.5f) ? Rarity.Common : Rarity.Uncommon;
         var relics = ContentService?.GetRelicDataByRarity(rarity);
 
         if (relics is not { Count: > 0 }) return;

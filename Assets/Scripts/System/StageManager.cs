@@ -103,7 +103,7 @@ public class StageManager : MonoBehaviour
         if(CurrentStage.Type == StageType.Events)
         {
             // ランダムなステージに移動
-            var r = _randomService.RandomRange(0.0f, 1.0f) < 0.75f ? 4 : _randomService.RandomRange(0, 4);
+            var r = _randomService.Chance(0.75f) ? 4 : _randomService.RandomRange(0, 4);
             var stage = (StageType)r;
             // ValueProcessorを通してステージタイプを最終決定
             finalStage = EventManager.OnStageTypeDecision.Process(stage);

@@ -12,7 +12,7 @@ public class RageAndConfuseWhenDamage : RelicBase
     private int OnDamage(int damage)
     {
         if (damage < 0) return damage;
-        if (RandomService.RandomRange(0f, 1f) < 0.5f) return damage;
+        if (RandomService.Chance(0.5f)) return damage;
         
         // プレイヤーに怒りと混乱を付与
         StatusEffects.AddToPlayer(StatusEffectType.Rage);
