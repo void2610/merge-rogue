@@ -109,6 +109,7 @@ public class ContentService : IContentService
     public int GetShopPrice(Shop.ShopItemType type, Rarity rarity) => (int)(_data.GetShopPrice(type, rarity) * ShopPriceMultiplier);
     public int GetBallRemovePrice() => (int)(_data.BallRemovePrice * ShopPriceMultiplier);
     public int GetBallUpgradePrice() => (int)(_data.BallUpgradePrice * ShopPriceMultiplier);
+    public int GetInitialPlayerCoin() => _data.InitialPlayerCoin;
     public void SetShopPriceMultiplier(float multiplier) => ShopPriceMultiplier = multiplier;
     
     public void AddAct()

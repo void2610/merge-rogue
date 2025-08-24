@@ -180,6 +180,7 @@ public class GameManager : MonoBehaviour
         ApplyGameSpeedFromSettings();
 
         AddCoin(Application.isEditor ? debugCoin : 10);
+        AddCoin(ContentService.GetInitialPlayerCoin());
         
         // テスト用レリックの追加（エディタでのみ）
         // RelicUIManagerのStart()が実行された後に実行するため、1フレーム遅延させる

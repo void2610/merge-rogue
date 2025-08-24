@@ -61,6 +61,7 @@ public class ContentProviderData : ScriptableObject
     [Header("特殊価格設定")]
     [SerializeField] private int ballRemovePrice = 25;
     [SerializeField] private int ballUpgradePrice = 10;
+    [SerializeField] private int initialPlayerCoin = 100;
     
     [Header("レリック重複回避設定")]
     [SerializeField] private int relicRetryCount = 3; // 重複回避の再試行回数
@@ -90,6 +91,7 @@ public class ContentProviderData : ScriptableObject
     public float BallPriceMultiplier => ballPriceMultiplier;
     public int BallRemovePrice => ballRemovePrice;
     public int BallUpgradePrice => ballUpgradePrice;
+    public int InitialPlayerCoin => initialPlayerCoin;
     public int RelicRetryCount => relicRetryCount;
     
     // 敵難易度倍率設定

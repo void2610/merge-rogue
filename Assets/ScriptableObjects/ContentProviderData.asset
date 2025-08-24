@@ -59,6 +59,7 @@ MonoBehaviour:
   ballPriceMultiplier: 0.75
   ballRemovePrice: 25
   ballUpgradePrice: 10
+  initialPlayerCoin: 50
   relicRetryCount: 3
-  baseEnemyHealthMultiplier: 2.5
-  baseEnemyAttackMultiplier: 3
+  baseEnemyHealthMultiplier: 1.5
+  baseEnemyAttackMultiplier: 4

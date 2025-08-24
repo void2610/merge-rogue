@@ -122,6 +122,11 @@ public interface IContentService
     /// <returns>ボール強化価格</returns>
     int GetBallUpgradePrice();
     
+    /// <summary>
+    /// プレイヤーの初期所持コイン数を取得する
+    /// </summary>
+    int GetInitialPlayerCoin();
+    
     // ====== ゲーム進行メソッド ======
     
     /// <summary>

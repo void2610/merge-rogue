@@ -64,5 +64,4 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  testRelics:
-  - {fileID: 11400000, guid: 085a725c786a74ca596e928403b777c5, type: 2}
+  testRelics: []

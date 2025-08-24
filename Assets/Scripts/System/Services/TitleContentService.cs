@@ -35,6 +35,7 @@ public class TitleContentService : IContentService
 
     public int GetBallRemovePrice() => _data?.BallRemovePrice ?? 0;
     public int GetBallUpgradePrice() => _data?.BallUpgradePrice ?? 0;
+    public int GetInitialPlayerCoin() => _data?.InitialPlayerCoin ?? 0;
 
     // 以下は未実装（TitleSceneでは使用されない）
     public List<StageEventData> GetAllStageEventData() => throw new NotSupportedException("TitleScene does not support stage event data");
