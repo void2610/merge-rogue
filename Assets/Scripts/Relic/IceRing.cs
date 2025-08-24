@@ -12,7 +12,7 @@ public class IceRing : RelicBase
             current =>
             {
                 var enemies = EnemyContainer.Instance.GetAllEnemies();
-                if (enemies.Count > 0)
+                if (enemies.Count > 0 && this.RandomService.Chance(0.05f))
                 {
                     StatusEffects.AddToEntity(enemies[0], StatusEffectType.Freeze, 1);
                     ActivateUI();

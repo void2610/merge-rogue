@@ -12,7 +12,7 @@ public class FireRing : RelicBase
             current =>
             {
                 var enemies = EnemyContainer.Instance.GetAllEnemies();
-                if (enemies.Count > 0)
+                if (enemies.Count > 0 && this.RandomService.Chance(0.15f))
                 {
                     StatusEffects.AddToEntity(enemies[0], StatusEffectType.Burn, 1);
                     ActivateUI();

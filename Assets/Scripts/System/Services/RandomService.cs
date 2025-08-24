@@ -42,6 +42,14 @@ public class RandomService : IRandomService
         
         _random = new System.Random(_seed);
     }
+
+    /// <summary>
+    /// 指定された確率でtrueを返す
+    /// </summary>
+    public bool Chance(float probability)
+    {
+        return _random.NextDouble() < probability;
+    }
     
     /// <summary>
     /// 指定された範囲内のランダムなfloat値を生成する

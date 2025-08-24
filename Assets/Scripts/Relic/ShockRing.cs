@@ -12,7 +12,7 @@ public class ShockRing : RelicBase
             current =>
             {
                 var enemies = EnemyContainer.Instance.GetAllEnemies();
-                if (enemies.Count > 0)
+                if (enemies.Count > 0 && this.RandomService.Chance(0.1f))
                 {
                     StatusEffects.AddToEntity(enemies[0], StatusEffectType.Shock, 1);
                     ActivateUI();

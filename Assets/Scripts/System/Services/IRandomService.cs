@@ -7,6 +7,11 @@ public interface IRandomService
     string SeedText { get; }
     
     /// <summary>
+    /// 指定された確率でtrueを返す
+    /// </summary>
+    bool Chance(float probability);
+    
+    /// <summary>
     /// 指定された範囲内のランダムなfloat値を生成する
     /// </summary>
     /// <param name="min">最小値</param>
