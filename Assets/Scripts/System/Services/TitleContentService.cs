@@ -13,8 +13,8 @@ public class TitleContentService : IContentService
     public int Act => 0;
     public StatusEffectDataList StatusEffectList => _data?.StatusEffectList;
     public float GlobalEnemyDifficultyMultiplier => 1.0f;
-    public float BaseEnemyHealthMultiplier => _data?.BaseEnemyHealthMultiplier ?? 1.0f;
-    public float BaseEnemyAttackMultiplier => _data?.BaseEnemyAttackMultiplier ?? 1.0f;
+    public float BaseEnemyHealthMultiplier => 1.0f;
+    public float BaseEnemyAttackMultiplier => 1.0f;
     public bool IsDemoPlay { get; } = false;
 
     public TitleContentService(ContentProviderData data)
@@ -48,9 +48,9 @@ public class TitleContentService : IContentService
     public BallData GetBallDataFromClassName(string className) => throw new NotSupportedException("TitleScene does not support ball data");
     public BallData GetBallData(string ballType) => throw new NotSupportedException("TitleScene does not support ball data");
     public RelicData GetRelicByClassName(string className) => throw new NotSupportedException("TitleScene does not support relic data");
+    public RelicData GetRelicData(string relicName) => throw new NotSupportedException("TitleScene does not support relic data");
     public List<RelicData> GetRelicDataByRarity(Rarity rarity) => throw new NotSupportedException("TitleScene does not support relic data");
     public List<RelicData> GetAllRelicData() => throw new NotSupportedException("TitleScene does not support relic data");
     public void AddAct() => throw new NotSupportedException("TitleScene does not support act progression");
     public void SetShopPriceMultiplier(float multiplier) => throw new NotSupportedException("TitleScene does not support price multiplier");
-    public void SetGlobalEnemyDifficultyMultiplier(float multiplier) => throw new NotSupportedException("TitleScene does not support difficulty multiplier");
 }

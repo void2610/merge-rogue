@@ -23,11 +23,6 @@ public class ContentProviderData : ScriptableObject
         public List<ContentData> list;
     }
 
-    [Header("敵データ")]
-    [SerializeField] private List<ContentDataList> enemyList;
-    
-    [Header("ボスデータ")]
-    [SerializeField] private List<ContentDataList> bossList;
     
     [Header("イベントデータ")]
     [SerializeField] private List<ContentDataList> eventList;
@@ -66,13 +61,8 @@ public class ContentProviderData : ScriptableObject
     [Header("レリック重複回避設定")]
     [SerializeField] private int relicRetryCount = 3; // 重複回避の再試行回数
     
-    [Header("敵難易度倍率設定（バランス調整用）")]
-    [SerializeField] private float baseEnemyHealthMultiplier = 1.0f;  // 基本ヘルス倍率
-    [SerializeField] private float baseEnemyAttackMultiplier = 1.0f;  // 基本攻撃力倍率
     
     // プロパティでデータにアクセス
-    public List<ContentDataList> EnemyList => enemyList;
-    public List<ContentDataList> BossList => bossList;
     public List<ContentDataList> EventList => eventList;
     public BallDataList BallList => ballList;
     public RelicDataList RelicList => relicList;
@@ -94,9 +84,6 @@ public class ContentProviderData : ScriptableObject
     public int InitialPlayerCoin => initialPlayerCoin;
     public int RelicRetryCount => relicRetryCount;
     
-    // 敵難易度倍率設定
-    public float BaseEnemyHealthMultiplier => baseEnemyHealthMultiplier;
-    public float BaseEnemyAttackMultiplier => baseEnemyAttackMultiplier;
     
     /// <summary>
     /// データ初期化処理
@@ -133,22 +120,6 @@ public class ContentProviderData : ScriptableObject
         #endif
     }
     
-    /// <summary>
-    /// 指定されたアクトのコンテンツデータリストを取得
-    /// </summary>
-    /// <param name="contentLists">コンテンツデータリスト</param>
-    /// <param name="act">アクト番号</param>
-    /// <returns>対応するコンテンツデータリスト</returns>
-    public ContentDataList GetContentDataListForAct(List<ContentDataList> contentLists, int act)
-    {
-        if (contentLists == null || contentLists.Count == 0)
-            return new ContentDataList { list = new List<ContentData>() };
-        
-        // TODO: 将来的にアクトベースの選択を実装
-        // 現在は最初のリストを返す
-        var index = Mathf.Clamp(0, 0, contentLists.Count - 1);
-        return contentLists[index];
-    }
     
     /// <summary>
     /// ランダムなレアリティを確率に基づいて取得する

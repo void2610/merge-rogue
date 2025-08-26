@@ -16,14 +16,15 @@ MonoBehaviour:
   displayName: "\u76FE\u30DC\u30B9"
   flavorText: "\u76FE\u30DC\u30B9"
   enemyType: 3
-  attackRange: 0
+  attackRange: 1
   isMelee: 1
   maxHealthMin: 10
   maxHealthMax: 12
   attack: 5
-  interval: 3
+  interval: 1
   coin: 30
   exp: 30
+  actions: []
   spriteSheet: {fileID: 2800000, guid: 61b16598bbf0548209e95da50895cedc, type: 3}
   sprites:
   - {fileID: -287567443, guid: 61b16598bbf0548209e95da50895cedc, type: 3}

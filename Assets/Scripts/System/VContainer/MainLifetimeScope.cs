@@ -37,6 +37,7 @@ public class MainLifetimeScope : LifetimeScope
 {
     [Header("コンポーネント参照")]
     [SerializeField] private InventoryConfiguration inventoryConfiguration;
+    [SerializeField] private EnemySpawnConfiguration enemySpawnConfiguration;
     
     protected override void Configure(IContainerBuilder builder)
     {
@@ -56,15 +57,18 @@ public class MainLifetimeScope : LifetimeScope
         builder.Register<IContentService>(container =>
         {
             var data = container.Resolve<ContentProviderData>();
+            var enemyConfig = container.Resolve<EnemySpawnConfiguration>();
             var randomService = container.Resolve<IRandomService>();
-            return new ContentService(data, randomService);
+            return new ContentService(data, enemyConfig, randomService);
         }, Lifetime.Singleton);
         
         builder.RegisterInstance(inventoryConfiguration);
+        builder.RegisterInstance(enemySpawnConfiguration);
         builder.Register<IInventoryService, InventoryService>(Lifetime.Singleton);
         builder.Register<IRelicService, RelicService>(Lifetime.Singleton);
         builder.Register<IScoreService, ScoreService>(Lifetime.Singleton);
         builder.Register<IEnemyDifficultyService, EnemyDifficultyService>(Lifetime.Singleton);
+        builder.Register<EnemySpawnService>(Lifetime.Singleton);
         builder.Register<IStageEventService, StageEventService>(Lifetime.Singleton);
         builder.Register<StageEventPresenter>(Lifetime.Singleton);
         

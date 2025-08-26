@@ -19,13 +19,15 @@ public class StageManager : MonoBehaviour
     private BackgroundController _backgroundController;
     private IRandomService _randomService;
     private IContentService _contentService;
+    private EnemySpawnService _enemySpawnService;
     private StageEventPresenter _stageEventPresenter;
     
     [Inject]
-    public void InjectDependencies(IRandomService randomService, IContentService contentService, StageEventPresenter stageEventPresenter)
+    public void InjectDependencies(IRandomService randomService, IContentService contentService, EnemySpawnService enemySpawnService, StageEventPresenter stageEventPresenter)
     {
         _contentService = contentService;
         _randomService = randomService;
+        _enemySpawnService = enemySpawnService;
         _stageEventPresenter = stageEventPresenter;
     }
     
@@ -122,8 +124,9 @@ public class StageManager : MonoBehaviour
         switch (s)
         {
             case StageType.Enemy:
-                // 敵の出現量と強さを設定
-                GameManager.Instance.EnemyContainer.SpawnEnemy(CurrentStageCount.Value + 1, CurrentStageCount.Value);
+                // 敵の出現量と強さを設定（サービスを使用して計算）
+                var enemyCount = _enemySpawnService.CalculateEnemySpawnCount(CurrentStageCount.Value, _contentService.Act);
+                GameManager.Instance.EnemyContainer.SpawnEnemy(enemyCount, CurrentStageCount.Value);
                 GameManager.Instance.ChangeState(GameManager.GameState.Merge);
                 
                 EventManager.OnBattleStart.OnNext(Unit.Default);

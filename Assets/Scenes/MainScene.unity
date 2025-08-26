@@ -12942,7 +12942,7 @@ MonoBehaviour:
   shop: {fileID: 1941433902}
   treasure: {fileID: 1607858726}
   clearScreenView: {fileID: 1897929370}
-  startStage: 0
+  startStage: 5
 --- !u!4 &716147203
 Transform:
   m_ObjectHideFlags: 0
@@ -14872,6 +14872,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   inventoryConfiguration: {fileID: 11400000, guid: 00a25f7e1cc3d4b2fb162625fa639052, type: 2}
+  enemySpawnConfiguration: {fileID: 11400000, guid: c491ef3c86d0c4c03a85e2946ffae271, type: 2}
 --- !u!4 &975825325
 Transform:
   m_ObjectHideFlags: 0

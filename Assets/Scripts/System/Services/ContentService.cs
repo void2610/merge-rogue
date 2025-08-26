@@ -11,6 +11,7 @@ using Object = UnityEngine.Object;
 public class ContentService : IContentService
 {
     private readonly ContentProviderData _data;
+    private readonly EnemySpawnConfiguration _enemyConfig;
     private readonly IRandomService _randomService;
 
     public bool IsDemoPlay { get; } = false;
@@ -18,9 +19,9 @@ public class ContentService : IContentService
     public float ShopPriceMultiplier { get; private set; } = 1.0f;
     
     // 敵難易度関連プロパティ
-    public float GlobalEnemyDifficultyMultiplier { get; private set; } = 1.0f;
-    public float BaseEnemyHealthMultiplier => _data.BaseEnemyHealthMultiplier;
-    public float BaseEnemyAttackMultiplier => _data.BaseEnemyAttackMultiplier;
+    public float GlobalEnemyDifficultyMultiplier => _enemyConfig.GlobalEnemyDifficultyMultiplier;
+    public float BaseEnemyHealthMultiplier => _enemyConfig.BaseEnemyHealthMultiplier;
+    public float BaseEnemyAttackMultiplier => _enemyConfig.BaseEnemyAttackMultiplier;
 
     public StatusEffectDataList StatusEffectList => _data.StatusEffectList;
     
@@ -28,12 +29,15 @@ public class ContentService : IContentService
     /// コンストラクタ
     /// </summary>
     /// <param name="data">統合データ（設定値とコンテンツデータ）</param>
+    /// <param name="enemyConfig">敵設定データ</param>
     /// <param name="randomService">ランダムサービス</param>
     public ContentService(
         ContentProviderData data,
+        EnemySpawnConfiguration enemyConfig,
         IRandomService randomService)
     {
         _data = data;
+        _enemyConfig = enemyConfig;
         _data.InitializeData();
         _randomService = randomService;
         #if DEMO_PLAY
@@ -43,14 +47,12 @@ public class ContentService : IContentService
     
     public EnemyData GetRandomEnemy()
     {
-        var enemy = GetRandomObjectFromList(_data.EnemyList) as EnemyData;
-        return enemy;
+        return GetRandomEnemyFromList(_enemyConfig.EnemyList);
     }
     
     public EnemyData GetRandomBoss()
     {
-        var boss = GetRandomObjectFromList(_data.BossList) as EnemyData;
-        return boss;
+        return GetRandomEnemyFromList(_enemyConfig.BossList);
     }
     
     public Rarity GetRandomRarity()
@@ -138,35 +140,31 @@ public class ContentService : IContentService
     }
     
     /// <summary>
-    /// ランダムなオブジェクトをリストから取得する
+    /// ランダムな敵データをリストから取得する
     /// </summary>
-    /// <param name="contentLists">コンテンツデータリスト</param>
-    /// <returns>ランダムに選択されたオブジェクト</returns>
-    private Object GetRandomObjectFromList(List<ContentProviderData.ContentDataList> contentLists)
+    /// <param name="spawnLists">敵出現データリスト</param>
+    /// <returns>ランダムに選択された敵データ</returns>
+    private EnemyData GetRandomEnemyFromList(List<EnemySpawnConfiguration.EnemySpawnDataList> spawnLists)
     {
-        var contentDataList = _data.GetContentDataListForAct(contentLists, Act);
-        var totalProbability = contentDataList.list.Sum(d => d.probability);
+        var spawnDataList = _enemyConfig.GetEnemySpawnDataListForAct(spawnLists, Act);
+        var totalProbability = spawnDataList.list.Sum(d => d.probability);
         var randomPoint = _randomService.RandomRange(0.0f, totalProbability);
         
-        foreach (var contentData in contentDataList.list)
+        foreach (var spawnData in spawnDataList.list)
         {
-            if (randomPoint < contentData.probability)
+            if (randomPoint < spawnData.probability)
             {
-                return contentData.data;
+                return spawnData.enemyData;
             }
-            randomPoint -= contentData.probability;
+            randomPoint -= spawnData.probability;
         }
         
         // フォールバックとして最後の要素を返す
-        return contentDataList.list.Last().data;
+        return spawnDataList.list.Last().enemyData;
     }
     
     // ====== 敵難易度関連メソッド ======
-    
-    public void SetGlobalEnemyDifficultyMultiplier(float multiplier)
-    {
-        GlobalEnemyDifficultyMultiplier = multiplier;
-    }
+    // GlobalEnemyDifficultyMultiplierは読み取り専用プロパティとして提供
     
     // ====== ステージイベント関連メソッド ======
     

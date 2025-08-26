@@ -88,6 +88,13 @@ public interface IContentService
     RelicData GetRelicByClassName(string className);
     
     /// <summary>
+    /// レリック名からレリックデータを取得する
+    /// </summary>
+    /// <param name="relicName">レリック名</param>
+    /// <returns>レリックデータ</returns>
+    RelicData GetRelicData(string relicName);
+    
+    /// <summary>
     /// 指定されたレアリティのレリックデータを全て取得する
     /// </summary>
     /// <param name="rarity">レアリティ</param>
@@ -147,11 +154,6 @@ public interface IContentService
     /// </summary>
     float GlobalEnemyDifficultyMultiplier { get; }
     
-    /// <summary>
-    /// 全体的な敵難易度倍率を設定する（レリック効果用）
-    /// </summary>
-    /// <param name="multiplier">難易度倍率</param>
-    void SetGlobalEnemyDifficultyMultiplier(float multiplier);
     
     /// <summary>
     /// 敵のヘルス基本倍率を取得する（ContentProviderDataから）
