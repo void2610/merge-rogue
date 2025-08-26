@@ -12942,7 +12942,7 @@ MonoBehaviour:
   shop: {fileID: 1941433902}
   treasure: {fileID: 1607858726}
   clearScreenView: {fileID: 1897929370}
-  startStage: 5
+  startStage: 0
 --- !u!4 &716147203
 Transform:
   m_ObjectHideFlags: 0
@@ -12989,7 +12989,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stageData:
   - stageType: 0
-    probability: 1
+    probability: 2
     icon: {fileID: 21300000, guid: 09d30acee4111476c8de2ee937656084, type: 3}
     color: {r: 1, g: 0, b: 0, a: 1}
   - stageType: 1
