@@ -49,7 +49,6 @@ public class EnemySpawnConfiguration : ScriptableObject
     [SerializeField] private float globalEnemyDifficultyMultiplier = 1.0f;
     
     [Header("出現数カーブ設定")]
-    [SerializeField] private float baseSpawnCount = 1f;
     [SerializeField] private GrowthCurveType growthCurveType = GrowthCurveType.Linear;
     [SerializeField, Range(0f, 2f)] private float growthRate = 0.3f;
     [SerializeField, Range(0.5f, 3f)] private float growthPower = 1.5f;
@@ -67,16 +66,12 @@ public class EnemySpawnConfiguration : ScriptableObject
     [SerializeField] private int minSpawnCount = 1;
     [SerializeField] private int maxSpawnCount = 6;
     
-    [Header("最初のステージ設定")]
-    [SerializeField] private int firstStageSpawnCount = 1;
-    
     // プロパティ
     public List<EnemySpawnDataList> EnemyList => enemyList;
     public List<EnemySpawnDataList> BossList => bossList;
     public float BaseEnemyHealthMultiplier => baseEnemyHealthMultiplier;
     public float BaseEnemyAttackMultiplier => baseEnemyAttackMultiplier;
     public float GlobalEnemyDifficultyMultiplier => globalEnemyDifficultyMultiplier;
-    public float BaseSpawnCount => baseSpawnCount;
     public GrowthCurveType CurveType => growthCurveType;
     public float GrowthRate => growthRate;
     public float GrowthPower => growthPower;
@@ -87,7 +82,6 @@ public class EnemySpawnConfiguration : ScriptableObject
     public AnimationCurve ActMultiplierCurve => actMultiplierCurve;
     public int MinSpawnCount => minSpawnCount;
     public int MaxSpawnCount => maxSpawnCount;
-    public int FirstStageSpawnCount => firstStageSpawnCount;
     
     /// <summary>
     /// Actに対応する倍率を取得

@@ -19,10 +19,7 @@ public class EnemySpawnService
     public int CalculateEnemySpawnCount(int stage, int act)
     {
         // 最初のステージは特別扱い
-        if (stage == 0)
-        {
-            return _configuration.FirstStageSpawnCount;
-        }
+        if (stage == 0) return 1;
         
         // ステージ進行度を計算
         float stageProgress = (stage + _configuration.StageOffset) * _configuration.GrowthRate;
@@ -38,7 +35,7 @@ public class EnemySpawnService
         };
         
         // 基本出現数を計算
-        int baseCount = Mathf.FloorToInt(_configuration.BaseSpawnCount + curveValue);
+        int baseCount = Mathf.FloorToInt(curveValue);
         
         // ランダムボーナスを追加
         int randomBonus = 0;
@@ -61,10 +58,5 @@ public class EnemySpawnService
         
         // 制限内に収める
         return Mathf.Clamp(totalCount, _configuration.MinSpawnCount, _configuration.MaxSpawnCount);
-    }
-    
-    public int GetFirstStageSpawnCount()
-    {
-        return _configuration.FirstStageSpawnCount;
     }
 }
