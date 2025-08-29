@@ -11,7 +11,6 @@ public static class EventManager
     // 値を変更するゲームイベント（ValueProcessorを使用）
     public static readonly ValueProcessor<int> OnCoinGain = new();
     public static readonly ValueProcessor<int> OnCoinConsume = new();
-    public static readonly ValueProcessor<int> OnPlayerExpGain = new();
     public static readonly ValueProcessor<int> OnPlayerAttack = new();
     public static readonly ValueProcessor<int> OnPlayerDamage = new();
     public static readonly ValueProcessor<int> OnPlayerHeal = new();
