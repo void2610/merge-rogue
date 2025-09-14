@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: RingShop
   m_EditorClassIdentifier: 
   eventId: RING_SHOP
-  weight: 9999
+  weight: 1
   options:
   - actions:
     - rid: 8001
