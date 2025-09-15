@@ -18,8 +18,8 @@ MonoBehaviour:
   enemyType: 3
   attackRange: 1
   isMelee: 1
-  maxHealthMin: 20
-  maxHealthMax: 25
+  maxHealthMin: 8
+  maxHealthMax: 10
   attack: 5
   interval: 1
   coin: 30

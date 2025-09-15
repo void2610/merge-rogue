@@ -117,14 +117,35 @@ public class BallBase : MonoBehaviour
         // コライダーの設定
         var polygonCollider2D = this.GetComponent<PolygonCollider2D>();
         var physicsShapeCount = d.sprite.GetPhysicsShapeCount();
-        polygonCollider2D.pathCount = physicsShapeCount;
-        var physicsShape = new List<Vector2>();
-        for ( var i = 0; i < physicsShapeCount; i++ )
+        
+        if (physicsShapeCount == 0)
         {
-            physicsShape.Clear();
-            d.sprite.GetPhysicsShape( i, physicsShape );
-            var points = physicsShape.ToArray();
-            polygonCollider2D.SetPath( i, points );
+            // physics shapeが見つからない場合は円形のコライダーを設定
+            var circlePoints = new List<Vector2>();
+            const int segments = 32;
+            const float radius = 0.5f; // スプライトの半分のサイズ
+            
+            for (int i = 0; i < segments; i++)
+            {
+                float angle = 2 * Mathf.PI * i / segments;
+                circlePoints.Add(new Vector2(Mathf.Cos(angle) * radius, Mathf.Sin(angle) * radius));
+            }
+            
+            polygonCollider2D.pathCount = 1;
+            polygonCollider2D.SetPath(0, circlePoints.ToArray());
+        }
+        else
+        {
+            // physics shapeが存在する場合は通常通り設定
+            polygonCollider2D.pathCount = physicsShapeCount;
+            var physicsShape = new List<Vector2>();
+            for (var i = 0; i < physicsShapeCount; i++)
+            {
+                physicsShape.Clear();
+                d.sprite.GetPhysicsShape(i, physicsShape);
+                var points = physicsShape.ToArray();
+                polygonCollider2D.SetPath(i, points);
+            }
         }
         
         // 画像の設定

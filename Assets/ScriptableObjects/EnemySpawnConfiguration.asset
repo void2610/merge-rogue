@@ -24,7 +24,7 @@ MonoBehaviour:
   - list:
     - enemyData: {fileID: 11400000, guid: 8a3ebb566fa3744d8b997fa59347dd71, type: 2}
       probability: 1
-  baseEnemyHealthMultiplier: 1.25
+  baseEnemyHealthMultiplier: 2
   baseEnemyAttackMultiplier: 1
   globalEnemyDifficultyMultiplier: 1
   growthCurveType: 0
