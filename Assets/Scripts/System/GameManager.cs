@@ -133,7 +133,7 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.Merge:
-                MergeManager.Instance.StartMerge();
+                MergeManager.Instance.StartMerge().Forget();
                 break;
             case GameState.EnemyAttack:
                 EnemyContainer.Action();

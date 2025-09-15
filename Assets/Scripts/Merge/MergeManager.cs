@@ -182,12 +182,13 @@ public class MergeManager : MonoBehaviour
         }
     }
     
-    public void StartMerge()
+    public async UniTaskVoid StartMerge()
     {
         Physics2D.simulationMode = SimulationMode2D.FixedUpdate;
         _isMovable = true;
         Reset();
         
+        await UniTask.Delay(500);
         _fillingRateMagnification = FillingRateManager.Instance.CalcFillingGauge();
         
         // マージフェーズ開始イベントを発火
