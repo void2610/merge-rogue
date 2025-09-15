@@ -24,10 +24,9 @@ MonoBehaviour:
   - list:
     - enemyData: {fileID: 11400000, guid: 8a3ebb566fa3744d8b997fa59347dd71, type: 2}
       probability: 1
-  baseEnemyHealthMultiplier: 1
+  baseEnemyHealthMultiplier: 1.25
   baseEnemyAttackMultiplier: 1
   globalEnemyDifficultyMultiplier: 1
-  baseSpawnCount: 1
   growthCurveType: 0
   growthRate: 0.3
   growthPower: 1.5
@@ -84,4 +83,3 @@ MonoBehaviour:
     m_RotationOrder: 4
   minSpawnCount: 1
   maxSpawnCount: 10
-  firstStageSpawnCount: 1
